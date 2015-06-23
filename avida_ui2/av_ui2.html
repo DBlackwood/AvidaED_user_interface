@@ -1,41 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>Untitled</title>
-<script type="text/javascript" src="../lib/dojo/dojo/dojo.js" data-dojo-config="'parseOnLoad':true,'async':true,'packages':[{'name':'gridx','location':'../gridx'},{'name':'clipart','location':'../../clipart'},{'name':'maqettaSamples','location':'../../../samples'},{'name':'maqetta','location':'../../maqetta'},{'name':'shapes','location':'../../shapes'},{'name':'zazl','location':'../../zazl'},{'name':'widgets','location':'../../custom'}],'themeMap':[['Android','',['../themes/android/android.css']],['BlackBerry','',['../themes/blackberry/blackberry.css']],['iPad','',['../themes/ipad/ipad.css']],['iPhone','',['../themes/iphone/iphone.css']],['.*','',['../themes/iphone/iphone.css']]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
-<script type="text/javascript">
-require([
-  "dijit/dijit",
-  "dojo/parser",
-  "maqetta/space",
-  "maqetta/AppStates",
-  "dijit/layout/BorderContainer",
-  "dijit/layout/ContentPane",
-  "dijit/MenuBar",
-  "dijit/PopupMenuBarItem",
-  "dijit/MenuItem",
-  "dijit/Menu",
-  "dijit/form/Button",
-  "dijit/TitlePane",
-  "dijit/layout/TabContainer",
-  "dijit/form/HorizontalSlider",
-  "dijit/form/HorizontalRule",
-  "dijit/form/HorizontalRuleLabels",
-  "dijit/form/RadioButton",
-  "dijit/form/ToggleButton",
-  "dijit/form/NumberSpinner",
-  "dijit/form/ComboButton",
-  "dijit/form/DropDownButton",
-  "dijit/form/ComboBox",
-  "dijit/form/Textarea"
-]);
-</script>
-<style>@import "../themes/claro/document.css";@import "../themes/claro/claro.css";@import "../app.css";
-</style>
-<script type="text/javascript" src="../app.js"></script>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Untitled</title>
+  <script type="text/javascript" src="../lib/dojo/dojo/dojo.js" 
+      data-dojo-config="'parseOnLoad':true,'async':true,
+        'packages':[
+        {'name':'gridx','location':'../gridx'},
+        {'name':'clipart','location':'../../clipart'},
+        {'name':'maqettaSamples','location':'../../../samples'},
+        {'name':'maqetta','location':'../../maqetta'},
+        {'name':'shapes','location':'../../shapes'},
+        {'name':'zazl','location':'../../zazl'},
+        {'name':'widgets','location':'../../custom'},
+        {'name':'jquery','location':'../../jquery/dist','main':'jquery'},
+        {'name':'jquery-ui','location':'../../jquery-ui','main':'jquery-ui'}
+        ],
+        'themeMap':[
+          ['Android','',['../themes/android/android.css']],
+          ['BlackBerry','',['../themes/blackberry/blackberry.css']],
+          ['iPad','',['../themes/ipad/ipad.css']],
+          ['iPhone','',['../themes/iphone/iphone.css']],
+          ['.*','',['../themes/iphone/iphone.css']
+        ]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
+  <script type="text/javascript" src="av_ui2.js"></script>
+  
+  <link rel="stylesheet" href="../lib/jquery-ui/themes/smoothness/jquery-ui.css">
+
+
+  <style>@import "../themes/claro/document.css";@import "../themes/claro/claro.css";@import "../app.css";</style>
+  <script type="text/javascript" src="../app.js"></script>
 </head>
+
 <body data-maq-flow-layout="true" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse" data-maq-appstates="{}" id="myapp">
  <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true" style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
    <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:36px;"><span data-dojo-type="dijit/MenuBar" tabIndex="0"><span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon"><span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="Open Default Workspace"></span><span data-dojo-type="dijit/MenuItem" label="Open Workspace"></span>
@@ -571,8 +568,12 @@ require([
            <div>
              <label>
                Per Site Mutation Rate:</label>
-             <div data-dojo-type="dijit/form/HorizontalSlider" id="muteSlide" intermediateChanges="false" discreteValues="Infinity" style="width: 200px; height: auto;"></div>
-             <input id="muteInput" style="width: 3em;"></input>
+             <div data-dojo-type="dijit/form/HorizontalSlider" id="muteSlidedojo" intermediateChanges="false" discreteValues="Infinity" style="width: 200px; height: auto;"></div>
+             <div id="muteSlide" style="width:100px; display: inline-block; vertical-align: top; margin-left:20px"></div>
+             <!-- style done here for the slider; margin to keep it from overlapping; 
+                                    without width the slider is the full width of the browser window-->
+             <input id="muteInput" style="width: 3em;"></input> or the slider value is 
+             <input id="mRate" style="width: 3em;"></input>
            </div>
            <div>
              <label>
