@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>Untitled</title>
+<script type="text/javascript" data-dojo-config="'parseOnLoad':true,'async':true,'packages':[{'name':'gridx','location':'../gridx'},{'name':'clipart','location':'../../clipart'},{'name':'maqettaSamples','location':'../../../samples'},{'name':'maqetta','location':'../../maqetta'},{'name':'shapes','location':'../../shapes'},{'name':'zazl','location':'../../zazl'},{'name':'widgets','location':'../../custom'}],'themeMap':[['Android','',['../themes/android/android.css']],['BlackBerry','',['../themes/blackberry/blackberry.css']],['iPad','',['../themes/ipad/ipad.css']],['iPhone','',['../themes/iphone/iphone.css']],['.*','',['../themes/iphone/iphone.css']]],'mblThemeFiles':[],'mblLoadCompatPattern':''" src="../lib/dojo/dojo/dojo.js"></script>
+<script type="text/javascript">
+require([
+  "dijit/dijit",
+  "dojo/parser",
+  "maqetta/space",
+  "maqetta/AppStates",
+  "dijit/layout/BorderContainer",
+  "dijit/layout/ContentPane",
+  "dijit/MenuBar",
+  "dijit/PopupMenuBarItem",
+  "dijit/MenuItem",
+  "dijit/Menu",
+  "dijit/form/Button",
+  "dijit/TitlePane",
+  "dijit/layout/TabContainer",
+  "dijit/form/ToggleButton",
+  "dijit/form/HorizontalSlider",
+  "dijit/form/HorizontalRule",
+  "dijit/form/HorizontalRuleLabels"
+]);
+</script>
+<style>@import "../themes/claro/document.css";@import "../themes/claro/claro.css";@import "../app.css";
+</style>
+<script type="text/javascript" src="../app.js"></script>
+</head>
+<body data-maq-flow-layout="true" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse" id="myapp" data-maq-appstates="{}">
+ <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true" style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+   <div data-dojo-type="dijit/layout/ContentPane" id="MenuPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" style="height: 41px;">
+     <span data-dojo-type="dijit/MenuBar" tabIndex="0"><span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon"><span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="Open Default Workspace"></span><span data-dojo-type="dijit/MenuItem" label="Open Workspace"></span><span data-dojo-type="dijit/MenuItem" label="Open Recent Files"></span><span data-dojo-type="dijit/MenuItem" label="Export Data"></span><span data-dojo-type="dijit/MenuItem" label="Export Graphics"></span><span data-dojo-type="dijit/MenuItem" label="Export Freezer Item"></span><span data-dojo-type="dijit/MenuItem" label="Import Freezer Item"></span><span data-dojo-type="dijit/MenuItem" label="Close Workspace"></span><span data-dojo-type="dijit/MenuItem" label="Save Workspace As"></span><span data-dojo-type="dijit/MenuItem" label="Quit"></span>
+     </span>
+     </span><span data-dojo-type="dijit/PopupMenuBarItem" label="Edit" iconClass="dijitNoIcon"><span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="Copy"></span><span data-dojo-type="dijit/MenuItem" label="Cut"></span><span data-dojo-type="dijit/MenuItem" label="Paste"></span><span data-dojo-type="dijit/MenuItem" label="Select All"></span>
+     </span>
+     </span><span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon"><span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="Save Experiment Configuration"></span><span data-dojo-type="dijit/MenuItem" label="Save Selected Organism"></span><span data-dojo-type="dijit/MenuItem" label="Save Current Population"></span>
+     </span>
+     </span><span data-dojo-type="dijit/PopupMenuBarItem" label="Control" iconClass="dijitNoIcon"><span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="Run"></span><span data-dojo-type="dijit/MenuItem" label="Start New Experiment"></span>
+     </span>
+     </span><span data-dojo-type="dijit/PopupMenuBarItem" label="Help" iconClass="dijitNoIcon"><span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="About"></span>
+     </span>
+     </span>
+     </span>
+   </div>
+   <div data-dojo-type="dijit/layout/ContentPane" id="sideBar" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" style="width:86px;">
+     <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+       <div data-dojo-type="dijit/layout/ContentPane" id="NavPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" region="top" splitter="true" maxSize="Infinity" style="height: 94px;">
+         <table id="NavTable" border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+           <colgroup>
+             <col></col>
+             <col></col>
+           </colgroup>
+           <tbody>
+             <tr>
+               <td>
+                 <img src="avida-ed-population-icon.png" alt="Population Grid Icon" style="width: 32px; height: 32px;"></img>
+               </td>
+               <td>
+                 <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Population" iconClass="dijitNoIcon"></input>
+               </td>
+             </tr>
+             <tr>
+               <td>
+                 <img src="avida-ed-organism-icon.png" alt="Organism Icon" style="width: 32px; height: 32px;"></img>
+               </td>
+               <td>
+                 <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Organism" iconClass="dijitNoIcon"></input>
+               </td>
+             </tr>
+             <tr>
+               <td>
+                 <img src="avida-ed-analysis-icon.png" alt="Analysis Icon" style="width: 32px; height: 32px;"></img>
+               </td>
+               <td>
+                 <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Analysis" iconClass="dijitNoIcon"></input>
+               </td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+       <div data-dojo-type="dijit/layout/ContentPane" id="TrashPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 50px;">
+        <img id="Trashcan" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
+      </div>
+       <div data-dojo-type="dijit/layout/ContentPane" id="FreezerPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
+         <label>
+           Freezer</label>
+       <span data-dojo-type="dijit/TitlePane" id="ConfigDishTitlePane" title="Configured Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
+       @default</span>
+       <span data-dojo-type="dijit/TitlePane" id="OrganismTitlePane" title="Organisms" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">@ancestor</span>
+       <span data-dojo-type="dijit/TitlePane" id="PopDishTitlePane" title="Populated Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">@example</span></div>
+     </div>
+   </div>
+   <div data-dojo-type="dijit/layout/ContentPane" id="multiArea" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="center" splitter="false" maxSize="Infinity">
+   <span data-dojo-type="dijit/layout/TabContainer" style="min-width: 1em; min-height: 1em; width: 100%; height: 100%;" controllerWidget="dijit.layout.TabController">
+<div data-dojo-type="dijit/layout/ContentPane" title="Population" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" selected="true" closable="false" doLayout="false">
+ <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:43px;">
+    <table style="border-collapse:collapse;table-layout:fixed;width:100%;height:auto;" border="0">
+    <colgroup>
+        <col></col>
+        <col></col>
+      </colgroup>
+      <tbody>
+        <tr>
+          <td style="text-vertical-align: middle">
+            <img src="avida-ed-dish-icon.png"></img>&nbsp;
+            <label id="DishConfigureCurrent" style="padding: 0px;">@default</label></td>
+          <td style="text-align: right">
+            <button id="mapButton">Map</button>&nbsp; <button id="statsButton">Stats</button>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="right" splitter="true" maxSize="Infinity" style="width: 50px;" doLayout="false"></div>
+   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false"><span data-dojo-type="dijit/layout/TabContainer" style="min-width: 1em; min-height: 1em; width: 100%; height: 100%;" controllerWidget="dijit.layout.TabController">
+<div data-dojo-type="dijit/layout/ContentPane" title="Map" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" selected="true" closable="false" doLayout="false"></div>
+    <div data-dojo-type="dijit/layout/ContentPane" title="Setup" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" selected="true" closable="false" doLayout="false">
+      <h3>Environmental Settings</h3>
+      <div>
+        <label>Dish Size:&nbsp;</label>
+        <input id="xsize" style="width:2em" value="60"></input>&nbsp;x&nbsp;
+        <input id="ysize" style="width:2em" value="60"></input>&nbsp;cells
+      </div>
+      <div>
+        <table style="border-collapse:collapse;table-layout:fixed;width:100%;height:auto;" border="0">
+          <colgroup>
+            <col></col>
+            <col></col>
+            <col></col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <td>
+                 <label>Per Site Mutation Rate:&nbsp;</label></td>
+              <td>
+                &nbsp;</td>
+              <td>
+                &nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </span></div>
+ </div>
+</div>
+<div data-dojo-type="dijit/layout/ContentPane" title="Organism" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" selected="true" closable="false" doLayout="false">
+</div>
+<div data-dojo-type="dijit/layout/ContentPane" title="Analysis"></div>
+<div data-dojo-type="dijit/layout/ContentPane" title="Test"></div>
+</span></div>
+ </div>
+</body>
+</html>
