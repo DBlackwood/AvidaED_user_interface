@@ -30,7 +30,7 @@ require([
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, $, jqueryui){
     console.log("before");
-    $(function() {
+    $(function slidemute() {
       /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
       /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
       /* so I multiplied by 100,000 to get 100.000% to come out even. */
@@ -47,7 +47,7 @@ require([
           $( "#muteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3) );  /*put the value in the text box */
         }
       });
-      console.log(max);
+      console.log("max");
       /* initialize */
       $( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));  
       $( "#muteInput" ).val(muteDefault);
@@ -59,10 +59,23 @@ require([
     });
     
     console.log("after");
+    /* slidemute; */
+    console.log("after slidemute");
     
     
+    /* Oranism Gestation Length Slider */
     
     
+    console.log("after organResetFn");
     
+    /* Canvas Play in gridCanvas */
+    var canvas = document.getElementById("gridCanvas");
+    var ctx = canvas.getContext("2d");
+    ctx.moveTo(0,0);
+    ctx.lineTo(200,100);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(95,50,40,0,1*Math.PI);
+    ctx.stroke();
     
   });

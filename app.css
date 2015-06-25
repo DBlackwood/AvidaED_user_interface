@@ -34,3 +34,32 @@ html,body {
 	width: 100%;
 }
 
+.bit32{
+    font-family: Courier New;
+    font-size: .7em;
+  }
+
+p
+  { margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  
+button
+  {
+    width: 50px;
+  }
+
+div.odd
+  {  background-color: #CCCCCC;
+  }
+.even
+  {  background-color: #EEEEEE;
+  }
+
+button, input,
+
+.dijitToggleButton
+  {
+    
+    height : 21px;
+  }
