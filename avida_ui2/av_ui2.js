@@ -26,9 +26,12 @@ require([
   "jquery",
   "jquery-ui",
   "dojo/domReady!"
-  ], function(dijit, parser, space, AppStates, BorderContainer, ContentPane, MenuBar, MenuItem, Menu, Button, TitlePane, TabContainer, 
+  ], function(dijit, parser, space, AppStates, BorderContainer, ContentPane, MenuBar, MenuItem, Menu, Button, TitlePane, TabContainer,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, $, jqueryui){
+
+    parser.parse();
+
     console.log("before");
     $(function slidemute() {
       /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
@@ -49,7 +52,7 @@ require([
       });
       console.log("max");
       /* initialize */
-      $( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));  
+      $( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));
       $( "#muteInput" ).val(muteDefault);
       /*update slide based on textbox */
       $( "#mute" ).change(function() {
@@ -57,17 +60,21 @@ require([
         $( "#mRate" ).val( Math.log(1+(parseFloat(this.value))) );
       });
     });
-    
+
     console.log("after");
     /* slidemute; */
     console.log("after slidemute");
-    
-    
+
+
     /* Oranism Gestation Length Slider */
-    
-    
+
+    function organResetFn() {
+      document.getElementById("orgCycle").innerHTML = "0";
+    }
+
+    dijit.byId("OrgReset").on("Click", organResetFn);
     console.log("after organResetFn");
-    
+
     /* Canvas Play in gridCanvas */
     var canvas = document.getElementById("gridCanvas");
     var ctx = canvas.getContext("2d");
@@ -77,5 +84,5 @@ require([
     ctx.beginPath();
     ctx.arc(95,50,40,0,1*Math.PI);
     ctx.stroke();
-    
+
   });

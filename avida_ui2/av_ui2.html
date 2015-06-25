@@ -4,8 +4,8 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <title>Untitled</title>
-  <script type="text/javascript" src="../lib/dojo/dojo/dojo.js" 
-      data-dojo-config="'parseOnLoad':true,'async':true,
+  <script type="text/javascript" src="../lib/dojo/dojo/dojo.js"
+      data-dojo-config="'parseOnLoad':false,'async':true,
         'packages':[
         {'name':'gridx','location':'../gridx'},
         {'name':'clipart','location':'../../clipart'},
@@ -25,7 +25,7 @@
           ['.*','',['../themes/iphone/iphone.css']
         ]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
   <script type="text/javascript" src="av_ui2.js"></script>
-  
+
   <link rel="stylesheet" href="../lib/jquery-ui/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" href="av-ui.css">
 
@@ -34,10 +34,10 @@
 </head>
 
 <body data-maq-flow-layout="true" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse" data-maq-appstates="{}" id="myapp">
-  <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true" 
+  <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true"
         style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
     <!-- contentPane for top that contains main menu -->
-    <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+    <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
           refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:26px;">
      <span data-dojo-type="dijit/MenuBar" tabIndex="0">
        <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
@@ -71,11 +71,11 @@
       </span>
     </div>
     <!-- contentPage for far left of screen with freezer etc -->
-    <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+    <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
         refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" doLayout="false" style="width:155px;">
-    <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
+    <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
             style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
         refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:154px;">
        <table style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
      <colgroup>
@@ -85,28 +85,28 @@
          <tbody>
            <tr>
              <td><img src="avida-ed-population-icon.png" style="width: 32px; height: 32px;"></img></td>
-             <td><input type="button" data-dojo-type="dijit/form/Button" id="populationButton" intermediateChanges="false" 
+             <td><input type="button" data-dojo-type="dijit/form/Button" id="populationButton" intermediateChanges="false"
                     label="Population" iconClass="dijitNoIcon"></input></td>
            </tr>
            <tr>
              <td><img src="avida-ed-organism-icon.png" style="width: 32px; height: 32px;"></img></td>
-             <td><input type="button" data-dojo-type="dijit/form/Button" id="organismButton" intermediateChanges="false" 
+             <td><input type="button" data-dojo-type="dijit/form/Button" id="organismButton" intermediateChanges="false"
                     label="Organism" iconClass="dijitNoIcon"></input></td>
            </tr>
            <tr>
              <td><img src="avida-ed-analysis-icon.png" style="width: 32px; height: 32px;"></img></td>
-             <td><input type="button" data-dojo-type="dijit/form/Button" id="analysisButton" intermediateChanges="false" 
+             <td><input type="button" data-dojo-type="dijit/form/Button" id="analysisButton" intermediateChanges="false"
                     label="Analysis" iconClass="dijitNoIcon"></input></td>
            </tr>
          </tbody>
        </table>
        <input type="button" data-dojo-type="dijit/form/Button" id="testButton" intermediateChanges="false" label="Test" iconClass="dijitNoIcon"></input>
      </div>
-      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
             refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false" style="height:75px;">
        <img id="TrashCan" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
      </div>
-      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
             refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
         Freezer
         <span data-dojo-type="dijit/TitlePane" id="FreezeConfigure" title="Configured Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
@@ -121,15 +121,15 @@
       </div>
     </div>
   </div>
-   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
         refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
-    <span data-dojo-type="dijit/layout/TabContainer" id="mainTabs" tabStrip="false" persist="false" controllerWidget="dijit.layout.TabController" 
+    <span data-dojo-type="dijit/layout/TabContainer" id="mainTabs" tabStrip="false" persist="false" controllerWidget="dijit.layout.TabController"
           style="min-width: 1em; min-height: 1em; width: 100%; height: 100%;">
-      <div data-dojo-type="dijit/layout/ContentPane" title="Population" extractContent="false" preventCache="false" preload="false" 
+      <div data-dojo-type="dijit/layout/ContentPane" title="Population" extractContent="false" preventCache="false" preload="false"
             refreshOnShow="false" doLayout="true" selected="true" closable="false">
-      <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
+      <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
             style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
               refreshOnShow="false" doLayout="true" region="top" splitter="true" maxSize="Infinity" style="height: 35px;">
           <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
             <colgroup>
@@ -154,20 +154,20 @@
           </table>
         </div>
         <!-- contentpane for data about current status of the grid on the right - bigger pane on right under population -->
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
               refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:400px;">
-          <div data-dojo-type="dijit/layout/BorderContainer" persist="false" gutters="true" 
+          <div data-dojo-type="dijit/layout/BorderContainer" persist="false" gutters="true"
                 style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                   refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height:133px;">
-                  
-              <!-- Section for real time graph vs Time on Population Page  -->  
-              <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
+
+              <!-- Section for real time graph vs Time on Population Page  -->
+              <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                     style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-                <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+                <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                       refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 31px;">
-                  <select data-dojo-type="dijit/form/ComboBox" id="yaxis" value="Average Fitness" 
-                        intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" 
+                  <select data-dojo-type="dijit/form/ComboBox" id="yaxis" value="Average Fitness"
+                        intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false"
                         invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
                     <option value="Average Fitness">
                       Average Fitness</option>
@@ -179,18 +179,18 @@
                       Number of Organisms</option>
                   </select>
                 </div>
-                <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" 
+                <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false"
                       preload="false" refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
                  <p>
                    Graph such as Average Fitness vs time goes here</p>
                </div>
               </div>
               <!-- End of section on Real time graph on Population Page -->
-              
+
             </div>
             <!-- contentPane for Selected Organism -->
-            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-                  refreshOnShow="false" doLayout="true" region="left" splitter="true" 
+            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
+                  refreshOnShow="false" doLayout="true" region="left" splitter="true"
                       maxSize="Infinity" style="width:150px;">
               <label>
                 Selected Organism Type</label>
@@ -416,12 +416,12 @@
             </div>
           </div>
         </div>
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
               refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
         <span data-dojo-type="dijit/layout/TabContainer" id="popTabs" tabStrip="false" persist="false" controllerWidget="dijit.layout.TabController" style="min-width: 1em; min-height: 1em; width: 100%; height: 100%;"><div data-dojo-type="dijit/layout/ContentPane" title="Map" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false">
-           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
+           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                   style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                     refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 46px;">
                <table border="0" style="border-collapse: collapse; table-layout: fixed; width: 100%; height: auto;">
                  <tbody>
@@ -440,13 +440,13 @@
                           </span>
                         </span>
                         <label id="GridColorMode">Fitness</label>
-                        <br>                       
+                        <br>
                         <button id="newDishButton">New</button>
                         <button id="runStopButton">Run</button>
                         <button id="freezeButton">Freeze</button>
                      </td>
                      <td>
-                       <div data-dojo-type="dijit/form/HorizontalSlider" id="MagnifiySlide" intermediateChanges="false" 
+                       <div data-dojo-type="dijit/form/HorizontalSlider" id="MagnifiySlide" intermediateChanges="false"
                             discreteValues="Infinity" style="height: auto; width: 120px;float:right">
                          <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
                          <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0%,50%,100%" style="height: 20px;"></ol>
@@ -456,16 +456,16 @@
                  </tbody>
                </table>
              </div>
-             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                   refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
-               <!-- begin border container   
-               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
+               <!-- begin border container
+               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                     style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                       refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height:39px;">
                    <label>Fitness (rescaling)</label>
                  </div>
-                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                       refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
                   <p>Grid goes here</p>
                   <p>Scaling color bar goes under the grid</p>
@@ -488,12 +488,12 @@
            <div class="even">
              <label>
                Per Site Mutation Rate:</label>
-             <div data-dojo-type="dijit/form/HorizontalSlider" id="muteSlidedojo" intermediateChanges="false" 
+             <div data-dojo-type="dijit/form/HorizontalSlider" id="muteSlidedojo" intermediateChanges="false"
                 discreteValues="Infinity" style="width: 200px; height: auto;"></div>
              <div id="muteSlide" style="width:100px; display: inline-block; vertical-align: top; margin-left:20px"></div>
-             <!-- style done here for the slider; margin to keep it from overlapping; 
+             <!-- style done here for the slider; margin to keep it from overlapping;
                                     without width the slider is the full width of the browser window-->
-             <input id="muteInput" style="width: 3em;"></input> or the slider value is 
+             <input id="muteInput" style="width: 3em;"></input> or the slider value is
              <input id="mRate" style="width: 3em;"></input>
            </div>
            <div class="odd">Ancestral Organism(s):
@@ -581,9 +581,9 @@ Details</button>
    </tbody>
  </table>
 </div>
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
               refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 87px;">
-          <div data-dojo-type="dijit/form/HorizontalSlider" id="OrgSlider" intermediateChanges="false" discreteValues="Infinity" 
+          <div data-dojo-type="dijit/form/HorizontalSlider" id="OrgSlider" intermediateChanges="false" discreteValues="Infinity"
                 style="height: auto; width: 100%;">
             <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
             <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0%,50%,100%" style="height: 20px;"></ol>
@@ -591,13 +591,9 @@ Details</button>
           <br />
           <div style="float:left">Cycle:<label id="orgCycle"> 5</label><p id="demo"></p></div>
           <div style="text-align:center">
-            <button id="organReset" onclick="organResetFn()" type="button">Set0</button>
-            
-            <script>
-              function organResetFn() {
-      document.getElementById("demo").innerHTML = "Hello World";
-    }
-            </script>
+            <button id="organReset" type="button">Set0</button>
+
+
             <input type="button" data-dojo-type="dijit/form/Button" id="OrgReset" intermediateChanges="false" label="Reset" iconClass="dijitNoIcon"></input>
             <input type="button" data-dojo-type="dijit/form/Button" id="OrgBack" intermediateChanges="false" label="Back" iconClass="dijitNoIcon"></input>
             <input type="button" data-dojo-type="dijit/form/Button" id="OrgRun" intermediateChanges="false" label="Run" iconClass="dijitNoIcon"></input>
@@ -713,7 +709,7 @@ Details</button>
           <p>Input Buffer</p>
           <label class="bit32" id="input1">01001001011010010011010101110010</label>
           <label class="bit32" id="input2">10110111101110000100010001110001</label>
-          <label class="bit32" id="input3">12345678911234567892123456789312</label>            
+          <label class="bit32" id="input3">12345678911234567892123456789312</label>
           <p>Registers: AX, BX, CX</p>
           <label class="bit32" id="regA">01001001011010010011010101110010</label>
           <label class="bit32" id="regB">11010010001111011000110011001100</label>
@@ -726,14 +722,14 @@ Details</button>
           <label class="bit32" id="stackB2">12345678911234567892123456789312</label>
           <p>Last Output</p>
           <label class="bit32" id="lastOutput">12345678911234567892123456789312</label>
-          <span data-dojo-type="dijit/TitlePane" id="InstructionDetail" title="Instruction Details" 
-                extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" 
+          <span data-dojo-type="dijit/TitlePane" id="InstructionDetail" title="Instruction Details"
+                extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200"
                 open="true" style="min-width: 1em; width: 100%; height: auto;">
             Just Executed:
-            <textarea type="text" data-dojo-type="dijit/form/Textarea" id="ExecuteJust" intermediateChanges="false" rows="3" 
+            <textarea type="text" data-dojo-type="dijit/form/Textarea" id="ExecuteJust" intermediateChanges="false" rows="3"
                   trim="false" uppercase="false" lowercase="false" propercase="false" style="height: auto; width: 100%;"></textarea>
             About to Execute:
-            <textarea type="text" data-dojo-type="dijit/form/Textarea" id="ExecuteAbout" intermediateChanges="false" rows="3" 
+            <textarea type="text" data-dojo-type="dijit/form/Textarea" id="ExecuteAbout" intermediateChanges="false" rows="3"
                   trim="false" uppercase="false" lowercase="false" propercase="false" style="height: auto; width: 100%;"></textarea>
           </span>
         </div>
@@ -846,7 +842,7 @@ Details</button>
             </div>
           </div>
         </div>
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
               refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
          <p>
            Analysis graph goes here</p>
