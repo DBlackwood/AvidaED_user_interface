@@ -482,8 +482,18 @@
            <label>
              Environmental Settings</label>
            <div style="height: 19px;" class="odd">
-             Dish Size: <input id="sizex" style="width: 2em;"></input>&nbsp; x &nbsp;
-                        <input id="sizey" style="width: 2em;"></input>cells
+<input type="button" data-dojo-type="dijit/form/Button" id="sizeButton" intermediateChanges="false" label="change" iconClass="dijitNoIcon"></input>             
+             Dish Size: 
+              <input id="sizex" type="text" data-dojo-type="dijit/form/NumberTextBox" value=60 required="true"; 
+                  data-dojo-props="constraints:{min:0, max:200,places:0},
+                  invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"            
+                  style="width: 3em; height:1.8em"></input>
+              &nbsp; x &nbsp;
+              <input id="sizey" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "cycle"
+                  required="true" value="60" data-dojo-props="constraints:{min:0, max:200,places:0},
+                  invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'" 
+                  style="width:3em; height:1.8em"/></input>
+              cells&nbsp;<span id="sizexy"></span>
            </div>
            <div class="even">
              <label>
@@ -588,17 +598,19 @@ Details</button>
             <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
             <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0%,50%,100%" style="height: 20px;"></ol>
           </div>
-          <br />
-          <div style="float:left">Cycle:<label id="orgCycle"> 5</label><p id="demo"></p></div>
+          <div style="float:left">Cycle:
+            <input id="orgCycle" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "cycle"
+                  required="true" value="3" data-dojo-props="constraints:{min:0, max:2000,places:0},
+                  invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid cycle number.'" 
+                  style="width:3em; height:1.8em"/>
+            <span id="organCycle"></span>
+          </div>
           <div style="text-align:center">
-            <button id="organReset" type="button">Set0</button>
-
-
-            <input type="button" data-dojo-type="dijit/form/Button" id="OrgReset" intermediateChanges="false" label="Reset" iconClass="dijitNoIcon"></input>
-            <input type="button" data-dojo-type="dijit/form/Button" id="OrgBack" intermediateChanges="false" label="Back" iconClass="dijitNoIcon"></input>
-            <input type="button" data-dojo-type="dijit/form/Button" id="OrgRun" intermediateChanges="false" label="Run" iconClass="dijitNoIcon"></input>
-            <input type="button" data-dojo-type="dijit/form/Button" id="OrgForward" intermediateChanges="false" label="Forward" iconClass="dijitNoIcon"></input>
-            <input type="button" data-dojo-type="dijit/form/Button" id="OrgEnd" intermediateChanges="false" label="End" iconClass="dijitNoIcon"></input>
+            <input type="button" data-dojo-type="dijit/form/Button" id="orgReset" intermediateChanges="false" label="Reset" iconClass="dijitNoIcon"></input>
+            <input type="button" data-dojo-type="dijit/form/Button" id="orgBack" intermediateChanges="false" label="Back" iconClass="dijitNoIcon"></input>
+            <input type="button" data-dojo-type="dijit/form/Button" id="orgRun" intermediateChanges="false" label="Run" iconClass="dijitNoIcon"></input>
+            <input type="button" data-dojo-type="dijit/form/Button" id="orgForward" intermediateChanges="false" label="Forward" iconClass="dijitNoIcon"></input>
+            <input type="button" data-dojo-type="dijit/form/Button" id="orgEnd" intermediateChanges="false" label="End" iconClass="dijitNoIcon"></input>
           </div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:180px;">
@@ -609,100 +621,45 @@ Details</button>
             </colgroup>
             <tbody>
               <tr>
-                <td>
-                  Function</td>
-                <td>
-                  Times Performed</td>
+                <td>Function</td>
+                <td>Times Performed</td>
               </tr>
               <tr>
-                <td>
-                  <label id="notOrg">
-                    0 not+</label>
-                </td>
-                <td>
-                  <label id="notPerf">
-                    1</label>
-                </td>
+                <td><label id="notOrg">0 not+</label></td>
+                <td><label id="notPerf">1</label></td>
               </tr>
               <tr>
-                <td>
-                  <label id="nanOrg">
-                    1 nan+</label>
-                </td>
-                <td>
-                  <label id="nanPerf">
-                    2</label>
-                </td>
+                <td><label id="nanOrg">1 nan+</label></td>
+                <td><label id="nanPerf">2</label></td>
               </tr>
               <tr>
-                <td>
-                  <label id="andOrg">
-                    2 and-</label>
-                </td>
-                <td>
-                  <label id="andPerf">
-                    0</label>
-                </td>
+                <td><label id="andOrg">2 and-</label></td>
+                <td><label id="andPerf">0</label></td>
               </tr>
               <tr>
-                <td>
-                  <label id="ornOrg">
-                    3 orn-</label>
-                </td>
-                <td>
-                  <label id="ornPerf">
-                    0</label>
-                </td>
+                <td><label id="ornOrg">3 orn-</label></td>
+                <td><label id="ornPerf">0</label></td>
               </tr>
               <tr>
-                <td>
-                 <label id="oroOrg">
-                   4 oro-</label>
-               </td>
-                <td>
-                 <label id="oroPerf">
-                   0</label>
+                <td><label id="oroOrg">4 oro-</label></td>
+                <td><label id="oroPerf">0</label>
                </td>
               </tr>
               <tr>
-                <td>
-                  <label id="antOrg">
-                    5 ant-</label>
-                </td>
-                <td>
-                 <label id="antPerf">
-                   0</label>
-               </td>
+                <td><label id="antOrg">5 ant-</label></td>
+                <td><label id="antPerf">0</label></td>
               </tr>
               <tr>
-                <td>
-                  <label id="norOrg">
-                    6 nor+</label>
-                </td>
-                <td>
-                  <label id="norPerf">
-                    1</label>
-                </td>
+                <td><label id="norOrg">6 nor+</label></td>
+                <td><label id="norPerf">1</label></td>
               </tr>
               <tr>
-                <td>
-                 <label id="xorOrg">
-                   7 xor-</label>
-               </td>
-                <td>
-                  <label id="xorPerf">
-                    0</label>
-                </td>
+                <td><label id="xorOrg">7 xor-</label></td>
+                <td><label id="xorPerf">0</label></td>
               </tr>
               <tr>
-                <td>
-                  <label id="equOrg">
-                    8 equ-</label>
-                </td>
-                <td>
-                  <label id="equPerf">
-                    0</label>
-                </td>
+                <td><label id="equOrg">8 equ-</label></td>
+                <td><label id="equPerf">0</label></td>
               </tr>
             </tbody>
           </table>

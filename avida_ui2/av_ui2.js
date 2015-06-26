@@ -32,7 +32,24 @@ require([
 
     parser.parse();
 
-    console.log("before");
+    console.log("after parser");
+      /* Population page script ***************************************/
+
+    console.log(dijit.byId("sizex"));
+    
+    function popSizeFn() {
+      console.log("in popSizeFn");
+      var xx = Number(document.getElementById("sizex").value);
+      var yy = Number(document.getElementById("sizey").value);
+      console.log("x is " + xx + "; y=" + yy);
+      document.getElementById("sizexy").innerHTML = "is a total of " + xx * yy + " cells";
+    }      
+
+    dijit.byId("sizex").on("Change", popSizeFn);
+    dijit.byId("sizey").on("Change", popSizeFn);
+    dijit.byId("sizeButton").on("Click", popSizeFn);
+    console.log("after size");
+
     $(function slidemute() {
       /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
       /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
@@ -66,14 +83,40 @@ require([
     console.log("after slidemute");
 
 
-    /* Oranism Gestation Length Slider */
 
-    function organResetFn() {
-      document.getElementById("orgCycle").innerHTML = "0";
+    /* Organism page script *****************************************/
+    /* Organism Gestation Length Slider */
+
+    //console.log(dijit.byId("orgCycle"));
+    
+    function orgBackFn() {
+      var ii = Number(document.getElementById("orgCycle").value);
+      // console.log("ii is " + ii);
+      ii = ii-1;
+      // console.log("now ii is " + ii );
+      document.getElementById("orgCycle").value = ii;
     }
 
-    dijit.byId("OrgReset").on("Click", organResetFn);
-    console.log("after organResetFn");
+    function orgForwardFn() {
+      var ii = Number(document.getElementById("orgCycle").value);
+      //console.log("ii is " + ii);
+      ii = ii+1;
+      //console.log("now ii is " + ii );
+      document.getElementById("orgCycle").value = ii;
+    }
+
+    dijit.byId("orgReset").on("Click", function(){
+      document.getElementById("orgCycle").value = "0";
+      document.getElementById("organCycle").innerHTML = "0"
+    });
+    dijit.byId("orgBack").on("Click", orgBackFn);
+    dijit.byId("orgForward").on("Click", orgForwardFn);
+    dijit.byId("orgEnd").on("Click", function() {
+      document.getElementById("orgCycle").value = "100";
+    });
+    
+    
+    console.log("after orgResetFn");
 
     /* Canvas Play in gridCanvas */
     var canvas = document.getElementById("gridCanvas");
@@ -82,7 +125,7 @@ require([
     ctx.lineTo(200,100);
     ctx.stroke();
     ctx.beginPath();
-    ctx.arc(95,50,40,0,1*Math.PI);
+    ctx.arc(95,50,40,0,3*Math.PI/2);
     ctx.stroke();
 
   });
