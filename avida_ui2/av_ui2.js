@@ -2,6 +2,7 @@ define.amd.jQuery = true;
 require([
   "dijit/dijit",
   "dojo/parser",
+  "dojo/_base/declare",
   "maqetta/space",
   "maqetta/AppStates",
   "dijit/layout/BorderContainer",
@@ -26,7 +27,7 @@ require([
   "jquery",
   "jquery-ui",
   "dojo/domReady!"
-  ], function(dijit, parser, space, AppStates, BorderContainer, ContentPane, MenuBar, MenuItem, Menu, Button, TitlePane, TabContainer,
+  ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, Button, TitlePane, TabContainer,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, $, jqueryui){
 
@@ -94,7 +95,7 @@ require([
       // console.log("ii is " + ii);
       ii = ii-1;
       // console.log("now ii is " + ii );
-      document.getElementById("orgCycle").value = ii;
+      dijit.byId("orgCycle").set("value", ii);
     }
 
     function orgForwardFn() {
@@ -102,21 +103,42 @@ require([
       //console.log("ii is " + ii);
       ii = ii+1;
       //console.log("now ii is " + ii );
-      document.getElementById("orgCycle").value = ii;
+      dijit.byId("orgCycle").set("value", ii);
     }
 
     dijit.byId("orgReset").on("Click", function(){
-      document.getElementById("orgCycle").value = "0";
+      dijit.byId("orgCycle").set("value", 0);
       document.getElementById("organCycle").innerHTML = "0"
     });
     dijit.byId("orgBack").on("Click", orgBackFn);
     dijit.byId("orgForward").on("Click", orgForwardFn);
     dijit.byId("orgEnd").on("Click", function() {
-      document.getElementById("orgCycle").value = "100";
+      dijit.byId("orgCycle").set("value", 100);
     });
+    dijit.byId("orgCycle").on("Change", function(value){
+      slider.set("value",value);
+    });
+    console.log("after orgEnd");
+    
+    //var slider = declare([HorizontalSlider, HorizontalRule, HorizontalRuleLabels], {
+    
+    var slider = new HorizontalSlider({
+        name: "slider",
+        value: 2,
+        minimum: 0,
+        maximum: 100,
+        intermediateChanges: true,
+        style: "width:300px;",
+        onChange: function(value){
+            document.getElementById("orgCycle").value = value;
+        }
+    }, "slider");
+    //console.log(slider);
+    //slider.startup();
     
     
-    console.log("after orgResetFn");
+    
+    console.log("after slider");
 
     /* Canvas Play in gridCanvas */
     var canvas = document.getElementById("gridCanvas");

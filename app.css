@@ -50,11 +50,32 @@ button
   }
 
 div.odd
-  {  background-color: #CCCCCC;
+  
+  { background-color: #CCCCCC;
+    padding: 0.5em 0.3em 1em 0.3em;
+    clear: left;
   }
 .even
-  {  background-color: #EEEEEE;
+  { background-color: #EEEEEE;
+    padding: 0.5em 0.3em 1em 0.3em;
+    clear: left;
   }
+  
+.mutation
+  { float: left;
+  }
+
+.muteRate
+  { float : left; clear: left; }
+
+#muteSlide
+  { float: left;
+    background-color: yellow;
+  }
+
+#muteInput{ float: left; }
+#mRate{ float: left; }
+#muteSlidedojo{ float: left; }
 
 button, input,
 
