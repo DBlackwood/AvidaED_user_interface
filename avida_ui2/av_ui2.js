@@ -93,17 +93,12 @@ require([
     function orgBackFn() {
       var ii = Number(document.getElementById("orgCycle").value);
       // console.log("ii is " + ii);
-      ii = ii-1;
-      // console.log("now ii is " + ii );
-      dijit.byId("orgCycle").set("value", ii);
+      dijit.byId("orgCycle").set("value", ii-1);
     }
 
     function orgForwardFn() {
       var ii = Number(document.getElementById("orgCycle").value);
-      //console.log("ii is " + ii);
-      ii = ii+1;
-      //console.log("now ii is " + ii );
-      dijit.byId("orgCycle").set("value", ii);
+      dijit.byId("orgCycle").set("value", ii+1);
     }
 
     dijit.byId("orgReset").on("Click", function(){

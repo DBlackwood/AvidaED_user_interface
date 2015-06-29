@@ -498,19 +498,19 @@
             <div class="even">
               <div class="muteRate">Per Site Mutation Rate:</div>
               <div data-dojo-type="dijit/form/HorizontalSlider" id="muteSlidedojo" intermediateChanges="false"
-                    discreteValues="Infinity" style="width: 300px; height: auto;" float="left">
+                    discreteValues="Infinity" style="width: 100px; height: auto;" float="left">
                 <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
                 <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0, 50,100" style="height: 20px;"></ol>
               </div>
               <input id="muteInput" type="text" data-dojo-type="dijit/form/NumberTextBox" value=2 required="true"; 
                   data-dojo-props="constraints:{min:0, max:100,places:3},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"            
-                  style="width: 4em; height:1.8em"></input>%; <br />or the slider value is &nbsp;
+                  style="width: 4em; height:1.8em"></input>%; or the slider value is &nbsp;
               <input id="mRate" type="text" data-dojo-type="dijit/form/NumberTextBox" value=5 required="true"; 
                   data-dojo-props="constraints:{min:0, max:200,places:3},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"            
                   style="width: 4em; height:1.8em"></input>
-              <div id="muteSlide" style="width:10px; display: inline-block; vertical-align: top; margin-left:20px"></div>
+              <div id="muteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-right:20px"></div>
               <!-- style done here for the slider; margin to keep it from overlapping;
                                     without width the slider is the full width of the browser window-->
             </div>
