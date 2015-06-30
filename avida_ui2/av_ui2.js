@@ -64,8 +64,8 @@ require([
         min: 0.0,
         max: 461512,
         slide: function( event, ui ) {
-          $( "#mRate" ).val( ui.value + "%");  /*put slider value in the text above the slider */
-          $( "#muteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3) );  /*put the value in the text box */
+          $( "#mRate" ).val( ui.value);  /*put slider value in the text above the slider */
+          $( "#muteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3));  /*put the value in the text box */
         }
       });
       console.log("max");
@@ -73,9 +73,10 @@ require([
       $( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));
       $( "#muteInput" ).val(muteDefault);
       /*update slide based on textbox */
-      $( "#mute" ).change(function() {
+      $( "#muteInput" ).change(function() {
         slides.slider( "value", 100000.0*Math.log(1+(parseFloat(this.value))) );
-        $( "#mRate" ).val( Math.log(1+(parseFloat(this.value))) );
+        $( "#mRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
+        console.log("in mute change");
       });
     });
 
@@ -93,7 +94,9 @@ require([
     function orgBackFn() {
       var ii = Number(document.getElementById("orgCycle").value);
       // console.log("ii is " + ii);
-      dijit.byId("orgCycle").set("value", ii-1);
+      ii = ii-1;
+      // console.log("now ii is " + ii );
+      dijit.byId("orgCycle").set("value", ii);
     }
 
     function orgForwardFn() {

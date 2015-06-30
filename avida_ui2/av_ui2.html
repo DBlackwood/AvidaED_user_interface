@@ -479,8 +479,7 @@
            </div>
          </div>
          <div data-dojo-type="dijit/layout/ContentPane" title="Setup" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" selected="true" closable="false">
-           <label>
-             Environmental Settings</label>
+           <label>Environmental Settings</label>
            <div style="height: 19px;" class="odd">
 <input type="button" data-dojo-type="dijit/form/Button" id="sizeButton" intermediateChanges="false" label="change" iconClass="dijitNoIcon"></input>             
              Dish Size: 
@@ -496,23 +495,13 @@
               cells&nbsp;<span id="sizexy"></span>
            </div>
             <div class="even">
-              <div class="muteRate">Per Site Mutation Rate:</div>
-              <div data-dojo-type="dijit/form/HorizontalSlider" id="muteSlidedojo" intermediateChanges="false"
-                    discreteValues="Infinity" style="width: 100px; height: auto;" float="left">
-                <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
-                <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0, 50,100" style="height: 20px;"></ol>
-              </div>
-              <input id="muteInput" type="text" data-dojo-type="dijit/form/NumberTextBox" value=2 required="true"; 
-                  data-dojo-props="constraints:{min:0, max:100,places:3},
-                  invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"            
-                  style="width: 4em; height:1.8em"></input>%; or the slider value is &nbsp;
-              <input id="mRate" type="text" data-dojo-type="dijit/form/NumberTextBox" value=5 required="true"; 
-                  data-dojo-props="constraints:{min:0, max:200,places:3},
-                  invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"            
-                  style="width: 4em; height:1.8em"></input>
-              <div id="muteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-right:20px"></div>
+              <span class="muteRate">Per Site Mutation Rate:</span>
+              <span id="muteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
               <!-- style done here for the slider; margin to keep it from overlapping;
                                     without width the slider is the full width of the browser window-->
+              <input id="muteInput" type="text" style="width: 4em; height:1.8em"></input>
+              <div class="fltLeft">%; or the slider value is &nbsp;</div>
+              <input id="mRate" type="text" readonly style="width: 4em; height:1.8em"></input>
             </div>
           
            <div class="odd">Ancestral Organism(s):
@@ -703,8 +692,7 @@ Details</button>
           </span>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
-         <p>
-           Ring of DNA genetic information goes here</p>
+         <p>Ring of DNA genetic information goes here</p>
        </div>
       </div>
     </div>
