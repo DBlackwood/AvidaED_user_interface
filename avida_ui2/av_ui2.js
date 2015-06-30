@@ -37,14 +37,14 @@ require([
       /* Population page script ***************************************/
 
     console.log(dijit.byId("sizex"));
-    
+
     function popSizeFn() {
       console.log("in popSizeFn");
       var xx = Number(document.getElementById("sizex").value);
       var yy = Number(document.getElementById("sizey").value);
       console.log("x is " + xx + "; y=" + yy);
       document.getElementById("sizexy").innerHTML = "is a total of " + xx * yy + " cells";
-    }      
+    }
 
     dijit.byId("sizex").on("Change", popSizeFn);
     dijit.byId("sizey").on("Change", popSizeFn);
@@ -90,7 +90,7 @@ require([
     /* Organism Gestation Length Slider */
 
     //console.log(dijit.byId("orgCycle"));
-    
+
     function orgBackFn() {
       var ii = Number(document.getElementById("orgCycle").value);
       // console.log("ii is " + ii);
@@ -117,9 +117,38 @@ require([
       slider.set("value",value);
     });
     console.log("after orgEnd");
-    
+
+    // Mixed HTML / Dojo syntax
+    dijit.byId("populationButton").on("Click", function(){
+      document.getElementById("hiddenDiv2").style = "display: none;"
+      document.getElementById("hiddenDiv3").style = "display: none;"
+      document.getElementById("hiddenDiv4").style = "display: none;"
+      document.getElementById("hiddenDiv1").style = "display: block;"
+      //dijit.byId("contentPane1").set("style", "display: block;");
+    });
+    dijit.byId("organismButton").on("Click", function(){
+      document.getElementById("hiddenDiv1").style = "display: none;"
+      document.getElementById("hiddenDiv3").style = "display: none;"
+      document.getElementById("hiddenDiv4").style = "display: none;"
+      document.getElementById("hiddenDiv2").style = "display: block;"
+    });
+    dijit.byId("analysisButton").on("Click", function(){
+      document.getElementById("hiddenDiv1").style = "display: none;"
+      document.getElementById("hiddenDiv2").style = "display: none;"
+      document.getElementById("hiddenDiv4").style = "display: none;"
+      document.getElementById("hiddenDiv3").style = "display: block;"
+    });
+
+    // HTML Only syntax
+    document.getElementById("testButton").onclick = function(){
+      document.getElementById("hiddenDiv1").style = "display: none;"
+      document.getElementById("hiddenDiv2").style = "display: none;"
+      document.getElementById("hiddenDiv3").style = "display: none;"
+      document.getElementById("hiddenDiv4").style = "display: block;"
+    }
+
     //var slider = declare([HorizontalSlider, HorizontalRule, HorizontalRuleLabels], {
-    
+
     var slider = new HorizontalSlider({
         name: "slider",
         value: 2,
@@ -133,9 +162,9 @@ require([
     }, "slider");
     //console.log(slider);
     //slider.startup();
-    
-    
-    
+
+
+
     console.log("after slider");
 
     /* Canvas Play in gridCanvas */
