@@ -27,35 +27,67 @@ require([
   "jquery",
   "jquery-ui",
   "dojo/domReady!"
-  ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, Button, TitlePane, TabContainer,
+  ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
+              Button, TitlePane, TabContainer,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, $, jqueryui){
 
     parser.parse();
 
     console.log("after parser");
+    // main button scripts-------------------------------------------
+    
+    function mainBoxSwap(showBlock){
+      console.log("in mainBoxSwap");
+      //document.getElementById("populationBlock").style = "display: none;"
+      //document.getElementById("organismBlock").style = "display: none;"
+      //document.getElementById("analysisBlock").style = "display: none;"
+      dijit.byId("populationBlock").set("style", "display: none;");
+      dijit.byId("organismBlock").set("style", "display: none;");
+      dijit.byId("analysisBlock").set("style", "display: none;");
+      dijit.byId("testBlock").set("style", "display: none;");
+      dijit.byId(showBlock).set("style", "display: block;");
+      //document.getElementById("testBlock").style = "display: none;"
+      //document.getElementById(showBlock).style = "display: block;"
+  };
+    
+    /* Mixed HTML / Dojo syntax
+    document.getElementById("populationButton").onclick = function(){
+      document.getElementById("hiddenDiv2").style = "display: none;"
+      document.getElementById("hiddenDiv3").style = "display: none;"
+      document.getElementById("hiddenDiv4").style = "display: none;"
+      document.getElementById("hiddenDiv1").style = "display: block;"
+      //dijit.byId("contentPane1").set("style", "display: block;");
+    };*/
+
+    // Call general function
+    document.getElementById("populationButton").onclick = function(){ mainBoxSwap("populationBlock"); }
+    document.getElementById("organismButton").onclick = function(){ mainBoxSwap("organismBlock"); }
+    document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
+    document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
+
       /* Population page script ***************************************/
 
-    console.log(dijit.byId("sizex"));
+    //console.log(dijit.byId("sizex"));
 
     function popSizeFn() {
       console.log("in popSizeFn");
       var xx = Number(document.getElementById("sizex").value);
       var yy = Number(document.getElementById("sizey").value);
-      console.log("x is " + xx + "; y=" + yy);
+      //console.log("x is " + xx + "; y=" + yy);
       document.getElementById("sizexy").innerHTML = "is a total of " + xx * yy + " cells";
     }
 
     dijit.byId("sizex").on("Change", popSizeFn);
     dijit.byId("sizey").on("Change", popSizeFn);
     dijit.byId("sizeButton").on("Click", popSizeFn);
-    console.log("after size");
+    //console.log("after size");
 
     $(function slidemute() {
       /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
       /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
       /* so I multiplied by 100,000 to get 100.000% to come out even. */
-      console.log("before defaultslide value");
+      //console.log("before defaultslide value");
       var muteSlideDefault = 109861.   /* results in 2% as a default */
       var muteDefault = (Math.pow(Math.E, (muteSlideDefault/100000))-1).toFixed(3)
       var slides = $( "#muteSlide" ).slider({
@@ -68,7 +100,7 @@ require([
           $( "#muteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3));  /*put the value in the text box */
         }
       });
-      console.log("max");
+      //console.log("max");
       /* initialize */
       $( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));
       $( "#muteInput" ).val(muteDefault);
@@ -76,7 +108,7 @@ require([
       $( "#muteInput" ).change(function() {
         slides.slider( "value", 100000.0*Math.log(1+(parseFloat(this.value))) );
         $( "#mRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
-        console.log("in mute change");
+        //console.log("in mute change");
       });
     });
 
@@ -93,10 +125,7 @@ require([
 
     function orgBackFn() {
       var ii = Number(document.getElementById("orgCycle").value);
-      // console.log("ii is " + ii);
-      ii = ii-1;
-      // console.log("now ii is " + ii );
-      dijit.byId("orgCycle").set("value", ii);
+      dijit.byId("orgCycle").set("value", ii-1);
     }
 
     function orgForwardFn() {
@@ -116,36 +145,7 @@ require([
     dijit.byId("orgCycle").on("Change", function(value){
       slider.set("value",value);
     });
-    console.log("after orgEnd");
-
-    // Mixed HTML / Dojo syntax
-    dijit.byId("populationButton").on("Click", function(){
-      document.getElementById("hiddenDiv2").style = "display: none;"
-      document.getElementById("hiddenDiv3").style = "display: none;"
-      document.getElementById("hiddenDiv4").style = "display: none;"
-      document.getElementById("hiddenDiv1").style = "display: block;"
-      //dijit.byId("contentPane1").set("style", "display: block;");
-    });
-    dijit.byId("organismButton").on("Click", function(){
-      document.getElementById("hiddenDiv1").style = "display: none;"
-      document.getElementById("hiddenDiv3").style = "display: none;"
-      document.getElementById("hiddenDiv4").style = "display: none;"
-      document.getElementById("hiddenDiv2").style = "display: block;"
-    });
-    dijit.byId("analysisButton").on("Click", function(){
-      document.getElementById("hiddenDiv1").style = "display: none;"
-      document.getElementById("hiddenDiv2").style = "display: none;"
-      document.getElementById("hiddenDiv4").style = "display: none;"
-      document.getElementById("hiddenDiv3").style = "display: block;"
-    });
-
-    // HTML Only syntax
-    document.getElementById("testButton").onclick = function(){
-      document.getElementById("hiddenDiv1").style = "display: none;"
-      document.getElementById("hiddenDiv2").style = "display: none;"
-      document.getElementById("hiddenDiv3").style = "display: none;"
-      document.getElementById("hiddenDiv4").style = "display: block;"
-    }
+    //console.log("after orgEnd");
 
     //var slider = declare([HorizontalSlider, HorizontalRule, HorizontalRuleLabels], {
 
@@ -161,11 +161,8 @@ require([
         }
     }, "slider");
     //console.log(slider);
-    //slider.startup();
 
-
-
-    console.log("after slider");
+    //console.log("after slider");
 
     /* Canvas Play in gridCanvas */
     var canvas = document.getElementById("gridCanvas");
