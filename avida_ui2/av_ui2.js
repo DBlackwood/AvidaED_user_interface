@@ -46,7 +46,7 @@ require([
       dijit.byId("organismBlock").set("style", "display: none;");
       dijit.byId("analysisBlock").set("style", "display: none;");
       dijit.byId("testBlock").set("style", "display: none;");
-      dijit.byId(showBlock).set("style", "display: block;");
+      dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
       //document.getElementById("testBlock").style = "display: none;"
       //document.getElementById(showBlock).style = "display: block;"
   };
