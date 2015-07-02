@@ -39,26 +39,19 @@ require([
     
     function mainBoxSwap(showBlock){
       console.log("in mainBoxSwap");
-      //document.getElementById("populationBlock").style = "display: none;"
-      //document.getElementById("organismBlock").style = "display: none;"
-      //document.getElementById("analysisBlock").style = "display: none;"
       dijit.byId("populationBlock").set("style", "display: none;");
       dijit.byId("organismBlock").set("style", "display: none;");
       dijit.byId("analysisBlock").set("style", "display: none;");
       dijit.byId("testBlock").set("style", "display: none;");
       dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
-      //document.getElementById("testBlock").style = "display: none;"
-      //document.getElementById(showBlock).style = "display: block;"
   };
-    
-    /* Mixed HTML / Dojo syntax
-    document.getElementById("populationButton").onclick = function(){
-      document.getElementById("hiddenDiv2").style = "display: none;"
-      document.getElementById("hiddenDiv3").style = "display: none;"
-      document.getElementById("hiddenDiv4").style = "display: none;"
-      document.getElementById("hiddenDiv1").style = "display: block;"
-      //dijit.byId("contentPane1").set("style", "display: block;");
-    };*/
+  
+    //The style display: none cannnot be used in the html durint the initial load as the dijits won't work right
+    //visibility:hidden can be used, but it leave the white space and just does not display dijits. 
+    //So all areas are loaded, then the mainBoxSwap is called to set display to none after the load on all but 
+    //the default option.
+    //mainBoxSwap("organismBlock");
+    mainBoxSwap("populationBlock");
 
     // Call general function
     document.getElementById("populationButton").onclick = function(){ mainBoxSwap("populationBlock"); }
