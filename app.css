@@ -36,14 +36,21 @@ html,body {
 
 .bit32{
     font-family: Courier New;
-    font-size: .7em;
+    font-size: .8em;
+    text-height: .2em;
   }
 
 p
   { margin-top: 0px;
     margin-bottom: 0px;
   }
-  
+li 
+  { margin: 0px 0px 0px 0px;}
+ul
+  { margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
 button
   {
     width: 50px;
@@ -91,3 +98,55 @@ button, input,
     width:100px
 }
 .shortButton{ height: 10px}
+
+.dojoDndItem {
+    padding:3px;
+}
+.dojoDndItemOver {
+    background-color:#EDEDED;
+    cursor:pointer;
+}
+.dojoDndItemSelected {
+    background-color:#5BBDEA;
+    color:#444444;
+}
+.dojoDndItemAnchor {
+    background-color:#5BBDEA;
+    color:black;
+}
+.dojoDndItemOver .dojoDndItemSelected {
+    background-color:#EDEDED;
+}
+.dojoDndItemOver .dojoDndItemAnchor {
+    background-color:#EDEDED;
+}
+.dojoDndItemBefore {
+    border-top:2px solid #336699;
+}
+.dojoDndItemAfter {
+    border-bottom:2px solid #336699;
+}
+.dojoDndAvatar {
+    border:2px solid #CCCCCC;
+}
+.dojoDndAvatarHeader {
+    background-color:#AAAAAA;
+}
+.dojoDndAvatarItem {
+    background-color:#FFFFFF;
+    border-bottom:1px solid #666666;
+}
+.dojoDndAvatarItem .itemText {
+    font-size:120%;
+}
+
+.container {
+    min-height: 10px;
+    width: 100%;
+}
+.popContainer{
+    min-height: 30px;
+    width: 200px;
+    border: 1px solid black;
+    background-color: white;
+}

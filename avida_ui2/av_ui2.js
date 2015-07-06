@@ -13,7 +13,7 @@ require([
   "dijit/Menu",
   "dijit/form/Button",
   "dijit/TitlePane",
-  "dijit/layout/TabContainer",
+  "dojo/dnd/Source",
   "dijit/form/HorizontalSlider",
   "dijit/form/HorizontalRule",
   "dijit/form/HorizontalRuleLabels",
@@ -28,7 +28,7 @@ require([
   "jquery-ui",
   "dojo/domReady!"
   ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, TabContainer,
+              Button, TitlePane, dndSource,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, $, jqueryui){
 
@@ -59,6 +59,11 @@ require([
     document.getElementById("organismButton").onclick = function(){ mainBoxSwap("organismBlock"); }
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
     document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
+
+    /* Drag N Drop ****************************************************/
+      dojo.connect(myTarget, "onMouseMove", function(evt){
+       console.log({"x": evt.layerX, "y": evt.layerY}); 
+    });
 
       /* Population page script ***************************************/
 
@@ -150,23 +155,23 @@ require([
       dijit.byId("orgCycle").set("value", 100);
     });
     dijit.byId("orgCycle").on("Change", function(value){
-      slider.set("value",value);
+      cycleSlider.set("value",value);
     });
     //console.log("after orgEnd");
 
     //var slider = declare([HorizontalSlider, HorizontalRule, HorizontalRuleLabels], {
 
-    var slider = new HorizontalSlider({
-        name: "slider",
+    var cycleSlider = new HorizontalSlider({
+        name: "cycleSlider",
         value: 2,
         minimum: 0,
         maximum: 100,
         intermediateChanges: true,
-        style: "width:300px;",
+        style: "width:100%;",
         onChange: function(value){
             document.getElementById("orgCycle").value = value;
         }
-    }, "slider");
+    }, "cycleSlider");
     //console.log(slider);
 
     //console.log("after slider");

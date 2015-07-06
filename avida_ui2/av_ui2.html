@@ -77,7 +77,7 @@
     <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
             style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-        refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:154px;">
+        refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:120px;">
        <table style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
      <colgroup>
            <col></col>
@@ -104,20 +104,29 @@
        <input type="button" id="testButton" intermediateChanges="false" label="Test" value="Test" iconClass="dijitNoIcon"></input>
      </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false" style="height:75px;">
-       <img id="TrashCan" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
+            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false" style="height:35px;">
+       <div data-dojo-type="dojo.dnd.Source" id="trashDiv" class="container">
+        <img id="TrashCan" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
+      </div>
      </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
             refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
         Freezer
         <span data-dojo-type="dijit/TitlePane" id="FreezeConfigure" title="Configured Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-           <label id="frCondish0">@default</label>
+            <div dojoType="dojo.dnd.Source" class="container" data-dojo-props="accept: [ 'conDish' ]">
+              <div class="dojoDndItem" id="frCondish0">@default</div>
+            </div>
         </span>
         <span data-dojo-type="dijit/TitlePane" id="FreezeOrganism" title="Organisms" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-          <label id="frOrganism0">@ancestor</label>
+            <div dojoType="dojo.dnd.Source" class="container" data-dojo-props="accept: [ 'organism' ]">
+              <div class="dojoDndItem" id="frOrganism0" dndType="organism">@ancestor</div>
+              <div class="dojoDndItem" id="frOrganism1" dndType="organism">m2u8000Nand</div>
+            </div>
         </span>
         <span data-dojo-type="dijit/TitlePane" id="FreezePopDish" title="Populated Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-          <label id="frPopdish0">@example</label>
+            <div dojoType="dojo.dnd.Source" class="container" jsId="myTarget" data-dojo-props="accept: [ 'popDish' ]">
+              <div class="dojoDndItem" id="frPopdish0">@example</div>
+            </div>
         </span>
       </div>
     </div>
@@ -492,7 +501,7 @@
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width: 3em; height:1.8em"></input>
               &nbsp; x &nbsp;
-              <input id="sizey" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "cycle"
+              <input id="sizey" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
                   required="true" value="60" data-dojo-props="constraints:{min:0, max:200,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width:4em; height:1.8em"/></input>
@@ -509,17 +518,17 @@
             </div>
 
            <div class="odd">Ancestral Organism(s):
-             <textarea id="AncestorBox"></textarea>
+              <div dojoType="dojo.dnd.Source" class="popContainer" id="AncestorBox" data-dojo-props="accept: [ 'organism' ]">
+              </div>
            </div>
            <div class="even">
-             <label>
-               Place Offspring:</label>
+             <form id="offspringForm">
+             <label>Place Offspring:</label>
              <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childParentRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-             <label id="childParentLabel">
-               Near their parent</label>
+             <label id="childParentLabel">Near their parent</label>
              <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childRandomRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-             <label id="childRandomLabel">
-               Anywhere, randomly</label>
+             <label id="childRandomLabel">Anywhere, randomly</label>
+             </form>
            </div>
            <div class="odd">
              <label>
@@ -551,22 +560,23 @@
              </table>
            </div>
            <div class="even">
-             <label id="label_31">
-               Repeatability Mode:</label>
-             <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="experimentRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-             <label id="experimentLabel">
-               Experimental</label>
-             <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="demoRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-             <label id="demoLabel">
-               Demo</label>
+             <form id="repeatForm">
+               <label id="label_31">Repeatability Mode:</label>
+               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="experimentRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+               <label id="experimentLabel">Experimental</label>
+               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="demoRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+               <label id="demoLabel">Demo</label>
+            </form>
            </div>
            <div class="odd">
-             <label>Pause Run:</label>
-             <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="manRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-             <label id="ManLabel">Manually</label>
-             <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="updateRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-             <label id="updateLabel">At update:</label>
-             <input type="text" data-dojo-type="dijit/form/NumberSpinner" id="updateSpinner" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$"></input>
+             <form id="runPauseForm">
+               <label>Pause Run:</label>
+               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="manRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+               <label id="ManLabel">Manually</label>
+               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="updateRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+               <label id="updateLabel">At update:</label>
+               <input type="text" data-dojo-type="dijit/form/NumberSpinner" id="updateSpinner" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$"></input>
+              </form>
            </div>
          </div>
         <!-- </span> -->
@@ -596,15 +606,12 @@
         </table>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-            refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 87px;">
-        <div id="slider"></div>
-<!--
-          <div data-dojo-type="dijit/form/HorizontalSlider" id="OrgSlider" intermediateChanges="false" discreteValues="Infinity"
-                style="height: auto; width: 100%;">
+            refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 70px;">
+        <div id="cycleSlider">             
             <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
             <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0, 50,100" style="height: 20px;"></ol>
           </div>
--->
+
           <div style="float:left">Cycle:
             <input id="orgCycle" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "cycle"
                   required="true" value="3" data-dojo-props="constraints:{min:0, max:2000,places:0},
@@ -711,104 +718,65 @@
               refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" style="height: 123px;" doLayout="false">
           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                 style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+            <!-- Content Pane with Analysis controls-->
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
                   refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" style="width: 258px;" doLayout="false">
-              <span><button id="pop1delete">
-                X</button>
+              <span><button id="pop1delete">X</button>
               <select data-dojo-type="dijit/form/ComboBox" id="pop1color" value="Red" intermediateChanges="false" trim="false" 
                       uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" 
                       searchDelay="200" style="width: 7em;">
-                <option value="Red">
-                  Red</option>
-                <option value="Blue">
-                  Blue</option>
-                <option value="Green">
-                  Green</option>
-                <option value="Cyan">
-                  Cyan</option>
-                <option value="Magenta">
-                  Magenta</option>
-                <option value="Purple">
-                  Purple</option>
-                <option value="Orange">
-                  Orange</option>
-                <option value="Brown">
-                  Brown</option>
+                <option value="Red">Red</option>
+                <option value="Blue">Blue</option>
+                <option value="Green">Green</option>
+                <option value="Cyan">Cyan</option>
+                <option value="Magenta">Magenta</option>
+                <option value="Purple">Purple</option>
+                <option value="Orange">Orange</option>
+                <option value="Yellow">Yellow</option>
               </select>
-              <label id="pop1name">
-                pop 1 name</label></span>
-              <br></br><span><button id="pop2delete">
-                X</button>
+              <label id="pop1name">pop 1 name</label></span>
+              <br></br><span><button id="pop2delete">X</button>
               <select data-dojo-type="dijit/form/ComboBox" id="pop2color" value="Blue" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="width: 7em;">
-                <option value="Red">
-                  Red</option>
-                <option value="Blue">
-                  Blue</option>
-                <option value="Green">
-                  Green</option>
-                <option value="Cyan">
-                  Cyan</option>
-                <option value="Magenta">
-                  Magenta</option>
-                <option value="Purple">
-                  Purple</option>
-                <option value="Orange">
-                  Orange</option>
-                <option value="Brown">
-                  Brown</option>
+                <option value="Red">Red</option>
+                <option value="Blue">Blue</option>
+                <option value="Green">Green</option>
+                <option value="Cyan">Cyan</option>
+                <option value="Magenta">Magenta</option>
+                <option value="Purple">Purple</option>
+                <option value="Orange">Orange</option>
+                <option value="Yellow">Yellow</option>
               </select>
-              <label id="pop2name">
-                pop 2 name</label>
+              <label id="pop2name">pop 2 name</label>
               </span>
-              <br></br><span><button id="pop3delete">
-                X</button>
+              <br></br><span><button id="pop3delete">X</button>
               <select data-dojo-type="dijit/form/ComboBox" id="pop3color" value="Green" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="width: 7em;">
-                <option value="Red">
-                  Red</option>
-                <option value="Blue">
-                  Blue</option>
-                <option value="Green">
-                  Green</option>
-                <option value="Cyan">
-                  Cyan</option>
-                <option value="Magenta">
-                  Magenta</option>
-                <option value="Purple">
-                  Purple</option>
-                <option value="Orange">
-                  Orange</option>
-                <option value="Brown">
-                  Brown</option>
+                <option value="Red">Red</option>
+                <option value="Blue">Blue</option>
+                <option value="Green">Green</option>
+                <option value="Cyan">Cyan</option>
+                <option value="Magenta">Magenta</option>
+                <option value="Purple">Purple</option>
+                <option value="Orange">Orange</option>
+                <option value="Yellow">Yellow</option>
               </select>
-              <label id="pop3name">
-                pop 3 name</label>
+              <label id="pop3name">pop 3 name</label>
               </span>
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
               <select id="y1select">
-                <option value="None">
-                  None</option>
-                <option value="Average Fitness">
-                  Average Fitness</option>
-                <option value="Average Gestation Time">
-                  Average Gestation Time</option>
-                <option value="Average Metabolic Rate">
-                  Average Metabolic Rate</option>
-                <option value="Number of Organisms">
-                  Number of Organisms</option>
+                <option value="None">None</option>
+                <option value="Average Fitness">Average Fitness</option>
+                <option value="Average Gestation Time">Average Gestation Time</option>
+                <option value="Average Metabolic Rate">Average Metabolic Rate</option>
+                <option value="Number of Organisms">Number of Organisms</option>
               </select>
               <br></br>
               <select id="y2select">
-                <option value="None">
-                  None</option>
-                <option value="Average Fitness">
-                  Average Fitness</option>
-                <option value="Average Gestation Time">
-                  Average Gestation Time</option>
-                <option value="Average Metabolic Rate">
-                  Average Metabolic Rate</option>
-                <option value="Number of Organisms">
-                  Number of Organisms</option>
+                <option value="None">None</option>
+                <option value="Average Fitness">Average Fitness</option>
+                <option value="Average Gestation Time">Average Gestation Time</option>
+                <option value="Average Metabolic Rate">Average Metabolic Rate</option>
+                <option value="Number of Organisms">Number of Organisms</option>
               </select>
             </div>
           </div>
