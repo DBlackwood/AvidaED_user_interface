@@ -81,6 +81,13 @@ button, input,
 
 .dijitToggleButton
   {
-    
     height : 21px;
   }
+.dijitButtonNode {
+     width:75px;
+     height:10px;
+}
+.resourceButton{
+    width:100px
+}
+.shortButton{ height: 10px}

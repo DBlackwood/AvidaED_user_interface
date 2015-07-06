@@ -52,6 +52,7 @@ require([
     //the default option.
     //mainBoxSwap("organismBlock");
     mainBoxSwap("populationBlock");
+    dijit.byId("setupBlock").set("style", "display: none;");
 
     // Call general function
     document.getElementById("populationButton").onclick = function(){ mainBoxSwap("populationBlock"); }
@@ -61,6 +62,20 @@ require([
 
       /* Population page script ***************************************/
 
+    function popBoxSwap(){
+      console.log("in popBoxSwap");
+      if ("Map"== document.getElementById("PopSetupButton").innerHTML ) {
+        dijit.byId("mapBlock").set("style", "display: block;");
+        dijit.byId("setupBlock").set("style", "display: none;");
+        document.getElementById("PopSetupButton").innerHTML = "Setup";
+      } else {
+        document.getElementById("PopSetupButton").innerHTML = "Map";
+        dijit.byId("setupBlock").set("style", "display: block;");
+        dijit.byId("mapBlock").set("style", "display: none;");
+        console.log("in else statement");
+      }
+    }
+    document.getElementById("PopSetupButton").onclick = function(){popBoxSwap();};
     //console.log(dijit.byId("sizex"));
 
     function popSizeFn() {
@@ -73,7 +88,6 @@ require([
 
     dijit.byId("sizex").on("Change", popSizeFn);
     dijit.byId("sizey").on("Change", popSizeFn);
-    dijit.byId("sizeButton").on("Click", popSizeFn);
     //console.log("after size");
 
     $(function slidemute() {
