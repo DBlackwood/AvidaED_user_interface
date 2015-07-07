@@ -14,6 +14,8 @@ require([
   "dijit/form/Button",
   "dijit/TitlePane",
   "dojo/dnd/Source",
+  "dojo/dnd/Manager",
+  "dijit/form/Select",
   "dijit/form/HorizontalSlider",
   "dijit/form/HorizontalRule",
   "dijit/form/HorizontalRuleLabels",
@@ -28,7 +30,7 @@ require([
   "jquery-ui",
   "dojo/domReady!"
   ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource,
+              Button, TitlePane, dndSource, dndManager, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, $, jqueryui){
 
@@ -37,15 +39,6 @@ require([
     console.log("after parser");
     // main button scripts-------------------------------------------
     
-    function mainBoxSwap(showBlock){
-      console.log("in mainBoxSwap");
-      dijit.byId("populationBlock").set("style", "display: none;");
-      dijit.byId("organismBlock").set("style", "display: none;");
-      dijit.byId("analysisBlock").set("style", "display: none;");
-      dijit.byId("testBlock").set("style", "display: none;");
-      dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
-  };
-  
     //The style display: none cannnot be used in the html durint the initial load as the dijits won't work right
     //visibility:hidden can be used, but it leave the white space and just does not display dijits. 
     //So all areas are loaded, then the mainBoxSwap is called to set display to none after the load on all but 
@@ -54,6 +47,15 @@ require([
     mainBoxSwap("populationBlock");
     dijit.byId("setupBlock").set("style", "display: none;");
 
+    function mainBoxSwap(showBlock){
+      //console.log("in mainBoxSwap");
+      dijit.byId("populationBlock").set("style", "display: none;");
+      dijit.byId("organismBlock").set("style", "display: none;");
+      dijit.byId("analysisBlock").set("style", "display: none;");
+      dijit.byId("testBlock").set("style", "display: none;");
+      dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
+  };
+  
     // Call general function
     document.getElementById("populationButton").onclick = function(){ mainBoxSwap("populationBlock"); }
     document.getElementById("organismButton").onclick = function(){ mainBoxSwap("organismBlock"); }
@@ -68,7 +70,6 @@ require([
       /* Population page script ***************************************/
 
     function popBoxSwap(){
-      console.log("in popBoxSwap");
       if ("Map"== document.getElementById("PopSetupButton").innerHTML ) {
         dijit.byId("mapBlock").set("style", "display: block;");
         dijit.byId("setupBlock").set("style", "display: none;");
@@ -77,7 +78,6 @@ require([
         document.getElementById("PopSetupButton").innerHTML = "Map";
         dijit.byId("setupBlock").set("style", "display: block;");
         dijit.byId("mapBlock").set("style", "display: none;");
-        console.log("in else statement");
       }
     }
     document.getElementById("PopSetupButton").onclick = function(){popBoxSwap();};
@@ -126,7 +126,7 @@ require([
 
     console.log("after");
     /* slidemute; */
-    console.log("after slidemute");
+    //console.log("after slidemute");
 
 
 
@@ -185,5 +185,16 @@ require([
     ctx.beginPath();
     ctx.arc(95,50,40,0,3*Math.PI/2);
     ctx.stroke();
-
+    
+    FreezeOrgansim.on("DndDrop", function(source, nodes, copy, target){
+      console.log("Source: ", source);
+      console.log("Nodes: ", nodes);
+      console.log("Copy: ", copy);
+      console.log("Target: ", target);
+      
+      if (!copy){
+        var avidian = prompt("Please name your avidian", "HarryPotter");
+        nodes[0].textContent=avidian;
+      }
+    });
   });
