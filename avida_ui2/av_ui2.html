@@ -113,23 +113,16 @@
             refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
         Freezer
         <span data-dojo-type="dijit/TitlePane" title="Configured Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-            <div dojoType="dojo.dnd.Source" class="container" id="FreezeConfigure" data-dojo-props="accept: [ 'conDish' ]">
-              <div class="dojoDndItem" id="frCondish0">@default</div>
-            </div>
+          <div id="freezeConfigureNode"class="container"></div>
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Organisms" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
           <div id="freezeOrgansimNode" class="container"></div>
-          <!--<div dojoType="dojo.dnd.Source" class="container" id="FreezeOrganism" data-dojo-id="FreezeOrgansim"
-                  copyonly="true" data-dojo-props="accept: [ 'organism' ]">
-              <div class="dojoDndItem" id="frOrganism0" dndType="organism">@ancestor</div>
-              <div class="dojoDndItem" id="frOrganism1" dndType="organism">m2u8000Nand</div>
-            </div>
-        -->
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-            <div dojoType="dojo.dnd.Source" class="container" jsId="FreezePopDish" id="FreezePopDish" data-dojo-props="accept: [ 'popDish' ]">
+          <div id="freezePopDishNode"class="container" jsId="freezePopDish"></div>
+            <!--<div dojoType="dojo.dnd.Source" class="container" jsId="FreezePopDish" id="FreezePopDish" data-dojo-props="accept: [ 'popDish' ]">
               <div class="dojoDndItem" id="frPopdish0">@example</div>
-            </div>
+            </div>-->
         </span>
       </div>
     </div>

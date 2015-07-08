@@ -63,16 +63,26 @@ require([
     document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
     /* Drag N Drop Freezer ****************************************************/
-      dojo.connect(FreezePopDish, "onMouseMove", function(evt){
+      dojo.connect(freezePopDish, "onMouseMove", function(evt){
        console.log({"x": evt.layerX, "y": evt.layerY}); 
     });
     //console.log(dndSource);
+    var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: ["true"]});
+    freezeConfigure.insertNodes(false, [
+      { data: "@default",      type: ["conDish"]},
+      { data: "s30m.2NandNot", type: ["conDish"]},
+    ]);
     var freezeOrgan = new dndSource("freezeOrgansimNode", {accept: ["organism"], copyOnly: ["true"]});
-    console.log("after var freezerOrganism");    
     freezeOrgan.insertNodes(false, [
       { data: "@ancestor",      type: ["organism"]},
       { data: "m2u8000Nand",    type: ["organism"]},
       { data: "m2u8000Not",     type: ["organism"]}
+    ]);
+    var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: ["true"]});
+    freezePopDish.insertNodes(false, [
+      { data: "@example",       type: ["popDish"]},
+      { data: "m2w30u1000nand", type: ["popDish"]},
+      { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
     console.log("after freezerOrgan");
     
