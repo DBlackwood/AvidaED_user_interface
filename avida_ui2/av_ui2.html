@@ -112,20 +112,22 @@
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
             refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
         Freezer
-        <span data-dojo-type="dijit/TitlePane" id="FreezeConfigure" title="Configured Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-            <div dojoType="dojo.dnd.Source" class="container" data-dojo-props="accept: [ 'conDish' ]">
+        <span data-dojo-type="dijit/TitlePane" title="Configured Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
+            <div dojoType="dojo.dnd.Source" class="container" id="FreezeConfigure" data-dojo-props="accept: [ 'conDish' ]">
               <div class="dojoDndItem" id="frCondish0">@default</div>
             </div>
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Organisms" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-            <div dojoType="dojo.dnd.Source" class="container" id="FreezeOrganism" data-dojo-id="FreezeOrgansim"
+          <div id="freezeOrgansimNode" class="container"></div>
+          <!--<div dojoType="dojo.dnd.Source" class="container" id="FreezeOrganism" data-dojo-id="FreezeOrgansim"
                   copyonly="true" data-dojo-props="accept: [ 'organism' ]">
               <div class="dojoDndItem" id="frOrganism0" dndType="organism">@ancestor</div>
               <div class="dojoDndItem" id="frOrganism1" dndType="organism">m2u8000Nand</div>
             </div>
+        -->
         </span>
-        <span data-dojo-type="dijit/TitlePane" id="FreezePopDish" title="Populated Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
-            <div dojoType="dojo.dnd.Source" class="container" jsId="myTarget" data-dojo-props="accept: [ 'popDish' ]">
+        <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
+            <div dojoType="dojo.dnd.Source" class="container" jsId="FreezePopDish" id="FreezePopDish" data-dojo-props="accept: [ 'popDish' ]">
               <div class="dojoDndItem" id="frPopdish0">@example</div>
             </div>
         </span>
@@ -176,11 +178,11 @@
               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                     style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                      refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 31px;">
+                      refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 22px;">
                   <select data-dojo-type="dijit/form/Select" id="yaxis" data-dojo-props="name: 'yyAxis'">
                     <option value="Average Fitness" selected="selected">Average Fitness</option>
-                    <option value="Average Gestation">Average Gestation</option>
-                    <option value="Average Metabolic">Average Metabolic</option>
+                    <option value="Average Gestation Time">Average Gestation Time</option>
+                    <option value="Average Metabolic Rate">Average Metabolic Time</option>
                     <option value="Number of Organisms">Number of Organisms</option>
                   </select>
                 </div>
@@ -432,22 +434,20 @@
                   style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
              <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                     refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 46px;">
-               <table border="0" style="border-collapse: collapse; table-layout: fixed; width: 100%; height: auto;">
+               <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
                  <tbody>
                    <tr>
                      <td>
                        <label id="TimeLabel">Time: 1000</label>
                      </td>
                      <td style="text-align: center">
-                        <span data-dojo-type="dijit/form/DropDownButton" intermediateChanges="false" label="Mode" iconClass="dijitNoIcon">
-                          <span data-dojo-type="dijit/Menu" contextMenuForWindow="false" leftClickToOpen="false" tabIndex="0">
-                            <span data-dojo-type="dijit/MenuItem" label="Fitness" iconClass="dijitNoIcon"></span>
-                            <span data-dojo-type="dijit/MenuItem" label="Metabolic Rate" iconClass="dijitNoIcon"></span>
-                            <span data-dojo-type="dijit/MenuItem" label="Generation Time" iconClass="dijitNoIcon"></span>
-                            <span data-dojo-type="dijit/MenuItem" label="Ancestor Organism" iconClass="dijitNoIcon"></span>
-                          </span>
-                        </span>
-                        <label id="GridColorMode">Fitness</label>
+                        Mode
+                        <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorAxis'">
+                          <option value="Fitness" selected="selected">Fitness</option>
+                          <option value="Gestation Time">Gestation Time</option>
+                          <option value="Metabolic Rate">Metabolic Time</option>
+                          <option value="Ancestor Organism">Ancestor Organism</option>
+                        </select>
                         <br>
                         <button id="newDishButton">New</button>
                         <button id="runStopButton">Run</button>

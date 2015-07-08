@@ -62,10 +62,34 @@ require([
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
     document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
-    /* Drag N Drop ****************************************************/
-      dojo.connect(myTarget, "onMouseMove", function(evt){
+    /* Drag N Drop Freezer ****************************************************/
+      dojo.connect(FreezePopDish, "onMouseMove", function(evt){
        console.log({"x": evt.layerX, "y": evt.layerY}); 
     });
+    //console.log(dndSource);
+    var freezeOrgan = new dndSource("freezeOrgansimNode", {accept: ["organism"], copyOnly: ["true"]});
+    console.log("after var freezerOrganism");    
+    freezeOrgan.insertNodes(false, [
+      { data: "@ancestor",      type: ["organism"]},
+      { data: "m2u8000Nand",    type: ["organism"]},
+      { data: "m2u8000Not",     type: ["organism"]}
+    ]);
+    console.log("after freezerOrgan");
+    
+    freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
+      console.log("dnd:", nodes.innerHTML);
+      console.log("Source: ", source);
+      console.log("Nodes: ", nodes);
+      console.log("Copy: ", copy);
+      console.log("Target: ", target);
+      console.log("id: ", target.node.id);
+      // works for now when dragging to organism freezer. The if test will need to get better
+      if (target.node.id=="freezeOrgansimNode"){
+        var avidian = prompt("Please name your avidian", "HarryPotter");
+        nodes[0].textContent=avidian;
+      }
+    });
+
 
       /* Population page script ***************************************/
 
@@ -152,7 +176,7 @@ require([
     dijit.byId("orgBack").on("Click", orgBackFn);
     dijit.byId("orgForward").on("Click", orgForwardFn);
     dijit.byId("orgEnd").on("Click", function() {
-      dijit.byId("orgCycle").set("value", 100);
+    dijit.byId("orgCycle").set("value", 100);
     });
     dijit.byId("orgCycle").on("Change", function(value){
       cycleSlider.set("value",value);
@@ -186,15 +210,4 @@ require([
     ctx.arc(95,50,40,0,3*Math.PI/2);
     ctx.stroke();
     
-    FreezeOrgansim.on("DndDrop", function(source, nodes, copy, target){
-      console.log("Source: ", source);
-      console.log("Nodes: ", nodes);
-      console.log("Copy: ", copy);
-      console.log("Target: ", target);
-      
-      if (!copy){
-        var avidian = prompt("Please name your avidian", "HarryPotter");
-        nodes[0].textContent=avidian;
-      }
-    });
   });
