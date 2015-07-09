@@ -15,6 +15,7 @@ require([
   "dijit/TitlePane",
   "dojo/dnd/Source",
   "dojo/dnd/Manager",
+  "dojo/dnd/Selector",
   "dijit/form/Select",
   "dijit/form/HorizontalSlider",
   "dijit/form/HorizontalRule",
@@ -34,7 +35,7 @@ require([
   "jquery-ui",
   "dojo/domReady!"
   ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource, dndManager, Select,
+              Button, TitlePane, dndSource, dndManager, dndSelector, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
@@ -67,29 +68,42 @@ require([
     document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
     /* Drag N Drop Freezer ****************************************************/
+    
+    dojo.declare("AcceptOneItemSource", dndSource, {
+      checkAcceptance : function(source, nodes) {
+        if (this.node.children.length > 1) {
+           return false;
+        }
+        return this.inherited(arguments);
+      }
+    });
       
-    var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: ["true"]});
+    var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: ["true"], singular: "true"});
     freezeConfigure.insertNodes(false, [
       { data: "@default",      type: ["conDish"]},
       { data: "s30m.2NandNot", type: ["conDish"]},
     ]);
-    var freezeOrgan = new dndSource("freezeOrgansimNode", {accept: ["organism"], copyOnly: ["true"]});
+    var freezeOrgan = new dndSource("freezeOrgansimNode", {accept: ["organism"], copyOnly: ["true"], singular: "true"});
     freezeOrgan.insertNodes(false, [
       { data: "@ancestor",      type: ["organism"]},
       { data: "m2u8000Nand",    type: ["organism"]},
       { data: "m2u8000Not",     type: ["organism"]}
     ]);
-    var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: ["true"]});
+    var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: ["true"], singular: "true"});
     freezePopDish.insertNodes(false, [
       { data: "@example",       type: ["popDish"]},
       { data: "m2w30u1000nand", type: ["popDish"]},
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
     var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"]});
-    var ConfigCurrent = new dndSource("ConfigurationCurrent", {accept: ["conDish"]});
-    var graphPop1 = new dndSource("pop1name", {accept: ["popDish"]});
-    var graphPop2 = new dndSource("pop2name", {accept: ["popDish"]});
-    var graphPop3 = new dndSource("pop3name", {accept: ["popDish"]});
+    
+    var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
+
+    var ConfigCurrent = new AcceptOneItemSource("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
+    
+    var graphPop1 = new dndSource("pop1name", {accept: ["popDish"], singular: "true"});
+    var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
+    var graphPop3 = new dndSource("pop3name", {accept: ["popDish"], singular: "true"});
     console.log("after create graphPopulations");
 
     freezeConfigure.on("MouseMove", function(evt){
@@ -258,7 +272,8 @@ require([
     dictColor["Magenta"] = "#FF00FF";
     dictColor["Cyan"] = "#00FFFF";
     dictColor["Yellow"] = "#FFFF00";
-    
+    dictColor["Purple"] = "#8800FF";
+    dictColor["Orange"] = "#FFAA00";
     var example_a = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
     var example_b = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
     var m2w30u1000not_a = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
@@ -271,18 +286,21 @@ require([
     var pop2b = m2w30u1000not_b;
     var pop3a = m2w30u1000nand_a;
     var pop3b = m2w30u1000nand_b;
-    console.log("c1: ", dijit.byId("pop1color").value);
-    console.log("c2: ", dijit.byId("pop2color").value);
-    console.log("c3: ", dijit.byId("pop3color").value);
+    //console.log("c1: ", dijit.byId("pop1color").value);
+    //console.log("c2: ", dijit.byId("pop2color").value);
+    //console.log("c3: ", dijit.byId("pop3color").value);
     var color1 = dictColor[dijit.byId("pop1color").value];
     var color2 = dictColor[dijit.byId("pop2color").value];
     var color3 = dictColor[dijit.byId("pop3color").value]; 
     var y1title = "Average Fitness";
     var y2title = 'Average Gestation Time'
+    //var chart1 = new Chart("chartOne",{title: "Avida Traits"});
+    var chart1 = new Chart("chartOne");
 
     ready(function(){
-      //var chart1 = new Chart("chartOne",{title: "Avida Traits"});
-      var chart1 = new Chart("chartOne");
+    });
+    
+    function AnaChart(){
       chart1.addPlot("default", {type: "Lines"});
       chart1.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
       chart1.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
@@ -296,9 +314,21 @@ require([
       chart1.addSeries("Series 2b", pop2b, {plot: "other", stroke: {color:color2, width: .3}});
       chart1.addSeries("Series 3b", pop3b, {plot: "other", stroke: {color:color3, width: .3}});
       chart1.render();
-    });
+    };
     
     /* Chart buttons and dnd ********/
+    dijit.byId("pop1color").on("Change", function(){
+      color1 = dictColor[dijit.byId("pop1color").value];
+      AnaChart();
+    });
+    dijit.byId("pop2color").on("Change", function(){
+      color2 = dictColor[dijit.byId("pop2color").value];
+      AnaChart();
+    });
+    dijit.byId("pop3color").on("Change", function(){
+      color3 = dictColor[dijit.byId("pop3color").value];
+      AnaChart();
+    });
 
     /* Canvas Play in gridCanvas *************************************/
     var canvas = document.getElementById("gridCanvas");

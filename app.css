@@ -58,7 +58,8 @@ button
 
 div { margin:0}
 
-#chartOne { width: 90%; height: 100%}
+#chartOne { width: 100%; height: 100%;
+    background-color: #FFFF88;}
 
 div.odd
   
@@ -157,7 +158,7 @@ button, input,
 .popContainer{
     float: left;
     min-height: 1.6em;
-    width: 15em;
+    width: 20em;
     border: 1px solid black;
     background-color: white;
     display:block;
