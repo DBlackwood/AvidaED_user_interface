@@ -71,7 +71,7 @@ require([
     
     dojo.declare("AcceptOneItemSource", dndSource, {
       checkAcceptance : function(source, nodes) {
-        if (this.node.children.length > 1) {
+        if (this.node.children.length >= 1) {
            return false;
         }
         return this.inherited(arguments);
@@ -91,7 +91,7 @@ require([
     ]);
     var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: ["true"], singular: "true"});
     freezePopDish.insertNodes(false, [
-      { data: "@example",       type: ["popDish"]},
+      { data: "example",       type: ["popDish"]},
       { data: "m2w30u1000nand", type: ["popDish"]},
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
@@ -99,11 +99,11 @@ require([
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
 
-    var ConfigCurrent = new AcceptOneItemSource("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
+    var ConfigCurrent = new dndSource("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
     
-    var graphPop1 = new dndSource("pop1name", {accept: ["popDish"], singular: "true"});
-    var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
-    var graphPop3 = new dndSource("pop3name", {accept: ["popDish"], singular: "true"});
+    var graphPop1 = new AcceptOneItemSource("pop1name", {accept: ["popDish"], singular: "true"});
+    var graphPop2 = new AcceptOneItemSource("pop2name", {accept: ["popDish"], singular: "true"});
+    var graphPop3 = new AcceptOneItemSource("pop3name", {accept: ["popDish"], singular: "true"});
     console.log("after create graphPopulations");
 
     freezeConfigure.on("MouseMove", function(evt){
@@ -112,12 +112,12 @@ require([
     
     freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
       //console.log("Source: ", source);
-      console.log("Nodes: ", nodes);
+      //console.log("Nodes: ", nodes);
       //console.log("Copy: ", copy);
-      console.log("Target: ", target);
+      //console.log("Target: ", target);
       //console.log("id: ", target.node.id);
       // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
-      // Does not change "data" value.
+      // Does not change "data" value, only textContent changes.
       if (target.node.id=="freezeConfigureNode"){
         var dishCon = prompt("Please name your dish configuration", "George");
         nodes[0].textContent=dishCon;
@@ -133,24 +133,36 @@ require([
         var popDish = prompt("Please name your populated dish", "Fred");
         nodes[0].textContent=popDish;
       }
-      if (target.node.id=="pop1name"){
+      if (target.node.id=="ConfigurationCurrent"){
+        console.log("children=",target.node.children);
+        dojo.empty(target.node.children);
         var list = this.getAllNodes();
         return list.length < 1
       }
       if (target.node.id=="pop1name"){
-        console.log(nodes[0].textContent);
-        console.log("nodes.id: ", nodes[0].id);
-        console.log(target.selection);
-        //document.getElementById("pop1name").innerHTML = nodes[0].textContent;
-        console.log("allnodes: ",target.getAllNodes());
-        //target.clearItems();
-        //target.selectAll().deleteSelectedNodes();
-        target.forInSelectedItems(function(item, id){
-          console.log("id: ", id);  // print the id
-          //target.deleteSelectedNodes();
-        });
+        console.log("textContent: ", nodes[0].textContent);
+        //console.log("nodes[0].id: ", nodes[0].id);
+        //console.log("target.selection: ",target.selection);
+        //console.log("allnodes: ",target.getAllNodes());
+        //console.log("source.getItem(nodes[0].id)=",source.getItem(nodes[0].id));
+        pop1a = dictPlota[nodes[0].textContent];
+        pop1b = dictPlotb[nodes[0].textContent];
+        AnaChart();
+      }
+      if (target.node.id=="pop2name"){
+        console.log("textContent: ", nodes[0].textContent);
+        pop2a = dictPlota[nodes[0].textContent];
+        pop2b = dictPlotb[nodes[0].textContent];
+        AnaChart();
+      }
+      if (target.node.id=="pop3name"){
+        console.log("textContent: ", nodes[0].textContent);
+        pop3a = dictPlota[nodes[0].textContent];
+        pop3b = dictPlotb[nodes[0].textContent];
+        AnaChart();
       }
     });
+
 
 
       /* Population page script ***************************************/
@@ -210,12 +222,6 @@ require([
       });
     });
 
-    console.log("after");
-    /* slidemute; */
-    //console.log("after slidemute");
-
-
-
     /* Organism page script *********************************************/
     /* Organism Gestation Length Slider */
 
@@ -258,13 +264,19 @@ require([
             document.getElementById("orgCycle").value = value;
         }
     }, "cycleSlider");
-    //console.log(slider);
-
     //console.log("after slider");
 
     /* ****************************************************************/
     /* Analysis Page **************************************************/
     /* ****************************************************************/
+    var dictPlota = {};
+    var dictPlotb = {};
+    dictPlota["example"] = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
+    dictPlota["m2w30u1000not"] = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
+    dictPlota["m2w30u1000nand"] = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
+    dictPlotb["example"] = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
+    dictPlotb["m2w30u1000not"] = [7,   6.8, 6, 5, 5,   4.7, 4];
+    dictPlotb["m2w30u1000nand"] = [8, 7, 7.5, 6, 5, 5, 4, 4, 3];
     var dictColor = {};
     dictColor["Red"] = "#FF0000";
     dictColor["Green"] = "#00FF00";
@@ -274,18 +286,24 @@ require([
     dictColor["Yellow"] = "#FFFF00";
     dictColor["Purple"] = "#8800FF";
     dictColor["Orange"] = "#FFAA00";
-    var example_a = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
-    var example_b = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
-    var m2w30u1000not_a = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
-    var m2w30u1000not_b = [7,   6.8, 6, 5, 5,   4.7, 4];
-    var m2w30u1000nand_a = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
-    var m2w30u1000nand_b = [8, 7, 7.5, 6, 5, 5, 4, 4, 3];
-    var pop1a = example_a;
-    var pop1b = example_b;
-    var pop2a = m2w30u1000not_a;
-    var pop2b = m2w30u1000not_b;
-    var pop3a = m2w30u1000nand_a;
-    var pop3b = m2w30u1000nand_b;
+    //var example_a = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
+    //var example_b = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
+    //var m2w30u1000not_a = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
+    //var m2w30u1000not_b = [7,   6.8, 6, 5, 5,   4.7, 4];
+    //var m2w30u1000nand_a = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
+    //var m2w30u1000nand_b = [8, 7, 7.5, 6, 5, 5, 4, 4, 3];
+    //var pop1a = example_a;
+    //var pop1b = example_b;
+    //var pop2a = m2w30u1000not_a;
+    //var pop2b = m2w30u1000not_b;
+    //var pop3a = m2w30u1000nand_a;
+    //var pop3b = m2w30u1000nand_b;
+    var pop1a = [];
+    var pop1b = [];
+    var pop2a = [];
+    var pop2b = [];
+    var pop3a = [];
+    var pop3b = [];
     //console.log("c1: ", dijit.byId("pop1color").value);
     //console.log("c2: ", dijit.byId("pop2color").value);
     //console.log("c3: ", dijit.byId("pop3color").value);
@@ -307,6 +325,12 @@ require([
       chart1.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
       //chart1.addAxis("other x", {leftBottom: false});
       chart1.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
+      console.log("pop1a: ", pop1a);
+      console.log("pop2a: ", pop2a);
+      console.log("pop3a: ", pop3a);
+      console.log("pop1b: ", pop1b);
+      console.log("pop2b: ", pop2b);
+      console.log("pop3b: ", pop3b);
       chart1.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});   
       chart1.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
       chart1.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
@@ -317,6 +341,27 @@ require([
     };
     
     /* Chart buttons and dnd ********/
+    document.getElementById("pop1delete").onclick = function(){ 
+      graphPop1.selectAll().deleteSelectedNodes();
+      console.log("delete pop1");
+      pop1a = [];
+      pop1b = [];
+      AnaChart();
+    }
+    document.getElementById("pop2delete").onclick = function(){ 
+      console.log("delete pop2");
+      pop2a = [];
+      pop2b = [];
+      AnaChart();
+      graphPop2.selectAll().deleteSelectedNodes();
+    }
+    document.getElementById("pop3delete").onclick = function(){ 
+      console.log("delete pop3");
+      pop3a = [];
+      pop3b = [];
+      AnaChart();
+      graphPop3.selectAll().deleteSelectedNodes();
+    }
     dijit.byId("pop1color").on("Change", function(){
       color1 = dictColor[dijit.byId("pop1color").value];
       AnaChart();
