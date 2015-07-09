@@ -56,6 +56,10 @@ button
     width: 50px;
   }
 
+div { margin:0}
+
+#chartOne { width: 90%; height: 100%}
+
 div.odd
   
   { background-color: #CCCCCC;
@@ -72,7 +76,7 @@ div.odd
   { float: left;
   }
 
-.muteRate
+.lftmargin
   { float : left; clear: left; }
 
 #muteSlide
@@ -144,9 +148,17 @@ button, input,
     min-height: 10px;
     width: 100%;
 }
-.popContainer{
+.ancestorContainer{
     min-height: 30px;
     width: 200px;
     border: 1px solid black;
     background-color: white;
+}
+.popContainer{
+    float: left;
+    min-height: 1.6em;
+    width: 15em;
+    border: 1px solid black;
+    background-color: white;
+    display:block;
 }

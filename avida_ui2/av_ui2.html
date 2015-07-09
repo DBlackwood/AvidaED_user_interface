@@ -147,9 +147,8 @@
             <tbody>
               <tr>
                 <td>
-                  <img src="avida-ed-dish-icon.png"></img>
-                  <label id="ConfigurationCurrent">
-                    @default</label>
+                  <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img>Configuration: </div>
+                  <div id="ConfigurationCurrent" class="popContainer">
                 </td>
                 <td style="text-align: right;">
                   <button id="PopSetupButton">Setup</button>
@@ -496,7 +495,7 @@
               cells&nbsp;<span id="sizexy"></span>
            </div>
             <div class="even">
-              <span class="muteRate">Per Site Mutation Rate:</span>
+              <span class="lftmargin">Per Site Mutation Rate:</span>
               <span id="muteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
               <!-- style done here for the slider; margin to keep it from overlapping;
                                     without width the slider is the full width of the browser window-->
@@ -506,8 +505,8 @@
             </div>
 
            <div class="odd">Ancestral Organism(s):
-              <div dojoType="dojo.dnd.Source" class="popContainer" id="AncestorBox" data-dojo-props="accept: [ 'organism' ]">
-              </div>
+              <!--<div dojoType="dojo.dnd.Source" class="ancestorContainer" id="AncestorBox" data-dojo-props="accept: [ 'organism' ]"></div>-->
+              <div class="ancestorContainer" id="AncestorBoxNode"></div>
            </div>
            <div class="even">
              <form id="offspringForm">
@@ -709,8 +708,8 @@
             <!-- Content Pane with Analysis controls-->
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
                   refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" style="width: 400px;" doLayout="false">
-              <span><button id="pop1delete">X</button>
-              <select data-dojo-type="dijit/form/Select" id="pop1color" data-dojo-props="name: 'color'">
+              <div class="lftmargin"><button id="pop1delete">X</button></div>
+              <select data-dojo-type="dijit/form/Select" id="pop1color" data-dojo-props="name: 'color'" class="fltLeft">
                 <option value="Red" selected="selected">Red</option>
                 <option value="Blue">Blue</option>
                 <option value="Green">Green</option>
@@ -720,9 +719,10 @@
                 <option value="Orange">Orange</option>
                 <option value="Yellow">Yellow</option>
               </select>
-              <label id="pop1name">pop 1 name</label></span>
-              <br></br><span><button id="pop2delete">X</button>
-              <select data-dojo-type="dijit/form/Select" id="pop2color" data-dojo-props="name: 'color'">
+              <div id="pop1name" class="popContainer"></div>
+              
+              <div class="lftmargin"><button id="pop2delete">X</button></div>
+              <select data-dojo-type="dijit/form/Select" id="pop2color" data-dojo-props="name: 'color'" class="fltLeft">
                 <option value="Red">Red</option>
                 <option value="Blue" selected="selected">Blue</option>
                 <option value="Green">Green</option>
@@ -732,26 +732,26 @@
                 <option value="Orange">Orange</option>
                 <option value="Yellow">Yellow</option>
               </select>
-              <label id="pop2name">pop 2 name</label>
-              </span>
-              <br></br><span><button id="pop3delete">X</button>
-              <select data-dojo-type="dijit/form/Select" id="pop3color" data-dojo-props="name: 'color'">
-                <option value="Red">Red</option>
-                <option value="Blue">Blue</option>
-                <option value="Green" selected="selected">Green</option>
-                <option value="Cyan">Cyan</option>
-                <option value="Magenta">Magenta</option>
-                <option value="Purple">Purple</option>
-                <option value="Orange">Orange</option>
-                <option value="Yellow">Yellow</option>
-              </select>
-              <label id="pop3name">pop 3 name</label>
-              </span>
+              <div id="pop2name" class="popContainer"></div>
+              
+              <div class="lftmargin"><button id="pop3delete">X</button>
+                <select data-dojo-type="dijit/form/Select" id="pop3color" data-dojo-props="name: 'color'">
+                  <option value="Red">Red</option>
+                  <option value="Blue">Blue</option>
+                  <option value="Green" selected="selected">Green</option>
+                  <option value="Cyan">Cyan</option>
+                  <option value="Magenta">Magenta</option>
+                  <option value="Purple">Purple</option>
+                  <option value="Orange">Orange</option>
+                  <option value="Yellow">Yellow</option>
+                </select>
+              </div>
+              <div id="pop3name" class="popContainer"></div>
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
               <select data-dojo-type="dijit/form/Select" id="y1select" data-dojo-props="name: 'yyaxis'">
                 <option value="None">None</option>
-                <option value="Average Fitness">Average Fitness</option>
+                <option value="Average Fitness" selected="selected">Average Fitness</option>
                 <option value="Average Gestation Time">Average Gestation Time</option>
                 <option value="Average Metabolic Rate">Average Metabolic Rate</option>
                 <option value="Number of Organisms">Number of Organisms</option>
@@ -770,6 +770,7 @@
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
               refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
          <p>Analysis graph goes here</p>
+         <div id="chartOne"></div>
        </div>
       </div>
     </div>

@@ -26,13 +26,17 @@ require([
   "dijit/form/DropDownButton",
   "dijit/form/ComboBox",
   "dijit/form/Textarea",
+  "dojox/charting/Chart", 
+  "dojox/charting/axis2d/Default", 
+  "dojox/charting/plot2d/Lines", 
+  "dojo/ready",
   "jquery",
   "jquery-ui",
   "dojo/domReady!"
   ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
               Button, TitlePane, dndSource, dndManager, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-              DropDownButton, ComboBox, Textarea, $, jqueryui){
+              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
     parser.parse();
 
@@ -63,10 +67,7 @@ require([
     document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
     /* Drag N Drop Freezer ****************************************************/
-      dojo.connect(freezePopDish, "onMouseMove", function(evt){
-       console.log({"x": evt.layerX, "y": evt.layerY}); 
-    });
-    //console.log(dndSource);
+      
     var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: ["true"]});
     freezeConfigure.insertNodes(false, [
       { data: "@default",      type: ["conDish"]},
@@ -84,19 +85,56 @@ require([
       { data: "m2w30u1000nand", type: ["popDish"]},
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
-    console.log("after freezerOrgan");
+    var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"]});
+    var ConfigCurrent = new dndSource("ConfigurationCurrent", {accept: ["conDish"]});
+    var graphPop1 = new dndSource("pop1name", {accept: ["popDish"]});
+    var graphPop2 = new dndSource("pop2name", {accept: ["popDish"]});
+    var graphPop3 = new dndSource("pop3name", {accept: ["popDish"]});
+    console.log("after create graphPopulations");
+
+    freezeConfigure.on("MouseMove", function(evt){
+       //console.log({"x": evt.layerX, "y": evt.layerY}); 
+    });
     
     freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
-      console.log("dnd:", nodes.innerHTML);
-      console.log("Source: ", source);
+      //console.log("Source: ", source);
       console.log("Nodes: ", nodes);
-      console.log("Copy: ", copy);
+      //console.log("Copy: ", copy);
       console.log("Target: ", target);
-      console.log("id: ", target.node.id);
-      // works for now when dragging to organism freezer. The if test will need to get better
+      //console.log("id: ", target.node.id);
+      // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
+      // Does not change "data" value.
+      if (target.node.id=="freezeConfigureNode"){
+        var dishCon = prompt("Please name your dish configuration", "George");
+        nodes[0].textContent=dishCon;
+      }
       if (target.node.id=="freezeOrgansimNode"){
-        var avidian = prompt("Please name your avidian", "HarryPotter");
+        var avidian = prompt("Please name your avidian", nodes[0].textContent);
+        console.log("map: ", target.map);
         nodes[0].textContent=avidian;
+        nodes[0].data=dishCon;
+        console.log("data: ", nodes[0].data);
+      }
+      if (target.node.id=="freezePopDishNode"){
+        var popDish = prompt("Please name your populated dish", "Fred");
+        nodes[0].textContent=popDish;
+      }
+      if (target.node.id=="pop1name"){
+        var list = this.getAllNodes();
+        return list.length < 1
+      }
+      if (target.node.id=="pop1name"){
+        console.log(nodes[0].textContent);
+        console.log("nodes.id: ", nodes[0].id);
+        console.log(target.selection);
+        //document.getElementById("pop1name").innerHTML = nodes[0].textContent;
+        console.log("allnodes: ",target.getAllNodes());
+        //target.clearItems();
+        //target.selectAll().deleteSelectedNodes();
+        target.forInSelectedItems(function(item, id){
+          console.log("id: ", id);  // print the id
+          //target.deleteSelectedNodes();
+        });
       }
     });
 
@@ -164,7 +202,7 @@ require([
 
 
 
-    /* Organism page script *****************************************/
+    /* Organism page script *********************************************/
     /* Organism Gestation Length Slider */
 
     //console.log(dijit.byId("orgCycle"));
@@ -210,7 +248,59 @@ require([
 
     //console.log("after slider");
 
-    /* Canvas Play in gridCanvas */
+    /* ****************************************************************/
+    /* Analysis Page **************************************************/
+    /* ****************************************************************/
+    var dictColor = {};
+    dictColor["Red"] = "#FF0000";
+    dictColor["Green"] = "#00FF00";
+    dictColor["Blue"] = "#0000FF";
+    dictColor["Magenta"] = "#FF00FF";
+    dictColor["Cyan"] = "#00FFFF";
+    dictColor["Yellow"] = "#FFFF00";
+    
+    var example_a = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
+    var example_b = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
+    var m2w30u1000not_a = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
+    var m2w30u1000not_b = [7,   6.8, 6, 5, 5,   4.7, 4];
+    var m2w30u1000nand_a = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
+    var m2w30u1000nand_b = [8, 7, 7.5, 6, 5, 5, 4, 4, 3];
+    var pop1a = example_a;
+    var pop1b = example_b;
+    var pop2a = m2w30u1000not_a;
+    var pop2b = m2w30u1000not_b;
+    var pop3a = m2w30u1000nand_a;
+    var pop3b = m2w30u1000nand_b;
+    console.log("c1: ", dijit.byId("pop1color").value);
+    console.log("c2: ", dijit.byId("pop2color").value);
+    console.log("c3: ", dijit.byId("pop3color").value);
+    var color1 = dictColor[dijit.byId("pop1color").value];
+    var color2 = dictColor[dijit.byId("pop2color").value];
+    var color3 = dictColor[dijit.byId("pop3color").value]; 
+    var y1title = "Average Fitness";
+    var y2title = 'Average Gestation Time'
+
+    ready(function(){
+      //var chart1 = new Chart("chartOne",{title: "Avida Traits"});
+      var chart1 = new Chart("chartOne");
+      chart1.addPlot("default", {type: "Lines"});
+      chart1.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
+      chart1.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
+      chart1.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
+      //chart1.addAxis("other x", {leftBottom: false});
+      chart1.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
+      chart1.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});   
+      chart1.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
+      chart1.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
+      chart1.addSeries("Series 1b", pop1b, {plot: "other", stroke: {color:color1, width: .3}});
+      chart1.addSeries("Series 2b", pop2b, {plot: "other", stroke: {color:color2, width: .3}});
+      chart1.addSeries("Series 3b", pop3b, {plot: "other", stroke: {color:color3, width: .3}});
+      chart1.render();
+    });
+    
+    /* Chart buttons and dnd ********/
+
+    /* Canvas Play in gridCanvas *************************************/
     var canvas = document.getElementById("gridCanvas");
     var ctx = canvas.getContext("2d");
     ctx.moveTo(0,0);
