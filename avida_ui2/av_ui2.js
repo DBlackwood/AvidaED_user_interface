@@ -77,7 +77,7 @@ require([
         return this.inherited(arguments);
       }
     });
-      
+          
     var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: ["true"], singular: "true"});
     freezeConfigure.insertNodes(false, [
       { data: "@default",      type: ["conDish"]},
@@ -98,13 +98,54 @@ require([
     var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"]});
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
-
     var ConfigCurrent = new dndSource("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
+    var OrganCurrent = new dndSource("OrgansimCurrent", {accept: ["organism"], singular: "true"});
+    //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+    //OrganCurrent.insertNodes(false, [{data: "test", type:["organism"]}]);
+    //OrganCurrent.insertNodes(false, [{data: "again", type:["organism"]}]);
+
+    console.log("after organCurrent");
     
     var graphPop1 = new AcceptOneItemSource("pop1name", {accept: ["popDish"], singular: "true"});
     var graphPop2 = new AcceptOneItemSource("pop2name", {accept: ["popDish"], singular: "true"});
     var graphPop3 = new AcceptOneItemSource("pop3name", {accept: ["popDish"], singular: "true"});
     console.log("after create graphPopulations");
+
+    //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
+    //Puts the contents of the source in a object (list) called items. 
+    function getAllItems(source){
+      var items = source.getAllNodes().map(function(node){
+        return source.getItem(node.id);
+      });
+      return items;
+    }
+    function OrganCurrentChange(){
+      console.log("in OrganCurrentChange");
+      var items = getAllItems(OrganCurrent);
+      console.log("items: ", items);
+      console.log("items.len: ", items.length);
+      //need to assign most recent to item 0 and set length to 1
+      if (1 < items.length) {
+        OrganCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        OrganCurrent.sync();   //not sure if this helps or not
+        console.log("item1: ", items[1]);
+        console.log("item1d: ", items[1].data);
+        OrganCurrent.insertNodes(false, [items[1]]);
+        //OrganCurrent.insertNodes(["datastring"],false);
+        var after = getAllItems(OrganCurrent);
+        console.log("after: ", after);
+      }
+    };
+    function trashChange(){
+      console.log("in trashchange");
+      var items = getAllItems(trash);
+      console.log("items: ", items);
+      console.log("item0: ", items[0]);
+      console.log("item0d: ", items[0].data);
+      console.log("items.l: ", items.length);
+    }
+    dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
+    dojo.connect(trash, "insertNodes", trashChange);
 
     freezeConfigure.on("MouseMove", function(evt){
        //console.log({"x": evt.layerX, "y": evt.layerY}); 
@@ -135,9 +176,14 @@ require([
       }
       if (target.node.id=="ConfigurationCurrent"){
         console.log("children=",target.node.children);
-        dojo.empty(target.node.children);
-        var list = this.getAllNodes();
-        return list.length < 1
+        console.log("children0=",target.node);
+        console.log("ConfigCurrent:", ConfigCurrent);
+        //ConfigCurrent.selectAll().deleteSelectedNodes();
+        //console.log("children=",target.node.children);
+        //dojo.empty(target.node.children);
+        //console.log("children=",target.node.children);
+        //var list = this.getAllNodes();
+        //return list.length < 1
       }
       if (target.node.id=="pop1name"){
         console.log("textContent: ", nodes[0].textContent);
@@ -286,27 +332,12 @@ require([
     dictColor["Yellow"] = "#FFFF00";
     dictColor["Purple"] = "#8800FF";
     dictColor["Orange"] = "#FFAA00";
-    //var example_a = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
-    //var example_b = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
-    //var m2w30u1000not_a = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
-    //var m2w30u1000not_b = [7,   6.8, 6, 5, 5,   4.7, 4];
-    //var m2w30u1000nand_a = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
-    //var m2w30u1000nand_b = [8, 7, 7.5, 6, 5, 5, 4, 4, 3];
-    //var pop1a = example_a;
-    //var pop1b = example_b;
-    //var pop2a = m2w30u1000not_a;
-    //var pop2b = m2w30u1000not_b;
-    //var pop3a = m2w30u1000nand_a;
-    //var pop3b = m2w30u1000nand_b;
     var pop1a = [];
     var pop1b = [];
     var pop2a = [];
     var pop2b = [];
     var pop3a = [];
     var pop3b = [];
-    //console.log("c1: ", dijit.byId("pop1color").value);
-    //console.log("c2: ", dijit.byId("pop2color").value);
-    //console.log("c3: ", dijit.byId("pop3color").value);
     var color1 = dictColor[dijit.byId("pop1color").value];
     var color2 = dictColor[dijit.byId("pop2color").value];
     var color3 = dictColor[dijit.byId("pop3color").value]; 
