@@ -101,14 +101,12 @@ require([
     var ConfigCurrent = new dndSource("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
     var OrganCurrent = new dndSource("OrgansimCurrent", {accept: ["organism"], singular: "true"});
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-    //OrganCurrent.insertNodes(false, [{data: "test", type:["organism"]}]);
-    //OrganCurrent.insertNodes(false, [{data: "again", type:["organism"]}]);
 
     console.log("after organCurrent");
     
-    var graphPop1 = new AcceptOneItemSource("pop1name", {accept: ["popDish"], singular: "true"});
-    var graphPop2 = new AcceptOneItemSource("pop2name", {accept: ["popDish"], singular: "true"});
-    var graphPop3 = new AcceptOneItemSource("pop3name", {accept: ["popDish"], singular: "true"});
+    var graphPop1 = new dndSource("pop1name", {accept: ["popDish"], singular: "true"});
+    var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
+    var graphPop3 = new dndSource("pop3name", {accept: ["popDish"]});
     console.log("after create graphPopulations");
 
     //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
@@ -119,32 +117,43 @@ require([
       });
       return items;
     }
+    function ConfigCurrentChange(){
+      var items = getAllItems(ConfigCurrent);
+      //console.log("items: ", items);
+      //console.log("items.len: ", items.length);
+      //need to assign most recent to item 0 and set length to 1
+      if (1 < items.length) {
+        ConfigCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        ConfigCurrent.sync();   //not sure if this helps or not
+        //console.log("item1: ", items[1]);
+        //console.log("item1d: ", items[1].data);
+        ConfigCurrent.insertNodes(false, [items[1]]);
+        //var after = getAllItems(ConfigCurrent);
+        //console.log("after: ", after);
+      }
+    };
+    dojo.connect(ConfigCurrent, "onDrop", ConfigCurrentChange);
+
     function OrganCurrentChange(){
-      console.log("in OrganCurrentChange");
       var items = getAllItems(OrganCurrent);
-      console.log("items: ", items);
-      console.log("items.len: ", items.length);
       //need to assign most recent to item 0 and set length to 1
       if (1 < items.length) {
         OrganCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         OrganCurrent.sync();   //not sure if this helps or not
-        console.log("item1: ", items[1]);
-        console.log("item1d: ", items[1].data);
         OrganCurrent.insertNodes(false, [items[1]]);
-        //OrganCurrent.insertNodes(["datastring"],false);
-        var after = getAllItems(OrganCurrent);
-        console.log("after: ", after);
       }
     };
+    dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
+
     function trashChange(){
       console.log("in trashchange");
       var items = getAllItems(trash);
+      trash.selectAll().deleteSelectedNodes();  //does appear to clear items  
       console.log("items: ", items);
       console.log("item0: ", items[0]);
       console.log("item0d: ", items[0].data);
       console.log("items.l: ", items.length);
     }
-    dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
     dojo.connect(trash, "insertNodes", trashChange);
 
     freezeConfigure.on("MouseMove", function(evt){
@@ -169,46 +178,67 @@ require([
         nodes[0].textContent=avidian;
         nodes[0].data=dishCon;
         console.log("data: ", nodes[0].data);
+        //console.log("textContent: ", nodes[0].textContent);
+        //console.log("nodes[0].id: ", nodes[0].id);
+        //console.log("target.selection: ",target.selection);
+        //console.log("allnodes: ",target.getAllNodes());
+        //console.log("source.getItem(nodes[0].id)=",source.getItem(nodes[0].id));
       }
       if (target.node.id=="freezePopDishNode"){
         var popDish = prompt("Please name your populated dish", "Fred");
         nodes[0].textContent=popDish;
       }
-      if (target.node.id=="ConfigurationCurrent"){
-        console.log("children=",target.node.children);
-        console.log("children0=",target.node);
-        console.log("ConfigCurrent:", ConfigCurrent);
-        //ConfigCurrent.selectAll().deleteSelectedNodes();
-        //console.log("children=",target.node.children);
-        //dojo.empty(target.node.children);
-        //console.log("children=",target.node.children);
-        //var list = this.getAllNodes();
-        //return list.length < 1
+
+    function graphPop1Change(){
+      var items = getAllItems(graphPop1);
+      //need to clear all nodes and assign most recent to item 0
+      if (1 < items.length) {
+        graphPop1.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        graphPop1.sync();   //not sure if this helps or not
+        graphPop1.insertNodes(false, [items[1]]);
+        var items = getAllItems(graphPop1);
       }
-      if (target.node.id=="pop1name"){
-        console.log("textContent: ", nodes[0].textContent);
-        //console.log("nodes[0].id: ", nodes[0].id);
-        //console.log("target.selection: ",target.selection);
-        //console.log("allnodes: ",target.getAllNodes());
-        //console.log("source.getItem(nodes[0].id)=",source.getItem(nodes[0].id));
-        pop1a = dictPlota[nodes[0].textContent];
-        pop1b = dictPlotb[nodes[0].textContent];
-        AnaChart();
+      pop1a = dictPlota[items[0].data];
+      pop1b = dictPlotb[items[0].data];
+      AnaChart();
+      console.log("items ", items[0].data);
+    };
+    dojo.connect(graphPop1, "onDrop", graphPop1Change);
+
+    function graphPop2Change(){
+      var items = getAllItems(graphPop2);
+      //need to clear all nodes and assign most recent to item 0
+      if (1 < items.length) {
+        graphPop2.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        graphPop2.sync();   //not sure if this helps or not
+        graphPop2.insertNodes(false, [items[1]]);
+        var items = getAllItems(graphPop2);
       }
-      if (target.node.id=="pop2name"){
-        console.log("textContent: ", nodes[0].textContent);
-        pop2a = dictPlota[nodes[0].textContent];
-        pop2b = dictPlotb[nodes[0].textContent];
-        AnaChart();
-      }
-      if (target.node.id=="pop3name"){
-        console.log("textContent: ", nodes[0].textContent);
-        pop3a = dictPlota[nodes[0].textContent];
-        pop3b = dictPlotb[nodes[0].textContent];
-        AnaChart();
-      }
+      pop2a = dictPlota[items[0].data];
+      pop2b = dictPlotb[items[0].data];
+      AnaChart();
+      console.log("items ", items[0].data);
+    };
+    dojo.connect(graphPop2, "onDrop", graphPop2Change);
+
     });
 
+    //Need to change how graphPop1 and 2 are created as well when changing them to match graphPop3Change
+    function graphPop3Change(){
+      var items = getAllItems(graphPop3);
+      //need to clear all nodes and assign most recent to item 0
+      if (1 < items.length) {
+        graphPop3.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        graphPop3.sync();   //not sure if this helps or not
+        graphPop3.insertNodes(false, [items[1]]);
+        var items = getAllItems(graphPop3);
+      }
+      pop3a = dictPlota[items[0].data];
+      pop3b = dictPlotb[items[0].data];
+      AnaChart();
+      console.log("items ", items[0].data);
+    };
+    dojo.connect(graphPop3, "onDrop", graphPop3Change);
 
 
       /* Population page script ***************************************/
@@ -344,11 +374,11 @@ require([
     var y1title = "Average Fitness";
     var y2title = 'Average Gestation Time'
     //var chart1 = new Chart("chartOne",{title: "Avida Traits"});
-    var chart1 = new Chart("chartOne");
 
     ready(function(){
     });
     
+    var chart1 = new Chart("chartOne");
     function AnaChart(){
       chart1.addPlot("default", {type: "Lines"});
       chart1.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
@@ -356,12 +386,12 @@ require([
       chart1.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
       //chart1.addAxis("other x", {leftBottom: false});
       chart1.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
-      console.log("pop1a: ", pop1a);
-      console.log("pop2a: ", pop2a);
-      console.log("pop3a: ", pop3a);
-      console.log("pop1b: ", pop1b);
-      console.log("pop2b: ", pop2b);
-      console.log("pop3b: ", pop3b);
+      //console.log("pop1a: ", pop1a);
+      //console.log("pop2a: ", pop2a);
+      //console.log("pop3a: ", pop3a);
+      //console.log("pop1b: ", pop1b);
+      //console.log("pop2b: ", pop2b);
+      //console.log("pop3b: ", pop3b);
       chart1.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});   
       chart1.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
       chart1.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
