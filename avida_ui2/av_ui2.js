@@ -16,6 +16,7 @@ require([
   "dojo/dnd/Source",
   "dojo/dnd/Manager",
   "dojo/dnd/Selector",
+  "dojo/dom-geometry",
   "dijit/form/Select",
   "dijit/form/HorizontalSlider",
   "dijit/form/HorizontalRule",
@@ -35,7 +36,7 @@ require([
   "jquery-ui",
   "dojo/domReady!"
   ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource, dndManager, dndSelector, Select,
+              Button, TitlePane, dndSource, dndManager, dndSelector, domGeometry, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
@@ -81,7 +82,8 @@ require([
     var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: ["true"], singular: "true"});
     freezeConfigure.insertNodes(false, [
       { data: "@default",      type: ["conDish"]},
-      { data: "s30m.2NandNot", type: ["conDish"]},
+      { data: "s20m.2Nand",    type: ["conDish"]},
+      { data: "s30m.2Not",     type: ["conDish"]}
     ]);
     var freezeOrgan = new dndSource("freezeOrgansimNode", {accept: ["organism"], copyOnly: ["true"], singular: "true"});
     freezeOrgan.insertNodes(false, [
@@ -99,8 +101,11 @@ require([
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
     var ConfigCurrent = new dndSource("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
-    var OrganCurrent = new dndSource("OrgansimCurrent", {accept: ["organism"], singular: "true"});
+    ConfigCurrent.insertNodes(false, [
+      { data: "@default",      type: ["conDish"]}
+    ]);
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+    var OrganCurrent = new dndSource("OrgansimCurrent", {accept: ["organism"], singular: "true"});
 
     console.log("after organCurrent");
     
@@ -119,40 +124,35 @@ require([
     }
     function ConfigCurrentChange(){
       var items = getAllItems(ConfigCurrent);
-      //console.log("items: ", items);
-      //console.log("items.len: ", items.length);
-      //need to assign most recent to item 0 and set length to 1
       if (1 < items.length) {
         ConfigCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         ConfigCurrent.sync();   //not sure if this helps or not
-        //console.log("item1: ", items[1]);
-        //console.log("item1d: ", items[1].data);
-        ConfigCurrent.insertNodes(false, [items[1]]);
-        //var after = getAllItems(ConfigCurrent);
-        //console.log("after: ", after);
+        freezeConfigure.forInSelectedItems(function(item, id){
+          ConfigCurrent.insertNodes(false, [item]);
+        });
       }
     };
     dojo.connect(ConfigCurrent, "onDrop", ConfigCurrentChange);
 
     function OrganCurrentChange(){
-      var items = getAllItems(OrganCurrent);
-      //need to assign most recent to item 0 and set length to 1
       if (1 < items.length) {
         OrganCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         OrganCurrent.sync();   //not sure if this helps or not
-        OrganCurrent.insertNodes(false, [items[1]]);
+        //OrganCurrent.insertNodes(false, [items[1]]);
+        freezeOrgan.forInSelectedItems(function(item, id){
+          OrganCurrent.insertNodes(false, [item]);
+        });
       }
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
 
     function trashChange(){
-      console.log("in trashchange");
       var items = getAllItems(trash);
       trash.selectAll().deleteSelectedNodes();  //does appear to clear items  
-      console.log("items: ", items);
-      console.log("item0: ", items[0]);
-      console.log("item0d: ", items[0].data);
-      console.log("items.l: ", items.length);
+      //console.log("items: ", items);
+      //console.log("item0: ", items[0]);
+      //console.log("item0d: ", items[0].data);
+      //console.log("items.l: ", items.length);
     }
     dojo.connect(trash, "insertNodes", trashChange);
 
@@ -166,18 +166,28 @@ require([
       //console.log("Copy: ", copy);
       //console.log("Target: ", target);
       //console.log("id: ", target.node.id);
-      // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
-      // Does not change "data" value, only textContent changes.
-      if (target.node.id=="freezeConfigureNode"){
-        var dishCon = prompt("Please name your dish configuration", "George");
-        nodes[0].textContent=dishCon;
+      //console.log("node0: ", nodes[0].id);
+      if (target.node.id=="trashNode"){
+        //console.log("nodes0: ", nodes[0]);
+        //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+        source.parent.removeChild(nodes[0]);
+      //target.parent.removeChild(nodes[0]);
+      //var items = getAllItems(trash);
+      //trash.selectAll().deleteSelectedNodes();  //does appear to clear items  
       }
-      if (target.node.id=="freezeOrgansimNode"){
-        var avidian = prompt("Please name your avidian", nodes[0].textContent);
-        console.log("map: ", target.map);
-        nodes[0].textContent=avidian;
+      if (target.node.id=="freezeConfigureNode"){
+        // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
+        // Does not change "data" value, only textContent changes.
+        var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
+        nodes[0].textContent=dishCon;
+        console.log("data: ", nodes[0].data);
         nodes[0].data=dishCon;
         console.log("data: ", nodes[0].data);
+      }
+      if (target.node.id=="freezeOrgansimNode"){
+        var avidian = prompt("Please name your avidian", nodes[0].textContent+"_1");
+        console.log("map: ", target.map);
+        nodes[0].textContent=avidian;
         //console.log("textContent: ", nodes[0].textContent);
         //console.log("nodes[0].id: ", nodes[0].id);
         //console.log("target.selection: ",target.selection);
@@ -185,7 +195,7 @@ require([
         //console.log("source.getItem(nodes[0].id)=",source.getItem(nodes[0].id));
       }
       if (target.node.id=="freezePopDishNode"){
-        var popDish = prompt("Please name your populated dish", "Fred");
+        var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
         nodes[0].textContent=popDish;
       }
 
@@ -201,7 +211,7 @@ require([
       pop1a = dictPlota[items[0].data];
       pop1b = dictPlotb[items[0].data];
       AnaChart();
-      console.log("items ", items[0].data);
+      //console.log("item0data ", items[0].data);
     };
     dojo.connect(graphPop1, "onDrop", graphPop1Change);
 
@@ -217,13 +227,11 @@ require([
       pop2a = dictPlota[items[0].data];
       pop2b = dictPlotb[items[0].data];
       AnaChart();
-      console.log("items ", items[0].data);
     };
     dojo.connect(graphPop2, "onDrop", graphPop2Change);
 
     });
 
-    //Need to change how graphPop1 and 2 are created as well when changing them to match graphPop3Change
     function graphPop3Change(){
       var items = getAllItems(graphPop3);
       //need to clear all nodes and assign most recent to item 0
@@ -236,7 +244,6 @@ require([
       pop3a = dictPlota[items[0].data];
       pop3b = dictPlotb[items[0].data];
       AnaChart();
-      console.log("items ", items[0].data);
     };
     dojo.connect(graphPop3, "onDrop", graphPop3Change);
 
@@ -384,7 +391,7 @@ require([
       chart1.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
       chart1.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
       chart1.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
-      //chart1.addAxis("other x", {leftBottom: false});
+      chart1.addAxis("other x", {leftBottom: false});
       chart1.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
       //console.log("pop1a: ", pop1a);
       //console.log("pop2a: ", pop2a);
@@ -398,6 +405,12 @@ require([
       chart1.addSeries("Series 1b", pop1b, {plot: "other", stroke: {color:color1, width: .3}});
       chart1.addSeries("Series 2b", pop2b, {plot: "other", stroke: {color:color2, width: .3}});
       chart1.addSeries("Series 3b", pop3b, {plot: "other", stroke: {color:color3, width: .3}});
+      //console.log(domGeometry.position(document.getElementById("chartOne")).w);
+      
+      chart1.resize(domGeometry.position(document.getElementById("chartHolder")).w-10, 
+                    domGeometry.position(document.getElementById("chartHolder")).h-15);
+      //console.log("chartOneafter", document.getElementById("chartOne"));
+      console.log("chartHoldAfter", dijit.byId("chartHolder"));
       chart1.render();
     };
     
