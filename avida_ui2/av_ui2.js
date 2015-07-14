@@ -17,6 +17,7 @@ require([
   "dojo/dnd/Manager",
   "dojo/dnd/Selector",
   "dojo/dom-geometry",
+  "dojo/dom-style",
   "dijit/form/Select",
   "dijit/form/HorizontalSlider",
   "dijit/form/HorizontalRule",
@@ -36,7 +37,7 @@ require([
   "jquery-ui",
   "dojo/domReady!"
   ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource, dndManager, dndSelector, domGeometry, Select,
+              Button, TitlePane, dndSource, dndManager, dndSelector, domGeometry, domStyle, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
@@ -53,6 +54,11 @@ require([
     mainBoxSwap("populationBlock");
     dijit.byId("setupBlock").set("style", "display: none;");
 
+    BrowserResizeEventHandler=function(){
+      console.log("analysisBlock: ", domStyle.get("analysisBlock","display"));
+      if ("block"==domStyle.get("analysisBlock","display")){AnaChart();};
+    }
+
     function mainBoxSwap(showBlock){
       //console.log("in mainBoxSwap");
       dijit.byId("populationBlock").set("style", "display: none;");
@@ -60,7 +66,8 @@ require([
       dijit.byId("analysisBlock").set("style", "display: none;");
       dijit.byId("testBlock").set("style", "display: none;");
       dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
-  };
+      dijit.byId(showBlock).resize();
+    };
   
     // Call general function
     document.getElementById("populationButton").onclick = function(){ mainBoxSwap("populationBlock"); }
@@ -122,9 +129,12 @@ require([
       });
       return items;
     }
+    
+    //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
+    //and reinserting the most resent one after a drop event.
     function ConfigCurrentChange(){
-      var items = getAllItems(ConfigCurrent);
-      if (1 < items.length) {
+      var items = getAllItems(ConfigCurrent);  //get a list of items after ondrop into configCurrent. 
+      if (1 < items.length) {                   //if there is more than one, then get rid of the old one and keep the one just dropped.
         ConfigCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         ConfigCurrent.sync();   //not sure if this helps or not
         freezeConfigure.forInSelectedItems(function(item, id){
@@ -134,6 +144,8 @@ require([
     };
     dojo.connect(ConfigCurrent, "onDrop", ConfigCurrentChange);
 
+    //Need to have only the most recent dropped organism in OrganCurrent. Do this by deleting everything in organCurrent
+    //and reinserting the most resent one after a drop event.
     function OrganCurrentChange(){
       var items = getAllItems(OrganCurrent);
       if (1 < items.length) {
@@ -185,7 +197,7 @@ require([
         //console.log("textContent: ", nodes[0].textContent);
         //console.log("nodes[0].id: ", nodes[0].id);
         //console.log("target.selection: ",target.selection);
-        //console.log("allnodes: ",target.getAllNodes());
+        console.log("allnodes: ",target.getAllNodes());
         //console.log("source.getItem(nodes[0].id)=",source.getItem(nodes[0].id));
       }
       if (target.node.id=="freezePopDishNode"){
