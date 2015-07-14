@@ -128,19 +128,20 @@ require([
         ConfigCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         ConfigCurrent.sync();   //not sure if this helps or not
         freezeConfigure.forInSelectedItems(function(item, id){
-          ConfigCurrent.insertNodes(false, [item]);
+          ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only  valid source.
         });
       }
     };
     dojo.connect(ConfigCurrent, "onDrop", ConfigCurrentChange);
 
     function OrganCurrentChange(){
+      var items = getAllItems(OrganCurrent);
       if (1 < items.length) {
         OrganCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         OrganCurrent.sync();   //not sure if this helps or not
         //OrganCurrent.insertNodes(false, [items[1]]);
-        freezeOrgan.forInSelectedItems(function(item, id){
-          OrganCurrent.insertNodes(false, [item]);
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
         });
       }
     };
@@ -149,10 +150,6 @@ require([
     function trashChange(){
       var items = getAllItems(trash);
       trash.selectAll().deleteSelectedNodes();  //does appear to clear items  
-      //console.log("items: ", items);
-      //console.log("item0: ", items[0]);
-      //console.log("item0d: ", items[0].data);
-      //console.log("items.l: ", items.length);
     }
     dojo.connect(trash, "insertNodes", trashChange);
 
@@ -168,12 +165,9 @@ require([
       //console.log("id: ", target.node.id);
       //console.log("node0: ", nodes[0].id);
       if (target.node.id=="trashNode"){
-        //console.log("nodes0: ", nodes[0]);
         //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
         source.parent.removeChild(nodes[0]);
-      //target.parent.removeChild(nodes[0]);
-      //var items = getAllItems(trash);
-      //trash.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        //target.parent.removeChild(nodes[0]);
       }
       if (target.node.id=="freezeConfigureNode"){
         // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
@@ -198,6 +192,21 @@ require([
         var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
         nodes[0].textContent=popDish;
       }
+        if (source.node.id =="pop1name"){
+          pop1a = [];       //remove lines from population 1
+          pop1b = [];
+          AnaChart();
+        }
+        if (source.node.id =="pop2name"){
+          pop2a = [];       //remove lines from population 2
+          pop2b = [];
+          AnaChart();
+        }
+        if (source.node.id =="pop3name"){
+          pop3a = [];       //remove lines from population 3
+          pop3b = [];
+          AnaChart();
+        }
 
     function graphPop1Change(){
       var items = getAllItems(graphPop1);
@@ -410,11 +419,11 @@ require([
       chart1.resize(domGeometry.position(document.getElementById("chartHolder")).w-10, 
                     domGeometry.position(document.getElementById("chartHolder")).h-15);
       //console.log("chartOneafter", document.getElementById("chartOne"));
-      console.log("chartHoldAfter", dijit.byId("chartHolder"));
+      //console.log("chartHoldAfter", dijit.byId("chartHolder"));
       chart1.render();
     };
     
-    /* Chart buttons and dnd ********/
+    /* Chart buttons ****************************************/
     document.getElementById("pop1delete").onclick = function(){ 
       graphPop1.selectAll().deleteSelectedNodes();
       console.log("delete pop1");
