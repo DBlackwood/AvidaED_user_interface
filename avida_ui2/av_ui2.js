@@ -174,7 +174,6 @@ require([
 
     //used to re-name freezer items after they are created.
     function contextMenu(fzItemID, fzSection) {
-      console.log("in context menu");
       var aMenu;
       aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
       aMenu.addChild(new dijit.MenuItem({
@@ -234,7 +233,7 @@ require([
             }
           }  
         }
-        nodes[0].textContent=avidian;
+        if (null != avidian) { nodes[0].textContent=avidian; }
         //contextMenu(Object.keys(target.selection)[0], target.node.id); //either this line or the next seem to work; don't need both
         contextMenu(nodes[0].id, target.node.id);
 
@@ -248,6 +247,7 @@ require([
         //console.log("allnodes: ",target.getAllNodes());
       }
       if (target.node.id=="freezePopDishNode"){
+        var items = getAllItems(freezePopDish);
         var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
         var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
         var unique = true;
@@ -261,8 +261,10 @@ require([
             }
           }  
         }
-        if (null!=popDish) {
-          nodes[0].textContent=popDish;}
+        if (null!=popDish) { 
+          nodes[0].textContent=popDish;
+          //items[0].data=popDish;
+        }
         contextMenu(nodes[0].id, target.node.id);
         //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
       }
@@ -283,6 +285,9 @@ require([
         }
 
     function graphPop1Change(){
+      //console.log("sel", graphPop1.selection);
+      //console.log("sel", Object.keys(target.selection)[0]);
+      //console.log("sel", document.getElementById(Object.keys(graphPop1.selection)[0]).innerHTML);
       var items = getAllItems(graphPop1);
       //need to clear all nodes and assign most recent to item 0
       if (1 < items.length) {
@@ -291,10 +296,13 @@ require([
         graphPop1.insertNodes(false, [items[1]]);
         var items = getAllItems(graphPop1);
       }
+      //To get the text that changes use that in the console.log below:
+      console.log("sel", document.getElementById(Object.keys(graphPop1.selection)[0]).textContent);
+      //the above gets the string that goes with the populated dish object.
+      //this works for demo purposes only.
       pop1a = dictPlota[items[0].data];
       pop1b = dictPlotb[items[0].data];
       AnaChart();
-      //console.log("item0data ", items[0].data);
     };
     dojo.connect(graphPop1, "onDrop", graphPop1Change);
 
@@ -537,20 +545,17 @@ require([
     /* Chart buttons ****************************************/
     document.getElementById("pop1delete").onclick = function(){ 
       graphPop1.selectAll().deleteSelectedNodes();
-      console.log("delete pop1");
       pop1a = [];
       pop1b = [];
       AnaChart();
     }
     document.getElementById("pop2delete").onclick = function(){ 
-      console.log("delete pop2");
       pop2a = [];
       pop2b = [];
       AnaChart();
       graphPop2.selectAll().deleteSelectedNodes();
     }
     document.getElementById("pop3delete").onclick = function(){ 
-      console.log("delete pop3");
       pop3a = [];
       pop3b = [];
       AnaChart();
