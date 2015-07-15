@@ -173,21 +173,6 @@ require([
     });
 
     //used to re-name freezer items after they are created.
-    function contextMenuOld(fzItemID, fzSection) {
-      console.log("in 1st context menu");
-      var aMenu;
-      aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
-      aMenu.addChild(new dijit.MenuItem({
-        label: "Rename",
-        onClick: function() {
-          console.log("on click");
-          var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).innerHTML);
-          document.getElementById(fzItemID).innerHTML = fzName;
-        }
-      }))
-    };
-
-
     function contextMenu(fzItemID, fzSection) {
       console.log("in context menu");
       var aMenu;
@@ -195,7 +180,6 @@ require([
       aMenu.addChild(new dijit.MenuItem({
         label: "Rename",
         onClick: function() {
-          console.log("on click");
           var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).innerHTML);
           var namelist = dojo.query('> .dojoDndItem', fzSection);
           var unique = true;
@@ -250,13 +234,10 @@ require([
           }  
         }
         nodes[0].textContent=avidian;
-        console.log ("select, nodeid: ", Object.keys(target.selection)[0], target.node.id);
         contextMenu(Object.keys(target.selection)[0], target.node.id);
-        
         //console.log("map: ", target.map);
-        //console.log("Target: ", target);
-        //console.log("id: ", target.node.id);
-        //console.log("textContent: ", nodes[0].textContent);
+        console.log("id: ", target.node.id);
+        console.log("textContent: ", nodes[0].textContent);
         //console.log("nodes[0].id: ", nodes[0].id);
         //console.log("target.selection: ",target.selection);
         //console.log("target.selection: ",Object.keys(target.selection)[0]);
@@ -265,7 +246,21 @@ require([
       }
       if (target.node.id=="freezePopDishNode"){
         var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
+        var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
+        var unique = true;
+        while (unique) {
+          unique = false;
+          for (var ii = 0; ii < namelist.length; ii++){
+            //console.log ("name ", namelist[ii].innerHTML);
+            if (avidian == namelist[ii].innerHTML) {
+              popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
+              unique = true;
+              break;
+            }
+          }  
+        }
         nodes[0].textContent=popDish;
+        contextMenu(Object.keys(target.selection)[0], target.node.id);
       }
         if (source.node.id =="pop1name"){
           pop1a = [];       //remove lines from population 1
