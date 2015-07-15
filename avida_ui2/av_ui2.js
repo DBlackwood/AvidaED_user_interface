@@ -196,7 +196,8 @@ require([
               }  
             }
           }
-          document.getElementById(fzItemID).innerHTML = fzName;
+          if (null!=fzName) {
+          document.getElementById(fzItemID).innerHTML = fzName;}
           //alert('i was clicked')
         }
       }))
@@ -234,10 +235,12 @@ require([
           }  
         }
         nodes[0].textContent=avidian;
-        contextMenu(Object.keys(target.selection)[0], target.node.id);
+        //contextMenu(Object.keys(target.selection)[0], target.node.id); //either this line or the next seem to work; don't need both
+        contextMenu(nodes[0].id, target.node.id);
+
         //console.log("map: ", target.map);
-        console.log("id: ", target.node.id);
-        console.log("textContent: ", nodes[0].textContent);
+        //console.log("id: ", target.node.id);
+        //console.log("textContent: ", nodes[0].textContent);
         //console.log("nodes[0].id: ", nodes[0].id);
         //console.log("target.selection: ",target.selection);
         //console.log("target.selection: ",Object.keys(target.selection)[0]);
@@ -251,7 +254,6 @@ require([
         while (unique) {
           unique = false;
           for (var ii = 0; ii < namelist.length; ii++){
-            //console.log ("name ", namelist[ii].innerHTML);
             if (avidian == namelist[ii].innerHTML) {
               popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
               unique = true;
@@ -259,8 +261,10 @@ require([
             }
           }  
         }
-        nodes[0].textContent=popDish;
-        contextMenu(Object.keys(target.selection)[0], target.node.id);
+        if (null!=popDish) {
+          nodes[0].textContent=popDish;}
+        contextMenu(nodes[0].id, target.node.id);
+        //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
       }
         if (source.node.id =="pop1name"){
           pop1a = [];       //remove lines from population 1
