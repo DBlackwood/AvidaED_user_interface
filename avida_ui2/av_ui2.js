@@ -3,6 +3,8 @@ require([
   "dijit/dijit",
   "dojo/parser",
   "dojo/_base/declare",
+  "dojo/query",
+  "dojo/NodeList-traverse",
   "maqetta/space",
   "maqetta/AppStates",
   "dijit/layout/BorderContainer",
@@ -16,6 +18,7 @@ require([
   "dojo/dnd/Source",
   "dojo/dnd/Manager",
   "dojo/dnd/Selector",
+  "dojo/dnd/Target",
   "dojo/dom-geometry",
   "dojo/dom-style",
   "dijit/form/Select",
@@ -36,8 +39,8 @@ require([
   "jquery",
   "jquery-ui",
   "dojo/domReady!"
-  ], function(dijit, parser, declare, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource, dndManager, dndSelector, domGeometry, domStyle, Select,
+  ], function(dijit, parser, declare, query, nodelistTraverse, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
+              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
@@ -55,7 +58,6 @@ require([
     dijit.byId("setupBlock").set("style", "display: none;");
 
     BrowserResizeEventHandler=function(){
-      console.log("analysisBlock: ", domStyle.get("analysisBlock","display"));
       if ("block"==domStyle.get("analysisBlock","display")){AnaChart();};
     }
 
@@ -75,7 +77,9 @@ require([
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
     document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
+    /* ********************************************************************** */
     /* Drag N Drop Freezer ****************************************************/
+    /* ********************************************************************** */
     
     dojo.declare("AcceptOneItemSource", dndSource, {
       checkAcceptance : function(source, nodes) {
@@ -92,6 +96,7 @@ require([
       { data: "s20m.2Nand",    type: ["conDish"]},
       { data: "s30m.2Not",     type: ["conDish"]}
     ]);
+    //console.log("freezeConfigure: ", freezeConfigure.map);
     var freezeOrgan = new dndSource("freezeOrgansimNode", {accept: ["organism"], copyOnly: ["true"], singular: "true"});
     freezeOrgan.insertNodes(false, [
       { data: "@ancestor",      type: ["organism"]},
@@ -107,19 +112,17 @@ require([
     var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"]});
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
-    var ConfigCurrent = new dndSource("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
+    var ConfigCurrent = new dndTarget("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
     ConfigCurrent.insertNodes(false, [
       { data: "@default",      type: ["conDish"]}
     ]);
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
     var OrganCurrent = new dndSource("OrgansimCurrent", {accept: ["organism"], singular: "true"});
 
-    console.log("after organCurrent");
-    
     var graphPop1 = new dndSource("pop1name", {accept: ["popDish"], singular: "true"});
     var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
     var graphPop3 = new dndSource("pop3name", {accept: ["popDish"]});
-    console.log("after create graphPopulations");
+    //console.log("after create graphPopulations");
 
     //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
     //Puts the contents of the source in a object (list) called items. 
@@ -168,14 +171,58 @@ require([
     freezeConfigure.on("MouseMove", function(evt){
        //console.log({"x": evt.layerX, "y": evt.layerY}); 
     });
+
+    //used to re-name freezer items after they are created.
+    function contextMenuOld(fzItemID, fzSection) {
+      console.log("in 1st context menu");
+      var aMenu;
+      aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
+      aMenu.addChild(new dijit.MenuItem({
+        label: "Rename",
+        onClick: function() {
+          console.log("on click");
+          var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).innerHTML);
+          document.getElementById(fzItemID).innerHTML = fzName;
+        }
+      }))
+    };
+
+
+    function contextMenu(fzItemID, fzSection) {
+      console.log("in context menu");
+      var aMenu;
+      aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
+      aMenu.addChild(new dijit.MenuItem({
+        label: "Rename",
+        onClick: function() {
+          console.log("on click");
+          var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).innerHTML);
+          var namelist = dojo.query('> .dojoDndItem', fzSection);
+          var unique = true;
+          while (unique) {
+            unique = false;
+            if (fzName != document.getElementById(fzItemID).innerHTML){
+              for (var ii = 0; ii < namelist.length; ii++){
+                //console.log ("name ", namelist[ii].innerHTML);
+                if (fzName == namelist[ii].innerHTML) {
+                  fzName = prompt("Please give your freezer item a unique name ", fzName+"_1")
+                  unique = true;
+                  break;
+                }
+              }  
+            }
+          }
+          document.getElementById(fzItemID).innerHTML = fzName;
+          //alert('i was clicked')
+        }
+      }))
+    };
     
     freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
       //console.log("Source: ", source);
       //console.log("Nodes: ", nodes);
       //console.log("Copy: ", copy);
       //console.log("Target: ", target);
-      //console.log("id: ", target.node.id);
-      //console.log("node0: ", nodes[0].id);
       if (target.node.id=="trashNode"){
         //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
         source.parent.removeChild(nodes[0]);
@@ -186,19 +233,35 @@ require([
         // Does not change "data" value, only textContent changes.
         var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
         nodes[0].textContent=dishCon;
-        console.log("data: ", nodes[0].data);
-        nodes[0].data=dishCon;
-        console.log("data: ", nodes[0].data);
       }
       if (target.node.id=="freezeOrgansimNode"){
         var avidian = prompt("Please name your avidian", nodes[0].textContent+"_1");
-        console.log("map: ", target.map);
+        var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
+        var unique = true;
+        while (unique) {
+          unique = false;
+          for (var ii = 0; ii < namelist.length; ii++){
+            //console.log ("name ", namelist[ii].innerHTML);
+            if (avidian == namelist[ii].innerHTML) {
+              avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
+              unique = true;
+              break;
+            }
+          }  
+        }
         nodes[0].textContent=avidian;
+        console.log ("select, nodeid: ", Object.keys(target.selection)[0], target.node.id);
+        contextMenu(Object.keys(target.selection)[0], target.node.id);
+        
+        //console.log("map: ", target.map);
+        //console.log("Target: ", target);
+        //console.log("id: ", target.node.id);
         //console.log("textContent: ", nodes[0].textContent);
         //console.log("nodes[0].id: ", nodes[0].id);
         //console.log("target.selection: ",target.selection);
-        console.log("allnodes: ",target.getAllNodes());
-        //console.log("source.getItem(nodes[0].id)=",source.getItem(nodes[0].id));
+        //console.log("target.selection: ",Object.keys(target.selection)[0]);
+        //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
+        //console.log("allnodes: ",target.getAllNodes());
       }
       if (target.node.id=="freezePopDishNode"){
         var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
@@ -268,9 +331,30 @@ require([
     };
     dojo.connect(graphPop3, "onDrop", graphPop3Change);
 
+    /* ********************************************************************** */
+    /* Right Click Context Menu Freezer ************************************* */
+    /* ********************************************************************** */
 
-      /* Population page script ***************************************/
+    var pMenu;
+    var freezerItemID ="Configuration";  //id of a freezer item need to get from dnd assignments
+    freezerItemID = "dojoUnique1";
+    
+    dojo.addOnLoad(function() {
+      pMenu = new dijit.Menu({ targetNodeIds: [freezerItemID]});
+      pMenu.addChild(new dijit.MenuItem({
+        label: "Simple menu item",
+        onClick: function() {
+          var gmenu = prompt("Please rename your populated dish", "george");
+          //alert('i was clicked')
+        }
+      }));
+    });
 
+
+    /* *************************************************************** */
+    /* Population page script ******************************************/
+    /* *************************************************************** */
+    
     function popBoxSwap(){
       if ("Map"== document.getElementById("PopSetupButton").innerHTML ) {
         dijit.byId("mapBlock").set("style", "display: block;");
@@ -285,6 +369,20 @@ require([
     document.getElementById("PopSetupButton").onclick = function(){popBoxSwap();};
     //console.log(dijit.byId("sizex"));
 
+    /* *************************************************************** */
+    /* ******* Map buttons ******************************************* */
+    /* *************************************************************** */
+    document.getElementById("runStopButton").onclick = function(){
+      if ("Run"==document.getElementById("runStopButton").innerHTML) {
+        document.getElementById("runStopButton").innerHTML="Stop";
+      } else {
+        document.getElementById("runStopButton").innerHTML="Run";
+      }
+    }
+
+    /* *************************************************************** */
+    /* ******* Population Setup Buttons, etc.  *********************** */
+    /* *************************************************************** */
     function popSizeFn() {
       console.log("in popSizeFn");
       var xx = Number(document.getElementById("sizex").value);
@@ -325,8 +423,10 @@ require([
         //console.log("in mute change");
       });
     });
-
+    
+    /* *************************************************************** */
     /* Organism page script *********************************************/
+    /* *************************************************************** */
     /* Organism Gestation Length Slider */
 
     //console.log(dijit.byId("orgCycle"));
@@ -348,7 +448,7 @@ require([
     dijit.byId("orgBack").on("Click", orgBackFn);
     dijit.byId("orgForward").on("Click", orgForwardFn);
     dijit.byId("orgEnd").on("Click", function() {
-    dijit.byId("orgCycle").set("value", 100);
+    dijit.byId("orgCycle").set("value", 200);
     });
     dijit.byId("orgCycle").on("Change", function(value){
       cycleSlider.set("value",value);
@@ -361,7 +461,7 @@ require([
         name: "cycleSlider",
         value: 2,
         minimum: 0,
-        maximum: 100,
+        maximum: 200,
         intermediateChanges: true,
         style: "width:100%;",
         onChange: function(value){
@@ -467,6 +567,19 @@ require([
     });
     dijit.byId("pop3color").on("Change", function(){
       color3 = dictColor[dijit.byId("pop3color").value];
+      AnaChart();
+    });
+    
+    //Set Y-axis title and choose the correct array to plot
+    dijit.byId("y1select").on("Change", function(){
+      y1title = dijit.byId("y1select").value;
+      //need to get correct array to plot from freezer
+      AnaChart();
+    });
+
+    dijit.byId("y2select").on("Change", function(){
+      y2title = dijit.byId("y2select").value;
+      //need to get correct array to plot from freezer
       AnaChart();
     });
 

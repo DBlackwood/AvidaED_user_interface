@@ -153,7 +153,7 @@
             <tbody>
               <tr>
                 <td>
-                  <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img>Configuration: </div>
+                  <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img><span id="Configuration">Configuration: </span></div>
                   <div id="ConfigurationCurrent" class="popContainer">
                 </td>
                 <td style="text-align: right;">
@@ -602,8 +602,8 @@
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
             refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 70px;">
         <div id="cycleSlider">             
-            <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
-            <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0, 50,100" style="height: 20px;"></ol>
+            <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;" id="cycleTicks"></div>
+            <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" id="cycleLabels" labels="0, 50, 100, 150, 200" style="height: 20px;"></ol>
           </div>
 
           <div style="float:left">Cycle:
