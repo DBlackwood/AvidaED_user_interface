@@ -804,8 +804,22 @@
        </div>
       </div>
     </div>
-    <!-- </span> <!-- tab container span ????-->
+    <!-- </span> <!-- tab container span -->
   </div>
  </div>
+ 
+ <!-- Dialog boxes -->
+  <div data-dojo-type="dijit/Dialog" data-dojo-id="fzDialog" title="What would you like to save to the freezer?">
+    <div class = "dijitDialogPaneContentArea">
+      <p>Configuration saves the experiment settings only.</p>
+      <p>Population saves organisms and experiment history.</p>
+    </div>
+    <div class="dijitDialogPaneActionBar">
+      <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){fzDialog.hide();}"
+                id="FzCancel">Cancel</button>
+      <button data-dojo-type="dijit/form/Button" type="button" id="FzConfiguration">Configuration</button>
+      <button data-dojo-type="dijit/form/Button" type="button" id="FzPopulation">Population</button>
+    </div>
+  </div>
 </body>
 </html>

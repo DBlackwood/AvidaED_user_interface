@@ -7,6 +7,7 @@ require([
   "dojo/NodeList-traverse",
   "maqetta/space",
   "maqetta/AppStates",
+  "dijit/Dialog",
   "dijit/layout/BorderContainer",
   "dijit/layout/ContentPane",
   "dijit/MenuBar",
@@ -39,7 +40,8 @@ require([
   "jquery",
   "jquery-ui",
   "dojo/domReady!"
-  ], function(dijit, parser, declare, query, nodelistTraverse, space, AppStates, BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
+  ], function(dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
+              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
               Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
@@ -173,6 +175,7 @@ require([
     });
 
     //used to re-name freezer items after they are created.
+    //http://jsfiddle.net/bEurr/10/
     function contextMenu(fzItemID, fzSection) {
       var aMenu;
       aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
@@ -361,7 +364,7 @@ require([
     /* *************************************************************** */
     /* Population page script ******************************************/
     /* *************************************************************** */
-    
+    // shifts the population page from Map (grid) view to setup parameters view and back again.
     function popBoxSwap(){
       if ("Map"== document.getElementById("PopSetupButton").innerHTML ) {
         dijit.byId("mapBlock").set("style", "display: block;");
@@ -374,24 +377,73 @@ require([
       }
     }
     document.getElementById("PopSetupButton").onclick = function(){popBoxSwap();};
-    //console.log(dijit.byId("sizex"));
 
     /* *************************************************************** */
-    /* ******* Map buttons ******************************************* */
+    /* ******* Map Grid buttons ************************************** */
     /* *************************************************************** */
     document.getElementById("runStopButton").onclick = function(){
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
-        document.getElementById("runStopButton").innerHTML="Stop";
+        document.getElementById("runStopButton").innerHTML="Pause";
       } else {
         document.getElementById("runStopButton").innerHTML="Run";
       }
     }
 
+    //******* Freeze Button ********************************************
+    document.getElementById("freezeButton").onclick = function(){
+      fzDialog.show();
+    }
+    
+    dijit.byId("FzConfiguration").on("Click", function(){
+      //console.log("in FzConfiguration");
+      fzDialog.hide();
+      var fzName = prompt("Please name the new configuration", "newConfig");
+      var namelist = dojo.query('> .dojoDndItem', "freezeConfigureNode");
+      var unique = true;
+      while (unique) {
+        unique = false;
+        for (var ii = 0; ii < namelist.length; ii++){
+          //console.log ("name ", namelist[ii].innerHTML);
+          if (fzName == namelist[ii].innerHTML) {
+            fzName = prompt("Please give your new configuration a unique name ", fzName+"_1")
+            unique = true;
+            break;
+          }
+        }  
+      }
+      if (null!=fzName) {
+        freezeConfigure.insertNodes(false, [ {data: fzName,   type: ["conDish"]}]);
+      }
+    }); 
+
+    dijit.byId("FzPopulation").on("Click", function(){
+      console.log("in FzPopulation");
+      fzDialog.hide();
+      var fzName = prompt("Please name the new population", "newPopulation");
+      var namelist = dojo.query('> .dojoDndItem', "freezePopDishNode");
+      var unique = true;
+      while (unique) {
+        unique = false;
+        for (var ii = 0; ii < namelist.length; ii++){
+          //console.log ("name ", namelist[ii].innerHTML);
+          if (fzName == namelist[ii].innerHTML) {
+            fzName = prompt("Please give your new Population a unique name ", fzName+"_1")
+            unique = true;
+            break;
+          }
+        }  
+      }
+      if (null!=fzName) {
+        freezePopDish.insertNodes(false, [ {data: fzName,   type: ["popDish"]}]);
+      }
+    }); 
+
     /* *************************************************************** */
     /* ******* Population Setup Buttons, etc.  *********************** */
     /* *************************************************************** */
     function popSizeFn() {
-      console.log("in popSizeFn");
+      //console.log("in popSizeFn");
+      //console.log(dijit.byId("sizex"));
       var xx = Number(document.getElementById("sizex").value);
       var yy = Number(document.getElementById("sizey").value);
       //console.log("x is " + xx + "; y=" + yy);
@@ -488,6 +540,8 @@ require([
     dictPlotb["example"] = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
     dictPlotb["m2w30u1000not"] = [7,   6.8, 6, 5, 5,   4.7, 4];
     dictPlotb["m2w30u1000nand"] = [8, 7, 7.5, 6, 5, 5, 4, 4, 3];
+    dictPlota["newPopulation"] = [0.5, 1, 2, 1.7, 2, 2.7, 3.2, 3.2];
+    dictPlotb["newPopulation"] = [6.5, 5, 5, 4.7, 4, 3.7, 3.2, 2.2];
     var dictColor = {};
     dictColor["Red"] = "#FF0000";
     dictColor["Green"] = "#00FF00";
