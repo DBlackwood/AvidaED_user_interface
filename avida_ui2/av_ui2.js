@@ -536,6 +536,34 @@ require([
       OrganSetupDialog.show();
     }
 
+    $(function slideOrganism() {
+      /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
+      /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
+      /* so I multiplied by 100,000 to get 100.000% to come out even. */
+      //console.log("before defaultslide value");
+      var muteSlideDefault = 109861.   /* results in 2% as a default */
+      var muteDefault = (Math.pow(Math.E, (muteSlideDefault/100000))-1).toFixed(3)
+      var slides = $( "#orMuteSlide" ).slider({
+        // range: "min",   /*causes the left side of the scroll bar to be grey */
+        value: muteSlideDefault,
+        min: 0.0,
+        max: 461512,
+        slide: function( event, ui ) {
+          //$( "#orMRate" ).val( ui.value);  /*put slider value in the text near slider */
+          $( "#orMuteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3) + "%");  /*put the value in the text box */
+        }
+      });
+      /* initialize */
+      //$( "#orMRate" ).val( ($( "#orMuteSlide").slider( "value" )));
+      $( "#orMuteInput" ).val(muteDefault+"%");
+      /*update slide based on textbox */
+      $( "#orMuteInput" ).change(function() {
+        slides.slider( "value", 100000.0*Math.log(1+(parseFloat(this.value))) );
+        //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
+        //console.log("in mute change");
+      });
+    });
+
     /* **** Controls bottum of page ***********************************/
     /* Organism Gestation Length Slider */
 
