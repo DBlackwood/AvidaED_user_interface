@@ -60,15 +60,16 @@
         </span>
       </span>
       <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
-        <span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="Save Experiment Configuration"></span>
-        <span data-dojo-type="dijit/MenuItem" label="Save Selected Organism"></span>
-        <span data-dojo-type="dijit/MenuItem" label="Save Current Population"></span>
-      </span>
+        <span data-dojo-type="dijit/Menu">
+          <span data-dojo-type="dijit/MenuItem" id="mnConfig" label="Save Experiment Configuration"></span>
+          <span data-dojo-type="dijit/MenuItem" id="mnOrganism" label="Save Selected Organism"></span>
+          <span data-dojo-type="dijit/MenuItem" id="mnPopulation" label="Save Current Population"></span>
+        </span>
       </span>
       <span data-dojo-type="dijit/PopupMenuBarItem" label="Control">
         <span data-dojo-type="dijit/Menu">
-          <span data-dojo-type="dijit/MenuItem" label="Run"></span>
-          <span data-dojo-type="dijit/MenuItem" label="Start New Population"></span>
+          <span data-dojo-type="dijit/MenuItem" id="mnRun" label="Run"></span>
+          <span data-dojo-type="dijit/MenuItem" id="mnNewpop" label="Start New Population"></span>
       </span>
       </span><span data-dojo-type="dijit/PopupMenuBarItem" label="Help">
         <span data-dojo-type="dijit/Menu">
@@ -592,8 +593,8 @@
                   <div id="OrgansimCurrent" class="popContainer"></div>
               </td>
               <td style="text-align: right;">
-                <button id="OrgSetting">settings</button>&nbsp;
-                <button id="OrgDetailsButton">Details</button>
+                <button id="OrgSetting">Settings</button>&nbsp;
+                <!--<button id="OrgDetailsButton">Details</button>-->
               </td>
             </tr>
           </tbody>
@@ -808,7 +809,8 @@
   </div>
  </div>
  
- <!-- Dialog boxes -->
+ <!-- Dialog boxes --------------------------------------- -->
+ <!-- Freezer Dialog -->
   <div data-dojo-type="dijit/Dialog" data-dojo-id="fzDialog" title="What would you like to save to the freezer?">
     <div class = "dijitDialogPaneContentArea">
       <p>Configuration saves the experiment settings only.</p>
@@ -819,6 +821,23 @@
                 id="FzCancel">Cancel</button>
       <button data-dojo-type="dijit/form/Button" type="button" id="FzConfiguration">Configuration</button>
       <button data-dojo-type="dijit/form/Button" type="button" id="FzPopulation">Population</button>
+    </div>
+  </div>
+  
+  <!-- Single Organism Replication Settings Dialog Box -->
+  <div data-dojo-type="dijit/Dialog" data-dojo-id="OrganSetupDialog" title="Settings for single organism replication">
+    <div class = "dijitDialogPaneContentArea">
+      mutate slider
+       <form id="OrganRepeatForm">
+         <h3>Repeatability Mode:</h3>
+         <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganExperimentRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+         <label id="OrganExperimentLabel">Experimental (Natural Variation)</label>
+         <br />
+         <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganDemoRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+         <label id="OrganDemoLabel">Demo (forces exact replay</label>
+      </form>
+    </div>
+    <div class="dijitDialogPaneActionBar">
     </div>
   </div>
 </body>

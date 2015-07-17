@@ -141,10 +141,10 @@ require([
       var items = getAllItems(ConfigCurrent);  //get a list of items after ondrop into configCurrent. 
       if (1 < items.length) {                   //if there is more than one, then get rid of the old one and keep the one just dropped.
         ConfigCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
-        ConfigCurrent.sync();   //not sure if this helps or not
         freezeConfigure.forInSelectedItems(function(item, id){
           ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only  valid source.
         });
+        ConfigCurrent.sync();   
       }
     };
     dojo.connect(ConfigCurrent, "onDrop", ConfigCurrentChange);
@@ -156,10 +156,11 @@ require([
       if (1 < items.length) {
         OrganCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         OrganCurrent.sync();   //not sure if this helps or not
-        //OrganCurrent.insertNodes(false, [items[1]]);
+        //OrganCurrent.insertNodes(false, [items[1]]);    //oldway only works part of the time depends on mouse position
         freezeOrgan.forInSelectedItems(function(item, id){  
           OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
         });
+        OrganCurrent.sync();   //not sure if this helps or not
       }
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
@@ -176,6 +177,7 @@ require([
 
     //used to re-name freezer items after they are created.
     //http://jsfiddle.net/bEurr/10/
+    //for now this function only changes the textContent (or innerHTML)
     function contextMenu(fzItemID, fzSection) {
       var aMenu;
       aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
@@ -199,7 +201,8 @@ require([
             }
           }
           if (null!=fzName) {
-          document.getElementById(fzItemID).innerHTML = fzName;}
+          //document.getElementById(fzItemID).innerHTML = fzName;}  //either works
+          document.getElementById(fzItemID).textContent = fzName;}
           //alert('i was clicked')
         }
       }))
@@ -266,7 +269,8 @@ require([
         }
         if (null!=popDish) { 
           nodes[0].textContent=popDish;
-          //items[0].data=popDish;
+          //to change data value not fully tested, but keep as it was hard to figure out
+          //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
         }
         contextMenu(nodes[0].id, target.node.id);
         //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
@@ -290,19 +294,27 @@ require([
     function graphPop1Change(){
       //console.log("sel", graphPop1.selection);
       //console.log("sel", Object.keys(target.selection)[0]);
-      //console.log("sel", document.getElementById(Object.keys(graphPop1.selection)[0]).innerHTML);
+      //console.log("sel", document.getElementById(Object.keys(graphPop1.selection)[0]).innerHTML);  //only works when something is selected
       var items = getAllItems(graphPop1);
-      //need to clear all nodes and assign most recent to item 0
+      //if there is an existing item, need to clear all nodes and assign most recent to item 0
       if (1 < items.length) {
         graphPop1.selectAll().deleteSelectedNodes();  //does appear to clear items  
         graphPop1.sync();   //not sure if this helps or not
-        graphPop1.insertNodes(false, [items[1]]);
+        freezePopDish.forInSelectedItems(function(item, id){  
+          graphPop1.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+        });
         var items = getAllItems(graphPop1);
       }
-      //To get the text that changes use that in the console.log below:
-      console.log("sel", document.getElementById(Object.keys(graphPop1.selection)[0]).textContent);
-      //the above gets the string that goes with the populated dish object.
-      //this works for demo purposes only.
+      
+      console.log("textcontent ", graphPop1.node.textContent);  //use to get textContent which is what will be paired with actual data
+      //console.log("iditems ", items._parent[0].id);
+      //console.log("id ", graphPop1.node.childNodes[0].id);
+
+      //example code to set item programatically. not actually needed here.
+      //graphPop1.setItem(graphPop1.node.childNodes[0].id, {data: "test_name", type: ["popDish"]});
+      //graphPop1.sync();
+
+      //this works for demo purposes only. We will be using textContent rather than data
       pop1a = dictPlota[items[0].data];
       pop1b = dictPlotb[items[0].data];
       AnaChart();
@@ -315,9 +327,13 @@ require([
       if (1 < items.length) {
         graphPop2.selectAll().deleteSelectedNodes();  //does appear to clear items  
         graphPop2.sync();   //not sure if this helps or not
-        graphPop2.insertNodes(false, [items[1]]);
+        freezePopDish.forInSelectedItems(function(item, id){  
+          graphPop2.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+        });
         var items = getAllItems(graphPop2);
       }
+      console.log("textcontent ", graphPop2.node.textContent);  //use to get textContent which is what will be paired with actual data
+      //this works for demo purposes only. We will be using textContent rather than data
       pop2a = dictPlota[items[0].data];
       pop2b = dictPlotb[items[0].data];
       AnaChart();
@@ -332,9 +348,12 @@ require([
       if (1 < items.length) {
         graphPop3.selectAll().deleteSelectedNodes();  //does appear to clear items  
         graphPop3.sync();   //not sure if this helps or not
-        graphPop3.insertNodes(false, [items[1]]);
-        var items = getAllItems(graphPop3);
+        freezePopDish.forInSelectedItems(function(item, id){  
+          graphPop3.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+        });
+        items = getAllItems(graphPop3);
       }
+      console.log("textcontent ", graphPop3.node.textContent);  //use to get textContent which is what will be paired with actual data
       pop3a = dictPlota[items[0].data];
       pop3b = dictPlotb[items[0].data];
       AnaChart();
@@ -384,19 +403,33 @@ require([
     document.getElementById("runStopButton").onclick = function(){
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
         document.getElementById("runStopButton").innerHTML="Pause";
+        //call stuff to start/continue run via enscripten here
       } else {
         document.getElementById("runStopButton").innerHTML="Run";
+        //call stuff to pauese run via enscripten here
       }
     }
+
+    //changes value of label, but does not change dislay
+    dijit.byId("mnRun").on("Click", function(){ 
+      console.log("label", dijit.byId("mnRun").label);
+      if ("Run"==dijit.byId("mnRun").label) {
+        dijit.byId("mnRun").label="Pause";
+        console.log("set to pause", dijit.byId("mnRun").label);
+        //call stuff to start/continue run via enscripten here
+      } else {
+        dijit.byId("mnRun").label="Run";
+        console.log("set to run", dijit.byId("mnRun").label);
+        //call stuff to pauese run via enscripten here
+      }       
+    });
 
     //******* Freeze Button ********************************************
     document.getElementById("freezeButton").onclick = function(){
       fzDialog.show();
     }
     
-    dijit.byId("FzConfiguration").on("Click", function(){
-      //console.log("in FzConfiguration");
-      fzDialog.hide();
+    function FrConfigFn(){
       var fzName = prompt("Please name the new configuration", "newConfig");
       var namelist = dojo.query('> .dojoDndItem', "freezeConfigureNode");
       var unique = true;
@@ -414,11 +447,16 @@ require([
       if (null!=fzName) {
         freezeConfigure.insertNodes(false, [ {data: fzName,   type: ["conDish"]}]);
       }
-    }); 
-
-    dijit.byId("FzPopulation").on("Click", function(){
-      console.log("in FzPopulation");
+    }
+    
+    dijit.byId("FzConfiguration").on("Click", function(){
       fzDialog.hide();
+      FrConfigFn();
+    }); 
+    
+    dijit.byId("mnConfig").on("Click", function(){ FrConfigFn() });
+    
+    function FrPopulationFn(){
       var fzName = prompt("Please name the new population", "newPopulation");
       var namelist = dojo.query('> .dojoDndItem', "freezePopDishNode");
       var unique = true;
@@ -436,7 +474,14 @@ require([
       if (null!=fzName) {
         freezePopDish.insertNodes(false, [ {data: fzName,   type: ["popDish"]}]);
       }
+    }
+
+    dijit.byId("FzPopulation").on("Click", function(){
+      fzDialog.hide();
+      FrPopulationFn();
     }); 
+    
+    dijit.byId("mnPopulation").on("Click", function() {FrPopulationFn() });
 
     /* *************************************************************** */
     /* ******* Population Setup Buttons, etc.  *********************** */
@@ -462,7 +507,7 @@ require([
       var muteSlideDefault = 109861.   /* results in 2% as a default */
       var muteDefault = (Math.pow(Math.E, (muteSlideDefault/100000))-1).toFixed(3)
       var slides = $( "#muteSlide" ).slider({
-        /* range: "min", */  /*causes the left side of the scroll bar to be grey */
+        // range: "min",   /*causes the left side of the scroll bar to be grey */
         value: muteSlideDefault,
         min: 0.0,
         max: 461512,
@@ -471,7 +516,6 @@ require([
           $( "#muteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3));  /*put the value in the text box */
         }
       });
-      //console.log("max");
       /* initialize */
       $( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));
       $( "#muteInput" ).val(muteDefault);
@@ -486,6 +530,13 @@ require([
     /* *************************************************************** */
     /* Organism page script *********************************************/
     /* *************************************************************** */
+    /* **** Organism Setup Dialog */
+
+    document.getElementById("OrgSetting").onclick = function(){
+      OrganSetupDialog.show();
+    }
+
+    /* **** Controls bottum of page ***********************************/
     /* Organism Gestation Length Slider */
 
     //console.log(dijit.byId("orgCycle"));
@@ -537,11 +588,11 @@ require([
     dictPlota["example"] = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
     dictPlota["m2w30u1000not"] = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
     dictPlota["m2w30u1000nand"] = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
-    dictPlotb["example"] = [6, 5, 5, 4, 4, 3.7, 3, 2, 1.5, .7];
-    dictPlotb["m2w30u1000not"] = [7,   6.8, 6, 5, 5,   4.7, 4];
-    dictPlotb["m2w30u1000nand"] = [8, 7, 7.5, 6, 5, 5, 4, 4, 3];
-    dictPlota["newPopulation"] = [0.5, 1, 2, 1.7, 2, 2.7, 3.2, 3.2];
-    dictPlotb["newPopulation"] = [6.5, 5, 5, 4.7, 4, 3.7, 3.2, 2.2];
+    dictPlotb["example"] = [60, 50, 50, 40, 40, 37, 30, 20, 15, 7];
+    dictPlotb["m2w30u1000not"] = [70,   68, 60, 50, 50,   47, 40];
+    dictPlotb["m2w30u1000nand"] = [80, 70, 75, 60, 50, 50, 40, 40, 30];
+    dictPlota["newPopulation"] = [0.5,  1,  2, 1.7,  2, 2.7, 3.2, 3.2];
+    dictPlotb["newPopulation"] = [ 65, 50, 50,  47, 40,  37,  32, 22];
     var dictColor = {};
     dictColor["Red"] = "#FF0000";
     dictColor["Green"] = "#00FF00";
