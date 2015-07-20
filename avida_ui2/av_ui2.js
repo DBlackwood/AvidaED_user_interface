@@ -364,6 +364,7 @@ require([
     /* Right Click Context Menu Freezer ************************************* */
     /* ********************************************************************** */
 
+    // I think all the code in this section can be deleted as it is not used.
     var pMenu;
     var freezerItemID ="Configuration";  //id of a freezer item need to get from dnd assignments
     freezerItemID = "dojoUnique1";
@@ -719,6 +720,12 @@ require([
       //need to get correct array to plot from freezer
       AnaChart();
     });
+
+    /* Json play *****/
+    var json = '{"result":true,"count":3}',
+    obj = JSON.parse(json);
+
+    console.log('count is ', obj.count, "; result is ", obj.result);
 
     /* Canvas Play in gridCanvas *************************************/
     var canvas = document.getElementById("gridCanvas");
