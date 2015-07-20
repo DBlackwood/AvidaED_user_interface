@@ -22,6 +22,8 @@ require([
   "dojo/dnd/Target",
   "dojo/dom-geometry",
   "dojo/dom-style",
+  "dojo/aspect", 
+  "dijit/registry",
   "dijit/form/Select",
   "dijit/form/HorizontalSlider",
   "dijit/form/HorizontalRule",
@@ -42,13 +44,24 @@ require([
   "dojo/domReady!"
   ], function(dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
               BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, Select,
+              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, 
+              aspect, registry, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
     parser.parse();
 
     console.log("after parser");
+
+    BrowserResizeEventHandler=function(){
+      if ("block"==domStyle.get("analysisBlock","display")){AnaChart();};
+      if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
+    }
+
+    ready(function(){
+      aspect.after(registry.byId("popChartHolder"), "resize", function(){BrowserResizeEventHandler()});
+    });
+
     // main button scripts-------------------------------------------
     
     //The style display: none cannnot be used in the html durint the initial load as the dijits won't work right
@@ -58,10 +71,6 @@ require([
     //mainBoxSwap("organismBlock");
     mainBoxSwap("populationBlock");
     dijit.byId("setupBlock").set("style", "display: none;");
-
-    BrowserResizeEventHandler=function(){
-      if ("block"==domStyle.get("analysisBlock","display")){AnaChart();};
-    }
 
     function mainBoxSwap(showBlock){
       //console.log("in mainBoxSwap");
@@ -401,13 +410,29 @@ require([
     /* *************************************************************** */
     /* ******* Map Grid buttons ************************************** */
     /* *************************************************************** */
+    var newrun = true;
+    function runPopFn(){
+      if (newrun) {
+        newrun = false;
+        console.log("in run new");
+        //collect setup data to send to C++
+      }
+      //update screen based on data from C++
+    }
+
     document.getElementById("runStopButton").onclick = function(){
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
         document.getElementById("runStopButton").innerHTML="Pause";
-        //call stuff to start/continue run via enscripten here
+        runPopFn();
       } else {
         document.getElementById("runStopButton").innerHTML="Run";
         //call stuff to pauese run via enscripten here
+      }
+    }
+
+    document.getElementById("newDishButton").onClick = function(){
+      if (!newrun) {
+        //ask about saving currnt run
       }
     }
 
@@ -417,13 +442,20 @@ require([
       if ("Run"==dijit.byId("mnRun").label) {
         dijit.byId("mnRun").label="Pause";
         console.log("set to pause", dijit.byId("mnRun").label);
-        //call stuff to start/continue run via enscripten here
+        runPopFn();
       } else {
         dijit.byId("mnRun").label="Run";
         console.log("set to run", dijit.byId("mnRun").label);
         //call stuff to pauese run via enscripten here
       }       
     });
+    
+    /* Json play *****************************************************/
+    var json = '{"result":true,"count":3}',
+    obj = JSON.parse(json);
+
+    console.log('count is ', obj.count, "; result is ", obj.result);
+    //console.log(obj);
 
     //******* Freeze Button ********************************************
     document.getElementById("freezeButton").onclick = function(){
@@ -527,6 +559,35 @@ require([
         //console.log("in mute change");
       });
     });
+    
+    /* --------------------------------------------------------------- */
+    /*                    Population Chart                             */
+    /* --------------------------------------------------------------- */
+    
+    //need to get the next two values from real data. 
+    var popY = [1, 1, 1, 2, 2, 2, 4, 4, 4, 8,8,8,14,15,16,16,16,24,24,25,26,36,36,36,48,48];
+    var ytitle = "Number of Organisms";
+    var popChart = new Chart("popChart");
+    function popChartFn(){
+      popChart.addPlot("default", {type: "Lines"});
+      popChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
+      popChart.addAxis("y", {vertical: true, fixLower: "major", title: ytitle, titleOrientation: 'axis',fixUpper: "major", min: 0});
+      popChart.addSeries("Series y", popY, {stroke: {color:"blue", width: .5}});   
+      popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w-10, 
+                    domGeometry.position(document.getElementById("popChartHolder")).h-15);
+      //console.log("chartOneafter", document.getElementById("chartOne"));
+      //console.log("chartHoldAfter", dijit.byId("chartHolder"));
+      popChart.render();
+    };
+    popChartFn();
+    
+    //Set Y-axis title and choose the correct array to plot
+    dijit.byId("yaxis").on("Change", function(){
+      ytitle = dijit.byId("yaxis").value;
+      //need to get correct array to plot from freezer
+      popChartFn();
+    });
+
     
     /* *************************************************************** */
     /* Organism page script *********************************************/
@@ -643,10 +704,7 @@ require([
     var y1title = "Average Fitness";
     var y2title = 'Average Gestation Time'
     //var chart1 = new Chart("chartOne",{title: "Avida Traits"});
-
-    ready(function(){
-    });
-    
+        
     var chart1 = new Chart("chartOne");
     function AnaChart(){
       chart1.addPlot("default", {type: "Lines"});
@@ -721,11 +779,6 @@ require([
       AnaChart();
     });
 
-    /* Json play *****/
-    var json = '{"result":true,"count":3}',
-    obj = JSON.parse(json);
-
-    console.log('count is ', obj.count, "; result is ", obj.result);
 
     /* Canvas Play in gridCanvas *************************************/
     var canvas = document.getElementById("gridCanvas");
