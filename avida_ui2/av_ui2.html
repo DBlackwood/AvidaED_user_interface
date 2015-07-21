@@ -823,6 +823,19 @@
     </div>
   </div>
   
+ <!-- New button Dialog -->
+  <div data-dojo-type="dijit/Dialog" data-dojo-id="newDialog" title="The petri dish of the current experiment has not been saved in the freezer">
+    <div class = "dijitDialogPaneContentArea">
+      <p>Would you like to save or discard the current petri dish before starting a new experiment?</p>
+    </div>
+    <div class="dijitDialogPaneActionBar">
+      <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){newDialog.hide();}"
+                id="newCancel">Cancel</button>
+      <button data-dojo-type="dijit/form/Button" type="button" id="newDiscard">Discard</button>
+      <button data-dojo-type="dijit/form/Button" type="button" id="newSave">Save</button>
+    </div>
+  </div>
+ 
   <!-- Single Organism Replication Settings Dialog Box -->
   <div data-dojo-type="dijit/Dialog" data-dojo-id="OrganSetupDialog" title="Settings for single organism replication">
     <div class = "dijitDialogPaneContentArea">

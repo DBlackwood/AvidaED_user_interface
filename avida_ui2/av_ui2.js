@@ -124,9 +124,7 @@ require([
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
     var ConfigCurrent = new dndTarget("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
-    ConfigCurrent.insertNodes(false, [
-      { data: "@default",      type: ["conDish"]}
-    ]);
+    ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
     var OrganCurrent = new dndSource("OrgansimCurrent", {accept: ["organism"], singular: "true"});
 
@@ -421,6 +419,7 @@ require([
     }
 
     document.getElementById("runStopButton").onclick = function(){
+      console.log("newrun=", newrun);
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
         document.getElementById("runStopButton").innerHTML="Pause";
         runPopFn();
@@ -428,13 +427,7 @@ require([
         document.getElementById("runStopButton").innerHTML="Run";
         //call stuff to pauese run via enscripten here
       }
-    }
-
-    document.getElementById("newDishButton").onClick = function(){
-      if (!newrun) {
-        //ask about saving currnt run
-      }
-    }
+    };
 
     //changes value of label, but does not change dislay
     dijit.byId("mnRun").on("Click", function(){ 
@@ -450,6 +443,38 @@ require([
       }       
     });
     
+    /* ************** New Button and new Dialog ***********************/    
+    dijit.byId("newDiscard").on("Click", function(){
+      newDialog.hide();
+      resetDishFn();
+      console.log("newDiscard click");
+    }); 
+
+    dijit.byId("newSave").on("Click", function(){
+      newDialog.hide();
+      resetDishFn();
+      FrPopulationFn();
+      console.log("newSave click");
+    }); 
+
+    document.getElementById("newDishButton").onclick = function(){
+      console.log("newDishButton-newrun=", newrun);
+      if (newrun) {// reset petri dish
+        resetDishFn();
+      }
+      else {// check to see about saving current population
+        newDialog.show();
+      }
+    }
+    
+    function resetDishFn() { //Need to reset all settings to @default
+      console.log("reset Dish Fn");
+      newrun = true;
+      ConfigCurrent.selectAll().deleteSelectedNodes();  
+      ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
+      //reset values in population  settings either based on a 'file' @default or a @default string
+    }
+
     /* Json play *****************************************************/
     var json = '{"result":true,"count":3}',
     obj = JSON.parse(json);
