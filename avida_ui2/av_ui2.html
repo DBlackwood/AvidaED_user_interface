@@ -41,7 +41,7 @@
 
 <body data-maq-flow-layout="true" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse" data-maq-appstates="{}" id="myapp"
   onresize="BrowserResizeEventHandler()">
-  <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true"
+  <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true" id="mainBC"
         style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
     <!-- contentPane for top that contains main menu -->
     <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -137,8 +137,6 @@
    <div data-dojo-type="dijit/layout/ContentPane" id="blockHolder" extractContent="false" preventCache="false" preload="false"
         refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
     <!-- main tab container ---------------------------->
-    <!--<span data-dojo-type="dijit/layout/TabContainer" id="mainTabs" tabStrip="false" persist="false" controllerWidget="dijit.layout.TabController"
-          style="min-width: 1em; min-height: 1em; width: 100%; height: 100%;">
       <!-- population block ----------------------------->
       <div data-dojo-type="dijit/layout/ContentPane" id="populationBlock" title="Population" extractContent="false" preventCache="false" 
             refreshOnShow="false" doLayout="true" selected="true" closable="false" preload="false"  style="height: 100%">
@@ -159,16 +157,16 @@
                 </td>
                 <td style="text-align: right;">
                   <button id="PopSetupButton">Setup</button>
-                  <!--<button id="PopStatsButton">Stats</button>-->
+                  <button id="PopStatsButton">Stats</button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
         <!-- contentpane for data about current status of the grid on the right - bigger pane on right under population -->
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-              refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:400px;">
-          <div data-dojo-type="dijit/layout/BorderContainer" persist="false" gutters="true"
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="popRight"
+              refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:360px;">
+          <div data-dojo-type="dijit/layout/BorderContainer" persist="false" gutters="true" id="popRightBC"
                 style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                   refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height:280px;">
@@ -195,7 +193,7 @@
             </div>
             <!-- contentPane for Selected Organism -->
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                  refreshOnShow="false" doLayout="true" region="left" splitter="true"
+                  refreshOnShow="false" doLayout="true" region="left" splitter="true" id="selectOrganPane"
                       maxSize="Infinity" style="width:150px;">
               <label>
                 Selected Organism Type</label>
@@ -249,77 +247,39 @@
                   </tr>
                   <tr>
                     <td><label id="andLabel">and+</label></td>
-                    <td>
-                      <label id="andTime">
-                        1</label>
+                    <td><label id="andTime">1</label>
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      <label id="ornLabel">
-                        orn-</label>
-                    </td>
-                    <td>
-                      <label id="ornTime">
-                        0</label>
-                    </td>
+                    <td><label id="ornLabel">orn-</label></td>
+                    <td><label id="ornTime">0</label></td>
                   </tr>
                   <tr>
-                    <td>
-                      <label id="oroLabel">
-                        oro-</label>
-                    </td>
-                    <td>
-                      <label id="oroTime">
-                        0</label>
-                    </td>
+                    <td><label id="oroLabel">oro-</label></td>
+                    <td><label id="oroTime">0</label></td>
                   </tr>
                   <tr>
-                    <td>
-                      <label id="antLabel">
-                        ant-</label>
-                    </td>
-                    <td>
-                      <label id="antTime">
-                        0</label>
-                    </td>
+                    <td><label id="antLabel">ant-</label></td>
+                    <td><label id="antTime">0</label></td>
                   </tr>
                   <tr>
-                    <td>
-                      <label id="norLabel">
-                        nor+</label>
-                    </td>
-                    <td>
-                      <label id="norTime">
-                        1</label>
-                    </td>
+                    <td><label id="norLabel">nor+</label></td>
+                    <td><label id="norTime">1</label></td>
                   </tr>
                   <tr>
-                    <td>
-                      <label id="xorLabel">
-                        xor-</label>
-                    </td>
-                    <td>
-                      <label id="xorTime">
-                        0</label>
-                    </td>
+                    <td><label id="xorLabel">xor-</label></td>
+                    <td><label id="xorTime">0</label></td>
                   </tr>
                   <tr>
-                    <td>
-                      <label id="equLabel">
-                        equ-</label>
-                    </td>
-                    <td>
-                      <label id="equTime">
-                        0</label>
-                    </td>
+                    <td><label id="equLabel">equ-</label></td>
+                    <td><label id="equTime">0</label></td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
-              <label>
-                Population Statistics</label>
+            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+                    refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="PopStatsPane">
+              <label>Population Statistics</label>
               <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
                 <tbody>
                   <tr>
@@ -352,14 +312,8 @@
                 </colgroup>
                 <tbody>
                   <tr>
-                    <td>
-                      <label>
-                        Function</label>
-                    </td>
-                    <td>
-                      <label>
-                        # Organisms</label>
-                    </td>
+                    <td><label>Function</label></td>
+                    <td><label># Organisms</label></td>
                   </tr>
                   <tr>
                     <td>
@@ -383,8 +337,7 @@
                     <td>
                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="ornButton" class="shortButton" intermediateChanges="false" label="orn" iconClass="dijitCheckBoxIcon"></input>
                     </td>
-                    <td><label id="ornPop">0</label>
-                    </td>
+                    <td><label id="ornPop">0</label></td>
                   </tr>
                   <tr>
                     <td>
@@ -484,7 +437,7 @@
              </div>
            </div>
          </div>
-         <div data-dojo-type="dijit/layout/ContentPane" title="Setup" id="setupBlock" extractContent="false" 
+         <div data-dojo-type="dijit/layout/ContentPane" title="SetupB" id="setupBlock" extractContent="false" 
               preventCache="false" preload="false" refreshOnShow="false" doLayout="true" selected="true" closable="false">
            <label>Environmental Settings</label>
            <div style="height: 19px;" class="odd">
@@ -804,7 +757,6 @@
        </div>
       </div>
     </div>
-    <!-- </span> <!-- tab container span -->
   </div>
  </div>
  

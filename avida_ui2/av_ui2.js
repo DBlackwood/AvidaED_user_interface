@@ -58,9 +58,34 @@ require([
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
     }
 
+    var oldwidth = 0;
     ready(function(){
       aspect.after(registry.byId("popChartHolder"), "resize", function(){BrowserResizeEventHandler()});
+      
+      aspect.after(registry.byId("popRight"), "resize", function(){
+        console.log("popRight ", registry.byId("popRight").domNode.style.width);
+        //console.log("selectOrganPane ", registry.byId("selectOrganPane").domNode.style.width);
+        //console.log("PopStatsPane ", registry.byId("PopStatsPane").domNode.style.width);
+        if (registry.byId("popRight").domNode.style.width != oldwidth) {
+          console.log("dif");
+          oldwidth = registry.byId("popRight").domNode.style.width;
+          var str = registry.byId("popRight").domNode.style.width;
+          registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.5143)+"px"
+          console.log("new Sel ", registry.byId("selectOrganPane").domNode.style.width);
+          registry.byId("popRightBC").layout();  // does not work
+        }
+      });
     });
+
+
+    document.getElementById("PopStatsButton").onclick = function(){
+      console.log("select ", registry.byId("selectOrganPane").domNode.style.width);
+      var str = registry.byId("popRight").domNode.style.width;
+      registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.5143)+"px"
+      console.log("new Sel ", registry.byId("selectOrganPane").domNode.style.width);
+      registry.byId("popRightBC").layout();  // does not work
+      //registry.byId("mainBC").layout();  //works but calls rec
+    };
 
     // main button scripts-------------------------------------------
     
