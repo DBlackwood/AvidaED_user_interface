@@ -58,34 +58,19 @@ require([
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
     }
 
-    var oldwidth = 0;
     ready(function(){
       aspect.after(registry.byId("popChartHolder"), "resize", function(){BrowserResizeEventHandler()});
-      
-      aspect.after(registry.byId("popRight"), "resize", function(){
-        console.log("popRight ", registry.byId("popRight").domNode.style.width);
-        //console.log("selectOrganPane ", registry.byId("selectOrganPane").domNode.style.width);
-        //console.log("PopStatsPane ", registry.byId("PopStatsPane").domNode.style.width);
-        if (registry.byId("popRight").domNode.style.width != oldwidth) {
-          console.log("dif");
-          oldwidth = registry.byId("popRight").domNode.style.width;
-          var str = registry.byId("popRight").domNode.style.width;
-          registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.5143)+"px"
-          console.log("new Sel ", registry.byId("selectOrganPane").domNode.style.width);
-          registry.byId("popRightBC").layout();  // does not work
-        }
-      });
     });
 
-
-    document.getElementById("PopStatsButton").onclick = function(){
-      console.log("select ", registry.byId("selectOrganPane").domNode.style.width);
-      var str = registry.byId("popRight").domNode.style.width;
-      registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.5143)+"px"
-      console.log("new Sel ", registry.byId("selectOrganPane").domNode.style.width);
-      registry.byId("popRightBC").layout();  // does not work
-      //registry.byId("mainBC").layout();  //works but calls rec
-    };
+    var oldwidth = 0;
+    aspect.after(registry.byId("popRight"), "resize", function(){
+      if (registry.byId("popRight").domNode.style.width != oldwidth) {
+        oldwidth = registry.byId("popRight").domNode.style.width;
+        var str = registry.byId("popRight").domNode.style.width;
+        registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.5143)+"px"
+        registry.byId("popRightBC").layout();  
+      }
+    });
 
     // main button scripts-------------------------------------------
     
@@ -412,7 +397,6 @@ require([
       }));
     });
 
-
     /* *************************************************************** */
     /* Population page script ******************************************/
     /* *************************************************************** */
@@ -429,6 +413,24 @@ require([
       }
     }
     document.getElementById("PopSetupButton").onclick = function(){popBoxSwap();};
+
+    // hides and shows the population and selected organsim data on right of population page with "Stats" button
+    var popStatFlag = true;
+    document.getElementById("PopStatsButton").onclick = function(){
+      if (popStatFlag) {
+        console.log("popStatFlag ", popStatFlag);
+        popStatFlag = false;
+        registry.byId("popRight").domNode.style.width = "1px";
+        registry.byId("mainBC").layout();  
+      }
+      else {
+        console.log("popStatFlag = ", popStatFlag);
+        popStatFlag = true;
+        registry.byId("selectOrganPane").domNode.style.width = "159px";
+        registry.byId("popRight").domNode.style.width = "360px";
+        registry.byId("mainBC").layout();  
+      }
+    };
 
     /* *************************************************************** */
     /* ******* Map Grid buttons ************************************** */
