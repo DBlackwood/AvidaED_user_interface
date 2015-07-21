@@ -649,6 +649,23 @@ require([
     document.getElementById("OrgSetting").onclick = function(){
       OrganSetupDialog.show();
     }
+    
+    var DetailsFlag = true;
+    document.getElementById("OrgDetailsButton").onclick = function(){
+      if (DetailsFlag) {
+        console.log("DetailsFlag ", DetailsFlag);
+        DetailsFlag = false;
+        registry.byId("rightDetail").domNode.style.width = "1px";
+        registry.byId("mainBC").layout();  
+      }
+      else {
+        console.log("DetailsFlag = ", DetailsFlag);
+        DetailsFlag = true;
+        registry.byId("rightDetail").domNode.style.width = "180px";
+        registry.byId("mainBC").layout();  
+      }
+    };
+
 
     $(function slideOrganism() {
       /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
