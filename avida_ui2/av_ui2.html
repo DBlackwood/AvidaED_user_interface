@@ -4,7 +4,6 @@
   <title>Avida-ED</title>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <title>Untitled</title>
   <script type="text/javascript" src="../lib/dojo/dojo/dojo.js"
       data-dojo-config="'parseOnLoad':false,'async':true,
         'packages':[
@@ -127,9 +126,6 @@
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1em; width: 100%; height: auto;">
           <div id="freezePopDishNode"class="container" jsId="freezePopDish"></div>
-            <!--<div dojoType="dojo.dnd.Source" class="container" jsId="FreezePopDish" id="FreezePopDish" data-dojo-props="accept: [ 'popDish' ]">
-              <div class="dojoDndItem" id="frPopdish0">example</div>
-            </div>-->
         </span>
       </div>
     </div>
@@ -464,7 +460,6 @@
             </div>
 
            <div class="odd">Ancestral Organism(s):
-              <!--<div dojoType="dojo.dnd.Source" class="ancestorContainer" id="AncestorBox" data-dojo-props="accept: [ 'organism' ]"></div>-->
               <div class="ancestorContainer" id="AncestorBoxNode"></div>
            </div>
            <div class="even">
@@ -528,7 +523,7 @@
                     intermediateChanges="false" iconClass="dijitNoIcon" name="pauseType" value="setupdate"></input>
                <label id="updateLabel">At update:</label>
                <input type="text" data-dojo-type="dijit/form/NumberSpinner" id="updateSpinner" intermediateChanges="false" 
-                    trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" value="1000"></input>
+                    trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$"></input>
               </form>
            </div>
          </div>
@@ -582,7 +577,7 @@
           </div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="rightDetail"
-        refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:180px;">
+        refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" data-dojo-props="minSize:1" style="width:180px;">
           <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
             <colgroup>
               <col></col>

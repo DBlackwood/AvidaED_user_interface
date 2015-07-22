@@ -484,7 +484,7 @@ require([
       console.log("newSave click");
     }); 
 
-    document.getElementById("newDishButton").onclick = function(){
+    function newButtonBoth(){
       console.log("newDishButton-newrun=", newrun);
       if (newrun) {// reset petri dish
         resetDishFn();
@@ -493,6 +493,8 @@ require([
         newDialog.show();
       }
     }
+    document.getElementById("newDishButton").onclick = function(){newButtonBoth()};
+    dijit.byId("mnNewpop").on("Click", function(){newButtonBoth()});
     
     function resetDishFn() { //Need to reset all settings to @default
       console.log("reset Dish Fn");
@@ -500,6 +502,33 @@ require([
       ConfigCurrent.selectAll().deleteSelectedNodes();  
       ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
       //reset values in population  settings either based on a 'file' @default or a @default string
+      writeSettings();
+    }
+
+    //writes data to Environmental Settings page based on the content of ConfigCurrent
+    //for now this is hard coded to what would be in @default. will need a way to request data from C++
+    //and read the returned json string. 
+    function writeSettings(){
+      console.log("in writeSettings");
+      dijit.byId("sizex").set('value','60');
+      dijit.byId("sizey").set('value','60');
+      document.getElementById("muteInput").value='2';
+      var event = new Event('change');
+      document.getElementById("muteInput").dispatchEvent(event);
+      AncestorBox.selectAll().deleteSelectedNodes();
+      AncestorBox.sync();
+      dijit.byId("childParentRadio").set('checked',true);
+      dijit.byId("notose").set('checked',true);
+      dijit.byId("nanose").set('checked',true);
+      dijit.byId("andose").set('checked',true);
+      dijit.byId("ornose").set('checked',true);
+      dijit.byId("orose").set('checked',true);
+      dijit.byId("andnose").set('checked',true);
+      dijit.byId("norose").set('checked',true);
+      dijit.byId("xorose").set('checked',true);
+      dijit.byId("equose").set('checked',true);
+      dijit.byId("experimentRadio").set('checked',true);
+      dijit.byId("manRadio").set('checked',true);
     }
 
     /* Json play *****************************************************/
