@@ -67,7 +67,7 @@ require([
       if (registry.byId("popRight").domNode.style.width != oldwidth) {
         oldwidth = registry.byId("popRight").domNode.style.width;
         var str = registry.byId("popRight").domNode.style.width;
-        registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.5143)+"px"
+        registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.48)+"px"
         registry.byId("popRightBC").layout();  
       }
     });
@@ -418,16 +418,15 @@ require([
     var popStatFlag = true;
     document.getElementById("PopStatsButton").onclick = function(){
       if (popStatFlag) {
-        console.log("popStatFlag ", popStatFlag);
         popStatFlag = false;
         registry.byId("popRight").domNode.style.width = "1px";
         registry.byId("mainBC").layout();  
       }
       else {
-        console.log("popStatFlag = ", popStatFlag);
+        console.log("show stats");
         popStatFlag = true;
-        registry.byId("selectOrganPane").domNode.style.width = "159px";
-        registry.byId("popRight").domNode.style.width = "360px";
+        registry.byId("selectOrganPane").domNode.style.width = "150px";
+        registry.byId("popRight").domNode.style.width = "365px";
         registry.byId("mainBC").layout();  
       }
     };
@@ -529,6 +528,44 @@ require([
       dijit.byId("equose").set('checked',true);
       dijit.byId("experimentRadio").set('checked',true);
       dijit.byId("manRadio").set('checked',true);
+      //Selected Organism Type
+      document.getElementById("nameLabel").textContent="-";
+      document.getElementById("fitLabel").innerHTML="-";
+      document.getElementById("metabolicLabel").textContent="-";
+      document.getElementById("generateLabel").textContent="-";
+      document.getElementById("ageLabel").textContent="-";
+      document.getElementById("ancestorLabel").textContent="-";
+      document.getElementById("notLabel").textContent="not-";
+      document.getElementById("nanLabel").textContent="nan-";
+      document.getElementById("andLabel").textContent="and-";
+      document.getElementById("ornLabel").textContent="orn-";
+      document.getElementById("antLabel").textContent="ant-";
+      document.getElementById("norLabel").textContent="nor-";
+      document.getElementById("xorLabel").textContent="xor-";
+      document.getElementById("equLabel").textContent="equ-";
+      document.getElementById("notTime").textContent="0";
+      document.getElementById("nanTime").textContent="0";
+      document.getElementById("andTime").textContent="0";
+      document.getElementById("ornTime").textContent="0";
+      document.getElementById("antTime").textContent="0";
+      document.getElementById("norTime").textContent="0";
+      document.getElementById("xorTime").textContent="0";
+      document.getElementById("equTime").textContent="0";
+      //Population Statistics
+      document.getElementById("popSizeLabel").textContent="-";
+      document.getElementById("aFitLabel").textContent="-";
+      document.getElementById("aMetabolicLabel").textContent="-";
+      document.getElementById("aGestateLabel").textContent="-";
+      document.getElementById("aAgeLabel").textContent="-";
+      document.getElementById("notPop").textContent="-";
+      document.getElementById("nanPop").textContent="-";
+      document.getElementById("andPop").textContent="-";
+      document.getElementById("ornPop").textContent="-";
+      document.getElementById("oroPop").textContent="-";
+      document.getElementById("antPop").textContent="-";
+      document.getElementById("norPop").textContent="-";
+      document.getElementById("xorPop").textContent="-";
+      document.getElementById("equPop").textContent="-";
     }
 
     /* Json play *****************************************************/
@@ -651,8 +688,10 @@ require([
     var popChart = new Chart("popChart");
     function popChartFn(){
       popChart.addPlot("default", {type: "Lines"});
-      popChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
-      popChart.addAxis("y", {vertical: true, fixLower: "major", title: ytitle, titleOrientation: 'axis',fixUpper: "major", min: 0});
+      popChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away', titleGap: 2,
+                             titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"});
+      popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
+                    fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,});
       popChart.addSeries("Series y", popY, {stroke: {color:"blue", width: .5}});   
       popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w-10, 
                     domGeometry.position(document.getElementById("popChartHolder")).h-15);

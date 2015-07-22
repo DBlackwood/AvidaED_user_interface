@@ -147,7 +147,7 @@
             </colgroup>
             <tbody>
               <tr>
-                <td>
+                <td style="vertical-align: bottom;">
                   <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img><span id="Configuration">Configuration: </span></div>
                   <div id="ConfigurationCurrent" class="popContainer">
                 </td>
@@ -161,12 +161,12 @@
         </div>
         <!-- contentpane for data about current status of the grid on the right - bigger pane on right under population -->
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="popRight"
-              refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:360px;">
+              refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:365px;">
           <div data-dojo-type="dijit/layout/BorderContainer" persist="false" gutters="true" id="popRightBC" data-dojo-props="minSize:1"
                 style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+            <!-- Content pane around graph vs Time on Population Page -->
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                   refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height:280px;">
-
               <!-- Section for real time graph vs Time on Population Page  -->
               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                     style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;" >
@@ -190,39 +190,39 @@
             <!-- contentPane for Selected Organism -->
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                   refreshOnShow="false" doLayout="true" region="left" splitter="true" id="selectOrganPane"
-                      maxSize="Infinity" style="width:150px;">
+                      maxSize="Infinity" style="width:120px;">
               <label>
                 Selected Organism Type</label>
-              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
                 <tbody>
                   <tr>
-                    <td><label id="nameLabel">Name:</label></td>
-                    <td>&nbsp;</td>
+                    <td>Name: <label id="nameLabel">no_name</label></td>
+                    <td align="right">colorsq</td>
                   </tr>
                   <tr>
-                    <td><label>Fitness:</label></td>
+                    <td>Fitness:</td>
                     <td><label id="fitLabel">0.29</label></td>
                   </tr>
                   <tr>
-                    <td><label>Metabolic Rate:</label></td>
+                    <td>Metabolic Rate:</td>
                     <td><label id="metabolicLabel">45.0</label></td>
                   </tr>
                   <tr>
-                    <td><label>Generation:</label></td>
+                    <td>Generation:</td>
                     <td><label id="generateLabel">154.0</label></td>
                   </tr>
                   <tr>
-                    <td><label id="label_31">Age:</label></td>
+                    <td>Age:</td>
                     <td><label id="ageLabel">15.00</label></td>
                   </tr>
                   <tr>
-                    <td><label>Ancestor:</label></td>
+                    <td>Ancestor:</td>
                     <td><label id="ancestorLabel">@ancestor</label>
                    </td>
                   </tr>
                 </tbody>
               </table>
-              <br></br>
+              <br />
               <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
                 <colgroup>
                   <col></col>
@@ -276,7 +276,7 @@
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
                     refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="PopStatsPane">
               <label>Population Statistics</label>
-              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
                 <tbody>
                   <tr>
                     <td>Pop Size:</td>
@@ -287,20 +287,20 @@
                     <td><label id="aFitLabel">234.34</label></td>
                   </tr>
                   <tr>
-                    <td>Avg. Metabolic Rate</td>
+                    <td>Avg. Metabolic Rate:</td>
                     <td><label id="aMetabolicLabel">12345.6</label></td>
                   </tr>
                   <tr>
-                    <td>Avg. Gestation</td>
+                    <td>Avg. Gestation:</td>
                     <td><label id="aGestateLabel">169.3</label></td>
                   </tr>
                   <tr>
-                    <td>Avg. Age</td>
+                    <td>Avg. Age (updates):</td>
                     <td><label id="aAgeLabel">7.36</label></td>
                   </tr>
                 </tbody>
               </table>
-              <br></br>
+              <br />
               <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
                 <colgroup>
                   <col></col>
@@ -476,7 +476,7 @@
            <div class="odd">
              <label>
                What resources are available in the environment? (strength of metabolic reward shown in parentheses)</label>
-             <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; text-align: center">
+             <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; text-align: left">
                <tbody>
                  <tr>
                    <td>Easy (x2)    </td>
@@ -486,17 +486,17 @@
                    <td>Brutal (x32) </td>
                  </tr>
                  <tr>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="notose" intermediateChanges="false" label="notose" iconClass="dijitCheckBoxIcon"></input></td>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="andose" intermediateChanges="false" label="andose" iconClass="dijitCheckBoxIcon"></input></td>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="orose" intermediateChanges="false" label="orose" iconClass="dijitCheckBoxIcon"></input></td>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="norose" intermediateChanges="false" label="norose" iconClass="dijitCheckBoxIcon"></input></td>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="equose" intermediateChanges="false" label="equose" iconClass="dijitCheckBoxIcon"></input></td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="notose" label="notose"></input>notose</td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="andose" label="andose"></input>andose</td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="orose" label="orose"></input>orose</td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="norose" label="norose"></input>norose</td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="equose" label="equose"></input>equose</td>
                  </tr>
                  <tr>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="nanose" intermediateChanges="false" label="nanose" iconClass="dijitCheckBoxIcon"></input></td>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="ornose" intermediateChanges="false" label="ornose" iconClass="dijitCheckBoxIcon"></input></td>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="andnose" intermediateChanges="false" label="andnose" iconClass="dijitCheckBoxIcon"></input></td>
-                   <td><input type="button" data-dojo-type="dijit/form/ToggleButton" class="resourceButton" id="xorose" intermediateChanges="false" label="xorose" iconClass="dijitCheckBoxIcon"></input></td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="nanose" label="nanose"></input>nanose</td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="ornose" label="ornose"></input>orose</td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="andnose" label="andnose"></input>andnose</td>
+                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="xorose" label="xorose"></input>xorose</td>
                    <td>&nbsp;</td>
                  </tr>
                </tbody>
