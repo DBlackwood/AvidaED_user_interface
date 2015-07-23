@@ -67,7 +67,7 @@ require([
       if (registry.byId("popRight").domNode.style.width != oldwidth) {
         oldwidth = registry.byId("popRight").domNode.style.width;
         var str = registry.byId("popRight").domNode.style.width;
-        registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.43)+"px"
+        registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.45)+"px"
         registry.byId("mainBC").layout();  
       }
     });
@@ -220,7 +220,6 @@ require([
           if (null!=fzName) {
           //document.getElementById(fzItemID).innerHTML = fzName;}  //either works
           document.getElementById(fzItemID).textContent = fzName;}
-          //alert('i was clicked')
         }
       }))
     };
@@ -325,7 +324,7 @@ require([
       
       console.log("textcontent ", graphPop1.node.textContent);  //use to get textContent which is what will be paired with actual data
       //console.log("iditems ", items._parent[0].id);
-      //console.log("id ", graphPop1.node.childNodes[0].id);
+      console.log("id ", graphPop1.node.childNodes[0].id);
 
       //example code to set item programatically. not actually needed here.
       //graphPop1.setItem(graphPop1.node.childNodes[0].id, {data: "test_name", type: ["popDish"]});
@@ -392,7 +391,6 @@ require([
         label: "Simple menu item",
         onClick: function() {
           var gmenu = prompt("Please rename your populated dish", "george");
-          //alert('i was clicked')
         }
       }));
     });
@@ -437,9 +435,43 @@ require([
     var newrun = true;
     function runPopFn(){
       if (newrun) {
-        newrun = false;
-        console.log("in run new");
-        //collect setup data to send to C++
+        var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
+        if (1>namelist.length){
+          document.getElementById("runStopButton").innerHTML="Run";
+          alert('Unable to run experiment; There is no start organism in the petri dish. '
+          +'Please drag an organism from the freezer into the settings panel or the petri dish')}
+        else {
+          newrun = false;
+          console.log("in run new");
+          //collect setup data to send to C++
+          var setDict={};
+          setDict["sizex"]=dijit.byId("sizex").get('value');
+          setDict["sizey"]=dijit.byId("sizey").get('value');
+          setDict["muteInput"]=document.getElementById("muteInput").value;
+          var nmlist = [];
+          for (var ii=0; ii<namelist.length; ii++){
+            nmlist.push(namelist[ii].innerHTML);
+          }
+          setDict["ancestor"] = nmlist;
+          if (dijit.byId("childParentRadio").get('checked')){
+            setDict["birthMethod"]=0}
+          else {
+            setDict["birthMethod"]=1}
+          setDict["notose"]=dijit.byId("notose").get('checked');
+          setDict["nanose"]=dijit.byId("nanose").get('checked');
+          setDict["andose"]=dijit.byId("andose").get('checked');
+          setDict["ornose"]=dijit.byId("ornose").get('checked');
+          setDict["orose"]=dijit.byId("orose").get('checked',true);
+          setDict["andnose"]=dijit.byId("andnose").get('checked',true);
+          setDict["norose"]=dijit.byId("norose").get('checked',true);
+          setDict["xorose"]=dijit.byId("xorose").get('checked',true);
+          setDict["equose"]=dijit.byId("equose").get('checked',true);
+          setDict["repeatMode"]=dijit.byId("experimentRadio").get('checked',true);
+          //dijit.byId("manRadio").set('checked',true); 
+           
+          var setjson = dojo.toJson(setDict);
+          console.log("setjson ", setjson);     
+        }
       }
       //update screen based on data from C++
     }
@@ -448,9 +480,11 @@ require([
       console.log("newrun=", newrun);
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
         document.getElementById("runStopButton").innerHTML="Pause";
+        dijit.byId("mnRun").label="Pause";
         runPopFn();
       } else {
         document.getElementById("runStopButton").innerHTML="Run";
+        dijit.byId("mnRun").label="Run";
         //call stuff to pauese run via enscripten here
       }
     };
@@ -460,11 +494,11 @@ require([
       console.log("label", dijit.byId("mnRun").label);
       if ("Run"==dijit.byId("mnRun").label) {
         dijit.byId("mnRun").label="Pause";
-        console.log("set to pause", dijit.byId("mnRun").label);
+        document.getElementById("runStopButton").innerHTML="Pause";
         runPopFn();
       } else {
         dijit.byId("mnRun").label="Run";
-        console.log("set to run", dijit.byId("mnRun").label);
+        document.getElementById("runStopButton").innerHTML="Run";
         //call stuff to pauese run via enscripten here
       }       
     });
@@ -473,14 +507,14 @@ require([
     dijit.byId("newDiscard").on("Click", function(){
       newDialog.hide();
       resetDishFn();
-      console.log("newDiscard click");
+      //console.log("newDiscard click");
     }); 
 
     dijit.byId("newSave").on("Click", function(){
       newDialog.hide();
       resetDishFn();
       FrPopulationFn();
-      console.log("newSave click");
+      //console.log("newSave click");
     }); 
 
     function newButtonBoth(){
