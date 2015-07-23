@@ -161,215 +161,211 @@
         </div>
         <!-- contentpane for data about current status of the grid on the right - bigger pane on right under population -->
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="popRight"
-              refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:365px;">
-          <div data-dojo-type="dijit/layout/BorderContainer" persist="false" gutters="true" id="popRightBC" data-dojo-props="minSize:1"
-                style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-            <!-- Content pane around graph vs Time on Population Page -->
-            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                  refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height:280px;">
-              <!-- Section for real time graph vs Time on Population Page  -->
-              <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
-                    style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;" >
-                <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                      refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 1.2em;">
-                  <select data-dojo-type="dijit/form/Select" id="yaxis" data-dojo-props="name: 'yyAxis'">
-                    <option value="Average Fitness">Average Fitness</option>
-                    <option value="Average Gestation Time">Average Gestation Time</option>
-                    <option value="Average Metabolic Rate">Average Metabolic Time</option>
-                    <option value="Number of Organisms" selected="selected">Number of Organisms</option>
-                  </select>
-                </div>
-                <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" id="popChartHolder"
-                      preload="false" refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
-                 <div id="popChart"></div>
-               </div>
-              </div>
-              <!-- End of section on Real time graph on Population Page -->
+              refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:395px;">
 
-            </div>
-            <!-- contentPane for Selected Organism -->
-            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                  refreshOnShow="false" doLayout="true" region="left" splitter="true" id="selectOrganPane"
-                      maxSize="Infinity" style="width:120px;">
-              <label>
-                Selected Organism Type</label>
-              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
-                <tbody>
-                  <tr>
-                    <td>Name: <label id="nameLabel">no_name</label></td>
-                    <td align="right">colorsq</td>
-                  </tr>
-                  <tr>
-                    <td>Fitness:</td>
-                    <td><label id="fitLabel">0.29</label></td>
-                  </tr>
-                  <tr>
-                    <td>Metabolic Rate:</td>
-                    <td><label id="metabolicLabel">45.0</label></td>
-                  </tr>
-                  <tr>
-                    <td>Generation:</td>
-                    <td><label id="generateLabel">154.0</label></td>
-                  </tr>
-                  <tr>
-                    <td>Age:</td>
-                    <td><label id="ageLabel">15.00</label></td>
-                  </tr>
-                  <tr>
-                    <td>Ancestor:</td>
-                    <td><label id="ancestorLabel">@ancestor</label>
-                   </td>
-                  </tr>
-                </tbody>
-              </table>
-              <br />
-              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
-                <colgroup>
-                  <col></col>
-                  <col></col>
-                </colgroup>
-                <tbody>
-                  <tr>
-                    <td><label>Function</label></td>
-                    <td><label>Times Performed</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="notLabel">not+</label></td>
-                    <td><label id="notTime">2</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="nanLabel">nan-</label></td>
-                    <td><label id="nanTime">0</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="andLabel">and+</label></td>
-                    <td><label id="andTime">1</label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><label id="ornLabel">orn-</label></td>
-                    <td><label id="ornTime">0</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="oroLabel">oro-</label></td>
-                    <td><label id="oroTime">0</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="antLabel">ant-</label></td>
-                    <td><label id="antTime">0</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="norLabel">nor+</label></td>
-                    <td><label id="norTime">1</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="xorLabel">xor-</label></td>
-                    <td><label id="xorTime">0</label></td>
-                  </tr>
-                  <tr>
-                    <td><label id="equLabel">equ-</label></td>
-                    <td><label id="equTime">0</label></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
+                style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-                    refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="PopStatsPane">
-              <label>Population Statistics</label>
-              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
-                <tbody>
-                  <tr>
-                    <td>Pop Size:</td>
-                    <td><label id="popSizeLabel">3594</label></td>
-                  </tr>
-                  <tr>
-                    <td>Avg. Fitness:</td>
-                    <td><label id="aFitLabel">234.34</label></td>
-                  </tr>
-                  <tr>
-                    <td>Avg. Metabolic Rate:</td>
-                    <td><label id="aMetabolicLabel">12345.6</label></td>
-                  </tr>
-                  <tr>
-                    <td>Avg. Gestation:</td>
-                    <td><label id="aGestateLabel">169.3</label></td>
-                  </tr>
-                  <tr>
-                    <td>Avg. Age (updates):</td>
-                    <td><label id="aAgeLabel">7.36</label></td>
-                  </tr>
-                </tbody>
-              </table>
-              <br />
-              <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
-                <colgroup>
-                  <col></col>
-                  <col></col>
-                </colgroup>
-                <tbody>
-                  <tr>
-                    <td><label>Function</label></td>
-                    <td><label># Organisms</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="button" data-dojo-type="dijit/form/ToggleButton" id="notButton" class="shortButton" intermediateChanges="false" label="not" iconClass="dijitCheckBoxIcon"></input>
-                    </td>
-                    <td><label id="notPop">3579</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="button" data-dojo-type="dijit/form/ToggleButton" id="nanButton" class="shortButton" intermediateChanges="false" label="nan" iconClass="dijitCheckBoxIcon"></input>
-                    </td>
-                    <td><label id="nanPop">23</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                     <input type="button" data-dojo-type="dijit/form/ToggleButton" id="andButton" class="shortButton" intermediateChanges="false" label="and" iconClass="dijitCheckBoxIcon"></input>
-                   </td>
-                    <td><label id="andPop">893</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="button" data-dojo-type="dijit/form/ToggleButton" id="ornButton" class="shortButton" intermediateChanges="false" label="orn" iconClass="dijitCheckBoxIcon"></input>
-                    </td>
-                    <td><label id="ornPop">0</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="button" data-dojo-type="dijit/form/ToggleButton" id="oroButton" class="shortButton" intermediateChanges="false" label="oro" iconClass="dijitCheckBoxIcon"></input>
-                    </td>
-                    <td><label id="oroPop">23</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                     <input type="button" data-dojo-type="dijit/form/ToggleButton" id="antButton" class="shortButton" intermediateChanges="false" label="ant" iconClass="dijitCheckBoxIcon"></input>
-                   </td>
-                    <td><label id="antPop">0</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                     <input type="button" data-dojo-type="dijit/form/ToggleButton" id="norButton" class="shortButton" intermediateChanges="false" label="nor" iconClass="dijitCheckBoxIcon"></input>
-                   </td>
-                    <td><label id="norPop">1245</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                     <input type="button" data-dojo-type="dijit/form/ToggleButton" id="xorButton" class="shortButton" intermediateChanges="false" label="xor" iconClass="dijitCheckBoxIcon"></input>
-                   </td>
-                    <td><label id="xorPop">8</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                     <input type="button" data-dojo-type="dijit/form/ToggleButton" id="equButton" class="shortButton" intermediateChanges="false" label="equ" iconClass="dijitCheckBoxIcon"></input>
-                   </td>
-                    <td><label id="equPop">0</label></td>
-                  </tr>
-                </tbody>
-              </table>
+                  refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:279px;">
+              <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
+                    style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+                <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="selectOrganPane"
+                      refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" doLayout="false" style="width:152px;">
+                  <label>Selected Organism Type</label>
+                  <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
+                    <tbody>
+                      <tr>
+                        <td>Name: <label id="nameLabel">no_name</label></td>
+                        <td align="right">colorsq</td>
+                      </tr>
+                      <tr>
+                        <td>Fitness:</td>
+                        <td><label id="fitLabel">0.29</label></td>
+                      </tr>
+                      <tr>
+                        <td>Metabolic Rate:</td>
+                        <td><label id="metabolicLabel">45.0</label></td>
+                      </tr>
+                      <tr>
+                        <td>Generation:</td>
+                        <td><label id="generateLabel">154.0</label></td>
+                      </tr>
+                      <tr>
+                        <td>Age:</td>
+                        <td><label id="ageLabel">15.00</label></td>
+                      </tr>
+                      <tr>
+                        <td>Ancestor:</td>
+                        <td><label id="ancestorLabel">@ancestor</label>
+                       </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <br />
+                  <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+                    <colgroup>
+                      <col></col>
+                      <col></col>
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <td><label>Function</label></td>
+                        <td><label>Times Performed</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="notLabel">not+</label></td>
+                        <td><label id="notTime">2</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="nanLabel">nan-</label></td>
+                        <td><label id="nanTime">0</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="andLabel">and+</label></td>
+                        <td><label id="andTime">1</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><label id="ornLabel">orn-</label></td>
+                        <td><label id="ornTime">0</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="oroLabel">oro-</label></td>
+                        <td><label id="oroTime">0</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="antLabel">ant-</label></td>
+                        <td><label id="antTime">0</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="norLabel">nor+</label></td>
+                        <td><label id="norTime">1</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="xorLabel">xor-</label></td>
+                        <td><label id="xorTime">0</label></td>
+                      </tr>
+                      <tr>
+                        <td><label id="equLabel">equ-</label></td>
+                        <td><label id="equTime">0</label></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+                    refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
+                <label>Population Statistics</label>
+                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
+                  <tbody>
+                    <tr>
+                      <td>Pop Size:</td>
+                      <td><label id="popSizeLabel">3594</label></td>
+                    </tr>
+                    <tr>
+                      <td>Avg. Fitness:</td>
+                      <td><label id="aFitLabel">234.34</label></td>
+                    </tr>
+                    <tr>
+                      <td>Avg. Metabolic Rate:</td>
+                      <td><label id="aMetabolicLabel">12345.6</label></td>
+                    </tr>
+                    <tr>
+                      <td>Avg. Gestation:</td>
+                      <td><label id="aGestateLabel">169.3</label></td>
+                    </tr>
+                    <tr>
+                      <td>Avg. Age (updates):</td>
+                      <td><label id="aAgeLabel">7.36</label></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br />
+                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+                  <colgroup>
+                    <col></col>
+                    <col></col>
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td><label>Function</label></td>
+                      <td><label># Organisms</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="notButton" class="shortButton" intermediateChanges="false" label="not" iconClass="dijitCheckBoxIcon"></input>
+                      </td>
+                      <td><label id="notPop">3579</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="nanButton" class="shortButton" intermediateChanges="false" label="nan" iconClass="dijitCheckBoxIcon"></input>
+                      </td>
+                      <td><label id="nanPop">23</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="andButton" class="shortButton" intermediateChanges="false" label="and" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="andPop">893</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="ornButton" class="shortButton" intermediateChanges="false" label="orn" iconClass="dijitCheckBoxIcon"></input>
+                      </td>
+                      <td><label id="ornPop">0</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="oroButton" class="shortButton" intermediateChanges="false" label="oro" iconClass="dijitCheckBoxIcon"></input>
+                      </td>
+                      <td><label id="oroPop">23</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="antButton" class="shortButton" intermediateChanges="false" label="ant" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="antPop">0</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="norButton" class="shortButton" intermediateChanges="false" label="nor" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="norPop">1245</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="xorButton" class="shortButton" intermediateChanges="false" label="xor" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="xorPop">8</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="equButton" class="shortButton" intermediateChanges="false" label="equ" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="equPop">0</label></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
+           <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+                refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" style="height: 1.1em;" doLayout="false">
+             <select data-dojo-type="dijit/form/Select" id="yaxis" data-dojo-props="name: 'yyAxis'">
+                <option value="Average Fitness">Average Fitness</option>
+                <option value="Average Gestation Time">Average Gestation Time</option>
+                <option value="Average Metabolic Rate">Average Metabolic Time</option>
+                <option value="Number of Organisms" selected="selected">Number of Organisms</option>
+              </select>
+           </div>
+           <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
+                refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="popChartHolder">
+            <div id="popChart"></div>
+          </div>
+         </div>
+
+
+        </div>  <!-- Then end of the main right pane for Population -->
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
               refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
         <!-- Tab container within PopulationBlock ------------------------------------------------------>

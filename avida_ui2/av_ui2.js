@@ -67,8 +67,8 @@ require([
       if (registry.byId("popRight").domNode.style.width != oldwidth) {
         oldwidth = registry.byId("popRight").domNode.style.width;
         var str = registry.byId("popRight").domNode.style.width;
-        registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.48)+"px"
-        registry.byId("popRightBC").layout();  
+        registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.43)+"px"
+        registry.byId("mainBC").layout();  
       }
     });
 
@@ -426,7 +426,7 @@ require([
         console.log("show stats");
         popStatFlag = true;
         registry.byId("selectOrganPane").domNode.style.width = "150px";
-        registry.byId("popRight").domNode.style.width = "365px";
+        registry.byId("popRight").domNode.style.width = "395px";
         registry.byId("mainBC").layout();  
       }
     };
@@ -700,14 +700,13 @@ require([
       popChart.render();
     };
     popChartFn();
-    
+   
     //Set Y-axis title and choose the correct array to plot
     dijit.byId("yaxis").on("Change", function(){
       ytitle = dijit.byId("yaxis").value;
       //need to get correct array to plot from freezer
       popChartFn();
     });
-
     
     /* *************************************************************** */
     /* Organism page script *********************************************/
