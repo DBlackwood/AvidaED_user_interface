@@ -122,10 +122,10 @@
           <div id="freezeConfigureNode"class="container"></div>
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Organisms" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1px; width: 100%; height: auto;">
-          <div id="freezeOrgansimNode" class="container"></div>
+          <div  id="freezeOrgansimNode" class="container"></div>
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200" open="true" style="min-width: 1px; width: 100%; height: auto;">
-          <div id="freezePopDishNode"class="container" jsId="freezePopDish"></div>
+          <div  id="freezePopDishNode"class="container" jsId="freezePopDish"></div>
         </span>
       </div>
     </div>
@@ -410,7 +410,7 @@
                </table>
              </div>
              <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                  refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
+                  refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="gridHolder">
                <!-- begin border container
                <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                     style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
@@ -425,9 +425,11 @@
                  </div>
                 </div>
                 <!-- end of border container -->
-                Grid location should be here<br>
-                <canvas id="gridCanvas" width="300" height="300" style="border:1px solid #000000;"></canvas>
-
+                Grid location should be here<br />
+                <div id="gridBoxNode">
+                    <canvas data-dojo-type="dojo.dnd.Source" id="gridCanvas" width="300" height="100" style="border:1px solid #000000;"></canvas>
+                </div>
+                <div id="seedTray"></div>
              </div>
            </div>
          </div>

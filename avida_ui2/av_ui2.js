@@ -131,6 +131,7 @@ require([
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
     var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"]});
+    var GridBox = new dndSource("gridBoxNode", {accept: ["organism"]});
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
     var ConfigCurrent = new dndTarget("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
@@ -177,7 +178,7 @@ require([
         freezeOrgan.forInSelectedItems(function(item, id){  
           OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
         });
-        OrganCurrent.sync();   //not sure if this helps or not
+        OrganCurrent.sync();   //
       }
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
@@ -188,7 +189,7 @@ require([
     }
     dojo.connect(trash, "insertNodes", trashChange);
 
-    freezeConfigure.on("MouseMove", function(evt){
+    GridBox.on("MouseMove", function(evt){
        //console.log({"x": evt.layerX, "y": evt.layerY}); 
     });
 
@@ -224,6 +225,7 @@ require([
       }))
     };
     
+    var AncestorList = [];
     freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
       //console.log("Source: ", source);
       //console.log("Nodes: ", nodes);
@@ -254,6 +256,26 @@ require([
         }
         if (null != dishCon) nodes[0].textContent=dishCon;
         contextMenu(nodes[0].id, target.node.id);
+      }
+      if (target.node.id=="gridBoxNode"){
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+        });
+        // need to create and array of ancestors to be used for color key
+        AncestorList.push(nodes[0].textContent);
+        console.log(AncestorList);
+        var outstr ="";
+        for (var ii = 0; ii<AncestorList.length; ii++) {
+          if (0 == ii) { outstr = AncestorList[ii]; }
+          else {outstr = outstr + ", " + AncestorList[ii];}
+        }
+        document.getElementById("seedTray").innerHTML = outstr;
+        console.log("grid ", GridBox);
+      }
+      if (target.node.id=="AncestorBoxNode"){
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          GridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+        });
       }
       if (target.node.id=="freezeOrgansimNode"){
         var avidian = prompt("Please name your avidian", nodes[0].textContent+"_1");
@@ -321,6 +343,7 @@ require([
           pop3b = [];
           AnaChart();
         }
+      });
 
     function graphPop1Change(){
       //console.log("sel", graphPop1.selection);
@@ -373,7 +396,7 @@ require([
     };
     dojo.connect(graphPop2, "onDrop", graphPop2Change);
 
-    });
+    //});  //what does this close?? tiba
 
     function graphPop3Change(){
       var items = getAllItems(graphPop3);
@@ -513,9 +536,9 @@ require([
     dataManDict["core.environment.trigger.xor.test_organisms"]=0;
     dataManDict["core.environment.trigger.equ.test_organisms"]=0;
     var dataManJson = dojo.toJson(dataManDict);
-    var DataManJson = JSON.stringify(dataManDict)
+    //var DataManJson = JSON.stringify(dataManDict) does the same thing as dojo.toJason
     console.log("man ", dataManJson);
-    console.log("str ", DataManJson);
+    //console.log("str ", DataManJson);
 
     function DataManagerRead(){
       dataManObj = JSON.parse(dataManJson);
@@ -528,7 +551,7 @@ require([
       document.getElementById("nanPop").textContent=dataManObj["core.environment.trigger.nan.test_organisms"];
       document.getElementById("andPop").textContent=dataManObj["core.environment.trigger.and.test_organisms"];
       document.getElementById("ornPop").textContent=dataManObj["core.environment.trigger.orn.test_organisms"];
-      document.getElementById("oroPop").textContent=dataManObj["core.environment.trigger.or.test_organisms"];
+      document.getElementById("oroPop").textContent=dataManObj["core.environment.trigger.oro.test_organisms"];
       document.getElementById("antPop").textContent=dataManObj["core.environment.trigger.andnot.test_organisms"];
       document.getElementById("norPop").textContent=dataManObj["core.environment.trigger.nor.test_organisms"];
       document.getElementById("xorPop").textContent=dataManObj["core.environment.trigger.xor.test_organisms"];
@@ -541,7 +564,7 @@ require([
     }
 
     document.getElementById("runStopButton").onclick = function(){
-      console.log("newrun=", newrun);
+      //console.log("newrun=", newrun);
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
         document.getElementById("runStopButton").innerHTML="Pause";
         dijit.byId("mnRun").label="Pause";
