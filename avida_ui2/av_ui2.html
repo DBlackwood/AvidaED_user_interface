@@ -146,10 +146,12 @@
               <col></col>
             </colgroup>
             <tbody>
-              <tr>
-                <td style="vertical-align: bottom;">
-                  <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img><span id="Configuration">Configuration: </span></div>
-                  <div id="ConfigurationCurrent" class="popContainer">
+              <tr style="vertical-align: middle; line-height: 15px">
+                <td style="vertical-align: top;">
+                  <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img>
+                    <span id="Configuration" style="display: inline-block; padding-top:-2px">
+                        Configuration: </span></div>
+                  <div id="ConfigurationCurrent" class="popContainer"></div>
                 </td>
                 <td style="text-align: right;">
                   <button id="PopSetupButton">Setup</button>
@@ -159,7 +161,7 @@
             </tbody>
           </table>
         </div>
-        <!-- contentpane for data about current status of the grid on the right - bigger pane on right under population -->
+        <!-- contentpane for data about current status of the grid on the right - bigger pane on right in population page -->
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="popRight"
               refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:395px;">
 
@@ -791,7 +793,6 @@
   <!-- Single Organism Replication Settings Dialog Box -->
   <div data-dojo-type="dijit/Dialog" data-dojo-id="OrganSetupDialog" title="Settings for single organism replication">
     <div class = "dijitDialogPaneContentArea">
-
       <div class="even">
         <span class="lftmargin">Per Site Mutation Rate:</span>
         <span id="orMuteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
@@ -801,7 +802,6 @@
         <!--<div class="fltLeft">%</div>
         <input id="orMRate" type="text" readonly style="width: 4em; height:1.8em"></input>-->
       </div>
-
        <form id="OrganRepeatForm">
          <h3>Repeatability Mode:</h3>
          <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganExperimentRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
@@ -816,3 +816,16 @@
   </div>
 </body>
 </html>
+
+ <!-- Need Ancestor Dialog -->
+  <div data-dojo-type="dijit/Dialog" data-dojo-id="NeedAncestorDialog" 
+        title="Unable to resume experiment; there is no start organism in the petri dish.">
+    <div class = "dijitDialogPaneContentArea">
+      <p>Please drag an organism from the freezer into the settings panel or the petri dish.</p>
+    </div>
+    <div class="dijitDialogPaneActionBar">
+      <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){NeedAncestorDialog.hide();}"
+                id="NeedAncestorCancel">OK</button>
+    </div>
+  </div>
+

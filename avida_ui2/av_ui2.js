@@ -159,7 +159,7 @@ require([
       if (1 < items.length) {                   //if there is more than one, then get rid of the old one and keep the one just dropped.
         ConfigCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
         freezeConfigure.forInSelectedItems(function(item, id){
-          ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only  valid source.
+          ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only valid source.
         });
         ConfigCurrent.sync();   
       }
@@ -172,7 +172,7 @@ require([
       var items = getAllItems(OrganCurrent);
       if (1 < items.length) {
         OrganCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
-        OrganCurrent.sync();   //not sure if this helps or not
+        OrganCurrent.sync();   //should be done after insertion or deletion
         //OrganCurrent.insertNodes(false, [items[1]]);    //oldway only works part of the time depends on mouse position
         freezeOrgan.forInSelectedItems(function(item, id){  
           OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
@@ -238,7 +238,22 @@ require([
         // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
         // Does not change "data" value, only textContent changes.
         var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
-        nodes[0].textContent=dishCon;
+        
+                var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
+        var unique = true;
+        while (unique) {
+          unique = false;
+          for (var ii = 0; ii < namelist.length; ii++){
+            //console.log ("name ", namelist[ii].innerHTML);
+            if (dishCon == namelist[ii].innerHTML) {
+              dishCon = prompt("Please give your configured dish a unique name ", dishCon+"_1")
+              unique = true;
+              break;
+            }
+          }  
+        }
+        if (null != dishCon) nodes[0].textContent=dishCon;
+        contextMenu(nodes[0].id, target.node.id);
       }
       if (target.node.id=="freezeOrgansimNode"){
         var avidian = prompt("Please name your avidian", nodes[0].textContent+"_1");
@@ -319,6 +334,7 @@ require([
         freezePopDish.forInSelectedItems(function(item, id){  
           graphPop1.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
         });
+        graphPop1.sync();
         var items = getAllItems(graphPop1);
       }
       
@@ -342,10 +358,11 @@ require([
       //need to clear all nodes and assign most recent to item 0
       if (1 < items.length) {
         graphPop2.selectAll().deleteSelectedNodes();  //does appear to clear items  
-        graphPop2.sync();   //not sure if this helps or not
+        graphPop2.sync();   
         freezePopDish.forInSelectedItems(function(item, id){  
           graphPop2.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
         });
+        graphPop2.sync(); 
         var items = getAllItems(graphPop2);
       }
       console.log("textcontent ", graphPop2.node.textContent);  //use to get textContent which is what will be paired with actual data
@@ -367,6 +384,7 @@ require([
         freezePopDish.forInSelectedItems(function(item, id){  
           graphPop3.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
         });
+        graphPop3.sync();
         items = getAllItems(graphPop3);
       }
       console.log("textcontent ", graphPop3.node.textContent);  //use to get textContent which is what will be paired with actual data
@@ -438,11 +456,9 @@ require([
         var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
         if (1>namelist.length){
           document.getElementById("runStopButton").innerHTML="Run";
-          alert('Unable to run experiment; There is no start organism in the petri dish. '
-          +'Please drag an organism from the freezer into the settings panel or the petri dish')}
+          NeedAncestorDialog.show();}
         else {
-          newrun = false;
-          console.log("in run new");
+          newrun = false;  //the run will no longer be "new"
           //collect setup data to send to C++
           var setDict={};
           setDict["sizex"]=dijit.byId("sizex").get('value');
@@ -534,6 +550,7 @@ require([
       newrun = true;
       ConfigCurrent.selectAll().deleteSelectedNodes();  
       ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
+      ConfigCurrent.sync();
       //reset values in population  settings either based on a 'file' @default or a @default string
       writeSettings();
     }
@@ -603,11 +620,13 @@ require([
     }
 
     /* Json play *****************************************************/
+    // just to see how json stores stuff, delete later.
     var json = '{"result":true,"count":3}',
     obj = JSON.parse(json);
 
-    console.log('count is ', obj.count, "; result is ", obj.result);
+    //console.log('count is ', obj.count, "; result is ", obj.result);
     //console.log(obj);
+  
 
     //******* Freeze Button ********************************************
     document.getElementById("freezeButton").onclick = function(){
@@ -631,6 +650,7 @@ require([
       }
       if (null!=fzName) {
         freezeConfigure.insertNodes(false, [ {data: fzName,   type: ["conDish"]}]);
+        freezeConfigure.sync();
       }
     }
     
@@ -658,6 +678,7 @@ require([
       }
       if (null!=fzName) {
         freezePopDish.insertNodes(false, [ {data: fzName,   type: ["popDish"]}]);
+        freezePopDish.sync();
       }
     }
 
@@ -756,12 +777,14 @@ require([
       if (DetailsFlag) {
         console.log("DetailsFlag ", DetailsFlag);
         DetailsFlag = false;
+        dijit.byId("rightDetail").set("style", "display: none;");
         registry.byId("rightDetail").domNode.style.width = "1px";
         registry.byId("mainBC").layout();  
       }
       else {
         console.log("DetailsFlag = ", DetailsFlag);
         DetailsFlag = true;
+        dijit.byId("rightDetail").set("style", "display: block; visibility: visible;");
         registry.byId("rightDetail").domNode.style.width = "180px";
         registry.byId("mainBC").layout();  
       }
