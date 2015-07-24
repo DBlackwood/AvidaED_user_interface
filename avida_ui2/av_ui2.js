@@ -456,7 +456,8 @@ require([
         var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
         if (1>namelist.length){
           document.getElementById("runStopButton").innerHTML="Run";
-          NeedAncestorDialog.show();}
+          NeedAncestorDialog.show();
+        }
         else {
           newrun = false;  //the run will no longer be "new"
           //collect setup data to send to C++
@@ -488,8 +489,55 @@ require([
           var setjson = dojo.toJson(setDict);
           console.log("setjson ", setjson);     
         }
+        DataManagerRead();
       }
       //update screen based on data from C++
+      
+    }
+
+    //Dummy Data 
+    var dataManDict={}
+    dataManDict["core.world.update"]=1;
+    dataManDict["core.world.organisms"]=2;
+    dataManDict["core.world.ave_fitness"]=2;
+    dataManDict["core.world.ave_merit"]=2;
+    dataManDict["core.world.ave_gest"]=2;
+    dataManDict["core.world.ave_age"]=2;
+    dataManDict["core.environment.trigger.not.test_organisms"]=2;
+    dataManDict["core.environment.trigger.nan.test_organisms"]=0;
+    dataManDict["core.environment.trigger.and.test_organisms"]=0;
+    dataManDict["core.environment.trigger.orn.test_organisms"]=0;
+    dataManDict["core.environment.trigger.or.test_organisms"]=0;
+    dataManDict["core.environment.trigger.andnot.test_organisms"]=0;
+    dataManDict["core.environment.trigger.nor.test_organisms"]=0;
+    dataManDict["core.environment.trigger.xor.test_organisms"]=0;
+    dataManDict["core.environment.trigger.equ.test_organisms"]=0;
+    var dataManJson = dojo.toJson(dataManDict);
+    var DataManJson = JSON.stringify(dataManDict)
+    console.log("man ", dataManJson);
+    console.log("str ", DataManJson);
+
+    function DataManagerRead(){
+      dataManObj = JSON.parse(dataManJson);
+      document.getElementById("popSizeLabel").textContent=dataManObj["core.world.organisms"];
+      document.getElementById("aFitLabel").textContent=dataManObj["core.world.ave_fitness"];
+      document.getElementById("aMetabolicLabel").textContent=dataManObj["core.world.ave_merit"];
+      document.getElementById("aGestateLabel").textContent=dataManObj["core.world.ave_gest"];
+      document.getElementById("aAgeLabel").textContent=dataManObj["core.world.ave_age"];
+      document.getElementById("notPop").textContent=dataManObj["core.environment.trigger.not.test_organisms"];
+      document.getElementById("nanPop").textContent=dataManObj["core.environment.trigger.nan.test_organisms"];
+      document.getElementById("andPop").textContent=dataManObj["core.environment.trigger.and.test_organisms"];
+      document.getElementById("ornPop").textContent=dataManObj["core.environment.trigger.orn.test_organisms"];
+      document.getElementById("oroPop").textContent=dataManObj["core.environment.trigger.or.test_organisms"];
+      document.getElementById("antPop").textContent=dataManObj["core.environment.trigger.andnot.test_organisms"];
+      document.getElementById("norPop").textContent=dataManObj["core.environment.trigger.nor.test_organisms"];
+      document.getElementById("xorPop").textContent=dataManObj["core.environment.trigger.xor.test_organisms"];
+      document.getElementById("equPop").textContent=dataManObj["core.environment.trigger.equ.test_organisms"];
+      //console.log("it is ",dataManObj["core.world.organisms"]);
+
+      if ("Run"==document.getElementById("runStopButton").innerHTML) {
+        //tell avida to do another step
+      }
     }
 
     document.getElementById("runStopButton").onclick = function(){
@@ -623,7 +671,6 @@ require([
     // just to see how json stores stuff, delete later.
     var json = '{"result":true,"count":3}',
     obj = JSON.parse(json);
-
     //console.log('count is ', obj.count, "; result is ", obj.result);
     //console.log(obj);
   
