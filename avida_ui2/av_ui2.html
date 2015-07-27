@@ -544,7 +544,7 @@
             <tr style="valign: middle; line-height: 30px">
               <td>
                   <div class="lftmargin"><img src="avida-ed-ancestor-icon.png" style="height: 32px;"></img>Organism: </div>
-                  <div id="OrgansimCurrent" class="popContainer"></div>&nbsp;
+                  <div id="OrganCurrentNode" class="popContainer"></div>&nbsp;
               </td>
               <td style="text-align: right;">
                 <button id="OrgSetting">Settings</button>&nbsp;
@@ -641,7 +641,8 @@
           <label class="bit32" id="stackA2">12345678911234567892123456789312</label>
           <p>Stack B (first two frames)</p>
           <label class="bit32" id="stackB1">11010010001111011000110011001100</label>
-          <label class="bit32" id="stackB2">12345678911234567892123456789312</label>
+          <label class="bit32" id="stackB2">12345678911234567892123456789312</label><br />
+          <canvas width="64px" height="15px" style="border:1px solid #000000;"></canvas>
           <p>Last Output</p>
           <label class="bit32" id="lastOutput">12345678911234567892123456789312</label>
           <span data-dojo-type="dijit/TitlePane" id="InstructionDetail" title="Instruction Details"
@@ -656,8 +657,9 @@
           </span>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
+              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="organismCanvasHolder">
          <p>Ring of DNA genetic information goes here</p>
+            <canvas data-dojo-type="dojo.dnd.Source" id="organismCanvas" width="600" height="300" style="border:1px solid #000000;"></canvas>
        </div>
       </div>
     </div>

@@ -137,7 +137,7 @@ require([
     var ConfigCurrent = new dndTarget("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
     ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-    var OrganCurrent = new dndSource("OrgansimCurrent", {accept: ["organism"], singular: "true"});
+    var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: "true"});
 
     var graphPop1 = new dndSource("pop1name", {accept: ["popDish"], singular: "true"});
     var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
@@ -172,7 +172,7 @@ require([
     function OrganCurrentChange(){
       var items = getAllItems(OrganCurrent);
       if (1 < items.length) {
-        OrganCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
         OrganCurrent.sync();   //should be done after insertion or deletion
         //OrganCurrent.insertNodes(false, [items[1]]);    //oldway only works part of the time depends on mouse position
         freezeOrgan.forInSelectedItems(function(item, id){  
@@ -180,6 +180,7 @@ require([
         });
         OrganCurrent.sync();   //
       }
+      drawGenome();
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
 
@@ -431,7 +432,7 @@ require([
       pMenu.addChild(new dijit.MenuItem({
         label: "Simple menu item",
         onClick: function() {
-          var gmenu = prompt("Please rename your populated dish", "george");
+          var gmenu = prompt("Please rename your freezer item", "george");
         }
       }));
     });
@@ -638,6 +639,10 @@ require([
       document.getElementById("muteInput").dispatchEvent(event);
       AncestorBox.selectAll().deleteSelectedNodes();
       AncestorBox.sync();
+      GridBox.selectAll().deleteSelectedNodes();
+      GridBox.sync();
+      AncestorList = [];
+      document.getElementById("seedTray").innerHTML="";
       dijit.byId("childParentRadio").set('checked',true);
       dijit.byId("notose").set('checked',true);
       dijit.byId("nanose").set('checked',true);
@@ -860,7 +865,6 @@ require([
       }
     };
 
-
     $(function slideOrganism() {
       /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
       /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
@@ -889,6 +893,42 @@ require([
       });
     });
 
+    /* ****************************************************************/
+    /*                  Canvas to draw genome
+    /* ************************************************************** */
+    function drawGenome(){
+      var OrgCanvas = document.getElementById("organismCanvas");
+      var ctx = OrgCanvas.getContext("2d");
+      //Get DNA sequence - hard coded for now
+      //         12345678911234567892123456789312345678941234567895
+      var dna = "wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab"
+      var bigR = 120; //radius of full circle
+      var smallR = bigR*2*Math.PI/100; //radius of each small circle
+      console.log("smallR ", smallR);
+      var cx1 = 150;  //center of main circle x
+      var cy1 = 150;  //center of main circld y
+      var bx1 = 50; //center of small circle on main circle
+      var by1 = 50; //center of small circle on main circle
+        //ctx.font = "10px Arial";
+        //ctx.fillText(dna.substr(1,1),150, 150);
+      
+      for (var ii = 0; ii < dna.length; ii++){
+        bx1 = cx1 + bigR*Math.cos(ii*2*Math.PI/50);
+        by1 = cy1 + bigR*Math.sin(ii*2*Math.PI/50);
+        ctx.beginPath();
+        ctx.lineWidth = 0.1;
+        ctx.strokeStyle = letterColor['a'];  //set the line to a color can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+        ctx.arc(bx1, by1, smallR, 0, 2*Math.PI);
+        ctx.stroke();  //required to render stroke
+        ctx.fillStyle = letterColor[dna.substr(ii,1)];
+        ctx.fill();   //required to render fill
+        ctx.fillStyle = dictColor["Black"];
+        ctx.font = "12px Arial";
+        ctx.fillText(dna.substr(ii,1),bx1-smallR/2, by1+smallR/2);
+        //console.log("x, y: ", bx1, by1);
+      }
+    }
+
     /* **** Controls bottum of page ***********************************/
     /* Organism Gestation Length Slider */
 
@@ -898,21 +938,23 @@ require([
       var ii = Number(document.getElementById("orgCycle").value);
       dijit.byId("orgCycle").set("value", ii-1);
     }
+    dijit.byId("orgBack").on("Click", orgBackFn);
 
     function orgForwardFn() {
       var ii = Number(document.getElementById("orgCycle").value);
       dijit.byId("orgCycle").set("value", ii+1);
     }
+    dijit.byId("orgForward").on("Click", orgForwardFn);
 
     dijit.byId("orgReset").on("Click", function(){
       dijit.byId("orgCycle").set("value", 0);
       document.getElementById("organCycle").innerHTML = "0"
     });
-    dijit.byId("orgBack").on("Click", orgBackFn);
-    dijit.byId("orgForward").on("Click", orgForwardFn);
+
     dijit.byId("orgEnd").on("Click", function() {
-    dijit.byId("orgCycle").set("value", 200);
+      dijit.byId("orgCycle").set("value", 200);
     });
+
     dijit.byId("orgCycle").on("Change", function(value){
       cycleSlider.set("value",value);
     });
@@ -955,6 +997,7 @@ require([
     dictColor["Yellow"] = "#FFFF00";
     dictColor["Purple"] = "#8800FF";
     dictColor["Orange"] = "#FFAA00";
+    dictColor["Black"] = "#000000";
     var pop1a = [];
     var pop1b = [];
     var pop2a = [];
@@ -1045,12 +1088,54 @@ require([
 
     /* Canvas Play in gridCanvas *************************************/
     var canvas = document.getElementById("gridCanvas");
-    var ctx = canvas.getContext("2d");
-    ctx.moveTo(0,0);
-    ctx.lineTo(200,100);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(95,50,40,0,3*Math.PI/2);
-    ctx.stroke();
-    
+    var ctxP = canvas.getContext("2d");
+    ctxP.moveTo(0,0);
+    ctxP.lineTo(200,100);
+    ctxP.stroke();
+    ctxP.beginPath();
+    ctxP.arc(95,50,40,0,3*Math.PI/2);
+    //ctxP.arc(95,50,40,0,2*Math.PI);
+    ctxP.stroke();
+        
+    var letterColor = {};
+    letterColor["a"] = "#F9CC65"; //color Meter
+    letterColor["b"] = "#EFC461"; //color Meter
+    letterColor["c"] = "#E5BC5D"; //color Meter 
+    letterColor["d"] = "#59FF71"; //color Meter
+    letterColor["e"] = "#55FF6D"; //color Meter
+    letterColor["f"] = "#52F768"; //color Meter
+    letterColor["g"] = "#BBFF5C"; //color Meter
+    letterColor["h"] = "#B4FF59"; //color Meter
+    letterColor["i"] = "#ACF655"; //color Meter
+    letterColor["j"] = "#A5EC51"; //color Meter 
+    letterColor["k"] = "#6EFFEB"; //color Meter
+    letterColor["l"] = "#69FAE2"; //color Meter
+    letterColor["m"] = "#65F0D8"; //color Meter
+    letterColor["n"] = "#61E5CF"; //color Meter
+    letterColor["o"] = "#7B8FFF"; //color Meter
+    letterColor["p"] = "#7B8FFF"; //color Meter
+    letterColor["q"] = "#7084EA"; //color Meter
+    letterColor["r"] = "#6C7EE1"; //color Meter
+    letterColor["s"] = "#5CDBC5"; //color Meter
+    letterColor["t"] = "#58D1BC"; //color Meter
+    letterColor["u"] = "#53C6B3"; //color Meter
+    letterColor["v"] = "#FF26EE"; //color Meter
+    letterColor["x"] = "#ED24DB"; //color Meter
+    letterColor["w"] = "#F725E5"; //color Meter
+    letterColor["y"] = "#AE2CFF"; //color Meter
+    letterColor["z"] = "#9DE14E"; //color Meter
+    var orgColorCodes = {};
+    orgColorCodes["mutate"] = "#00FF00"; //color Meter green
+    orgColorCodes["start"] = "#5300FF"; //color Meter blue
+    orgColorCodes["headFill"] = "#777777"; //color Meter grey
+    orgColorCodes["Write"] = "#FA0022"; //color Meter  red
+    dictColor["Red"] = "#00FF00";
+    dictColor["Green"] = "#00FF00";
+    dictColor["Blue"] = "#0000FF";
+    dictColor["Magenta"] = "#FF00FF";
+    dictColor["Cyan"] = "#00FFFF";
+    dictColor["Yellow"] = "#FFFF00";
+    dictColor["Purple"] = "#8800FF";
+    dictColor["Orange"] = "#FFAA00";
+
   });
