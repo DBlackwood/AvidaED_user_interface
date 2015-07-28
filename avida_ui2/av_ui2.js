@@ -22,7 +22,9 @@ require([
   "dojo/dnd/Target",
   "dojo/dom-geometry",
   "dojo/dom-style",
-  "dojo/aspect", 
+  "dojo/dom",
+  "dojo/aspect",
+  "dojo/on", 
   "dijit/registry",
   "dijit/form/Select",
   "dijit/form/HorizontalSlider",
@@ -44,8 +46,8 @@ require([
   "dojo/domReady!"
   ], function(dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
               BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, 
-              aspect, registry, Select,
+              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
+              aspect, on, registry, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
@@ -131,7 +133,10 @@ require([
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
     var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"]});
-    var GridBox = new dndSource("gridBoxNode", {accept: ["organism"]});
+    //Have not made final decision about which div the dnd will connect to
+    //var gridBoxNode = "gridBoxNode";  //the div around the grid
+    var gridBoxNode = "gridCanvas";   //the actual canvas object
+    var GridBox = new dndSource(gridBoxNode, {accept: ["organism"]}); 
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
     var ConfigCurrent = new dndTarget("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
@@ -190,10 +195,6 @@ require([
     }
     dojo.connect(trash, "insertNodes", trashChange);
 
-    GridBox.on("MouseMove", function(evt){
-       //console.log({"x": evt.layerX, "y": evt.layerY}); 
-    });
-
     //used to re-name freezer items after they are created.
     //http://jsfiddle.net/bEurr/10/
     //for now this function only changes the textContent (or innerHTML)
@@ -225,8 +226,20 @@ require([
         }
       }))
     };
-    
+
+    GridBox.on("MouseUp", function(evt){
+       console.log("x", evt.layerX, "; y", evt.layerY); 
+    });
+
+    // does not work
+    on(dom.byId("gridCanvas"),"drop", function(event){
+      domGeometry.normalizeEvent(event);
+      console.log("xx ", event.pageX);
+      console.log("yy ", event.pageY);
+    })
+
     var AncestorList = [];
+    //This triggers for every dnd drop, not just those of freezeOrgan
     freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
       //console.log("Source: ", source);
       //console.log("Nodes: ", nodes);
@@ -258,20 +271,21 @@ require([
         if (null != dishCon) nodes[0].textContent=dishCon;
         contextMenu(nodes[0].id, target.node.id);
       }
-      if (target.node.id=="gridBoxNode"){
+      // Process Drop on GridBox
+      if (target.node.id==gridBoxNode){
         freezeOrgan.forInSelectedItems(function(item, id){  
-          AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+          AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         });
-        // need to create and array of ancestors to be used for color key
+        // need to create an array of ancestors to be used for color key
         AncestorList.push(nodes[0].textContent);
-        console.log(AncestorList);
+        //console.log(AncestorList);
         var outstr ="";
         for (var ii = 0; ii<AncestorList.length; ii++) {
           if (0 == ii) { outstr = AncestorList[ii]; }
           else {outstr = outstr + ", " + AncestorList[ii];}
         }
         document.getElementById("seedTray").innerHTML = outstr;
-        console.log("grid ", GridBox);
+        //console.log("grid ", GridBox);
       }
       if (target.node.id=="AncestorBoxNode"){
         freezeOrgan.forInSelectedItems(function(item, id){  
@@ -528,11 +542,11 @@ require([
     dataManDict["core.world.ave_gest"]=2;
     dataManDict["core.world.ave_age"]=2;
     dataManDict["core.environment.trigger.not.test_organisms"]=2;
-    dataManDict["core.environment.trigger.nan.test_organisms"]=0;
+    dataManDict["core.environment.trigger.nand.test_organisms"]=0;
     dataManDict["core.environment.trigger.and.test_organisms"]=0;
     dataManDict["core.environment.trigger.orn.test_organisms"]=0;
     dataManDict["core.environment.trigger.or.test_organisms"]=0;
-    dataManDict["core.environment.trigger.andnot.test_organisms"]=0;
+    dataManDict["core.environment.trigger.andn.test_organisms"]=0;
     dataManDict["core.environment.trigger.nor.test_organisms"]=0;
     dataManDict["core.environment.trigger.xor.test_organisms"]=0;
     dataManDict["core.environment.trigger.equ.test_organisms"]=0;
@@ -549,11 +563,11 @@ require([
       document.getElementById("aGestateLabel").textContent=dataManObj["core.world.ave_gest"];
       document.getElementById("aAgeLabel").textContent=dataManObj["core.world.ave_age"];
       document.getElementById("notPop").textContent=dataManObj["core.environment.trigger.not.test_organisms"];
-      document.getElementById("nanPop").textContent=dataManObj["core.environment.trigger.nan.test_organisms"];
+      document.getElementById("nanPop").textContent=dataManObj["core.environment.trigger.nand.test_organisms"];
       document.getElementById("andPop").textContent=dataManObj["core.environment.trigger.and.test_organisms"];
       document.getElementById("ornPop").textContent=dataManObj["core.environment.trigger.orn.test_organisms"];
-      document.getElementById("oroPop").textContent=dataManObj["core.environment.trigger.oro.test_organisms"];
-      document.getElementById("antPop").textContent=dataManObj["core.environment.trigger.andnot.test_organisms"];
+      document.getElementById("oroPop").textContent=dataManObj["core.environment.trigger.or.test_organisms"];
+      document.getElementById("antPop").textContent=dataManObj["core.environment.trigger.andn.test_organisms"];
       document.getElementById("norPop").textContent=dataManObj["core.environment.trigger.nor.test_organisms"];
       document.getElementById("xorPop").textContent=dataManObj["core.environment.trigger.xor.test_organisms"];
       document.getElementById("equPop").textContent=dataManObj["core.environment.trigger.equ.test_organisms"];
@@ -896,30 +910,18 @@ require([
     /* ****************************************************************/
     /*                  Canvas to draw genome
     /* ************************************************************** */
-    function drawGenome(){
-      var OrgCanvas = document.getElementById("organismCanvas");
-      var ctx = OrgCanvas.getContext("2d");
-      //Get DNA sequence - hard coded for now
-      //         12345678911234567892123456789312345678941234567895
-      var dna = "wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab"
-      var bigR = 120; //radius of full circle
-      var smallR = bigR*2*Math.PI/100; //radius of each small circle
-      console.log("smallR ", smallR);
-      var cx1 = 150;  //center of main circle x
-      var cy1 = 150;  //center of main circld y
-      var bx1 = 50; //center of small circle on main circle
-      var by1 = 50; //center of small circle on main circle
-        //ctx.font = "10px Arial";
-        //ctx.fillText(dna.substr(1,1),150, 150);
-      
+
+    var OrgCanvas = document.getElementById("organismCanvas");
+    var ctx = OrgCanvas.getContext("2d");
+
+    function genomeCircle(dna, bigR, smallR,cx1, cy1){
+      var bx1, by1;  //center of small circle
       for (var ii = 0; ii < dna.length; ii++){
         bx1 = cx1 + bigR*Math.cos(ii*2*Math.PI/50);
         by1 = cy1 + bigR*Math.sin(ii*2*Math.PI/50);
         ctx.beginPath();
-        ctx.lineWidth = 0.1;
-        ctx.strokeStyle = letterColor['a'];  //set the line to a color can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
         ctx.arc(bx1, by1, smallR, 0, 2*Math.PI);
-        ctx.stroke();  //required to render stroke
+        //ctx.stroke();  //required to render stroke
         ctx.fillStyle = letterColor[dna.substr(ii,1)];
         ctx.fill();   //required to render fill
         ctx.fillStyle = dictColor["Black"];
@@ -927,6 +929,40 @@ require([
         ctx.fillText(dna.substr(ii,1),bx1-smallR/2, by1+smallR/2);
         //console.log("x, y: ", bx1, by1);
       }
+    }
+
+    function drawGenome(){
+      //Get DNA sequence - hard coded for now
+      //         12345678911234567892123456789312345678941234567895
+      var dna = "wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab"
+      var bigR = 120; //radius of full circle
+      var smallR = bigR*2*Math.PI/100; //radius of each small circle
+      var tanR = bigR-smallR;
+      var instructR = bigR-2*smallR;
+      console.log("smallR ", smallR);
+      var cx1 = 150;  //center of main circle x
+      var cy1 = 150;  //center of main circld y
+      var xx1, yy1, xx2, yy2, xxc, yyc; 
+        //ctx.font = "10px Arial";
+        //ctx.fillText(dna.substr(1,1),150, 150);
+      genomeCircle(dna, bigR, smallR, cx1, cy1);
+
+      ctx.lineWidth = .5;
+      ctx.strokeStyle = dictColor["Black"];  //set the line to a color can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+      ctx.beginPath();
+      xx1 = cx1 + tanR*Math.cos(0); yy1 = cy1+tanR*Math.sin(0);  //first instruction
+      ctx.moveTo(xx1, yy1);
+      //ctx.moveTo(50, 10);
+      xx2 = cx1 + tanR*Math.cos(2*Math.PI/50); 
+      yy2 = cy1 + tanR*Math.sin(2*Math.PI/50);  //second instruction
+      xxc = cx1 + instructR*Math.cos((0*2*Math.PI+Math.PI)/50);
+      yyc = cy1 + instructR*Math.sin((0*2*Math.PI+Math.PI)/50);
+      ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
+      //ctx.quadraticCurveTo(100, 100, 150, 10);
+      ctx.stroke();
+      
+      
+        //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
     }
 
     /* **** Controls bottum of page ***********************************/
