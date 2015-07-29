@@ -45,36 +45,33 @@
     <!-- contentPane for top that contains main menu -->
     <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
           refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:26px;">
-     <span data-dojo-type="dijit/MenuBar" tabIndex="0">
-       <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
-         <span data-dojo-type="dijit/Menu">
-           <span data-dojo-type="dijit/MenuItem" label="Open Default Workspace"></span>
-           <span data-dojo-type="dijit/MenuItem" label="Open Workspace"></span>
-         </span>
+      <span data-dojo-type="dijit/MenuBar" tabIndex="0">
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
+          <span data-dojo-type="dijit/Menu">
+            <span data-dojo-type="dijit/MenuItem" label="Open Default Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" label="Open Workspace"></span>
+          </span>
         </span>
-        <span data-dojo-type="dijit/PopupMenuBarItem" label="Edit" iconClass="dijitNoIcon">
-          <span data-dojo-type="dijit/Menu"><span data-dojo-type="dijit/MenuItem" label="Copy"></span>
-          <span data-dojo-type="dijit/MenuItem" label="Cut"></span>
-          <span data-dojo-type="dijit/MenuItem" label="Paste"></span>
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
+          <span data-dojo-type="dijit/Menu">
+            <span data-dojo-type="dijit/MenuItem" id="mnConfig" label="Save Experiment Configuration"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnOrganism" label="Save Selected Organism"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnPopulation" label="Save Current Population"></span>
+          </span>
         </span>
-      </span>
-      <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
-        <span data-dojo-type="dijit/Menu">
-          <span data-dojo-type="dijit/MenuItem" id="mnConfig" label="Save Experiment Configuration"></span>
-          <span data-dojo-type="dijit/MenuItem" id="mnOrganism" label="Save Selected Organism"></span>
-          <span data-dojo-type="dijit/MenuItem" id="mnPopulation" label="Save Current Population"></span>
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Control">
+          <span data-dojo-type="dijit/Menu">
+            <span data-dojo-type="dijit/MenuItem" id="mnRun" label="Run"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnPause" label="Pause"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnNewpop" label="Start New Population"></span>
+          </span>
         </span>
-      </span>
-      <span data-dojo-type="dijit/PopupMenuBarItem" label="Control">
-        <span data-dojo-type="dijit/Menu">
-          <span data-dojo-type="dijit/MenuItem" id="mnRun" label="Run"></span>
-          <span data-dojo-type="dijit/MenuItem" id="mnNewpop" label="Start New Population"></span>
-      </span>
-      </span><span data-dojo-type="dijit/PopupMenuBarItem" label="Help">
-        <span data-dojo-type="dijit/Menu">
-          <span data-dojo-type="dijit/MenuItem" label="About"></span>
-      </span>
-      </span>
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Help">
+          <span data-dojo-type="dijit/Menu">
+            <span data-dojo-type="dijit/MenuItem" id="About" label="About"></span>
+            <span data-dojo-type="dijit/MenuItem" id="Hardware" label="Ancestor and Hardware"></span>
+          </span>
+        </span>
       </span>
     </div>
     <!-- contentPage for far left of screen with freezer etc -->
@@ -383,7 +380,7 @@
                  <tbody>
                    <tr>
                      <td>
-                       <label id="TimeLabel">Time: 1000</label>
+                       Time: <label id="TimeLabel">1000</label>
                      </td>
                      <td style="text-align: center">
                         Mode
@@ -818,8 +815,6 @@
     <div class="dijitDialogPaneActionBar">
     </div>
   </div>
-</body>
-</html>
 
  <!-- Need Ancestor Dialog -->
   <div data-dojo-type="dijit/Dialog" data-dojo-id="NeedAncestorDialog" 
@@ -833,3 +828,6 @@
     </div>
   </div>
 
+<!-- closing the file -->
+</body>
+</html>

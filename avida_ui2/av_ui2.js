@@ -53,8 +53,7 @@ require([
 
     parser.parse();
 
-    console.log("after parser");
-
+    // Resize window helpers -------------------------------------------
     BrowserResizeEventHandler=function(){
       if ("block"==domStyle.get("analysisBlock","display")){AnaChart();};
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
@@ -72,6 +71,23 @@ require([
         registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.45)+"px"
         registry.byId("mainBC").layout();  
       }
+    });
+
+    // Drop down menu buttons ------------------------------------------
+    
+    HardwareDialog = new Dialog({
+      title: "Avida : A Guided Tour of an Ancestor and its Hardware",
+      id: "HardwareDialog",
+      href: "cpu_tour.html",
+      //style: "width: 600px; height: 400px"
+    });
+    
+    domStyle.set(HardwareDialog.containerNode, {
+      position: 'relative'
+    });
+    
+    dijit.byId("Hardware").on("Click", function(){ 
+      HardwareDialog.show();
     });
 
     // main button scripts-------------------------------------------
@@ -163,7 +179,7 @@ require([
     function ConfigCurrentChange(){
       var items = getAllItems(ConfigCurrent);  //get a list of items after ondrop into configCurrent. 
       if (1 < items.length) {                   //if there is more than one, then get rid of the old one and keep the one just dropped.
-        ConfigCurrent.selectAll().deleteSelectedNodes();  //does appear to clear items  
+        ConfigCurrent.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
         freezeConfigure.forInSelectedItems(function(item, id){
           ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only valid source.
         });
@@ -411,8 +427,6 @@ require([
     };
     dojo.connect(graphPop2, "onDrop", graphPop2Change);
 
-    //});  //what does this close?? tiba
-
     function graphPop3Change(){
       var items = getAllItems(graphPop3);
       //need to clear all nodes and assign most recent to item 0
@@ -489,14 +503,17 @@ require([
     /* ******* Map Grid buttons ************************************** */
     /* *************************************************************** */
     var newrun = true;
+    dijit.byId("mnPause").attr("disabled", true);
     function runPopFn(){
-      if (newrun) {
-        var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
-        if (1>namelist.length){
-          document.getElementById("runStopButton").innerHTML="Run";
-          NeedAncestorDialog.show();
-        }
-        else {
+      var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
+      if (1>namelist.length){
+        document.getElementById("runStopButton").innerHTML="Run";
+        dijit.byId("mnPause").attr("disabled", true);
+        dijit.byId("mnRun").attr("disabled", false);
+        NeedAncestorDialog.show();
+      }
+      else {
+        if (newrun) {
           newrun = false;  //the run will no longer be "new"
           //collect setup data to send to C++
           var setDict={};
@@ -511,7 +528,7 @@ require([
           if (dijit.byId("childParentRadio").get('checked')){
             setDict["birthMethod"]=0}
           else {
-            setDict["birthMethod"]=1}
+          setDict["birthMethod"]=1}
           setDict["notose"]=dijit.byId("notose").get('checked');
           setDict["nanose"]=dijit.byId("nanose").get('checked');
           setDict["andose"]=dijit.byId("andose").get('checked');
@@ -525,8 +542,8 @@ require([
           //dijit.byId("manRadio").set('checked',true); 
            
           var setjson = dojo.toJson(setDict);
-          console.log("setjson ", setjson);     
-        }
+          //console.log("setjson ", setjson);   
+        }  
         DataManagerRead();
       }
       //update screen based on data from C++
@@ -551,12 +568,13 @@ require([
     dataManDict["core.environment.trigger.xor.test_organisms"]=0;
     dataManDict["core.environment.trigger.equ.test_organisms"]=0;
     var dataManJson = dojo.toJson(dataManDict);
-    //var DataManJson = JSON.stringify(dataManDict) does the same thing as dojo.toJason
-    console.log("man ", dataManJson);
+    //var DataManJson = JSON.stringify(dataManDict) //does the same thing as dojo.toJason
+    //console.log("man ", dataManJson);
     //console.log("str ", DataManJson);
 
     function DataManagerRead(){
       dataManObj = JSON.parse(dataManJson);
+      document.getElementById("TimeLabel").textContent = dataManDict["core.world.update"];
       document.getElementById("popSizeLabel").textContent=dataManObj["core.world.organisms"];
       document.getElementById("aFitLabel").textContent=dataManObj["core.world.ave_fitness"];
       document.getElementById("aMetabolicLabel").textContent=dataManObj["core.world.ave_merit"];
@@ -582,27 +600,30 @@ require([
       //console.log("newrun=", newrun);
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
         document.getElementById("runStopButton").innerHTML="Pause";
-        dijit.byId("mnRun").label="Pause";
+        dijit.byId("mnPause").attr("disabled", false);
+        dijit.byId("mnRun").attr("disabled", true);
         runPopFn();
       } else {
         document.getElementById("runStopButton").innerHTML="Run";
-        dijit.byId("mnRun").label="Run";
+        dijit.byId("mnPause").attr("disabled", true);
+        dijit.byId("mnRun").attr("disabled", false);
         //call stuff to pauese run via enscripten here
       }
     };
 
     //changes value of label, but does not change dislay
     dijit.byId("mnRun").on("Click", function(){ 
-      console.log("label", dijit.byId("mnRun").label);
-      if ("Run"==dijit.byId("mnRun").label) {
-        dijit.byId("mnRun").label="Pause";
+        dijit.byId("mnPause").attr("disabled", false);
+        dijit.byId("mnRun").attr("disabled", true);
         document.getElementById("runStopButton").innerHTML="Pause";
         runPopFn();
-      } else {
-        dijit.byId("mnRun").label="Run";
+    });
+
+    dijit.byId("mnPause").on("Click", function(){ 
+        dijit.byId("mnPause").attr("disabled", true);
+        dijit.byId("mnRun").attr("disabled", false);
         document.getElementById("runStopButton").innerHTML="Run";
         //call stuff to pauese run via enscripten here
-      }       
     });
     
     /* ************** New Button and new Dialog ***********************/    
@@ -620,7 +641,6 @@ require([
     }); 
 
     function newButtonBoth(){
-      console.log("newDishButton-newrun=", newrun);
       if (newrun) {// reset petri dish
         resetDishFn();
       }
@@ -632,11 +652,14 @@ require([
     dijit.byId("mnNewpop").on("Click", function(){newButtonBoth()});
     
     function resetDishFn() { //Need to reset all settings to @default
-      console.log("reset Dish Fn");
       newrun = true;
+      dijit.byId("mnPause").attr("disabled", true);
+      dijit.byId("mnRun").attr("disabled", false);
+      document.getElementById("runStopButton").innerHTML="Run";
       ConfigCurrent.selectAll().deleteSelectedNodes();  
       ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
       ConfigCurrent.sync();
+      
       //reset values in population  settings either based on a 'file' @default or a @default string
       writeSettings();
     }
@@ -645,7 +668,6 @@ require([
     //for now this is hard coded to what would be in @default. will need a way to request data from C++
     //and read the returned json string. 
     function writeSettings(){
-      console.log("in writeSettings");
       dijit.byId("sizex").set('value','60');
       dijit.byId("sizey").set('value','60');
       document.getElementById("muteInput").value='2';
@@ -656,6 +678,7 @@ require([
       GridBox.selectAll().deleteSelectedNodes();
       GridBox.sync();
       AncestorList = [];
+      TimeLabel.textContent = 0;
       document.getElementById("seedTray").innerHTML="";
       dijit.byId("childParentRadio").set('checked',true);
       dijit.byId("notose").set('checked',true);
@@ -708,14 +731,6 @@ require([
       document.getElementById("xorPop").textContent="-";
       document.getElementById("equPop").textContent="-";
     }
-
-    /* Json play *****************************************************/
-    // just to see how json stores stuff, delete later.
-    var json = '{"result":true,"count":3}',
-    obj = JSON.parse(json);
-    //console.log('count is ', obj.count, "; result is ", obj.result);
-    //console.log(obj);
-  
 
     //******* Freeze Button ********************************************
     document.getElementById("freezeButton").onclick = function(){
@@ -938,25 +953,26 @@ require([
       var bigR = 120; //radius of full circle
       var smallR = bigR*2*Math.PI/100; //radius of each small circle
       var tanR = bigR-smallR;
-      var instructR = bigR-2*smallR;
+      var acrR = bigR-3*smallR;
+      var headR = bigR-2*smallR;
       console.log("smallR ", smallR);
       var cx1 = 150;  //center of main circle x
-      var cy1 = 150;  //center of main circld y
+      var cy1 = 150;  //center of main circle y
       var xx1, yy1, xx2, yy2, xxc, yyc; 
         //ctx.font = "10px Arial";
         //ctx.fillText(dna.substr(1,1),150, 150);
       genomeCircle(dna, bigR, smallR, cx1, cy1);
 
-      ctx.lineWidth = .5;
-      ctx.strokeStyle = dictColor["Black"];  //set the line to a color can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
       ctx.beginPath();
       xx1 = cx1 + tanR*Math.cos(0); yy1 = cy1+tanR*Math.sin(0);  //first instruction
       ctx.moveTo(xx1, yy1);
       //ctx.moveTo(50, 10);
       xx2 = cx1 + tanR*Math.cos(2*Math.PI/50); 
       yy2 = cy1 + tanR*Math.sin(2*Math.PI/50);  //second instruction
-      xxc = cx1 + instructR*Math.cos((0*2*Math.PI+Math.PI)/50);
-      yyc = cy1 + instructR*Math.sin((0*2*Math.PI+Math.PI)/50);
+      xxc = cx1 + acrR*Math.cos((0*2*Math.PI+Math.PI)/50);
+      yyc = cy1 + acrR*Math.sin((0*2*Math.PI+Math.PI)/50);
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       //ctx.quadraticCurveTo(100, 100, 150, 10);
       ctx.stroke();
@@ -1163,15 +1179,8 @@ require([
     var orgColorCodes = {};
     orgColorCodes["mutate"] = "#00FF00"; //color Meter green
     orgColorCodes["start"] = "#5300FF"; //color Meter blue
-    orgColorCodes["headFill"] = "#777777"; //color Meter grey
+    orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
+    orgColorCodes["headFill"] = "#DDDDDD"; //color Meter grey
     orgColorCodes["Write"] = "#FA0022"; //color Meter  red
-    dictColor["Red"] = "#00FF00";
-    dictColor["Green"] = "#00FF00";
-    dictColor["Blue"] = "#0000FF";
-    dictColor["Magenta"] = "#FF00FF";
-    dictColor["Cyan"] = "#00FFFF";
-    dictColor["Yellow"] = "#FFFF00";
-    dictColor["Purple"] = "#8800FF";
-    dictColor["Orange"] = "#FFAA00";
 
   });
