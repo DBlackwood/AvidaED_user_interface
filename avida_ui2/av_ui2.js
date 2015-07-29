@@ -112,7 +112,10 @@ require([
   
     // Call general function
     document.getElementById("populationButton").onclick = function(){ mainBoxSwap("populationBlock"); }
-    document.getElementById("organismButton").onclick = function(){ mainBoxSwap("organismBlock"); }
+    document.getElementById("organismButton").onclick = function(){ 
+      mainBoxSwap("organismBlock"); 
+      //document.getElementById("organismCanvas").resize();  //.resize is not a function
+    }
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
     document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
@@ -555,8 +558,8 @@ require([
     dataManDict["core.world.update"]=1;
     dataManDict["core.world.organisms"]=2;
     dataManDict["core.world.ave_fitness"]=2;
-    dataManDict["core.world.ave_merit"]=2;
-    dataManDict["core.world.ave_gest"]=2;
+    dataManDict["core.world.ave_metabolic_rate"]=2;
+    dataManDict["core.world.ave_gestation_time"]=2;
     dataManDict["core.world.ave_age"]=2;
     dataManDict["core.environment.trigger.not.test_organisms"]=2;
     dataManDict["core.environment.trigger.nand.test_organisms"]=0;
@@ -577,8 +580,8 @@ require([
       document.getElementById("TimeLabel").textContent = dataManDict["core.world.update"];
       document.getElementById("popSizeLabel").textContent=dataManObj["core.world.organisms"];
       document.getElementById("aFitLabel").textContent=dataManObj["core.world.ave_fitness"];
-      document.getElementById("aMetabolicLabel").textContent=dataManObj["core.world.ave_merit"];
-      document.getElementById("aGestateLabel").textContent=dataManObj["core.world.ave_gest"];
+      document.getElementById("aMetabolicLabel").textContent=dataManObj["core.world.ave_metabolic_rate"];
+      document.getElementById("aGestateLabel").textContent=dataManObj["core.world.ave_gestation_time"];
       document.getElementById("aAgeLabel").textContent=dataManObj["core.world.ave_age"];
       document.getElementById("notPop").textContent=dataManObj["core.environment.trigger.not.test_organisms"];
       document.getElementById("nanPop").textContent=dataManObj["core.environment.trigger.nand.test_organisms"];
@@ -929,7 +932,7 @@ require([
     var OrgCanvas = document.getElementById("organismCanvas");
     var ctx = OrgCanvas.getContext("2d");
 
-    function genomeCircle(dna, bigR, smallR,cx1, cy1){
+    function genomeCircle(dna, bigR, smallR, cx1, cy1){
       var bx1, by1;  //center of small circle
       for (var ii = 0; ii < dna.length; ii++){
         bx1 = cx1 + bigR*Math.cos(ii*2*Math.PI/50);
@@ -963,6 +966,7 @@ require([
         //ctx.fillText(dna.substr(1,1),150, 150);
       genomeCircle(dna, bigR, smallR, cx1, cy1);
 
+      //draw an arc
       ctx.lineWidth = 1;
       ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
       ctx.beginPath();
@@ -977,6 +981,7 @@ require([
       //ctx.quadraticCurveTo(100, 100, 150, 10);
       ctx.stroke();
       
+      //drawIP
       
         //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
     }
