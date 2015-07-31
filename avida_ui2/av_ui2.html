@@ -351,10 +351,10 @@
            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
                 refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" style="height: 1.1em;" doLayout="false">
              <select data-dojo-type="dijit/form/Select" id="yaxis" data-dojo-props="name: 'yyAxis'">
-                <option value="Average Fitness">Average Fitness</option>
+                <option value="Average Fitness" selected="selected">Average Fitness</option>
                 <option value="Average Gestation Time">Average Gestation Time</option>
                 <option value="Average Metabolic Rate">Average Metabolic Time</option>
-                <option value="Number of Organisms" selected="selected">Number of Organisms</option>
+                <option value="Number of Organisms">Number of Organisms</option>
               </select>
            </div>
            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
@@ -656,7 +656,7 @@
         <!-- Canvas area where the life cycle of a single organism is shown -->
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
               refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="organismCanvasHolder">
-            <canvas data-dojo-type="dojo.dnd.Source" id="organismCanvas" width="700" height="300" style="border:1px solid #000000;"></canvas>
+            <canvas data-dojo-type="dojo.dnd.Source" id="organismCanvas" width="100" height="100" style="border:1px solid #000000;"></canvas>
        </div>
       </div>
     </div>

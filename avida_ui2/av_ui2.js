@@ -52,6 +52,7 @@ require([
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
 
     parser.parse();
+    var uiWorker = new Worker('ui-test.js');
 
     // Resize window helpers -------------------------------------------
     BrowserResizeEventHandler=function(){
@@ -506,7 +507,12 @@ require([
     /* ******* Map Grid buttons ************************************** */
     /* *************************************************************** */
     var newrun = true;
+    var ave_fitness = [];
+    var ave_gestation_time = [];
+    var ave_metabolic_rate = [];
+    var population_size = [];
     dijit.byId("mnPause").attr("disabled", true);
+    
     function runPopFn(){
       var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
       if (1>namelist.length){
@@ -515,7 +521,7 @@ require([
         dijit.byId("mnRun").attr("disabled", false);
         NeedAncestorDialog.show();
       }
-      else {
+      else { // setup for a new run by sending config data to avida
         if (newrun) {
           newrun = false;  //the run will no longer be "new"
           //collect setup data to send to C++
@@ -547,10 +553,18 @@ require([
           var setjson = dojo.toJson(setDict);
           //console.log("setjson ", setjson);   
         }  
-        DataManagerRead();
+        //DataManagerRead();
+        doRunPause();
       }
       //update screen based on data from C++
-      
+    }
+ 
+    //sends message to worker to tell Avida to run/pause as a toggle. 
+    function doRunPause() {
+       var request = {
+          'Key':'RunPause'
+       };
+       uiWorker.postMessage(request);
     }
 
     //Dummy Data 
@@ -561,44 +575,50 @@ require([
     dataManDict["core.world.ave_metabolic_rate"]=2;
     dataManDict["core.world.ave_gestation_time"]=2;
     dataManDict["core.world.ave_age"]=2;
-    dataManDict["core.environment.trigger.not.test_organisms"]=2;
-    dataManDict["core.environment.trigger.nand.test_organisms"]=0;
-    dataManDict["core.environment.trigger.and.test_organisms"]=0;
-    dataManDict["core.environment.trigger.orn.test_organisms"]=0;
-    dataManDict["core.environment.trigger.or.test_organisms"]=0;
-    dataManDict["core.environment.trigger.andn.test_organisms"]=0;
-    dataManDict["core.environment.trigger.nor.test_organisms"]=0;
-    dataManDict["core.environment.trigger.xor.test_organisms"]=0;
-    dataManDict["core.environment.trigger.equ.test_organisms"]=0;
+    dataManDict["core.environment.triggers.not.test_organisms"]=2;
+    dataManDict["core.environment.triggers.nand.test_organisms"]=0;
+    dataManDict["core.environment.triggers.and.test_organisms"]=0;
+    dataManDict["core.environment.triggers.orn.test_organisms"]=0;
+    dataManDict["core.environment.triggers.or.test_organisms"]=0;
+    dataManDict["core.environment.triggers.andn.test_organisms"]=0;
+    dataManDict["core.environment.triggers.nor.test_organisms"]=0;
+    dataManDict["core.environment.triggers.xor.test_organisms"]=0;
+    dataManDict["core.environment.triggers.equ.test_organisms"]=0;
     var dataManJson = dojo.toJson(dataManDict);
     //var DataManJson = JSON.stringify(dataManDict) //does the same thing as dojo.toJason
     //console.log("man ", dataManJson);
     //console.log("str ", DataManJson);
 
-    function DataManagerRead(){
-      dataManObj = JSON.parse(dataManJson);
-      document.getElementById("TimeLabel").textContent = dataManDict["core.world.update"];
-      document.getElementById("popSizeLabel").textContent=dataManObj["core.world.organisms"];
-      document.getElementById("aFitLabel").textContent=dataManObj["core.world.ave_fitness"];
-      document.getElementById("aMetabolicLabel").textContent=dataManObj["core.world.ave_metabolic_rate"];
-      document.getElementById("aGestateLabel").textContent=dataManObj["core.world.ave_gestation_time"];
-      document.getElementById("aAgeLabel").textContent=dataManObj["core.world.ave_age"];
-      document.getElementById("notPop").textContent=dataManObj["core.environment.trigger.not.test_organisms"];
-      document.getElementById("nanPop").textContent=dataManObj["core.environment.trigger.nand.test_organisms"];
-      document.getElementById("andPop").textContent=dataManObj["core.environment.trigger.and.test_organisms"];
-      document.getElementById("ornPop").textContent=dataManObj["core.environment.trigger.orn.test_organisms"];
-      document.getElementById("oroPop").textContent=dataManObj["core.environment.trigger.or.test_organisms"];
-      document.getElementById("antPop").textContent=dataManObj["core.environment.trigger.andn.test_organisms"];
-      document.getElementById("norPop").textContent=dataManObj["core.environment.trigger.nor.test_organisms"];
-      document.getElementById("xorPop").textContent=dataManObj["core.environment.trigger.xor.test_organisms"];
-      document.getElementById("equPop").textContent=dataManObj["core.environment.trigger.equ.test_organisms"];
-      //console.log("it is ",dataManObj["core.world.organisms"]);
-
-      if ("Run"==document.getElementById("runStopButton").innerHTML) {
-        //tell avida to do another step
+    uiWorker.onmessage = function(ee){
+      var dataObj = ee.data;
+      //console.log(dataObj);
+      //Avida is running; update population stats
+      if (dataObj["Key"] == "PopulationStats") {
+        document.getElementById("TimeLabel").textContent = dataObj["core.update"];
+        document.getElementById("popSizeLabel").textContent = dataObj["core.world.organisms"];
+        document.getElementById("aFitLabel").textContent = dataObj["core.world.ave_fitness"];
+        document.getElementById("aMetabolicLabel").textContent = dataObj["core.world.ave_metabolic_rate"];
+        document.getElementById("aGestateLabel").textContent = dataObj["core.world.ave_gestation_time"];
+        document.getElementById("aAgeLabel").textContent = dataObj["core.world.ave_age"];
+        document.getElementById("notPop").textContent = dataObj["core.environment.triggers.not.test_organisms"];
+        document.getElementById("nanPop").textContent = dataObj["core.environment.triggers.nand.test_organisms"];
+        document.getElementById("andPop").textContent = dataObj["core.environment.triggers.and.test_organisms"];
+        document.getElementById("ornPop").textContent = dataObj["core.environment.triggers.orn.test_organisms"];
+        document.getElementById("oroPop").textContent = dataObj["core.environment.triggers.or.test_organisms"];
+        document.getElementById("antPop").textContent = dataObj["core.environment.triggers.andn.test_organisms"];
+        document.getElementById("norPop").textContent = dataObj["core.environment.triggers.nor.test_organisms"];
+        document.getElementById("xorPop").textContent = dataObj["core.environment.triggers.xor.test_organisms"];
+        document.getElementById("equPop").textContent = dataObj["core.environment.triggers.equ.test_organisms"];
+        //update graph arrays
+        ave_fitness.push(dataObj["core.world.ave_fitness"]); 
+        ave_gestation_time.push(dataObj["core.world.ave_gestation_time"]);
+        ave_metabolic_rate.push(dataObj["core.world.ave_metabolic_rate"]);
+        population_size.push(dataObj["core.world.organisms"]);
+        popChartFn();
       }
     }
 
+    //process the run/Stop Button
     document.getElementById("runStopButton").onclick = function(){
       //console.log("newrun=", newrun);
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
@@ -610,11 +630,12 @@ require([
         document.getElementById("runStopButton").innerHTML="Run";
         dijit.byId("mnPause").attr("disabled", true);
         dijit.byId("mnRun").attr("disabled", false);
-        //call stuff to pauese run via enscripten here
+        doRunPause()
+        //console.log("pop size ", population_size);
       }
     };
 
-    //changes value of label, but does not change dislay
+    //Same as above but for drop down menu
     dijit.byId("mnRun").on("Click", function(){ 
         dijit.byId("mnPause").attr("disabled", false);
         dijit.byId("mnRun").attr("disabled", true);
@@ -626,7 +647,7 @@ require([
         dijit.byId("mnPause").attr("disabled", true);
         dijit.byId("mnRun").attr("disabled", false);
         document.getElementById("runStopButton").innerHTML="Run";
-        //call stuff to pauese run via enscripten here
+        doRunPause()
     });
     
     /* ************** New Button and new Dialog ***********************/    
@@ -656,13 +677,20 @@ require([
     
     function resetDishFn() { //Need to reset all settings to @default
       newrun = true;
+      //set run/stop and drop down menu to the 'stopped' state
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);
       document.getElementById("runStopButton").innerHTML="Run";
+      //set configuation to default
       ConfigCurrent.selectAll().deleteSelectedNodes();  
       ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
       ConfigCurrent.sync();
-      
+      //clear the time series graphs
+      ave_fitness = {};
+      ave_gestation_time = {};
+      ave_metabolic_rate = {};
+      population_size = {};
+
       //reset values in population  settings either based on a 'file' @default or a @default string
       writeSettings();
     }
@@ -845,10 +873,16 @@ require([
     /* --------------------------------------------------------------- */
     
     //need to get the next two values from real data. 
-    var popY = [1, 1, 1, 2, 2, 2, 4, 4, 4, 8,8,8,14,15,16,16,16,24,24,25,26,36,36,36,48,48];
-    var ytitle = "Number of Organisms";
+    //var popY = [1, 1, 1, 2, 2, 2, 4, 4, 4, 8,8,8,14,15,16,16,16,24,24,25,26,36,36,36,48,48]; /
+    var popY = [];
+    var ytitle = dijit.byId("yaxis").value;
     var popChart = new Chart("popChart");
     function popChartFn(){
+      if ("Average Fitness" == dijit.byId("yaxis").value) {popY = ave_fitness;}
+      else if ("Average Fitness" == dijit.byId("yaxis").value) {popY = ave_fitness;}
+      else if ("Average Gestation Time" == dijit.byId("yaxis").value) {popY = ave_gestation_time;}
+      else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {popY = ave_metabolic_rate;}
+      else if ("Number of Organisms" == dijit.byId("yaxis").value) {popY = population_size;}
       popChart.addPlot("default", {type: "Lines"});
       popChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away', titleGap: 2,
                              titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"});
@@ -950,6 +984,11 @@ require([
     }
 
     function drawGenome(){
+      var wide = $("#organismCanvasHolder").innerWidth();
+      var high = $("#organismCanvasHolder").innerHeight();
+      console.log("xy  ", wide, high);
+      OrgCanvas.width = 700;
+      OrgCanvas.height = 300;
       //Get DNA sequence - hard coded for now
       //         12345678911234567892123456789312345678941234567895
       var dna = "wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab"
@@ -1006,6 +1045,9 @@ require([
     dijit.byId("orgReset").on("Click", function(){
       dijit.byId("orgCycle").set("value", 0);
       document.getElementById("organCycle").innerHTML = "0"
+    });
+
+    dijit.byId("orgRun").on("Click", function(){
     });
 
     dijit.byId("orgEnd").on("Click", function() {
