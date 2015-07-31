@@ -41,7 +41,8 @@ require([
   "dojox/charting/axis2d/Default", 
   "dojox/charting/plot2d/Lines",
   "dojox/charting/plot2d/Grid", 
-  "dojox/charting/Theme",
+//  "dojox/charting/Theme",
+  "dojox/charting/themes/Wetland",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -51,7 +52,7 @@ require([
               Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
               aspect, on, registry, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, Theme, ready, $, jqueryui){
+              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, Wetland, ready, $, jqueryui){
 
     parser.parse();
     var uiWorker = new Worker('ui-test.js');
@@ -900,8 +901,8 @@ require([
     var popY = [];
     var ytitle = dijit.byId("yaxis").value;
     var popChart = new Chart("popChart");
-    //var myTheme = dojox.charting.themes.PlotKit.blue; // Or any other theme
-    //myTheme.axis.majorTick.color = "green";
+    var myTheme = Wetland; // Or any other theme
+    myTheme.axis.majorTick.color = "#CCC";
     //myTheme.axis.minorTick.color = "red";
     
     function popChartFn(){
