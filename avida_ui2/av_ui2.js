@@ -39,7 +39,9 @@ require([
   "dijit/form/Textarea",
   "dojox/charting/Chart", 
   "dojox/charting/axis2d/Default", 
-  "dojox/charting/plot2d/Lines", 
+  "dojox/charting/plot2d/Lines",
+  "dojox/charting/plot2d/Grid", 
+  "dojox/charting/Theme",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -49,7 +51,7 @@ require([
               Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
               aspect, on, registry, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, ready, $, jqueryui){
+              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, Theme, ready, $, jqueryui){
 
     parser.parse();
     var uiWorker = new Worker('ui-test.js');
@@ -493,6 +495,8 @@ require([
         popStatFlag = false;
         registry.byId("popRight").domNode.style.width = "1px";
         registry.byId("mainBC").layout();  
+        dijit.byId("popRight").set("style", "display: block; visibility: visible;");
+
       }
       else {
         console.log("show stats");
@@ -500,6 +504,8 @@ require([
         registry.byId("selectOrganPane").domNode.style.width = "150px";
         registry.byId("popRight").domNode.style.width = "395px";
         registry.byId("mainBC").layout();  
+        dijit.byId("popRight").set("style", "display: block; visibility: visible;");
+
       }
     };
 
@@ -591,15 +597,21 @@ require([
 
     uiWorker.onmessage = function(ee){
       var dataObj = ee.data;
-      //console.log(dataObj);
-      //Avida is running; update population stats
-      if (dataObj["Key"] == "PopulationStats") {
-        document.getElementById("TimeLabel").textContent = dataObj["core.update"];
-        document.getElementById("popSizeLabel").textContent = dataObj["core.world.organisms"];
-        document.getElementById("aFitLabel").textContent = dataObj["core.world.ave_fitness"];
-        document.getElementById("aMetabolicLabel").textContent = dataObj["core.world.ave_metabolic_rate"];
-        document.getElementById("aGestateLabel").textContent = dataObj["core.world.ave_gestation_time"];
-        document.getElementById("aAgeLabel").textContent = dataObj["core.world.ave_age"];
+      console.log(dataObj);
+      //If Avida is running; update population stats
+      if ("PopulationStats" == dataObj["Key"]) { updatePopStats(dataObj)}
+      else if ("RunPause" == dataObj["Key"]) {
+        if (true != dataObj["success"]) {console.log("Error: ", dataObj);}
+      }
+    }
+
+    function updatePopStats(dataObj){
+        document.getElementById("TimeLabel").textContent = dataObj["core.update"].formatNum(0);
+        document.getElementById("popSizeLabel").textContent = dataObj["core.world.organisms"].formatNum(0);
+        document.getElementById("aFitLabel").textContent = dataObj["core.world.ave_fitness"].formatNum(2);
+        document.getElementById("aMetabolicLabel").textContent = dataObj["core.world.ave_metabolic_rate"].formatNum(1);
+        document.getElementById("aGestateLabel").textContent = dataObj["core.world.ave_gestation_time"].formatNum(1);
+        document.getElementById("aAgeLabel").textContent = dataObj["core.world.ave_age"].formatNum(2);
         document.getElementById("notPop").textContent = dataObj["core.environment.triggers.not.test_organisms"];
         document.getElementById("nanPop").textContent = dataObj["core.environment.triggers.nand.test_organisms"];
         document.getElementById("andPop").textContent = dataObj["core.environment.triggers.and.test_organisms"];
@@ -615,8 +627,19 @@ require([
         ave_metabolic_rate.push(dataObj["core.world.ave_metabolic_rate"]);
         population_size.push(dataObj["core.world.organisms"]);
         popChartFn();
-      }
     }
+    
+    //from http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
+    Number.prototype.formatNum = function(c, d, t){
+    var n = this, 
+        c = isNaN(c = Math.abs(c)) ? 2 : c, 
+        d = d == undefined ? "." : d, 
+        t = t == undefined ? "," : t, 
+        s = n < 0 ? "-" : "", 
+        i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
+        j = (j = i.length) > 3 ? j % 3 : 0;
+       return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+     };
 
     //process the run/Stop Button
     document.getElementById("runStopButton").onclick = function(){
@@ -877,22 +900,27 @@ require([
     var popY = [];
     var ytitle = dijit.byId("yaxis").value;
     var popChart = new Chart("popChart");
+    //var myTheme = dojox.charting.themes.PlotKit.blue; // Or any other theme
+    //myTheme.axis.majorTick.color = "green";
+    //myTheme.axis.minorTick.color = "red";
+    
     function popChartFn(){
       if ("Average Fitness" == dijit.byId("yaxis").value) {popY = ave_fitness;}
       else if ("Average Fitness" == dijit.byId("yaxis").value) {popY = ave_fitness;}
       else if ("Average Gestation Time" == dijit.byId("yaxis").value) {popY = ave_gestation_time;}
       else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {popY = ave_metabolic_rate;}
       else if ("Number of Organisms" == dijit.byId("yaxis").value) {popY = population_size;}
+      //popChart.setTheme(myTheme);
       popChart.addPlot("default", {type: "Lines"});
+      popChart.addPlot("grid",{type:"Grid",hMinorLines:false});
       popChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away', titleGap: 2,
                              titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"});
-      popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
+      //popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
+      popChart.addAxis("y", {vertical: true, 
                     fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,});
-      popChart.addSeries("Series y", popY, {stroke: {color:"blue", width: .5}});   
+      popChart.addSeries("Series y", popY, {stroke: {color:"blue", width: 2}});   
       popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w-10, 
                     domGeometry.position(document.getElementById("popChartHolder")).h-15);
-      //console.log("chartOneafter", document.getElementById("chartOne"));
-      //console.log("chartHoldAfter", dijit.byId("chartHolder"));
       popChart.render();
     };
     popChartFn();
@@ -913,6 +941,7 @@ require([
       OrganSetupDialog.show();
     }
     
+    //process button to hide or show Organism detail panal. 
     var DetailsFlag = true;
     document.getElementById("OrgDetailsButton").onclick = function(){
       if (DetailsFlag) {
@@ -1107,10 +1136,9 @@ require([
     var color2 = dictColor[dijit.byId("pop2color").value];
     var color3 = dictColor[dijit.byId("pop3color").value]; 
     var y1title = "Average Fitness";
-    var y2title = 'Average Gestation Time'
-    //var chart1 = new Chart("chartOne",{title: "Avida Traits"});
-        
+    var y2title = 'Average Gestation Time'        
     var chart1 = new Chart("chartOne");
+
     function AnaChart(){
       chart1.addPlot("default", {type: "Lines"});
       chart1.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
@@ -1118,12 +1146,6 @@ require([
       chart1.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
       chart1.addAxis("other x", {leftBottom: false});
       chart1.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
-      //console.log("pop1a: ", pop1a);
-      //console.log("pop2a: ", pop2a);
-      //console.log("pop3a: ", pop3a);
-      //console.log("pop1b: ", pop1b);
-      //console.log("pop2b: ", pop2b);
-      //console.log("pop3b: ", pop3b);
       chart1.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});   
       chart1.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
       chart1.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
@@ -1134,8 +1156,6 @@ require([
       
       chart1.resize(domGeometry.position(document.getElementById("chartHolder")).w-10, 
                     domGeometry.position(document.getElementById("chartHolder")).h-15);
-      //console.log("chartOneafter", document.getElementById("chartOne"));
-      //console.log("chartHoldAfter", dijit.byId("chartHolder"));
       chart1.render();
     };
     
