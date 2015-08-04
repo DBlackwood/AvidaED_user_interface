@@ -915,8 +915,9 @@ require([
     var popY = [];
     var ytitle = dijit.byId("yaxis").value;
     var popChart = new Chart("popChart");
+    // use theme to change grid color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
     var myTheme = Wetland; // Or any other theme
-    myTheme.axis.majorTick.color = "#CCC";
+    myTheme.axis.majorTick.color = "#CCC";  //grey
     //myTheme.axis.minorTick.color = "red";
     
     function popChartFn(){
@@ -1035,7 +1036,88 @@ require([
         //console.log("x, y: ", bx1, by1);
       }
     }
+    
+    function drawInstructionPointer(gen, spot) {
+      var ix, iy;  //center of instruction pointer
+      //draw circumference around instruction that the instruction pointer points to. 
+      ix = gen.cx1 + gen.bigR*Math.cos(spot*2*Math.PI/gen.size);
+      iy = gen.cy1 + gen.bigR*Math.sin(spot*2*Math.PI/gen.size);
+      ctx.beginPath();
+      ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
+      ctx.strokeStyle = dictColor["Black"];
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      //draw instruction pointer tangent to instruction
+      ix = gen.cx1 + gen.headR*Math.cos(spot*2*Math.PI/gen.size);
+      iy = gen.cy1 + gen.headR*Math.sin(spot*2*Math.PI/gen.size);
+      ctx.beginPath();
+      ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
+      console.log("HeadFill ", orgColorCodes["headFill"]);
+      ctx.fillStyle = orgColorCodes["headFill"];
+      ctx.fill();
+      ctx.fillStyle = dictColor["Black"];
+      ctx.font = gen.fontsize+"px Arial";
+      ctx.fillText("I",ix-gen.smallR/3, iy+gen.smallR/2);      
+    }
 
+    function drawHead(gen, spot, head) {
+      var hx, hy;
+      //draw instruction pointer tangent to instruction
+      hx = gen.cx1 + gen.headR*Math.cos(spot*2*Math.PI/gen.size);
+      hy = gen.cy1 + gen.headR*Math.sin(spot*2*Math.PI/gen.size);
+      ctx.beginPath();
+      ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
+      console.log("HeadFill ", orgColorCodes["headFill"]);
+      ctx.fillStyle = orgColorCodes["headFill"];
+      ctx.fill();
+      ctx.fillStyle = orgColorCodes[head];
+      ctx.font = gen.fontsize+"px Arial";
+      ctx.fillText(headCodes[head],hx-gen.smallR/2, hy+gen.smallR/2);      
+    }
+    
+    //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
+    function drawArc1(gen, spot1, spot2, rep){ 
+      var xx1, yy1, xx2, yy2, xxc, yyc; 
+      ctx.lineWidth = 1;
+      if (0 < spot2 - spot1) {
+        ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+      } else { ctx.strokeStyle = dictColor["Red"];}
+      ctx.beginPath();
+      xx1 = gen.cx1 + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size); //Draw line from Spot1
+      yy1 = gen.cy1 + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size);  
+      ctx.moveTo(xx1, yy1);
+      xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
+      yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
+      //Set Control point on line perpendicular to line between Spot1 & spot2
+      gen.pathR = gen.bigR-(2+rep)*gen.smallR;
+      xxc = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);  
+      yyc = gen.cy1 + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);
+      ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
+      ctx.stroke();
+    }
+    
+    //Draw arc using Bézier curve and two control points http://www.w3schools.com/tags/canvas_beziercurveto.asp
+    function drawArc2(gen, spot1, spot2, rep){ //draw an arc
+      var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2; 
+      ctx.lineWidth = 1;
+      if (0 < spot2 - spot1) {
+        ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+      } else { ctx.strokeStyle = dictColor["Red"];}
+      ctx.beginPath();
+      xx1 = gen.cx1 + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size); //Draw line from Spot1
+      yy1 = gen.cy1 + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size);  
+      ctx.moveTo(xx1, yy1);
+      xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
+      yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
+      //Set Control points on same radial as the spots
+      gen.pathR = gen.bigR-(1+rep)*gen.smallR;
+      xc1 = gen.cx1 + gen.pathR*Math.cos(spot1*2*Math.PI/gen.size);  
+      yc1 = gen.cy1 + gen.pathR*Math.sin(spot1*2*Math.PI/gen.size);
+      xc2 = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size);  
+      yc2 = gen.cy1 + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size);
+      ctx.bezierCurveTo(xc1, yc1, xc2, yc2, xx2, yy2);
+      ctx.stroke();
+    }
     function drawGenome(organismName){
       var wide = $("#organismCanvasHolder").innerWidth();
       var high = $("#organismCanvasHolder").innerHeight();
@@ -1069,27 +1151,29 @@ require([
       console.log("smallR ", gen.smallR, "; fontsize ", gen.fontsize);
 
       genomeCircle(gen);
-
-      //draw an arc
-      var xx1, yy1, xx2, yy2, xxc, yyc; 
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
-      ctx.beginPath();
-      xx1 = gen.cx1 + gen.tanR*Math.cos(0); yy1 = gen.cy1+gen.tanR*Math.sin(0);  //first instruction
-      ctx.moveTo(xx1, yy1);
-      //ctx.moveTo(50, 10);
-      xx2 = gen.cx1 + gen.tanR*Math.cos(2*Math.PI/50); 
-      yy2 = gen.cy1 + gen.tanR*Math.sin(2*Math.PI/50);  //second instruction
-      xxc = gen.cx1 + gen.pathR*Math.cos((0*2*Math.PI+Math.PI)/50);
-      yyc = gen.cy1 + gen.pathR*Math.sin((0*2*Math.PI+Math.PI)/50);
-      ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
-      //ctx.quadraticCurveTo(100, 100, 150, 10);
-      ctx.stroke();
+      //drawArc(gen, spot1, spot2, rep)
+      drawArc2(gen,  0,  1, 1);
+      drawArc2(gen,  1,  4, 1);
+      drawArc1(gen,  4,  6, 1);
+      drawArc1(gen,  6,  7, 1);
+      drawArc1(gen,  7,  8, 1);
+      drawArc2(gen,  8,  9, 1);
+      drawArc2(gen,  9, 10, 1);
+      drawArc2(gen, 10, 11, 1);
+      //drawIP at position 11 
+      drawInstructionPointer(gen, 11);
+      //drawHead(gen, spot, head)
+      drawHead(gen, 0, "Read");
       
-      //drawIP
+      
+      
       
         //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
     }
+
+    /* ****************************************************************/
+    /*                  End of Canvas to draw genome
+    /* ************************************************************** */
 
     /* **** Controls bottum of page ***********************************/
     /* Organism Gestation Length Slider */
@@ -1284,7 +1368,39 @@ require([
     orgColorCodes["mutate"] = "#00FF00"; //color Meter green
     orgColorCodes["start"] = "#5300FF"; //color Meter blue
     orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
-    orgColorCodes["headFill"] = "#DDDDDD"; //color Meter grey
+    orgColorCodes["headFill"] = "#CCCCCC"; //color Meter grey
     orgColorCodes["Write"] = "#FA0022"; //color Meter  red
-
+    orgColorCodes["Read"] = "#5300FF"; //color Meter  red
+    orgColorCodes["Flow"] = "#00FF00"; //color Meter  red
+    var headCodes = {};
+    headCodes["Read"] = "R";
+    headCodes["Write"] = "W";
+    headCodes["Flow"] = "F";
+    var InstDescribe = {};
+    InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    InstDescribe["c"]="nop-C is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    InstDescribe["d"]="if-n-equ: This instruction compares the BX register to its complement. If they are not equal, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If they are equal, that next instruction is skipped.";
+    InstDescribe["e"]="if-less: This instruction compares the BX register to its complement. If BX is the lesser of the pair, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If it is greater or equal, then that next instruction is skipped.";
+    InstDescribe["f"]="if-label: This instruction reads in the template that follows it, and tests if its complement template was the most recent series of instructions copied. If so, it executed the next instruction, otherwise it skips it. This instruction is commonly used for an organism to determine when it has finished producing its offspring.";
+    InstDescribe["g"]="mov-head: This instruction will cause the IP to jump to the position in memory of the flow-head.";
+    InstDescribe["h"]="jmp-head: This instruction will read in the value of the CX register, and the move the IP by that fixed amount through the organism's memory.";
+    InstDescribe["i"]="get-head: This instruction will copy the position of the IP into the CX register.";
+    InstDescribe["j"]="set-flow: This instruction moves the flow-head to the memory position denoted in the CX register.";
+    InstDescribe["k"]="shift-r: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the right by one. In effect, it divides the value stored in the register by two, rounding down.";
+    InstDescribe["l"]="shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.";
+    InstDescribe["m"]="inc: This instruction reads in the content of the BX register and increments it by one.";
+    InstDescribe["n"]="dec: This instruction reads in the content of the BX register and decrements it by one.";
+    InstDescribe["o"]="pop: This instruction removes the top element from the active stack, and places it into the BX register.";
+    InstDescribe["p"]="push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.";
+    InstDescribe["q"]="swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.";
+    InstDescribe["r"]="swap: This instruction swaps the contents of the BX register with its complement.";
+    InstDescribe["s"]="add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.";
+    InstDescribe["t"]="sub: This instruction reads in the contents of the BX and CX registers and subtracts CX from BX (respectively). The result of this operation is then placed in the BX register.";
+    InstDescribe["u"]="nand: This instruction reads in the contents of the BX and CX registers (each of which are 32-bit numbers) and performs a bitwise nand operation on them. The result of this operation is placed in the BX register. Note that this is the only logic operation provided in the basic avida instruction set.";
+    InstDescribe["v"]="h-copy: This instruction reads the contents of the organism's memory at the position of the read-head, and copy that to the position of the write-head. If a non-zero copy mutation rate is set, a test will be made based on this probability to determine if a mutation occurs. If so, a random instruction (chosen from the full set with equal probability) will be placed at the write-head instead.";
+    InstDescribe["w"]="h-alloc: This instruction allocates additional memory for the organism up to the maximum it is allowed to use for its offspring.";
+    InstDescribe["x"]="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
+    InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
+    InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
   });
