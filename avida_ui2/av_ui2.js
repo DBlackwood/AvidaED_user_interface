@@ -82,7 +82,8 @@ require([
     HardwareDialog = new Dialog({
       title: "Avida : A Guided Tour of an Ancestor and its Hardware",
       id: "HardwareDialog",
-      href: "cpu_tour.html",
+      href: "cpu_tour.html"
+      //hide: function() {HardwareDialog.destroy()}
       //style: "width: 600px; height: 400px"
     });
     
@@ -91,6 +92,16 @@ require([
     });
     
     dijit.byId("Hardware").on("Click", function(){ 
+      if (!HardwareDialog) {
+        HardwareDialog = new Dialog({
+          title: "Avida : A Guided Tour of an Ancestor and its Hardware",
+          id: "HardwareDialog",
+          href: "cpu_tour.html"
+          //hide: function() {HardwareDialog.destroy()}
+          //style: "width: 600px; height: 400px"
+        });
+      }
+      console.log(HardwareDialog);
       HardwareDialog.show();
     });
 
@@ -208,7 +219,7 @@ require([
         });
         OrganCurrent.sync();   //
       }
-      drawGenome();
+      drawGenome(OrganCurrent.node.textContent);  // Draw the initial genome of the dropped organism. 
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
 
@@ -500,7 +511,6 @@ require([
 
       }
       else {
-        console.log("show stats");
         popStatFlag = true;
         registry.byId("selectOrganPane").domNode.style.width = "150px";
         registry.byId("popRight").domNode.style.width = "395px";
@@ -521,6 +531,7 @@ require([
     dijit.byId("mnPause").attr("disabled", true);
     
     function runPopFn(){
+      //check for ancestor organism in configuration data
       var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
       if (1>namelist.length){
         document.getElementById("runStopButton").innerHTML="Run";
@@ -597,12 +608,15 @@ require([
     //console.log("str ", DataManJson);
 
     uiWorker.onmessage = function(ee){
-      var dataObj = ee.data;
-      console.log(dataObj);
+      var dataObj = ee.data;  //passed as object rather than string so JSON.parse is not needed.
+      //console.log(dataObj);
       //If Avida is running; update population stats
       if ("PopulationStats" == dataObj["Key"]) { updatePopStats(dataObj)}
       else if ("RunPause" == dataObj["Key"]) {
-        if (true != dataObj["success"]) {console.log("Error: ", dataObj);}
+        if (true != dataObj["success"]) {
+          console.log("Error: ", dataObj);
+          runStopFn();
+        }
       }
     }
 
@@ -642,9 +656,9 @@ require([
        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
      };
 
-    //process the run/Stop Button
-    document.getElementById("runStopButton").onclick = function(){
-      //console.log("newrun=", newrun);
+    //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful. 
+    document.getElementById("runStopButton").onclick = function(){runStopFn()}
+    function runStopFn(){
       if ("Run"==document.getElementById("runStopButton").innerHTML) {
         document.getElementById("runStopButton").innerHTML="Pause";
         dijit.byId("mnPause").attr("disabled", false);
@@ -710,11 +724,11 @@ require([
       ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
       ConfigCurrent.sync();
       //clear the time series graphs
-      ave_fitness = {};
-      ave_gestation_time = {};
-      ave_metabolic_rate = {};
-      population_size = {};
-
+      ave_fitness = [];
+      ave_gestation_time = [];
+      ave_metabolic_rate = [];
+      population_size = [];
+      popChartFn();
       //reset values in population  settings either based on a 'file' @default or a @default string
       writeSettings();
     }
@@ -946,14 +960,12 @@ require([
     var DetailsFlag = true;
     document.getElementById("OrgDetailsButton").onclick = function(){
       if (DetailsFlag) {
-        console.log("DetailsFlag ", DetailsFlag);
         DetailsFlag = false;
         dijit.byId("rightDetail").set("style", "display: none;");
         registry.byId("rightDetail").domNode.style.width = "1px";
         registry.byId("mainBC").layout();  
       }
       else {
-        console.log("DetailsFlag = ", DetailsFlag);
         DetailsFlag = true;
         dijit.byId("rightDetail").set("style", "display: block; visibility: visible;");
         registry.byId("rightDetail").domNode.style.width = "180px";
@@ -995,57 +1007,81 @@ require([
 
     var OrgCanvas = document.getElementById("organismCanvas");
     var ctx = OrgCanvas.getContext("2d");
+    var gen = {};
+    gen.bigR = 120; //radius of full circle
+    gen.smallR = gen.bigR*2*Math.PI/(2*gen.size); //radius of each small circle
+    gen.tanR = gen.bigR-gen.smallR;         //radius of circle tanget to inside of small circles
+    gen.pathR = gen.bigR-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
+    gen.headR = gen.bigR-2*gen.smallR;      //radius of circle made by center of head positions.
+    gen.cx1 = 150;  //center of main circle x
+    gen.cy1 = 150;  //center of main circle y
+    gen.fontsize = Math.round(1.8*gen.smallR);
+    gen.dna = "";
+    gen.size = 50;
 
-    function genomeCircle(dna, bigR, smallR, cx1, cy1){
+    function genomeCircle(gen){
       var bx1, by1;  //center of small circle
-      for (var ii = 0; ii < dna.length; ii++){
-        bx1 = cx1 + bigR*Math.cos(ii*2*Math.PI/50);
-        by1 = cy1 + bigR*Math.sin(ii*2*Math.PI/50);
+      for (var ii = 0; ii < gen.dna.length; ii++){
+        bx1 = gen.cx1 + gen.bigR*Math.cos(ii*2*Math.PI/gen.size);
+        by1 = gen.cy1 + gen.bigR*Math.sin(ii*2*Math.PI/gen.size);
         ctx.beginPath();
-        ctx.arc(bx1, by1, smallR, 0, 2*Math.PI);
+        ctx.arc(bx1, by1, gen.smallR, 0, 2*Math.PI);
         //ctx.stroke();  //required to render stroke
-        ctx.fillStyle = letterColor[dna.substr(ii,1)];
+        ctx.fillStyle = letterColor[gen.dna.substr(ii,1)];
         ctx.fill();   //required to render fill
         ctx.fillStyle = dictColor["Black"];
-        ctx.font = "12px Arial";
-        ctx.fillText(dna.substr(ii,1),bx1-smallR/2, by1+smallR/2);
+        ctx.font = gen.fontsize+"px Arial";
+        ctx.fillText(gen.dna.substr(ii,1),bx1-gen.smallR/2, by1+gen.smallR/2);
         //console.log("x, y: ", bx1, by1);
       }
     }
 
-    function drawGenome(){
+    function drawGenome(organismName){
       var wide = $("#organismCanvasHolder").innerWidth();
       var high = $("#organismCanvasHolder").innerHeight();
       console.log("xy  ", wide, high);
-      OrgCanvas.width = 700;
-      OrgCanvas.height = 300;
+      OrgCanvas.width = wide-10;
+      OrgCanvas.height = high-10;
       //Get DNA sequence - hard coded for now
-      //         12345678911234567892123456789312345678941234567895
-      var dna = "wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab"
-      var bigR = 120; //radius of full circle
-      var smallR = bigR*2*Math.PI/100; //radius of each small circle
-      var tanR = bigR-smallR;
-      var acrR = bigR-3*smallR;
-      var headR = bigR-2*smallR;
-      console.log("smallR ", smallR);
-      var cx1 = 150;  //center of main circle x
-      var cy1 = 150;  //center of main circle y
-      var xx1, yy1, xx2, yy2, xxc, yyc; 
-        //ctx.font = "10px Arial";
-        //ctx.fillText(dna.substr(1,1),150, 150);
-      genomeCircle(dna, bigR, smallR, cx1, cy1);
+      if ("@ancestor" == organismName) {
+        //         12345678911234567892123456789312345678941234567895
+        gen.dna = "wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab"
+      } else if ("m2u8000Nand" == organismName) {  
+        //         12345678911234567892123456789312345678941234567895
+        gen.dna = "wzcagckchsdctcbqkwicclsdycygcubemcccqyjcizvfcaxgab"
+      } else if ("m2u8000Not" == organismName) { 
+        //         12345678911234567892123456789312345678941234567895
+        gen.dna = "wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab"
+      }
+      //Find size and position of circle. 
+      if (OrgCanvas.height < .45*OrgCanvas.width) {gen.bigR = Math.round(0.4*OrgCanvas.height) }//set size based on height
+      else {
+        gen.bigR = Math.round(0.2*OrgCanvas.width) //set size based on width
+        console.log("w ", gen.bigR);
+      }
+      gen.smallR = gen.bigR*2*Math.PI/(2*gen.size); //radius of each small circle
+      gen.tanR = gen.bigR-gen.smallR;         //radius of circle tanget to inside of small circles
+      gen.pathR = gen.bigR-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
+      gen.headR = gen.bigR-2*gen.smallR;      //radius of circle made by center of head positions.
+      gen.cx1 = 1.2*gen.bigR;  //center of main circle x
+      gen.cy1 = .5*OrgCanvas.height;  //center of main circle y
+      gen.fontsize = Math.round(1.8*gen.smallR);
+      console.log("smallR ", gen.smallR, "; fontsize ", gen.fontsize);
+
+      genomeCircle(gen);
 
       //draw an arc
+      var xx1, yy1, xx2, yy2, xxc, yyc; 
       ctx.lineWidth = 1;
       ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
       ctx.beginPath();
-      xx1 = cx1 + tanR*Math.cos(0); yy1 = cy1+tanR*Math.sin(0);  //first instruction
+      xx1 = gen.cx1 + gen.tanR*Math.cos(0); yy1 = gen.cy1+gen.tanR*Math.sin(0);  //first instruction
       ctx.moveTo(xx1, yy1);
       //ctx.moveTo(50, 10);
-      xx2 = cx1 + tanR*Math.cos(2*Math.PI/50); 
-      yy2 = cy1 + tanR*Math.sin(2*Math.PI/50);  //second instruction
-      xxc = cx1 + acrR*Math.cos((0*2*Math.PI+Math.PI)/50);
-      yyc = cy1 + acrR*Math.sin((0*2*Math.PI+Math.PI)/50);
+      xx2 = gen.cx1 + gen.tanR*Math.cos(2*Math.PI/50); 
+      yy2 = gen.cy1 + gen.tanR*Math.sin(2*Math.PI/50);  //second instruction
+      xxc = gen.cx1 + gen.pathR*Math.cos((0*2*Math.PI+Math.PI)/50);
+      yyc = gen.cy1 + gen.pathR*Math.sin((0*2*Math.PI+Math.PI)/50);
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       //ctx.quadraticCurveTo(100, 100, 150, 10);
       ctx.stroke();
