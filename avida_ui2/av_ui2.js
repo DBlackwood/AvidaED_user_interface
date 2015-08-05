@@ -41,6 +41,7 @@ require([
   "dojox/charting/axis2d/Default", 
   "dojox/charting/plot2d/Lines",
   "dojox/charting/plot2d/Grid", 
+  "dojox/charting/action2d/MouseZoomAndPan",
 //  "dojox/charting/Theme",
   "dojox/charting/themes/Wetland",
   "dojo/ready",
@@ -52,7 +53,7 @@ require([
               Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
               aspect, on, registry, Select,
               HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, Wetland, ready, $, jqueryui){
+              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, ready, $, jqueryui){
 
     parser.parse();
     var uiWorker = new Worker('ui-test.js');
@@ -60,7 +61,7 @@ require([
     // Resize window helpers -------------------------------------------
     // called from script in html file as well as below
     BrowserResizeEventHandler=function(){
-      if ("block"==domStyle.get("analysisBlock","display")){AnaChart();};
+      if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
       //update size of circular genome when size of holder changed. This needs more work when slider works.
       if ("block"==domStyle.get("organismBlock","display")){drawGenome(OrganCurrent.node.textContent);};  //does not work
@@ -384,17 +385,17 @@ require([
         if (source.node.id =="pop1name"){
           pop1a = [];       //remove lines from population 1
           pop1b = [];
-          AnaChart();
+          AnaChartFn();
         }
         if (source.node.id =="pop2name"){
           pop2a = [];       //remove lines from population 2
           pop2b = [];
-          AnaChart();
+          AnaChartFn();
         }
         if (source.node.id =="pop3name"){
           pop3a = [];       //remove lines from population 3
           pop3b = [];
-          AnaChart();
+          AnaChartFn();
         }
       });
 
@@ -425,7 +426,7 @@ require([
       //this works for demo purposes only. We will be using textContent rather than data
       pop1a = dictPlota[items[0].data];
       pop1b = dictPlotb[items[0].data];
-      AnaChart();
+      AnaChartFn();
     };
     dojo.connect(graphPop1, "onDrop", graphPop1Change);
 
@@ -445,7 +446,7 @@ require([
       //this works for demo purposes only. We will be using textContent rather than data
       pop2a = dictPlota[items[0].data];
       pop2b = dictPlotb[items[0].data];
-      AnaChart();
+      AnaChartFn();
     };
     dojo.connect(graphPop2, "onDrop", graphPop2Change);
 
@@ -464,7 +465,7 @@ require([
       console.log("textcontent ", graphPop3.node.textContent);  //use to get textContent which is what will be paired with actual data
       pop3a = dictPlota[items[0].data];
       pop3b = dictPlotb[items[0].data];
-      AnaChart();
+      AnaChartFn();
     };
     dojo.connect(graphPop3, "onDrop", graphPop3Change);
 
@@ -919,9 +920,11 @@ require([
     var popY = [];
     var ytitle = dijit.byId("yaxis").value;
     var popChart = new Chart("popChart");
-    // use theme to change grid color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
-    var myTheme = Wetland; // Or any other theme
-    myTheme.axis.majorTick.color = "#CCC";  //grey
+    
+    //use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
+    //this required the use of a theme, but I'm no longer using the theme. Could take 'Wetland' out of require statemet as long a this is not used
+    //var myTheme = Wetland; // Or any other theme
+    //myTheme.axis.majorTick.color = "#CCC";  //grey
     //myTheme.axis.minorTick.color = "red";
     
     function popChartFn(){
@@ -932,7 +935,11 @@ require([
       else if ("Number of Organisms" == dijit.byId("yaxis").value) {popY = population_size;}
       //popChart.setTheme(myTheme);
       popChart.addPlot("default", {type: "Lines"});
-      popChart.addPlot("grid",{type:"Grid",hMinorLines:false});
+      //popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
+      // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
+      popChart.addPlot("grid", {type:Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1}, 
+                                          vMajorLines: true, majorVLine: {color: "#CCC", width: 1}});
+
       popChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away', titleGap: 2,
                              titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"});
       //popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
@@ -1230,26 +1237,35 @@ require([
     var color3 = dictColor[dijit.byId("pop3color").value]; 
     var y1title = "Average Fitness";
     var y2title = 'Average Gestation Time'        
-    var chart1 = new Chart("chartOne");
+    var anaChart = new Chart("analyzeChart");
 
-    function AnaChart(){
-      chart1.addPlot("default", {type: "Lines"});
-      chart1.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
-      chart1.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
-      chart1.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
-      chart1.addAxis("other x", {leftBottom: false});
-      chart1.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
-      chart1.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});   
-      chart1.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
-      chart1.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
-      chart1.addSeries("Series 1b", pop1b, {plot: "other", stroke: {color:color1, width: .3}});
-      chart1.addSeries("Series 2b", pop2b, {plot: "other", stroke: {color:color2, width: .3}});
-      chart1.addSeries("Series 3b", pop3b, {plot: "other", stroke: {color:color3, width: .3}});
-      //console.log(domGeometry.position(document.getElementById("chartOne")).w);
+    function AnaChartFn(){
+      anaChart.addPlot("default", {type: "Lines"});
+      anaChart.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
+      //grid line info on https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
+      anaChart.addPlot("grid", {type:Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1}, 
+                                          vMajorLines: true, majorVLine: {color: "#CCC", width: 1}});
+      anaChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
+      anaChart.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
+      anaChart.addAxis("other x", {leftBottom: false});
+      anaChart.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
+      anaChart.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});   
+      anaChart.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
+      anaChart.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
+      anaChart.addSeries("Series 1b", pop1b, {plot: "other", stroke: {color:color1, width: .3}});
+      anaChart.addSeries("Series 2b", pop2b, {plot: "other", stroke: {color:color2, width: .3}});
+      anaChart.addSeries("Series 3b", pop3b, {plot: "other", stroke: {color:color3, width: .3}});
       
-      chart1.resize(domGeometry.position(document.getElementById("chartHolder")).w-10, 
+      anaChart.resize(domGeometry.position(document.getElementById("chartHolder")).w-10, 
                     domGeometry.position(document.getElementById("chartHolder")).h-15);
-      chart1.render();
+
+      //This seems to only work for the primary axis;
+      //var dZoom = new MouseZoomAndPan(anaChart, "default");
+      //var oZoom = new MouseZoomAndPan(anaChart, "other");  //appears to have no effect.
+      
+      //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different method using a window.
+
+      anaChart.render();
     };
     
     /* Chart buttons ****************************************/
@@ -1257,44 +1273,44 @@ require([
       graphPop1.selectAll().deleteSelectedNodes();
       pop1a = [];
       pop1b = [];
-      AnaChart();
+      AnaChartFn();
     }
     document.getElementById("pop2delete").onclick = function(){ 
       pop2a = [];
       pop2b = [];
-      AnaChart();
+      AnaChartFn();
       graphPop2.selectAll().deleteSelectedNodes();
     }
     document.getElementById("pop3delete").onclick = function(){ 
       pop3a = [];
       pop3b = [];
-      AnaChart();
+      AnaChartFn();
       graphPop3.selectAll().deleteSelectedNodes();
     }
     dijit.byId("pop1color").on("Change", function(){
       color1 = dictColor[dijit.byId("pop1color").value];
-      AnaChart();
+      AnaChartFn();
     });
     dijit.byId("pop2color").on("Change", function(){
       color2 = dictColor[dijit.byId("pop2color").value];
-      AnaChart();
+      AnaChartFn();
     });
     dijit.byId("pop3color").on("Change", function(){
       color3 = dictColor[dijit.byId("pop3color").value];
-      AnaChart();
+      AnaChartFn();
     });
     
     //Set Y-axis title and choose the correct array to plot
     dijit.byId("y1select").on("Change", function(){
       y1title = dijit.byId("y1select").value;
       //need to get correct array to plot from freezer
-      AnaChart();
+      AnaChartFn();
     });
 
     dijit.byId("y2select").on("Change", function(){
       y2title = dijit.byId("y2select").value;
       //need to get correct array to plot from freezer
-      AnaChart();
+      AnaChartFn();
     });
 
 
