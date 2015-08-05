@@ -583,6 +583,7 @@ require([
     }
  
     //sends message to worker to tell Avida to run/pause as a toggle. 
+    //uiWorker function
     function doRunPause() {
        var request = {
           'Key':'RunPause'
@@ -718,8 +719,18 @@ require([
     document.getElementById("newDishButton").onclick = function(){newButtonBoth()};
     dijit.byId("mnNewpop").on("Click", function(){newButtonBoth()});
     
+    //uiWorker function
+    function doReset() {
+      var request = {
+        'Key':'Reset'
+      };
+      uiWorker.postMessage(request);
+    }
+    
     function resetDishFn() { //Need to reset all settings to @default
       newrun = true;
+      // send rest to Avida adaptor
+      doReset();
       //set run/stop and drop down menu to the 'stopped' state
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);
@@ -1017,6 +1028,8 @@ require([
     /*                  Canvas to draw genome
     /* ************************************************************** */
 
+    var BstackCvs = document.getElementById("Bstack");
+    var BstackCtx = BstackCvs.getContext("2d");
     var OrgCanvas = document.getElementById("organismCanvas");
     var ctx = OrgCanvas.getContext("2d");
     var gen = {};
@@ -1030,6 +1043,25 @@ require([
     gen.fontsize = Math.round(1.8*gen.smallR);
     gen.dna = "";
     gen.size = 50;
+
+    function drawBitStr (context, row, bitStr) {
+      var recWidth = 4;   //The width of the rectangle, in pixels
+      var recHeight = 5;  //The height of the rectangle, in pixels
+      var xx; //The x-coordinate of the upper-left corner of the rectangle
+      var yy = row*recHeight;    //upper-left corner of rectangle
+      var str = "1";
+      var color; 
+      for (var ii = 0; ii < bitStr.length; ii++){
+        str = bitStr.substr(ii,1);
+        if ("0" == str) {context.fillStyle = dictColor["Yellow"];}
+        else {context.fillStyle = dictColor["Blue"];}
+        xx = ii*(recWidth+1);
+        context.fillRect(xx, yy, recWidth, recHeight);
+        context.fill();
+        console.log("fs=", context.fillStyle, "; xx=", xx, "; yy=", yy, "; w=", recWidth, "; h=", recHeight, 
+                    "; bitStr=",str);
+      }
+    }
 
     function genomeCircle(gen){
       var bx1, by1;  //center of small circle
@@ -1143,11 +1175,16 @@ require([
       //drawHead(gen, spot, head)
       drawHead(gen, 11, "Instruct");
       drawHead(gen, 0, "Read");
-      
-      
-      
-      
-        //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+      //        12345678911234567892123456789312
+      var s1 = "10101100110011111111111111111111";
+      //var s1 = "1010";
+      var s2 = "11111111111110000001111110011110f";
+
+
+      //drawBitStr (name, row, bitStr);
+      drawBitStr (BstackCtx, 0, s1);
+      //drawBitStr (BstackCtx, 0, s2);
+      //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
     }
 
     /* ****************************************************************/
@@ -1156,8 +1193,6 @@ require([
 
     /* **** Controls bottum of page ***********************************/
     /* Organism Gestation Length Slider */
-
-    //console.log(dijit.byId("orgCycle"));
 
     function orgBackFn() {
       var ii = Number(document.getElementById("orgCycle").value);
@@ -1186,9 +1221,6 @@ require([
     dijit.byId("orgCycle").on("Change", function(value){
       cycleSlider.set("value",value);
     });
-    //console.log("after orgEnd");
-
-    //var slider = declare([HorizontalSlider, HorizontalRule, HorizontalRuleLabels], {
 
     var cycleSlider = new HorizontalSlider({
         name: "cycleSlider",
