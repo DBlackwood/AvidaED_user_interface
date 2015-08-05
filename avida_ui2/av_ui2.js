@@ -58,13 +58,17 @@ require([
     var uiWorker = new Worker('ui-test.js');
 
     // Resize window helpers -------------------------------------------
+    // called from script in html file as well as below
     BrowserResizeEventHandler=function(){
       if ("block"==domStyle.get("analysisBlock","display")){AnaChart();};
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
+      //update size of circular genome when size of holder changed. This needs more work when slider works.
+      if ("block"==domStyle.get("organismBlock","display")){drawGenome(OrganCurrent.node.textContent);};  //does not work
     }
 
     ready(function(){
       aspect.after(registry.byId("popChartHolder"), "resize", function(){BrowserResizeEventHandler()});
+      aspect.after(registry.byId("organismCanvasHolder"), "resize", function(){BrowserResizeEventHandler()});
     });
 
     var oldwidth = 0;
@@ -1022,6 +1026,7 @@ require([
 
     function genomeCircle(gen){
       var bx1, by1;  //center of small circle
+      var txtW;      // width of txt
       for (var ii = 0; ii < gen.dna.length; ii++){
         bx1 = gen.cx1 + gen.bigR*Math.cos(ii*2*Math.PI/gen.size);
         by1 = gen.cy1 + gen.bigR*Math.sin(ii*2*Math.PI/gen.size);
@@ -1032,75 +1037,42 @@ require([
         ctx.fill();   //required to render fill
         ctx.fillStyle = dictColor["Black"];
         ctx.font = gen.fontsize+"px Arial";
-        ctx.fillText(gen.dna.substr(ii,1),bx1-gen.smallR/2, by1+gen.smallR/2);
+        txtW = ctx.measureText(gen.dna.substr(ii,1)).width;
+        //console.log("r=", gen.smallR, "; W=", txtW);
+        ctx.fillText(gen.dna.substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);
         //console.log("x, y: ", bx1, by1);
       }
     }
     
-    function drawInstructionPointer(gen, spot) {
-      var ix, iy;  //center of instruction pointer
+    function drawHead(gen, spot, head) {
+      var hx, hy; //center of head and used as center of ring
+      var txtW;  // width of txt
       //draw circumference around instruction that the instruction pointer points to. 
-      ix = gen.cx1 + gen.bigR*Math.cos(spot*2*Math.PI/gen.size);
-      iy = gen.cy1 + gen.bigR*Math.sin(spot*2*Math.PI/gen.size);
+      hx = gen.cx1 + gen.bigR*Math.cos(spot*2*Math.PI/gen.size);
+      hy = gen.cy1 + gen.bigR*Math.sin(spot*2*Math.PI/gen.size);
       ctx.beginPath();
-      ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
-      ctx.strokeStyle = dictColor["Black"];
+      ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
+      ctx.strokeStyle = orgColorCodes[head];
       ctx.lineWidth = 1.5;
       ctx.stroke();
-      //draw instruction pointer tangent to instruction
-      ix = gen.cx1 + gen.headR*Math.cos(spot*2*Math.PI/gen.size);
-      iy = gen.cy1 + gen.headR*Math.sin(spot*2*Math.PI/gen.size);
-      ctx.beginPath();
-      ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
-      console.log("HeadFill ", orgColorCodes["headFill"]);
-      ctx.fillStyle = orgColorCodes["headFill"];
-      ctx.fill();
-      ctx.fillStyle = dictColor["Black"];
-      ctx.font = gen.fontsize+"px Arial";
-      ctx.fillText("I",ix-gen.smallR/3, iy+gen.smallR/2);      
-    }
-
-    function drawHead(gen, spot, head) {
-      var hx, hy;
       //draw instruction pointer tangent to instruction
       hx = gen.cx1 + gen.headR*Math.cos(spot*2*Math.PI/gen.size);
       hy = gen.cy1 + gen.headR*Math.sin(spot*2*Math.PI/gen.size);
       ctx.beginPath();
       ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
-      console.log("HeadFill ", orgColorCodes["headFill"]);
       ctx.fillStyle = orgColorCodes["headFill"];
       ctx.fill();
       ctx.fillStyle = orgColorCodes[head];
       ctx.font = gen.fontsize+"px Arial";
-      ctx.fillText(headCodes[head],hx-gen.smallR/2, hy+gen.smallR/2);      
-    }
-    
-    //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
-    function drawArc1(gen, spot1, spot2, rep){ 
-      var xx1, yy1, xx2, yy2, xxc, yyc; 
-      ctx.lineWidth = 1;
-      if (0 < spot2 - spot1) {
-        ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
-      } else { ctx.strokeStyle = dictColor["Red"];}
-      ctx.beginPath();
-      xx1 = gen.cx1 + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size); //Draw line from Spot1
-      yy1 = gen.cy1 + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size);  
-      ctx.moveTo(xx1, yy1);
-      xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
-      yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
-      //Set Control point on line perpendicular to line between Spot1 & spot2
-      gen.pathR = gen.bigR-(2+rep)*gen.smallR;
-      xxc = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);  
-      yyc = gen.cy1 + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);
-      ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
-      ctx.stroke();
+      txtW = ctx.measureText(headCodes[head]).width;
+      ctx.fillText(headCodes[head],hx-txtW/2, hy+gen.smallR/2);      
     }
     
     //Draw arc using Bézier curve and two control points http://www.w3schools.com/tags/canvas_beziercurveto.asp
     function drawArc2(gen, spot1, spot2, rep){ //draw an arc
       var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2; 
       ctx.lineWidth = 1;
-      if (0 < spot2 - spot1) {
+      if (spot2 > spot1) {
         ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
       } else { ctx.strokeStyle = dictColor["Red"];}
       ctx.beginPath();
@@ -1110,7 +1082,7 @@ require([
       xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
       yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
       //Set Control points on same radial as the spots
-      gen.pathR = gen.bigR-(1+rep)*gen.smallR;
+      gen.pathR = gen.bigR-(2+rep/4)*gen.smallR;
       xc1 = gen.cx1 + gen.pathR*Math.cos(spot1*2*Math.PI/gen.size);  
       yc1 = gen.cy1 + gen.pathR*Math.sin(spot1*2*Math.PI/gen.size);
       xc2 = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size);  
@@ -1134,7 +1106,7 @@ require([
       } else if ("m2u8000Not" == organismName) { 
         //         12345678911234567892123456789312345678941234567895
         gen.dna = "wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab"
-      }
+      } else {return;}
       //Find size and position of circle. 
       if (OrgCanvas.height < .45*OrgCanvas.width) {gen.bigR = Math.round(0.4*OrgCanvas.height) }//set size based on height
       else {
@@ -1145,24 +1117,24 @@ require([
       gen.tanR = gen.bigR-gen.smallR;         //radius of circle tanget to inside of small circles
       gen.pathR = gen.bigR-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
       gen.headR = gen.bigR-2*gen.smallR;      //radius of circle made by center of head positions.
-      gen.cx1 = 1.2*gen.bigR;  //center of main circle x
-      gen.cy1 = .5*OrgCanvas.height;  //center of main circle y
+      gen.cx1 = 1.2*gen.bigR;         //center of 1st (parent) circle x
+      gen.cy1 = .5*OrgCanvas.height;  //center of 1st (parent) circle y
       gen.fontsize = Math.round(1.8*gen.smallR);
-      console.log("smallR ", gen.smallR, "; fontsize ", gen.fontsize);
+      //console.log("smallR ", gen.smallR, "; fontsize ", gen.fontsize);
 
       genomeCircle(gen);
       //drawArc(gen, spot1, spot2, rep)
       drawArc2(gen,  0,  1, 1);
-      drawArc2(gen,  1,  4, 1);
-      drawArc1(gen,  4,  6, 1);
-      drawArc1(gen,  6,  7, 1);
-      drawArc1(gen,  7,  8, 1);
-      drawArc2(gen,  8,  9, 1);
-      drawArc2(gen,  9, 10, 1);
+      drawArc2(gen,  1,  4, 2);
+      drawArc2(gen,  4,  6, 1);
+      drawArc2(gen,  6,  7, 1);
+      drawArc2(gen,  8,  6, 1);
+      drawArc2(gen,  7,  8, 1);
+      drawArc2(gen,  8,  9, 3);
+      drawArc2(gen,  9, 10, 50);
       drawArc2(gen, 10, 11, 1);
-      //drawIP at position 11 
-      drawInstructionPointer(gen, 11);
       //drawHead(gen, spot, head)
+      drawHead(gen, 11, "Instruct");
       drawHead(gen, 0, "Read");
       
       
@@ -1366,16 +1338,18 @@ require([
     letterColor["z"] = "#9DE14E"; //color Meter
     var orgColorCodes = {};
     orgColorCodes["mutate"] = "#00FF00"; //color Meter green
-    orgColorCodes["start"] = "#5300FF"; //color Meter blue
+    orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
     orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
     orgColorCodes["headFill"] = "#CCCCCC"; //color Meter grey
     orgColorCodes["Write"] = "#FA0022"; //color Meter  red
-    orgColorCodes["Read"] = "#5300FF"; //color Meter  red
-    orgColorCodes["Flow"] = "#00FF00"; //color Meter  red
+    orgColorCodes["Read"] = "#5300FF"; //color Meter  blue
+    orgColorCodes["Flow"] = "#00FF00"; //color Meter  green
+    orgColorCodes["Instruct"] = "#000000"; //color Meter  black
     var headCodes = {};
     headCodes["Read"] = "R";
     headCodes["Write"] = "W";
     headCodes["Flow"] = "F";
+    headCodes["Instruct"] = "I";
     var InstDescribe = {};
     InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
     InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
@@ -1403,4 +1377,49 @@ require([
     InstDescribe["x"]="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
     InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
     InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
+
+    //Functions not in use, but not ready to trash yet------------------------
+    //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
+    function drawArc1(gen, spot1, spot2, rep){ 
+      var xx1, yy1, xx2, yy2, xxc, yyc; 
+      ctx.lineWidth = 1;
+      if (0 < spot2 - spot1) {
+        ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+      } else { ctx.strokeStyle = dictColor["Red"];}
+      ctx.beginPath();
+      xx1 = gen.cx1 + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size); //Draw line from Spot1
+      yy1 = gen.cy1 + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size);  
+      ctx.moveTo(xx1, yy1);
+      xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
+      yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
+      //Set Control point on line perpendicular to line between Spot1 & spot2
+      gen.pathR = gen.bigR-(2+rep)*gen.smallR;
+      xxc = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);  
+      yyc = gen.cy1 + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);
+      ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
+      ctx.stroke();
+    }
+
+    function drawInstructionPointer(gen, spot) {
+      var ix, iy;  //center of instruction pointer
+      //draw circumference around instruction that the instruction pointer points to. 
+      ix = gen.cx1 + gen.bigR*Math.cos(spot*2*Math.PI/gen.size);
+      iy = gen.cy1 + gen.bigR*Math.sin(spot*2*Math.PI/gen.size);
+      ctx.beginPath();
+      ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
+      ctx.strokeStyle = dictColor["Black"];
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      //draw instruction pointer tangent to instruction
+      ix = gen.cx1 + gen.headR*Math.cos(spot*2*Math.PI/gen.size);
+      iy = gen.cy1 + gen.headR*Math.sin(spot*2*Math.PI/gen.size);
+      ctx.beginPath();
+      ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
+      ctx.fillStyle = orgColorCodes["headFill"];
+      ctx.fill();
+      ctx.fillStyle = dictColor["Black"];
+      ctx.font = gen.fontsize+"px Arial";
+      ctx.fillText("I",ix-gen.smallR/3, iy+gen.smallR/2);      
+    }
+
   });
