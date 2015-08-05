@@ -1240,15 +1240,15 @@ require([
     var anaChart = new Chart("analyzeChart");
 
     function AnaChartFn(){
-      anaChart.addPlot("default", {type: "Lines"});
-      anaChart.addPlot("other", {type: "Lines", hAxis: "other x", vAxis: "other y"});
+      anaChart.addPlot("default", {type: "Lines", hAxis:"x", vAxis:"y"});
+      anaChart.addPlot("other", {type: "Lines", hAxis: "x", vAxis: "right y"});
       //grid line info on https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
       anaChart.addPlot("grid", {type:Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1}, 
                                           vMajorLines: true, majorVLine: {color: "#CCC", width: 1}});
       anaChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
       anaChart.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
-      anaChart.addAxis("other x", {leftBottom: false});
-      anaChart.addAxis("other y", {vertical: true, leftBottom: false, min: 0, title:y2title});
+      //anaChart.addAxis("top x", {leftBottom: false});
+      anaChart.addAxis("right y", {vertical: true, leftBottom: false, min: 0, title:y2title});
       anaChart.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});   
       anaChart.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
       anaChart.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
@@ -1258,13 +1258,8 @@ require([
       
       anaChart.resize(domGeometry.position(document.getElementById("chartHolder")).w-10, 
                     domGeometry.position(document.getElementById("chartHolder")).h-15);
-
-      //This seems to only work for the primary axis;
-      //var dZoom = new MouseZoomAndPan(anaChart, "default");
-      //var oZoom = new MouseZoomAndPan(anaChart, "other");  //appears to have no effect.
-      
-      //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different method using a window.
-
+      var dZoom = new MouseZoomAndPan(anaChart, "default");
+            //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
       anaChart.render();
     };
     
