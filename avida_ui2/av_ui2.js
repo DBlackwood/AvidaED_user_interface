@@ -58,13 +58,41 @@ require([
     parser.parse();
     var uiWorker = new Worker('ui-test.js');
 
+    //process message from web worker
+    uiWorker.onmessage = function(ee){
+      var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
+      switch(msg.Key){
+        case 'RunPause':
+          if (true != msg["Success"]) {
+          console.log("Error: ", msg);  // msg failed
+          runStopFn();  //flip state back since the message failed to get to Avida
+        }
+          break;
+        case 'Reset':
+          if (true != msg["Success"]) { console.log("Reset failed: ", msg)};
+          break;
+        case 'OrgTrace':
+          traceObj = msg;
+          updateOrgTrace(traceObj, cycle);
+          break;
+        case 'PopulationStats':
+          updatePopStats(msg)
+          break;
+        default:
+          console.log('UnknownRequest: ', msg);
+          break;
+      }
+    }
+
     // Resize window helpers -------------------------------------------
     // called from script in html file as well as below
     BrowserResizeEventHandler=function(){
       if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
       //update size of circular genome when size of holder changed. This needs more work when slider works.
-      if ("block"==domStyle.get("organismBlock","display")){drawGenome(OrganCurrent.node.textContent);};  //does not work
+      if ("block"==domStyle.get("organismBlock","display")){
+        if (undefined != traceObj) { updateOrgTrace(traceObj, cycle);}; 
+      } 
     }
 
     ready(function(){
@@ -224,9 +252,20 @@ require([
         });
         OrganCurrent.sync();   //
       }
-      drawGenome(OrganCurrent.node.textContent);  // Draw the initial genome of the dropped organism. 
+      doOrgTrace();  //request new Organism Trace from Avida and draw that.    
+      //(traceObj, cycle);  // Draw the initial genome of the dropped organism. 
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
+
+    //uiWorker function
+    function doOrgTrace() {
+       var request = {
+          'Key':'OrgTrace', 
+          'PtMuteRate': '0.02',
+          'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
+       };
+       uiWorker.postMessage(request);
+    }
 
     function trashChange(){
       var items = getAllItems(trash);
@@ -594,59 +633,32 @@ require([
     //Dummy Data 
     var dataManDict={}
     dataManDict["core.world.update"]=1;
-    dataManDict["core.world.organisms"]=2;
-    dataManDict["core.world.ave_fitness"]=2;
-    dataManDict["core.world.ave_metabolic_rate"]=2;
-    dataManDict["core.world.ave_gestation_time"]=2;
-    dataManDict["core.world.ave_age"]=2;
-    dataManDict["core.environment.triggers.not.test_organisms"]=2;
-    dataManDict["core.environment.triggers.nand.test_organisms"]=0;
-    dataManDict["core.environment.triggers.and.test_organisms"]=0;
-    dataManDict["core.environment.triggers.orn.test_organisms"]=0;
-    dataManDict["core.environment.triggers.or.test_organisms"]=0;
-    dataManDict["core.environment.triggers.andn.test_organisms"]=0;
-    dataManDict["core.environment.triggers.nor.test_organisms"]=0;
-    dataManDict["core.environment.triggers.xor.test_organisms"]=0;
-    dataManDict["core.environment.triggers.equ.test_organisms"]=0;
-    var dataManJson = dojo.toJson(dataManDict);
+    //var dataManJson = dojo.toJson(dataManDict);
     //var DataManJson = JSON.stringify(dataManDict) //does the same thing as dojo.toJason
     //console.log("man ", dataManJson);
     //console.log("str ", DataManJson);
 
-    uiWorker.onmessage = function(ee){
-      var dataObj = ee.data;  //passed as object rather than string so JSON.parse is not needed.
-      //console.log(dataObj);
-      //If Avida is running; update population stats
-      if ("PopulationStats" == dataObj["Key"]) { updatePopStats(dataObj)}
-      else if ("RunPause" == dataObj["Key"]) {
-        if (true != dataObj["success"]) {
-          console.log("Error: ", dataObj);
-          runStopFn();
-        }
-      }
-    }
-
-    function updatePopStats(dataObj){
-        document.getElementById("TimeLabel").textContent = dataObj["core.update"].formatNum(0);
-        document.getElementById("popSizeLabel").textContent = dataObj["core.world.organisms"].formatNum(0);
-        document.getElementById("aFitLabel").textContent = dataObj["core.world.ave_fitness"].formatNum(2);
-        document.getElementById("aMetabolicLabel").textContent = dataObj["core.world.ave_metabolic_rate"].formatNum(1);
-        document.getElementById("aGestateLabel").textContent = dataObj["core.world.ave_gestation_time"].formatNum(1);
-        document.getElementById("aAgeLabel").textContent = dataObj["core.world.ave_age"].formatNum(2);
-        document.getElementById("notPop").textContent = dataObj["core.environment.triggers.not.test_organisms"];
-        document.getElementById("nanPop").textContent = dataObj["core.environment.triggers.nand.test_organisms"];
-        document.getElementById("andPop").textContent = dataObj["core.environment.triggers.and.test_organisms"];
-        document.getElementById("ornPop").textContent = dataObj["core.environment.triggers.orn.test_organisms"];
-        document.getElementById("oroPop").textContent = dataObj["core.environment.triggers.or.test_organisms"];
-        document.getElementById("antPop").textContent = dataObj["core.environment.triggers.andn.test_organisms"];
-        document.getElementById("norPop").textContent = dataObj["core.environment.triggers.nor.test_organisms"];
-        document.getElementById("xorPop").textContent = dataObj["core.environment.triggers.xor.test_organisms"];
-        document.getElementById("equPop").textContent = dataObj["core.environment.triggers.equ.test_organisms"];
+    function updatePopStats(msg){
+        document.getElementById("TimeLabel").textContent = msg["core.update"].formatNum(0);
+        document.getElementById("popSizeLabel").textContent = msg["core.world.organisms"].formatNum(0);
+        document.getElementById("aFitLabel").textContent = msg["core.world.ave_fitness"].formatNum(2);
+        document.getElementById("aMetabolicLabel").textContent = msg["core.world.ave_metabolic_rate"].formatNum(1);
+        document.getElementById("aGestateLabel").textContent = msg["core.world.ave_gestation_time"].formatNum(1);
+        document.getElementById("aAgeLabel").textContent = msg["core.world.ave_age"].formatNum(2);
+        document.getElementById("notPop").textContent = msg["core.environment.triggers.not.test_organisms"];
+        document.getElementById("nanPop").textContent = msg["core.environment.triggers.nand.test_organisms"];
+        document.getElementById("andPop").textContent = msg["core.environment.triggers.and.test_organisms"];
+        document.getElementById("ornPop").textContent = msg["core.environment.triggers.orn.test_organisms"];
+        document.getElementById("oroPop").textContent = msg["core.environment.triggers.or.test_organisms"];
+        document.getElementById("antPop").textContent = msg["core.environment.triggers.andn.test_organisms"];
+        document.getElementById("norPop").textContent = msg["core.environment.triggers.nor.test_organisms"];
+        document.getElementById("xorPop").textContent = msg["core.environment.triggers.xor.test_organisms"];
+        document.getElementById("equPop").textContent = msg["core.environment.triggers.equ.test_organisms"];
         //update graph arrays
-        ave_fitness.push(dataObj["core.world.ave_fitness"]); 
-        ave_gestation_time.push(dataObj["core.world.ave_gestation_time"]);
-        ave_metabolic_rate.push(dataObj["core.world.ave_metabolic_rate"]);
-        population_size.push(dataObj["core.world.organisms"]);
+        ave_fitness.push(msg["core.world.ave_fitness"]); 
+        ave_gestation_time.push(msg["core.world.ave_gestation_time"]);
+        ave_metabolic_rate.push(msg["core.world.ave_metabolic_rate"]);
+        population_size.push(msg["core.world.organisms"]);
         popChartFn();
     }
     
@@ -1025,13 +1037,31 @@ require([
     });
 
     /* ****************************************************************/
-    /*                  Canvas to draw genome
+    /*                  Canvas for Organsim (genome) view
     /* ************************************************************** */
-
+    //initialize globals needed to hold Organism Trace Data
+    var traceObj; 
+    var cycle=0;
+    //initialize all canvases needed for Organism page
+    var bufferCvs = document.getElementById("buffer");
+    var bufferCtx = bufferCvs.getContext("2d");
+    bufferCtx.translate(0.5, 0.5);
+    var registerCvs = document.getElementById("register");
+    var registerCtx = registerCvs.getContext("2d");
+    registerCtx.translate(0.5, 0.5);
+    var AstackCvs = document.getElementById("Astack");
+    var AstackCtx = AstackCvs.getContext("2d");
+    AstackCtx.translate(0.5, 0.5);
     var BstackCvs = document.getElementById("Bstack");
     var BstackCtx = BstackCvs.getContext("2d");
+    BstackCtx.translate(0.5, 0.5);
+    var outputCvs = document.getElementById("output");
+    var outputCtx = outputCvs.getContext("2d");
+    //outputCtx.imageSmoothingEnabled= false;
     var OrgCanvas = document.getElementById("organismCanvas");
     var ctx = OrgCanvas.getContext("2d");
+    ctx.translate(0.5, 0.5);  //makes a crisper image
+    //initialize gen (genome) object. 
     var gen = {};
     gen.bigR = 120; //radius of full circle
     gen.smallR = gen.bigR*2*Math.PI/(2*gen.size); //radius of each small circle
@@ -1045,21 +1075,38 @@ require([
     gen.size = 50;
 
     function drawBitStr (context, row, bitStr) {
-      var recWidth = 4;   //The width of the rectangle, in pixels
+      var recWidth = 5;   //The width of the rectangle, in pixels
       var recHeight = 5;  //The height of the rectangle, in pixels
       var xx; //The x-coordinate of the upper-left corner of the rectangle
       var yy = row*recHeight;    //upper-left corner of rectangle
       var str = "1";
       var color; 
       for (var ii = 0; ii < bitStr.length; ii++){
+        xx = ii*(recWidth);
+        //draw outline of rectangle
+        context.beginPath();
+        context.lineWidth = 1;
+        context.strokeStyle = orgColorCodes["outline"];
+        context.rect(xx, yy, recWidth, recHeight);
+        context.stroke();
+        //fill in rectangle
+        context.beginPath();
         str = bitStr.substr(ii,1);
-        if ("0" == str) {context.fillStyle = dictColor["Yellow"];}
-        else {context.fillStyle = dictColor["Blue"];}
-        xx = ii*(recWidth+1);
+        if ("0" == str) {context.fillStyle = orgColorCodes["0"];}
+        else {context.fillStyle = orgColorCodes["1"];}
         context.fillRect(xx, yy, recWidth, recHeight);
         context.fill();
-        console.log("fs=", context.fillStyle, "; xx=", xx, "; yy=", yy, "; w=", recWidth, "; h=", recHeight, 
-                    "; bitStr=",str);
+        //draw black lines every so many bits
+        if (0 == ii%4) {
+          context.beginPath();
+          context.lineWidth = 1;
+          context.strokeStyle = dictColor["Black"];
+          context.moveTo(xx,yy);
+          context.lineTo(xx,yy+recHeight);
+          context.stroke();
+        }
+        //console.log("fs=", context.fillStyle, "; xx=", xx, "; yy=", yy, "; w=", recWidth, "; h=", recHeight, 
+        //            "; bitStr=",str, "; out=",context.strokeStyle);
       }
     }
 
@@ -1071,14 +1118,16 @@ require([
         by1 = gen.cy1 + gen.bigR*Math.sin(ii*2*Math.PI/gen.size);
         ctx.beginPath();
         ctx.arc(bx1, by1, gen.smallR, 0, 2*Math.PI);
-        //ctx.stroke();  //required to render stroke
-        ctx.fillStyle = letterColor[gen.dna.substr(ii,1)];
+        //ctx.fillStyle = letterColor[gen.dna.substr(ii,1)];  //use if gen.dna is a string
+        ctx.fillStyle = letterColor[gen.dna[ii]];  //use if gen.dna is an array
         ctx.fill();   //required to render fill
         ctx.fillStyle = dictColor["Black"];
         ctx.font = gen.fontsize+"px Arial";
-        txtW = ctx.measureText(gen.dna.substr(ii,1)).width;
+        //txtW = ctx.measureText(gen.dna.substr(ii,1)).width;  //use if gen.dna is a string
+        txtW = ctx.measureText(gen.dna[ii]).width;     //use if gen.dna is an array
         //console.log("r=", gen.smallR, "; W=", txtW);
-        ctx.fillText(gen.dna.substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);
+        //ctx.fillText(gen.dna.substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);  //use if gen.dna is a string
+        ctx.fillText(gen.dna[ii],bx1-txtW/2, by1+gen.smallR/2);
         //console.log("x, y: ", bx1, by1);
       }
     }
@@ -1121,7 +1170,7 @@ require([
       xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
       yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
       //Set Control points on same radial as the spots
-      gen.pathR = gen.bigR-(2+rep/4)*gen.smallR;
+      gen.pathR = gen.bigR-(2+rep/3)*gen.smallR;
       xc1 = gen.cx1 + gen.pathR*Math.cos(spot1*2*Math.PI/gen.size);  
       yc1 = gen.cy1 + gen.pathR*Math.sin(spot1*2*Math.PI/gen.size);
       xc2 = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size);  
@@ -1129,28 +1178,27 @@ require([
       ctx.bezierCurveTo(xc1, yc1, xc2, yc2, xx2, yy2);
       ctx.stroke();
     }
-    function drawGenome(organismName){
+    
+    //main function to update the Organism Trace on the Organism Page
+    function updateOrgTrace(obj, cycle){
+      //set canvas size
       var wide = $("#organismCanvasHolder").innerWidth();
       var high = $("#organismCanvasHolder").innerHeight();
-      console.log("xy  ", wide, high);
-      OrgCanvas.width = wide-10;
-      OrgCanvas.height = high-10;
-      //Get DNA sequence - hard coded for now
-      if ("@ancestor" == organismName) {
-        //         12345678911234567892123456789312345678941234567895
-        gen.dna = "wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab"
-      } else if ("m2u8000Nand" == organismName) {  
-        //         12345678911234567892123456789312345678941234567895
-        gen.dna = "wzcagckchsdctcbqkwicclsdycygcubemcccqyjcizvfcaxgab"
-      } else if ("m2u8000Not" == organismName) { 
-        //         12345678911234567892123456789312345678941234567895
-        gen.dna = "wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab"
-      } else {return;}
-      //Find size and position of circle. 
+      OrgCanvas.width = wide-5;
+      OrgCanvas.height = high-5;
+      
+      //console.log("in", obj[0].Buffers.input[0], " and=", obj[0].Functions.and," in", obj[0].Buffers.input[0][0]
+      //  , " mem", obj[0].MemSpace[0].Memory.length);
+      //if (undefined == obj[18].MemSpace[0].Heads.FLOW) {console.log("not there");}
+      //else {console.log("FLOW=", obj[18].MemSpace[0].Heads.FLOW);}
+      //console.log("obj:", obj);
+
+      //Find size and position of parent circle. 
+      gen.size = obj[cycle].MemSpace[0].Memory.length;
       if (OrgCanvas.height < .45*OrgCanvas.width) {gen.bigR = Math.round(0.4*OrgCanvas.height) }//set size based on height
       else {
         gen.bigR = Math.round(0.2*OrgCanvas.width) //set size based on width
-        console.log("w ", gen.bigR);
+        //console.log("w ", gen.bigR);
       }
       gen.smallR = gen.bigR*2*Math.PI/(2*gen.size); //radius of each small circle
       gen.tanR = gen.bigR-gen.smallR;         //radius of circle tanget to inside of small circles
@@ -1160,30 +1208,41 @@ require([
       gen.cy1 = .5*OrgCanvas.height;  //center of 1st (parent) circle y
       gen.fontsize = Math.round(1.8*gen.smallR);
       //console.log("smallR ", gen.smallR, "; fontsize ", gen.fontsize);
-
+      gen.dna = obj[cycle].MemSpace[0].Memory
       genomeCircle(gen);
+      
       //drawArc(gen, spot1, spot2, rep)
       drawArc2(gen,  0,  1, 1);
-      drawArc2(gen,  1,  4, 2);
+      drawArc2(gen,  1,  4, 1);
       drawArc2(gen,  4,  6, 1);
       drawArc2(gen,  6,  7, 1);
-      drawArc2(gen,  8,  6, 1);
-      drawArc2(gen,  7,  8, 1);
-      drawArc2(gen,  8,  9, 3);
+      drawArc2(gen,  8,  6, 2);
+      drawArc2(gen,  7,  8, 2);
+      drawArc2(gen,  8,  9, 1);
       drawArc2(gen,  9, 10, 50);
       drawArc2(gen, 10, 11, 1);
       //drawHead(gen, spot, head)
       drawHead(gen, 11, "Instruct");
       drawHead(gen, 0, "Read");
       //        12345678911234567892123456789312
-      var s1 = "10101100110011111111111111111111";
+      var s1 = "10101100110011100011110000110101";
       //var s1 = "1010";
-      var s2 = "11111111111110000001111110011110f";
+      var s2 = "11010011001110000001111110011110";
 
 
       //drawBitStr (name, row, bitStr);
+      drawBitStr (bufferCtx, 0, s1);
+      drawBitStr (bufferCtx, 1, s2);
+      drawBitStr (bufferCtx, 2, s1);
+      drawBitStr (registerCtx, 0, s2);
+      drawBitStr (registerCtx, 1, s1);
+      drawBitStr (registerCtx, 2, s2);
+      drawBitStr (AstackCtx, 0, s1);
+      drawBitStr (AstackCtx, 1, s2);
       drawBitStr (BstackCtx, 0, s1);
-      //drawBitStr (BstackCtx, 0, s2);
+      drawBitStr (BstackCtx, 1, s2);
+      drawBitStr (outputCtx, 0, s2);
+
       //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
     }
 
@@ -1194,21 +1253,28 @@ require([
     /* **** Controls bottum of page ***********************************/
     /* Organism Gestation Length Slider */
 
+    function outputUpdate(vol) {
+      document.querySelector('#orgCycle').value = vol;
+    }
+
     function orgBackFn() {
       var ii = Number(document.getElementById("orgCycle").value);
-      dijit.byId("orgCycle").set("value", ii-1);
+      if (cycleSlider.get("minimum") < cycleSlider.get("value")) {
+        dijit.byId("orgCycle").set("value", ii-1);
+      }
     }
     dijit.byId("orgBack").on("Click", orgBackFn);
 
     function orgForwardFn() {
       var ii = Number(document.getElementById("orgCycle").value);
-      dijit.byId("orgCycle").set("value", ii+1);
+      if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
+        dijit.byId("orgCycle").set("value", ii+1);
+      }
     }
     dijit.byId("orgForward").on("Click", orgForwardFn);
 
     dijit.byId("orgReset").on("Click", function(){
       dijit.byId("orgCycle").set("value", 0);
-      document.getElementById("organCycle").innerHTML = "0"
     });
 
     dijit.byId("orgRun").on("Click", function(){
@@ -1228,6 +1294,7 @@ require([
         minimum: 0,
         maximum: 200,
         intermediateChanges: true,
+        discreteValues:201,
         style: "width:100%;",
         onChange: function(value){
             document.getElementById("orgCycle").value = value;
@@ -1383,11 +1450,14 @@ require([
     orgColorCodes["mutate"] = "#00FF00"; //color Meter green
     orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
     orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
-    orgColorCodes["headFill"] = "#CCCCCC"; //color Meter grey
+    orgColorCodes["headFill"] = "#CCCCCC"; //lighter grey
     orgColorCodes["Write"] = "#FA0022"; //color Meter  red
     orgColorCodes["Read"] = "#5300FF"; //color Meter  blue
     orgColorCodes["Flow"] = "#00FF00"; //color Meter  green
     orgColorCodes["Instruct"] = "#000000"; //color Meter  black
+    orgColorCodes["outline"] = "#686868"; //color Meter grey
+    orgColorCodes["0"] = "#F5FF00"; //color Meter yellow
+    orgColorCodes["1"] = "#8888FF"; //lt blue
     var headCodes = {};
     headCodes["Read"] = "R";
     headCodes["Write"] = "W";

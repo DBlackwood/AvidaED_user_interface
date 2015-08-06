@@ -134,9 +134,9 @@
       <div data-dojo-type="dijit/layout/ContentPane" id="populationBlock" title="Population" extractContent="false" preventCache="false" 
             refreshOnShow="false" doLayout="true" selected="true" closable="false" preload="false"  style="height: 100%">
       <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
-            style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+            style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;" liveSplitters="false">
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-              refreshOnShow="false" doLayout="true" region="top" splitter="true" maxSize="Infinity" style="height: 30px;">
+              refreshOnShow="false" doLayout="true" region="top" splitter="false" maxSize="Infinity" style="height: 30px;">
           <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
             <colgroup>
               <col></col>
@@ -165,7 +165,7 @@
           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                 style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-                  refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:291px;">
+                  refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:272px;">
               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                     style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="selectOrganPane"
@@ -221,8 +221,7 @@
                       </tr>
                       <tr>
                         <td><label id="andLabel">and+</label></td>
-                        <td><label id="andTime">1</label>
-                        </td>
+                        <td><label id="andTime">1</label></td>
                       </tr>
                       <tr>
                         <td><label id="ornLabel">orn-</label></td>
@@ -349,7 +348,7 @@
             </div>
           </div>
            <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-                refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" style="height: 1.1em;" doLayout="false">
+                refreshOnShow="false" region="bottom" splitter="false" maxSize="Infinity" style="height: 1.1em;" doLayout="false">
              <select data-dojo-type="dijit/form/Select" id="yaxis" data-dojo-props="name: 'yyAxis'">
                 <option value="Average Fitness" selected="selected">Average Fitness</option>
                 <option value="Average Gestation Time">Average Gestation Time</option>
@@ -375,7 +374,7 @@
            <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                   style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
              <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                    refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 46px;">
+                    refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity" style="height: 34px;">
                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
                  <tbody>
                    <tr>
@@ -535,7 +534,7 @@
       <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
             style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-            refreshOnShow="false" doLayout="true" region="top" splitter="true" maxSize="Infinity" style="height:35px;">
+            refreshOnShow="false" doLayout="true" region="top" splitter="false" maxSize="Infinity" style="height:37px;">
         <table style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
           <tbody>
             <tr style="valign: middle; line-height: 30px">
@@ -552,18 +551,14 @@
         </table>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-            refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height: 70px;">
-        <div id="cycleSlider">             
-            <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;" id="cycleTicks"></div>
-            <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" id="cycleLabels" labels="0, 50, 100, 150, 200" style="height: 20px;"></ol>
-          </div>
-
-          <div style="float:left">Cycle:
+            refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity" style="height: 50px;">
+          <div id="cycleSlider"></div>
+          <br />
+          <div class="lftmargin">Cycle:
             <input id="orgCycle" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "cycle"
-                  required="true" value="3" data-dojo-props="constraints:{min:0, max:2000,places:0},
+                  required="true" value="0" data-dojo-props="constraints:{min:0, max:2000,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid cycle number.'"
                   style="width:3em; height:1.8em"/>
-            <span id="organCycle"></span>
           </div>
           <div style="text-align:center">
             <input type="button" data-dojo-type="dijit/form/Button" id="orgReset" intermediateChanges="false" label="Reset" iconClass="dijitNoIcon"></input>
@@ -574,9 +569,9 @@
           </div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="rightDetail"
-        refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:180px;">
+        refreshOnShow="false" doLayout="true" region="right" splitter="true" maxSize="Infinity" style="width:172px;">
         
-          <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+          <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
             <colgroup>
               <col></col>
               <col></col>
@@ -626,23 +621,15 @@
             </tbody>
           </table>
           <p>Input Buffer</p>
-          <label class="bit32" id="input1">01001001011010010011010101110010</label>
-          <label class="bit32" id="input2">10110111101110000100010001110001</label>
-          <label class="bit32" id="input3">12345678911234567892123456789312</label>
+          <canvas id="buffer" width="160px" height="15px" style="border:1px solid #000000;"></canvas>
           <p>Registers: AX, BX, CX</p>
-          <label class="bit32" id="regA">01001001011010010011010101110010</label>
-          <label class="bit32" id="regB">11010010001111011000110011001100</label>
-          <label class="bit32" id="regC">12345678911234567892123456789312</label>
+          <canvas id="register" width="160px" height="15px" style="border:1px solid #000000;"></canvas>
           <p>Stack A (first two frames)</p>
-          <label class="bit32" id="stackA1">11010010001111011000110011001100</label>
-          <label class="bit32" id="stackA2">12345678911234567892123456789312</label>
-          <canvas id="Astack" width="160px" height="15px" style="border:1px solid #000000;"></canvas>
+          <canvas id="Astack" width="160px" height="10px" style="border:1px solid #000000;"></canvas>
           <p>Stack B (first two frames)</p>
-          <label class="bit32" id="stackB1">11010010001111011000110011001100</label>
-          <label class="bit32" id="stackB2">12345678911234567892123456789312</label><br />
-          <canvas id="Bstack" width="160px" height="15px" style="border:1px solid #000000;"></canvas>
+          <canvas id="Bstack" width="160px" height="10px" style="border:1px solid #000000;"></canvas>
           <p>Last Output</p>
-          <label class="bit32" id="lastOutput">12345678911234567892123456789312</label>
+          <canvas id="output" width="160px" height="5px" style="border:1px solid #000000;"></canvas>
           <span data-dojo-type="dijit/TitlePane" id="InstructionDetail" title="Instruction Details"
                 extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200"
                 open="true" style="min-width: 1px; width: 100%; height: auto;">
