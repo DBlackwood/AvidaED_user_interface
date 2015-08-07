@@ -73,6 +73,7 @@ require([
           break;
         case 'OrgTrace':
           traceObj = msg;
+          cycle = 0;
           updateOrgTrace(traceObj, cycle);
           break;
         case 'PopulationStats':
@@ -1160,7 +1161,7 @@ require([
     function drawArc2(gen, spot1, spot2, rep){ //draw an arc
       var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2; 
       ctx.lineWidth = 1;
-      if (spot2 > spot1) {
+      if (spot2 >= spot1) {
         ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
       } else { ctx.strokeStyle = dictColor["Red"];}
       ctx.beginPath();
@@ -1186,20 +1187,13 @@ require([
       var high = $("#organismCanvasHolder").innerHeight();
       OrgCanvas.width = wide-5;
       OrgCanvas.height = high-5;
-      
-      //console.log("in", obj[0].Buffers.input[0], " and=", obj[0].Functions.and," in", obj[0].Buffers.input[0][0]
-      //  , " mem", obj[0].MemSpace[0].Memory.length);
-      //if (undefined == obj[18].MemSpace[0].Heads.FLOW) {console.log("not there");}
-      //else {console.log("FLOW=", obj[18].MemSpace[0].Heads.FLOW);}
-      //console.log("obj:", obj);
-
       //Find size and position of parent circle. 
       gen.size = obj[cycle].MemSpace[0].Memory.length;
       if (OrgCanvas.height < .45*OrgCanvas.width) {gen.bigR = Math.round(0.4*OrgCanvas.height) }//set size based on height
       else {
         gen.bigR = Math.round(0.2*OrgCanvas.width) //set size based on width
-        //console.log("w ", gen.bigR);
       }
+      // Draw genome in a circle---------------------------------------- 
       gen.smallR = gen.bigR*2*Math.PI/(2*gen.size); //radius of each small circle
       gen.tanR = gen.bigR-gen.smallR;         //radius of circle tanget to inside of small circles
       gen.pathR = gen.bigR-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
@@ -1207,74 +1201,129 @@ require([
       gen.cx1 = 1.2*gen.bigR;         //center of 1st (parent) circle x
       gen.cy1 = .5*OrgCanvas.height;  //center of 1st (parent) circle y
       gen.fontsize = Math.round(1.8*gen.smallR);
-      //console.log("smallR ", gen.smallR, "; fontsize ", gen.fontsize);
       gen.dna = obj[cycle].MemSpace[0].Memory
       genomeCircle(gen);
-      
+      //Draw path of acrs
       //drawArc(gen, spot1, spot2, rep)
-      drawArc2(gen,  0,  1, 1);
-      drawArc2(gen,  1,  4, 1);
-      drawArc2(gen,  4,  6, 1);
-      drawArc2(gen,  6,  7, 1);
-      drawArc2(gen,  8,  6, 2);
-      drawArc2(gen,  7,  8, 2);
-      drawArc2(gen,  8,  9, 1);
-      drawArc2(gen,  9, 10, 50);
-      drawArc2(gen, 10, 11, 1);
-      //drawHead(gen, spot, head)
-      drawHead(gen, 11, "Instruct");
-      drawHead(gen, 0, "Read");
-      //        12345678911234567892123456789312
-      var s1 = "10101100110011100011110000110101";
-      //var s1 = "1010";
-      var s2 = "11010011001110000001111110011110";
-
-
+      console.log("cycle=",cycle, " pathLength=",obj[cycle].Jumps.length); 
+      for (var ii = 0; ii<obj[cycle].Jumps.length; ii++) {
+        drawArc2(gen,  obj[cycle].Jumps[ii].FromIDX,  obj[cycle].Jumps[ii].ToIDX, obj[cycle].Jumps[ii].Freq);
+      }
+      //drawHead(gen, spot, head) // draws the various heads
+      if (undefined != obj[cycle].MemSpace[0].Heads.FLOW) {drawHead(gen, obj[cycle].MemSpace[0].Heads.FLOW, "FLOW");}
+      if (undefined != obj[cycle].MemSpace[0].Heads.READ) {drawHead(gen, obj[cycle].MemSpace[0].Heads.READ, "READ");}
+      if (undefined != obj[cycle].MemSpace[0].Heads.WRITE) {drawHead(gen, obj[cycle].MemSpace[0].Heads.WRITE, "WRITE");}
+      if (undefined != obj[cycle].MemSpace[0].Heads.IP) {drawHead(gen, obj[cycle].MemSpace[0].Heads.IP, "IP");}
+      //Draw Buffers ---------------------------------------------------
       //drawBitStr (name, row, bitStr);
-      drawBitStr (bufferCtx, 0, s1);
-      drawBitStr (bufferCtx, 1, s2);
-      drawBitStr (bufferCtx, 2, s1);
-      drawBitStr (registerCtx, 0, s2);
-      drawBitStr (registerCtx, 1, s1);
-      drawBitStr (registerCtx, 2, s2);
-      drawBitStr (AstackCtx, 0, s1);
-      drawBitStr (AstackCtx, 1, s2);
-      drawBitStr (BstackCtx, 0, s1);
-      drawBitStr (BstackCtx, 1, s2);
-      drawBitStr (outputCtx, 0, s2);
+      for (var ii = 0; ii < obj[cycle].Buffers.input.length; ii++){
+        drawBitStr (bufferCtx, ii, obj[cycle].Buffers.input[ii]);}
+      //drawBitStr (registerCtx, 0, s2);
+      //drawBitStr (registerCtx, 1, s1);
+      //drawBitStr (registerCtx, 2, s2);
+      //console.log("A", obj[cycle].Buffers);
+      for (var ii = 0; ii<2; ii++){ //only showing the top 2 in the stack of 10
+        //console.log(ii, obj[cycle].Buffers["stack A"][ii]);
+        drawBitStr (AstackCtx, ii, obj[cycle].Buffers["stack A"][ii]);
+        }
+      for (var ii = 0; ii<2; ii++){ //only showing the top 2 in the stack of 10
+        drawBitStr (BstackCtx, ii, obj[cycle].Buffers["stack B"][ii]);
+      }
+      drawBitStr (outputCtx, 0, obj[cycle].Buffers.output[0]);
+      
+      // update details 
+      updateTimesPerformed(obj, cycle);   //Update Times Functions are performed. 
+      writeInstructDetails(obj, cycle);   //Write Instruction Details
 
       //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
     }
+    
+    function updateTimesPerformed(obj, cycle){
+      document.getElementById("notPerf").textContent = obj[cycle].Functions.not;
+      document.getElementById("nanPerf").textContent = obj[cycle].Functions.nand;
+      document.getElementById("andPerf").textContent = obj[cycle].Functions.and;
+      document.getElementById("ornPerf").textContent = obj[cycle].Functions.orn;
+      document.getElementById("oroPerf").textContent = obj[cycle].Functions.or;
+      document.getElementById("antPerf").textContent = obj[cycle].Functions.andn;
+      document.getElementById("norPerf").textContent = obj[cycle].Functions.nor;
+      document.getElementById("xorPerf").textContent = obj[cycle].Functions.xor;
+      document.getElementById("equPerf").textContent = obj[cycle].Functions.equ;
+      if (0 < obj[cycle].Functions.not) {document.getElementById("notOrg").textContent="0 not+";}
+      else {document.getElementById("notOrg").textContent="0 not-";}
+      if (0 < obj[cycle].Functions.nand) {document.getElementById("nanOrg").textContent="1 nan+";}
+      else {document.getElementById("nanOrg").textContent="1 nan-";}
+      if (0 < obj[cycle].Functions.and) {document.getElementById("andOrg").textContent="2 and+";}
+      else {document.getElementById("andOrg").textContent="2 and-";}
+      if (0 < obj[cycle].Functions.orn) {document.getElementById("ornOrg").textContent="3 orn+";}
+      else {document.getElementById("ornOrg").textContent="3 orn-";}
+      if (0 < obj[cycle].Functions.or) {document.getElementById("oroOrg").textContent="4 oro+";}
+      else {document.getElementById("oroOrg").textContent="4 oro-";}
+      if (0 < obj[cycle].Functions.andn) {document.getElementById("antOrg").textContent="5 ant+";}
+      else {document.getElementById("antOrg").textContent="5 ant-";}
+      if (0 < obj[cycle].Functions.nor) {document.getElementById("norOrg").textContent="6 nor+";}
+      else {document.getElementById("norOrg").textContent="6 nor-";}
+      if (0 < obj[cycle].Functions.xor) {document.getElementById("xorOrg").textContent="7 xor+";}
+      else {document.getElementById("xorOrg").textContent="7 xor-";}
+      if (0 < obj[cycle].Functions.equ) {document.getElementById("equOrg").textContent="8 equ+";}
+      else {document.getElementById("equOrg").textContent="8 equ-";}
+    }
+    
+    function writeInstructDetails(obj, cycle) {
+      var letter;
+      var IPspot = obj[cycle].MemSpace[0].Heads.IP
+      if (undefined == obj[cycle].MemSpace[0].Memory[IPspot-1]) {
+        dijit.byId("ExecuteJust").set("value","(none)"); 
+      }
+      else {
+        letter = obj[cycle].MemSpace[0].Memory[IPspot-1]
+        dijit.byId("ExecuteJust").set("value", InstDescribe[letter]);
+        //console.log("Inst", InstDescribe[letter]);
+      }
+      if (undefined == obj[cycle].MemSpace[0].Memory[IPspot]) {
+        document.getElementById("ExecuteAbout").textContent = "(none)";
+      }
+      else {
+        letter = obj[cycle].MemSpace[0].Memory[IPspot];
+        document.getElementById("ExecuteAbout").textContent = InstDescribe[letter];
+      }
+      //console.log('spot=', IPspot, ' letter=', letter, " Instr=", InstDescribe[letter]);
+    }
 
     /* ****************************************************************/
-    /*                  End of Canvas to draw genome
+    /*             End of Canvas to draw genome and update details
     /* ************************************************************** */
 
-    /* **** Controls bottum of page ***********************************/
+    /* **** Controls bottum of organism page **************************/
     /* Organism Gestation Length Slider */
 
     function outputUpdate(vol) {
       document.querySelector('#orgCycle').value = vol;
     }
 
-    function orgBackFn() {
+    dijit.byId("orgBack").on("Click", function() {
       var ii = Number(document.getElementById("orgCycle").value);
       if (cycleSlider.get("minimum") < cycleSlider.get("value")) {
-        dijit.byId("orgCycle").set("value", ii-1);
+        ii--;
+        dijit.byId("orgCycle").set("value", ii);
+        cycle = ii;
+        updateOrgTrace(traceObj, cycle)
       }
-    }
-    dijit.byId("orgBack").on("Click", orgBackFn);
+    });
 
-    function orgForwardFn() {
+    dijit.byId("orgForward").on("Click", function() {
       var ii = Number(document.getElementById("orgCycle").value);
       if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
-        dijit.byId("orgCycle").set("value", ii+1);
+        ii++;
+        dijit.byId("orgCycle").set("value", ii);
+        cycle = ii;
+        updateOrgTrace(traceObj, cycle)
       }
-    }
-    dijit.byId("orgForward").on("Click", orgForwardFn);
+    });
 
     dijit.byId("orgReset").on("Click", function(){
       dijit.byId("orgCycle").set("value", 0);
+      cycle = 0;
+      updateOrgTrace(traceObj, cycle)
     });
 
     dijit.byId("orgRun").on("Click", function(){
@@ -1286,6 +1335,7 @@ require([
 
     dijit.byId("orgCycle").on("Change", function(value){
       cycleSlider.set("value",value);
+      cycle = value;
     });
 
     var cycleSlider = new HorizontalSlider({
@@ -1298,6 +1348,7 @@ require([
         style: "width:100%;",
         onChange: function(value){
             document.getElementById("orgCycle").value = value;
+            cycle = value;
         }
     }, "cycleSlider");
     //console.log("after slider");
@@ -1451,18 +1502,18 @@ require([
     orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
     orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
     orgColorCodes["headFill"] = "#CCCCCC"; //lighter grey
-    orgColorCodes["Write"] = "#FA0022"; //color Meter  red
-    orgColorCodes["Read"] = "#5300FF"; //color Meter  blue
-    orgColorCodes["Flow"] = "#00FF00"; //color Meter  green
-    orgColorCodes["Instruct"] = "#000000"; //color Meter  black
+    orgColorCodes["WRITE"] = "#FA0022"; //color Meter  red
+    orgColorCodes["READ"] = "#5300FF"; //color Meter  blue
+    orgColorCodes["FLOW"] = "#00FF00"; //color Meter  green
+    orgColorCodes["IP"] = "#000000"; //color Meter  black
     orgColorCodes["outline"] = "#686868"; //color Meter grey
     orgColorCodes["0"] = "#F5FF00"; //color Meter yellow
     orgColorCodes["1"] = "#8888FF"; //lt blue
     var headCodes = {};
-    headCodes["Read"] = "R";
-    headCodes["Write"] = "W";
-    headCodes["Flow"] = "F";
-    headCodes["Instruct"] = "I";
+    headCodes["READ"] = "R";
+    headCodes["WRITE"] = "W";
+    headCodes["FLOW"] = "F";
+    headCodes["IP"] = "I";
     var InstDescribe = {};
     InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
     InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
