@@ -74,6 +74,8 @@ require([
         case 'OrgTrace':
           traceObj = msg;
           cycle = 0;
+          cycleSlider.set("maximum", traceObj.length-1);
+          cycleSlider.set("discreteValues", traceObj.length);
           updateOrgTrace(traceObj, cycle);
           break;
         case 'PopulationStats':
@@ -251,7 +253,7 @@ require([
         freezeOrgan.forInSelectedItems(function(item, id){  
           OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
         });
-        OrganCurrent.sync();   //
+        OrganCurrent.sync();   
       }
       doOrgTrace();  //request new Organism Trace from Avida and draw that.    
       //(traceObj, cycle);  // Draw the initial genome of the dropped organism. 
@@ -1064,16 +1066,16 @@ require([
     ctx.translate(0.5, 0.5);  //makes a crisper image
     //initialize gen (genome) object. 
     var gen = {};
-    gen.bigR = 120; //radius of full circle
-    gen.smallR = gen.bigR*2*Math.PI/(2*gen.size); //radius of each small circle
-    gen.tanR = gen.bigR-gen.smallR;         //radius of circle tanget to inside of small circles
-    gen.pathR = gen.bigR-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
-    gen.headR = gen.bigR-2*gen.smallR;      //radius of circle made by center of head positions.
-    gen.cx1 = 150;  //center of main circle x
-    gen.cy1 = 150;  //center of main circle y
+    gen.bigR = [120, 120]; //radius of full circle
+    gen.size = [50, 50];
+    gen.smallR = gen.bigR*2*Math.PI/(2*gen.size[0]); //radius of each small circle
+    gen.tanR = gen.bigR[0]-gen.smallR;         //radius of circle tanget to inside of small circles
+    gen.pathR = gen.bigR[0]-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
+    gen.headR = [gen.bigR[0]-2*gen.smallR,gen.bigR[1]-2*gen.smallR];      //radius of circle made by center of head positions.
+    gen.cx = [150, 350];  //center of main circle x
+    gen.cy = [150, 150];  //center of main circle y
     gen.fontsize = Math.round(1.8*gen.smallR);
-    gen.dna = "";
-    gen.size = 50;
+    gen.dna = ["",""];
 
     function drawBitStr (context, row, bitStr) {
       var recWidth = 5;   //The width of the rectangle, in pixels
@@ -1111,42 +1113,110 @@ require([
       }
     }
 
-    function genomeCircle(gen){
+    function genomeCircleMom(gen){
       var bx1, by1;  //center of small circle
       var txtW;      // width of txt
-      for (var ii = 0; ii < gen.dna.length; ii++){
-        bx1 = gen.cx1 + gen.bigR*Math.cos(ii*2*Math.PI/gen.size);
-        by1 = gen.cy1 + gen.bigR*Math.sin(ii*2*Math.PI/gen.size);
+      for (var ii = 0; ii < gen.dna[0].length; ii++){
+        bx1 = gen.cx[0] + gen.bigR[0]*Math.cos(ii*2*Math.PI/gen.size[0]);
+        by1 = gen.cy[0] + gen.bigR[0]*Math.sin(ii*2*Math.PI/gen.size[0]);
         ctx.beginPath();
         ctx.arc(bx1, by1, gen.smallR, 0, 2*Math.PI);
-        //ctx.fillStyle = letterColor[gen.dna.substr(ii,1)];  //use if gen.dna is a string
-        ctx.fillStyle = letterColor[gen.dna[ii]];  //use if gen.dna is an array
+        //ctx.fillStyle = letterColor[gen.dna[0].substr(ii,1)];  //use if gen.dna is a string
+        ctx.fillStyle = letterColor[gen.dna[0][ii]];  //use if gen.dna is an array
         ctx.fill();   //required to render fill
         ctx.fillStyle = dictColor["Black"];
         ctx.font = gen.fontsize+"px Arial";
-        //txtW = ctx.measureText(gen.dna.substr(ii,1)).width;  //use if gen.dna is a string
-        txtW = ctx.measureText(gen.dna[ii]).width;     //use if gen.dna is an array
+        //txtW = ctx.measureText(gen.dna[0].substr(ii,1)).width;  //use if gen.dna is a string
+        txtW = ctx.measureText(gen.dna[0][ii]).width;     //use if gen.dna is an array
         //console.log("r=", gen.smallR, "; W=", txtW);
-        //ctx.fillText(gen.dna.substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);  //use if gen.dna is a string
-        ctx.fillText(gen.dna[ii],bx1-txtW/2, by1+gen.smallR/2);
+        //ctx.fillText(gen.dna[0].substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);  //use if gen.dna is a string
+        ctx.fillText(gen.dna[0][ii],bx1-txtW/2, by1+gen.smallR/2);
         //console.log("x, y: ", bx1, by1);
       }
     }
     
-    function drawHead(gen, spot, head) {
+    function genomeCircleMom(gen){
+      var bx1, by1;  //center of small circle
+      var txtW;      // width of txt
+      for (var ii = 0; ii < gen.dna[0].length; ii++){
+        bx1 = gen.cx[0] + gen.bigR[0]*Math.cos(ii*2*Math.PI/gen.size[0]);
+        by1 = gen.cy[0] + gen.bigR[0]*Math.sin(ii*2*Math.PI/gen.size[0]);
+        ctx.beginPath();
+        ctx.arc(bx1, by1, gen.smallR, 0, 2*Math.PI);
+        //ctx.fillStyle = letterColor[gen.dna[0].substr(ii,1)];  //use if gen.dna is a string
+        ctx.fillStyle = letterColor[gen.dna[0][ii]];  //use if gen.dna is an array
+        ctx.fill();   //required to render fill
+        ctx.fillStyle = dictColor["Black"];
+        ctx.font = gen.fontsize+"px Arial";
+        //txtW = ctx.measureText(gen.dna[0].substr(ii,1)).width;  //use if gen.dna is a string
+        txtW = ctx.measureText(gen.dna[0][ii]).width;     //use if gen.dna is an array
+        //console.log("r=", gen.smallR, "; W=", txtW);
+        //ctx.fillText(gen.dna[0].substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);  //use if gen.dna is a string
+        ctx.fillText(gen.dna[0][ii],bx1-txtW/2, by1+gen.smallR/2);
+        //console.log("x, y: ", bx1, by1);
+      }
+    }
+    
+    function genomeCircleSon(gen){
+      var bx1, by1;  //center of small circle
+      var txtW;      // width of txt
+      for (var ii = 0; ii < gen.dna[1].length; ii++){
+        bx1 = gen.cx[1] + gen.bigR[1]*Math.cos(ii*2*Math.PI/gen.size[1] + gen.rotate);
+        by1 = gen.cy[1] + gen.bigR[1]*Math.sin(ii*2*Math.PI/gen.size[1] + gen.rotate);
+        ctx.beginPath();
+        ctx.arc(bx1, by1, gen.smallR, 0, 2*Math.PI);
+        //ctx.fillStyle = letterColor[gen.dna[0].substr(ii,1)];  //use if gen.dna is a string
+        ctx.fillStyle = letterColor[gen.dna[0][ii]];  //use if gen.dna is an array
+        ctx.fill();   //required to render fill
+        ctx.fillStyle = dictColor["Black"];
+        ctx.font = gen.fontsize+"px Arial";
+        //txtW = ctx.measureText(gen.dna[0].substr(ii,1)).width;  //use if gen.dna is a string
+        txtW = ctx.measureText(gen.dna[0][ii]).width;     //use if gen.dna is an array
+        //console.log("r=", gen.smallR, "; W=", txtW);
+        //ctx.fillText(gen.dna[0].substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);  //use if gen.dna is a string
+        ctx.fillText(gen.dna[0][ii],bx1-txtW/2, by1+gen.smallR/2);
+        //console.log("x, y: ", bx1, by1);
+      }
+    }
+
+    function drawHeadMom(gen, spot, head) {
       var hx, hy; //center of head and used as center of ring
       var txtW;  // width of txt
       //draw circumference around instruction that the instruction pointer points to. 
-      hx = gen.cx1 + gen.bigR*Math.cos(spot*2*Math.PI/gen.size);
-      hy = gen.cy1 + gen.bigR*Math.sin(spot*2*Math.PI/gen.size);
+      hx = gen.cx[0] + gen.bigR[0]*Math.cos(spot*2*Math.PI/gen.size[0]);
+      hy = gen.cy[0] + gen.bigR[0]*Math.sin(spot*2*Math.PI/gen.size[0]);
       ctx.beginPath();
       ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
       ctx.strokeStyle = orgColorCodes[head];
       ctx.lineWidth = 1.5;
       ctx.stroke();
       //draw instruction pointer tangent to instruction
-      hx = gen.cx1 + gen.headR*Math.cos(spot*2*Math.PI/gen.size);
-      hy = gen.cy1 + gen.headR*Math.sin(spot*2*Math.PI/gen.size);
+      hx = gen.cx[0] + gen.headR*Math.cos(spot*2*Math.PI/gen.size[0]);
+      hy = gen.cy[0] + gen.headR*Math.sin(spot*2*Math.PI/gen.size[0]);
+      ctx.beginPath();
+      ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
+      ctx.fillStyle = orgColorCodes["headFill"];
+      ctx.fill();
+      ctx.fillStyle = orgColorCodes[head];
+      ctx.font = gen.fontsize+"px Arial";
+      txtW = ctx.measureText(headCodes[head]).width;
+      ctx.fillText(headCodes[head],hx-txtW/2, hy+gen.smallR/2);      
+    }
+
+    function drawHeadSon(gen, spot, head) {
+      var hx, hy; //center of head and used as center of ring
+      var txtW;  // width of txt
+      //draw circumference around instruction that the instruction pointer points to. 
+      hx = gen.cx[1] + gen.bigR*Math.cos(spot*2*Math.PI/gen.size[0]);
+      hy = gen.cy[1] + gen.bigR*Math.sin(spot*2*Math.PI/gen.size[0]);
+      ctx.beginPath();
+      ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
+      ctx.strokeStyle = orgColorCodes[head];
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      //draw instruction pointer tangent to instruction
+      hx = gen.cx[1] + gen.headR*Math.cos(spot*2*Math.PI/gen.size[0]);
+      hy = gen.cy[1] + gen.headR*Math.sin(spot*2*Math.PI/gen.size[0]);
       ctx.beginPath();
       ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
       ctx.fillStyle = orgColorCodes["headFill"];
@@ -1165,17 +1235,18 @@ require([
         ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
       } else { ctx.strokeStyle = dictColor["Red"];}
       ctx.beginPath();
-      xx1 = gen.cx1 + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size); //Draw line from Spot1
-      yy1 = gen.cy1 + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size);  
+      xx1 = gen.cx[0] + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size[0]); //Draw line from Spot1
+      yy1 = gen.cy[0] + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size[0]);  
       ctx.moveTo(xx1, yy1);
-      xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
-      yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
+      xx2 = gen.cx[0] + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size[0]); //Draw line to Spot2
+      yy2 = gen.cy[0] + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size[0]);  
       //Set Control points on same radial as the spots
-      gen.pathR = gen.bigR-(2+rep/3)*gen.smallR;
-      xc1 = gen.cx1 + gen.pathR*Math.cos(spot1*2*Math.PI/gen.size);  
-      yc1 = gen.cy1 + gen.pathR*Math.sin(spot1*2*Math.PI/gen.size);
-      xc2 = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size);  
-      yc2 = gen.cy1 + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size);
+      gen.pathR = gen.bigR[0]-(2+rep/3)*gen.smallR;
+      xc1 = gen.cx[0] + gen.pathR*Math.cos(spot1*2*Math.PI/gen.size[0]);  
+      yc1 = gen.cy[0] + gen.pathR*Math.sin(spot1*2*Math.PI/gen.size[0]);
+      xc2 = gen.cx[0] + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size[0]);  
+      yc2 = gen.cy[0] + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size[0]);
+      //console.log(xc1, yc1, xc2, yc2, xx2, yy2);
       ctx.bezierCurveTo(xc1, yc1, xc2, yc2, xx2, yy2);
       ctx.stroke();
     }
@@ -1183,44 +1254,61 @@ require([
     //main function to update the Organism Trace on the Organism Page
     function updateOrgTrace(obj, cycle){
       //set canvas size
-      var wide = $("#organismCanvasHolder").innerWidth();
-      var high = $("#organismCanvasHolder").innerHeight();
-      OrgCanvas.width = wide-5;
-      OrgCanvas.height = high-5;
+      OrgCanvas.width = $("#organismCanvasHolder").innerWidth();-5;
+      OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-5;
       //Find size and position of parent circle. 
-      gen.size = obj[cycle].MemSpace[0].Memory.length;
-      if (OrgCanvas.height < .45*OrgCanvas.width) {gen.bigR = Math.round(0.4*OrgCanvas.height) }//set size based on height
-      else {
-        gen.bigR = Math.round(0.2*OrgCanvas.width) //set size based on width
+      //console.log("MemSpace", obj[cycle].MemSpace.length);
+      for (var ii=0; ii < obj[cycle].MemSpace.length; ii++) {
+        gen.dna[ii] = obj[cycle].MemSpace[ii].Memory;
+        gen.size[ii] = obj[cycle].MemSpace[ii].Memory.length;
       }
-      // Draw genome in a circle---------------------------------------- 
-      gen.smallR = gen.bigR*2*Math.PI/(2*gen.size); //radius of each small circle
-      gen.tanR = gen.bigR-gen.smallR;         //radius of circle tanget to inside of small circles
-      gen.pathR = gen.bigR-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
-      gen.headR = gen.bigR-2*gen.smallR;      //radius of circle made by center of head positions.
-      gen.cx1 = 1.2*gen.bigR;         //center of 1st (parent) circle x
-      gen.cy1 = .5*OrgCanvas.height;  //center of 1st (parent) circle y
+      if (OrgCanvas.height < .45*OrgCanvas.width) {gen.bigR[0] = Math.round(0.4*OrgCanvas.height) }//set size based on height
+      else {
+        gen.bigR[0] = Math.round(0.2*OrgCanvas.width) //set size based on width
+      }
+      gen.cx[0] = 1.1*gen.bigR[0];         //center of 1st (parent) circle x
+      gen.cy[0] = .5*OrgCanvas.height;  //center of 1st (parent) circle y
+      // Draw parent (Mom) genome in a circle---------------------------------------- 
+      gen.smallR = gen.bigR[0]*2*Math.PI/(2*gen.size[0]); //radius of each small circle
+      gen.tanR = gen.bigR[0]-gen.smallR;         //radius of circle tanget to inside of small circles
+      gen.pathR = gen.bigR[0]-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
+      gen.headR[0] = gen.bigR[0]-2*gen.smallR;      //radius of circle made by center of head positions.
       gen.fontsize = Math.round(1.8*gen.smallR);
-      gen.dna = obj[cycle].MemSpace[0].Memory
-      genomeCircle(gen);
+      genomeCircleMom(gen);
+      // Draw child (Son) genome in a circle ---------
+      if (1 < obj[cycle].MemSpace.length) {
+        gen.bigR[1] = gen.smallR*2*gen.size[1]/(2*Math.PI);
+        gen.cy[1] = gen.cy[0];
+        if (obj[cycle].DidDivide) {
+          gen.cx[1] = gen.cx[0] + gen.bigR[0] + 3*gen.smallR + gen.bigR[1];
+          gen.rotate = 0;
+        }
+        else {
+          gen.cx[1] = gen.cx[0] + gen.bigR[0] + 1.5*gen.smallR + gen.bigR[1];
+          gen.rotate = 2*Math.PI;
+          console.log("xy", gen.cx[1], gen.cy[1], " size", gen.size[1]);
+        }
+        genomeCircleSon(gen);
+      }
       //Draw path of acrs
       //drawArc(gen, spot1, spot2, rep)
-      console.log("cycle=",cycle, " pathLength=",obj[cycle].Jumps.length); 
       for (var ii = 0; ii<obj[cycle].Jumps.length; ii++) {
         drawArc2(gen,  obj[cycle].Jumps[ii].FromIDX,  obj[cycle].Jumps[ii].ToIDX, obj[cycle].Jumps[ii].Freq);
       }
-      //drawHead(gen, spot, head) // draws the various heads
-      if (undefined != obj[cycle].MemSpace[0].Heads.FLOW) {drawHead(gen, obj[cycle].MemSpace[0].Heads.FLOW, "FLOW");}
-      if (undefined != obj[cycle].MemSpace[0].Heads.READ) {drawHead(gen, obj[cycle].MemSpace[0].Heads.READ, "READ");}
-      if (undefined != obj[cycle].MemSpace[0].Heads.WRITE) {drawHead(gen, obj[cycle].MemSpace[0].Heads.WRITE, "WRITE");}
-      if (undefined != obj[cycle].MemSpace[0].Heads.IP) {drawHead(gen, obj[cycle].MemSpace[0].Heads.IP, "IP");}
+      //drawHeadMom(gen, spot, head) // draws the various heads for parent (Mom)
+      if (undefined != obj[cycle].MemSpace[0].Heads.READ) {drawHeadMom(gen, obj[cycle].MemSpace[0].Heads.READ, "READ");}
+      if (undefined != obj[cycle].MemSpace[0].Heads.WRITE) {drawHeadMom(gen, obj[cycle].MemSpace[0].Heads.WRITE, "WRITE");}
+      if (undefined != obj[cycle].MemSpace[0].Heads.FLOW) {drawHeadMom(gen, obj[cycle].MemSpace[0].Heads.FLOW, "FLOW");}
+      if (undefined != obj[cycle].MemSpace[0].Heads.IP) {drawHeadMom(gen, obj[cycle].MemSpace[0].Heads.IP, "IP");}
+
       //Draw Buffers ---------------------------------------------------
       //drawBitStr (name, row, bitStr);
       for (var ii = 0; ii < obj[cycle].Buffers.input.length; ii++){
-        drawBitStr (bufferCtx, ii, obj[cycle].Buffers.input[ii]);}
-      //drawBitStr (registerCtx, 0, s2);
-      //drawBitStr (registerCtx, 1, s1);
-      //drawBitStr (registerCtx, 2, s2);
+        drawBitStr (bufferCtx, ii, obj[cycle].Buffers.input[ii]);
+      }
+      drawBitStr (registerCtx, 0, obj[cycle].Registers['AX']);
+      drawBitStr (registerCtx, 1, obj[cycle].Registers['BX']);
+      drawBitStr (registerCtx, 2, obj[cycle].Registers['CX']);
       //console.log("A", obj[cycle].Buffers);
       for (var ii = 0; ii<2; ii++){ //only showing the top 2 in the stack of 10
         //console.log(ii, obj[cycle].Buffers["stack A"][ii]);
@@ -1294,7 +1382,7 @@ require([
     /* ************************************************************** */
 
     /* **** Controls bottum of organism page **************************/
-    /* Organism Gestation Length Slider */
+    var update_timer = null;
 
     function outputUpdate(vol) {
       document.querySelector('#orgCycle').value = vol;
@@ -1323,14 +1411,35 @@ require([
     dijit.byId("orgReset").on("Click", function(){
       dijit.byId("orgCycle").set("value", 0);
       cycle = 0;
-      updateOrgTrace(traceObj, cycle)
+      updateOrgTrace(traceObj, cycle);
+      orgStopFn()
     });
-
+    
+    function orgStopFn() {
+      if (update_timer){ clearInterval(update_timer);}
+      dijit.byId("orgRun").set("label", "Run");
+    }
+    function orgRunFn(){
+      if (cycleSlider.get("maximum")-1 > cycleSlider.get("value")) {
+        cycle++;
+        dijit.byId("orgCycle").set("value", cycle);
+        updateOrgTrace(traceObj, cycle);
+      }
+    }
     dijit.byId("orgRun").on("Click", function(){
+      if ("Run" == dijit.byId("orgRun").get("label")) {
+        dijit.byId("orgRun").set("label", "Stop");
+        update_timer = setInterval(orgRunFn, 100);
+      }
+      else { orgStopFn();
+      }
     });
 
     dijit.byId("orgEnd").on("Click", function() {
-      dijit.byId("orgCycle").set("value", 200);
+      dijit.byId("orgCycle").set("value", cycleSlider.get("maximum"));
+      cycle = cycleSlider.get("maximum");
+      updateOrgTrace(traceObj, cycle);
+      orgStopFn()
     });
 
     dijit.byId("orgCycle").on("Change", function(value){
@@ -1338,9 +1447,10 @@ require([
       cycle = value;
     });
 
+    /* Organism Gestation Length Slider */
     var cycleSlider = new HorizontalSlider({
         name: "cycleSlider",
-        value: 2,
+        value: 0,
         minimum: 0,
         maximum: 200,
         intermediateChanges: true,
@@ -1551,15 +1661,15 @@ require([
         ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
       } else { ctx.strokeStyle = dictColor["Red"];}
       ctx.beginPath();
-      xx1 = gen.cx1 + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size); //Draw line from Spot1
-      yy1 = gen.cy1 + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size);  
+      xx1 = gen.cx[0] + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size[0]); //Draw line from Spot1
+      yy1 = gen.cy[0] + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size[0]);  
       ctx.moveTo(xx1, yy1);
-      xx2 = gen.cx1 + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size); //Draw line to Spot2
-      yy2 = gen.cy1 + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size);  
+      xx2 = gen.cx[0] + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size[0]); //Draw line to Spot2
+      yy2 = gen.cy[0] + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size[0]);  
       //Set Control point on line perpendicular to line between Spot1 & spot2
       gen.pathR = gen.bigR-(2+rep)*gen.smallR;
-      xxc = gen.cx1 + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);  
-      yyc = gen.cy1 + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size + (spot1-spot2)*(Math.PI)/gen.size);
+      xxc = gen.cx[0] + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);  
+      yyc = gen.cy[0] + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       ctx.stroke();
     }
@@ -1567,16 +1677,16 @@ require([
     function drawInstructionPointer(gen, spot) {
       var ix, iy;  //center of instruction pointer
       //draw circumference around instruction that the instruction pointer points to. 
-      ix = gen.cx1 + gen.bigR*Math.cos(spot*2*Math.PI/gen.size);
-      iy = gen.cy1 + gen.bigR*Math.sin(spot*2*Math.PI/gen.size);
+      ix = gen.cx[0] + gen.bigR*Math.cos(spot*2*Math.PI/gen.size[0]);
+      iy = gen.cy[0] + gen.bigR*Math.sin(spot*2*Math.PI/gen.size[0]);
       ctx.beginPath();
       ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
       ctx.strokeStyle = dictColor["Black"];
       ctx.lineWidth = 1.5;
       ctx.stroke();
       //draw instruction pointer tangent to instruction
-      ix = gen.cx1 + gen.headR*Math.cos(spot*2*Math.PI/gen.size);
-      iy = gen.cy1 + gen.headR*Math.sin(spot*2*Math.PI/gen.size);
+      ix = gen.cx[0] + gen.headR*Math.cos(spot*2*Math.PI/gen.size[0]);
+      iy = gen.cy[0] + gen.headR*Math.sin(spot*2*Math.PI/gen.size[0]);
       ctx.beginPath();
       ctx.arc(ix, iy, gen.smallR, 0, 2*Math.PI);
       ctx.fillStyle = orgColorCodes["headFill"];
