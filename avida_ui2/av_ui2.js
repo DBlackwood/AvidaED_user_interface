@@ -1153,7 +1153,7 @@ require([
         //console.log("r=", gen.smallR, "; W=", txtW);
         //ctx.fillText(gen.dna[0].substr(ii,1),bx1-txtW/2, by1+gen.smallR/2);  //use if gen.dna is a string
         ctx.fillText(gen.dna[0][ii],bx1-txtW/2, by1+gen.smallR/2);
-        //console.log("x, y: ", bx1, by1);
+        //console.log("CircleMom xy: ", bx1, by1);
       }
     }
     
@@ -1163,6 +1163,8 @@ require([
       for (var ii = 0; ii < gen.dna[1].length; ii++){
         bx1 = gen.cx[1] + gen.bigR[1]*Math.cos(ii*2*Math.PI/gen.size[1] + gen.rotate);
         by1 = gen.cy[1] + gen.bigR[1]*Math.sin(ii*2*Math.PI/gen.size[1] + gen.rotate);
+        bx1 = gen.cx[1] + gen.bigR[1]*Math.cos(ii*2*Math.PI/gen.size[1] );
+        by1 = gen.cy[1] + gen.bigR[1]*Math.sin(ii*2*Math.PI/gen.size[1] );
         ctx.beginPath();
         ctx.arc(bx1, by1, gen.smallR, 0, 2*Math.PI);
         //ctx.fillStyle = letterColor[gen.dna[0].substr(ii,1)];  //use if gen.dna is a string
@@ -1191,8 +1193,8 @@ require([
       ctx.lineWidth = 1.5;
       ctx.stroke();
       //draw instruction pointer tangent to instruction
-      hx = gen.cx[0] + gen.headR*Math.cos(spot*2*Math.PI/gen.size[0]);
-      hy = gen.cy[0] + gen.headR*Math.sin(spot*2*Math.PI/gen.size[0]);
+      hx = gen.cx[0] + gen.headR[0]*Math.cos(spot*2*Math.PI/gen.size[0]);
+      hy = gen.cy[0] + gen.headR[0]*Math.sin(spot*2*Math.PI/gen.size[0]);
       ctx.beginPath();
       ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
       ctx.fillStyle = orgColorCodes["headFill"];
@@ -1200,7 +1202,8 @@ require([
       ctx.fillStyle = orgColorCodes[head];
       ctx.font = gen.fontsize+"px Arial";
       txtW = ctx.measureText(headCodes[head]).width;
-      ctx.fillText(headCodes[head],hx-txtW/2, hy+gen.smallR/2);      
+      ctx.fillText(headCodes[head],hx-txtW/2, hy+gen.smallR/2); 
+      console.log("HeadMom xy", hx, hy);     
     }
 
     function drawHeadSon(gen, spot, head) {
@@ -1278,7 +1281,9 @@ require([
       // Draw child (Son) genome in a circle ---------
       if (1 < obj[cycle].MemSpace.length) {
         gen.bigR[1] = gen.smallR*2*gen.size[1]/(2*Math.PI);
+        gen.bigR[1] = gen.bigR[1]+gen.bigR[1]/gen.size[1];
         gen.cy[1] = gen.cy[0];
+        gen.headR[1] = gen.bigR[1]-2*gen.smallR;      //radius of circle made by center of head positions.
         if (obj[cycle].DidDivide) {
           gen.cx[1] = gen.cx[0] + gen.bigR[0] + 3*gen.smallR + gen.bigR[1];
           gen.rotate = 0;
@@ -1286,7 +1291,7 @@ require([
         else {
           gen.cx[1] = gen.cx[0] + gen.bigR[0] + 1.5*gen.smallR + gen.bigR[1];
           gen.rotate = 2*Math.PI;
-          console.log("xy", gen.cx[1], gen.cy[1], " size", gen.size[1]);
+          console.log("xy", gen.cx[1], gen.cy[1], " size", gen.size[0]);
         }
         genomeCircleSon(gen);
       }
