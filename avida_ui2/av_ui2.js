@@ -1077,9 +1077,10 @@ require([
     gen.fontsize = Math.round(1.8*gen.smallR);
     gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
     gen.dna = ["",""];
+    gen.TimeLineHeight = 60;
 
-    function DrawTimeline(width, height) {
-      var startX, lineY, endY, length, cycles;
+    function DrawTimeline(obj, cycle) {
+      var startX, lineY, endX, length, cycles;
       var upTickX = [];
       var upTickY = [];
       var upNumY = [];
@@ -1088,11 +1089,19 @@ require([
       var dnNumY = [];
       var txtWide = 3;
       
-      lineY = OrgCanvas.height-height/2;
-      startX = 5;
-      endX = OrgCanvas.width-5;
+      lineY = OrgCanvas.height - gen.TimeLineHeight/2;
+      startX = 25;                //The number are fudge factors to account for the end of the slider
+      endX = OrgCanvas.width-20;
+      length = endX-startX; 
+      for (var ii = 0; ii < obj.length; ii++){
+        }
+      console.log("len", obj.length);
+      ctx.lineWidth = 1; 
+      ctx.strokeStyle = dictColor["Black"];
       ctx.beginPath();
-      
+      ctx.moveTo(startX,lineY);
+      ctx.lineTo(endX,lineY);
+      ctx.stroke();
     }
 
     function drawBitStr (context, row, bitStr) {
@@ -1149,9 +1158,10 @@ require([
         //console.log("r=", gen.smallR, "; W=", txtW);
         //ctx.fillText(gen.dna[gg].substr(ii,1),SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is a string
         ctx.fillText(gen.dna[gg][ii],SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);
-        //console.log("Circle xy: ", SmallCenterX, SmallCenterY);
       }
-      //console.log("circle rotate", gen.rotate[gg], " gg=", gg);
+      //Draw center of circle to test max arc height - should not go past center of circle
+      //ctx.arc(gen.cx[gg], gen.cy[gg], gen.smallR/4, 0, 2*Math.PI);
+      //ctx.fill();
     }
     
     function drawHead(gen, spot, gg, head) {
@@ -1192,7 +1202,8 @@ require([
       xx2 = gen.cx[0] + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size[0]); //Draw line to Spot2
       yy2 = gen.cy[0] + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size[0]);  
       //Set Control points on same radial as the spots
-      gen.pathR = gen.bigR[0]-(2+rep/3)*gen.smallR;
+      gen.pathR = gen.bigR[0]-2*gen.smallR-rep*gen.bigR[0]/gen.size[0];
+      //gen.pathR = gen.bigR[0]-(2+rep/3)*gen.smallR;
       xc1 = gen.cx[0] + gen.pathR*Math.cos(spot1*2*Math.PI/gen.size[0]);  
       yc1 = gen.cy[0] + gen.pathR*Math.sin(spot1*2*Math.PI/gen.size[0]);
       xc2 = gen.cx[0] + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size[0]);  
@@ -1213,16 +1224,15 @@ require([
         gen.size[ii] = obj[cycle].MemSpace[ii].Memory.length;
       }
       //Draw Timeline
-      var timelineHeight = 60;
-      DrawTimeline(OrgCanvas.width, timelineHeight);
+      DrawTimeline(obj, cycle);
       //Find radius and center of big circle for each genome
-      if (OrgCanvas.height < .55*(OrgCanvas.width-timelineHeight)) {
-        gen.bigR[0] = Math.round(0.45*(OrgCanvas.height-timelineHeight)) }//set size based on height
+      if (OrgCanvas.height < .55*(OrgCanvas.width-gen.TimeLineHeight)) {
+        gen.bigR[0] = Math.round(0.45*(OrgCanvas.height-gen.TimeLineHeight)) }//set size based on height
       else {
         gen.bigR[0] = Math.round(0.2*OrgCanvas.width) //set size based on width
       }
       gen.cx[0] = OrgCanvas.width/2 - 1.2*gen.bigR[0];        //center of 1st (parent) circle x
-      gen.cy[0] = (OrgCanvas.height-timelineHeight)/2;  //center of 1st (parent) circle y
+      gen.cy[0] = (OrgCanvas.height-gen.TimeLineHeight)/2;  //center of 1st (parent) circle y
       // Draw parent (Mom) genome in a circle---------------------------------------- 
       gen.smallR = gen.bigR[0]*2*Math.PI/(2*gen.size[0]); //radius of each small circle
       gen.tanR = gen.bigR[0]-gen.smallR;         //radius of circle tanget to inside of small circles
@@ -1248,7 +1258,7 @@ require([
         genomeCircle(gen, 1);
       }
       //Draw path of acrs
-      //drawArc(gen, spot1, spot2, rep)
+      //drawArc2(gen, spot1, spot2, rep)
       for (var ii = 0; ii<obj[cycle].Jumps.length; ii++) {
         drawArc2(gen,  obj[cycle].Jumps[ii].FromIDX,  obj[cycle].Jumps[ii].ToIDX, obj[cycle].Jumps[ii].Freq);
       }
@@ -1322,12 +1332,12 @@ require([
     function writeInstructDetails(obj, cycle) {
       var letter;
       var IPspot = obj[cycle].MemSpace[0].Heads.IP
-      if (undefined == obj[cycle].MemSpace[0].Memory[IPspot-1]) {
+      if (undefined == obj[cycle-1]) {
         dijit.byId("ExecuteJust").set("value","(none)"); 
       }
       else {
-        letter = obj[cycle].MemSpace[0].Memory[IPspot-1]
-        dijit.byId("ExecuteJust").set("value", InstDescribe[letter]);
+        letter = obj[cycle-1].NextInstruction;
+        dijit.byId("ExecuteJust").set("value", letter + ": " + InstDescribe[letter]);
         //console.log("Inst", InstDescribe[letter]);
       }
       if (undefined == obj[cycle].MemSpace[0].Memory[IPspot]) {
@@ -1335,9 +1345,9 @@ require([
       }
       else {
         letter = obj[cycle].MemSpace[0].Memory[IPspot];
-        document.getElementById("ExecuteAbout").textContent = InstDescribe[letter];
+        document.getElementById("ExecuteAbout").textContent = letter + ": " + InstDescribe[letter];
       }
-      //console.log('spot=', IPspot, ' letter=', letter, " Instr=", InstDescribe[letter]);
+      console.log('spot=', IPspot, ' letter=', letter, " Instr=", InstDescribe[letter]);
     }
 
     /* ****************************************************************/
