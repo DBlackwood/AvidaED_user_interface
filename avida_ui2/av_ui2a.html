@@ -632,11 +632,12 @@
           <canvas id="output" width="160px" height="5px" style="border:1px solid #000000;"></canvas>
           <span data-dojo-type="dijit/TitlePane" id="InstructionDetail" title="Instruction Details"
                 extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200"
-                open="false" style="min-width: 1px; width: 100%; height: auto;">
+                open="true" style="min-width: 1px; width: 100%; height: auto;">
             <p>Just Executed:</p>
-            <textarea type="text" id="ExecuteJust" readonly style="height: 50px; width: 100%;"></textarea>
+            <textarea type="text" data-dojo-type="dijit/form/Textarea" id="ExecuteJust" intermediateChanges="false" rows="3"
+                  trim="false" uppercase="false" lowercase="false" propercase="false" style="height: auto; width: 100%;"></textarea>
             <p>About to Execute:</p>
-            <textarea type="text" id="ExecuteAbout" readonly style="height: 50px; width: 100%;"></textarea>
+            <textarea type="text" id="ExecuteAbout" style="height: auto; width: 100%;"></textarea>
           </span>
         </div>
         <!-- Canvas area where the life cycle of a single organism is shown -->
