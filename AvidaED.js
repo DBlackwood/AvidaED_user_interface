@@ -79,11 +79,45 @@ require([
           updateOrgTrace(traceObj, cycle);
           break;
         case 'PopulationStats':
-          updatePopStats(msg)
+          updatePopStats(msg);
+          //doPopMap();  //Call to update grid colors;
+          break;
+        case 'PopMap':
+          //updatePopMap(msg);
           break;
         default:
           console.log('UnknownRequest: ', msg);
           break;
+      }
+    }
+    
+    //uiWorker function to get color data for the grid
+    function doPopMap() {
+      var str = ""; 
+      switch(dijit.byId("colorMode").value) {
+        case 'Fitness': 
+          str = 'last_fitness';
+          break;
+        case 'Gestation Time':
+          str = 'last_gestation_time';
+          break
+        case 'Metabolic Rate':
+          str = 'Metabolic Rate';
+          break;
+        case 'Ancestor Organism':
+          str = 'clade';
+          break;
+        default:
+          str = "error";
+          console.log('unknown dimension for color map');
+          break
+      }
+      if ('error' != str) {
+        var request = {
+          'Key':'PopMap', 
+          'Mode': str
+        }
+       uiWorker.postMessage(request);
       }
     }
 
@@ -528,19 +562,19 @@ require([
     /* ********************************************************************** */
 
     // I think all the code in this section can be deleted as it is not used.
-    var pMenu;
-    var freezerItemID ="Configuration";  //id of a freezer item need to get from dnd assignments
-    freezerItemID = "dojoUnique1";
-    
-    dojo.addOnLoad(function() {
-      pMenu = new dijit.Menu({ targetNodeIds: [freezerItemID]});
-      pMenu.addChild(new dijit.MenuItem({
-        label: "Simple menu item",
-        onClick: function() {
-          var gmenu = prompt("Please rename your freezer item", "george");
-        }
-      }));
-    });
+    //var pMenu;
+    //var freezerItemID ="Configuration";  //id of a freezer item need to get from dnd assignments
+    //freezerItemID = "dojoUnique1";
+    //
+    //dojo.addOnLoad(function() {
+    //  pMenu = new dijit.Menu({ targetNodeIds: [freezerItemID]});
+    //  pMenu.addChild(new dijit.MenuItem({
+    //    label: "Simple menu item",
+    //    onClick: function() {
+    //      var gmenu = prompt("Please rename your freezer item", "george");
+    //    }
+    //  }));
+    //});
 
     /* *************************************************************** */
     /* Population page script ******************************************/
@@ -646,8 +680,8 @@ require([
     }
 
     //Dummy Data 
-    var dataManDict={}
-    dataManDict["core.world.update"]=1;
+    //var dataManDict={}
+    //dataManDict["core.world.update"]=1;
     //var dataManJson = dojo.toJson(dataManDict);
     //var DataManJson = JSON.stringify(dataManDict) //does the same thing as dojo.toJason
     //console.log("man ", dataManJson);
@@ -904,6 +938,27 @@ require([
     }); 
     
     dijit.byId("mnPopulation").on("Click", function() {FrPopulationFn() });
+    
+    // End of Freezer Functions 
+    /* *************************************************************** */
+    // ****************  Draw Population Grid ************************ */
+    /* *************************************************************** */
+
+    /* Canvas Play in gridCanvas *************************************/
+    var CanvasGrid = document.getElementById("gridCanvas");
+    var cntx = CanvasGrid.getContext("2d");
+    CanvasGrid.width = $("#gridHolder").innerWidth()-6;
+    CanvasGrid.height = $("#gridHolder").innerHeight()-6;
+    console.log('Grid', CanvasGrid.width, CanvasGrid.height);
+
+    cntx.beginPath();
+    cntx.moveTo(0,0);
+    cntx.lineTo(200,100);
+    cntx.stroke();
+    cntx.beginPath();
+    cntx.arc(95,50,40,0,3*Math.PI/2);
+    cntx.arc(95,50,40,0,2*Math.PI);
+    cntx.stroke();
 
     /* *************************************************************** */
     /* ******* Population Setup Buttons, etc.  *********************** */
@@ -1151,7 +1206,7 @@ require([
         ctx.moveTo(dnTickX, lineY);
         ctx.lineTo(dnTickX, dnTickY);
         ctx.stroke();
-        if (0==ii%4) {
+        if (0==Math.fmod(ii,4)) {
           txtWide = ctx.measureText(dnNum).width;     
           ctx.fillText(dnNum,dnTickX-txtWide/2, dnLabelY);
         }
@@ -1187,7 +1242,7 @@ require([
         context.fillRect(xx, yy, recWidth, recHeight);
         context.fill();
         //draw black lines every so many bits
-        if (0 == ii%4) {
+        if (0 == Math.fmod(ii,4)) {
           context.beginPath();
           context.lineWidth = 1;
           context.strokeStyle = dictColor["Black"];
@@ -1299,10 +1354,12 @@ require([
 
     //Draw offspring Icon once cell divides  from http://stackoverflow.com/questions/8977369/drawing-png-to-a-canvas-element-not-showing-transparency
     function drawIcon(gen) {
-      var txt = "Offspring Genome";
+      var txt = "Offspring Genome"; 
       drw = new Image();
       drw.src = "avida-ed-ancestor-icon.png";
-      drw.onload = function () { ctx.drawImage(drw, gen.cx[1]-drw.width/2, gen.cy[1]-drw.height/2);}
+      drw.onload = function () {   //image size(width, height) from http://stackoverflow.com/questions/5173796/html5-get-image-dimension
+        ctx.drawImage(drw, gen.cx[1]-drw.width/2, gen.cy[1]-drw.height/2);
+      }
       ctx.fillStyle = dictColor["black"];
       ctx.font = gen.fontsize+"px Arial";
       var txtWd = ctx.measureText(txt).width;
@@ -1550,6 +1607,7 @@ require([
     dictPlotb["newPopulation"] = [ 65, 50, 50,  47, 40,  37,  32, 22];
     var dictColor = {};
     dictColor["Red"] = "#FF0000";
+    //dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
     dictColor["Green"] = "#00FF00";
     dictColor["Blue"] = "#0000FF";
     dictColor["Magenta"] = "#FF00FF";
@@ -1639,19 +1697,11 @@ require([
       //need to get correct array to plot from freezer
       AnaChartFn();
     });
+    
+    //Modulo that is more accurate than %; Math.fmod(aa, bb);
+    Math.fmod = function (aa, bb) { return Number((aa - (Math.floor(aa/bb) * bb)).toPrecision(8));}
 
-
-    /* Canvas Play in gridCanvas *************************************/
-    var canvas = document.getElementById("gridCanvas");
-    var ctxP = canvas.getContext("2d");
-    ctxP.moveTo(0,0);
-    ctxP.lineTo(200,100);
-    ctxP.stroke();
-    ctxP.beginPath();
-    ctxP.arc(95,50,40,0,3*Math.PI/2);
-    //ctxP.arc(95,50,40,0,2*Math.PI);
-    ctxP.stroke();
-        
+    //Dictionarys
     var letterColor = {};
     letterColor["a"] = "#F9CC65"; //color Meter
     letterColor["b"] = "#EFC461"; //color Meter
@@ -1746,4 +1796,6 @@ require([
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       ctx.stroke();
     }
+    
+    //use FileMerge to compare to versions of the same file on a Mac
   });
