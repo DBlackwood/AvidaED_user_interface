@@ -269,7 +269,6 @@ require([
         OrganCurrent.sync();   
       }
       doOrgTrace();  //request new Organism Trace from Avida and draw that.    
-      //(traceObj, cycle);  // Draw the initial genome of the dropped organism. 
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
 
