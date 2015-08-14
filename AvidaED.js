@@ -367,6 +367,16 @@ require([
     function contextMenu(target) {
       var fzItemID = target.selection[0]; 
       var fzSection = target.node.id;
+      console.log("target.node=", target.node);
+      console.log("target.node.id=",target.node.id);
+      console.log("selection=", target.selection);
+      console.log("sel", target.selection[0]);
+
+      
+      fzItemID = target.selection[0]; 
+      fzSection = target.node.id;
+      console.log(target);
+      console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
       var aMenu;
       aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
       aMenu.addChild(new dijit.MenuItem({
@@ -391,7 +401,7 @@ require([
           if (null!=fzName) {
             //document.getElementById(fzItemID).innerHTML = fzName;  //either works
             document.getElementById(fzItemID).textContent = fzName;
-            //target.map[strItem].data=avidian
+            target.map[strItem].data=avidian
           }
         }
       }));
@@ -405,7 +415,7 @@ require([
 
     //When something is added to the Organism Freezer ------------------
     function AncestorBoxChange () {  // for html "AncestorBoxNode"
-      var target = freezeOrgan;
+      var target = AncestorBox;
       var strItem = Object.keys(target.selection)[0];
       var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
       var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
@@ -426,8 +436,14 @@ require([
       if (null != avidian) { 
         document.getElementById(strItem).textContent=avidian; 
         target.map[strItem].data=avidian;
-      }        
+      }
+      console.log("strItem", strItem);
+      var fzItemID = target.selection[0]; 
+      var fzSection = target.node.id;
+      console.log("target.node", target.node);
+      console.log("target.node.id",target.node.id);
       contextMenu(target); 
+
     }
     dojo.connect(AncestorBox, "onDrop", AncestorBoxChange);
 
@@ -506,6 +522,7 @@ require([
         document.getElementById("seedTray").innerHTML = outstr;
         //console.log("grid ", GridBox);
       }
+      /*
       if (target.node.id=="AncestorBoxNode"){
         freezeOrgan.forInSelectedItems(function(item, id){  
           GridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
@@ -517,6 +534,7 @@ require([
 
         });
       }
+      */
       if (target.node.id=="freezePopDishNode"){
         var items = getAllItems(freezePopDish);
         var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
