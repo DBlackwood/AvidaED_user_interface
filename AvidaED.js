@@ -126,7 +126,6 @@ require([
     BrowserResizeEventHandler=function(){
       if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
-      //update size of circular genome when size of holder changed. This needs more work when slider works.
       if ("block"==domStyle.get("organismBlock","display")){
         var height = ($("#rightDetail").innerHeight()-375)/2;
         document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
@@ -191,13 +190,23 @@ require([
     //mainBoxSwap("organismBlock");
     mainBoxSwap("populationBlock");
     dijit.byId("setupBlock").set("style", "display: none;");
-
+    
+    /* this section gets rid of scroll bars, but then page no longer resizes correctly
+    var popNewHt = $("#blockHolder").height()-10;
+    dijit.byId("populationBlock").set("style", "height: "+ popNewHt +"px");
+    dijit.byId("popBC").set("style", "height: "+ popNewHt+"px");
+    
+    var mapNewHt = $("#mapBlockHold").height()-10;
+    dijit.byId("mapBlock").set("style", "height: "+ mapNewHt +"px");
+    //mapNewHt = mapNewHt - 5;
+    dijit.byId("mapBC").set("style", "height: "+ mapNewHt +"px;");
+*/
     function mainBoxSwap(showBlock){
       //console.log("in mainBoxSwap");
       dijit.byId("populationBlock").set("style", "display: none;");
       dijit.byId("organismBlock").set("style", "display: none;");
       dijit.byId("analysisBlock").set("style", "display: none;");
-      dijit.byId("testBlock").set("style", "display: none;");
+      dijit.byId("testBlock").set("style", "display: none;");       //take testBlock out completely later 
       dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
       dijit.byId(showBlock).resize();
     };
@@ -215,7 +224,8 @@ require([
       document.getElementById("ExecuteAbout").style.width = "100%";
     }
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
-    document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
+    //Take testBlock out completely later
+    //document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
     /* ********************************************************************** */
     /* Drag N Drop Freezer ****************************************************/
@@ -260,11 +270,11 @@ require([
     ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
     var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: "true"});
+    var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: "true"});
 
     var graphPop1 = new dndSource("pop1name", {accept: ["popDish"], singular: "true"});
     var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
     var graphPop3 = new dndSource("pop3name", {accept: ["popDish"]});
-    //console.log("after create graphPopulations");
 
     //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
     //Puts the contents of the source in a object (list) called items. 
@@ -292,19 +302,36 @@ require([
     //Need to have only the most recent dropped organism in OrganCurrent. Do this by deleting everything in organCurrent
     //and reinserting the most resent one after a drop event.
     function OrganCurrentChange(){
-      var items = getAllItems(OrganCurrent);
-      if (1 < items.length) {
-        OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
-        OrganCurrent.sync();   //should be done after insertion or deletion
-        //OrganCurrent.insertNodes(false, [items[1]]);    //oldway only works part of the time depends on mouse position
-        freezeOrgan.forInSelectedItems(function(item, id){  
-          OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-        });
-        OrganCurrent.sync();   
-      }
+      var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
+      OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
+      OrganCurrent.sync();   //should be done after insertion or deletion
+      //OrganCurrent.insertNodes(false, [items[1]]);    //oldway only works part of the time depends on mouse position
+      freezeOrgan.forInSelectedItems(function(item, id){  
+        OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+      });
+      OrganCurrent.sync();   
+      //items = getAllItems(OrganCurrent);
+      //console.log("items",items.length, items);
+      //console.log(items[0].data);
+      console.log(OrganCurrent.map);
+      console.log(Object.keys(OrganCurrent.map))
+      var strHt = Object.keys(OrganCurrent.map)[0];
+      console.log(OrganCurrent.map[strHt].data);
+      console.log(document.getElementById(strHt).textContent);
+      
       doOrgTrace();  //request new Organism Trace from Avida and draw that.    
     };
     dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
+    
+    //var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: "true"});
+    //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
+    //will be put in OrganCurrent.
+    dojo.connect(OrganCanvas, "onDrop", function() {
+      OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
+      OrganCurrent.sync();   //should be done after insertion or deletion
+      OrganCurrentChange();
+    });
+
 
     //uiWorker function
     function doOrgTrace() {
@@ -351,6 +378,9 @@ require([
           //document.getElementById(fzItemID).innerHTML = fzName;}  //either works
           document.getElementById(fzItemID).textContent = fzName;}
         }
+      }));
+      aMenu.addChild(new dijit.MenuItem({
+        label: "delete"
       }))
     };
 
@@ -381,8 +411,7 @@ require([
         // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
         // Does not change "data" value, only textContent changes.
         var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
-        
-                var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
+        var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
         var unique = true;
         while (unique) {
           unique = false;
@@ -434,18 +463,19 @@ require([
             }
           }  
         }
-        if (null != avidian) { nodes[0].textContent=avidian; }
+      console.log(Object.keys(target.map))
+      var strHt = Object.keys(target.selection)[0];
+      console.log("before: data",target.map[strHt].data, " content=", document.getElementById(strHt).textContent);
+
+        if (null != avidian) { 
+          nodes[0].textContent=avidian; 
+          target.map[strHt].data=avidian;
+        }  //tiba
+      console.log("After: data",target.map[strHt].data, " content=", document.getElementById(strHt).textContent);
+      
         //contextMenu(Object.keys(target.selection)[0], target.node.id); //either this line or the next seem to work; don't need both
         contextMenu(nodes[0].id, target.node.id);
-
-        //console.log("map: ", target.map);
-        //console.log("id: ", target.node.id);
-        //console.log("textContent: ", nodes[0].textContent);
-        //console.log("nodes[0].id: ", nodes[0].id);
-        //console.log("target.selection: ",target.selection);
-        //console.log("target.selection: ",Object.keys(target.selection)[0]);
-        //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
-        //console.log("allnodes: ",target.getAllNodes());
+        console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
       }
       if (target.node.id=="freezePopDishNode"){
         var items = getAllItems(freezePopDish);
@@ -469,6 +499,16 @@ require([
         }
         contextMenu(nodes[0].id, target.node.id);
         //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
+        //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
+        //console.log(Object.keys(target.selection)[0]);
+        //console.log("map: ", target.map);
+        //console.log("id: ", target.node.id);
+        //console.log("textContent: ", nodes[0].textContent);
+        //console.log("nodes[0].id: ", nodes[0].id);
+        //console.log("target.selection: ",target.selection);
+        //console.log("target.selection: ",Object.keys(target.selection)[0]);
+        //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
+        //console.log("allnodes: ",target.getAllNodes());
       }
         if (source.node.id =="pop1name"){
           pop1a = [];       //remove lines from population 1
@@ -582,8 +622,11 @@ require([
     // shifts the population page from Map (grid) view to setup parameters view and back again.
     function popBoxSwap(){
       if ("Map"== document.getElementById("PopSetupButton").innerHTML ) {
-        dijit.byId("mapBlock").set("style", "display: block;");
-        dijit.byId("setupBlock").set("style", "display: none;");
+      var height = $("#mapBlock").innerHeight()-6;
+
+        dijit.byId("mapBlock").set("style", "display: block; height: "+height+"px");
+        dijit.byId("mapBC").set("style", "height: "+height+"px");
+        dijit.byId("setupBlock").set("style", "display: none");
         document.getElementById("PopSetupButton").innerHTML = "Setup";
       } else {
         document.getElementById("PopSetupButton").innerHTML = "Map";
@@ -947,8 +990,8 @@ require([
     /* Canvas Play in gridCanvas *************************************/
     var CanvasGrid = document.getElementById("gridCanvas");
     var cntx = CanvasGrid.getContext("2d");
-    CanvasGrid.width = $("#gridHolder").innerWidth()-6;
-    CanvasGrid.height = $("#gridHolder").innerHeight()-6;
+    CanvasGrid.width = $("#gridHolder").innerWidth()-16;
+    CanvasGrid.height = $("#gridHolder").innerHeight()-16;
     console.log('Grid', CanvasGrid.width, CanvasGrid.height);
 
     cntx.beginPath();
@@ -1022,7 +1065,6 @@ require([
     
     function popChartFn(){
       if ("Average Fitness" == dijit.byId("yaxis").value) {popY = ave_fitness;}
-      else if ("Average Fitness" == dijit.byId("yaxis").value) {popY = ave_fitness;}
       else if ("Average Gestation Time" == dijit.byId("yaxis").value) {popY = ave_gestation_time;}
       else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {popY = ave_metabolic_rate;}
       else if ("Number of Organisms" == dijit.byId("yaxis").value) {popY = population_size;}
@@ -1040,7 +1082,7 @@ require([
                     fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,});
       popChart.addSeries("Series y", popY, {stroke: {color:"blue", width: 2}});   
       popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w-10, 
-                    domGeometry.position(document.getElementById("popChartHolder")).h-15);
+                    domGeometry.position(document.getElementById("popChartHolder")).h-30);
       popChart.render();
     };
     popChartFn();
@@ -1700,6 +1742,20 @@ require([
     
     //Modulo that is more accurate than %; Math.fmod(aa, bb);
     Math.fmod = function (aa, bb) { return Number((aa - (Math.floor(aa/bb) * bb)).toPrecision(8));}
+    
+    //sigmoid for use in converting a floating point into hue, saturation, brightness
+    function sigmoid (xx, midpoint, steepness) {
+      var val = steepness * (xx-midpoint);
+      return Math.exp(val) /(1.0 + Math.exp(val));
+    }
+    var ii = 5.6;
+    var num_colors = 255;
+    var xx = 0.1 + 0.8 * ii/ (num_colors-1);
+    var grColor = {};
+    grColor.hue = Math.fmod((xx+0.27), 1.0);
+    grColor.sat = sigmoid(1.0 - xx, 0.1, 30);
+    grColor.brt = sigmoid(xx, 0.3, 10);
+    console.log("hsb", grColor);
 
     //Dictionarys
     var letterColor = {};

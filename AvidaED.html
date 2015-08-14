@@ -42,7 +42,7 @@
         style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
     <!-- contentPane for top that contains main menu -->
     <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-          refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:26px;">
+          refreshOnShow="false" region="top" splitter="false" maxSize="Infinity" doLayout="false" style="height:26px;">
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
@@ -102,7 +102,9 @@
            </tr>
          </tbody>
        </table>
+       <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
        <input type="button" id="testButton" intermediateChanges="false" label="Test" value="Test" iconClass="dijitNoIcon"></input>
+       -->
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
             refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false" style="height:35px;">
@@ -131,9 +133,9 @@
       <!-- population block ----------------------------->
       <div data-dojo-type="dijit/layout/ContentPane" id="populationBlock" title="Population" extractContent="false" preventCache="false" 
             refreshOnShow="false" doLayout="true" selected="true" closable="false" preload="false"  style="height: 100%">
-      <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
+      <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" id="popBC"
             style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;" liveSplitters="false">
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="popTop"
               refreshOnShow="false" doLayout="true" region="top" splitter="false" maxSize="Infinity" style="height: 30px;">
           <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
             <colgroup>
@@ -163,7 +165,7 @@
           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                 style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-                  refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:272px;">
+                  refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:275px;">
               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                     style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="selectOrganPane"
@@ -360,24 +362,20 @@
           </div>
          </div>
 
-
         </div>  <!-- Then end of the main right pane for Population -->
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
-        <!-- Tab container within PopulationBlock ------------------------------------------------------>
-        <!--<span data-dojo-type="dijit/layout/TabContainer" id="popTabs" tabStrip="false" persist="false" 
-                controllerWidget="dijit.layout.TabController" style="min-width: 1px; min-height: 1em; width: 100%; height: 100%;">-->
+              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" ID="mapBlockHold">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false" 
-                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"  style="height: 100%">
-           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
+                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"  style="height: 100%;">
+           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" id="mapBC"
                   style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                    refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity" style="height: 34px;">
+             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id = "popBot"
+                    refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity" style="height: 38px;">
                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
                  <tbody>
                    <tr>
                      <td>
-                       Time: <label id="TimeLabel">1000</label>
+                       Time: <label id="TimeLabel"></label>
                      </td>
                      <td style="text-align: center">
                         Mode
@@ -405,21 +403,6 @@
              </div>
              <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                   refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="gridHolder">
-               <!-- begin border container
-               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
-                    style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
-                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                      refreshOnShow="false" doLayout="true" region="bottom" splitter="true" maxSize="Infinity" style="height:39px;">
-                   <label>Fitness (rescaling)</label>
-                 </div>
-                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                      refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
-                  <p>Grid goes here</p>
-                  <p>Scaling color bar goes under the grid</p>
-                 </div>
-                </div>
-                <!-- end of border container -->
-                Grid location should be here<br />
                 <div id="gridBoxNode">
                     <canvas data-dojo-type="dojo.dnd.Source" id="gridCanvas" width="300" height="100" style="border:1px solid #000000;"></canvas>
                 </div>
