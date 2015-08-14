@@ -166,5 +166,5 @@ button, input,
 
 .dijitBorderContainer {padding: 1px;}.claro
 
-.dijitBorderContainer-dijitContentPane {background-color: #ffffff; padding: 1px 1px 6px 1px;}.claro 
+.dijitBorderContainer-dijitContentPane {background-color: #ffffff; padding: 1px 1px 6px 1px; margin:1px}.claro 
 
