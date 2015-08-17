@@ -247,7 +247,7 @@ require([
       { data: "s30m.2Not",     type: ["conDish"]}
     ]);
     //console.log("freezeConfigure: ", freezeConfigure.map);
-    var freezeOrgan = new dndSource("freezeOrgansimNode", {accept: ["organism"], copyOnly: ["true"], singular: "true"});
+    var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: ["true"], singular: "true"});
     freezeOrgan.insertNodes(false, [
       { data: "@ancestor",      type: ["organism"]},
       { data: "m2u8000Nand",    type: ["organism"]},
@@ -263,7 +263,7 @@ require([
     //Have not made final decision about which div the dnd will connect to
     //var gridBoxNode = "gridBoxNode";  //the div around the grid
     var gridBoxNode = "gridCanvas";   //the actual canvas object
-    var GridBox = new dndSource(gridBoxNode, {accept: ["organism"]}); 
+    var gridBox = new dndSource(gridBoxNode, {accept: ["organism"]}); 
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
     var ConfigCurrent = new dndTarget("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
@@ -276,7 +276,7 @@ require([
     var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
     var graphPop3 = new dndSource("pop3name", {accept: ["popDish"]});
 
-    // More general DnD functions --------------------------------------
+    // General DnD functions --------------------------------------
     //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
     //Puts the contents of the source in a object (list) called items. 
     function getAllItems(source){
@@ -286,7 +286,7 @@ require([
       return items;
     }
     
-    GridBox.on("MouseUp", function(evt){
+    gridBox.on("MouseUp", function(evt){
        console.log("x", evt.layerX, "; y", evt.layerY); 
     });
 
@@ -312,6 +312,7 @@ require([
     };
     dojo.connect(ConfigCurrent, "onDrop", ConfigCurrentChange);
 
+    //Organsim dnd------------------------------------------------------
     //Need to have only the most recent dropped organism in OrganCurrent. Do this by deleting everything in organCurrent
     //and reinserting the most resent one after a drop event.
     function OrganCurrentChange(){
@@ -364,19 +365,16 @@ require([
 
     //used to re-name freezer items after they are created--------------
     //http://jsfiddle.net/bEurr/10/
-    function contextMenu(target) {
+    function contextMenu(target, nodes) {
       var fzItemID = target.selection[0]; 
       var fzSection = target.node.id;
       console.log("target.node=", target.node);
       console.log("target.node.id=",target.node.id);
       console.log("selection=", target.selection);
       console.log("sel", target.selection[0]);
-
-      
-      fzItemID = target.selection[0]; 
-      fzSection = target.node.id;
       console.log(target);
       console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
+
       var aMenu;
       aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
       aMenu.addChild(new dijit.MenuItem({
@@ -418,7 +416,7 @@ require([
       var target = AncestorBox;
       var strItem = Object.keys(target.selection)[0];
       var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
-      var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
+      var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
       var unique = true;
       while (unique) {
         unique = false;
@@ -442,17 +440,17 @@ require([
       var fzSection = target.node.id;
       console.log("target.node", target.node);
       console.log("target.node.id",target.node.id);
-      contextMenu(target); 
+      //contextMenu(target, nodes); 
 
     }
     dojo.connect(AncestorBox, "onDrop", AncestorBoxChange);
 
     //When something is added to the Organism Freezer ------------------
-    function freezeOrganChange () {  // for html "freezeOrgansimNode"
+    function freezeOrganChange () {  // for html "freezeOrganNode"
       var target = freezeOrgan;
       var strItem = Object.keys(target.selection)[0];
       var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
-      var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
+      var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
       var unique = true;
       while (unique) {
         unique = false;
@@ -471,7 +469,7 @@ require([
         document.getElementById(strItem).textContent=avidian; 
         target.map[strItem].data=avidian;
       }        
-      contextMenu(target); 
+      contextMenu(target, nodes); 
     }
     dojo.connect(freezeOrgan, "onDrop", freezeOrganChange);
     
@@ -490,7 +488,7 @@ require([
         // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
         // Does not change "data" value, only textContent changes.
         var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
-        var namelist = dojo.query('> .dojoDndItem', 'freezeOrgansimNode');
+        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
         var unique = true;
         while (unique) {
           unique = false;
@@ -504,9 +502,13 @@ require([
           }  
         }
         if (null != dishCon) nodes[0].textContent=dishCon;
-        contextMenu(target);
+        contextMenu(target, nodes);
       }
-      // Process Drop on GridBox
+    });
+    
+    // Process Drop on gridBox
+    //This triggers for every dnd drop, not just those of gridBoxNode
+    gridBox.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id==gridBoxNode){
         freezeOrgan.forInSelectedItems(function(item, id){  
           AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
@@ -520,12 +522,15 @@ require([
           else {outstr = outstr + ", " + AncestorList[ii];}
         }
         document.getElementById("seedTray").innerHTML = outstr;
-        //console.log("grid ", GridBox);
+        //console.log("grid ", gridBox);
       }
-      /*
+    });
+
+    //This triggers for every dnd drop, not just those of AncestorBox
+    AncestorBox.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="AncestorBoxNode"){
         freezeOrgan.forInSelectedItems(function(item, id){  
-          GridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+          gridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
           console.log(Object.keys(target.map));
           var strItm = Object.keys(target.map)[0];
           //console.log(target.map[strItm].data);
@@ -534,7 +539,10 @@ require([
 
         });
       }
-      */
+    });
+    
+    //This triggers for every dnd drop, not just those of freezePopDish
+    freezePopDish.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="freezePopDishNode"){
         var items = getAllItems(freezePopDish);
         var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
@@ -543,7 +551,7 @@ require([
         while (unique) {
           unique = false;
           for (var ii = 0; ii < namelist.length; ii++){
-            if (avidian == namelist[ii].innerHTML) {
+            if (popDish == namelist[ii].innerHTML) {
               popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
               unique = true;
               break;
@@ -555,7 +563,7 @@ require([
           //to change data value not fully tested, but keep as it was hard to figure out
           //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
         }
-        contextMenu(target);
+        contextMenu(target, nodes);  // does not have the right data! crashes here! tiba
         contextMenu(nodes[0].id, target.node.id);
         //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
         
@@ -570,22 +578,26 @@ require([
         //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
         //console.log("allnodes: ",target.getAllNodes());
       }
-        if (source.node.id =="pop1name"){
-          pop1a = [];       //remove lines from population 1
-          pop1b = [];
-          AnaChartFn();
-        }
-        if (source.node.id =="pop2name"){
-          pop2a = [];       //remove lines from population 2
-          pop2b = [];
-          AnaChartFn();
-        }
-        if (source.node.id =="pop3name"){
-          pop3a = [];       //remove lines from population 3
-          pop3b = [];
-          AnaChartFn();
-        }
-      });
+    });
+    
+    //This triggers for every dnd drop, not just those of freezePopDish
+    freezePopDish.on("DndDrop", function(source, nodes, copy, target){
+      if (source.node.id =="pop1name"){
+        pop1a = [];       //remove lines from population 1
+        pop1b = [];
+        AnaChartFn();
+      }
+      if (source.node.id =="pop2name"){
+        pop2a = [];       //remove lines from population 2
+        pop2b = [];
+        AnaChartFn();
+      }
+      if (source.node.id =="pop3name"){
+        pop3a = [];       //remove lines from population 3
+        pop3b = [];
+        AnaChartFn();
+      }
+    });
 
     function graphPop1Change(){
       //console.log("sel", graphPop1.selection);
@@ -729,6 +741,7 @@ require([
     function runPopFn(){
       //check for ancestor organism in configuration data
       var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
+      console.log("namelist", namelist);
       if (1>namelist.length){
         document.getElementById("runStopButton").innerHTML="Run";
         dijit.byId("mnPause").attr("disabled", true);
@@ -924,8 +937,8 @@ require([
       document.getElementById("muteInput").dispatchEvent(event);
       AncestorBox.selectAll().deleteSelectedNodes();
       AncestorBox.sync();
-      GridBox.selectAll().deleteSelectedNodes();
-      GridBox.sync();
+      gridBox.selectAll().deleteSelectedNodes();
+      gridBox.sync();
       AncestorList = [];
       TimeLabel.textContent = 0;
       document.getElementById("seedTray").innerHTML="";
