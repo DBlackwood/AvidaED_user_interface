@@ -246,7 +246,6 @@ require([
       { data: "s20m.2Nand",    type: ["conDish"]},
       { data: "s30m.2Not",     type: ["conDish"]}
     ]);
-    //console.log("freezeConfigure: ", freezeConfigure.map);
     var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: ["true"], singular: "true"});
     freezeOrgan.insertNodes(false, [
       { data: "@ancestor",      type: ["organism"]},
@@ -266,7 +265,7 @@ require([
     var gridBox = new dndSource(gridBoxNode, {accept: ["organism"]}); 
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
-    var ConfigCurrent = new dndTarget("ConfigurationCurrent", {accept: ["conDish"], singular: "true"});
+    var ConfigCurrent = new dndTarget("ConfigCurrentNode", {accept: ["conDish"], singular: "true"});
     ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
     var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: "true"});
@@ -300,50 +299,147 @@ require([
     //-------- Configuration DnD ---------------------------------------
     //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
     //and reinserting the most resent one after a drop event.
-    function ConfigCurrentChange(){
-      var items = getAllItems(ConfigCurrent);  //get a list of items after ondrop into configCurrent. 
-      if (1 < items.length) {                   //if there is more than one, then get rid of the old one and keep the one just dropped.
+    //This triggers for every dnd drop, not just those of freezeConfigureNode
+    ConfigCurrent.on("DndDrop", function(source, nodes, copy, target){
+      console.log("ConfigCurrent.on('DndDrop', function(source, nodes, copy, target)")
+      if (target.node.id=="ConfigCurrentNode"){
         ConfigCurrent.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
         freezeConfigure.forInSelectedItems(function(item, id){
           ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only valid source.
         });
         ConfigCurrent.sync();   
       }
-    };
-    dojo.connect(ConfigCurrent, "onDrop", ConfigCurrentChange);
+    });
 
+    //This triggers for every dnd drop, not just those of freezeConfigureNode
+    freezeConfigure.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="freezeConfigureNode"){
+        // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
+        // Does not change "data" value, only textContent changes.
+        var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
+        var namelist = dojo.query('> .dojoDndItem', 'freezeConfigureNode');
+        var unique = true;
+        while (unique) {
+          unique = false;
+          for (var ii = 0; ii < namelist.length; ii++){
+            //console.log ("name ", namelist[ii].innerHTML);
+            if (dishCon == namelist[ii].innerHTML) {
+              dishCon = prompt("Please give your configured dish a unique name ", dishCon+"_1")
+              unique = true;
+              break;
+            }
+          }  
+        }
+        if (null != dishCon) nodes[0].textContent=dishCon;
+        contextMenu(target, nodes);
+      }
+    });
+    
     //Organsim dnd------------------------------------------------------
+
+    var AncestorList = [];
+
+    //This triggers for every dnd drop, not just those of AncestorBox
+    AncestorBox.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="AncestorBoxNode"){
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          gridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+          console.log(Object.keys(target.map));
+          var strItm = Object.keys(target.map)[0];
+          //console.log(target.map[strItm].data);
+          //target.map[strHt].genome = "test";
+          //console.log("data, test", target.map[strHt].data,target.map[strHt].genome);
+
+        });
+      }
+    });
+    
+    //This triggers for every dnd drop, not just those of AncestorBoxNode
+    AncestorBox.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="AncestorBoxNode"){
+        var strItem = Object.keys(target.selection)[0];
+        var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
+        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
+        var unique = true;
+        while (unique) {
+          unique = false;
+          for (var ii = 0; ii < namelist.length; ii++){
+            //console.log ("name ", namelist[ii].innerHTML);
+            if (avidian == namelist[ii].innerHTML) {
+              avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
+              unique = true;
+              break;
+            }
+          }  
+        }
+        //console.log(Object.keys(target.map))
+        //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
+        if (null != avidian) { 
+          document.getElementById(strItem).textContent=avidian; 
+          target.map[strItem].data=avidian;
+        }
+        console.log("strItem", strItem);
+        var fzItemID = target.selection[0]; 
+        var fzSection = target.node.id;
+        console.log("target.node", target.node);
+        console.log("target.node.id",target.node.id);
+        //contextMenu(target, nodes); 
+      }
+    });
+
+    // Process Drop on gridBox
+    //This triggers for every dnd drop, not just those of gridBoxNode
+    gridBox.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id==gridBoxNode){
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+        });
+        // need to create an array of ancestors to be used for color key
+        AncestorList.push(nodes[0].textContent);
+        //console.log(AncestorList);
+        var outstr ="";
+        for (var ii = 0; ii<AncestorList.length; ii++) {
+          if (0 == ii) { outstr = AncestorList[ii]; }
+          else {outstr = outstr + ", " + AncestorList[ii];}
+        }
+        document.getElementById("seedTray").innerHTML = outstr;
+        //console.log("grid ", gridBox);
+      }
+    });
+    
     //Need to have only the most recent dropped organism in OrganCurrent. Do this by deleting everything in organCurrent
     //and reinserting the most resent one after a drop event.
-    function OrganCurrentChange(){
-      var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
-      OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
-      OrganCurrent.sync();   //should be done after insertion or deletion
-      //OrganCurrent.insertNodes(false, [items[1]]);    //oldway only works part of the time depends on mouse position
-      freezeOrgan.forInSelectedItems(function(item, id){  
-        OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-      });
-      OrganCurrent.sync();   
-      //items = getAllItems(OrganCurrent);
-      //console.log("items",items.length, items);
-      //console.log(items[0].data);
-      console.log(OrganCurrent.map);
-      console.log(Object.keys(OrganCurrent.map))
-      var strHt = Object.keys(OrganCurrent.map)[0];
-      console.log(OrganCurrent.map[strHt].data);
-      console.log(document.getElementById(strHt).textContent);
-      
-      doOrgTrace();  //request new Organism Trace from Avida and draw that.    
-    };
-    dojo.connect(OrganCurrent, "onDrop", OrganCurrentChange);
+    //This triggers for every dnd drop, not just those of OrganCurrentNode
+    OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="OrganCurrentNode"){
+        var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
+        OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
+        OrganCurrent.sync();   //should be done after insertion or deletion
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+        });
+        OrganCurrent.sync();   
+        //items = getAllItems(OrganCurrent);
+        //console.log("items",items.length, items);
+        //console.log(items[0].data);
+        console.log(OrganCurrent.map);
+        console.log(Object.keys(OrganCurrent.map))
+        var strHt = Object.keys(OrganCurrent.map)[0];
+        console.log(OrganCurrent.map[strHt].data);
+        console.log(document.getElementById(strHt).textContent);
+        doOrgTrace();  //request new Organism Trace from Avida and draw that.
+      }
+    });
     
     //var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: "true"});
     //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
     //will be put in OrganCurrent.
-    dojo.connect(OrganCanvas, "onDrop", function() {
-      OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
-      OrganCurrent.sync();   //should be done after insertion or deletion
-      OrganCurrentChange();
+    OrganCanvas.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="organismCanvas"){
+        OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
+        OrganCurrent.sync();   //should be done after insertion or deletion
+        OrganCurrentChange();
+      }
     });
 
 
@@ -357,11 +453,21 @@ require([
        uiWorker.postMessage(request);
     }
 
-    function trashChange(){
-      var items = getAllItems(trash);
-      trash.selectAll().deleteSelectedNodes();  //does appear to clear items  
-    }
-    dojo.connect(trash, "insertNodes", trashChange);
+    // Process trash ---------------------------------------------------
+    //This triggers for every dnd drop, not just those of trashNode
+    trash.on("DndDrop", function(source, nodes, copy, target){
+      //console.log("Source: ", source);
+      //console.log("Nodes: ", nodes);
+      //console.log("Copy: ", copy);
+      //console.log("Target: ", target);
+      if (target.node.id=="trashNode"){
+        //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+        source.parent.removeChild(nodes[0]);
+        var items = getAllItems(trash);
+        trash.selectAll().deleteSelectedNodes();  //does appear to clear items 
+        //target.parent.removeChild(nodes[0]);
+      }
+    });
 
     //used to re-name freezer items after they are created--------------
     //http://jsfiddle.net/bEurr/10/
@@ -408,139 +514,6 @@ require([
       }))
     };
 
-    var AncestorList = [];
-
-
-    //When something is added to the Organism Freezer ------------------
-    function AncestorBoxChange () {  // for html "AncestorBoxNode"
-      var target = AncestorBox;
-      var strItem = Object.keys(target.selection)[0];
-      var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
-      var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-      var unique = true;
-      while (unique) {
-        unique = false;
-        for (var ii = 0; ii < namelist.length; ii++){
-          //console.log ("name ", namelist[ii].innerHTML);
-          if (avidian == namelist[ii].innerHTML) {
-            avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
-            unique = true;
-            break;
-          }
-        }  
-      }
-      //console.log(Object.keys(target.map))
-      //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
-      if (null != avidian) { 
-        document.getElementById(strItem).textContent=avidian; 
-        target.map[strItem].data=avidian;
-      }
-      console.log("strItem", strItem);
-      var fzItemID = target.selection[0]; 
-      var fzSection = target.node.id;
-      console.log("target.node", target.node);
-      console.log("target.node.id",target.node.id);
-      //contextMenu(target, nodes); 
-
-    }
-    dojo.connect(AncestorBox, "onDrop", AncestorBoxChange);
-
-    //When something is added to the Organism Freezer ------------------
-    function freezeOrganChange () {  // for html "freezeOrganNode"
-      var target = freezeOrgan;
-      var strItem = Object.keys(target.selection)[0];
-      var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
-      var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-      var unique = true;
-      while (unique) {
-        unique = false;
-        for (var ii = 0; ii < namelist.length; ii++){
-          //console.log ("name ", namelist[ii].innerHTML);
-          if (avidian == namelist[ii].innerHTML) {
-            avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
-            unique = true;
-            break;
-          }
-        }  
-      }
-      //console.log(Object.keys(target.map))
-      //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
-      if (null != avidian) { 
-        document.getElementById(strItem).textContent=avidian; 
-        target.map[strItem].data=avidian;
-      }        
-      contextMenu(target, nodes); 
-    }
-    dojo.connect(freezeOrgan, "onDrop", freezeOrganChange);
-    
-    //This triggers for every dnd drop, not just those of freezeOrgan
-    freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
-      //console.log("Source: ", source);
-      //console.log("Nodes: ", nodes);
-      //console.log("Copy: ", copy);
-      //console.log("Target: ", target);
-      if (target.node.id=="trashNode"){
-        //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
-        source.parent.removeChild(nodes[0]);
-        //target.parent.removeChild(nodes[0]);
-      }
-      if (target.node.id=="freezeConfigureNode"){
-        // Asks for a name for any object dragged to the freezer. Need to check for duplicate names.
-        // Does not change "data" value, only textContent changes.
-        var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
-        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-        var unique = true;
-        while (unique) {
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++){
-            //console.log ("name ", namelist[ii].innerHTML);
-            if (dishCon == namelist[ii].innerHTML) {
-              dishCon = prompt("Please give your configured dish a unique name ", dishCon+"_1")
-              unique = true;
-              break;
-            }
-          }  
-        }
-        if (null != dishCon) nodes[0].textContent=dishCon;
-        contextMenu(target, nodes);
-      }
-    });
-    
-    // Process Drop on gridBox
-    //This triggers for every dnd drop, not just those of gridBoxNode
-    gridBox.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id==gridBoxNode){
-        freezeOrgan.forInSelectedItems(function(item, id){  
-          AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
-        });
-        // need to create an array of ancestors to be used for color key
-        AncestorList.push(nodes[0].textContent);
-        //console.log(AncestorList);
-        var outstr ="";
-        for (var ii = 0; ii<AncestorList.length; ii++) {
-          if (0 == ii) { outstr = AncestorList[ii]; }
-          else {outstr = outstr + ", " + AncestorList[ii];}
-        }
-        document.getElementById("seedTray").innerHTML = outstr;
-        //console.log("grid ", gridBox);
-      }
-    });
-
-    //This triggers for every dnd drop, not just those of AncestorBox
-    AncestorBox.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="AncestorBoxNode"){
-        freezeOrgan.forInSelectedItems(function(item, id){  
-          gridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-          console.log(Object.keys(target.map));
-          var strItm = Object.keys(target.map)[0];
-          //console.log(target.map[strItm].data);
-          //target.map[strHt].genome = "test";
-          //console.log("data, test", target.map[strHt].data,target.map[strHt].genome);
-
-        });
-      }
-    });
-    
     //This triggers for every dnd drop, not just those of freezePopDish
     freezePopDish.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="freezePopDishNode"){
@@ -1925,6 +1898,35 @@ require([
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       ctx.stroke();
     }
-    
+
+/*
+    //When something is added to the Organism Freezer ------------------
+    function freezeOrganChange () {  // for html "freezeOrganNode"
+      var target = freezeOrgan;
+      var strItem = Object.keys(target.selection)[0];
+      var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
+      var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
+      var unique = true;
+      while (unique) {
+        unique = false;
+        for (var ii = 0; ii < namelist.length; ii++){
+          //console.log ("name ", namelist[ii].innerHTML);
+          if (avidian == namelist[ii].innerHTML) {
+            avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
+            unique = true;
+            break;
+          }
+        }  
+      }
+      //console.log(Object.keys(target.map))
+      //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
+      if (null != avidian) { 
+        document.getElementById(strItem).textContent=avidian; 
+        target.map[strItem].data=avidian;
+      }        
+      contextMenu(target, nodes); 
+    }
+    dojo.connect(freezeOrgan, "onDrop", freezeOrganChange);
+*/    
     //use FileMerge to compare to versions of the same file on a Mac
   });
