@@ -251,10 +251,15 @@ require([
       { data: "@ancestor",      type: ["organism"]},
       { data: "m2u8000Nand",    type: ["organism"]},
       { data: "m2u8000Not",     type: ["organism"]}
+      //{ data: "@ancestor",      type: ["organism"], genome: '@anc_0'},  //did not seem to get in to structure
+     // { data: "m2u8000Nand",    type: ["organism"], genome: 'Nand 1'},  
+     // { data: "m2u8000Not",     type: ["organism"], genome: 'Not 2'}
+
     ]);
+    
     var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: ["true"], singular: "true"});
     freezePopDish.insertNodes(false, [
-      { data: "example",       type: ["popDish"]},
+      { data: "@example",       type: ["popDish"]},
       { data: "m2w30u1000nand", type: ["popDish"]},
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
@@ -271,10 +276,27 @@ require([
     var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: "true"});
     var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: "true"});
 
-    var graphPop1 = new dndSource("pop1name", {accept: ["popDish"], singular: "true"});
-    var graphPop2 = new dndSource("pop2name", {accept: ["popDish"], singular: "true"});
-    var graphPop3 = new dndSource("pop3name", {accept: ["popDish"]});
+    var graphPop1 = new dndSource("graphPop1Node", {accept: ["popDish"], singular: "true"});
+    var graphPop2 = new dndSource("graphPop2Node", {accept: ["popDish"], singular: "true"});
+    var graphPop3 = new dndSource("graphPop3Node", {accept: ["popDish"]});
 
+    //temp ---------to look at adding info to data
+    //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+    var orderedDataItems = freezeOrgan.getAllNodes().map(function(node){
+        return freezeOrgan.getItem(node.id).data;
+    });
+    //console.log("orderedDataItems", orderedDataItems);
+    var domItems = Object.keys(freezeOrgan.map);
+    //console.log("domItems=", domItems);
+    //console.log("domItems.length", domItems.length);
+    for (var ii=0; ii< domItems.length; ii++) {
+      document.getElementById(domItems[ii]).textContent = freezeOrgan.map[domItems[ii]].data; 
+      freezeOrgan.map[domItems[ii]].data = orderedDataItems[ii]+ii;
+      //console.log("doc", document.getElementById(domItems[ii]));
+      //console.log("freezeOrgan.map[domItems[ii]].genome=", freezeOrgan.map[domItems[ii]].genome);
+    }
+    console.log("freezeOrgan.map", freezeOrgan.map);
+    
     // General DnD functions --------------------------------------
     //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
     //Puts the contents of the source in a object (list) called items. 
@@ -301,16 +323,26 @@ require([
     //and reinserting the most resent one after a drop event.
     //This triggers for every dnd drop, not just those of freezeConfigureNode
     ConfigCurrent.on("DndDrop", function(source, nodes, copy, target){
-      console.log("ConfigCurrent.on('DndDrop', function(source, nodes, copy, target)")
       if (target.node.id=="ConfigCurrentNode"){
+        //clear all data so when we add one there will never be more than one.
         ConfigCurrent.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+        //get the data for the new configuration 
         freezeConfigure.forInSelectedItems(function(item, id){
           ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only valid source.
         });
-        ConfigCurrent.sync();   
+        ConfigCurrent.sync(); 
+        
+        //update the visible name to the user will recognize it
+        var currentItem = Object.keys(ConfigCurrent.map)[0];
+        var freezeItem = Object.keys(freezeConfigure.selection)[0];
+        //console.log("currentI", currentItem, " freezeI", freezeItem);
+        var tmp = document.getElementById(freezeItem).textContent;
+        document.getElementById(currentItem).textContent = tmp;
+        
+        //Update the configuration based on the data  ***needs work****
       }
     });
-
+    
     //This triggers for every dnd drop, not just those of freezeConfigureNode
     freezeConfigure.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="freezeConfigureNode"){
@@ -331,7 +363,7 @@ require([
           }  
         }
         if (null != dishCon) nodes[0].textContent=dishCon;
-        contextMenu(target, nodes);
+        //contextMenu(target, nodes);
       }
     });
     
@@ -339,51 +371,17 @@ require([
 
     var AncestorList = [];
 
-    //This triggers for every dnd drop, not just those of AncestorBox
-    AncestorBox.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="AncestorBoxNode"){
-        freezeOrgan.forInSelectedItems(function(item, id){  
-          gridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-          console.log(Object.keys(target.map));
-          var strItm = Object.keys(target.map)[0];
-          //console.log(target.map[strItm].data);
-          //target.map[strHt].genome = "test";
-          //console.log("data, test", target.map[strHt].data,target.map[strHt].genome);
-
-        });
-      }
-    });
-    
     //This triggers for every dnd drop, not just those of AncestorBoxNode
     AncestorBox.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="AncestorBoxNode"){
-        var strItem = Object.keys(target.selection)[0];
-        var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
-        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-        var unique = true;
-        while (unique) {
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++){
-            //console.log ("name ", namelist[ii].innerHTML);
-            if (avidian == namelist[ii].innerHTML) {
-              avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
-              unique = true;
-              break;
-            }
-          }  
-        }
-        //console.log(Object.keys(target.map))
-        //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
-        if (null != avidian) { 
-          document.getElementById(strItem).textContent=avidian; 
-          target.map[strItem].data=avidian;
-        }
-        console.log("strItem", strItem);
+        //var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
+        console.log("ancestorBox=",target.map)
         var fzItemID = target.selection[0]; 
         var fzSection = target.node.id;
-        console.log("target.node", target.node);
-        console.log("target.node.id",target.node.id);
-        //contextMenu(target, nodes); 
+        //console.log("target.node", target.node);
+        //console.log("target.node.id",target.node.id);
+        console.log("nodes[0]=", nodes[0]);
+        AncestorList.push(nodes[0].textContent); //update Ancetor list for use on Map Page
       }
     });
 
@@ -406,27 +404,63 @@ require([
         //console.log("grid ", gridBox);
       }
     });
-    
+
+    //When something is added to the Organism Freezer ------------------
+    //This triggers for every dnd drop, not just those of gridBoxNode
+    freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="freezeOrganNode"){
+        var strItem = Object.keys(target.selection)[0];
+        var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
+        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
+        var unique = true;
+        while (unique) {
+          unique = false;
+          for (var ii = 0; ii < namelist.length; ii++){
+            //console.log ("name ", namelist[ii].innerHTML);
+            if (avidian == namelist[ii].innerHTML) {
+              avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
+              unique = true;
+              break;
+            }
+          }  
+        }
+        //console.log(Object.keys(target.map))
+        //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
+        if (null != avidian) { 
+          document.getElementById(strItem).textContent=avidian; 
+          //console.log(target.map[strItem].data); need to make sure this is unique
+        }        
+        console.log("Fztarget=", target);
+        console.log("fz nodes", nodes);
+        //contextMenu(target, nodes); 
+      }
+    });
+
     //Need to have only the most recent dropped organism in OrganCurrent. Do this by deleting everything in organCurrent
     //and reinserting the most resent one after a drop event.
     //This triggers for every dnd drop, not just those of OrganCurrentNode
     OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="OrganCurrentNode"){
+        //clear out the old data
         var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
         OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
         OrganCurrent.sync();   //should be done after insertion or deletion
+        
+        //get the data for the new organism
         freezeOrgan.forInSelectedItems(function(item, id){  
-          OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+          OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         });
-        OrganCurrent.sync();   
-        //items = getAllItems(OrganCurrent);
-        //console.log("items",items.length, items);
-        //console.log(items[0].data);
-        console.log(OrganCurrent.map);
-        console.log(Object.keys(OrganCurrent.map))
-        var strHt = Object.keys(OrganCurrent.map)[0];
-        console.log(OrganCurrent.map[strHt].data);
-        console.log(document.getElementById(strHt).textContent);
+        OrganCurrent.sync();
+        //console.log("OrganCurrent.map=", OrganCurrent.map);
+        
+        //get the right name so the user will recognize it
+        var currentItem = Object.keys(OrganCurrent.map)[0];
+        var freezeItem = Object.keys(freezeOrgan.selection)[0];
+        //console.log("currentI", currentItem, " freezeI", freezeItem);
+        var tmp = document.getElementById(freezeItem).textContent;
+        document.getElementById(currentItem).textContent = tmp;
+        //console.log("OrganCurrent.map=", OrganCurrent.map);
+        //console.log(Object.keys(OrganCurrent.map))
         doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
     });
@@ -438,7 +472,6 @@ require([
       if (target.node.id=="organismCanvas"){
         OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
         OrganCurrent.sync();   //should be done after insertion or deletion
-        OrganCurrentChange();
       }
     });
 
@@ -469,6 +502,180 @@ require([
       }
     });
 
+    //------------------------------------- Populated Dishes DND ---------------------
+    //This triggers for every dnd drop, not just those of freezePopDish
+    freezePopDish.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="freezePopDishNode"){
+        //var items = getAllItems(freezePopDish);  not used
+        var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
+        var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
+        var unique = true;
+        while (unique) {
+          unique = false;
+          for (var ii = 0; ii < namelist.length; ii++){
+            if (popDish == namelist[ii].innerHTML) {
+              popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
+              unique = true;
+              break;
+            }
+          }  
+        }
+        if (null!=popDish) { 
+          nodes[0].textContent=popDish;
+          //to change data value not fully tested, but keep as it was hard to figure out
+          //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
+        }
+        //contextMenu(target, nodes);  // does not have the right data! crashes here! tiba
+        //contextMenu(nodes[0].id, target.node.id);
+        //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
+        
+        //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
+        //console.log(Object.keys(target.selection)[0]);
+        //console.log("map: ", target.map);
+        //console.log("id: ", target.node.id);
+        //console.log("textContent: ", nodes[0].textContent);
+        //console.log("nodes[0].id: ", nodes[0].id);
+        //console.log("target.selection: ",target.selection);
+        //console.log("target.selection: ",Object.keys(target.selection)[0]);
+        //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
+        //console.log("allnodes: ",target.getAllNodes());
+      }
+    });
+    
+    //This triggers for every dnd drop, not just those of freezePopDish
+    freezePopDish.on("DndDrop", function(source, nodes, copy, target){
+      if (source.node.id =="graphPop1Node"){
+        pop1a = [];       //remove lines from population 1
+        pop1b = [];
+        AnaChartFn();
+      }
+      if (source.node.id =="graphPop2Node"){
+        pop2a = [];       //remove lines from population 2
+        pop2b = [];
+        AnaChartFn();
+      }
+      if (source.node.id =="graphPop3Node"){
+        pop3a = [];       //remove lines from population 3
+        pop3b = [];
+        AnaChartFn();
+      }
+    });
+    
+    //This triggers for every dnd drop, not just those of graphPop1
+    graphPop1.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="graphPop1Node"){
+        var items = getAllItems(graphPop1);
+        //if there is an existing item, need to clear all nodes and assign most recent to item 0
+        if (1 < items.length) {
+          //clear out the old data
+          graphPop1.selectAll().deleteSelectedNodes();  //clear items  
+          graphPop1.sync();   //should be done after insertion or deletion
+          
+          //get the data for the new organism
+          freezePopDish.forInSelectedItems(function(item, id){  
+            graphPop1.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+          });
+          graphPop1.sync();
+          //console.log("graphPop1.map=", graphPop1.map);
+          
+          //get the right name so the user will recognize it
+          var currentItem = Object.keys(graphPop1.map)[0];
+          var freezeItem = Object.keys(freezePopDish.selection)[0];
+          //console.log("currentI", currentItem, " freezeI", freezeItem);
+          var tmp = document.getElementById(freezeItem).textContent;
+          document.getElementById(currentItem).textContent = tmp;
+          //console.log("graphPop1.map=", graphPop1.map);
+          //console.log(Object.keys(graphPop1.map))
+        }
+        //update the graph
+        //this works for demo purposes only. We will be using textContent rather than data
+        pop1a = dictPlota[items[0].data];
+        pop1b = dictPlotb[items[0].data];
+        AnaChartFn();
+        
+        //example code to set item programatically. not actually needed here.
+        //graphPop1.setItem(graphPop1.node.childNodes[0].id, {data: "test_name", type: ["popDish"]});
+        //graphPop1.sync();
+        //console.log("graphPop1.node.childNodes[0].id=", graphPop1.node.childNodes[0].id);
+      }
+    });
+
+    //This triggers for every dnd drop, not just those of graphPop1
+    graphPop2.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="graphPop2Node"){
+        var items = getAllItems(graphPop2);
+        //if there is an existing item, need to clear all nodes and assign most recent to item 0
+        if (1 < items.length) {
+          //clear out the old data
+          graphPop2.selectAll().deleteSelectedNodes();  //clear items  
+          graphPop2.sync();   //should be done after insertion or deletion
+          
+          //get the data for the new organism
+          freezePopDish.forInSelectedItems(function(item, id){  
+            graphPop2.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+          });
+          graphPop2.sync();
+          //console.log("graphPop2.map=", graphPop2.map);
+          
+          //get the right name so the user will recognize it
+          var currentItem = Object.keys(graphPop2.map)[0];
+          var freezeItem = Object.keys(freezePopDish.selection)[0];
+          //console.log("currentI", currentItem, " freezeI", freezeItem);
+          var tmp = document.getElementById(freezeItem).textContent;
+          document.getElementById(currentItem).textContent = tmp;
+          //console.log("graphPop2.map=", graphPop2.map);
+          //console.log(Object.keys(graphPop2.map))
+        }
+        //update the graph
+        //this works for demo purposes only. We will be using textContent rather than data
+        pop2a = dictPlota[items[0].data];
+        pop2b = dictPlotb[items[0].data];
+        AnaChartFn();
+      }
+    });
+
+    //This triggers for every dnd drop, not just those of graphPop1
+    graphPop3.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="graphPop3Node"){
+        var items = getAllItems(graphPop3);
+        //if there is an existing item, need to clear all nodes and assign most recent to item 0
+        if (1 < items.length) {
+          //clear out the old data
+          graphPop3.selectAll().deleteSelectedNodes();  //clear items  
+          graphPop3.sync();   //should be done after insertion or deletion
+          
+          //get the data for the new organism
+          freezePopDish.forInSelectedItems(function(item, id){  
+            graphPop3.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+          });
+          graphPop3.sync();
+          //console.log("graphPop3.map=", graphPop3.map);
+          
+          //get the right name so the user will recognize it
+          var currentItem = Object.keys(graphPop3.map)[0];
+          var freezeItem = Object.keys(freezePopDish.selection)[0];
+          //console.log("currentI", currentItem, " freezeI", freezeItem);
+          var tmp = document.getElementById(freezeItem).textContent;
+          document.getElementById(currentItem).textContent = tmp;
+          //console.log("graphPop3.map=", graphPop3.map);
+          //console.log(Object.keys(graphPop3.map))
+        }
+        //update the graph
+        //this works for demo purposes only. We will be using textContent rather than data
+        pop3a = dictPlota[items[0].data];
+        pop3b = dictPlotb[items[0].data];
+        AnaChartFn();
+        
+        //example code to set item programatically. not actually needed here.
+        //graphPop3.setItem(graphPop3.node.childNodes[0].id, {data: "test_name", type: ["popDish"]});
+        //graphPop3.sync();
+        //console.log("graphPop3.node.childNodes[0].id=", graphPop3.node.childNodes[0].id);
+      }
+    });
+
+    /* ********************************************************************** */
+    /* Right Click Context Menu Freezer ************************************* */
+    /* ********************************************************************** */
     //used to re-name freezer items after they are created--------------
     //http://jsfiddle.net/bEurr/10/
     function contextMenu(target, nodes) {
@@ -513,153 +720,6 @@ require([
         label: "delete"
       }))
     };
-
-    //This triggers for every dnd drop, not just those of freezePopDish
-    freezePopDish.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="freezePopDishNode"){
-        var items = getAllItems(freezePopDish);
-        var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
-        var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
-        var unique = true;
-        while (unique) {
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++){
-            if (popDish == namelist[ii].innerHTML) {
-              popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
-              unique = true;
-              break;
-            }
-          }  
-        }
-        if (null!=popDish) { 
-          nodes[0].textContent=popDish;
-          //to change data value not fully tested, but keep as it was hard to figure out
-          //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
-        }
-        contextMenu(target, nodes);  // does not have the right data! crashes here! tiba
-        contextMenu(nodes[0].id, target.node.id);
-        //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
-        
-        //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
-        //console.log(Object.keys(target.selection)[0]);
-        //console.log("map: ", target.map);
-        //console.log("id: ", target.node.id);
-        //console.log("textContent: ", nodes[0].textContent);
-        //console.log("nodes[0].id: ", nodes[0].id);
-        //console.log("target.selection: ",target.selection);
-        //console.log("target.selection: ",Object.keys(target.selection)[0]);
-        //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
-        //console.log("allnodes: ",target.getAllNodes());
-      }
-    });
-    
-    //This triggers for every dnd drop, not just those of freezePopDish
-    freezePopDish.on("DndDrop", function(source, nodes, copy, target){
-      if (source.node.id =="pop1name"){
-        pop1a = [];       //remove lines from population 1
-        pop1b = [];
-        AnaChartFn();
-      }
-      if (source.node.id =="pop2name"){
-        pop2a = [];       //remove lines from population 2
-        pop2b = [];
-        AnaChartFn();
-      }
-      if (source.node.id =="pop3name"){
-        pop3a = [];       //remove lines from population 3
-        pop3b = [];
-        AnaChartFn();
-      }
-    });
-
-    function graphPop1Change(){
-      //console.log("sel", graphPop1.selection);
-      //console.log("sel", Object.keys(target.selection)[0]);
-      //console.log("sel", document.getElementById(Object.keys(graphPop1.selection)[0]).innerHTML);  //only works when something is selected
-      var items = getAllItems(graphPop1);
-      //if there is an existing item, need to clear all nodes and assign most recent to item 0
-      if (1 < items.length) {
-        graphPop1.selectAll().deleteSelectedNodes();  //does appear to clear items  
-        graphPop1.sync();   //not sure if this helps or not
-        freezePopDish.forInSelectedItems(function(item, id){  
-          graphPop1.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-        });
-        graphPop1.sync();
-        var items = getAllItems(graphPop1);
-      }
-      
-      console.log("textcontent ", graphPop1.node.textContent);  //use to get textContent which is what will be paired with actual data
-      //console.log("iditems ", items._parent[0].id);
-      console.log("id ", graphPop1.node.childNodes[0].id);
-
-      //example code to set item programatically. not actually needed here.
-      //graphPop1.setItem(graphPop1.node.childNodes[0].id, {data: "test_name", type: ["popDish"]});
-      //graphPop1.sync();
-
-      //this works for demo purposes only. We will be using textContent rather than data
-      pop1a = dictPlota[items[0].data];
-      pop1b = dictPlotb[items[0].data];
-      AnaChartFn();
-    };
-    dojo.connect(graphPop1, "onDrop", graphPop1Change);
-
-    function graphPop2Change(){
-      var items = getAllItems(graphPop2);
-      //need to clear all nodes and assign most recent to item 0
-      if (1 < items.length) {
-        graphPop2.selectAll().deleteSelectedNodes();  //does appear to clear items  
-        graphPop2.sync();   
-        freezePopDish.forInSelectedItems(function(item, id){  
-          graphPop2.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-        });
-        graphPop2.sync(); 
-        var items = getAllItems(graphPop2);
-      }
-      console.log("textcontent ", graphPop2.node.textContent);  //use to get textContent which is what will be paired with actual data
-      //this works for demo purposes only. We will be using textContent rather than data
-      pop2a = dictPlota[items[0].data];
-      pop2b = dictPlotb[items[0].data];
-      AnaChartFn();
-    };
-    dojo.connect(graphPop2, "onDrop", graphPop2Change);
-
-    function graphPop3Change(){
-      var items = getAllItems(graphPop3);
-      //need to clear all nodes and assign most recent to item 0
-      if (1 < items.length) {
-        graphPop3.selectAll().deleteSelectedNodes();  //does appear to clear items  
-        graphPop3.sync();   //not sure if this helps or not
-        freezePopDish.forInSelectedItems(function(item, id){  
-          graphPop3.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-        });
-        graphPop3.sync();
-        items = getAllItems(graphPop3);
-      }
-      console.log("textcontent ", graphPop3.node.textContent);  //use to get textContent which is what will be paired with actual data
-      pop3a = dictPlota[items[0].data];
-      pop3b = dictPlotb[items[0].data];
-      AnaChartFn();
-    };
-    dojo.connect(graphPop3, "onDrop", graphPop3Change);
-
-    /* ********************************************************************** */
-    /* Right Click Context Menu Freezer ************************************* */
-    /* ********************************************************************** */
-
-    // I think all the code in this section can be deleted as it is not used.
-    //var pMenu;
-    //var freezerItemID ="Configuration";  //id of a freezer item need to get from dnd assignments
-    //freezerItemID = "dojoUnique1";
-    //
-    //dojo.addOnLoad(function() {
-    //  pMenu = new dijit.Menu({ targetNodeIds: [freezerItemID]});
-    //  pMenu.addChild(new dijit.MenuItem({
-    //    label: "Simple menu item",
-    //    onClick: function() {
-    //      var gmenu = prompt("Please rename your freezer item", "george");
-    //    }
-    //  }));
-    //});
 
     /* *************************************************************** */
     /* Population page script ******************************************/
@@ -777,7 +837,7 @@ require([
     //console.log("str ", DataManJson);
 
     function updatePopStats(msg){
-        document.getElementById("TimeLabel").textContent = msg["core.update"].formatNum(0);
+        document.getElementById("TimeLabel").textContent = msg["core.update"].formatNum(0)+" updates";
         document.getElementById("popSizeLabel").textContent = msg["core.world.organisms"].formatNum(0);
         document.getElementById("aFitLabel").textContent = msg["core.world.ave_fitness"].formatNum(2);
         document.getElementById("aMetabolicLabel").textContent = msg["core.world.ave_metabolic_rate"].formatNum(1);
@@ -1038,7 +1098,32 @@ require([
     var cntx = CanvasGrid.getContext("2d");
     CanvasGrid.width = $("#gridHolder").innerWidth()-16;
     CanvasGrid.height = $("#gridHolder").innerHeight()-16;
-    console.log('Grid', CanvasGrid.width, CanvasGrid.height);
+    
+    grd = {};
+    grd.cols = 30;  //x
+    grd.rows = 30;  //y
+    grd.sizeX = 300;  
+    grd.sizeY = 300;
+    grd.scaleSpaceY = 100; //space needed to draw color scale in vertical direction
+    grd.boxSpaceY = CanvasGrid.hieght - grd.scaleSpaceY;
+    
+    function DrawGridMain() {
+      //set rows and cols based on settings
+          grd.boxSpaceY = CanvasGrid.hieght - grd.scaleSpaceY;
+      //max size of box based on width or hieght based on ratio of cols:rows and width:height
+      if (CanvasGrid.width/grd.boxSpaceY > grd.cols/grd.rows) {
+        //set based  on height as that is the limiting factor. 
+        grd.sizeY = CanvasGrid.height-grd.scaleSpaceY;
+        grd.sizeX = grd.sizeX*rows/cols;
+      } 
+      else {
+        //set based on width as that is the limiting direction
+        grd.sizeX = CanvasGrid.width;
+        grd.sizeY = grd.sizeX * cols/rows;
+      }
+      cntx.fillStyle=dictColor('Black');
+      cntx.fillRect(20,20,150,100);
+    }
 
     cntx.beginPath();
     cntx.moveTo(0,0);
@@ -1685,10 +1770,10 @@ require([
     /* ****************************************************************/
     var dictPlota = {};
     var dictPlotb = {};
-    dictPlota["example"] = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
+    dictPlota["@example"] = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
     dictPlota["m2w30u1000not"] = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
     dictPlota["m2w30u1000nand"] = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
-    dictPlotb["example"] = [60, 50, 50, 40, 40, 37, 30, 20, 15, 7];
+    dictPlotb["@example"] = [60, 50, 50, 40, 40, 37, 30, 20, 15, 7];
     dictPlotb["m2w30u1000not"] = [70,   68, 60, 50, 50,   47, 40];
     dictPlotb["m2w30u1000nand"] = [80, 70, 75, 60, 50, 50, 40, 40, 30];
     dictPlota["newPopulation"] = [0.5,  1,  2, 1.7,  2, 2.7, 3.2, 3.2];
@@ -1877,6 +1962,12 @@ require([
     InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
     InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
 
+    //Not currently in use, but kept as an example
+    //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+    //var orderedDataItems = source.getAllNodes().map(function(node){
+    //    return source.getItem(node.id).data;
+    //});
+
     //Functions not in use, but not ready to trash yet------------------------
     //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
     function drawArc1(gen, spot1, spot2, rep){ 
@@ -1898,35 +1989,24 @@ require([
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       ctx.stroke();
     }
+    
+    /* //here as of 2015_0818 delete later
+    //This triggers for every dnd drop, not just those of AncestorBox
+    AncestorBox.on("DndDrop", function(source, nodes, copy, target){
+      if (target.node.id=="AncestorBoxNode"){
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          gridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
+          console.log(Object.keys(target.map));
+          var strItm = Object.keys(target.map)[0];
+          //console.log(target.map[strItm].data);
+          //target.map[strHt].genome = "test";
+          //console.log("data, test", target.map[strHt].data,target.map[strHt].genome);
 
-/*
-    //When something is added to the Organism Freezer ------------------
-    function freezeOrganChange () {  // for html "freezeOrganNode"
-      var target = freezeOrgan;
-      var strItem = Object.keys(target.selection)[0];
-      var avidian = prompt("Please name your avidian", target.map[strItem].data+"_1");
-      var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-      var unique = true;
-      while (unique) {
-        unique = false;
-        for (var ii = 0; ii < namelist.length; ii++){
-          //console.log ("name ", namelist[ii].innerHTML);
-          if (avidian == namelist[ii].innerHTML) {
-            avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
-            unique = true;
-            break;
-          }
-        }  
+        });
       }
-      //console.log(Object.keys(target.map))
-      //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
-      if (null != avidian) { 
-        document.getElementById(strItem).textContent=avidian; 
-        target.map[strItem].data=avidian;
-      }        
-      contextMenu(target, nodes); 
-    }
-    dojo.connect(freezeOrgan, "onDrop", freezeOrganChange);
-*/    
+    });
+*/
+
+    
     //use FileMerge to compare to versions of the same file on a Mac
   });
