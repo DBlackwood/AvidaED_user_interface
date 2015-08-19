@@ -561,6 +561,9 @@ require([
       }
     });
     
+    var domItm; //used in population graph slots
+    var currentItem;
+    var freezeItem;
     //This triggers for every dnd drop, not just those of graphPop1
     graphPop1.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="graphPop1Node"){
@@ -579,18 +582,22 @@ require([
           //console.log("graphPop1.map=", graphPop1.map);
           
           //get the right name so the user will recognize it
-          var currentItem = Object.keys(graphPop1.map)[0];
-          var freezeItem = Object.keys(freezePopDish.selection)[0];
-          //console.log("currentI", currentItem, " freezeI", freezeItem);
-          var tmp = document.getElementById(freezeItem).textContent;
-          document.getElementById(currentItem).textContent = tmp;
+          currentItem = Object.keys(graphPop1.map)[0];
+          freezeItem = Object.keys(freezePopDish.selection)[0];
+          console.log("currentI", currentItem, " freezeI", freezeItem);
+          domItm = document.getElementById(freezeItem).textContent;
+          document.getElementById(currentItem).textContent = domItm;
           //console.log("graphPop1.map=", graphPop1.map);
           //console.log(Object.keys(graphPop1.map))
+          console.log('1=', domItm);
         }
+        currentItem = Object.keys(graphPop1.map)[0];
+        domItm = document.getElementById(currentItem).textContent
         //update the graph
         //this works for demo purposes only. We will be using textContent rather than data
-        pop1a = dictPlota[items[0].data];
-        pop1b = dictPlotb[items[0].data];
+        pop1a = dictPlota[domItm];
+        pop1b = dictPlotb[domItm];
+        //console.log('1=', domItm);
         AnaChartFn();
         
         //example code to set item programatically. not actually needed here.
@@ -618,18 +625,22 @@ require([
           //console.log("graphPop2.map=", graphPop2.map);
           
           //get the right name so the user will recognize it
-          var currentItem = Object.keys(graphPop2.map)[0];
-          var freezeItem = Object.keys(freezePopDish.selection)[0];
-          //console.log("currentI", currentItem, " freezeI", freezeItem);
-          var tmp = document.getElementById(freezeItem).textContent;
-          document.getElementById(currentItem).textContent = tmp;
+          currentItem = Object.keys(graphPop2.map)[0];
+          freezeItem = Object.keys(freezePopDish.selection)[0];
+          console.log("currentI", currentItem, " freezeI", freezeItem);
+          domItm = document.getElementById(freezeItem).textContent;
+          document.getElementById(currentItem).textContent = domItm;
           //console.log("graphPop2.map=", graphPop2.map);
           //console.log(Object.keys(graphPop2.map))
+          console.log('2=', domItm);
         }
+        currentItem = Object.keys(graphPop2.map)[0];
+        domItm = document.getElementById(currentItem).textContent
         //update the graph
         //this works for demo purposes only. We will be using textContent rather than data
-        pop2a = dictPlota[items[0].data];
-        pop2b = dictPlotb[items[0].data];
+        pop2a = dictPlota[domItm];
+        pop2b = dictPlotb[domItm];
+        //console.log('2=', domItm);
         AnaChartFn();
       }
     });
@@ -652,18 +663,22 @@ require([
           //console.log("graphPop3.map=", graphPop3.map);
           
           //get the right name so the user will recognize it
-          var currentItem = Object.keys(graphPop3.map)[0];
-          var freezeItem = Object.keys(freezePopDish.selection)[0];
-          //console.log("currentI", currentItem, " freezeI", freezeItem);
-          var tmp = document.getElementById(freezeItem).textContent;
-          document.getElementById(currentItem).textContent = tmp;
+          currentItem = Object.keys(graphPop3.map)[0];
+          freezeItem = Object.keys(freezePopDish.selection)[0];
+          console.log("currentI", currentItem, " freezeI", freezeItem);
+          domItm = document.getElementById(freezeItem).textContent;
+          document.getElementById(currentItem).textContent = domItm;
           //console.log("graphPop3.map=", graphPop3.map);
           //console.log(Object.keys(graphPop3.map))
+          console.log('3=', domItm);
         }
+        currentItem = Object.keys(graphPop3.map)[0];
+        domItm = document.getElementById(currentItem).textContent
         //update the graph
         //this works for demo purposes only. We will be using textContent rather than data
-        pop3a = dictPlota[items[0].data];
-        pop3b = dictPlotb[items[0].data];
+        pop3a = dictPlota[domItm];
+        pop3b = dictPlotb[domItm];
+        console.log('3=', domItm);
         AnaChartFn();
         
         //example code to set item programatically. not actually needed here.
