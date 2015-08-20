@@ -125,7 +125,7 @@ require([
     // called from script in html file as well as below
     BrowserResizeEventHandler=function(){
       if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
-      if ("block"==domStyle.get("populationBlock","display")){popChartFn();};
+      if ("block"==domStyle.get("populationBlock","display")){popChartFn();DrawGridMain();};
       if ("block"==domStyle.get("organismBlock","display")){
         var height = ($("#rightDetail").innerHeight()-375)/2;
         document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
@@ -139,6 +139,7 @@ require([
     }
 
     ready(function(){
+      aspect.after(registry.byId("gridHolder"), "resize", function(){BrowserResizeEventHandler()});
       aspect.after(registry.byId("popChartHolder"), "resize", function(){BrowserResizeEventHandler()});
       aspect.after(registry.byId("organismCanvasHolder"), "resize", function(){BrowserResizeEventHandler()});
     });
@@ -211,8 +212,11 @@ require([
       dijit.byId(showBlock).resize();
     };
   
-    // Call general function
-    document.getElementById("populationButton").onclick = function(){ mainBoxSwap("populationBlock"); }
+    // Buttons that call MainBoxSwap 
+    document.getElementById("populationButton").onclick = function(){ 
+      mainBoxSwap("populationBlock"); 
+      DrawGridMain();
+    }
     document.getElementById("organismButton").onclick = function(){ 
       mainBoxSwap("organismBlock"); 
       OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
@@ -527,8 +531,8 @@ require([
           //to change data value not fully tested, but keep as it was hard to figure out
           //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
         }
-        //contextMenu(target, nodes);  // does not have the right data! crashes here! tiba
-        //contextMenu(nodes[0].id, target.node.id);
+        contextMenu(target);  // 
+
         //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
         
         //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
@@ -766,6 +770,7 @@ require([
         dijit.byId("mapBC").set("style", "height: "+height+"px");
         dijit.byId("setupBlock").set("style", "display: none");
         document.getElementById("PopSetupButton").innerHTML = "Setup";
+        DrawGridMain();
       } else {
         document.getElementById("PopSetupButton").innerHTML = "Map";
         dijit.byId("setupBlock").set("style", "display: block;");
@@ -988,7 +993,7 @@ require([
       ave_metabolic_rate = [];
       population_size = [];
       popChartFn();
-      //reset values in population  settings either based on a 'file' @default or a @default string
+      //reset values in population settings either based on a 'file' @default or a @default string
       writeSettings();
     }
 
@@ -1127,45 +1132,63 @@ require([
     /* *************************************************************** */
 
     /* Canvas Play in gridCanvas *************************************/
+    var CanvasScale = document.getElementById("scaleCanvas");
+    var sCtx = CanvasScale.getContext("2d");
+    CanvasScale.width = $("#gridHolder").innerWidth()-6;
+
     var CanvasGrid = document.getElementById("gridCanvas");
     var cntx = CanvasGrid.getContext("2d");
-    CanvasGrid.width = $("#gridHolder").innerWidth()-16;
-    CanvasGrid.height = $("#gridHolder").innerHeight()-16;
+    CanvasGrid.width = $("#gridHolder").innerWidth()-6;
+    CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
     
     grd = {};
     grd.cols = 30;  //x
     grd.rows = 30;  //y
     grd.sizeX = 300;  
     grd.sizeY = 300;
-    grd.scaleSpaceY = 100; //space needed to draw color scale in vertical direction
-    grd.boxSpaceY = CanvasGrid.hieght - grd.scaleSpaceY;
-    
+    grd.border = 0;
+        
     function DrawGridMain() {
+      CanvasScale.width = $("#gridHolder").innerWidth()-6;
+      CanvasGrid.width = $("#gridHolder").innerWidth()-6;
+      CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
+      // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+      cntx.setTransform(1, 0, 0, 1, 0, 0);
+      cntx.clearRect(0, 0, CanvasGrid.width, CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+      // set box size based on border
+      grd.boxY = CanvasGrid.height - grd.border;
+      grd.boxX = CanvasGrid.width - grd.border; //for a border
+      //draw grey rectangle as back ground
+      cntx.fillStyle = dictColor["ltGrey"];
+      cntx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
+      sCtx.fillStyle = dictColor["ltGrey"];
+      sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
       //set rows and cols based on settings
-          grd.boxSpaceY = CanvasGrid.hieght - grd.scaleSpaceY;
-      //max size of box based on width or hieght based on ratio of cols:rows and width:height
-      if (CanvasGrid.width/grd.boxSpaceY > grd.cols/grd.rows) {
+      grd.cols = dijit.byId("sizex").get('value');
+      grd.rows = dijit.byId("sizey").get('value');
+      //max size of box based on width or height based on ratio of cols:rows and width:height
+      if (CanvasGrid.width/grd.boxY > grd.cols/grd.rows) {
         //set based  on height as that is the limiting factor. 
-        grd.sizeY = CanvasGrid.height-grd.scaleSpaceY;
-        grd.sizeX = grd.sizeX*rows/cols;
+        grd.sizeY = grd.boxY;
+        grd.sizeX = grd.sizeY*grd.cols/grd.rows;
       } 
       else {
         //set based on width as that is the limiting direction
-        grd.sizeX = CanvasGrid.width;
-        grd.sizeY = grd.sizeX * cols/rows;
+        grd.sizeX = grd.boxX;
+        grd.sizeY = grd.sizeX * grd.rows/grd.cols;
       }
-      cntx.fillStyle=dictColor('Black');
-      cntx.fillRect(20,20,150,100);
+      grd.xbrdr = (CanvasGrid.width-grd.sizeX)/2;
+      grd.ybrdr = (CanvasGrid.height-grd.sizeY)/2;
+      cntx.translate(grd.xbrdr, grd.ybrdr);
+      cntx.fillStyle=dictColor['Black'];
+      cntx.fillRect(0,0,grd.sizeX,grd.sizeY);
+      console.log("cntx grd", grd);
     }
 
-    cntx.beginPath();
-    cntx.moveTo(0,0);
-    cntx.lineTo(200,100);
-    cntx.stroke();
-    cntx.beginPath();
-    cntx.arc(95,50,40,0,3*Math.PI/2);
-    cntx.arc(95,50,40,0,2*Math.PI);
-    cntx.stroke();
+    //cntx.beginPath();
+    //cntx.moveTo(0,0);
+    //cntx.lineTo(200,100);
+    //cntx.stroke();
 
     /* *************************************************************** */
     /* ******* Population Setup Buttons, etc.  *********************** */
@@ -1822,6 +1845,7 @@ require([
     dictColor["Purple"] = "#8800FF";
     dictColor["Orange"] = "#FFAA00";
     dictColor["Black"] = "#000000";
+    dictColor["ltGrey"] = "#CCCCCC";
     var pop1a = [];
     var pop1b = [];
     var pop2a = [];
@@ -1936,6 +1960,8 @@ require([
     var theColor = hexColor["#000000"];  //This should get 'Black'
     //console.log("theColor=", theColor);
 
+    DrawGridMain(); //Draw initial Box
+    
     //Dictionarys
     var letterColor = {};
     letterColor["a"] = "#F9CC65"; //color Meter
