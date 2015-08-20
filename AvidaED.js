@@ -240,13 +240,13 @@ require([
       }
     });
           
-    var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: ["true"], singular: "true"});
+    var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: true, singular: true, selfAccept: false});
     freezeConfigure.insertNodes(false, [
       { data: "@default",      type: ["conDish"]},
       { data: "s20m.2Nand",    type: ["conDish"]},
       { data: "s30m.2Not",     type: ["conDish"]}
     ]);
-    var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: ["true"], singular: "true"});
+    var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: true, singular: true , selfAccept: false});
     freezeOrgan.insertNodes(false, [
       { data: "@ancestor",      type: ["organism"]},
       { data: "m2u8000Nand",    type: ["organism"]},
@@ -254,10 +254,9 @@ require([
       //{ data: "@ancestor",      type: ["organism"], genome: '@anc_0'},  //did not seem to get in to structure
      // { data: "m2u8000Nand",    type: ["organism"], genome: 'Nand 1'},  
      // { data: "m2u8000Not",     type: ["organism"], genome: 'Not 2'}
-
     ]);
     
-    var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: ["true"], singular: "true"});
+    var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: true, singular: true, selfAccept: false});
     freezePopDish.insertNodes(false, [
       { data: "@example",       type: ["popDish"]},
       { data: "m2w30u1000nand", type: ["popDish"]},
@@ -269,16 +268,18 @@ require([
     var gridBoxNode = "gridCanvas";   //the actual canvas object
     var gridBox = new dndSource(gridBoxNode, {accept: ["organism"]}); 
     
-    var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: "true"});
-    var ConfigCurrent = new dndTarget("ConfigCurrentNode", {accept: ["conDish"], singular: "true"});
+    var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: true});
+    
+    var ConfigCurrent = new dndTarget("ConfigCurrentNode", {accept: ["conDish"], singular:true});  //Targets only accept object, source can do both
     ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
+    
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
     var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: "true"});
     var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: "true"});
 
-    var graphPop1 = new dndSource("graphPop1Node", {accept: ["popDish"], singular: "true"});
-    var graphPop2 = new dndSource("graphPop2Node", {accept: ["popDish"], singular: "true"});
-    var graphPop3 = new dndSource("graphPop3Node", {accept: ["popDish"]});
+    var graphPop1 = new dndTarget("graphPop1Node", {accept: ["popDish"], singular: true}); 
+    var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
+    var graphPop3 = new dndTarget("graphPop3Node", {accept: ["popDish"], singular: true});
 
     //temp ---------to look at adding info to data
     //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
@@ -375,12 +376,13 @@ require([
     AncestorBox.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="AncestorBoxNode"){
         //var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
-        console.log("ancestorBox=",target.map)
+        //console.log("ancestorBox=",target.map)
         var fzItemID = target.selection[0]; 
         var fzSection = target.node.id;
         //console.log("target.node", target.node);
         //console.log("target.node.id",target.node.id);
-        console.log("nodes[0]=", nodes[0]);
+        //console.log("nodes[0]=", nodes[0]);
+        //console.log("source=", source.map);
         AncestorList.push(nodes[0].textContent); //update Ancetor list for use on Map Page
       }
     });
@@ -430,9 +432,9 @@ require([
           document.getElementById(strItem).textContent=avidian; 
           //console.log(target.map[strItem].data); need to make sure this is unique
         }        
-        console.log("Fztarget=", target);
-        console.log("fz nodes", nodes);
-        //contextMenu(target, nodes); 
+        //console.log("Fztarget=", target);
+        //console.log("fz nodes", nodes);
+        contextMenu(target); 
       }
     });
 
@@ -693,14 +695,14 @@ require([
     /* ********************************************************************** */
     //used to re-name freezer items after they are created--------------
     //http://jsfiddle.net/bEurr/10/
-    function contextMenu(target, nodes) {
-      var fzItemID = target.selection[0]; 
+    function contextMenu(target) {
+      var fzItemID = Object.keys(target.selection)[0];
       var fzSection = target.node.id;
-      console.log("target.node=", target.node);
-      console.log("target.node.id=",target.node.id);
-      console.log("selection=", target.selection);
-      console.log("sel", target.selection[0]);
-      console.log(target);
+      //console.log("target.node=", target.node);
+      //console.log("target.node.id=",target.node.id);
+      //console.log("selection=", target.selection);
+      //console.log("selection[]=", target.selection)[0];
+      //console.log("target.map", target.map);
       console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
 
       var aMenu;
@@ -708,7 +710,7 @@ require([
       aMenu.addChild(new dijit.MenuItem({
         label: "Rename",
         onClick: function() {
-          var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).innerHTML);
+          var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).textContent);
           var namelist = dojo.query('> .dojoDndItem', fzSection);
           var unique = true;
           while (unique) {
@@ -727,15 +729,31 @@ require([
           if (null!=fzName) {
             //document.getElementById(fzItemID).innerHTML = fzName;  //either works
             document.getElementById(fzItemID).textContent = fzName;
-            target.map[strItem].data=avidian
+            console.log(".data=", target.map[fzItemID].data);
           }
         }
       }));
       aMenu.addChild(new dijit.MenuItem({
-        label: "delete"
+        label: "delete",
+        onClick: function() {
+          var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
+          if (sure) {
+            //target.parent.removeChild(fzItemID);
+            target.selectNone(); 
+            dojo.destroy(fzItemID); 
+            target.delItem(fzItemID); 
+            //console.log("target.map", target.map);
+          }
+        }
       }))
     };
-
+    // create the delete dialog:
+    deleteDlg = new dijit.Dialog({
+        title: "Delete",
+        
+        style: "width: 300px"
+    });
+    
     /* *************************************************************** */
     /* Population page script ******************************************/
     /* *************************************************************** */
@@ -1903,6 +1921,21 @@ require([
     grColor.brt = sigmoid(xx, 0.3, 10);
     console.log("hsb", grColor);
 
+    //http://nelsonwells.net/2011/10/swap-object-key-and-values-in-javascript/
+    var invertHash = function (obj) {
+      var new_obj = {};
+      for (var prop in obj) {
+        if(obj.hasOwnProperty(prop)) {
+          new_obj[obj[prop]] = prop;
+        }
+      }
+      return new_obj;
+    };
+    
+    hexColor = invertHash(dictColor);
+    var theColor = hexColor["#000000"];  //This should get 'Black'
+    //console.log("theColor=", theColor);
+
     //Dictionarys
     var letterColor = {};
     letterColor["a"] = "#F9CC65"; //color Meter
@@ -1977,6 +2010,7 @@ require([
     InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
     InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
 
+    
     //Not currently in use, but kept as an example
     //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
     //var orderedDataItems = source.getAllNodes().map(function(node){
