@@ -81,6 +81,7 @@ require([
         case 'PopulationStats':
           updatePopStats(msg);
           //doPopMap();  //Call to update grid colors;
+          fakePopMap();
           break;
         case 'PopMap':
           //updatePopMap(msg);
@@ -125,7 +126,7 @@ require([
     // called from script in html file as well as below
     BrowserResizeEventHandler=function(){
       if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
-      if ("block"==domStyle.get("populationBlock","display")){popChartFn();DrawGridMain();};
+      if ("block"==domStyle.get("populationBlock","display")){popChartFn();DrawGridBackground();};
       if ("block"==domStyle.get("organismBlock","display")){
         var height = ($("#rightDetail").innerHeight()-375)/2;
         document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
@@ -215,7 +216,7 @@ require([
     // Buttons that call MainBoxSwap 
     document.getElementById("populationButton").onclick = function(){ 
       mainBoxSwap("populationBlock"); 
-      DrawGridMain();
+      DrawGridBackground();
     }
     document.getElementById("organismButton").onclick = function(){ 
       mainBoxSwap("organismBlock"); 
@@ -770,7 +771,7 @@ require([
         dijit.byId("mapBC").set("style", "height: "+height+"px");
         dijit.byId("setupBlock").set("style", "display: none");
         document.getElementById("PopSetupButton").innerHTML = "Setup";
-        DrawGridMain();
+        DrawGridBackground();
       } else {
         document.getElementById("PopSetupButton").innerHTML = "Map";
         dijit.byId("setupBlock").set("style", "display: block;");
@@ -812,7 +813,7 @@ require([
     function runPopFn(){
       //check for ancestor organism in configuration data
       var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
-      console.log("namelist", namelist);
+      //console.log("namelist", namelist);
       if (1>namelist.length){
         document.getElementById("runStopButton").innerHTML="Run";
         dijit.byId("mnPause").attr("disabled", true);
@@ -1131,7 +1132,6 @@ require([
     // ****************  Draw Population Grid ************************ */
     /* *************************************************************** */
 
-    /* Canvas Play in gridCanvas *************************************/
     var CanvasScale = document.getElementById("scaleCanvas");
     var sCtx = CanvasScale.getContext("2d");
     CanvasScale.width = $("#gridHolder").innerWidth()-6;
@@ -1147,8 +1147,33 @@ require([
     grd.sizeX = 300;  
     grd.sizeY = 300;
     grd.border = 0;
-        
-    function DrawGridMain() {
+    
+    function GradientScale() {
+      var xStart = 30;
+      var xEnd = CanvasScale.width - xStart;
+      var gradWidth = xEnd-xStart 
+      var grad = sCtx.createLinearGradient(xStart+2, 0, xEnd-2, 0)
+      var legendHt = 15;
+      for (var ii=0; ii < viridis_cmap.length; ii++) {
+        grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
+      }
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
+    }
+    
+    function FindColor (min, max, number) {
+    }
+
+
+    //   var request = {
+    //      'Key':'RunPause'
+
+    function fakePopMap() {
+      var seed = 2;
+      var size = grd.rows *grd.cols;
+    }
+
+    function DrawGridBackground() {
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
       CanvasGrid.width = $("#gridHolder").innerWidth()-6;
       CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
@@ -1182,7 +1207,11 @@ require([
       cntx.translate(grd.xbrdr, grd.ybrdr);
       cntx.fillStyle=dictColor['Black'];
       cntx.fillRect(0,0,grd.sizeX,grd.sizeY);
-      console.log("cntx grd", grd);
+      //console.log("cntx grd", grd);
+      GradientScale();
+    }
+
+    function GridUpdate(GrdClr) {
     }
 
     //cntx.beginPath();
@@ -1960,7 +1989,7 @@ require([
     var theColor = hexColor["#000000"];  //This should get 'Black'
     //console.log("theColor=", theColor);
 
-    DrawGridMain(); //Draw initial Box
+    DrawGridBackground(); //Draw initial Box
     
     //Dictionarys
     var letterColor = {};
@@ -2044,6 +2073,28 @@ require([
     //});
 
     //Functions not in use, but not ready to trash yet------------------------
+
+    function GradientScaleOld() {
+      var xStart = 30;
+      var xEnd = CanvasScale.width - xStart;
+      var gradWidth = xEnd-xStart 
+      var grad = sCtx.createLinearGradient(xStart+3, 0, xEnd-3, 0)
+      var ledgendHt = 15;
+      grad.addColorStop(0,   '#000'); //black 
+      grad.addColorStop(1/8, '#0F0'); //green
+      grad.addColorStop(2/8, '#0FF'); //aqua
+      grad.addColorStop(3/8, '#00F'); //blue
+      grad.addColorStop(4/8, '#F0F'); //purple
+      grad.addColorStop(5/8, '#F00'); //red
+      grad.addColorStop(6/8, 'orange');
+      grad.addColorStop(7/8, '#FF0'); //yellow
+      grad.addColorStop(1, 'white');
+      //grad.addColorStop(5/8, 'rgb(255, 0, 0)'); //red
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(xStart, ledgendHt, gradWidth, CanvasScale.height-ledgendHt);
+      console.log("xEnd", xEnd, "Width=", CanvasScale.width);
+    }
+
     //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
     function drawArc1(gen, spot1, spot2, rep){ 
       var xx1, yy1, xx2, yy2, xxc, yyc; 
@@ -2064,24 +2115,6 @@ require([
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       ctx.stroke();
     }
-    
-    /* //here as of 2015_0818 delete later
-    //This triggers for every dnd drop, not just those of AncestorBox
-    AncestorBox.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="AncestorBoxNode"){
-        freezeOrgan.forInSelectedItems(function(item, id){  
-          gridBox.insertNodes(false, [item]);          //assign the node that is selected from the only  valid source.
-          console.log(Object.keys(target.map));
-          var strItm = Object.keys(target.map)[0];
-          //console.log(target.map[strItm].data);
-          //target.map[strHt].genome = "test";
-          //console.log("data, test", target.map[strHt].data,target.map[strHt].genome);
-
-        });
-      }
-    });
-*/
-
     
     //use FileMerge to compare to versions of the same file on a Mac
   });
