@@ -11,7 +11,8 @@ var linmap = function(dx, d1, d2, r1, r2){
 	var doffs = dx - d1 + 0.0;
 
 	if (0.0 == ddiff){
-	    return 0.0; // should be NaN
+	    //return 0.0; // should be NaN
+	    return Number.Nan; // should be NaN
 	};
 
 	var dscale = (doffs + 0.0) / ddiff;

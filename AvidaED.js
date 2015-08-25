@@ -279,8 +279,11 @@ require([
     ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
     
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-    var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: "true"});
-    var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: "true"});
+    var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: true, selfAccept: false});
+    var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: true, selfAccept: false});
+    // Next two lines for test only on 24 Aug. Delete later
+    //OrganCanvas.insertNodes(false, [{ data: "test",      type: ["organism"]}]);
+    //console.log('OrganCanvas', OrganCanvas);
 
     var graphPop1 = new dndTarget("graphPop1Node", {accept: ["popDish"], singular: true}); 
     var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
@@ -297,7 +300,7 @@ require([
     //console.log("domItems.length", domItems.length);
     for (var ii=0; ii< domItems.length; ii++) {
       document.getElementById(domItems[ii]).textContent = freezeOrgan.map[domItems[ii]].data; 
-      freezeOrgan.map[domItems[ii]].data = orderedDataItems[ii]+ii;
+      freezeOrgan.map[domItems[ii]].data = orderedDataItems[ii]+'0';
       //console.log("doc", document.getElementById(domItems[ii]));
       //console.log("freezeOrgan.map[domItems[ii]].genome=", freezeOrgan.map[domItems[ii]].genome);
     }
@@ -313,10 +316,6 @@ require([
       return items;
     }
     
-    gridBox.on("MouseUp", function(evt){
-       console.log("x", evt.layerX, "; y", evt.layerY); 
-    });
-
     // does not work
     on(dom.byId("gridCanvas"),"drop", function(event){
       domGeometry.normalizeEvent(event);
@@ -369,7 +368,7 @@ require([
           }  
         }
         if (null != dishCon) nodes[0].textContent=dishCon;
-        //contextMenu(target, nodes);
+        contextMenu(target);
       }
     });
     
@@ -479,10 +478,48 @@ require([
       if (target.node.id=="organismCanvas"){
         OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
         OrganCurrent.sync();   //should be done after insertion or deletion
+
+        //get the data for the new organism
+        freezeOrgan.forInSelectedItems(function(item, id){  
+          OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+        });
+        OrganCurrent.sync();
+
+        //get the right name so the user will recognize it
+        var currentItem = Object.keys(OrganCurrent.map)[0];   //dojo assigned DOM id
+        var freezeItem = Object.keys(freezeOrgan.selection)[0];
+        //console.log("currentI", currentItem, " freezeI", freezeItem);
+        var tmp = document.getElementById(freezeItem).textContent;
+        document.getElementById(currentItem).textContent = tmp;
+        //console.log("OrganCurrent.map=", OrganCurrent.map);
+        //console.log(Object.keys(OrganCurrent.map))
+        doOrgTrace();  //request new Organism Trace from Avida and draw that.
+        
+        console.log('OrganCanvas', OrganCanvas.map);
+        //OrganCanvas.selectAll().deleteSelectedNodes();  //clear items  
+        //OrganCanvas.sync();   //should be done after insertion or deletion
       }
     });
 
+    //dojo dnd;
+    function addOffspring() {
+      var parentID = Object.keys(OrganCurrent.map)[0];
+      var parent = document.getElementById(parentID).textContent;
+      var items = getAllItems(OrganCanvas);
+      console.log('items', items.length, items);
+      if (0 == items.length) {
+        //get the data for the new organism
+        //freezeOrgan.forInSelectedItems(function(item, id){  
+        //  OrganCanvas.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+        //});
+        //OrganCurrent.sync();
 
+        OrganCanvas.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
+        OrganCanvas.sync();
+        console.log(OrganCanvas.map);
+      }
+    }
+    
     //uiWorker function
     function doOrgTrace() {
        var request = {
@@ -503,7 +540,7 @@ require([
       if (target.node.id=="trashNode"){
         //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
         source.parent.removeChild(nodes[0]);
-        var items = getAllItems(trash);
+        //var items = getAllItems(trash);
         trash.selectAll().deleteSelectedNodes();  //does appear to clear items 
         //target.parent.removeChild(nodes[0]);
       }
@@ -533,9 +570,6 @@ require([
           //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
         }
         contextMenu(target);  // 
-
-        //contextMenu(Object.keys(target.selection)[0], target.node.id);  //gets original rather than new node 
-        
         //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
         //console.log(Object.keys(target.selection)[0]);
         //console.log("map: ", target.map);
@@ -1168,10 +1202,57 @@ require([
     //   var request = {
     //      'Key':'RunPause'
 
-    function fakePopMap() {
-      var seed = 2;
-      var size = grd.rows *grd.cols;
+    function drawblock(cntxt, xx, yy, wide, high, color) {
+      //cntxt.
     }
+
+    function fakePopMap() {
+      grd.cubeWd = Math.trunc((grd.sizeX-1)/grd.cols); 
+      grd.cubeHt = Math.trunc((grd.sizeY-1)/grd.rows);
+      grd.marginX = Math.trunc((grd.sizeX - grd.cubeWd * grd.cols)/2);
+      grd.marginY = Math.trunc((grd.sizeY - grd.cubeHt * grd.rows)/2);
+      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cubeWd, Ht', grd.cubeWd, grd.cubeHt, 
+      // '; product',grd.cubeWd*grd.cols, grd.cubeHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
+      //console.log ("CubeWd, Ht", grd.cubeWd, grd.cubeHt);
+      var boxColor = {};
+      for (ii=0; ii<grd.cols; ii++) {
+        xx = grd.marginX + grd.xOffset + ii*grd.cubeWd;
+        for (jj=0; jj<grd.rows; jj++) {
+          yy = grd.marginY + grd.yOffset + jj*grd.cubeHt;
+          boxColor[ii, jj] = get_color(viridis_cmap, Math.random(), 0, 1);
+          //console.log('color=', boxColor[ii,jj]);
+          cntx.fillStyle = boxColor[ii, jj];
+          cntx.fillRect(xx, yy, grd.cubeWd-1, grd.cubeHt-1);
+        }
+      }
+    }
+
+    gridBox.on("MouseUp", function(evt){
+       //console.log("x", evt.layerX, "; y", evt.layerY); 
+    });
+
+
+    gridBox.on("MouseDown", function(evt){
+      //console.log("xdn", evt.layerX, "; y", evt.layerY); 
+      mouseX = evt.layerX - grd.marginX - grd.xOffset;
+      mouseY = evt.layerY - grd.marginY - grd.yOffset;
+      boxCol = Math.floor(mouseX/grd.cubeWd);
+      boxRow = Math.floor(mouseY/grd.cubeHt);
+      console.log('mx,y', mouseX, mouseY, '; boxCol, Row', boxCol, boxRow);
+      cntx.beginPath();
+      cntx.rect(grd.selectX, grd.selectY, grd.cubeWd, grd.cubeHt);
+      cntx.strokeStyle = 'black';
+      cntx.lineWidth = 1;
+      cntx.stroke();
+
+      cntx.beginPath();
+      grd.selectX = grd.marginX + grd.xOffset + boxCol * grd.cubeWd;
+      grd.selectY = grd.marginY + grd.yOffset + boxRow * grd.cubeHt;
+      cntx.rect(grd.selectX, grd.selectY, grd.cubeWd, grd.cubeHt);
+      cntx.strokeStyle = 'white';
+      cntx.lineWidth = 1;
+      cntx.stroke();
+    });
 
     function DrawGridBackground() {
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
@@ -1202,13 +1283,14 @@ require([
         grd.sizeX = grd.boxX;
         grd.sizeY = grd.sizeX * grd.rows/grd.cols;
       }
-      grd.xbrdr = (CanvasGrid.width-grd.sizeX)/2;
-      grd.ybrdr = (CanvasGrid.height-grd.sizeY)/2;
-      cntx.translate(grd.xbrdr, grd.ybrdr);
+      grd.xOffset = (CanvasGrid.width-grd.sizeX)/2;
+      grd.yOffset = (CanvasGrid.height-grd.sizeY)/2;
+      //cntx.translate(grd.xOffset, grd.yOffset);
       cntx.fillStyle=dictColor['Black'];
-      cntx.fillRect(0,0,grd.sizeX,grd.sizeY);
+      cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
       //console.log("cntx grd", grd);
       GradientScale();
+      fakePopMap()
     }
 
     function GridUpdate(GrdClr) {
@@ -1403,6 +1485,7 @@ require([
     gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
     gen.dna = ["",""];
     gen.TimeLineHeight = 60;
+    gen.imageXY = {x: 5, y: 5};
 
     function DrawTimeline(obj, cycle) {
       var startX, lineY, endX, length, cycles, upLabelY, dnLabelY, txtWide, dnTickX, dnNum;
@@ -1662,6 +1745,7 @@ require([
           gen.cx[1] = OrgCanvas.width/2 + 1.1*gen.bigR[1];
           gen.rotate[1] = 0;
           drawIcon(gen);
+          addOffspring();
         }
         else {
           gen.cx[1] = gen.cx[0] + gen.bigR[0] + 2*gen.smallR + gen.bigR[1];
@@ -1960,20 +2044,6 @@ require([
     //Modulo that is more accurate than %; Math.fmod(aa, bb);
     Math.fmod = function (aa, bb) { return Number((aa - (Math.floor(aa/bb) * bb)).toPrecision(8));}
     
-    //sigmoid for use in converting a floating point into hue, saturation, brightness
-    function sigmoid (xx, midpoint, steepness) {
-      var val = steepness * (xx-midpoint);
-      return Math.exp(val) /(1.0 + Math.exp(val));
-    }
-    var ii = 5.6;
-    var num_colors = 255;
-    var xx = 0.1 + 0.8 * ii/ (num_colors-1);
-    var grColor = {};
-    grColor.hue = Math.fmod((xx+0.27), 1.0);
-    grColor.sat = sigmoid(1.0 - xx, 0.1, 30);
-    grColor.brt = sigmoid(xx, 0.3, 10);
-    console.log("hsb", grColor);
-
     //http://nelsonwells.net/2011/10/swap-object-key-and-values-in-javascript/
     var invertHash = function (obj) {
       var new_obj = {};
@@ -2071,29 +2141,35 @@ require([
     //var orderedDataItems = source.getAllNodes().map(function(node){
     //    return source.getItem(node.id).data;
     //});
+    
+    //Function not in use, but may need later
+    // from http://dojotoolkit.org/reference-guide/1.10/dojo/dnd.html
+    function OrderedIter(container, f, o){
+      // similar to:
+      // container.forInItems(f, o);
+      // but iterates in the listed order
+      o = o || dojo.global;
+      container.getAllNodes().forEach(function(node){
+        var id = node.id;
+        f.call(o, container.getItem(id), id, container);
+      });
+    }
 
     //Functions not in use, but not ready to trash yet------------------------
 
-    function GradientScaleOld() {
-      var xStart = 30;
-      var xEnd = CanvasScale.width - xStart;
-      var gradWidth = xEnd-xStart 
-      var grad = sCtx.createLinearGradient(xStart+3, 0, xEnd-3, 0)
-      var ledgendHt = 15;
-      grad.addColorStop(0,   '#000'); //black 
-      grad.addColorStop(1/8, '#0F0'); //green
-      grad.addColorStop(2/8, '#0FF'); //aqua
-      grad.addColorStop(3/8, '#00F'); //blue
-      grad.addColorStop(4/8, '#F0F'); //purple
-      grad.addColorStop(5/8, '#F00'); //red
-      grad.addColorStop(6/8, 'orange');
-      grad.addColorStop(7/8, '#FF0'); //yellow
-      grad.addColorStop(1, 'white');
-      //grad.addColorStop(5/8, 'rgb(255, 0, 0)'); //red
-      sCtx.fillStyle = grad;
-      sCtx.fillRect(xStart, ledgendHt, gradWidth, CanvasScale.height-ledgendHt);
-      console.log("xEnd", xEnd, "Width=", CanvasScale.width);
-    }
+    //sigmoid for use in converting a floating point into hue, saturation, brightness
+    //function sigmoid (xx, midpoint, steepness) {
+    //  var val = steepness * (xx-midpoint);
+    //  return Math.exp(val) /(1.0 + Math.exp(val));
+    //}
+    //var ii = 5.6;
+    //var num_colors = 255;
+    //var xx = 0.1 + 0.8 * ii/ (num_colors-1);
+    //var grColor = {};
+    //grColor.hue = Math.fmod((xx+0.27), 1.0);
+    //grColor.sat = sigmoid(1.0 - xx, 0.1, 30);
+    //grColor.brt = sigmoid(xx, 0.3, 10);
+    //console.log("hsb", grColor);
 
     //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
     function drawArc1(gen, spot1, spot2, rep){ 
@@ -2117,4 +2193,5 @@ require([
     }
     
     //use FileMerge to compare to versions of the same file on a Mac
+    //js fiddle of dragging image to cavans and dragging it around http://jsfiddle.net/XU2a3/41/
   });
