@@ -373,25 +373,74 @@ require([
     });
     
     //Organsim dnd------------------------------------------------------
-
-    var AncestorList = [];
-
-    //function Ancestor(name, genome, xx, yy, col, row) {
-    function Ancestor(name) {
-      this.name = name;
-      //this.genome = genome;
-      //this.xx = xx;
-      //this.yy = yy;
-      //this.col = col;
-      //this.row = row;
+    function PlaceAncestors() {
+      var cols = dijit.byId("sizex").get('value');
+      var rows = dijit.byId("sizey").get('value');
+      switch(AncestorBoxCnt){
+        case 1:   //Place in center
+          parents.col[AncestorBoxNdx[0]] = Math.trunc(cols/2);
+          parents.row[AncestorBoxNdx[0]] = Math.trunc(rows/2);
+          parents.ndx[AncestorBoxNdx[0]] = parents.col[AncestorBoxNdx[0]] + cols * parents.row[AncestorBoxNdx[0]];
+          break;
+        case 2:
+          if (cols > rows) {  //place parents horizontally
+            for (ii = 0; ii < AncestorBoxCnt; ii++) {
+              parents.col[AncestorBoxNdx[ii]] = Math.trunc(cols*(ii+1)/3);
+              parents.row[AncestorBoxNdx[ii]] = Math.trunc(rows/2);
+              parents.ndx[AncestorBoxNdx[ii]] = parents.col[AncestorBoxNdx[ii]] + cols * parents.row[AncestorBoxNdx[ii]];
+            }
+          }
+          else {  //place parents vertically
+            for (ii = 0; ii < AncestorBoxCnt; ii++) {
+              parents.col[AncestorBoxNdx[ii]] = Math.trunc(cols/3);
+              parents.row[AncestorBoxNdx[ii]] = Math.trunc(rows*(ii+1)/3);
+              parents.ndx[AncestorBoxNdx[ii]] = parents.col[AncestorBoxNdx[ii]] + cols * parents.row[AncestorBoxNdx[ii]];
+            }
+          }
+          break;
+        case 3:
+          if (cols > rows) {  //place parents horizontally
+            for (ii = 0; ii < 2; ii++) {
+              parents.col[AncestorBoxNdx[ii]] = Math.trunc(cols*(ii+1)/3);
+              parents.row[AncestorBoxNdx[ii]] = Math.trunc(rows/3);
+              parents.ndx[AncestorBoxNdx[ii]] = parents.col[AncestorBoxNdx[ii]] + cols * parents.row[AncestorBoxNdx[ii]];
+            }
+            parents.col[AncestorBoxNdx[2]] = Math.trunc(cols/2);
+            parents.row[AncestorBoxNdx[2]] = Math.trunc(rows*2/3);
+            parents.ndx[AncestorBoxNdx[2]] = parents.col[AncestorBoxNdx[ii]] + cols * parents.row[AncestorBoxNdx[ii]];
+          }
+          else {  //place parents vertically
+            for (ii = 0; ii < 2; ii++) {
+              parents.col[AncestorBoxNdx[ii]] = Math.trunc(cols/3);
+              parents.row[AncestorBoxNdx[ii]] = Math.trunc(rows*(ii+1)/3);
+              parents.ndx[AncestorBoxNdx[ii]] = parents.col[AncestorBoxNdx[ii]] + cols * parents.row[AncestorBoxNdx[ii]];
+            }
+            parents.col[AncestorBoxNdx[2]] = Math.trunc(cols*2/3);
+            parents.row[AncestorBoxNdx[2]] = Math.trunc(rows/2);
+            parents.ndx[AncestorBoxNdx[2]] = parents.col[AncestorBoxNdx[ii]] + cols * parents.row[AncestorBoxNdx[ii]];
+          }
+          break;          
+        default:
+          console.log('bigger than 2');
+          break;
+      }
+      console.log('rows, cols, AnBoxCnt', rows, cols, AncestorBoxCnt);
+      for (ii=0; ii< AncestorBoxCnt; ii++) {
+        console.log("ii, col, row, ndx", ii, parents.col[AncestorBoxNdx[ii]], parents.row[AncestorBoxNdx[ii]], parents.ndx[AncestorBoxNdx[ii]]);
+      }
     }
-    
+
+    var AncestorBoxCnt = 0;
+    var AncestorBoxNdx = [];
     var parents = {};
     parents.name = [];
     parents.genome = [];
     parents.col = [];
     parents.row = [];
     parents.ndx = [];
+    parents.cnt = 0; 
+    
+    function DrawParent() {};
 
     //This triggers for every dnd drop, not just those of AncestorBoxNode
     AncestorBox.on("DndDrop", function(source, nodes, copy, target){
@@ -400,21 +449,15 @@ require([
         //console.log("ancestorBox=",target.map)
         var fzItemID = target.selection[0]; 
         var fzSection = target.node.id;
-        //console.log("target.node", target.node);
-        //console.log("target.node.id",target.node.id);
-        //console.log("nodes[0]=", nodes[0]);
-        //console.log("source=", source.map);
         nn = parents.name.length;
         parents.name[nn] = nodes[0].textContent;
-        
-        //AncestorList.push(nodes[0].textContent); //update Ancetor list for use on Map Page
-        org = new Ancestor(nodes[0].textContent);
-        org.xx = 345;
-        org.yy = 124; 
-        org.row = 3;
-        org.col = 0;
-        AncestorList.push(org);
-        console.log('AncestorList', AncestorList);
+        AncestorBoxNdx.push(nn);
+        AncestorBoxCnt++;
+        //for (ll=0; ll<AncestorBoxCnt; ll++){
+        //  console.log('AnBoxNdx, ll, nn, AnBoxCnt',AncestorBoxNdx[ll],ll, nn, AncestorBoxCnt)
+        //}
+        //equalSpace();
+        PlaceAncestors();
       }
     });
 
@@ -426,14 +469,6 @@ require([
           AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         });
         // need to create an array of ancestors to be used for color key
-        //AncestorList.push(nodes[0].textContent);
-        //console.log(AncestorList);
-        //var outstr ="";
-        //for (var ii = 0; ii<AncestorList.length; ii++) {
-        //  if (0 == ii) { outstr = AncestorList[ii]; }
-        //  else {outstr = outstr + ", " + AncestorList[ii];}
-        //}
-        //document.getElementById("seedTray").innerHTML = outstr;
         //console.log("grid ", gridBox);
         //console.log('xUP, y', gridMouse.xUp, gridMouse.yUp);
         
@@ -2291,6 +2326,33 @@ require([
       yyc = gen.cy[0] + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
       ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
       ctx.stroke();
+    }
+
+    //Find points with an even distribution. This does not really work, but I might use for points > 9
+    //http://stackoverflow.com/questions/10579470/equally-distrubute-n-points-on-a-rectangle
+    function equalSpace() {
+      var width = Math.trunc(dijit.byId("sizex").get('value'));
+      var height = Math.trunc(dijit.byId("sizey").get('value'));
+      var nPoints = AncestorBoxCnt;
+      
+      var totalArea = width*height;
+      var pointArea = totalArea/nPoints;
+      var length = Math.sqrt(pointArea);
+      var kk = 0;
+      console.log('wide, hight, nPts=', width, height, nPoints);
+      for (ii = length/2; ii < width+0.99; ii = ii+length) {
+        for (jj = length/2; jj < height+0.99; jj = jj+length) {
+          if (kk < nPoints) {
+            parents.col[AncestorBoxNdx[kk]] = Math.trunc(ii);
+            parents.row[AncestorBoxNdx[kk]] = Math.trunc(jj);
+            parents.ndx[AncestorBoxNdx[kk]] = Math.trunc(jj)*width + Math.trunc(ii);
+            console.log('col, row, ndx, AboxNdx, k=', parents.col[AncestorBoxNdx[kk]], parents.row[AncestorBoxNdx[kk]]
+                        ,parents.ndx[AncestorBoxNdx[kk]], AncestorBoxNdx[kk], kk);
+            kk++;
+            DrawParent();
+          }
+        }
+      }
     }
     
     //use FileMerge to compare to versions of the same file on a Mac
