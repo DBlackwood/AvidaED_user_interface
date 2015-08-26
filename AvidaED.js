@@ -183,6 +183,10 @@ require([
       HardwareDialog.show();
     });
 
+    //initialize globals needed to hold Organism Trace Data
+    var traceObj; 
+    var cycle=0;
+
     // main button scripts-------------------------------------------
     
     //The style display: none cannnot be used in the html during the initial load as the dijits won't work right
@@ -227,6 +231,10 @@ require([
       document.getElementById("ExecuteAbout").style.height = height+"px";
       document.getElementById("ExecuteJust").style.width = "100%";  
       document.getElementById("ExecuteAbout").style.width = "100%";
+      if (undefined != traceObj) {
+        console.log('traceObj.len', traceObj.length);
+        updateOrgTrace(traceObj, cycle);
+      }
     }
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
     //Take testBlock out completely later
@@ -557,8 +565,15 @@ require([
     //will be put in OrganCurrent.
     OrganCanvas.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="organismCanvas"){
+        //Clear current to put the new organism in there.
         OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
         OrganCurrent.sync();   //should be done after insertion or deletion
+        
+        //Clear canvas because we should only drag offspring from the canvas
+        ItemID = Object.keys(OrganCurrent.map)[0];
+        OrganCanvas.selectAll().deleteSelectedNodes();  //clear items  
+        OrganCanvas.sync();   //should be done after insertion or deletion
+        dojo.destroy(ItemID); 
 
         //get the data for the new organism
         freezeOrgan.forInSelectedItems(function(item, id){  
@@ -591,7 +606,7 @@ require([
       if (0 == items.length) {
         OrganCanvas.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
         OrganCanvas.sync();
-        console.log(OrganCanvas.map);
+        console.log('offspring', OrganCanvas.map);
       }
     }
     
@@ -854,6 +869,7 @@ require([
           if (sure) {
             //target.parent.removeChild(fzItemID);
             target.selectNone(); 
+            console.log('frzITem', fzItemID);
             dojo.destroy(fzItemID); 
             target.delItem(fzItemID); 
             //console.log("target.map", target.map);
@@ -1585,9 +1601,6 @@ require([
     /* ****************************************************************/
     /*                  Canvas for Organsim (genome) view
     /* ************************************************************** */
-    //initialize globals needed to hold Organism Trace Data
-    var traceObj; 
-    var cycle=0;
     //initialize all canvases needed for Organism page
     var bufferCvs = document.getElementById("buffer");
     var bufferCtx = bufferCvs.getContext("2d");
@@ -2050,6 +2063,7 @@ require([
     dijit.byId("orgCycle").on("Change", function(value){
       cycleSlider.set("value",value);
       cycle = value;
+      //console.log('orgCycle.change');
       updateOrgTrace(traceObj, cycle);
     });
 
@@ -2065,6 +2079,7 @@ require([
         onChange: function(value){
             document.getElementById("orgCycle").value = value;
             cycle = value;
+            //console.log('cycleSlider');
             updateOrgTrace(traceObj, cycle);
         }
     }, "cycleSlider");
