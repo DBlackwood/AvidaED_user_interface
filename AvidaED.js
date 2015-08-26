@@ -185,8 +185,8 @@ require([
 
     // main button scripts-------------------------------------------
     
-    //The style display: none cannnot be used in the html durint the initial load as the dijits won't work right
-    //visibility:hidden can be used, but it leave the white space and just does not display dijits. 
+    //The style display: none cannnot be used in the html during the initial load as the dijits won't work right
+    //visibility:hidden can be used, but it leaves the white space and just does not display dijits. 
     //So all areas are loaded, then the mainBoxSwap is called to set display to none after the load on all but 
     //the default option.
     //mainBoxSwap("organismBlock");
@@ -288,7 +288,7 @@ require([
     var graphPop1 = new dndTarget("graphPop1Node", {accept: ["popDish"], singular: true}); 
     var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
     var graphPop3 = new dndTarget("graphPop3Node", {accept: ["popDish"], singular: true});
-
+/*
     //temp ---------to look at adding info to data
     //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
     var orderedDataItems = freezeOrgan.getAllNodes().map(function(node){
@@ -305,7 +305,7 @@ require([
       //console.log("freezeOrgan.map[domItems[ii]].genome=", freezeOrgan.map[domItems[ii]].genome);
     }
     console.log("freezeOrgan.map", freezeOrgan.map);
-    
+*/
     // General DnD functions --------------------------------------
     //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
     //Puts the contents of the source in a object (list) called items. 
@@ -376,6 +376,23 @@ require([
 
     var AncestorList = [];
 
+    //function Ancestor(name, genome, xx, yy, col, row) {
+    function Ancestor(name) {
+      this.name = name;
+      //this.genome = genome;
+      //this.xx = xx;
+      //this.yy = yy;
+      //this.col = col;
+      //this.row = row;
+    }
+    
+    var parents = {};
+    parents.name = [];
+    parents.genome = [];
+    parents.col = [];
+    parents.row = [];
+    parents.ndx = [];
+
     //This triggers for every dnd drop, not just those of AncestorBoxNode
     AncestorBox.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="AncestorBoxNode"){
@@ -387,7 +404,17 @@ require([
         //console.log("target.node.id",target.node.id);
         //console.log("nodes[0]=", nodes[0]);
         //console.log("source=", source.map);
-        AncestorList.push(nodes[0].textContent); //update Ancetor list for use on Map Page
+        nn = parents.name.length;
+        parents.name[nn] = nodes[0].textContent;
+        
+        //AncestorList.push(nodes[0].textContent); //update Ancetor list for use on Map Page
+        org = new Ancestor(nodes[0].textContent);
+        org.xx = 345;
+        org.yy = 124; 
+        org.row = 3;
+        org.col = 0;
+        AncestorList.push(org);
+        console.log('AncestorList', AncestorList);
       }
     });
 
@@ -399,15 +426,33 @@ require([
           AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         });
         // need to create an array of ancestors to be used for color key
-        AncestorList.push(nodes[0].textContent);
+        //AncestorList.push(nodes[0].textContent);
         //console.log(AncestorList);
-        var outstr ="";
-        for (var ii = 0; ii<AncestorList.length; ii++) {
-          if (0 == ii) { outstr = AncestorList[ii]; }
-          else {outstr = outstr + ", " + AncestorList[ii];}
-        }
-        document.getElementById("seedTray").innerHTML = outstr;
+        //var outstr ="";
+        //for (var ii = 0; ii<AncestorList.length; ii++) {
+        //  if (0 == ii) { outstr = AncestorList[ii]; }
+        //  else {outstr = outstr + ", " + AncestorList[ii];}
+        //}
+        //document.getElementById("seedTray").innerHTML = outstr;
         //console.log("grid ", gridBox);
+        //console.log('xUP, y', gridMouse.xUp, gridMouse.yUp);
+        
+        var nn = parents.name.length;
+        parents.name[nn] = nodes[0].textContent;
+
+        var mouseX = gridMouse.xUp - grd.marginX - grd.xOffset;
+        var mouseY = gridMouse.yUp - grd.marginY - grd.yOffset;
+        parents.col[nn] = Math.floor(mouseX/grd.cellWd);
+        parents.row[nn] = Math.floor(mouseY/grd.cellHt);
+        //check to see if in the grid part of the canvas
+        if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
+          cntx.beginPath();
+          var xx = grd.marginX + grd.xOffset + parents.col[nn] * grd.cellWd;
+          var yy = grd.marginY + grd.yOffset + parents.row[nn] * grd.cellHt;
+          cntx.fillStyle = 'white';
+          cntx.fillRect(xx, yy, grd.cellWd, grd.cellHt);
+        }
+        console.log("parents", parents);  //error in drawing a white square to represent the parent
       }
     });
 
@@ -435,7 +480,8 @@ require([
         if (null != avidian) { 
           document.getElementById(strItem).textContent=avidian; 
           //console.log(target.map[strItem].data); need to make sure this is unique
-        }        
+        }
+        console.log('fzOrgan', freezeOrgan);
         //console.log("Fztarget=", target);
         //console.log("fz nodes", nodes);
         contextMenu(target); 
@@ -508,12 +554,6 @@ require([
       var items = getAllItems(OrganCanvas);
       console.log('items', items.length, items);
       if (0 == items.length) {
-        //get the data for the new organism
-        //freezeOrgan.forInSelectedItems(function(item, id){  
-        //  OrganCanvas.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
-        //});
-        //OrganCurrent.sync();
-
         OrganCanvas.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
         OrganCanvas.sync();
         console.log(OrganCanvas.map);
@@ -1098,6 +1138,7 @@ require([
       document.getElementById("norPop").textContent="-";
       document.getElementById("xorPop").textContent="-";
       document.getElementById("equPop").textContent="-";
+      grd.flagSelected = false;
     }
 
     //******* Freeze Button ********************************************
@@ -1130,8 +1171,8 @@ require([
       fzDialog.hide();
       FrConfigFn();
     }); 
-    
-    dijit.byId("mnConfig").on("Click", function(){ FrConfigFn() });
+
+    dijit.byId("mnFzConfig").on("Click", function(){ FrConfigFn() });
     
     function FrPopulationFn(){
       var fzName = prompt("Please name the new population", "newPopulation");
@@ -1159,8 +1200,50 @@ require([
       FrPopulationFn();
     }); 
     
-    dijit.byId("mnPopulation").on("Click", function() {FrPopulationFn() });
+    dijit.byId("mnFzPopulation").on("Click", function() {FrPopulationFn() });
     
+    dijit.byId("mnFzOrganism").on("Click", function(){ FrOrganismFn() });
+
+    function FrOrganismFn(){
+      var fzName = prompt("Please name the organism", "newOrganism");
+      var namelist = dojo.query('> .dojoDndItem', "freezeOrganNode");
+      var unique = true;
+      while (unique) {
+        unique = false;
+        for (var ii = 0; ii < namelist.length; ii++){
+          //console.log ("name ", namelist[ii].innerHTML);
+          if (fzName == namelist[ii].innerHTML) {
+            fzName = prompt("Please give your new Organism a unique name ", fzName+"_1")
+            unique = true;
+            break;
+          }
+        }  
+      }
+      if (null!=fzName) {
+        freezeOrgan.insertNodes(false, [ {data: fzName,   type: ["organism"]}]);
+        freezeOrgan.sync();
+        //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+        var orderedDataItems = freezeOrgan.getAllNodes().map(function(node){
+          return freezeOrgan.getItem(node.id).data;
+        });
+        //console.log("orderedDataItems", orderedDataItems);
+        var domItems = Object.keys(freezeOrgan.map);
+        //console.log("domItems=", domItems);
+        var nodeIndex = -1;
+        for (var ii=0; ii< domItems.length; ii++) {
+          if (freezeOrgan.map[domItems[ii]].data == fzName) {
+            nodeIndex = ii;
+          }
+        }
+        console.log('nodeIndex, domItem', nodeIndex, domItems[nodeIndex]);
+        //http://dojo-toolkit.33424.n3.nabble.com/dojo-dnd-problems-selection-object-from-nodes-etc-td3753366.html
+        //make the new node the selected node. Does not show up on the screen, but works for purpose of creating contextMenu
+        freezeOrgan.selection[domItems[nodeIndex]] = 1;
+        contextMenu(freezeOrgan);
+        
+      }
+    }
+
     // End of Freezer Functions 
     /* *************************************************************** */
     // ****************  Draw Population Grid ************************ */
@@ -1181,6 +1264,7 @@ require([
     grd.sizeX = 300;  
     grd.sizeY = 300;
     grd.border = 0;
+    grd.flagSelected = false;
     
     function GradientScale() {
       var xStart = 30;
@@ -1194,10 +1278,6 @@ require([
       sCtx.fillStyle = grad;
       sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
     }
-    
-    function FindColor (min, max, number) {
-    }
-
 
     //   var request = {
     //      'Key':'RunPause'
@@ -1207,51 +1287,72 @@ require([
     }
 
     function fakePopMap() {
-      grd.cubeWd = Math.trunc((grd.sizeX-1)/grd.cols); 
-      grd.cubeHt = Math.trunc((grd.sizeY-1)/grd.rows);
-      grd.marginX = Math.trunc((grd.sizeX - grd.cubeWd * grd.cols)/2);
-      grd.marginY = Math.trunc((grd.sizeY - grd.cubeHt * grd.rows)/2);
-      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cubeWd, Ht', grd.cubeWd, grd.cubeHt, 
-      // '; product',grd.cubeWd*grd.cols, grd.cubeHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
-      //console.log ("CubeWd, Ht", grd.cubeWd, grd.cubeHt);
+      //Thought I needed to have integer values, but looks ok with non-integers
+      //grd.cellWd = Math.trunc((grd.sizeX-1)/grd.cols); 
+      //grd.cellHt = Math.trunc((grd.sizeY-1)/grd.rows);
+      //grd.marginX = Math.trunc((grd.sizeX - grd.cellWd * grd.cols)/2);
+      //grd.marginY = Math.trunc((grd.sizeY - grd.cellHt * grd.rows)/2);
+      
+      grd.marginX = 1;
+      grd.marginY = 1;
+      grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
+      grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
+      
+      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cellWd, Ht', grd.cellWd, grd.cellHt, 
+      // '; product',grd.cellWd*grd.cols, grd.cellHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
+      //console.log ("cellWd, Ht", grd.cellWd, grd.cellHt);
       var boxColor = {};
       for (ii=0; ii<grd.cols; ii++) {
-        xx = grd.marginX + grd.xOffset + ii*grd.cubeWd;
+        xx = grd.marginX + grd.xOffset + ii*grd.cellWd;
         for (jj=0; jj<grd.rows; jj++) {
-          yy = grd.marginY + grd.yOffset + jj*grd.cubeHt;
+          yy = grd.marginY + grd.yOffset + jj*grd.cellHt;
           boxColor[ii, jj] = get_color(viridis_cmap, Math.random(), 0, 1);
           //console.log('color=', boxColor[ii,jj]);
           cntx.fillStyle = boxColor[ii, jj];
-          cntx.fillRect(xx, yy, grd.cubeWd-1, grd.cubeHt-1);
+          cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
         }
       }
     }
 
+    gridMouse ={};
     gridBox.on("MouseUp", function(evt){
-       //console.log("x", evt.layerX, "; y", evt.layerY); 
+      //console.log("x", evt.layerX, "; y", evt.layerY); 
+      gridMouse.xUp = evt.layerX;
+      gridMouse.yUp = evt.layerY;
     });
 
-
+    //https://github.com/kangax/fabric.js/wiki/Working-with-events
     gridBox.on("MouseDown", function(evt){
       //console.log("xdn", evt.layerX, "; y", evt.layerY); 
       mouseX = evt.layerX - grd.marginX - grd.xOffset;
       mouseY = evt.layerY - grd.marginY - grd.yOffset;
-      boxCol = Math.floor(mouseX/grd.cubeWd);
-      boxRow = Math.floor(mouseY/grd.cubeHt);
-      console.log('mx,y', mouseX, mouseY, '; boxCol, Row', boxCol, boxRow);
-      cntx.beginPath();
-      cntx.rect(grd.selectX, grd.selectY, grd.cubeWd, grd.cubeHt);
-      cntx.strokeStyle = 'black';
-      cntx.lineWidth = 1;
-      cntx.stroke();
+      grd.ColSelected = Math.floor(mouseX/grd.cellWd);
+      grd.RowSelected = Math.floor(mouseY/grd.cellHt);
+      //console.log('mx,y', mouseX, mouseY, '; boxCol, Row', boxCol, boxRow);
 
-      cntx.beginPath();
-      grd.selectX = grd.marginX + grd.xOffset + boxCol * grd.cubeWd;
-      grd.selectY = grd.marginY + grd.yOffset + boxRow * grd.cubeHt;
-      cntx.rect(grd.selectX, grd.selectY, grd.cubeWd, grd.cubeHt);
-      cntx.strokeStyle = 'white';
-      cntx.lineWidth = 1;
-      cntx.stroke();
+      //check to see if in the grid part of the canvas
+      if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
+        //erase last selection by redrawing the entire page
+        //DrawGridBackground();
+        
+        //erase last selection by drawing a black outline over the white outline.
+        //need away to know if this is needed. Can cause trouble when grid size changes.
+        if (grd.flagSelected) {
+          cntx.beginPath();
+          cntx.rect(grd.selectX, grd.selectY, grd.cellWd, grd.cellHt);
+          cntx.strokeStyle = 'black';
+          cntx.lineWidth = 1;
+          cntx.stroke();
+        }
+        cntx.beginPath();
+        grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
+        grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
+        cntx.rect(grd.selectX, grd.selectY, grd.cellWd, grd.cellHt);
+        cntx.strokeStyle = 'white';
+        cntx.lineWidth = 1;
+        cntx.stroke();
+        grd.flagSelected = true;
+      }
     });
 
     function DrawGridBackground() {

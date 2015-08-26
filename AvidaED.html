@@ -54,9 +54,9 @@
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
-            <span data-dojo-type="dijit/MenuItem" id="mnConfig" label="Save Experiment Configuration"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnOrganism" label="Save Selected Organism"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnPopulation" label="Save Current Population"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnFzConfig" label="Save Experiment Configuration"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnFzOrganism" label="Save Selected Organism"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnFzPopulation" label="Save Current Population"></span>
           </span>
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Control">
@@ -418,13 +418,13 @@
            <label>Environmental Settings</label>
            <div style="height: 19px;" class="odd">
              Dish Size:
-              <input id="sizex" type="text" data-dojo-type="dijit/form/NumberTextBox" value=6 required="true";
+              <input id="sizex" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
                   data-dojo-props="constraints:{min:0, max:200,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width: 3em; height:1.8em"></input>
               &nbsp; x &nbsp;
               <input id="sizey" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
-                  required="true" value="3" data-dojo-props="constraints:{min:0, max:200,places:0},
+                  required="true" value="10" data-dojo-props="constraints:{min:0, max:200,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width:4em; height:1.8em"/></input>
               cells&nbsp;<span id="sizexy"></span>
