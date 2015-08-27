@@ -126,7 +126,7 @@ require([
     // called from script in html file as well as below
     BrowserResizeEventHandler=function(){
       if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
-      if ("block"==domStyle.get("populationBlock","display")){popChartFn();DrawGridBackground();};
+      if ("block"==domStyle.get("populationBlock","display")){popChartFn();DrawGridSetup();};
       if ("block"==domStyle.get("organismBlock","display")){
         var height = ($("#rightDetail").innerHeight()-375)/2;
         document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
@@ -220,7 +220,7 @@ require([
     // Buttons that call MainBoxSwap 
     document.getElementById("populationButton").onclick = function(){ 
       mainBoxSwap("populationBlock"); 
-      DrawGridBackground();
+      DrawGridSetup();
     }
     document.getElementById("organismButton").onclick = function(){ 
       mainBoxSwap("organismBlock"); 
@@ -275,7 +275,7 @@ require([
       { data: "m2w30u1000nand", type: ["popDish"]},
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
-    var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"]});
+    var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"], selfAccept: false});
     //Have not made final decision about which div the dnd will connect to
     //var gridBoxNode = "gridBoxNode";  //the div around the grid
     var gridBoxNode = "gridCanvas";   //the actual canvas object
@@ -851,7 +851,7 @@ require([
         dijit.byId("mapBC").set("style", "height: "+height+"px");
         dijit.byId("setupBlock").set("style", "display: none");
         document.getElementById("PopSetupButton").innerHTML = "Setup";
-        DrawGridBackground();
+        DrawGridSetup();
       } else {
         document.getElementById("PopSetupButton").innerHTML = "Map";
         dijit.byId("setupBlock").set("style", "display: block;");
@@ -1083,7 +1083,7 @@ require([
       parents.AvidaNdx = [];
       parents.autoCnt = 0; 
       parents.autoNdx = [];
-      DrawGridBackground();
+      DrawGridSetup();
       //reset values in population settings either based on a 'file' @default or a @default string
       writeSettings();
     }
@@ -1282,18 +1282,6 @@ require([
     grd.border = 0;
     grd.flagSelected = false;
     
-    function GradientScale() {
-      var xStart = 30;
-      var xEnd = CanvasScale.width - xStart;
-      var gradWidth = xEnd-xStart 
-      var grad = sCtx.createLinearGradient(xStart+2, 0, xEnd-2, 0)
-      var legendHt = 15;
-      for (var ii=0; ii < viridis_cmap.length; ii++) {
-        grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
-      }
-      sCtx.fillStyle = grad;
-      sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
-    }
 
     //   var request = {
     //      'Key':'RunPause'
@@ -1350,7 +1338,7 @@ require([
       //check to see if in the grid part of the canvas
       if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
         //erase last selection by redrawing the entire page
-        //DrawGridBackground();
+        //DrawGridSetup();
         
         //erase last selection by drawing a black outline over the white outline.
         //need away to know if this is needed. Can cause trouble when grid size changes.
@@ -1383,8 +1371,58 @@ require([
       }
     };
 
-    function DrawGridBackground() {
+/*    //Set Y-axis title and choose the correct array to plot
+    dijit.byId("y1select").on("Change", function(){
+      y1title = dijit.byId("y1select").value;
+      //need to get correct array to plot from freezer
+      AnaChartFn();
+    });
+*/
+    function DrawGridSetup() {
+      if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend() }
+      else { GradientScale() }
+      DrawGridBackground();
+      console.log('in DrawGridSetup');
+    }
+
+    //Draws the color and name of each Ancestor (parent) organism 
+    //to lay out the legend we need the width of the longest name and we
+    //allow for the width of the color box to see how many columns fit across
+    //the width of CanvasScale. We will need to increase the size of the 
+    //legend box if they don't all fit in two rows with is the default ht.
+    function drawLegend() {
+      //console.log('in drawLedgend')
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
+      if (2 >= parents.name.length) { CanvasScale.height = 30; }//keep default ht
+      else { //find ht based on number of names and width of name text
+      }
+      sCtx.fillStyle = dictColor["ltGrey"];
+      sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
+      sCtx.fillStyle='black';
+      sCtx.font = "12px Arial";
+      txtWide = ctx.measureText('O').width;     
+      sCtx.fillText('Og size = '+txtWide,15, 12);
+      sCtx.fillText('another line',15, 28);
+    }
+    
+    function GradientScale() {
+      //console.log('in gradientScale');
+      CanvasScale.width = $("#gridHolder").innerWidth()-6;
+      sCtx.fillStyle = dictColor["ltGrey"];
+      sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
+      var xStart = 30;
+      var xEnd = CanvasScale.width - xStart;
+      var gradWidth = xEnd-xStart 
+      var grad = sCtx.createLinearGradient(xStart+2, 0, xEnd-2, 0)
+      var legendHt = 15;
+      for (var ii=0; ii < viridis_cmap.length; ii++) {
+        grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
+      }
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
+    }
+
+    function DrawGridBackground() {
       CanvasGrid.width = $("#gridHolder").innerWidth()-6;
       CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
       // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
@@ -1396,8 +1434,6 @@ require([
       //draw grey rectangle as back ground
       cntx.fillStyle = dictColor["ltGrey"];
       cntx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
-      sCtx.fillStyle = dictColor["ltGrey"];
-      sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
       //set rows and cols based on settings
       grd.cols = dijit.byId("sizex").get('value');
       grd.rows = dijit.byId("sizey").get('value');
@@ -1418,7 +1454,6 @@ require([
       cntx.fillStyle=dictColor['Black'];
       cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
       //console.log("cntx grd", grd);
-      GradientScale();
       fakePopMap();
       DrawParent();
     }
@@ -2200,7 +2235,7 @@ require([
     var theColor = hexColor["#000000"];  //This should get 'Black'
     //console.log("theColor=", theColor);
 
-    DrawGridBackground(); //Draw initial Box
+    DrawGridSetup(); //Draw initial Box
     
     //Dictionarys
     var letterColor = {};
