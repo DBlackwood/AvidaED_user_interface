@@ -390,6 +390,8 @@ require([
     parents.AvidaNdx = [];
     parents.autoCnt = 0; 
     parents.autoNdx = [];
+    parents.handCnt = 0; 
+    parents.handNdx = [];
 
     //This triggers for every dnd drop, not just those of AncestorBoxNode
     AncestorBox.on("DndDrop", function(source, nodes, copy, target){
@@ -401,6 +403,7 @@ require([
         parents.autoNdx.push(nn);
         parents.autoCnt++;
         PlaceAncestors(parents);
+        console.log("parents", parents); 
       }
     });
 
@@ -408,29 +411,36 @@ require([
     //This triggers for every dnd drop, not just those of gridBoxNode
     gridBox.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id==gridBoxNode){
-        freezeOrgan.forInSelectedItems(function(item, id){  
-          AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
-        });
-        // need to create an array of ancestors to be used for color key
-        //console.log("grid ", gridBox);
-        //console.log('xUP, y', gridMouse.xUp, gridMouse.yUp);
-        
+        //was it dropped on the grid of cells?
+        //console.log('xOff, yOff, xUP, y', grd.xOffset, grd.yOffset, gridMouse.xUp, gridMouse.yUp);
         var nn = parents.name.length;
-        parents.name[nn] = nodes[0].textContent;
-
         var mouseX = gridMouse.xUp - grd.marginX - grd.xOffset;
         var mouseY = gridMouse.yUp - grd.marginY - grd.yOffset;
+        //console.log('mouseX, y', mouseX, mouseY);
         parents.col[nn] = Math.floor(mouseX/grd.cellWd);
         parents.row[nn] = Math.floor(mouseY/grd.cellHt);
         //check to see if in the grid part of the canvas
-        if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
+        if (parents.col[nn] >=0 && parents.col[nn] < grd.cols && parents.row[nn] >=0 && parents.row[nn] < grd.rows) {
           cntx.beginPath();
           var xx = grd.marginX + grd.xOffset + parents.col[nn] * grd.cellWd;
           var yy = grd.marginY + grd.yOffset + parents.row[nn] * grd.cellHt;
-          cntx.fillStyle = 'white';
-          cntx.fillRect(xx, yy, grd.cellWd, grd.cellHt);
+          cntx.fillStyle = '#EEE';
+          cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
+          //console.log('xx, yy, wd, ht', xx, yy, grd.cellWd, grd.cellHt);
+          parents.AvidaNdx[nn] = parents.row[nn] * grd.cols + parents.col[nn];
+          //Add organism to AncestorBox in settings. 
+          freezeOrgan.forInSelectedItems(function(item, id){  
+            AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+          });
+          var nn = parents.name.length;
+          parents.handNdx.push(nn);
+          parents.handCnt++;
+          parents.name[nn] = nodes[0].textContent;
+
         }
-        console.log("parents", parents);  //error in drawing a white square to represent the parent
+        //In all cases remove the ancestor from the gridBoxNode so we only keep them in the AncestorBox. 
+        gridBox.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+        console.log("parents", parents);  
       }
     });
 
