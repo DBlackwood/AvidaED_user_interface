@@ -1421,11 +1421,11 @@ require([
         xx = leftPad + col*(colWide);
         yy = 2+row*RowHt; 
         if ("Viridis" == dijit.byId("colorMap").value) {
-          sCtx.fillStyle = get_color1(viridis_cmap, ii, 0, Math.max(1, parents.name.length-1));
+          sCtx.fillStyle = get_color1(viridis_cmap, ii+1, 0, Math.max(1, parents.name.length));
         }
-        else { sCtx.fillStyle = get_color1(rainbow, ii, 0, Math.max(1,parents.name.length-1)) }
+        else { sCtx.fillStyle = get_color1(rainbow, ii+1, 0, Math.max(1,parents.name.length)) }
         
-        console.log(get_color1(viridis_cmap, ii, 0, Math.max(1,parents.name.length-1)));
+        //console.log(get_color1(viridis_cmap, ii, 0, Math.max(1,parents.name.length-1)));
         sCtx.fillRect(xx,yy, colorWide, colorWide);
         yy = textOffset+row*RowHt; 
         sCtx.font = "14px Arial";
