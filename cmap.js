@@ -46,16 +46,22 @@ input color map.
 The color map can be of any length.
 
    ---------------------------------------- */
-var get_color = function(cmap, dx, d1, d2){
+var get_color0 = function(cmap, dx, d1, d2){
     var datacolorindex = Math.max(0,Math.min(cmap.length-1,Math.round(linmap(dx, d1, d2, 0, cmap.length-1))));
+    var datacolor = cmap[datacolorindex];
+    return datacolor;
+}
+
+var get_color1 = function(cmap, dx, d1, d2){
+    var datacolorindex = Math.max(0,Math.min(cmap.length-1,Math.round(linmap(dx, d1, d2, 1, cmap.length-1))));
     var datacolor = cmap[datacolorindex];
     return datacolor;
 }
 
 //---------- set Ancestors ------------------/
     function PlaceAncestors(parents) {
-      var cols = dijit.byId("sizex").get('value');
-      var rows = dijit.byId("sizey").get('value');
+      var cols = dijit.byId("sizeCols").get('value');
+      var rows = dijit.byId("sizeRows").get('value');
       switch(parents.autoCnt){
         case 1:   //Place in center
           parents.col[parents.autoNdx[0]] = Math.trunc(cols/2);

@@ -421,12 +421,6 @@ require([
         parents.row[nn] = Math.floor(mouseY/grd.cellHt);
         //check to see if in the grid part of the canvas
         if (parents.col[nn] >=0 && parents.col[nn] < grd.cols && parents.row[nn] >=0 && parents.row[nn] < grd.rows) {
-          cntx.beginPath();
-          var xx = grd.marginX + grd.xOffset + parents.col[nn] * grd.cellWd;
-          var yy = grd.marginY + grd.yOffset + parents.row[nn] * grd.cellHt;
-          cntx.fillStyle = '#EEE';
-          cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
-          //console.log('xx, yy, wd, ht', xx, yy, grd.cellWd, grd.cellHt);
           parents.AvidaNdx[nn] = parents.row[nn] * grd.cols + parents.col[nn];
           //Add organism to AncestorBox in settings. 
           freezeOrgan.forInSelectedItems(function(item, id){  
@@ -436,11 +430,19 @@ require([
           parents.handNdx.push(nn);
           parents.handCnt++;
           parents.name[nn] = nodes[0].textContent;
-
+          
+          //Re-Draw Grid
+          DrawGridSetup();
+          //cntx.beginPath();
+          //var xx = grd.marginX + grd.xOffset + parents.col[nn] * grd.cellWd;
+          //var yy = grd.marginY + grd.yOffset + parents.row[nn] * grd.cellHt;
+          //cntx.fillStyle = '#EEE';
+          //cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
+          //console.log('xx, yy, wd, ht', xx, yy, grd.cellWd, grd.cellHt);
         }
         //In all cases remove the ancestor from the gridBoxNode so we only keep them in the AncestorBox. 
         gridBox.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-        console.log("parents", parents);  
+        //console.log("parents", parents);  
       }
     });
 
@@ -905,8 +907,8 @@ require([
           newrun = false;  //the run will no longer be "new"
           //collect setup data to send to C++
           var setDict={};
-          setDict["sizex"]=dijit.byId("sizex").get('value');
-          setDict["sizey"]=dijit.byId("sizey").get('value');
+          setDict["sizeCols"]=dijit.byId("sizeCols").get('value');
+          setDict["sizeRows"]=dijit.byId("sizeRows").get('value');
           setDict["muteInput"]=document.getElementById("muteInput").value;
           var nmlist = [];
           for (var ii=0; ii<namelist.length; ii++){
@@ -1056,6 +1058,7 @@ require([
       uiWorker.postMessage(request);
     }
     
+    //reset values with 
     function resetDishFn() { //Need to reset all settings to @default
       newrun = true;
       // send rest to Avida adaptor
@@ -1083,17 +1086,20 @@ require([
       parents.AvidaNdx = [];
       parents.autoCnt = 0; 
       parents.autoNdx = [];
-      DrawGridSetup();
+      parents.handCnt = 0; 
+      parents.handNdx = [];
       //reset values in population settings either based on a 'file' @default or a @default string
       writeSettings();
+      //re-write grid if that page is visible 
+      DrawGridSetup();
     }
 
     //writes data to Environmental Settings page based on the content of ConfigCurrent
     //for now this is hard coded to what would be in @default. will need a way to request data from C++
     //and read the returned json string. 
     function writeSettings(){
-      dijit.byId("sizex").set('value','60');
-      dijit.byId("sizey").set('value','60');
+      dijit.byId("sizeCols").set('value','60');
+      dijit.byId("sizeRows").set('value','60');
       document.getElementById("muteInput").value='2';
       var event = new Event('change');
       document.getElementById("muteInput").dispatchEvent(event);
@@ -1281,39 +1287,20 @@ require([
     grd.sizeY = 300;
     grd.border = 0;
     grd.flagSelected = false;
-    
 
     //   var request = {
     //      'Key':'RunPause'
 
-    function drawblock(cntxt, xx, yy, wide, high, color) {
-      //cntxt.
-    }
-
     function fakePopMap() {
-      //Thought I needed to have integer values, but looks ok with non-integers
-      //grd.cellWd = Math.trunc((grd.sizeX-1)/grd.cols); 
-      //grd.cellHt = Math.trunc((grd.sizeY-1)/grd.rows);
-      //grd.marginX = Math.trunc((grd.sizeX - grd.cellWd * grd.cols)/2);
-      //grd.marginY = Math.trunc((grd.sizeY - grd.cellHt * grd.rows)/2);
-      
-      grd.marginX = 1;
-      grd.marginY = 1;
-      grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
-      grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
-      
-      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cellWd, Ht', grd.cellWd, grd.cellHt, 
-      // '; product',grd.cellWd*grd.cols, grd.cellHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
-      //console.log ("cellWd, Ht", grd.cellWd, grd.cellHt);
-      var boxColor = {};
+      var boxColor = '#222';
       for (ii=0; ii<grd.cols; ii++) {
         xx = grd.marginX + grd.xOffset + ii*grd.cellWd;
         for (jj=0; jj<grd.rows; jj++) {
           yy = grd.marginY + grd.yOffset + jj*grd.cellHt;
-          //boxColor[ii, jj] = get_color(viridis_cmap, Math.random(), 0, 1);
-          boxColor[ii, jj] = get_color(viridis_cmap, 0.5, 0, 1);
-          //console.log('color=', boxColor[ii,jj]);
-          cntx.fillStyle = boxColor[ii, jj];
+          //boxColor = get_color0(viridis_cmap, Math.random(), 0, 1);
+          //boxColor = get_color0(viridis_cmap, 0.5, 0, 1);
+          //console.log('color=', boxColor);
+          cntx.fillStyle = '#222';
           cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
         }
       }
@@ -1326,6 +1313,7 @@ require([
       gridMouse.yUp = evt.layerY;
     });
 
+    //Call when user selects a cell
     //https://github.com/kangax/fabric.js/wiki/Working-with-events
     gridBox.on("MouseDown", function(evt){
       //console.log("xdn", evt.layerX, "; y", evt.layerY); 
@@ -1371,43 +1359,85 @@ require([
       }
     };
 
-/*    //Set Y-axis title and choose the correct array to plot
-    dijit.byId("y1select").on("Change", function(){
-      y1title = dijit.byId("y1select").value;
-      //need to get correct array to plot from freezer
-      AnaChartFn();
+    //Get color map data from Avida and draw
+    dijit.byId("colorMode").on("Change", function(){
+      var scaleType = dijit.byId("colorMode").value;
+      //need to request data to update the color map from Avida
+      // code for that
+      //Redraw Grid;
+      DrawGridSetup();
     });
-*/
+
     function DrawGridSetup() {
+      var GridHt = $("#gridHolder").innerHeight();
       if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend() }
       else { GradientScale() }
+      CanvasGrid.width = $("#gridHolder").innerWidth()-6;
+      CanvasGrid.height = GridHt-16-$("#scaleCanvas").innerHeight();
+      //console.log('Hts: GridHt, CanScale, ScaleInner, CanGrid', GridHt, CanvasScale.height, $("#scaleCanvas").innerHeight(), CanvasGrid.height);
       DrawGridBackground();
-      console.log('in DrawGridSetup');
     }
 
+    //--------------- Draw legend --------------------------------------
     //Draws the color and name of each Ancestor (parent) organism 
     //to lay out the legend we need the width of the longest name and we
     //allow for the width of the color box to see how many columns fit across
     //the width of CanvasScale. We will need to increase the size of the 
     //legend box if they don't all fit in two rows with is the default ht.
     function drawLegend() {
+      var legendPad = 10;
+      var colorWide = 13;
+      var RowHt = 20;
+      var textOffset = 15;
+      var leftPad = 10;
+      var extraWidth = 0;
+      var legendCols = 1;
+      var txtWide = 0;
+      var maxWide = 0;
       //console.log('in drawLedgend')
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
-      if (2 >= parents.name.length) { CanvasScale.height = 30; }//keep default ht
-      else { //find ht based on number of names and width of name text
+      sCtx.font = "14px Arial";
+      //find out how much space is needed
+      for (ii=0; ii< parents.name.length; ii++) {
+        txtWide = sCtx.measureText(parents.name[ii]).width;
+        if (txtWide > maxWide) { maxWide = txtWide }
       }
+      legendCols = Math.trunc((CanvasScale.width-leftPad)/(maxWide + colorWide + legendPad));
+      if (Math.trunc(parents.name.length/legendCols) == parents.name.length/legendCols) {
+        legendRows = Math.trunc(parents.name.length/legendCols);
+      }
+      else { legendRows = Math.trunc(parents.name.length/legendCols)+1; }
+      //set cavas height based on space needed
+      CanvasScale.height = RowHt * legendRows;
       sCtx.fillStyle = dictColor["ltGrey"];
       sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
-      sCtx.fillStyle='black';
-      sCtx.font = "12px Arial";
-      txtWide = ctx.measureText('O').width;     
-      sCtx.fillText('Og size = '+txtWide,15, 12);
-      sCtx.fillText('another line',15, 28);
+      var colWide = (CanvasScale.width-leftPad)/legendCols
+      var col = 0; 
+      var row = 0;
+      for (ii = 0; ii< parents.name.length; ii++) {
+        col = ii%legendCols;
+        row = Math.trunc(ii/legendCols);
+        //xx = leftPad + col*(maxWide+colorWide+legendPad);
+        xx = leftPad + col*(colWide);
+        yy = 2+row*RowHt; 
+        if ("Viridis" == dijit.byId("colorMap").value) {
+          sCtx.fillStyle = get_color1(viridis_cmap, ii, 0, Math.max(1, parents.name.length-1));
+        }
+        else { sCtx.fillStyle = get_color1(rainbow, ii, 0, Math.max(1,parents.name.length-1)) }
+        
+        console.log(get_color1(viridis_cmap, ii, 0, Math.max(1,parents.name.length-1)));
+        sCtx.fillRect(xx,yy, colorWide, colorWide);
+        yy = textOffset+row*RowHt; 
+        sCtx.font = "14px Arial";
+        sCtx.fillStyle='black';
+        sCtx.fillText(parents.name[ii],xx+colorWide+legendPad/2, yy);
+      }
     }
     
     function GradientScale() {
       //console.log('in gradientScale');
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
+      CanvasScale.height = 30;
       sCtx.fillStyle = dictColor["ltGrey"];
       sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
       var xStart = 30;
@@ -1415,16 +1445,24 @@ require([
       var gradWidth = xEnd-xStart 
       var grad = sCtx.createLinearGradient(xStart+2, 0, xEnd-2, 0)
       var legendHt = 15;
-      for (var ii=0; ii < viridis_cmap.length; ii++) {
-        grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
+      if ("Viridis" == dijit.byId("colorMap").value) {
+        for (var ii=0; ii < viridis_cmap.length; ii++) {
+          grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
+        }
       }
+      else {
+        for (var ii=0; ii < rainbow.length; ii++) {
+          grad.addColorStop(ii/(rainbow.length-1), rainbow[ii]); 
+        }
+      }
+      //for (var ii=0; ii < rainbow.length; ii++) {
+      //  grad.addColorStop(ii/(rainbow.length-1), rainbow[ii]); 
+      //}
       sCtx.fillStyle = grad;
       sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
     }
 
     function DrawGridBackground() {
-      CanvasGrid.width = $("#gridHolder").innerWidth()-6;
-      CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
       // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
       cntx.setTransform(1, 0, 0, 1, 0, 0);
       cntx.clearRect(0, 0, CanvasGrid.width, CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
@@ -1435,8 +1473,8 @@ require([
       cntx.fillStyle = dictColor["ltGrey"];
       cntx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
       //set rows and cols based on settings
-      grd.cols = dijit.byId("sizex").get('value');
-      grd.rows = dijit.byId("sizey").get('value');
+      grd.cols = dijit.byId("sizeCols").get('value');
+      grd.rows = dijit.byId("sizeRows").get('value');
       //max size of box based on width or height based on ratio of cols:rows and width:height
       if (CanvasGrid.width/grd.boxY > grd.cols/grd.rows) {
         //set based  on height as that is the limiting factor. 
@@ -1454,45 +1492,51 @@ require([
       cntx.fillStyle=dictColor['Black'];
       cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
       //console.log("cntx grd", grd);
-      fakePopMap();
-      DrawParent();
-    }
 
-    function GridUpdate(GrdClr) {
+      //prep grid based on rows and columns from Setup
+      grd.marginX = 1;
+      grd.marginY = 1;
+      grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
+      grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
+      
+      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cellWd, Ht', grd.cellWd, grd.cellHt, 
+      // '; product',grd.cellWd*grd.cols, grd.cellHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
+      //console.log ("cellWd, Ht", grd.cellWd, grd.cellHt);
+
+      fakePopMap();      
+      //Draw parents if run has not started. 
+      DrawParent();
     }
 
     //cntx.beginPath();
     //cntx.moveTo(0,0);
     //cntx.lineTo(200,100);
     //cntx.stroke();
-
+    
     /* *************************************************************** */
     /* ******* Population Setup Buttons, etc.  *********************** */
     /* *************************************************************** */
+    gridWasCols = Number(document.getElementById("sizeCols").value);
+    gridWasRows = Number(document.getElementById("sizeRows").value);
     function popSizeFn() {
-      //console.log("in popSizeFn");
-      //console.log(dijit.byId("sizex"));
-      var xx = Number(document.getElementById("sizex").value);
-      var yy = Number(document.getElementById("sizey").value);
-      //console.log("x is " + xx + "; y=" + yy);
-      document.getElementById("sizexy").innerHTML = "is a total of " + xx * yy + " cells";
-      //Clear grid of ancestors if any ancestor added by hand; 
-      if (parents.autoCnt != parents.name.length) { 
-        parents = {};
-        parents.name = [];
-        parents.genome = [];
-        parents.col = [];
-        parents.row = [];
-        parents.AvidaNdx = [];
-        parents.autoCnt = 0; 
-        parents.autoNdx = [];
-        ClearAncestorBox();
+      var NewCols = Number(document.getElementById("sizeCols").value);
+      var NewRows = Number(document.getElementById("sizeRows").value);
+      document.getElementById("sizeCells").innerHTML = "is a total of " + NewCols * NewRows + " cells";
+      //Linear scale the positon for Ancestors added by hand; 
+      for (var ii=0; ii<parents.handNdx.length; ii++) {
+        //console.log('old cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
+        parents.col[parents.handNdx[ii]] = Math.round(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);
+        parents.row[parents.handNdx[ii]] = Math.round(NewRows * parents.row[parents.handNdx[ii]] / gridWasRows);
+        parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
+        //console.log('New cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
       }
-      else {PlaceAncestors(parents)}
+      gridWasCols = Number(document.getElementById("sizeCols").value);
+      gridWasRows = Number(document.getElementById("sizeRows").value);
+      PlaceAncestors(parents);
     }
 
-    dijit.byId("sizex").on("Change", popSizeFn);
-    dijit.byId("sizey").on("Change", popSizeFn);
+    dijit.byId("sizeCols").on("Change", popSizeFn);
+    dijit.byId("sizeRows").on("Change", popSizeFn);
 
     $(function slidemute() {
       /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
@@ -2123,18 +2167,6 @@ require([
     dictPlotb["m2w30u1000nand"] = [80, 70, 75, 60, 50, 50, 40, 40, 30];
     dictPlota["newPopulation"] = [0.5,  1,  2, 1.7,  2, 2.7, 3.2, 3.2];
     dictPlotb["newPopulation"] = [ 65, 50, 50,  47, 40,  37,  32, 22];
-    var dictColor = {};
-    dictColor["Red"] = "#FF0000";
-    //dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
-    dictColor["Green"] = "#00FF00";
-    dictColor["Blue"] = "#0000FF";
-    dictColor["Magenta"] = "#FF00FF";
-    dictColor["Cyan"] = "#00FFFF";
-    dictColor["Yellow"] = "#FFFF00";
-    dictColor["Purple"] = "#8800FF";
-    dictColor["Orange"] = "#FFAA00";
-    dictColor["Black"] = "#000000";
-    dictColor["ltGrey"] = "#CCCCCC";
     var pop1a = [];
     var pop1b = [];
     var pop2a = [];
@@ -2236,82 +2268,7 @@ require([
     //console.log("theColor=", theColor);
 
     DrawGridSetup(); //Draw initial Box
-    
-    //Dictionarys
-    var letterColor = {};
-    letterColor["a"] = "#F9CC65"; //color Meter
-    letterColor["b"] = "#EFC461"; //color Meter
-    letterColor["c"] = "#E5BC5D"; //color Meter 
-    letterColor["d"] = "#59FF71"; //color Meter
-    letterColor["e"] = "#55FF6D"; //color Meter
-    letterColor["f"] = "#52F768"; //color Meter
-    letterColor["g"] = "#BBFF5C"; //color Meter
-    letterColor["h"] = "#B4FF59"; //color Meter
-    letterColor["i"] = "#ACF655"; //color Meter
-    letterColor["j"] = "#A5EC51"; //color Meter 
-    letterColor["k"] = "#6EFFEB"; //color Meter
-    letterColor["l"] = "#69FAE2"; //color Meter
-    letterColor["m"] = "#65F0D8"; //color Meter
-    letterColor["n"] = "#61E5CF"; //color Meter
-    letterColor["o"] = "#7B8FFF"; //color Meter
-    letterColor["p"] = "#7B8FFF"; //color Meter
-    letterColor["q"] = "#7084EA"; //color Meter
-    letterColor["r"] = "#6C7EE1"; //color Meter
-    letterColor["s"] = "#5CDBC5"; //color Meter
-    letterColor["t"] = "#58D1BC"; //color Meter
-    letterColor["u"] = "#53C6B3"; //color Meter
-    letterColor["v"] = "#FF26EE"; //color Meter
-    letterColor["x"] = "#ED24DB"; //color Meter
-    letterColor["w"] = "#F725E5"; //color Meter
-    letterColor["y"] = "#AE2CFF"; //color Meter
-    letterColor["z"] = "#9DE14E"; //color Meter
-    var orgColorCodes = {};
-    orgColorCodes["mutate_old"] = "#00FF00"; //color Meter green
-    orgColorCodes["mutate"] = "#000000"; //color black
-    orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
-    orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
-    orgColorCodes["headFill"] = "#AAAAAA"; //lighter grey
-    orgColorCodes["WRITE"] = "#FA0022"; //color Meter  red
-    orgColorCodes["READ"] = "#5300FF"; //color Meter  blue
-    orgColorCodes["FLOW"] = "#00FF00"; //color Meter  green
-    orgColorCodes["IP"] = "#000000"; //color Meter  black
-    orgColorCodes["outline"] = "#666666"; //grey
-    orgColorCodes["0"] = "#BBBBFF"; //lt blue
-    orgColorCodes["1"] = "#F5FF00"; //color Meter yellow
-    var headCodes = {};
-    headCodes["READ"] = "R";
-    headCodes["WRITE"] = "W";
-    headCodes["FLOW"] = "F";
-    headCodes["IP"] = "I";
-    var InstDescribe = {};
-    InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    InstDescribe["c"]="nop-C is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    InstDescribe["d"]="if-n-equ: This instruction compares the BX register to its complement. If they are not equal, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If they are equal, that next instruction is skipped.";
-    InstDescribe["e"]="if-less: This instruction compares the BX register to its complement. If BX is the lesser of the pair, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If it is greater or equal, then that next instruction is skipped.";
-    InstDescribe["f"]="if-label: This instruction reads in the template that follows it, and tests if its complement template was the most recent series of instructions copied. If so, it executed the next instruction, otherwise it skips it. This instruction is commonly used for an organism to determine when it has finished producing its offspring.";
-    InstDescribe["g"]="mov-head: This instruction will cause the IP to jump to the position in memory of the flow-head.";
-    InstDescribe["h"]="jmp-head: This instruction will read in the value of the CX register, and the move the IP by that fixed amount through the organism's memory.";
-    InstDescribe["i"]="get-head: This instruction will copy the position of the IP into the CX register.";
-    InstDescribe["j"]="set-flow: This instruction moves the flow-head to the memory position denoted in the CX register.";
-    InstDescribe["k"]="shift-r: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the right by one. In effect, it divides the value stored in the register by two, rounding down.";
-    InstDescribe["l"]="shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.";
-    InstDescribe["m"]="inc: This instruction reads in the content of the BX register and increments it by one.";
-    InstDescribe["n"]="dec: This instruction reads in the content of the BX register and decrements it by one.";
-    InstDescribe["o"]="pop: This instruction removes the top element from the active stack, and places it into the BX register.";
-    InstDescribe["p"]="push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.";
-    InstDescribe["q"]="swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.";
-    InstDescribe["r"]="swap: This instruction swaps the contents of the BX register with its complement.";
-    InstDescribe["s"]="add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.";
-    InstDescribe["t"]="sub: This instruction reads in the contents of the BX and CX registers and subtracts CX from BX (respectively). The result of this operation is then placed in the BX register.";
-    InstDescribe["u"]="nand: This instruction reads in the contents of the BX and CX registers (each of which are 32-bit numbers) and performs a bitwise nand operation on them. The result of this operation is placed in the BX register. Note that this is the only logic operation provided in the basic avida instruction set.";
-    InstDescribe["v"]="h-copy: This instruction reads the contents of the organism's memory at the position of the read-head, and copy that to the position of the write-head. If a non-zero copy mutation rate is set, a test will be made based on this probability to determine if a mutation occurs. If so, a random instruction (chosen from the full set with equal probability) will be placed at the write-head instead.";
-    InstDescribe["w"]="h-alloc: This instruction allocates additional memory for the organism up to the maximum it is allowed to use for its offspring.";
-    InstDescribe["x"]="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
-    InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
-    InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
-
-    
+        
     //Not currently in use, but kept as an example
     //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
     //var orderedDataItems = source.getAllNodes().map(function(node){

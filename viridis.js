@@ -1,3 +1,5 @@
+//Definition of viridis and other dictionaries. 
+
 var viridis_cmap = [
    'rgb(0, 0, 0)'
    ,'rgb(68, 1, 84)'
@@ -257,3 +259,345 @@ var viridis_cmap = [
    ,'rgb(251, 231, 35)'
    ,'rgb(253, 231, 37)'
 ];
+
+var rainbow = [
+  'rgb(0, 0, 0)'
+  ,'rgb(0, 64, 0)'
+  ,'rgb(0, 68, 5)'
+  ,'rgb(0, 72, 10)'
+  ,'rgb(0, 75, 15)'
+  ,'rgb(0, 79, 20)'
+  ,'rgb(0, 83, 26)'
+  ,'rgb(0, 87, 31)'
+  ,'rgb(0, 91, 36)'
+  ,'rgb(0, 95, 41)'
+  ,'rgb(0, 98, 46)'
+  ,'rgb(0, 102, 51)'
+  ,'rgb(0, 106, 56)'
+  ,'rgb(0, 110, 61)'
+  ,'rgb(0, 114, 66)'
+  ,'rgb(0, 117, 71)'
+  ,'rgb(0, 121, 77)'
+  ,'rgb(0, 125, 82)'
+  ,'rgb(0, 129, 87)'
+  ,'rgb(0, 133, 92)'
+  ,'rgb(0, 137, 97)'
+  ,'rgb(0, 140, 102)'
+  ,'rgb(0, 144, 107)'
+  ,'rgb(0, 148, 112)'
+  ,'rgb(0, 152, 117)'
+  ,'rgb(0, 156, 122)'
+  ,'rgb(0, 160, 128)'
+  ,'rgb(0, 163, 133)'
+  ,'rgb(0, 167, 138)'
+  ,'rgb(0, 171, 143)'
+  ,'rgb(0, 175, 148)'
+  ,'rgb(0, 179, 153)'
+  ,'rgb(0, 182, 158)'
+  ,'rgb(0, 186, 163)'
+  ,'rgb(0, 190, 168)'
+  ,'rgb(0, 194, 173)'
+  ,'rgb(0, 198, 179)'
+  ,'rgb(0, 202, 184)'
+  ,'rgb(0, 205, 189)'
+  ,'rgb(0, 209, 194)'
+  ,'rgb(0, 213, 199)'
+  ,'rgb(0, 217, 204)'
+  ,'rgb(0, 221, 209)'
+  ,'rgb(0, 224, 214)'
+  ,'rgb(0, 228, 219)'
+  ,'rgb(0, 232, 224)'
+  ,'rgb(0, 236, 230)'
+  ,'rgb(0, 240, 235)'
+  ,'rgb(0, 244, 240)'
+  ,'rgb(0, 247, 245)'
+  ,'rgb(0, 251, 250)'
+  ,'rgb(0, 255, 255)'
+  ,'rgb(0, 250, 255)'
+  ,'rgb(0, 245, 255)'
+  ,'rgb(0, 240, 255)'
+  ,'rgb(0, 235, 255)'
+  ,'rgb(0, 230, 255)'
+  ,'rgb(0, 224, 255)'
+  ,'rgb(0, 219, 255)'
+  ,'rgb(0, 214, 255)'
+  ,'rgb(0, 209, 255)'
+  ,'rgb(0, 204, 255)'
+  ,'rgb(0, 199, 255)'
+  ,'rgb(0, 194, 255)'
+  ,'rgb(0, 189, 255)'
+  ,'rgb(0, 184, 255)'
+  ,'rgb(0, 179, 255)'
+  ,'rgb(0, 173, 255)'
+  ,'rgb(0, 168, 255)'
+  ,'rgb(0, 163, 255)'
+  ,'rgb(0, 158, 255)'
+  ,'rgb(0, 153, 255)'
+  ,'rgb(0, 148, 255)'
+  ,'rgb(0, 143, 255)'
+  ,'rgb(0, 138, 255)'
+  ,'rgb(0, 133, 255)'
+  ,'rgb(0, 128, 255)'
+  ,'rgb(0, 122, 255)'
+  ,'rgb(0, 117, 255)'
+  ,'rgb(0, 112, 255)'
+  ,'rgb(0, 107, 255)'
+  ,'rgb(0, 102, 255)'
+  ,'rgb(0, 97, 255)'
+  ,'rgb(0, 92, 255)'
+  ,'rgb(0, 87, 255)'
+  ,'rgb(0, 82, 255)'
+  ,'rgb(0, 77, 255)'
+  ,'rgb(0, 71, 255)'
+  ,'rgb(0, 66, 255)'
+  ,'rgb(0, 61, 255)'
+  ,'rgb(0, 56, 255)'
+  ,'rgb(0, 51, 255)'
+  ,'rgb(0, 46, 255)'
+  ,'rgb(0, 41, 255)'
+  ,'rgb(0, 36, 255)'
+  ,'rgb(0, 31, 255)'
+  ,'rgb(0, 26, 255)'
+  ,'rgb(0, 20, 255)'
+  ,'rgb(0, 15, 255)'
+  ,'rgb(0, 10, 255)'
+  ,'rgb(0, 5, 255)'
+  ,'rgb(0, 0, 255)'
+  ,'rgb(5, 0, 255)'
+  ,'rgb(10, 0, 255)'
+  ,'rgb(15, 0, 255)'
+  ,'rgb(20, 0, 255)'
+  ,'rgb(26, 0, 255)'
+  ,'rgb(31, 0, 255)'
+  ,'rgb(36, 0, 255)'
+  ,'rgb(41, 0, 255)'
+  ,'rgb(46, 0, 255)'
+  ,'rgb(51, 0, 255)'
+  ,'rgb(56, 0, 255)'
+  ,'rgb(61, 0, 255)'
+  ,'rgb(66, 0, 255)'
+  ,'rgb(71, 0, 255)'
+  ,'rgb(77, 0, 255)'
+  ,'rgb(82, 0, 255)'
+  ,'rgb(87, 0, 255)'
+  ,'rgb(92, 0, 255)'
+  ,'rgb(97, 0, 255)'
+  ,'rgb(102, 0, 255)'
+  ,'rgb(107, 0, 255)'
+  ,'rgb(112, 0, 255)'
+  ,'rgb(117, 0, 255)'
+  ,'rgb(122, 0, 255)'
+  ,'rgb(128, 0, 255)'
+  ,'rgb(133, 0, 255)'
+  ,'rgb(138, 0, 255)'
+  ,'rgb(143, 0, 255)'
+  ,'rgb(148, 0, 255)'
+  ,'rgb(153, 0, 255)'
+  ,'rgb(158, 0, 255)'
+  ,'rgb(163, 0, 255)'
+  ,'rgb(168, 0, 255)'
+  ,'rgb(173, 0, 255)'
+  ,'rgb(179, 0, 255)'
+  ,'rgb(184, 0, 255)'
+  ,'rgb(189, 0, 255)'
+  ,'rgb(194, 0, 255)'
+  ,'rgb(199, 0, 255)'
+  ,'rgb(204, 0, 255)'
+  ,'rgb(209, 0, 255)'
+  ,'rgb(214, 0, 255)'
+  ,'rgb(219, 0, 255)'
+  ,'rgb(224, 0, 255)'
+  ,'rgb(230, 0, 255)'
+  ,'rgb(235, 0, 255)'
+  ,'rgb(240, 0, 255)'
+  ,'rgb(245, 0, 255)'
+  ,'rgb(250, 0, 255)'
+  ,'rgb(255, 0, 255)'
+  ,'rgb(255, 0, 250)'
+  ,'rgb(255, 0, 245)'
+  ,'rgb(255, 0, 240)'
+  ,'rgb(255, 0, 235)'
+  ,'rgb(255, 0, 230)'
+  ,'rgb(255, 0, 224)'
+  ,'rgb(255, 0, 219)'
+  ,'rgb(255, 0, 214)'
+  ,'rgb(255, 0, 209)'
+  ,'rgb(255, 0, 204)'
+  ,'rgb(255, 0, 199)'
+  ,'rgb(255, 0, 194)'
+  ,'rgb(255, 0, 189)'
+  ,'rgb(255, 0, 184)'
+  ,'rgb(255, 0, 179)'
+  ,'rgb(255, 0, 173)'
+  ,'rgb(255, 0, 168)'
+  ,'rgb(255, 0, 163)'
+  ,'rgb(255, 0, 158)'
+  ,'rgb(255, 0, 153)'
+  ,'rgb(255, 0, 148)'
+  ,'rgb(255, 0, 143)'
+  ,'rgb(255, 0, 138)'
+  ,'rgb(255, 0, 133)'
+  ,'rgb(255, 0, 128)'
+  ,'rgb(255, 0, 122)'
+  ,'rgb(255, 0, 117)'
+  ,'rgb(255, 0, 112)'
+  ,'rgb(255, 0, 107)'
+  ,'rgb(255, 0, 102)'
+  ,'rgb(255, 0, 97)'
+  ,'rgb(255, 0, 92)'
+  ,'rgb(255, 0, 87)'
+  ,'rgb(255, 0, 82)'
+  ,'rgb(255, 0, 77)'
+  ,'rgb(255, 0, 71)'
+  ,'rgb(255, 0, 66)'
+  ,'rgb(255, 0, 61)'
+  ,'rgb(255, 0, 56)'
+  ,'rgb(255, 0, 51)'
+  ,'rgb(255, 0, 46)'
+  ,'rgb(255, 0, 41)'
+  ,'rgb(255, 0, 36)'
+  ,'rgb(255, 0, 31)'
+  ,'rgb(255, 0, 26)'
+  ,'rgb(255, 0, 20)'
+  ,'rgb(255, 0, 15)'
+  ,'rgb(255, 0, 10)'
+  ,'rgb(255, 0, 5)'
+  ,'rgb(255, 0, 0)'
+  ,'rgb(255, 5, 0)'
+  ,'rgb(255, 10, 0)'
+  ,'rgb(255, 15, 0)'
+  ,'rgb(255, 20, 0)'
+  ,'rgb(255, 26, 0)'
+  ,'rgb(255, 31, 0)'
+  ,'rgb(255, 36, 0)'
+  ,'rgb(255, 41, 0)'
+  ,'rgb(255, 46, 0)'
+  ,'rgb(255, 51, 0)'
+  ,'rgb(255, 56, 0)'
+  ,'rgb(255, 61, 0)'
+  ,'rgb(255, 66, 0)'
+  ,'rgb(255, 71, 0)'
+  ,'rgb(255, 77, 0)'
+  ,'rgb(255, 82, 0)'
+  ,'rgb(255, 87, 0)'
+  ,'rgb(255, 92, 0)'
+  ,'rgb(255, 97, 0)'
+  ,'rgb(255, 102, 0)'
+  ,'rgb(255, 107, 0)'
+  ,'rgb(255, 112, 0)'
+  ,'rgb(255, 117, 0)'
+  ,'rgb(255, 122, 0)'
+  ,'rgb(255, 128, 0)'
+  ,'rgb(255, 133, 0)'
+  ,'rgb(255, 138, 0)'
+  ,'rgb(255, 143, 0)'
+  ,'rgb(255, 148, 0)'
+  ,'rgb(255, 153, 0)'
+  ,'rgb(255, 158, 0)'
+  ,'rgb(255, 163, 0)'
+  ,'rgb(255, 168, 0)'
+  ,'rgb(255, 173, 0)'
+  ,'rgb(255, 179, 0)'
+  ,'rgb(255, 184, 0)'
+  ,'rgb(255, 189, 0)'
+  ,'rgb(255, 194, 0)'
+  ,'rgb(255, 199, 0)'
+  ,'rgb(255, 204, 0)'
+  ,'rgb(255, 209, 0)'
+  ,'rgb(255, 214, 0)'
+  ,'rgb(255, 219, 0)'
+  ,'rgb(255, 224, 0)'
+  ,'rgb(255, 230, 0)'
+  ,'rgb(255, 235, 0)'
+  ,'rgb(255, 240, 0)'
+  ,'rgb(255, 245, 0)'
+  ,'rgb(255, 250, 0)'
+  ,'rgb(255, 255, 0)'
+];
+
+    var dictColor = {};
+    dictColor["Red"] = "#FF0000";
+    //dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
+    dictColor["Green"] = "#00FF00";
+    dictColor["Blue"] = "#0000FF";
+    dictColor["Magenta"] = "#FF00FF";
+    dictColor["Cyan"] = "#00FFFF";
+    dictColor["Yellow"] = "#FFFF00";
+    dictColor["Purple"] = "#8800FF";
+    dictColor["Orange"] = "#FFAA00";
+    dictColor["Black"] = "#000000";
+    dictColor["ltGrey"] = "#CCCCCC";
+
+    //Dictionarys
+    var letterColor = {};
+    letterColor["a"] = "#F9CC65"; //color Meter
+    letterColor["b"] = "#EFC461"; //color Meter
+    letterColor["c"] = "#E5BC5D"; //color Meter 
+    letterColor["d"] = "#59FF71"; //color Meter
+    letterColor["e"] = "#55FF6D"; //color Meter
+    letterColor["f"] = "#52F768"; //color Meter
+    letterColor["g"] = "#BBFF5C"; //color Meter
+    letterColor["h"] = "#B4FF59"; //color Meter
+    letterColor["i"] = "#ACF655"; //color Meter
+    letterColor["j"] = "#A5EC51"; //color Meter 
+    letterColor["k"] = "#6EFFEB"; //color Meter
+    letterColor["l"] = "#69FAE2"; //color Meter
+    letterColor["m"] = "#65F0D8"; //color Meter
+    letterColor["n"] = "#61E5CF"; //color Meter
+    letterColor["o"] = "#7B8FFF"; //color Meter
+    letterColor["p"] = "#7B8FFF"; //color Meter
+    letterColor["q"] = "#7084EA"; //color Meter
+    letterColor["r"] = "#6C7EE1"; //color Meter
+    letterColor["s"] = "#5CDBC5"; //color Meter
+    letterColor["t"] = "#58D1BC"; //color Meter
+    letterColor["u"] = "#53C6B3"; //color Meter
+    letterColor["v"] = "#FF26EE"; //color Meter
+    letterColor["x"] = "#ED24DB"; //color Meter
+    letterColor["w"] = "#F725E5"; //color Meter
+    letterColor["y"] = "#AE2CFF"; //color Meter
+    letterColor["z"] = "#9DE14E"; //color Meter
+    var orgColorCodes = {};
+    orgColorCodes["mutate_old"] = "#00FF00"; //color Meter green
+    orgColorCodes["mutate"] = "#000000"; //color black
+    orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
+    orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
+    orgColorCodes["headFill"] = "#AAAAAA"; //lighter grey
+    orgColorCodes["WRITE"] = "#FA0022"; //color Meter  red
+    orgColorCodes["READ"] = "#5300FF"; //color Meter  blue
+    orgColorCodes["FLOW"] = "#00FF00"; //color Meter  green
+    orgColorCodes["IP"] = "#000000"; //color Meter  black
+    orgColorCodes["outline"] = "#666666"; //grey
+    orgColorCodes["0"] = "#BBBBFF"; //lt blue
+    orgColorCodes["1"] = "#F5FF00"; //color Meter yellow
+    var headCodes = {};
+    headCodes["READ"] = "R";
+    headCodes["WRITE"] = "W";
+    headCodes["FLOW"] = "F";
+    headCodes["IP"] = "I";
+    var InstDescribe = {};
+    InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    InstDescribe["c"]="nop-C is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    InstDescribe["d"]="if-n-equ: This instruction compares the BX register to its complement. If they are not equal, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If they are equal, that next instruction is skipped.";
+    InstDescribe["e"]="if-less: This instruction compares the BX register to its complement. If BX is the lesser of the pair, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If it is greater or equal, then that next instruction is skipped.";
+    InstDescribe["f"]="if-label: This instruction reads in the template that follows it, and tests if its complement template was the most recent series of instructions copied. If so, it executed the next instruction, otherwise it skips it. This instruction is commonly used for an organism to determine when it has finished producing its offspring.";
+    InstDescribe["g"]="mov-head: This instruction will cause the IP to jump to the position in memory of the flow-head.";
+    InstDescribe["h"]="jmp-head: This instruction will read in the value of the CX register, and the move the IP by that fixed amount through the organism's memory.";
+    InstDescribe["i"]="get-head: This instruction will copy the position of the IP into the CX register.";
+    InstDescribe["j"]="set-flow: This instruction moves the flow-head to the memory position denoted in the CX register.";
+    InstDescribe["k"]="shift-r: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the right by one. In effect, it divides the value stored in the register by two, rounding down.";
+    InstDescribe["l"]="shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.";
+    InstDescribe["m"]="inc: This instruction reads in the content of the BX register and increments it by one.";
+    InstDescribe["n"]="dec: This instruction reads in the content of the BX register and decrements it by one.";
+    InstDescribe["o"]="pop: This instruction removes the top element from the active stack, and places it into the BX register.";
+    InstDescribe["p"]="push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.";
+    InstDescribe["q"]="swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.";
+    InstDescribe["r"]="swap: This instruction swaps the contents of the BX register with its complement.";
+    InstDescribe["s"]="add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.";
+    InstDescribe["t"]="sub: This instruction reads in the contents of the BX and CX registers and subtracts CX from BX (respectively). The result of this operation is then placed in the BX register.";
+    InstDescribe["u"]="nand: This instruction reads in the contents of the BX and CX registers (each of which are 32-bit numbers) and performs a bitwise nand operation on them. The result of this operation is placed in the BX register. Note that this is the only logic operation provided in the basic avida instruction set.";
+    InstDescribe["v"]="h-copy: This instruction reads the contents of the organism's memory at the position of the read-head, and copy that to the position of the write-head. If a non-zero copy mutation rate is set, a test will be made based on this probability to determine if a mutation occurs. If so, a random instruction (chosen from the full set with equal probability) will be placed at the write-head instead.";
+    InstDescribe["w"]="h-alloc: This instruction allocates additional memory for the organism up to the maximum it is allowed to use for its offspring.";
+    InstDescribe["x"]="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
+    InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
+    InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";

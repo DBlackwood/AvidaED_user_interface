@@ -377,7 +377,12 @@
                  <tbody>
                    <tr>
                      <td>
-                       Time: <label id="TimeLabel"></label>
+                       Time: <label id="TimeLabel"></label><br />
+                        Color Map
+                        <select data-dojo-type="dijit/form/Select" id="colorMap" data-dojo-props="name: 'colorAxis'">
+                          <option value="Viridis" selected="selected">Viridis</option>
+                          <option value="Rainbow">Rainbow</option>
+                        </select>
                      </td>
                      <td style="text-align: center">
                         Mode
@@ -418,16 +423,16 @@
            <label>Environmental Settings</label>
            <div style="height: 19px;" class="odd">
              Dish Size:
-              <input id="sizex" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
+              <input id="sizeCols" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
                   data-dojo-props="constraints:{min:0, max:200,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width: 3em; height:1.8em"></input>
               &nbsp; x &nbsp;
-              <input id="sizey" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
+              <input id="sizeRows" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
                   required="true" value="10" data-dojo-props="constraints:{min:0, max:200,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width:4em; height:1.8em"/></input>
-              cells&nbsp;<span id="sizexy"></span>
+              cells&nbsp;<span id="sizeCells"></span>
            </div>
             <div class="even">
               <span class="lftmargin">Per Site Mutation Rate:</span>
