@@ -56,6 +56,7 @@
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnFzConfig" label="Save Experiment Configuration"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzOrganism" label="Save Selected Organism"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnFzOffspring" label="Save Offspring Organism"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzPopulation" label="Save Current Population"></span>
           </span>
         </span>
@@ -63,7 +64,9 @@
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnRun" label="Run"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnPause" label="Pause"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnNewpop" label="Start New Population"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnNewpop" label="Start New Experiment"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnOrganismTrace" label="Put Selected Organism in Organism View"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnOffspringTrace" label="Put Offspring Organism in Organism View"></span>
           </span>
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Help">
@@ -377,7 +380,7 @@
                  <tbody>
                    <tr>
                      <td>
-                       Time: <label id="TimeLabel"></label><br />
+                       Time: <label id="TimeLabel">(not started)</label><br />
                         Color Map
                         <select data-dojo-type="dijit/form/Select" id="colorMap" data-dojo-props="name: 'colorAxis'">
                           <option value="Viridis" selected="selected">Viridis</option>
