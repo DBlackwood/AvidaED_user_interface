@@ -64,16 +64,17 @@ require([
       switch(msg.Key){
         case 'RunPause':
           if (true != msg["Success"]) {
-          console.log("Error: ", msg);  // msg failed
-          runStopFn();  //flip state back since the message failed to get to Avida
-        }
+            console.log("Error: ", msg);  // msg failed
+            runStopFn();  //flip state back since the message failed to get to Avida
+          }
           break;
         case 'Reset':
           if (true != msg["Success"]) { console.log("Reset failed: ", msg)};
           break;
-        case 'OrgTrace':
+        case 'OrgTrace': //reset values and call organism tracing routines. 
           traceObj = msg;
           cycle = 0;
+          dijit.byId("orgCycle").set("value", 0);
           cycleSlider.set("maximum", traceObj.length-1);
           cycleSlider.set("discreteValues", traceObj.length);
           updateOrgTrace(traceObj, cycle);
@@ -81,7 +82,6 @@ require([
         case 'PopulationStats':
           updatePopStats(msg);
           //doPopMap();  //Call to update grid colors;
-          fakePopMap();
           break;
         case 'PopMap':
           //updatePopMap(msg);
@@ -269,12 +269,9 @@ require([
       { data: "@ancestor",      type: ["organism"]},
       { data: "m2u8000Nand",    type: ["organism"]},
       { data: "m2u8000Not",     type: ["organism"]}
-      //{ data: "@ancestor",      type: ["organism"], genome: '@anc_0'},  //did not seem to get in to structure
-     // { data: "m2u8000Nand",    type: ["organism"], genome: 'Nand 1'},  
-     // { data: "m2u8000Not",     type: ["organism"], genome: 'Not 2'}
     ]);
     
-    var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], copyOnly: true, singular: true, selfAccept: false});
+    var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], singular: true, copyOnly: true, selfAccept: false});
     freezePopDish.insertNodes(false, [
       { data: "@example",       type: ["popDish"]},
       { data: "m2w30u1000nand", type: ["popDish"]},
@@ -287,14 +284,14 @@ require([
     var gridBox = new dndTarget(gridBoxNode, {accept: ["organism"]}); 
     
     var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: true});
-    
-    var ConfigCurrent = new dndSource("ConfigCurrentNode", {accept: ["conDish"], singular:true});  //Targets only accept object, source can do both
+      
+    var ConfigCurrent = new dndSource("ConfigCurrentNode", {accept: ["conDish"], singular:true, copyOnly: true, selfAccept: false}); 
     ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
     
     //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-    var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: true, selfAccept: false});
+    var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: true, copyOnly: true, selfAccept: false});
     var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: true, selfAccept: false});
-
+     //Targets only accept object, source can do both
     var graphPop1 = new dndTarget("graphPop1Node", {accept: ["popDish"], singular: true}); 
     var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
     var graphPop3 = new dndTarget("graphPop3Node", {accept: ["popDish"], singular: true});
@@ -348,39 +345,46 @@ require([
       if (target.node.id=="freezeConfigureNode"){
         var strItem = Object.keys(target.selection)[0];
         var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
-        var namelist = dojo.query('> .dojoDndItem', 'freezeConfigureNode');
-        var unique = true;
-        while (unique) {
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++){
-            //console.log ("name ", namelist[ii].innerHTML);
-            if (dishCon == namelist[ii].innerHTML) {
-              dishCon = prompt("Please give your configured dish a unique name ", dishCon+"_1")
-              unique = true;
-            }
-          }  
-        }
-        if (null != dishCon) {
-          document.getElementById(strItem).textContent=dishCon;
-          target.map[strItem].data = dishCon;
-          //console.log(target.map[strItem].data); need to make sure this is unique
-          //Now find which node has the new content so it can get a context menu. 
-          //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-          var orderedDataItems = freezeConfigure.getAllNodes().map(function(node){
-            return freezeConfigure.getItem(node.id).data;
-          });
-          //console.log("orderedDataItems", orderedDataItems); 
-          var domItems = Object.keys(freezeConfigure.map);
-          //console.log("domItems=", domItems);
-          var nodeIndex = -1;
-          for (var ii=0; ii< domItems.length; ii++) {
-            if (freezeConfigure.map[domItems[ii]].data == dishCon) {
-              nodeIndex = ii;
-            }
+        if (dishCon) {
+          var namelist = dojo.query('> .dojoDndItem', 'freezeConfigureNode');
+          var unique = true;
+          while (unique) {
+            unique = false;
+            for (var ii = 0; ii < namelist.length; ii++){
+              //console.log ("name ", namelist[ii].innerHTML);
+              if (dishCon == namelist[ii].innerHTML) {
+                dishCon = prompt("Please give your configured dish a unique name ", dishCon+"_1")
+                unique = true;
+              }
+            }  
           }
-          //create a right mouse-click context menue for the item just created. 
-          contextMenu(target, domItems[nodeIndex]); 
+          if (null != dishCon) {
+            document.getElementById(strItem).textContent=dishCon;
+            target.map[strItem].data = dishCon;
+            //console.log(target.map[strItem].data); need to make sure this is unique
+            //Now find which node has the new content so it can get a context menu. 
+            //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+            var orderedDataItems = freezeConfigure.getAllNodes().map(function(node){
+              return freezeConfigure.getItem(node.id).data;
+            });
+            //console.log("orderedDataItems", orderedDataItems); 
+            var domItems = Object.keys(freezeConfigure.map);
+            //console.log("domItems=", domItems);
+            var nodeIndex = -1;
+            for (var ii=0; ii< domItems.length; ii++) {
+              if (freezeConfigure.map[domItems[ii]].data == dishCon) {
+                nodeIndex = ii;
+              }
+            }
+            //create a right mouse-click context menue for the item just created. 
+            contextMenu(target, domItems[nodeIndex]); 
+          }
         }
+        else {  //cancelled so the item should NOT be added to the freezer. 
+          freezeConfigure.deleteSelectedNodes();  //clear items  
+          freezeConfigure.sync();   //should be done after insertion or deletion
+        }
+
       }
     });
     
@@ -465,41 +469,47 @@ require([
       if (target.node.id=="freezeOrganNode"){
         var strItem = Object.keys(target.selection)[0];
         var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
-        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-        var unique = true;
-        while (unique) {
-          //console.log('namelen', namelist.length, '; aviLen', avidian.length);
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++){
-            if (0 == avidian.length || avidian == namelist[ii].textContent) {
-              avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
-              unique = true;
-              //break;
-            }
-          }  
-        }
-        //console.log(Object.keys(target.map))
-        //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
-        if (null != avidian) { 
-          document.getElementById(strItem).textContent=avidian; 
-          target.map[strItem].data = avidian; 
-          //console.log(target.map[strItem].data); need to make sure this is unique
-          //Now find which node has the new content so it can get a context menu. 
-          //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-          var orderedDataItems = freezeOrgan.getAllNodes().map(function(node){
-            return freezeOrgan.getItem(node.id).data;
-          });
-          //console.log("orderedDataItems", orderedDataItems);
-          var domItems = Object.keys(freezeOrgan.map);
-          //console.log("domItems=", domItems);
-          var nodeIndex = -1;
-          for (var ii=0; ii< domItems.length; ii++) {
-            if (freezeOrgan.map[domItems[ii]].data == avidian) {
-              nodeIndex = ii;
-            }
+        if (avidian) {
+          var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
+          var unique = true;
+          while (unique) {
+            //console.log('namelen', namelist.length, '; aviLen', avidian.length);
+            unique = false;
+            for (var ii = 0; ii < namelist.length; ii++){
+              if (avidian == namelist[ii].textContent) {
+                avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
+                unique = true;
+                //break;
+              }
+            }  
           }
-          //create a right mouse-click context menue for the item just created. 
-          contextMenu(target, domItems[nodeIndex]); 
+          //console.log(Object.keys(target.map))
+          //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
+          if (null != avidian) { 
+            document.getElementById(strItem).textContent=avidian; 
+            target.map[strItem].data = avidian; 
+            //console.log(target.map[strItem].data); need to make sure this is unique
+            //Now find which node has the new content so it can get a context menu. 
+            //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+            var orderedDataItems = freezeOrgan.getAllNodes().map(function(node){
+              return freezeOrgan.getItem(node.id).data;
+            });
+            //console.log("orderedDataItems", orderedDataItems);
+            var domItems = Object.keys(freezeOrgan.map);
+            //console.log("domItems=", domItems);
+            var nodeIndex = -1;
+            for (var ii=0; ii< domItems.length; ii++) {
+              if (freezeOrgan.map[domItems[ii]].data == avidian) {
+                nodeIndex = ii;
+              }
+            }
+            //create a right mouse-click context menue for the item just created. 
+            contextMenu(target, domItems[nodeIndex]); 
+          }
+        }
+        else {  //cancelled so the item should NOT be added to the freezer. 
+          freezeOrgan.deleteSelectedNodes();  //clear items  
+          freezeOrgan.sync();   //should be done after insertion or deletion
         }
       }
     });
@@ -509,7 +519,7 @@ require([
     //This triggers for every dnd drop, not just those of OrganCurrentNode
     OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
       if (target.node.id=="OrganCurrentNode"){
-        //clear out the old data
+        //clear out the old data if an organism is already there
         var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
         if (1<items.length){
           OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
@@ -535,17 +545,6 @@ require([
         doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
     });
-    
-    //This function is never called and can be deleted as of 2015_0831
-/*    function ClearAncestorBox() {
-      ItemID = Object.keys(AncestorBox.map);
-      AncestorBox.selectAll().deleteSelectedNodes();  //clear items  
-      AncestorBox.sync();   //should be done after insertion or deletion
-      for (ii=0; ii<ItemID.length; ii++) {
-        dojo.destroy(ItemID[ii]);
-      }
-    }
-*/
 
     //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
     //will be put in OrganCurrent.
@@ -576,11 +575,11 @@ require([
       var parentID = Object.keys(OrganCurrent.map)[0];
       var parent = document.getElementById(parentID).textContent;
       var items = getAllItems(OrganCanvas);
-      console.log('items', items.length, items);
+      //console.log('items', items.length, items);
       if (0 == items.length) {
         OrganCanvas.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
         OrganCanvas.sync();
-        console.log('offspring', OrganCanvas.map);
+        //console.log('offspring', OrganCanvas.map);
       }
     }
     
@@ -618,7 +617,7 @@ require([
           //to change data value not fully tested, but keep as it was hard to figure out
           //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
         }
-        //contextMenu(target);  // need the domID
+        //ways to get information about the Dnd containers
         //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
         //console.log(Object.keys(target.selection)[0]);
         //console.log("map: ", target.map);
@@ -635,10 +634,6 @@ require([
     // Process trash ---------------------------------------------------
     //This triggers for every dnd drop, not just those of trashNode
     trash.on("DndDrop", function(source, nodes, copy, target){
-      //console.log("Source: ", source);
-      //console.log("Nodes: ", nodes);
-      //console.log("Copy: ", copy);
-      //console.log("Target: ", target);
       if (target.node.id=="trashNode"){
         //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
         source.parent.removeChild(nodes[0]);
@@ -687,16 +682,6 @@ require([
           });
           graphPop1.sync();
           //console.log("graphPop1.map=", graphPop1.map);
-          
-          //get the right name so the user will recognize it
-          currentItem = Object.keys(graphPop1.map)[0];
-          freezeItem = Object.keys(freezePopDish.selection)[0];
-          console.log("currentI", currentItem, " freezeI", freezeItem);
-          domItm = document.getElementById(freezeItem).textContent;
-          document.getElementById(currentItem).textContent = domItm;
-          //console.log("graphPop1.map=", graphPop1.map);
-          //console.log(Object.keys(graphPop1.map))
-          console.log('1=', domItm);
         }
         currentItem = Object.keys(graphPop1.map)[0];
         domItm = document.getElementById(currentItem).textContent
@@ -731,15 +716,6 @@ require([
           graphPop2.sync();
           //console.log("graphPop2.map=", graphPop2.map);
           
-          //get the right name so the user will recognize it
-          currentItem = Object.keys(graphPop2.map)[0];
-          freezeItem = Object.keys(freezePopDish.selection)[0];
-          console.log("currentI", currentItem, " freezeI", freezeItem);
-          domItm = document.getElementById(freezeItem).textContent;
-          document.getElementById(currentItem).textContent = domItm;
-          //console.log("graphPop2.map=", graphPop2.map);
-          //console.log(Object.keys(graphPop2.map))
-          console.log('2=', domItm);
         }
         currentItem = Object.keys(graphPop2.map)[0];
         domItm = document.getElementById(currentItem).textContent
@@ -776,11 +752,6 @@ require([
         pop3b = dictPlotb[domItm];
         console.log('3=', domItm);
         AnaChartFn();
-        
-        //example code to set item programatically. not actually needed here.
-        //graphPop3.setItem(graphPop3.node.childNodes[0].id, {data: "test_name", type: ["popDish"]});
-        //graphPop3.sync();
-        //console.log("graphPop3.node.childNodes[0].id=", graphPop3.node.childNodes[0].id);
       }
     });
 
@@ -837,13 +808,13 @@ require([
         }
       }))
     };
+/*
     // create the delete dialog:
     deleteDlg = new dijit.Dialog({
         title: "Delete",
-        
         style: "width: 300px"
     });
-    
+*/
     /* *************************************************************** */
     /* Population page script ******************************************/
     /* *************************************************************** */
@@ -989,6 +960,7 @@ require([
     }
     
     //from http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
+    //formats numbers with commas
     Number.prototype.formatNum = function(c, d, t){
     var n = this, 
         c = isNaN(c = Math.abs(c)) ? 2 : c, 
@@ -1017,7 +989,7 @@ require([
       }
     };
 
-    //Same as above but for drop down menu
+    //process run/Stop buttons as above but for drop down menu
     dijit.byId("mnRun").on("Click", function(){ 
         dijit.byId("mnPause").attr("disabled", false);
         dijit.byId("mnRun").attr("disabled", true);
@@ -1065,7 +1037,7 @@ require([
       uiWorker.postMessage(request);
     }
     
-    //reset values with 
+    //reset values with hard coded defaults Needs to be updated when Avida workss
     function resetDishFn() { //Need to reset all settings to @default
       newrun = true;
       // send rest to Avida adaptor
@@ -1163,6 +1135,8 @@ require([
     }
 
     //******* Freeze Button ********************************************
+    //Saves either configuration or populated dish
+    //Also creates context menu for all new freezer items. 
     document.getElementById("freezeButton").onclick = function(){
       fzDialog.show();
     }
@@ -1209,8 +1183,10 @@ require([
       FrConfigFn();
     }); 
 
+    //Drop down menu to save a configuration item
     dijit.byId("mnFzConfig").on("Click", function(){ FrConfigFn() });
     
+    //Save a populated dish
     function FrPopulationFn(){
       var fzName = prompt("Please name the new population", "newPopulation");
       var namelist = dojo.query('> .dojoDndItem', "freezePopDishNode");
@@ -1248,14 +1224,18 @@ require([
       }
     }
 
+    //button to freeze a population
     dijit.byId("FzPopulation").on("Click", function(){
       fzDialog.hide();
       FrPopulationFn();
     }); 
     
+    //Buttons on drop down menu to save population
     dijit.byId("mnFzPopulation").on("Click", function() {FrPopulationFn() });
+    //Buttons on drop down menu to save configured dish
     dijit.byId("mnFzOrganism").on("Click", function(){ FrOrganismFn('selected') });
 
+    //Freeze the selected organism
     function FrOrganismFn(trigger){
       var fzName = 'new';
       var parentName = "";
@@ -1473,10 +1453,25 @@ require([
         //xx = leftPad + col*(maxWide+colorWide+legendPad);
         xx = leftPad + col*(colWide);
         yy = 2+row*RowHt; 
-        if ("Viridis" == dijit.byId("colorMap").value) {
-          parents.color[ii] = get_color1(viridis_cmap, ii+1, 0, Math.max(1, parents.name.length));
+        switch(dijit.byId("colorMap").value) {
+          case "Viridis":
+            if (ii<12) {parents.color[ii] = viridis12[ii];}
+            else {parents.color[ii] = get_color1(viridis_cmap, ii+1, 0, Math.max(1, parents.name.length))};  //linear map into color map
+            break;
+          case 'Rainbow':
+            if (ii<12) {parents.color[ii] = rainbow12[ii];}
+            else { parents.color[ii] = get_color1(rainbow, ii+1, 0, Math.max(1,parents.name.length))}    //linear map into color map
+            break;
+          case 'Rainbow2':
+            if (ii<12) {parents.color[ii] = rainbow12[ii];}
+            else { parents.color[ii] = get_color1(rainbow2, ii+1, 0, Math.max(1,parents.name.length))}    //linear map into color map
+            break;
+          case 'Rainbow3':
+            if (ii<12) {parents.color[ii] = rainbow12[ii];}
+            else { parents.color[ii] = get_color1(rainbow3, ii+1, 0, Math.max(1,parents.name.length))}    //linear map into color map
+            break;
         }
-        else { parents.color[ii] = get_color1(rainbow, ii+1, 0, Math.max(1,parents.name.length)) }
+        console.log('color', parents.color[ii], ii);
         sCtx.fillStyle = parents.color[ii];
         //console.log(get_color1(viridis_cmap, ii, 0, Math.max(1,parents.name.length-1)));
         sCtx.fillRect(xx,yy, colorWide, colorWide);
@@ -1498,19 +1493,32 @@ require([
       var gradWidth = xEnd-xStart 
       var grad = sCtx.createLinearGradient(xStart+2, 0, xEnd-2, 0)
       var legendHt = 15;
-      if ("Viridis" == dijit.byId("colorMap").value) {
-        for (var ii=0; ii < viridis_cmap.length; ii++) {
-          grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
-        }
+      switch(dijit.byId("colorMap").value) {
+        case "Viridis":
+          console.log('Viridis');
+          for (var ii=0; ii < viridis_cmap.length; ii++) {
+            grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
+          }
+          break;
+        case 'Rainbow':
+          console.log('Rainbow');
+          for (var ii=0; ii < rainbow.length; ii++) {
+            grad.addColorStop(ii/(rainbow.length-1), rainbow[ii]); 
+          }
+          break;
+        case 'Rainbow2':
+          console.log('Rainbow2');
+          for (var ii=0; ii < rainbow2.length; ii++) {
+            grad.addColorStop(ii/(rainbow2.length-1), rainbow2[ii]); 
+          }
+          break;
+        case 'Rainbow3':
+          console.log('Rainbow3');
+          for (var ii=0; ii < rainbow3.length; ii++) {
+            grad.addColorStop(ii/(rainbow3.length-1), rainbow3[ii]); 
+          }
+          break;
       }
-      else {
-        for (var ii=0; ii < rainbow.length; ii++) {
-          grad.addColorStop(ii/(rainbow.length-1), rainbow[ii]); 
-        }
-      }
-      //for (var ii=0; ii < rainbow.length; ii++) {
-      //  grad.addColorStop(ii/(rainbow.length-1), rainbow[ii]); 
-      //}
       sCtx.fillStyle = grad;
       sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
     }
@@ -1748,9 +1756,36 @@ require([
 
       //call organismTrace
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
-
     });
 
+    //Put the offspring in the parent position on Organism Trace
+      dijit.byId("mnOffspringTrace").on("Click", function(){ 
+      //get name and genome for offspring cell
+      var Name = 'offspring';  //replace this with data from Avida later
+      // . . . need avida stuff first
+      //Open Oranism view 
+      mainBoxSwap("organismBlock"); 
+      OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
+      OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
+      var height = ($("#rightDetail").innerHeight()-375)/2;
+      document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById("ExecuteAbout").style.height = height+"px";
+      document.getElementById("ExecuteJust").style.width = "100%";  
+      document.getElementById("ExecuteAbout").style.width = "100%";
+      //and put organsim in place
+      //clear out the old data
+      var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
+      if (0<items.length){
+        OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
+        OrganCurrent.sync();   //should be done after insertion or deletion
+      }
+      OrganCurrent.insertNodes(false, [ {data: Name,   type: ["organism"]}]);
+      OrganCurrent.sync();
+
+      //call organismTrace
+      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+    });
+    
     /* ****************************************************************/
     /*                  Canvas for Organsim (genome) view
     /* ************************************************************** */
