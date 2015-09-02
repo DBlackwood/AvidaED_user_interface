@@ -1323,6 +1323,7 @@ require([
       }
     }
 
+    //used to place ancestors in the grid
     gridMouse ={};
     gridBox.on("MouseUp", function(evt){
       //console.log("x", evt.layerX, "; y", evt.layerY); 
@@ -1338,7 +1339,7 @@ require([
       mouseY = evt.layerY - grd.marginY - grd.yOffset;
       grd.ColSelected = Math.floor(mouseX/grd.cellWd);
       grd.RowSelected = Math.floor(mouseY/grd.cellHt);
-      //console.log('mx,y', mouseX, mouseY, '; boxCol, Row', boxCol, boxRow);
+      //console.log('mx,y', mouseX, mouseY, '; boxCol, Row', grd.ColSelected, grd.RowSelected);
 
       //check to see if in the grid part of the canvas
       if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
@@ -1403,7 +1404,7 @@ require([
         minimum: 1,
         maximum: 10,
         intermediateChanges: true,
-        discreteValues: 21,
+        discreteValues: 19,
         style: "height: auto; width: 120px;float:right",
         onChange: function(value){
             grd.zoom = value;
@@ -1424,20 +1425,26 @@ require([
       var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
       document.getElementById("gridBoxNode").style.height = GrdNodeHt+'px';
       document.getElementById("gridBoxNode").style.overflowY = "scroll";
+      //console.log('GrdNodeHt=',GrdNodeHt);
       
       // When zoom = 1x, set canvas size based on space available and cell size
-      // based on rows and columns requested by the user. 
-      // else, set canvas size based on magnification and keep aspect ratio so it 
-      // matches ratio of columns and rows specified by the user. 
+      // based on rows and columns requested by the user. Zoom acts as a factor 
+      // to multiply the size of each cell. When the size of the grid become larger
+      // than the canvas, then the canvas is set to the size of the grid and the 
+      // offset in that direction goes to zero.
       
-      // First find sizes based on zoom = 1x
-      grd.boxX = $("#gridHolder").innerWidth()-6;
-      grd.boxY = GridHolderHt-16-$("#scaleCanvas").innerHeight();
-      //set rows and cols based on settings
+      //find the space available to display the grid in pixels
+      grd.spaceX = $("#gridHolder").innerWidth()-6;
+      grd.spaceY = GrdNodeHt-5;
+      //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
+      // First find sizes based on zoom 
+      grd.boxX = grd.zoom * grd.spaceX;
+      grd.boxY = grd.zoom * grd.spaceY;
+      //get rows and cols based on user input form
       grd.cols = dijit.byId("sizeCols").get('value');
       grd.rows = dijit.byId("sizeRows").get('value');
       //max size of box based on width or height based on ratio of cols:rows and width:height
-      if (CanvasGrid.width/grd.boxY > grd.cols/grd.rows) {
+      if (grd.spaceX/grd.spaceY > grd.cols/grd.rows) {
         //set based  on height as that is the limiting factor. 
         grd.sizeY = grd.boxY;
         grd.sizeX = grd.sizeY*grd.cols/grd.rows;
@@ -1447,24 +1454,28 @@ require([
         grd.sizeX = grd.boxX;
         grd.sizeY = grd.sizeX * grd.rows/grd.cols;
       }
-
-      if (1 == grd.zoom) { // use values calculated above
-        CanvasGrid.width = $("#gridHolder").innerWidth()-6;
-        CanvasGrid.height = GridHolderHt-21-$("#scaleCanvas").innerHeight();
-        //Find offsets needed to center grid in space available. 
-        grd.xOffset = (CanvasGrid.width-grd.sizeX)/2;
-        grd.yOffset = (CanvasGrid.height-grd.sizeY)/2;
+      
+      //console.log('Xspace, size', grd.spaceX, grd.sizeX, '; Yspace, size', grd.spaceY, grd.sizeY, '; zoom=', grd.zoom);
+      //console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom);
+      //Determine offset and size of canvas based on grid size relative to space size in that direction
+      if (grd.sizeX < grd.spaceX) {
+        CanvasGrid.width = grd.spaceX;
+        grd.xOffset =(grd.spaceX-grd.sizeX)/2;
       }
-      else {  // zoom in effect; size of canvas based on ratio of rows and columns and zoom factor
-              // there are no offsets since the grid size and the canvas shape match.
-        CanvasGrid.width = grd.zoom * grd.sizeX;
-        CanvasGrid.height = grd.zoom * grd.sizeY;
+      else {
+        CanvasGrid.width = grd.sizeX;
         grd.xOffset = 0;
-        grd.yOffset = 0; 
-        grd.sizeX = CanvasGrid.width;
-        grd.sizeY = CanvasGrid.height;
       }
-      //console.log('Hts: GridHolderHt, CanScale, ScaleInner, CanGrid', GridHolderHt, CanvasScale.height, $("#scaleCanvas").innerHeight(), CanvasGrid.height);
+      if (grd.sizeY < grd.spaceY) {
+        CanvasGrid.height = grd.spaceY;
+        grd.yOffset =(grd.spaceY-grd.sizeY)/2;
+      }
+      else {
+        CanvasGrid.height = grd.sizeY;
+        grd.yOffset = 0;
+      }
+      //console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom);
+
       DrawGridBackground();
       //Draw Selected as one of the last items to draw
       if (grd.flagSelected) { DrawSelected() };
@@ -1484,8 +1495,8 @@ require([
       //console.log("cntx grd", grd);
 
       //prep grid based on rows and columns from Setup
-      grd.marginX = 1;
-      grd.marginY = 1;
+      grd.marginX = 1;  //width of black line between the cells
+      grd.marginY = 1;  //width of black line between the cells
       grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
       grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
       
