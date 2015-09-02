@@ -380,7 +380,14 @@
                  <tbody>
                    <tr>
                      <td>
-                       Time: <label id="TimeLabel">(not started)</label><br />
+                        Mode
+                        <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorAxis'">
+                          <option value="Fitness" selected="selected">Fitness</option>
+                          <option value="Gestation Time">Gestation Time</option>
+                          <option value="Metabolic Rate">Metabolic Time</option>
+                          <option value="Ancestor Organism">Ancestor Organism</option>
+                        </select>
+                        <br>
                         Color Map
                         <select data-dojo-type="dijit/form/Select" id="colorMap" data-dojo-props="name: 'colorAxis'">
                           <option value="Viridis" selected="selected">Viridis</option>
@@ -390,14 +397,7 @@
                         </select>
                      </td>
                      <td style="text-align: center">
-                        Mode
-                        <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorAxis'">
-                          <option value="Fitness" selected="selected">Fitness</option>
-                          <option value="Gestation Time">Gestation Time</option>
-                          <option value="Metabolic Rate">Metabolic Time</option>
-                          <option value="Ancestor Organism">Ancestor Organism</option>
-                        </select>
-                        <br>
+                       Time: <label id="TimeLabel">(not started)</label><br />
                         <button id="newDishButton">New</button>
                         <button id="runStopButton">Run</button>
                         <button id="freezeButton">Freeze</button>
@@ -417,6 +417,8 @@
                   refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="gridHolder">
                 <div id="gridBoxNode">
                     <canvas data-dojo-type="dojo.dnd.Source" id="gridCanvas" width="300" height="100" style="border:1px solid #DDDDDD;"></canvas>
+                </div>
+                <div>
                     <canvas data-dojo-type="dojo.dnd.Source" id="scaleCanvas" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
                 </div>
                 <div id="seedTray"></div>

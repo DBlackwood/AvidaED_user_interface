@@ -1040,21 +1040,21 @@ var rainbow3 = [
 ];
 
     var rainbow12 = [
-    'rgb(  0, 255,  36)' //0
-   ,'rgb(  0, 133,  92)' //1
-   ,'rgb(  0, 202, 184)' //2
-   ,'rgb(  0, 235, 255)' //3
-   ,'rgb(  0, 148, 255)' //3
-   ,'rgb(  0,  56, 255)' //5
-   ,'rgb(128,   0, 255)' //6
-   ,'rgb(219,   0, 255)' //7
-   ,'rgb(255,   0, 107)' //8
-   ,'rgb(255,  91,   0)' //9
-   ,'rgb(255, 163,   0)' //0
-   ,'rgb(255, 255,   0)' //1
-];
+     'rgb(0, 200,   0)'  // 0
+    ,'rgb(255, 0, 224)'  // 7
+    ,'rgb(0, 138, 255)'  // 4
+    ,'rgb(0, 102,  51)'  // 1
+    ,'rgb(255, 204, 0)'  // 10
+    ,'rgb(0,   0, 255)'  // 5
+    ,'rgb(0, 182, 158)'  // 2
+    ,'rgb(255, 97,  0)'  // 9
+    ,'rgb(179, 0, 255)'  // 6
+    ,'rgb(0, 245, 255)'  // 3
+    ,'rgb(255, 0,  10)'  // 8
+    ,'rgb(255, 255, 0)'  // 11
+    ];
 
-    var dictColor = {};
+    var dictColor =  {}
     dictColor["Red"] = "#FF0000";
     //dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
     dictColor["Green"] = "#00FF00";

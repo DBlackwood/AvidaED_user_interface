@@ -1403,8 +1403,8 @@ require([
       var GridHt = $("#gridHolder").innerHeight();
       if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend() }
       else { GradientScale() }
-      CanvasGrid.width = $("#gridHolder").innerWidth()-6;
-      CanvasGrid.height = GridHt-16-$("#scaleCanvas").innerHeight();
+      CanvasGrid.width = 2*($("#gridHolder").innerWidth()-6);
+      CanvasGrid.height = 2*(GridHt-16-$("#scaleCanvas").innerHeight());
       //console.log('Hts: GridHt, CanScale, ScaleInner, CanGrid', GridHt, CanvasScale.height, $("#scaleCanvas").innerHeight(), CanvasGrid.height);
       DrawGridBackground();
       //Draw Selected as one of the last items to draw
@@ -1416,7 +1416,7 @@ require([
     //to lay out the legend we need the width of the longest name and we
     //allow for the width of the color box to see how many columns fit across
     //the width of CanvasScale. We will need to increase the size of the 
-    //legend box if they don't all fit in two rows with is the default ht.
+    //legend box by the height of a line for each additional line.
     function drawLegend() {
       var legendPad = 10;
       var colorWide = 13;
@@ -1456,24 +1456,23 @@ require([
         switch(dijit.byId("colorMap").value) {
           case "Viridis":
             if (ii<12) {parents.color[ii] = viridis12[ii];}
-            else {parents.color[ii] = get_color1(viridis_cmap, ii+1, 0, Math.max(1, parents.name.length))};  //linear map into color map
+            else {parents.color[ii] = get_color1(viridis_cmap, ii-11, 0, Math.max(1, parents.name.length-11))};  //linear map into color map
             break;
           case 'Rainbow':
             if (ii<12) {parents.color[ii] = rainbow12[ii];}
-            else { parents.color[ii] = get_color1(rainbow, ii+1, 0, Math.max(1,parents.name.length))}    //linear map into color map
+            else { parents.color[ii] = get_color1(rainbow, ii-11, 0, Math.max(1,parents.name.length-11.5))}    //linear map into color map
             break;
           case 'Rainbow2':
             if (ii<12) {parents.color[ii] = rainbow12[ii];}
-            else { parents.color[ii] = get_color1(rainbow2, ii+1, 0, Math.max(1,parents.name.length))}    //linear map into color map
+            else { parents.color[ii] = get_color1(rainbow2, ii-11, 0, Math.max(1,parents.name.length-11.5))}    //linear map into color map
             break;
           case 'Rainbow3':
             if (ii<12) {parents.color[ii] = rainbow12[ii];}
-            else { parents.color[ii] = get_color1(rainbow3, ii+1, 0, Math.max(1,parents.name.length))}    //linear map into color map
+            else { parents.color[ii] = get_color1(rainbow3, ii-11, 0, Math.max(2,parents.name.length-11.5))}    //linear map into color map
             break;
         }
-        console.log('color', parents.color[ii], ii);
+        //console.log('color', parents.color[ii], ii);
         sCtx.fillStyle = parents.color[ii];
-        //console.log(get_color1(viridis_cmap, ii, 0, Math.max(1,parents.name.length-1)));
         sCtx.fillRect(xx,yy, colorWide, colorWide);
         yy = textOffset+row*RowHt; 
         sCtx.font = "14px Arial";
@@ -1483,7 +1482,6 @@ require([
     }
     
     function GradientScale() {
-      //console.log('in gradientScale');
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
       CanvasScale.height = 30;
       sCtx.fillStyle = dictColor["ltGrey"];
@@ -1495,7 +1493,6 @@ require([
       var legendHt = 15;
       switch(dijit.byId("colorMap").value) {
         case "Viridis":
-          console.log('Viridis');
           for (var ii=0; ii < viridis_cmap.length; ii++) {
             grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
           }
@@ -1507,13 +1504,11 @@ require([
           }
           break;
         case 'Rainbow2':
-          console.log('Rainbow2');
           for (var ii=0; ii < rainbow2.length; ii++) {
             grad.addColorStop(ii/(rainbow2.length-1), rainbow2[ii]); 
           }
           break;
         case 'Rainbow3':
-          console.log('Rainbow3');
           for (var ii=0; ii < rainbow3.length; ii++) {
             grad.addColorStop(ii/(rainbow3.length-1), rainbow3[ii]); 
           }
