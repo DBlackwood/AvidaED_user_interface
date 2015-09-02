@@ -170,7 +170,7 @@
           <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                 style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-                  refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:275px;">
+                  refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:279px;">
               <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
                     style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
                 <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="selectOrganPane"
@@ -381,7 +381,7 @@
                    <tr>
                      <td>
                         Mode
-                        <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorAxis'">
+                        <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
                           <option value="Fitness" selected="selected">Fitness</option>
                           <option value="Gestation Time">Gestation Time</option>
                           <option value="Metabolic Rate">Metabolic Time</option>
@@ -389,7 +389,7 @@
                         </select>
                         <br>
                         Color Map
-                        <select data-dojo-type="dijit/form/Select" id="colorMap" data-dojo-props="name: 'colorAxis'">
+                        <select data-dojo-type="dijit/form/Select" id="colorMap" data-dojo-props="name: 'colorMap'">
                           <option value="Viridis" selected="selected">Viridis</option>
                           <option value="Rainbow">Rainbow</option>
                           <option value="Rainbow2">Rainbow2</option>
@@ -403,10 +403,9 @@
                         <button id="freezeButton">Freeze</button>
                      </td>
                      <td>
-                       <div data-dojo-type="dijit/form/HorizontalSlider" id="MagnifiySlide" intermediateChanges="false"
-                            discreteValues="Infinity" style="height: auto; width: 120px;float:right">
-                         <!--<div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>
-                         <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="0%,50%,100%" style="height: 20px;"></ol>-->
+                       <div id="ZoomSlide" style="height: auto; width: 120px;float:right">
+                         <!--<div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>-->
+                         <!--<ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="1x,20x" style="height: 20px;">-->
                        </div>
                      </td>
                    </tr>
@@ -415,10 +414,10 @@
              </div>
              <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                   refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" id="gridHolder">
-                <div id="gridBoxNode">
+                <div id="gridBoxNode" style="overflow: scroll">
                     <canvas data-dojo-type="dojo.dnd.Source" id="gridCanvas" width="300" height="100" style="border:1px solid #DDDDDD;"></canvas>
                 </div>
-                <div>
+                <div id="scaleDiv">
                     <canvas data-dojo-type="dojo.dnd.Source" id="scaleCanvas" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
                 </div>
                 <div id="seedTray"></div>
@@ -431,12 +430,12 @@
            <div style="height: 19px;" class="odd">
              Dish Size:
               <input id="sizeCols" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
-                  data-dojo-props="constraints:{min:0, max:200,places:0},
+                  data-dojo-props="constraints:{min:0, max:500,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width: 3em; height:1.8em"></input>
               &nbsp; x &nbsp;
               <input id="sizeRows" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
-                  required="true" value="10" data-dojo-props="constraints:{min:0, max:200,places:0},
+                  required="true" value="10" data-dojo-props="constraints:{min:0, max:500,places:0},
                   invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                   style="width:4em; height:1.8em"/></input>
               cells&nbsp;<span id="sizeCells"></span>

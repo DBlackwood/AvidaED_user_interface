@@ -1300,18 +1300,15 @@ require([
     CanvasGrid.width = $("#gridHolder").innerWidth()-6;
     CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
     
-    grd = {};
-    grd.cols = 30;  //x
-    grd.rows = 30;  //y
-    grd.sizeX = 300;  
-    grd.sizeY = 300;
-    grd.border = 0;
-    grd.flagSelected = false;
+    grd = {};       //data about the grid canvas
+    grd.cols = 30;  //Number of columns in the grid
+    grd.rows = 30;  //Number of rows in the grid
+    grd.sizeX = 300;  //size of canvas in pixels
+    grd.sizeY = 300;  //size of canvas in pixels
+    grd.flagSelected = false; //is a cell selected
+    grd.zoom = 1;     //magnification for zooming.
 
-    //   var request = {
-    //      'Key':'RunPause'
-
-    function fakePopMap() {
+    function backgroundSqares() {
       var boxColor = '#111';
       for (ii=0; ii<grd.cols; ii++) {
         xx = grd.marginX + grd.xOffset + ii*grd.cellWd;
@@ -1398,17 +1395,107 @@ require([
       DrawGridSetup();
     });
 
+    //Only effect display not Avida; Adjust for zooming tiba
+    // Try fractions
+    var ZoomSlide = new HorizontalSlider({
+        name: "ZoomSlide",
+        value: 1,
+        minimum: 1,
+        maximum: 10,
+        intermediateChanges: true,
+        discreteValues: 21,
+        style: "height: auto; width: 120px;float:right",
+        onChange: function(value){
+            grd.zoom = value;
+            //console.log('ZoomSlide', grd.zoom);
+            DrawGridSetup();
+        }
+    }, "ZoomSlide");
 
     function DrawGridSetup() {
-      var GridHt = $("#gridHolder").innerHeight();
+      //Get the size of the div that holds the grid and the scale or legend
+      var GridHolderHt = $("#gridHolder").innerHeight();
+      
+      //Determine if a color gradient or legend will be displayed
       if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend() }
       else { GradientScale() }
-      CanvasGrid.width = 2*($("#gridHolder").innerWidth()-6);
-      CanvasGrid.height = 2*(GridHt-16-$("#scaleCanvas").innerHeight());
-      //console.log('Hts: GridHt, CanScale, ScaleInner, CanGrid', GridHt, CanvasScale.height, $("#scaleCanvas").innerHeight(), CanvasGrid.height);
+      
+      //find the height for the div that holds the grid Canvas
+      var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
+      document.getElementById("gridBoxNode").style.height = GrdNodeHt+'px';
+      document.getElementById("gridBoxNode").style.overflowY = "scroll";
+      
+      // When zoom = 1x, set canvas size based on space available and cell size
+      // based on rows and columns requested by the user. 
+      // else, set canvas size based on magnification and keep aspect ratio so it 
+      // matches ratio of columns and rows specified by the user. 
+      
+      // First find sizes based on zoom = 1x
+      grd.boxX = $("#gridHolder").innerWidth()-6;
+      grd.boxY = GridHolderHt-16-$("#scaleCanvas").innerHeight();
+      //set rows and cols based on settings
+      grd.cols = dijit.byId("sizeCols").get('value');
+      grd.rows = dijit.byId("sizeRows").get('value');
+      //max size of box based on width or height based on ratio of cols:rows and width:height
+      if (CanvasGrid.width/grd.boxY > grd.cols/grd.rows) {
+        //set based  on height as that is the limiting factor. 
+        grd.sizeY = grd.boxY;
+        grd.sizeX = grd.sizeY*grd.cols/grd.rows;
+      } 
+      else {
+        //set based on width as that is the limiting direction
+        grd.sizeX = grd.boxX;
+        grd.sizeY = grd.sizeX * grd.rows/grd.cols;
+      }
+
+      if (1 == grd.zoom) { // use values calculated above
+        CanvasGrid.width = $("#gridHolder").innerWidth()-6;
+        CanvasGrid.height = GridHolderHt-21-$("#scaleCanvas").innerHeight();
+        //Find offsets needed to center grid in space available. 
+        grd.xOffset = (CanvasGrid.width-grd.sizeX)/2;
+        grd.yOffset = (CanvasGrid.height-grd.sizeY)/2;
+      }
+      else {  // zoom in effect; size of canvas based on ratio of rows and columns and zoom factor
+              // there are no offsets since the grid size and the canvas shape match.
+        CanvasGrid.width = grd.zoom * grd.sizeX;
+        CanvasGrid.height = grd.zoom * grd.sizeY;
+        grd.xOffset = 0;
+        grd.yOffset = 0; 
+        grd.sizeX = CanvasGrid.width;
+        grd.sizeY = CanvasGrid.height;
+      }
+      //console.log('Hts: GridHolderHt, CanScale, ScaleInner, CanGrid', GridHolderHt, CanvasScale.height, $("#scaleCanvas").innerHeight(), CanvasGrid.height);
       DrawGridBackground();
       //Draw Selected as one of the last items to draw
       if (grd.flagSelected) { DrawSelected() };
+    }
+
+    function DrawGridBackground() {
+      // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+      cntx.setTransform(1, 0, 0, 1, 0, 0);
+      cntx.clearRect(0, 0, CanvasGrid.width, CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+      //draw grey rectangle as back ground
+      cntx.fillStyle = dictColor["ltGrey"];
+      cntx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
+
+      //cntx.translate(grd.xOffset, grd.yOffset);
+      cntx.fillStyle=dictColor['Black'];
+      cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
+      //console.log("cntx grd", grd);
+
+      //prep grid based on rows and columns from Setup
+      grd.marginX = 1;
+      grd.marginY = 1;
+      grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
+      grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
+      
+      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cellWd, Ht', grd.cellWd, grd.cellHt, 
+      // '; product',grd.cellWd*grd.cols, grd.cellHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
+      //console.log ("cellWd, Ht", grd.cellWd, grd.cellHt);
+
+      backgroundSqares();      
+      //Draw parents if run has not started. 
+      DrawParent();
     }
 
     //--------------- Draw legend --------------------------------------
@@ -1418,15 +1505,14 @@ require([
     //the width of CanvasScale. We will need to increase the size of the 
     //legend box by the height of a line for each additional line.
     function drawLegend() {
-      var legendPad = 10;
-      var colorWide = 13;
-      var RowHt = 20;
-      var textOffset = 15;
-      var leftPad = 10;
-      var extraWidth = 0;
-      var legendCols = 1;
-      var txtWide = 0;
-      var maxWide = 0;
+      var legendPad = 10;   //padding on left so it is not right at edge of canvas
+      var colorWide = 13;   //width and heigth of color square
+      var RowHt = 20;       //height of each row of text
+      var textOffset = 15;  //vertical offset to get to the bottom of the text
+      var leftPad = 10;     //padding to allow space between each column of text in the legend
+      var legendCols = 1;   //max number of columns based on width of canvas and longest name
+      var txtWide = 0;      //width of text for an ancestor (parent) name
+      var maxWide = 0;      //maximum width needed for any of the ancestor names in this set
       //console.log('in drawLedgend')
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
       sCtx.font = "14px Arial";
@@ -1485,7 +1571,7 @@ require([
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
       CanvasScale.height = 30;
       sCtx.fillStyle = dictColor["ltGrey"];
-      sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
+      sCtx.fillRect(0,0, CanvasScale.width, CanvasScale.height);
       var xStart = 30;
       var xEnd = CanvasScale.width - xStart;
       var gradWidth = xEnd-xStart 
@@ -1516,52 +1602,6 @@ require([
       }
       sCtx.fillStyle = grad;
       sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
-    }
-
-    function DrawGridBackground() {
-      // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
-      cntx.setTransform(1, 0, 0, 1, 0, 0);
-      cntx.clearRect(0, 0, CanvasGrid.width, CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
-      // set box size based on border
-      grd.boxY = CanvasGrid.height - grd.border;
-      grd.boxX = CanvasGrid.width - grd.border; //for a border
-      //draw grey rectangle as back ground
-      cntx.fillStyle = dictColor["ltGrey"];
-      cntx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
-      //set rows and cols based on settings
-      grd.cols = dijit.byId("sizeCols").get('value');
-      grd.rows = dijit.byId("sizeRows").get('value');
-      //max size of box based on width or height based on ratio of cols:rows and width:height
-      if (CanvasGrid.width/grd.boxY > grd.cols/grd.rows) {
-        //set based  on height as that is the limiting factor. 
-        grd.sizeY = grd.boxY;
-        grd.sizeX = grd.sizeY*grd.cols/grd.rows;
-      } 
-      else {
-        //set based on width as that is the limiting direction
-        grd.sizeX = grd.boxX;
-        grd.sizeY = grd.sizeX * grd.rows/grd.cols;
-      }
-      grd.xOffset = (CanvasGrid.width-grd.sizeX)/2;
-      grd.yOffset = (CanvasGrid.height-grd.sizeY)/2;
-      //cntx.translate(grd.xOffset, grd.yOffset);
-      cntx.fillStyle=dictColor['Black'];
-      cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
-      //console.log("cntx grd", grd);
-
-      //prep grid based on rows and columns from Setup
-      grd.marginX = 1;
-      grd.marginY = 1;
-      grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
-      grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
-      
-      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cellWd, Ht', grd.cellWd, grd.cellHt, 
-      // '; product',grd.cellWd*grd.cols, grd.cellHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
-      //console.log ("cellWd, Ht", grd.cellWd, grd.cellHt);
-
-      fakePopMap();      
-      //Draw parents if run has not started. 
-      DrawParent();
     }
 
     //cntx.beginPath();
@@ -2272,7 +2312,6 @@ require([
             updateOrgTrace(traceObj, cycle);
         }
     }, "cycleSlider");
-    //console.log("after slider");
 
     /* ****************************************************************/
     /* Analysis Page **************************************************/
