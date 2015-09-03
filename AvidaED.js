@@ -857,7 +857,7 @@ require([
     };
 
     /* *************************************************************** */
-    /* ******* Map Grid buttons ************************************** */
+    /* ******* Map Grid buttons - New  Run/Pause Freeze ************** */
     /* *************************************************************** */
     var newrun = true;
     var ave_fitness = [];
@@ -996,7 +996,6 @@ require([
         document.getElementById("runStopButton").innerHTML="Pause";
         runPopFn();
     });
-
     dijit.byId("mnPause").on("Click", function(){ 
         dijit.byId("mnPause").attr("disabled", true);
         dijit.byId("mnRun").attr("disabled", false);
@@ -1381,36 +1380,6 @@ require([
       }
     };
 
-    //Get color map data from Avida and draw
-    dijit.byId("colorMode").on("Change", function(){
-      var scaleType = dijit.byId("colorMode").value;
-      //need to request data to update the color map from Avida
-      // code for that
-      //Redraw Grid;
-      DrawGridSetup();
-    });
-
-    //Only effect display, not Avida
-    dijit.byId("colorMap").on("Change", function(){
-      DrawGridSetup();
-    });
-
-    // Zoom slide 
-    var ZoomSlide = new HorizontalSlider({
-        name: "ZoomSlide",
-        value: 1,
-        minimum: 1,
-        maximum: 10,
-        intermediateChanges: true,
-        discreteValues: 19,
-        style: "height: auto; width: 120px;float:right",
-        onChange: function(value){
-            grd.zoom = value;
-            //console.log('ZoomSlide', grd.zoom);
-            DrawGridSetup();
-        }
-    }, "ZoomSlide");
-
     function DrawGridSetup() {
       //Get the size of the div that holds the grid and the scale or legend
       var GridHolderHt = $("#gridHolder").innerHeight();
@@ -1447,18 +1416,16 @@ require([
         grd.sizeY = grd.boxY;
         grd.sizeX = grd.sizeY*grd.cols/grd.rows;
         grd.spaceCellWd = grd.spaceY/grd.rows;
-        grd.spaceCells = grd.rows;
+        grd.spaceCells = grd.rows;  //rows exactly fit the space when zoom = 1x
       } 
       else {
         //set based on width as that is the limiting direction
         grd.sizeX = grd.boxX;
         grd.sizeY = grd.sizeX * grd.rows/grd.cols;
         grd.spaceCellWd = grd.spaceX/grd.cols;
-        grd.spaceCells = grd.cols;
+        grd.spaceCells = grd.cols;  //cols exactly fit the space when zoom = 1x
       }
       
-      //console.log('Xspace, size', grd.spaceX, grd.sizeX, '; Yspace, size', grd.spaceY, grd.sizeY, '; zoom=', grd.zoom);
-      //console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom);
       //Determine offset and size of canvas based on grid size relative to space size in that direction
       if (grd.sizeX < grd.spaceX) {
         CanvasGrid.width = grd.spaceX;
@@ -1485,14 +1452,14 @@ require([
       grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
 
       //Find a reasonable maximum zoom for this grid and screen space
-      zMaxCells = Math.trunc(grd.spaceCells/20);  // at least 10 cells
+      zMaxCells = Math.trunc(grd.spaceCells/25);  // at least 10 cells
       zMaxWide = Math.trunc(10/grd.spaceCellWd);  // at least 10 pixels
       zMax = ((zMaxCells > zMaxWide) ? zMaxCells: zMaxWide); //Max of two methods 
       zMax = ((zMax > 2) ? zMax: 2); //max zoom power of at least 2x
       
       ZoomSlide.set("maximum", zMax);
       ZoomSlide.set("discreteValues", 2*(zMax-1)+1);
-      console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
+      //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
 
       DrawGridBackground();
       //Draw Selected as one of the last items to draw
@@ -1562,7 +1529,7 @@ require([
         //xx = leftPad + col*(maxWide+colorWide+legendPad);
         xx = leftPad + col*(colWide);
         yy = 2+row*RowHt; 
-        switch(dijit.byId("colorMap").value) {
+        switch(grd.colorMap) {
           case "Viridis":
             if (ii<12) {parents.color[ii] = viridis12[ii];}
             else {parents.color[ii] = get_color1(viridis_cmap, ii-11, 0, Math.max(1, parents.name.length-11))};  //linear map into color map
@@ -1626,15 +1593,88 @@ require([
       sCtx.fillStyle = grad;
       sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
     }
-
-    //cntx.beginPath();
-    //cntx.moveTo(0,0);
-    //cntx.lineTo(200,100);
-    //cntx.stroke();
     
-    /* *************************************************************** */
-    /* ******* Population Setup Buttons, etc.  *********************** */
-    /* *************************************************************** */
+    // *************************************************************** */
+    //        Color Map Color Mode and Zoom Slide Controls             //
+    // *************************************************************** */
+    
+    //Get color map data from Avida and draw
+    dijit.byId("colorMode").on("Change", function(){
+      var scaleType = dijit.byId("colorMode").value;
+      //need to request data to update the color map from Avida
+      // code for that
+      //Redraw Grid;
+      DrawGridSetup();
+    });
+
+    //Only effect display, not Avida
+    grd.colorMap = 'Viridis';
+    dijit.byId("colorMap").on("Change", function(){
+      grd.colorMap = dijit.byId("colorMap").value
+      DrawGridSetup();
+    });
+
+    // Zoom slide 
+    var ZoomSlide = new HorizontalSlider({
+        name: "ZoomSlide",
+        value: 1,
+        minimum: 1,
+        maximum: 10,
+        intermediateChanges: true,
+        discreteValues: 19,
+        style: "height: auto; width: 120px;float:right",
+        onChange: function(value){
+            grd.zoom = value;
+            //console.log('ZoomSlide', grd.zoom);
+            DrawGridSetup();
+        }
+    }, "ZoomSlide");
+
+    dijit.byId("mnViridis").on("Click", function(){ 
+      dijit.byId("colorMap").set("value", 'Viridis');
+      grd.colorMap = dijit.byId("colorMap").value
+      DrawGridSetup();
+    });
+
+    dijit.byId("mnRainbow").on("Click", function(){ 
+      dijit.byId("colorMap").set("value", 'Rainbow');
+      grd.colorMap = dijit.byId("colorMap").value
+      DrawGridSetup();
+    });
+    
+    // *************************************************************** */
+    //    Buttons that select organisms that perform a logic function 
+    // *************************************************************** */
+    
+    function toggle(button) {
+      if ('on' == document.getElementById(button).value) {
+        document.getElementById(button).value = 'off';
+        //document.getElementById(button).style.background = '#fff';
+        //document.getElementById(button).style.height = '10px';
+        document.getElementById(button).className = 'bitButtonOff';
+        console.log('now off');
+      }
+      else {
+        document.getElementById(button).value = 'on';
+        document.getElementById(button).className = 'bitButtonOn';
+        console.log('now on');
+      }
+    }
+
+    document.getElementById("notButton").onclick = function(){ toggle('notButton');}
+    document.getElementById("nanButton").onclick = function(){ toggle('nanButton');}
+    document.getElementById("andButton").onclick = function(){ toggle('andButton');}
+    document.getElementById("ornButton").onclick = function(){ toggle('ornButton');}
+    document.getElementById("oroButton").onclick = function(){ toggle('oroButton');}
+    document.getElementById("antButton").onclick = function(){ toggle('antButton');}
+    document.getElementById("norButton").onclick = function(){ toggle('norButton');}
+    document.getElementById("xorButton").onclick = function(){ toggle('xorButton');}
+    document.getElementById("equButton").onclick = function(){ toggle('equButton');}
+
+    //tiba
+    // *************************************************************** */
+    // ******* Population Setup Buttons from 'Setup' subpage ********* */
+    // *************************************************************** */
     gridWasCols = Number(document.getElementById("sizeCols").value);
     gridWasRows = Number(document.getElementById("sizeRows").value);
     function popSizeFn() {
@@ -2437,27 +2477,32 @@ require([
     //Tasks that Need to be run when page is loaded but after chart is defined
     //************************************************************************
     
-    DrawGridSetup(); //Draw initial Box
+    DrawGridSetup(); //Draw initial background
         
     //Eliminate scrollbars (we hope
     
+    //used to set the height so the data just fits. Done because different monitor/brower combinations require a diffent height in pixels.
+    //may need to take out as requires loading twice now.
     function removeScrollbar(scrollDiv, htChangeDiv, page) {
+      https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
+      //if the two heights are different then there is a scroll bar 
       var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
       var hasScrollbar = 0 < ScrollDif;
-      console.log(scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight, 
-        document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
-        document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
-      var divHt = document.getElementById(htChangeDiv).style.height.match(/\d/g);  //get 0-9 globally in the string
+      //console.log(scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight, 
+      //  document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
+      //  document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
+      
+      var divHt = document.getElementById(htChangeDiv).style.height.match(/\d/g);  //get 0-9 globally in the string  //http://stackoverflow.com/questions/10003683/javascript-get-number-from-string
       divHt = divHt.join(''); //converts array to string
-      var NewHt = Number(divHt)+1+ScrollDif;
+      var NewHt = Number(divHt)+1+ScrollDif;  //add the ht difference to the outer div that holds this one
       //line below is where the height of the div actually changes
       document.getElementById(htChangeDiv).style.height = NewHt + 'px';
-      hasScrollbar = document.getElementById(scrollDiv).scrollHeight > document.getElementById(scrollDiv).clientHeight;
-      //BrowserResizeEventHandler();
+      
+      //redraw the screen
       mainBoxSwap(page);
-      console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight, 
-        document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
-        document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
+      //console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight, 
+      //  document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
+      //  document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
     }
     
     removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');

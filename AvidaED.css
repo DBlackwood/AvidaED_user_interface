@@ -93,15 +93,45 @@ button, input,
   {
     height : 21px;
   }
-.dijitButtonNode {
+.bitButton {
      width:75px;
      height:10px;
+}
+.bitButtonOnWas {
+     width:75px;
+     height:10px;
+     background-color:#99f;
+}
+
+.bitButtonOff {
+    background-color: #fff; 
+    color: #000;
+    font: 11px sans-serif;
+    text-decoration: none;
+    border: 1px solid #000;
+    border-color: #aaa;
+    border-radius: 5px;
+    padding: 0px 00px 2px 0px;
+    height: 15px;
+    width: 75px;
+    display:block;
+}
+.bitButtonOn {
+    background-color: #fff; 
+    color: #00f;
+    font: 11px sans-serif;
+    text-decoration: none;
+    border: 1px solid #000;
+    border-color: #00f;
+    border-radius: 5px;
+    padding: 0px 00px 2px 0px;
+    height: 15px;
+    width: 75px;
+    display:block;
 }
 .resourceButton{
     width:100px
 }
-.shortButton{ height: 10px}
-
 .dojoDndItem {
     padding:3px;
 }

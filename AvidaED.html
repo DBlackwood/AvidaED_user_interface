@@ -73,9 +73,16 @@
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="About" label="About"></span>
             <span data-dojo-type="dijit/MenuItem" id="Hardware" label="Ancestor and Hardware"></span>
-          </span>
+            <div data-dojo-type="dijit/MenuSeparator"></div>
+            <div data-dojo-type="dijit/PopupMenuItem">
+              <span>Color</span>
+              <span data-dojo-type="dijit/Menu" id="Color" label="Color">
+              <span data-dojo-type="dijit/MenuItem" id="mnViridis" label="Viridis"></span>
+              <span data-dojo-type="dijit/MenuItem" id="mnRainbow" label="Rainbow"></span>
+            </div> 
         </span>
       </span>
+
     </div>
     <!-- contentPage for far left of screen with freezer etc -->
     <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -295,60 +302,129 @@
                     </tr>
                     <tr>
                       <td>
-                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="notButton" class="shortButton" intermediateChanges="false" label="not" iconClass="dijitCheckBoxIcon"></input>
+                        <button id="notButton" class="bitButtonOff">not</button>
                       </td>
-                      <td><label id="notPop">3579</label></td>
+                      <td><label id="notPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="nanButton" class="shortButton" intermediateChanges="false" label="nan" iconClass="dijitCheckBoxIcon"></input>
+                        <button id="nanButton" class="bitButtonOff">nan</button>
                       </td>
-                      <td><label id="nanPop">23</label></td>
+                      <td><label id="nanPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="andButton" class="shortButton" intermediateChanges="false" label="and" iconClass="dijitCheckBoxIcon"></input>
+                       <button id="andButton" class="bitButtonOff">and</button>
                      </td>
-                      <td><label id="andPop">893</label></td>
+                      <td><label id="andPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="ornButton" class="shortButton" intermediateChanges="false" label="orn" iconClass="dijitCheckBoxIcon"></input>
+                        <button id="ornButton" class="bitButtonOff">orn</button>
                       </td>
-                      <td><label id="ornPop">0</label></td>
+                      <td><label id="ornPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="oroButton" class="shortButton" intermediateChanges="false" label="oro" iconClass="dijitCheckBoxIcon"></input>
+                        <button id="oroButton" class="bitButtonOff">oro</button>
                       </td>
-                      <td><label id="oroPop">23</label></td>
+                      <td><label id="oroPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="antButton" class="shortButton" intermediateChanges="false" label="ant" iconClass="dijitCheckBoxIcon"></input>
+                       <button id="antButton" class="bitButtonOff">ant</button>
                      </td>
-                      <td><label id="antPop">0</label></td>
+                      <td><label id="antPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="norButton" class="shortButton" intermediateChanges="false" label="nor" iconClass="dijitCheckBoxIcon"></input>
+                       <button id="norButton" class="bitButtonOff">nor</button>
                      </td>
-                      <td><label id="norPop">1245</label></td>
+                      <td><label id="norPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="xorButton" class="shortButton" intermediateChanges="false" label="xor" iconClass="dijitCheckBoxIcon"></input>
+                       <button id="xorButton" class="bitButtonOff">xor</button>
                      </td>
-                      <td><label id="xorPop">8</label></td>
+                      <td><label id="xorPop"></label></td>
                     </tr>
                     <tr>
                       <td>
-                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="equButton" class="shortButton" intermediateChanges="false" label="equ" iconClass="dijitCheckBoxIcon"></input>
+                       <button id="equButton" class="bitButtonOff">equ</button>
                      </td>
-                      <td><label id="equPop">0</label></td>
+                      <td><label id="equPop"></label></td>
                     </tr>
                   </tbody>
                 </table>
+
+<!--  version of table with toggle buttons
+                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+                  <colgroup>
+                    <col></col>
+                    <col></col>
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td><label>Function</label></td>
+                      <td><label># Organisms</label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="notButton" class="bitButton" intermediateChanges="false" label="not" iconClass="dijitCheckBoxIcon"></input>
+                      </td>
+                      <td><label id="notPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="nanButton" class="bitButton" intermediateChanges="false" label="nan" iconClass="dijitCheckBoxIcon" style="width:75px"></input>
+                      </td>
+                      <td><label id="nanPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="andButton" class="bitButton" intermediateChanges="false" label="and" iconClass="dijitCheckBoxIcon" style="width:75px"></input>
+                     </td>
+                      <td><label id="andPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="ornButton" class="bitButton" intermediateChanges="false" label="orn" iconClass="dijitCheckBoxIcon"></input>
+                      </td>
+                      <td><label id="ornPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="button" data-dojo-type="dijit/form/ToggleButton" id="oroButton" class="bitButton" intermediateChanges="false" label="oro" iconClass="dijitCheckBoxIcon"></input>
+                      </td>
+                      <td><label id="oroPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="antButton" class="bitButton" intermediateChanges="false" label="ant" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="antPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="norButton" class="bitButton" intermediateChanges="false" label="nor" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="norPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="xorButton" class="bitButton" intermediateChanges="false" label="xor" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="xorPop"></label></td>
+                    </tr>
+                    <tr>
+                      <td>
+                       <input type="button" data-dojo-type="dijit/form/ToggleButton" id="equButton" class="bitButton" intermediateChanges="false" label="equ" iconClass="dijitCheckBoxIcon"></input>
+                     </td>
+                      <td><label id="equPop"></label></td>
+                    </tr>
+                  </tbody>
+                </table>
+-->
               </div>
             </div>
           </div>
