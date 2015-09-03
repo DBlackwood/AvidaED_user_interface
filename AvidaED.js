@@ -154,7 +154,7 @@ require([
         registry.byId("mainBC").layout();  
       }
     });
-
+          
     // Drop down menu buttons ------------------------------------------
     
     HardwareDialog = new Dialog({
@@ -1485,7 +1485,7 @@ require([
       grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
 
       //Find a reasonable maximum zoom for this grid and screen space
-      zMaxCells = Math.trunc(grd.spaceCells/10);  // at least 10 cells
+      zMaxCells = Math.trunc(grd.spaceCells/20);  // at least 10 cells
       zMaxWide = Math.trunc(10/grd.spaceCellWd);  // at least 10 pixels
       zMax = ((zMaxCells > zMaxWide) ? zMaxCells: zMaxWide); //Max of two methods 
       zMax = ((zMax > 2) ? zMax: 2); //max zoom power of at least 2x
@@ -2433,6 +2433,40 @@ require([
       AnaChartFn();
     });
     
+    //************************************************************************
+    //Tasks that Need to be run when page is loaded but after chart is defined
+    //************************************************************************
+    
+    DrawGridSetup(); //Draw initial Box
+        
+    //Eliminate scrollbars (we hope
+    
+    function removeScrollbar(scrollDiv, htChangeDiv, page) {
+      var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
+      var hasScrollbar = 0 < ScrollDif;
+      console.log(scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight, 
+        document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
+        document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
+      var divHt = document.getElementById(htChangeDiv).style.height.match(/\d/g);  //get 0-9 globally in the string
+      divHt = divHt.join(''); //converts array to string
+      var NewHt = Number(divHt)+1+ScrollDif;
+      //line below is where the height of the div actually changes
+      document.getElementById(htChangeDiv).style.height = NewHt + 'px';
+      hasScrollbar = document.getElementById(scrollDiv).scrollHeight > document.getElementById(scrollDiv).clientHeight;
+      //BrowserResizeEventHandler();
+      mainBoxSwap(page);
+      console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight, 
+        document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
+        document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
+    }
+    
+    removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
+    removeScrollbar('popStatistics', 'popTopRight', 'populationBlock');
+    
+    //************************************************************************
+    //Usefull Generic Functions
+    //************************************************************************
+    
     //Modulo that is more accurate than %; Math.fmod(aa, bb);
     Math.fmod = function (aa, bb) { return Number((aa - (Math.floor(aa/bb) * bb)).toPrecision(8));}
     
@@ -2447,19 +2481,19 @@ require([
       return new_obj;
     };
     
+    //************************************************************************
+    //Functions not in use, but might be usefull ------------------------
+    //************************************************************************
+
     hexColor = invertHash(dictColor);
     var theColor = hexColor["#000000"];  //This should get 'Black'
     //console.log("theColor=", theColor);
 
-    DrawGridSetup(); //Draw initial Box
-        
-    //Not currently in use, but kept as an example
     //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
     //var orderedDataItems = source.getAllNodes().map(function(node){
     //    return source.getItem(node.id).data;
     //});
     
-    //Function not in use, but may need later
     // from http://dojotoolkit.org/reference-guide/1.10/dojo/dnd.html
     function OrderedIter(container, f, o){
       // similar to:
@@ -2472,21 +2506,11 @@ require([
       });
     }
 
-    //Functions not in use, but not ready to trash yet------------------------
-
     //sigmoid for use in converting a floating point into hue, saturation, brightness
-    //function sigmoid (xx, midpoint, steepness) {
-    //  var val = steepness * (xx-midpoint);
-    //  return Math.exp(val) /(1.0 + Math.exp(val));
-    //}
-    //var ii = 5.6;
-    //var num_colors = 255;
-    //var xx = 0.1 + 0.8 * ii/ (num_colors-1);
-    //var grColor = {};
-    //grColor.hue = Math.fmod((xx+0.27), 1.0);
-    //grColor.sat = sigmoid(1.0 - xx, 0.1, 30);
-    //grColor.brt = sigmoid(xx, 0.3, 10);
-    //console.log("hsb", grColor);
+    function sigmoid (xx, midpoint, steepness) {
+      var val = steepness * (xx-midpoint);
+      return Math.exp(val) /(1.0 + Math.exp(val));
+    }
 
     //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
     function drawArc1(gen, spot1, spot2, rep){ 
