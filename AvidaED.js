@@ -1368,7 +1368,6 @@ require([
       cntx.lineWidth = lineThickness;
       cntx.stroke();
     }
-      
     
     function DrawParent() {
       //console.log('parents.col.length, marginX, xOffset', parents.col.length, grd.marginX, grd.xOffset);
@@ -1396,8 +1395,7 @@ require([
       DrawGridSetup();
     });
 
-    //Only effect display not Avida; Adjust for zooming tiba
-    // Try fractions
+    // Zoom slide 
     var ZoomSlide = new HorizontalSlider({
         name: "ZoomSlide",
         value: 1,
@@ -1448,11 +1446,15 @@ require([
         //set based  on height as that is the limiting factor. 
         grd.sizeY = grd.boxY;
         grd.sizeX = grd.sizeY*grd.cols/grd.rows;
+        grd.spaceCellWd = grd.spaceY/grd.rows;
+        grd.spaceCells = grd.rows;
       } 
       else {
         //set based on width as that is the limiting direction
         grd.sizeX = grd.boxX;
         grd.sizeY = grd.sizeX * grd.rows/grd.cols;
+        grd.spaceCellWd = grd.spaceX/grd.cols;
+        grd.spaceCells = grd.cols;
       }
       
       //console.log('Xspace, size', grd.spaceX, grd.sizeX, '; Yspace, size', grd.spaceY, grd.sizeY, '; zoom=', grd.zoom);
@@ -1476,6 +1478,22 @@ require([
       }
       //console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom);
 
+      //get cell size based on grid size and number of columns and rows
+      grd.marginX = 1;  //width of black line between the cells
+      grd.marginY = 1;  //width of black line between the cells
+      grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
+      grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
+
+      //Find a reasonable maximum zoom for this grid and screen space
+      zMaxCells = Math.trunc(grd.spaceCells/10);  // at least 10 cells
+      zMaxWide = Math.trunc(10/grd.spaceCellWd);  // at least 10 pixels
+      zMax = ((zMaxCells > zMaxWide) ? zMaxCells: zMaxWide); //Max of two methods 
+      zMax = ((zMax > 2) ? zMax: 2); //max zoom power of at least 2x
+      
+      ZoomSlide.set("maximum", zMax);
+      ZoomSlide.set("discreteValues", 2*(zMax-1)+1);
+      console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
+
       DrawGridBackground();
       //Draw Selected as one of the last items to draw
       if (grd.flagSelected) { DrawSelected() };
@@ -1493,12 +1511,6 @@ require([
       cntx.fillStyle=dictColor['Black'];
       cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
       //console.log("cntx grd", grd);
-
-      //prep grid based on rows and columns from Setup
-      grd.marginX = 1;  //width of black line between the cells
-      grd.marginY = 1;  //width of black line between the cells
-      grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols); 
-      grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
       
       //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cellWd, Ht', grd.cellWd, grd.cellHt, 
       // '; product',grd.cellWd*grd.cols, grd.cellHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
@@ -1639,6 +1651,8 @@ require([
       }
       gridWasCols = Number(document.getElementById("sizeCols").value);
       gridWasRows = Number(document.getElementById("sizeRows").value);
+      //reset zoom power to 1 
+      ZoomSlide.set("value", 1);
       PlaceAncestors(parents);
     }
 
