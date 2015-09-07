@@ -397,7 +397,9 @@ require([
     parents.col = [];
     parents.row = [];
     parents.AvidaNdx = [];
+    parents.autoCnt = 0; 
     parents.autoNdx = [];
+    parents.handCnt = 0; 
     parents.handNdx = [];
     
     //Clear parents/Ancestors
@@ -409,7 +411,9 @@ require([
       parents.col = [];
       parents.row = [];
       parents.AvidaNdx = [];
+      parents.autoCnt = 0; 
       parents.autoNdx = [];
+      parents.handCnt = 0; 
       parents.handNdx = [];
     }
       
@@ -419,6 +423,7 @@ require([
         nn = parents.name.length;
         parents.name[nn] = nodes[0].textContent;
         parents.autoNdx.push(nn);
+        parents.autoCnt++;
         PlaceAncestors(parents);
         //console.log("parents", parents); 
       }
@@ -446,6 +451,7 @@ require([
           });
           var nn = parents.name.length;
           parents.handNdx.push(nn);
+          parents.handCnt++;
           parents.name[nn] = nodes[0].textContent;
 
           //Re-Draw Grid
@@ -1434,7 +1440,7 @@ require([
                     parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
                     //change from auto placed to hand placed if needed
                     var autoPlaceNdx = -1;
-                    for (var ii = 0; ii < parents.autoNdx.length; ii++) {
+                    for (var ii = 0; ii < parents.autoCnt; ii++) {
                       if (ParentNdx == parents.autoNdx[ii]) {
                         autoPlaceNdx = ii;
                         break;
@@ -1456,7 +1462,7 @@ require([
                   console.log('Remove Parent', ParentNdx);
                   //look for parent in autoplace
                   var autoPlaceNdx = -1;
-                  for (var ii = 0; ii < parents.autoNdx.length; ii++) {
+                  for (var ii = 0; ii < parents.autoCnt; ii++) {
                     if (ParentNdx == parents.autoNdx[ii]) {
                       autoPlaceNdx = ii;
                       break;
@@ -1464,6 +1470,7 @@ require([
                   }
                   if (-1 < autoPlaceNdx) {
                     parents.autoNdx.splice(autoPlaceNdx,1);
+                    parents.autoCnt = parents.autoCnt-1;
                   }
                   else {  //not in automatically placed group so look in handplaced 
                     for (var ii = 0; ii < parents.hnadCnt; ii++) {
@@ -1474,6 +1481,7 @@ require([
                     }
                     if (-1 < autoPlaceNdx) {
                       parents.handNdx.splice(autoPlaceNdx,1);
+                      parents.handCnt = parents.handCnt-1;
                     }
                   }// end of removing from hand or autoplaced lists
                   //remove from main list.
