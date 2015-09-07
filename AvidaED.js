@@ -397,9 +397,7 @@ require([
     parents.col = [];
     parents.row = [];
     parents.AvidaNdx = [];
-    parents.autoCnt = 0; 
     parents.autoNdx = [];
-    parents.handCnt = 0; 
     parents.handNdx = [];
     
     //Clear parents/Ancestors
@@ -411,9 +409,7 @@ require([
       parents.col = [];
       parents.row = [];
       parents.AvidaNdx = [];
-      parents.autoCnt = 0; 
       parents.autoNdx = [];
-      parents.handCnt = 0; 
       parents.handNdx = [];
     }
       
@@ -423,9 +419,8 @@ require([
         nn = parents.name.length;
         parents.name[nn] = nodes[0].textContent;
         parents.autoNdx.push(nn);
-        parents.autoCnt++;
         PlaceAncestors(parents);
-        console.log("parents", parents); 
+        //console.log("parents", parents); 
       }
     });
 
@@ -451,7 +446,6 @@ require([
           });
           var nn = parents.name.length;
           parents.handNdx.push(nn);
-          parents.handCnt++;
           parents.name[nn] = nodes[0].textContent;
 
           //Re-Draw Grid
@@ -459,6 +453,7 @@ require([
         }
         //In all cases remove the ancestor from the gridBoxNode so we only keep them in the AncestorBox. 
         gridBox.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+        gridBox.sync();
         //console.log("parents", parents);  
       }
     });
@@ -1351,7 +1346,7 @@ require([
       else return false;
     }
 
-/*
+/*  //generic for whole screen
     $(document).on('mousedown', function (evt) {
     mouseDnPgPos=[evt.pageX, evt.pageY];
     mouseDnOffsetPos=[evt.offsetX, evt.offsetY];
@@ -1378,7 +1373,7 @@ require([
 
 */
 
-    //Call when user selects a cell  
+    //Call when user does a mouse down in the grid canvas  
     //https://github.com/kangax/fabric.js/wiki/Working-with-events
     $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
       mouseDnPgPos=[evt.pageX, evt.pageY];
@@ -1414,8 +1409,9 @@ require([
             $(document).on('mousemove', function handler(evt) {
               //console.log('gd move');
               document.getElementById('gridCanvas').style.cursor = 'copy';
+              document.getElementById('TrashCan').style.cursor = 'copy';
               if(!nearly([evt.offsetX, evt.offsetY], mouseDnPgPos)) {
-                console.log("gd draging");  //never triggered
+                console.log("gd draging");  
               }
               $(document).off('mousemove', handler);
             });
@@ -1424,7 +1420,8 @@ require([
               
               if (!nearly([evt.offsetX, evt.offsetY], mouseDnPgPos)) {  //look to see if it in the canvas
                 if ('gridCanvas' == evt.target.id) {
-                  console.log("page drag")
+                  //Move the ancestor on the canvas
+                  console.log("on gridCanvas")
                   mouseX = evt.offsetX - grd.marginX - grd.xOffset;
                   mouseY = evt.offsetY - grd.marginY - grd.yOffset;
                   grd.ColSelected = Math.floor(mouseX/grd.cellWd);
@@ -1433,10 +1430,66 @@ require([
                   if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
                     parents.col[ParentNdx] = grd.ColSelected;
                     parents.row[ParentNdx] = grd.RowSelected; 
-                    console.log('mvparent', ParentNdx, parents.col[ParentNdx], parents.row[ParentNdx]); 
+                    //console.log('mvparent', ParentNdx, parents.col[ParentNdx], parents.row[ParentNdx]); 
                     parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
+                    //change from auto placed to hand placed if needed
+                    var autoPlaceNdx = -1;
+                    for (var ii = 0; ii < parents.autoNdx.length; ii++) {
+                      if (ParentNdx == parents.autoNdx[ii]) {
+                        autoPlaceNdx = ii;
+                        break;
+                      }
+                    }
+                    
+                    if (-1 < autoPlaceNdx) {
+                      parents.handNdx.push(parents.autoNdx[ParentNdx]); 
+                      parents.autoNdx.splice(autoPlaceNdx,1);
+                    }
+                    console.log('autoPlaceNdx',autoPlaceNdx);
+                    console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
+                    console.log('hand', parents.handNdx.length, parents.handNdx);
                     DrawGridSetup();
                   }
+                }
+                else if ('TrashCan' == evt.target.id) {
+                  //Remove this Parent from the grid  //Needs work!!
+                  console.log('Remove Parent', ParentNdx);
+                  //look for parent in autoplace
+                  var autoPlaceNdx = -1;
+                  for (var ii = 0; ii < parents.autoNdx.length; ii++) {
+                    if (ParentNdx == parents.autoNdx[ii]) {
+                      autoPlaceNdx = ii;
+                      break;
+                    }
+                  }
+                  if (-1 < autoPlaceNdx) {
+                    parents.autoNdx.splice(autoPlaceNdx,1);
+                  }
+                  else {  //not in automatically placed group so look in handplaced 
+                    for (var ii = 0; ii < parents.hnadCnt; ii++) {
+                      if (ParentNdx == parents.handNdx[ii]) {
+                        autoPlaceNdx = ii;
+                        break;
+                      }
+                    }
+                    if (-1 < autoPlaceNdx) {
+                      parents.handNdx.splice(autoPlaceNdx,1);
+                    }
+                  }// end of removing from hand or autoplaced lists
+                  //remove from main list.
+                  parents.name.splice(ParentNdx,1);
+                  parents.genome.splice(ParentNdx,1);
+                  parents.color.splice(ParentNdx,1);
+                  parents.col.splice(ParentNdx,1);
+                  parents.row.splice(ParentNdx,1);
+                  parents.AvidaNdx.splice(ParentNdx,1);
+                  //remove node from AncestorBoxNode
+                  AncestorBox.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+                  AncestorBox.sync();
+                  console.log('trash', ParentNdx, parents.name, parents.col, parents.row)
+                  DrawGridSetup();
+                  document.getElementById('gridCanvas').style.cursor = 'default';
+                  document.getElementById('TrashCan').style.cursor = 'default';
                 }
               }
               $(document).off('page mouseup', handler);
@@ -1444,13 +1497,10 @@ require([
           }
         }
       }
-      else {
-        grd.flagSelected = false; //not sure if we want to be able to clear selected or not
-        dijit.byId("mnFzOrganism").attr("disabled", true);
-      }
+      document.getElementById('gridCanvas').style.cursor = 'default';
+      document.getElementById('TrashCan').style.cursor = 'default';
       console.log('heretoo');
       DrawGridSetup();
-      
     });
 
 
