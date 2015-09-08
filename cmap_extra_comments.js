@@ -62,7 +62,7 @@ var get_color1 = function(cmap, dx, d1, d2){
     function PlaceAncestors(parents) {
       var cols = dijit.byId("sizeCols").get('value');
       var rows = dijit.byId("sizeRows").get('value');
-      switch(parents.autoNdx.length){
+      switch(parents.autoCnt){
         case 1:   //Place in center
           parents.col[parents.autoNdx[0]] = Math.trunc(cols/2);
           parents.row[parents.autoNdx[0]] = Math.trunc(rows/2);
@@ -70,14 +70,14 @@ var get_color1 = function(cmap, dx, d1, d2){
           break;
         case 2:
           if (cols > rows) {  //place parents horizontally
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*ii+1)/4);
               parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           else {  //place parents vertically
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
               parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*ii+1)/4);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
@@ -107,7 +107,7 @@ var get_color1 = function(cmap, dx, d1, d2){
           }
           break;
         case 4:
-          for (ii = 0; ii < parents.autoNdx.length; ii++) {
+          for (ii = 0; ii < parents.autoCnt; ii++) {
             if (ii<2) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
             else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
             if (ii%2 < 1) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
@@ -115,7 +115,7 @@ var get_color1 = function(cmap, dx, d1, d2){
             parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
           }
         case 5:
-          for (ii = 0; ii < parents.autoNdx.length; ii++) {
+          for (ii = 0; ii < parents.autoCnt; ii++) {
             if (ii<2) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/5) }
             else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*4/5) }
             if (ii%2 < 1) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/5) }
@@ -132,7 +132,7 @@ var get_color1 = function(cmap, dx, d1, d2){
         case 7:
           //console.log('case7');
           if (cols > rows) {  //place parents horizontally
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
               else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
               cc = ii%3;
@@ -146,7 +146,7 @@ var get_color1 = function(cmap, dx, d1, d2){
             }
           }
           else {
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<3) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
               else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
               cc = ii%3;
@@ -161,7 +161,7 @@ var get_color1 = function(cmap, dx, d1, d2){
           break;
         case 8:
           if (cols > rows) {  //place parents horizontally
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
               else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
               cc = ii%3;
@@ -176,7 +176,7 @@ var get_color1 = function(cmap, dx, d1, d2){
             }
           }
           else {
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<3) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
               else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
               cc = ii%3;
@@ -192,7 +192,7 @@ var get_color1 = function(cmap, dx, d1, d2){
           break;
         case 9:
           console.log('case9');
-          for (ii = 0; ii < parents.autoNdx.length; ii++) {
+          for (ii = 0; ii < parents.autoCnt; ii++) {
             if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/5) }
             else if (ii < 6) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2) }
             else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*4/5) }
@@ -203,7 +203,7 @@ var get_color1 = function(cmap, dx, d1, d2){
           break;
         case 10:
           if (cols > rows) {  //place parents horizontally
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
               else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
               cc = ii%4;
@@ -218,7 +218,7 @@ var get_color1 = function(cmap, dx, d1, d2){
             }
           }
           else {
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
               else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
               cc = ii%4;
@@ -234,7 +234,7 @@ var get_color1 = function(cmap, dx, d1, d2){
           break;
         case 11:
           if (cols > rows) {  //place parents horizontally
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/5) }
               else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*4/5) }
               cc = ii%4;
@@ -248,7 +248,7 @@ var get_color1 = function(cmap, dx, d1, d2){
             }
           }
           else {
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/5) }
               else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*4/5) }
               cc = ii%4;
@@ -264,7 +264,7 @@ var get_color1 = function(cmap, dx, d1, d2){
           break;
         case 12:
           if (cols > rows) {  //place parents horizontally
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/6) }
               else if (ii < 8){ parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2) }
               else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*5/6) }
@@ -274,7 +274,7 @@ var get_color1 = function(cmap, dx, d1, d2){
             }
           }
           else {
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/6) }
               else if (ii < 8){ parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2) }
               else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*5/6) }
@@ -286,13 +286,13 @@ var get_color1 = function(cmap, dx, d1, d2){
           break;
         default:
           //console.log('bigger than 12');
-          if (Math.trunc(Math.sqrt(parents.autoNdx.length)) == Math.sqrt(parents.autoNdx.length)) {
-            sqLength = Math.sqrt(parents.autoNdx.length);
+          if (Math.trunc(Math.sqrt(parents.autoCnt)) == Math.sqrt(parents.autoCnt)) {
+            sqLength = Math.sqrt(parents.autoCnt);
           } 
           else {
-            sqLength = Math.trunc(Math.sqrt(parents.autoNdx.length))+1;
+            sqLength = Math.trunc(Math.sqrt(parents.autoCnt))+1;
           }
-            for (ii = 0; ii < parents.autoNdx.length; ii++) {
+            for (ii = 0; ii < parents.autoCnt; ii++) {
               cc = ii%sqLength;
               rr = Math.trunc(ii/sqLength);
               parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/(2*sqLength));
@@ -300,8 +300,8 @@ var get_color1 = function(cmap, dx, d1, d2){
             }
           break;
       }
-      //console.log('rows, cols, AnBoxCnt', rows, cols, parents.autoNdx.length);
-      //for (ii=0; ii< parents.autoNdx.length; ii++) {
+      //console.log('rows, cols, AnBoxCnt', rows, cols, parents.autoCnt);
+      //for (ii=0; ii< parents.autoCnt; ii++) {
       //  console.log("ii, col, row, ii", ii, parents.col[parents.autoNdx[ii]], parents.row[parents.autoNdx[ii]], parents.AvidaNdx[parents.autoNdx[ii]]);
       //}
     }
