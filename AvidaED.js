@@ -1336,14 +1336,8 @@ require([
       gridMouse.yUp = evt.layerY;
     });
     
-    var mouseDnPgPos = [];
     var mouseDnoffsetPos = [];
-    var mouseDnTargetId = "";
 
-    var mouseUpPgPos = [];
-    var mouseUpoffsetPos = [];
-    var mouseUpTargetId = "";
-    
     var nearly = function(aa, bb) {
       var epsilon = 3;
       var distance = Math.sqrt(Math.pow(aa[0]-bb[0],2) + Math.pow(aa[1]-bb[1],2))
@@ -1358,9 +1352,7 @@ require([
 
 /*  //generic for whole screen
     $(document).on('mousedown', function (evt) {
-    mouseDnPgPos=[evt.pageX, evt.pageY];
     mouseDnOffsetPos=[evt.offsetX, evt.offsetY];
-    mouseDnTargetId=evt.target.id;
     
     //console.log('document',evt);
     //console.log('client',evt.clientX, evt.clientY, '; offset', evt.offsetX, evt.offsetY, '; page', evt.pageX, evt.pageY, '; screen', evt.screenX, evt.screenY);
@@ -1406,9 +1398,9 @@ require([
     //Call when user does a mouse down in the grid canvas  
     //https://github.com/kangax/fabric.js/wiki/Working-with-events
     $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
-      mouseDnPgPos=[evt.pageX, evt.pageY];
+      //mouseDnPgPos=[evt.pageX, evt.pageY];
       mouseDnOffsetPos=[evt.offsetX, evt.offsetY];
-      mouseDnTargetId=evt.target.id;
+      //mouseDnTargetId=evt.target.id;
     
       //console.log('document',evt);
       //console.log('client',evt.clientX, evt.clientY, '; offset', evt.offsetX, evt.offsetY, '; page', evt.pageX, evt.pageY, '; screen', evt.screenX, evt.screenY);
@@ -1430,7 +1422,7 @@ require([
               //console.log('gd move');
               document.getElementById('gridCanvas').style.cursor = 'copy';
               document.getElementById('TrashCan').style.cursor = 'copy';
-              if(!nearly([evt.offsetX, evt.offsetY], mouseDnPgPos)) {
+              if(!nearly([evt.offsetX, evt.offsetY], mouseDnOffsetPos)) {
                 console.log("gd draging");  
               }
               $(document).off('mousemove', handler);
@@ -1438,7 +1430,7 @@ require([
             $(document).on('mouseup', function handler(evt) {
               document.getElementById('gridCanvas').style.cursor = 'default';
               
-              if (!nearly([evt.offsetX, evt.offsetY], mouseDnPgPos)) {  //look to see if it in the canvas
+              if (!nearly([evt.offsetX, evt.offsetY], mouseDnOffsetPos)) {  //look to see if it in the canvas
                 //-----------------------------------------------move on grid
                 if ('gridCanvas' == evt.target.id) {
                   //Move the ancestor on the canvas
@@ -1456,6 +1448,7 @@ require([
                     if ('auto' == parents.howPlaced[ParentNdx] ) {
                       parents.howPlaced[ParentNdx] = 'hand';
                       makeHandAutoNdx();
+                      PlaceAncestors(parents);
                     }
                     console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
                     console.log('hand', parents.handNdx.length, parents.handNdx);
