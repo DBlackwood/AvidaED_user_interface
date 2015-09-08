@@ -401,6 +401,7 @@ require([
     parents.autoNdx = [];
     parents.handCnt = 0; 
     parents.handNdx = [];
+    parents.howPlaced = [];
     
     //Clear parents/Ancestors
     function clearParents() {
@@ -415,6 +416,7 @@ require([
       parents.autoNdx = [];
       parents.handCnt = 0; 
       parents.handNdx = [];
+    parents.howPlaced = [];
     }
       
     //This triggers for every dnd drop, not just those of AncestorBoxNode
@@ -422,8 +424,9 @@ require([
       if (target.node.id=="AncestorBoxNode"){
         nn = parents.name.length;
         parents.name[nn] = nodes[0].textContent;
+        parents.howPlaced[nn] = 'auto';
         parents.autoNdx.push(nn);
-        parents.autoCnt++;
+        //parents.autoCnt++;
         PlaceAncestors(parents);
         //console.log("parents", parents); 
       }
@@ -451,7 +454,8 @@ require([
           });
           var nn = parents.name.length;
           parents.handNdx.push(nn);
-          parents.handCnt++;
+          parents.howPlaced[nn] = 'hand';
+          //parents.handCnt++;
           parents.name[nn] = nodes[0].textContent;
 
           //Re-Draw Grid
@@ -1382,9 +1386,8 @@ require([
     //Call when user does a mouse down in the grid canvas  
     //https://github.com/kangax/fabric.js/wiki/Working-with-events
     $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
-      mouseDnPgPos=[evt.pageX, evt.pageY];
       mouseDnOffsetPos=[evt.offsetX, evt.offsetY];
-      mouseDnTargetId=evt.target.id;
+      //mouseDnTargetId=evt.target.id;
     
       //console.log('document',evt);
       //console.log('client',evt.clientX, evt.clientY, '; offset', evt.offsetX, evt.offsetY, '; page', evt.pageX, evt.pageY, '; screen', evt.screenX, evt.screenY);
@@ -1395,36 +1398,37 @@ require([
       mouseY = evt.offsetY - grd.marginY - grd.yOffset;
       grd.ColSelected = Math.floor(mouseX/grd.cellWd);
       grd.RowSelected = Math.floor(mouseY/grd.cellHt);
-      //console.log('mx,y', mouseX, mouseY, '; boxCol, Row', grd.ColSelected, grd.RowSelected);
+      console.log('mx,y', mouseX, mouseY, '; boxCol, Row', grd.ColSelected, grd.RowSelected);
 
       //check to see if in the grid part of the canvas
       if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
         grd.flagSelected = true;
         dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
-
+        //console.log('selected');
         //In the grid and selected. Now look to see contents of cell are dragable. 
         var ParentNdx=-1;
         if (newrun) {  //run is not started so look to see if cell contains ancestor
           for (var ii=0; ii<parents.name.length; ii++) {
             if (matches([grd.ColSelected, grd.RowSelected], [parents.col[ii], parents.row[ii]])) {
               ParentNdx = ii;
+              console.log('parent found');
               break;  //found a parent no need to keep looking
             }
           }
           if (-1 < ParentNdx) { //selected a parent, check for dragging
             $(document).on('mousemove', function handler(evt) {
-              //console.log('gd move');
+              console.log('gd move');
               document.getElementById('gridCanvas').style.cursor = 'copy';
               document.getElementById('TrashCan').style.cursor = 'copy';
-              if(!nearly([evt.offsetX, evt.offsetY], mouseDnPgPos)) {
+              if(!nearly([evt.offsetX, evt.offsetY], mouseDnOffsetPos)) {
                 console.log("gd draging");  
               }
               $(document).off('mousemove', handler);
             });
             $(document).on('mouseup', function handler(evt) {
               document.getElementById('gridCanvas').style.cursor = 'default';
-              
-              if (!nearly([evt.offsetX, evt.offsetY], mouseDnPgPos)) {  //look to see if it in the canvas
+              document.getElementById('TrashCan').style.cursor = 'default';
+              console.log('mouseup');
                 if ('gridCanvas' == evt.target.id) {
                   //Move the ancestor on the canvas
                   console.log("on gridCanvas")
@@ -1436,22 +1440,14 @@ require([
                   if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
                     parents.col[ParentNdx] = grd.ColSelected;
                     parents.row[ParentNdx] = grd.RowSelected; 
-                    //console.log('mvparent', ParentNdx, parents.col[ParentNdx], parents.row[ParentNdx]); 
-                    parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
+                    parents.AvidaNdx[ParentNdx] = parents.col[ParentNdx] + grd.cols * parents.row[ParentNdx];
+                    console.log('mvparent', ParentNdx, parents.col[ParentNdx], parents.row[ParentNdx]); 
                     //change from auto placed to hand placed if needed
-                    var autoPlaceNdx = -1;
-                    for (var ii = 0; ii < parents.autoCnt; ii++) {
-                      if (ParentNdx == parents.autoNdx[ii]) {
-                        autoPlaceNdx = ii;
-                        break;
-                      }
+                    if ('auto' == parents.howPlaced[ParentNdx] ) {
+                      parents.howPlaced = 'hand';
+                      makeHandAutoNdx();
                     }
-                    
-                    if (-1 < autoPlaceNdx) {
-                      parents.handNdx.push(parents.autoNdx[ParentNdx]); 
-                      parents.autoNdx.splice(autoPlaceNdx,1);
-                    }
-                    console.log('autoPlaceNdx',autoPlaceNdx);
+                    //console.log('PlaceNdx',PlaceNdx);
                     console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
                     console.log('hand', parents.handNdx.length, parents.handNdx);
                     DrawGridSetup();
@@ -1460,30 +1456,27 @@ require([
                 else if ('TrashCan' == evt.target.id) {
                   //Remove this Parent from the grid  //Needs work!!
                   console.log('Remove Parent', ParentNdx);
-                  //look for parent in autoplace
-                  var autoPlaceNdx = -1;
-                  for (var ii = 0; ii < parents.autoCnt; ii++) {
-                    if (ParentNdx == parents.autoNdx[ii]) {
-                      autoPlaceNdx = ii;
-                      break;
+                  //remove node from AncestorBoxNode   //Needs work!! tiba
+
+                  var orderedDataItems = AncestorBox.getAllNodes().map(function(node){
+                    return AncestorBox.getItem(node.id).data;
+                  });
+                  //console.log("orderedDataItems", orderedDataItems);
+                  var domItems = Object.keys(AncestorBox.map);
+                  console.log("domItems=", domItems);
+                  var nodeIndex = -1;
+                  for (var ii=0; ii< domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+                    if (AncestorBox.map[domItems[ii]].data == parents.name[ParentNdx]) {
+                      nodeIndex = ii;
                     }
                   }
-                  if (-1 < autoPlaceNdx) {
-                    parents.autoNdx.splice(autoPlaceNdx,1);
-                    parents.autoCnt = parents.autoCnt-1;
-                  }
-                  else {  //not in automatically placed group so look in handplaced 
-                    for (var ii = 0; ii < parents.hnadCnt; ii++) {
-                      if (ParentNdx == parents.handNdx[ii]) {
-                        autoPlaceNdx = ii;
-                        break;
-                      }
-                    }
-                    if (-1 < autoPlaceNdx) {
-                      parents.handNdx.splice(autoPlaceNdx,1);
-                      parents.handCnt = parents.handCnt-1;
-                    }
-                  }// end of removing from hand or autoplaced lists
+                  var node = dojo.byId(domItems[nodeIndex]);
+                  console.log('nodeIndex', nodeIndex, domItems[nodeIndex] );
+                  AncestorBox.parent.removeChild(node);
+                  //create a right mouse-click context menue for the item just created. 
+                  //contextMenu(target, domItems[nodeIndex]); 
+    
+                  AncestorBox.sync();
                   //remove from main list.
                   parents.name.splice(ParentNdx,1);
                   parents.genome.splice(ParentNdx,1);
@@ -1491,15 +1484,13 @@ require([
                   parents.col.splice(ParentNdx,1);
                   parents.row.splice(ParentNdx,1);
                   parents.AvidaNdx.splice(ParentNdx,1);
-                  //remove node from AncestorBoxNode
-                  AncestorBox.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-                  AncestorBox.sync();
+                  parents.howPlaced.splice(ParentNdx, 1);
+                  makeHandAutoNdx();
                   console.log('trash', ParentNdx, parents.name, parents.col, parents.row)
                   DrawGridSetup();
                   document.getElementById('gridCanvas').style.cursor = 'default';
                   document.getElementById('TrashCan').style.cursor = 'default';
                 }
-              }
               $(document).off('page mouseup', handler);
             });
           }
@@ -1510,6 +1501,21 @@ require([
       console.log('heretoo');
       DrawGridSetup();
     });
+
+    function makeHandAutoNdx() {
+      var hh = 0;  //index into hand placed
+      var aa = 0;  //index into auto placed
+      for (ii = 0; ii < parents.name.length; ii++) {
+        if ('hand' == parents.howPlaced) {
+          parents.handNdx[hh] = ii;
+          hh++;
+        }
+        else if ('auto' == parents.howPlaced) {
+          parents.autoNdx[aa] = ii;
+          aa++;
+        }
+      }
+    };
 
 
     //Call when user selects a cell  
