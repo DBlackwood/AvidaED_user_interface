@@ -78,7 +78,8 @@
               <span>Color</span>
               <span data-dojo-type="dijit/Menu" id="Color" label="Color">
               <span data-dojo-type="dijit/MenuItem" id="mnViridis" label="Viridis"></span>
-              <span data-dojo-type="dijit/MenuItem" id="mnRainbow" label="Rainbow"></span>
+              <span data-dojo-type="dijit/MenuItem" id="mnCubehelix" label="Cubehelix"></span>
+              <span data-dojo-type="dijit/MenuItem" id="mnGnuplot2" label="Gnuplot2"></span>
             </div> 
         </span>
       </span>
@@ -456,24 +457,24 @@
                  <tbody>
                    <tr>
                      <td>
-                        Mode
-                        <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
-                          <option value="Fitness" selected="selected">Fitness</option>
-                          <option value="Gestation Time">Gestation Time</option>
-                          <option value="Metabolic Rate">Metabolic Time</option>
-                          <option value="Ancestor Organism">Ancestor Organism</option>
-                        </select>
-                        <br>
+                       Time: <label id="TimeLabel">(not started)</label><br />
+                      <!--  <br>
                         Color Map
                         <select data-dojo-type="dijit/form/Select" id="colorMap" data-dojo-props="name: 'colorMap'">
                           <option value="Viridis" selected="selected">Viridis</option>
                           <option value="Rainbow">Rainbow</option>
                           <option value="Rainbow2">Rainbow2</option>
                           <option value="Rainbow3">Rainbow3</option>
-                        </select>
+                        </select> -->
                      </td>
                      <td style="text-align: center">
-                       Time: <label id="TimeLabel">(not started)</label><br />
+                        Mode
+                        <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
+                          <option value="Fitness" selected="selected">Fitness</option>
+                          <option value="Gestation Time">Gestation Time</option>
+                          <option value="Metabolic Rate">Metabolic Time</option>
+                          <option value="Ancestor Organism">Ancestor Organism</option>
+                        </select><br />
                         <button id="newDishButton">New</button>
                         <button id="runStopButton">Run</button>
                         <button id="freezeButton">Freeze</button>

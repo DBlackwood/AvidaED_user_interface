@@ -58,6 +58,12 @@ var get_color1 = function(cmap, dx, d1, d2){
     return datacolor;
 }
 
+var get_color = function(cmap, dx, d1, d2, r1){
+    var datacolorindex = Math.max(0,Math.min(cmap.length-1,Math.round(linmap(dx, d1, d2, r1, cmap.length-1))));
+    var datacolor = cmap[datacolorindex];
+    return datacolor;
+}
+
 //---------- set Ancestors ------------------/
     function PlaceAncestors(parents) {
       var cols = dijit.byId("sizeCols").get('value');

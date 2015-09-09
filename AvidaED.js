@@ -1319,8 +1319,8 @@ require([
         xx = grd.marginX + grd.xOffset + ii*grd.cellWd;
         for (jj=0; jj<grd.rows; jj++) {
           yy = grd.marginY + grd.yOffset + jj*grd.cellHt;
-          //boxColor = get_color0(viridis_cmap, Math.random(), 0, 1);
-          //boxColor = get_color0(viridis_cmap, 0.5, 0, 1);
+          //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
+          //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
           //console.log('color=', boxColor);
           cntx.fillStyle = '#222';
           cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
@@ -1729,18 +1729,24 @@ require([
         yy = 2+row*RowHt; 
         switch(grd.colorMap) {
           case "Viridis":
-            if (ii<12) {parents.color[ii] = viridis12[ii];}
-            else {parents.color[ii] = get_color1(viridis_cmap, ii-11, 0, Math.max(1, parents.name.length-11))};  //linear map into color map
+            if (ii<12) {parents.color[ii] = Viridis12[ii];}
+            else {parents.color[ii] = get_color1(Viridis_cmap, ii-11, 0, Math.max(1, parents.name.length-11))};  //linear map into color map
             break;
-          case 'Rainbow':
+          case 'Cubehelix':
             if (ii<12) {parents.color[ii] = rainbow12[ii];}
-            else { parents.color[ii] = get_color1(rainbow, ii-11, 0, Math.max(1,parents.name.length-11.5))}    //linear map into color map
+            else { parents.color[ii] = get_color1(Cubehelix_cmap, ii-11, 0, Math.max(1,parents.name.length-11.5))}    //linear map into color map
             break;
-          case 'Rainbow2':
-            if (ii<12) {parents.color[ii] = rainbow12[ii];}
-            else { parents.color[ii] = get_color1(rainbow2, ii-11, 0, Math.max(1,parents.name.length-11.5))}    //linear map into color map
+          case 'Gnuplot2':
+            if (ii<18) {parents.color[ii] = Gnuplot218[ii];}
+            else { parents.color[ii] = get_color(Gnuplot2_cmap, ii-11, 0, Math.max(1,parents.name.length-11.5), 20);}    //linear map into color map
+            console.log(parents.color[ii], ii);
             break;
-          case 'Rainbow3':
+        //  case 'Gnuplot2':
+        //    if (false) {parents.color[ii] = rainbow12[ii];}
+        //    else { parents.color[ii] = get_color(Gnuplot2_cmap, ii+1, 0, Math.max(1,parents.name.length), 20)}    //linear map into color map
+        //    console.log(parents.color[ii],ii);
+        //    break;
+          case 'rainbow3':
             if (ii<12) {parents.color[ii] = rainbow12[ii];}
             else { parents.color[ii] = get_color1(rainbow3, ii-11, 0, Math.max(2,parents.name.length-11.5))}    //linear map into color map
             break;
@@ -1765,21 +1771,22 @@ require([
       var gradWidth = xEnd-xStart 
       var grad = sCtx.createLinearGradient(xStart+2, 0, xEnd-2, 0)
       var legendHt = 15;
-      switch(dijit.byId("colorMap").value) {
+      switch(grd.colorMap) {
         case "Viridis":
-          for (var ii=0; ii < viridis_cmap.length; ii++) {
-            grad.addColorStop(ii/(viridis_cmap.length-1), viridis_cmap[ii]); 
+          for (var ii=0; ii < Viridis_cmap.length; ii++) {
+            grad.addColorStop(ii/(Viridis_cmap.length-1), Viridis_cmap[ii]); 
           }
           break;
-        case 'Rainbow':
-          console.log('Rainbow');
-          for (var ii=0; ii < rainbow.length; ii++) {
-            grad.addColorStop(ii/(rainbow.length-1), rainbow[ii]); 
+        case 'Gnuplot2':
+          console.log('Gnuplot2');
+          for (var ii=0; ii < Gnuplot2_cmap.length; ii++) {
+            grad.addColorStop(ii/(Gnuplot2_cmap.length-1), Gnuplot2_cmap[ii]); 
           }
           break;
-        case 'Rainbow2':
-          for (var ii=0; ii < rainbow2.length; ii++) {
-            grad.addColorStop(ii/(rainbow2.length-1), rainbow2[ii]); 
+        case 'Cubehelix':
+          console.log('Cubehelix');
+          for (var ii=0; ii < Cubehelix_cmap.length; ii++) {
+            grad.addColorStop(ii/(Cubehelix_cmap.length-1), Cubehelix_cmap[ii]); 
           }
           break;
         case 'Rainbow3':
@@ -1806,11 +1813,6 @@ require([
     });
 
     //Only effect display, not Avida
-    grd.colorMap = 'Viridis';
-    dijit.byId("colorMap").on("Change", function(){
-      grd.colorMap = dijit.byId("colorMap").value
-      DrawGridSetup();
-    });
 
     // Zoom slide 
     var ZoomSlide = new HorizontalSlider({
@@ -1828,18 +1830,30 @@ require([
         }
     }, "ZoomSlide");
 
+    grd.colorMap = 'Gnuplot2';
     dijit.byId("mnViridis").on("Click", function(){ 
-      dijit.byId("colorMap").set("value", 'Viridis');
-      grd.colorMap = dijit.byId("colorMap").value
+//      dijit.byId("colorMap").set("value", 'Viridis');
+      grd.colorMap = 'Viridis';
       DrawGridSetup();
     });
 
-    dijit.byId("mnRainbow").on("Click", function(){ 
-      dijit.byId("colorMap").set("value", 'Rainbow');
-      grd.colorMap = dijit.byId("colorMap").value
+    dijit.byId("mnGnuplot2").on("Click", function(){ 
+      //dijit.byId("colorMap").set("value", 'Gnuplot2');
+      grd.colorMap = 'Gnuplot2';
+      DrawGridSetup();
+    });
+
+    dijit.byId("mnCubehelix").on("Click", function(){ 
+      //dijit.byId("colorMap").set("value", 'Cubehelix');
+      grd.colorMap = 'Cubehelix';
       DrawGridSetup();
     });
     
+/*    dijit.byId("colorMap").on("Change", function(){
+      grd.colorMap = dijit.byId("colorMap").value
+      DrawGridSetup();
+    });
+*/
     // *************************************************************** */
     //    Buttons that select organisms that perform a logic function 
     // *************************************************************** */
