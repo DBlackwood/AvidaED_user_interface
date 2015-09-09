@@ -1380,7 +1380,7 @@ require([
       for (var ii=0; ii<parents.name.length; ii++) {
         if (matches([grd.ColSelected, grd.RowSelected], [parents.col[ii], parents.row[ii]])) {
           MomNdx = ii;
-          console.log('parent found');
+          console.log('parent found in function', MomNdx);
           break;  //found a parent no need to keep looking
         }
       }
@@ -1398,14 +1398,8 @@ require([
     //Call when user does a mouse down in the grid canvas  
     //https://github.com/kangax/fabric.js/wiki/Working-with-events
     $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
-      //mouseDnPgPos=[evt.pageX, evt.pageY];
-      mouseDnOffsetPos=[evt.offsetX, evt.offsetY];
-      //mouseDnTargetId=evt.target.id;
-    
-      //console.log('document',evt);
-      //console.log('client',evt.clientX, evt.clientY, '; offset', evt.offsetX, evt.offsetY, '; page', evt.pageX, evt.pageY, '; screen', evt.screenX, evt.screenY);
-      //console.log('Gd mouseDn.id', mouseDnTargetId, '; offset', mouseDnOffsetPos);
-      
+      var mouseDnOffsetPos=[evt.offsetX, evt.offsetY];
+          
       //Ignore if not a cell in the grid. Select if it is in the grid
       findSelected(evt);
       //check to see if in the grid part of the canvas
@@ -1414,22 +1408,26 @@ require([
         dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
 
         //In the grid and selected. Now look to see contents of cell are dragable. 
-        var ParentNdx=-1;
+        var ParentNdx=-1; //index into parents array if parent selected else -1;
         if (newrun) {  //run is not started so look to see if cell contains ancestor
           ParentNdx = findParentNdx();
           if (-1 < ParentNdx) { //selected a parent, check for dragging
-            $(document).on('mousemove', function handler(evt) {
+            document.getElementById('gridCanvas').style.cursor = 'copy';
+            document.getElementById('TrashCan').style.cursor = 'copy';
+            console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
+            $(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
               //console.log('gd move');
               document.getElementById('gridCanvas').style.cursor = 'copy';
               document.getElementById('TrashCan').style.cursor = 'copy';
+              console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
               if(!nearly([evt.offsetX, evt.offsetY], mouseDnOffsetPos)) {
                 console.log("gd draging");  
               }
               $(document).off('mousemove', handler);
-            });
+            }); 
             $(document).on('mouseup', function handler(evt) {
               document.getElementById('gridCanvas').style.cursor = 'default';
-              
+              document.getElementById('TrashCan').style.cursor = 'default';
               if (!nearly([evt.offsetX, evt.offsetY], mouseDnOffsetPos)) {  //look to see if it in the canvas
                 //-----------------------------------------------move on grid
                 if ('gridCanvas' == evt.target.id) {
