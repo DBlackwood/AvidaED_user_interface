@@ -277,7 +277,7 @@ require([
       { data: "m2w30u1000nand", type: ["popDish"]},
       { data: "m2w30u1000not",  type: ["popDish"]}
     ]);
-    var AncestorBox = new dndTarget("AncestorBoxNode", {accept: ["organism"], selfAccept: false});
+    var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"], selfAccept: false});
     //Have not made final decision about which div the dnd will connect to
     //var gridBoxNode = "gridBoxNode";  //the div around the grid
     var gridBoxNode = "gridCanvas";   //the actual canvas object
@@ -327,7 +327,7 @@ require([
         });
         ConfigCurrent.sync(); 
         
-        //Dojo using .data to help keep track of .textContent or .innerHTML 
+        //Dojo uses .data to help keep track of .textContent or .innerHTML 
         //At one time I was trying to keep the original name in .data and allow the user 
         //to change the .textContent name only. I have now decided that will cause trouble. 
         //I'm keeping the following commented out code that would update the .textContent specifically.
@@ -384,7 +384,6 @@ require([
           freezeConfigure.deleteSelectedNodes();  //clear items  
           freezeConfigure.sync();   //should be done after insertion or deletion
         }
-
       }
     });
     
@@ -457,7 +456,6 @@ require([
           //parents.handCnt++;
           parents.howPlaced[nn] = 'hand';
           parents.name[nn] = nodes[0].textContent;
-
           //Re-Draw Grid
           DrawGridSetup();
         }
@@ -546,7 +544,7 @@ require([
         //document.getElementById(currentItem).textContent = tmp;
         //console.log("OrganCurrent.map=", OrganCurrent.map);
         //console.log(Object.keys(OrganCurrent.map))  //gets the dom ids 
-        
+
         doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
     });
@@ -1556,7 +1554,7 @@ require([
     function DrawSelected() {
       grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
       grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
-      DrawCellOutline(1, 'white', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt)
+      DrawCellOutline(2, '#00ffff', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt)
     }
     
     function DrawCellOutline(lineThickness, color, xx, yy, wide, tall) {
@@ -1729,26 +1727,18 @@ require([
         yy = 2+row*RowHt; 
         switch(grd.colorMap) {
           case "Viridis":
-            if (ii<12) {parents.color[ii] = Viridis12[ii];}
+            if (ii<26) {parents.color[ii] = ColorBlind[ii];}
             else {parents.color[ii] = get_color1(Viridis_cmap, ii-11, 0, Math.max(1, parents.name.length-11))};  //linear map into color map
             break;
           case 'Cubehelix':
-            if (ii<12) {parents.color[ii] = rainbow12[ii];}
+            if (ii<26) {parents.color[ii] = ColorBlind[ii];}
             else { parents.color[ii] = get_color1(Cubehelix_cmap, ii-11, 0, Math.max(1,parents.name.length-11.5))}    //linear map into color map
+            console.log(parents.color[ii],ii);
             break;
           case 'Gnuplot2':
-            if (ii<18) {parents.color[ii] = Gnuplot218[ii];}
+            if (ii<26) {parents.color[ii] = ColorBlind[ii];}
             else { parents.color[ii] = get_color(Gnuplot2_cmap, ii-11, 0, Math.max(1,parents.name.length-11.5), 20);}    //linear map into color map
             console.log(parents.color[ii], ii);
-            break;
-        //  case 'Gnuplot2':
-        //    if (false) {parents.color[ii] = rainbow12[ii];}
-        //    else { parents.color[ii] = get_color(Gnuplot2_cmap, ii+1, 0, Math.max(1,parents.name.length), 20)}    //linear map into color map
-        //    console.log(parents.color[ii],ii);
-        //    break;
-          case 'rainbow3':
-            if (ii<12) {parents.color[ii] = rainbow12[ii];}
-            else { parents.color[ii] = get_color1(rainbow3, ii-11, 0, Math.max(2,parents.name.length-11.5))}    //linear map into color map
             break;
         }
         //console.log('color', parents.color[ii], ii);
