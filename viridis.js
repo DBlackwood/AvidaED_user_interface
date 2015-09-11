@@ -1101,6 +1101,21 @@ var OriginalCubehelix_cmap = [
 , 'rgb(255, 255, 255)'
   ];
   
+    var Viridis12 = [
+   'rgb( 72,  31, 112)' //1
+  ,'rgb(200, 224,  32)' //b
+  ,'rgb( 32, 164, 134)' //7
+  ,'rgb( 59,  82, 139)' //3
+  ,'rgb( 92, 200,  99)' //9
+  ,'rgb( 40, 124, 142)' //5
+  ,'rgb(253, 231,  37)' //c
+  ,'rgb( 53, 183, 121)' //8
+  ,'rgb( 68,  58, 131)' //2
+  ,'rgb( 33, 145, 140)' //6
+  ,'rgb(144, 215,  67)' //a
+  ,'rgb( 49, 104, 142)' //4
+];
+    
     var ColorBlind = [  //http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
      'rgb(  0, 109, 219)' //1  blue              website #7 
     ,'rgb(255, 255,   0)' //2  yellow            website #15 modified was 255, 255, 109
@@ -1130,7 +1145,9 @@ var OriginalCubehelix_cmap = [
     ,'rgb(127, 127, 127)'  // 25 grey
     ,'rgb(  0, 245, 255)'  // 26 bright light blue
     ];
-
+    ParentColors = ColorBlind;
+    ParentColors.reverse();
+    
   //colors too close to others already in use
   //,'rgb(255, 204, 0)'  // 32 dark yellow
   //,'rgb(255, 255,   5)'  // 17 yellow
@@ -2028,3 +2045,31 @@ var rainbow3 = [
   ,'rgb(255, 252, 100)'
   ,'rgb(255, 255, 100)'
 ];
+
+
+/* web sites about color 
+ *  * 
+ * colors I used for colorblind distinct colors
+ * http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
+ * 
+ * https://personal.sron.nl/~pault/   has set of 9 color blind freindly distinct colors
+ * http://jfly.iam.u-tokyo.ac.jp/color/#pallet   set of 8 colors for colorbind folks
+ * 
+ * http://colorbrewer2.org  color selection tool 
+ * http://www.iscc.org/pdf/PC54_1724_001.pdf older artical about distinct colors
+ * 
+ * http://graphicdesign.stackexchange.com/questions/3682/where-can-i-find-a-large-palette-set-of-contrasting-colors-for-coloring-many-d
+ * http://tools.medialab.sciences-po.fr/iwanthue/  creates distinct colors
+ * 
+ * Color gradients with increasing lightness
+ * http://www.mrao.cam.ac.uk/~dag/CUBEHELIX/cubetry.html
+ * https://bids.github.io/colormap/  has viridis in it
+ * http://matplotlib.org/users/colormaps.html    source of gnuplot2
+ * 
+ * https://mycarta.wordpress.com/2012/05/29/the-rainbow-is-dead-long-live-the-rainbow-series-outline/
+ * http://stackoverflow.com/questions/7251872/is-there-a-better-color-scale-than-the-rainbow-colormap
+ * 
+ * color tools
+ * http://www.456bereastreet.com/archive/200709/10_colour_contrast_checking_tools_to_improve_the_accessibility_of_your_design/
+ * http://phrogz.net/css/distinct-colors.html
+*/

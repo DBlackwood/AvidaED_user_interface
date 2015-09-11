@@ -426,6 +426,9 @@ require([
         parents.autoNdx.push(nn);
         parents.howPlaced[nn] = 'auto';
         //parents.autoCnt++;
+        //Find color of ancestor
+        if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
+        else {parents.color.push('rgb(187, 187, 187)')};
         PlaceAncestors(parents);
         //console.log("parents", parents); 
       }
@@ -456,6 +459,9 @@ require([
           //parents.handCnt++;
           parents.howPlaced[nn] = 'hand';
           parents.name[nn] = nodes[0].textContent;
+          //Find color of ancestor
+          if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
+          else {parents.color.push('rgb(187, 187, 187)')};
           //Re-Draw Grid
           DrawGridSetup();
         }
@@ -1444,7 +1450,7 @@ require([
                     if ('auto' == parents.howPlaced[ParentNdx] ) {
                       parents.howPlaced[ParentNdx] = 'hand';
                       makeHandAutoNdx();
-                      PlaceAncestors(parents);
+                      //PlaceAncestors(parents);
                     }
                     console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
                     console.log('hand', parents.handNdx.length, parents.handNdx);
@@ -1498,6 +1504,7 @@ require([
 
     //removes the parent at index ParentNdx
     function removeParent(ParentNdx) {
+      ParentColors.push(parents.color[ParentNdx]);
       parents.name.splice(ParentNdx,1);
       parents.genome.splice(ParentNdx,1);
       parents.color.splice(ParentNdx,1);
@@ -1725,7 +1732,7 @@ require([
         //xx = leftPad + col*(maxWide+colorWide+legendPad);
         xx = leftPad + col*(colWide);
         yy = 2+row*RowHt; 
-        switch(grd.colorMap) {
+/*        switch(grd.colorMap) {
           case "Viridis":
             if (ii<26) {parents.color[ii] = ColorBlind[ii];}
             else {parents.color[ii] = get_color1(Viridis_cmap, ii-11, 0, Math.max(1, parents.name.length-11))};  //linear map into color map
@@ -1741,6 +1748,7 @@ require([
             console.log(parents.color[ii], ii);
             break;
         }
+*/
         //console.log('color', parents.color[ii], ii);
         sCtx.fillStyle = parents.color[ii];
         sCtx.fillRect(xx,yy, colorWide, colorWide);
