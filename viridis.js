@@ -1145,7 +1145,7 @@ var OriginalCubehelix_cmap = [
     ,'rgb(127, 127, 127)'  // 25 grey
     ,'rgb(  0, 245, 255)'  // 26 bright light blue
     ];
-    ParentColors = ColorBlind;
+    var ParentColors = ColorBlind;
     ParentColors.reverse();
     
   //colors too close to others already in use
@@ -2072,4 +2072,6 @@ var rainbow3 = [
  * color tools
  * http://www.456bereastreet.com/archive/200709/10_colour_contrast_checking_tools_to_improve_the_accessibility_of_your_design/
  * http://phrogz.net/css/distinct-colors.html
+ * 
+ * http://stackoverflow.com/questions/3620663/color-theory-how-to-convert-munsell-hvc-to-rgb-hsb-hsl
 */

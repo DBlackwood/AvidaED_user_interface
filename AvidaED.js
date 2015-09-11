@@ -257,7 +257,7 @@ require([
         return this.inherited(arguments);
       }
     });
-          
+
     var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: true, singular: true, selfAccept: false});
     freezeConfigure.insertNodes(false, [
       { data: "@default",      type: ["conDish"]},
@@ -266,9 +266,13 @@ require([
     ]);
     var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: true, singular: true , selfAccept: false});
     freezeOrgan.insertNodes(false, [
-      { data: "@ancestor",      type: ["organism"]},
-      { data: "m2u8000Nand",    type: ["organism"]},
-      { data: "m2u8000Not",     type: ["organism"]}
+      { data: "@ancestor",   type: ["organism"]},
+      { data: "bravo",       type: ["organism"]},
+      { data: "charlie",     type: ["organism"]},
+      { data: "delta",       type: ["organism"]},
+      { data: "echo",        type: ["organism"]},
+      { data: "foxtrot",     type: ["organism"]},
+      { data: "golf",        type: ["organism"]}
     ]);
     
     var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], singular: true, copyOnly: true, selfAccept: false});
@@ -296,7 +300,7 @@ require([
     var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
     var graphPop3 = new dndTarget("graphPop3Node", {accept: ["popDish"], singular: true});
 
-    // General DnD functions --------------------------------------
+    // General Drag and Drop (DnD) functions --------------------------------------
     //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
     //Puts the contents of the source in a object (list) called items. 
     function getAllItems(source){
@@ -318,7 +322,7 @@ require([
     //and reinserting the most resent one after a drop event.
     //This triggers for every dnd drop, not just those of freezeConfigureNode
     ConfigCurrent.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="ConfigCurrentNode"){
+      if ("ConfigCurrentNode" == target.node.id){
         //clear all data so when we add one there will never be more than one.
         ConfigCurrent.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
         //get the data for the new configuration 
@@ -342,7 +346,7 @@ require([
     
     //This triggers for every dnd drop, not just those of freezeConfigureNode
     freezeConfigure.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="freezeConfigureNode"){
+      if ("freezeConfigureNode" == target.node.id){
         var strItem = Object.keys(target.selection)[0];
         var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
         if (dishCon) {
@@ -389,6 +393,7 @@ require([
     
     //Organsim dnd------------------------------------------------------
 
+    //structure to hole list of ancestor organisms
     var parents = {};
     parents.name = [];
     parents.genome = [];
@@ -396,11 +401,10 @@ require([
     parents.col = [];
     parents.row = [];
     parents.AvidaNdx = [];
-    //parents.autoCnt = 0; 
     parents.autoNdx = [];
-    //parents.handCnt = 0; 
     parents.handNdx = [];
     parents.howPlaced = [];
+    parents.domId = [];
     
     //Clear parents/Ancestors
     function clearParents() {
@@ -411,26 +415,27 @@ require([
       parents.col = [];
       parents.row = [];
       parents.AvidaNdx = [];
-      //parents.autoCnt = 0; 
       parents.autoNdx = [];
-      //parents.handCnt = 0; 
       parents.handNdx = [];
       parents.howPlaced = [];
+      parents.domId = [];
     }
       
     //This triggers for every dnd drop, not just those of AncestorBoxNode
     AncestorBox.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="AncestorBoxNode"){
+      if ("AncestorBoxNode" == target.node.id && "AncestorBoxNode" != source.node.id) {
         nn = parents.name.length;
-        parents.name[nn] = nodes[0].textContent;
         parents.autoNdx.push(nn);
-        parents.howPlaced[nn] = 'auto';
-        //parents.autoCnt++;
+        parents.name.push(nodes[0].textContent);
+        parents.howPlaced.push('auto');
+        //parents.domId.push(nodes[0].id); //got domId from freezer
+        //tiba
+        parents.domId.push(Object.keys(target.selection)[0]);  
         //Find color of ancestor
         if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
         else {parents.color.push('rgb(187, 187, 187)')};
         PlaceAncestors(parents);
-        //console.log("parents", parents); 
+        //console.log("parents", parents.color); 
       }
     });
 
@@ -454,14 +459,16 @@ require([
           freezeOrgan.forInSelectedItems(function(item, id){  
             AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
           });
+          //console.log('before',parents);
           var nn = parents.name.length;
           parents.handNdx.push(nn);
-          //parents.handCnt++;
           parents.howPlaced[nn] = 'hand';
           parents.name[nn] = nodes[0].textContent;
+          parents.domId.push(Object.keys(target.selection)[0]);  
           //Find color of ancestor
           if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
           else {parents.color.push('rgb(187, 187, 187)')};
+          //console.log('after', parents)
           //Re-Draw Grid
           DrawGridSetup();
         }
@@ -475,7 +482,7 @@ require([
     //When something is added to the Organism Freezer ------------------
     //This triggers for every dnd drop, not just those of Organism Freezer
     freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="freezeOrganNode"){
+      if ("freezeOrganNode" == target.node.id){
         var strItem = Object.keys(target.selection)[0];
         var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
         if (avidian) {
@@ -492,8 +499,6 @@ require([
               }
             }  
           }
-          //console.log(Object.keys(target.map))
-          //console.log("before: data",target.map[strItem].data, " content=", document.getElementById(strItem).textContent);
           if (null != avidian) { 
             document.getElementById(strItem).textContent=avidian; 
             target.map[strItem].data = avidian; 
@@ -527,7 +532,7 @@ require([
     //and reinserting the most resent one after a drop event.
     //This triggers for every dnd drop, not just those of OrganCurrentNode
     OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="OrganCurrentNode"){
+      if ("OrganCurrentNode" == target.node.id){
         //clear out the old data if an organism is already there
         var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
         if (1<items.length){
@@ -606,7 +611,7 @@ require([
     //This should never happen as there is only one source for populated dishes
     //This triggers for every dnd drop, not just those of freezePopDish
     freezePopDish.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="freezePopDishNode"){
+      if ("freezePopDishNode" == target.node.id){
         //var items = getAllItems(freezePopDish);  not used
         var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
         var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
@@ -643,15 +648,34 @@ require([
     // Process trash ---------------------------------------------------
     //This triggers for every dnd drop, not just those of trashNode
     trash.on("DndDrop", function(source, nodes, copy, target){
-      if (target.node.id=="trashNode"){
-        //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
-        source.parent.removeChild(nodes[0]);
-        //var items = getAllItems(trash);
-        trash.selectAll().deleteSelectedNodes();  //does appear to clear items 
-        //target.parent.removeChild(nodes[0]);
+      if ("trashNode" == target.node.id){
+        //if the item is from the freezer, delete from freezer unless it is original stock (@) 
+        if ("freezeConfigureNode" == source.node.id ||
+            "freezeOrganNode" == source.node.id || "freezePopDishNode" == source.node.id) {
+          // find name of item in node; don't remove starter (@) items
+          if (!('@default' == nodes[0].textContent ||'@ancestor'==nodes[0].textContent || 
+                '@example'==nodes[0].textContent)) {
+            source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+          }
+        }
+        // items from ancestor box require ancestor (parent) handling. 
+        else if ("AncestorBoxNode" == source.node.id) {
+          //find index into parents     //tiba
+          console.log('source', source.map);
+          console.log('nodes', nodes[0], nodes[0].id);
+          //Find indext into parent structure
+          var Ndx = parents.domId.indexOf(nodes[0].id);
+          console.log('nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
+          removeParent(Ndx);
+          PlaceAncestors(parents);
+        }
+        trash.selectAll().deleteSelectedNodes();  //in all cases, empty the trash
       }
     });
 
+    //-----------------------------------------------------------------//
+    //          DND Analysis page
+    //-----------------------------------------------------------------//
     //The following cases should never happen as they are defined as 'target' not as 'source'
     //This triggers for every dnd drop, not just those of freezePopDish
     trash.on("DndDrop", function(source, nodes, copy, target){
@@ -1357,7 +1381,6 @@ require([
 /*  //generic for whole screen
     $(document).on('mousedown', function (evt) {
     mouseDnOffsetPos=[evt.offsetX, evt.offsetY];
-    
     //console.log('document',evt);
     //console.log('client',evt.clientX, evt.clientY, '; offset', evt.offsetX, evt.offsetY, '; page', evt.pageX, evt.pageY, '; screen', evt.screenX, evt.screenY);
     console.log('mouseDn.id', mouseDnTargetId, '; offset', mouseDnOffsetPos);
@@ -1399,6 +1422,13 @@ require([
       //console.log('mx,y', mouseX, mouseY, '; selected Col, Row', grd.ColSelected, grd.RowSelected);
     }
 
+    //If the mouse button is released, return cursor to default values
+    $(document).on('mouseup', function (evt) {
+      console.log('mouseup anywhere in document -------------');
+              document.getElementById('gridCanvas').style.cursor = 'default';
+              document.getElementById('TrashCan').style.cursor = 'default';
+    });
+
     //Call when user does a mouse down in the grid canvas  
     //https://github.com/kangax/fabric.js/wiki/Working-with-events
     $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
@@ -1413,25 +1443,27 @@ require([
 
         //In the grid and selected. Now look to see contents of cell are dragable. 
         var ParentNdx=-1; //index into parents array if parent selected else -1;
-        if (newrun) {  //run is not started so look to see if cell contains ancestor
+        if (newrun) {  //run has not started so look to see if cell contains ancestor
           ParentNdx = findParentNdx();
           if (-1 < ParentNdx) { //selected a parent, check for dragging
             document.getElementById('gridCanvas').style.cursor = 'copy';
             document.getElementById('TrashCan').style.cursor = 'copy';
             console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
             $(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
-              //console.log('gd move');
-              document.getElementById('gridCanvas').style.cursor = 'copy';
-              document.getElementById('TrashCan').style.cursor = 'copy';
-              console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
+              console.log('mmove', evt.offsetX, evt.offsetY, 'mouseDn', mouseDnOffsetPos);
               if(!nearly([evt.offsetX, evt.offsetY], mouseDnOffsetPos)) {
                 console.log("gd draging");  
+                document.getElementById('gridCanvas').style.cursor = 'copy';
+                document.getElementById('TrashCan').style.cursor = 'copy';
               }
               $(document).off('mousemove', handler);
-            }); 
+            });
+            console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
+             
             $(document).on('mouseup', function handler(evt) {
               document.getElementById('gridCanvas').style.cursor = 'default';
               document.getElementById('TrashCan').style.cursor = 'default';
+              console.log('mouseup in side of conditional');
               if (!nearly([evt.offsetX, evt.offsetY], mouseDnOffsetPos)) {  //look to see if it in the canvas
                 //-----------------------------------------------move on grid
                 if ('gridCanvas' == evt.target.id) {
@@ -1444,29 +1476,27 @@ require([
                     parents.row[ParentNdx] = grd.RowSelected; 
                     parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
                     //console.log('mvparent', ParentNdx, parents.col[ParentNdx], parents.row[ParentNdx]); 
-                    console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-                    console.log('b hand', parents.handNdx.length, parents.handNdx);
+                    //console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
+                    //console.log('b hand', parents.handNdx.length, parents.handNdx);
                     //change from auto placed to hand placed if needed
                     if ('auto' == parents.howPlaced[ParentNdx] ) {
                       parents.howPlaced[ParentNdx] = 'hand';
                       makeHandAutoNdx();
                       //PlaceAncestors(parents);
                     }
-                    console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-                    console.log('hand', parents.handNdx.length, parents.handNdx);
+                    //console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
+                    //console.log('hand', parents.handNdx.length, parents.handNdx);
                     DrawGridSetup();
                   }
                 } //-------------------------------------------- trash
                 else if ('TrashCan' == evt.target.id) {
                   //Remove this Parent from the grid  //Needs work!!
-                  console.log('Remove Parent', ParentNdx);
+                  //console.log('Remove Parent', ParentNdx);
                   //remove node from AncestorBoxNode
                   fromAncestorBoxRemove(parents.name[ParentNdx]);
-                  console.log('trash', ParentNdx, parents.name, parents.col, parents.row)
+                  //console.log('trash', ParentNdx, parents.name, parents.col, parents.row)
                   //remove from main list.
                   removeParent(ParentNdx);
-                  //re-create index list for Hand placed and Auto placed
-                  makeHandAutoNdx();
                   DrawGridSetup();
                   document.getElementById('gridCanvas').style.cursor = 'default';
                   document.getElementById('TrashCan').style.cursor = 'default';
@@ -1504,14 +1534,18 @@ require([
 
     //removes the parent at index ParentNdx
     function removeParent(ParentNdx) {
+      //console.log('rP', ParentColors)
+      console.log('rp',ParentNdx, parents);
       ParentColors.push(parents.color[ParentNdx]);
+      parents.color.splice(ParentNdx,1);      
       parents.name.splice(ParentNdx,1);
       parents.genome.splice(ParentNdx,1);
-      parents.color.splice(ParentNdx,1);
       parents.col.splice(ParentNdx,1);
       parents.row.splice(ParentNdx,1);
       parents.AvidaNdx.splice(ParentNdx,1);
       parents.howPlaced.splice(ParentNdx, 1);
+      parents.domId.splice(ParentNdx, 1);
+      makeHandAutoNdx();
     }
 
     function makeHandAutoNdx() {
@@ -1561,7 +1595,7 @@ require([
     function DrawSelected() {
       grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
       grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
-      DrawCellOutline(2, '#00ffff', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt)
+      DrawCellOutline(2, '#00ff00', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt)
     }
     
     function DrawCellOutline(lineThickness, color, xx, yy, wide, tall) {
@@ -1776,13 +1810,11 @@ require([
           }
           break;
         case 'Gnuplot2':
-          console.log('Gnuplot2');
           for (var ii=0; ii < Gnuplot2_cmap.length; ii++) {
             grad.addColorStop(ii/(Gnuplot2_cmap.length-1), Gnuplot2_cmap[ii]); 
           }
           break;
         case 'Cubehelix':
-          console.log('Cubehelix');
           for (var ii=0; ii < Cubehelix_cmap.length; ii++) {
             grad.addColorStop(ii/(Cubehelix_cmap.length-1), Cubehelix_cmap[ii]); 
           }
@@ -2740,7 +2772,7 @@ require([
     //Functions not in use, but might be usefull ------------------------
     //************************************************************************
 
-    hexColor = invertHash(dictColor);
+    var hexColor = invertHash(dictColor);
     var theColor = hexColor["#000000"];  //This should get 'Black'
     //console.log("theColor=", theColor);
 
