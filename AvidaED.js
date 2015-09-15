@@ -422,7 +422,6 @@ require([
         if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
         else {parents.color.push(defaultParentColor)};
         PlaceAncestors(parents);
-        console.log('ancestorBox: target.map', target.map, '; parents.dom', parents.domId);
       }
     });
 
@@ -457,7 +456,7 @@ require([
           //find domId of parent as listed in AncestorBox
           var mapItems = Object.keys(AncestorBox.map);
           parents.domId.push(mapItems[mapItems.length-1]);
-          console.log('mapItems', mapItems, mapItems.length, '; p.domId', parents.domId[nn]);
+          
           //Find color of ancestor
           if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
           else {parents.color.push(defaultParentColor)};
@@ -475,8 +474,6 @@ require([
     //When something is added to the Organism Freezer ------------------
     freezeOrgan.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of Organism Freezer
       if ("freezeOrganNode" == target.node.id && "AncestorBoxNode" == source.node.id) {
-        console.log('target.map', target.map);
-        console.log('nodes[0].id', nodes[0].id);
         var strItem = Object.keys(target.selection)[0];
         var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
         if (avidian) {
@@ -493,24 +490,12 @@ require([
               }
             }  
           }
-          if (null != avidian) { 
+          if (null != avidian) {  //give dom item new avidian name
             document.getElementById(strItem).textContent=avidian; 
             target.map[strItem].data = avidian; 
             
             // need to remove organism from parents list. 
             var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
-            console.log('nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
-
-            var domItems = Object.keys(freezeOrgan.map);
-            var nodeIndex = -1;
-            for (var ii=0; ii< domItems.length; ii++) {
-              if (freezeOrgan.map[domItems[ii]].data == avidian) {
-                nodeIndex = ii;
-                break;
-              }
-            }
-            console.log('domItems[nodeIndex]', domItems[nodeIndex]);
-
             removeParent(Ndx);
             PlaceAncestors(parents);
             
@@ -1575,7 +1560,7 @@ require([
     //removes the parent at index ParentNdx
     function removeParent(ParentNdx) {
       //console.log('rP', ParentColors)
-      console.log('rp ndx, domId, parents',ParentNdx, parents.domId, parents);
+      //console.log('rp ndx, domId, parents',ParentNdx, parents.domId, parents);
       ParentColors.push(parents.color[ParentNdx]);
       parents.color.splice(ParentNdx,1);      
       parents.name.splice(ParentNdx,1);
