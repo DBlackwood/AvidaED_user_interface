@@ -1074,6 +1074,9 @@ require([
       newrun = true;
       // send rest to Avida adaptor
       doReset();
+      //reset Ancestor Color stack
+      ParentColors = ColorBlind;
+      ParentColors.reverse();
       //set run/stop and drop down menu to the 'stopped' state
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);

@@ -1145,7 +1145,9 @@ var OriginalCubehelix_cmap = [
     //,'rgb(127, 127, 127)'  // 25 grey
     ,'rgb(  0, 245, 255)'  // 26 bright light blue
     ];
-    var ParentColors = ColorBlind;
+
+    var ParentColors = ColorBlind.slice();
+
     ParentColors.reverse();
     
     var defaultParentColor = 'rgb(187, 187, 187)';
