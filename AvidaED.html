@@ -104,7 +104,7 @@
                     value="Population" iconClass="dijitNoIcon"></input></td>
            </tr>
            <tr>
-             <td><img src="avida-ed-organism-icon.png" style="width: 32px; height: 32px;"></img></td>
+             <td><img src="avida-ed-organism-icon.png" style="width: 32px; height: 32px;" id="organismIcon"></img></td>
              <td><input type="button" id="organismButton" intermediateChanges="false"
                     value="Organism" iconClass="dijitNoIcon"></input></td>
            </tr>
@@ -158,9 +158,7 @@
             <tbody>
               <tr style="vertical-align: middle; line-height: 25px">
                 <td style="vertical-align: top;">
-                  <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img>
-                    <span id="Configuration" style="display: inline-block; padding-top:-2px">
-                        Configuration: </span></div>
+                  <div class="lftmargin"><img src="avida-ed-dish-icon.png" ></img></div>
                   <div id="ConfigCurrentNode" class="popContainer"></div>
                 </td>
                 <td style="text-align: right;">
@@ -188,27 +186,29 @@
                     <tbody>
                       <tr>
                         <td>Name: <label id="nameLabel">no_name</label></td>
-                        <td align="right">colorsq</td>
+                        <td align="right">
+                          <canvas id="SelectedColor" width="15" height="15" style="border:1px solid #000;"></canvas>
+                        </td>
                       </tr>
                       <tr>
                         <td>Fitness:</td>
-                        <td><label id="fitLabel">0.29</label></td>
+                        <td><label id="fitLabel"></label></td>
                       </tr>
                       <tr>
                         <td>Metabolic Rate:</td>
-                        <td><label id="metabolicLabel">45.0</label></td>
+                        <td><label id="metabolicLabel"></label></td>
                       </tr>
                       <tr>
                         <td>Generation:</td>
-                        <td><label id="generateLabel">154.0</label></td>
+                        <td><label id="generateLabel"></label></td>
                       </tr>
                       <tr>
                         <td>Age:</td>
-                        <td><label id="ageLabel">15.00</label></td>
+                        <td><label id="ageLabel"></label></td>
                       </tr>
                       <tr>
                         <td>Ancestor:</td>
-                        <td><label id="ancestorLabel">@ancestor</label>
+                        <td><label id="ancestorLabel"></label>
                        </td>
                       </tr>
                     </tbody>
@@ -225,40 +225,40 @@
                         <td><label>Times Performed</label></td>
                       </tr>
                       <tr>
-                        <td><label id="notLabel">not+</label></td>
-                        <td><label id="notTime">2</label></td>
+                        <td><label id="notLabel">not</label></td>
+                        <td><label id="notTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="nanLabel">nan-</label></td>
-                        <td><label id="nanTime">0</label></td>
+                        <td><label id="nanLabel">nan</label></td>
+                        <td><label id="nanTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="andLabel">and+</label></td>
-                        <td><label id="andTime">1</label></td>
+                        <td><label id="andLabel">and</label></td>
+                        <td><label id="andTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="ornLabel">orn-</label></td>
-                        <td><label id="ornTime">0</label></td>
+                        <td><label id="ornLabel">orn</label></td>
+                        <td><label id="ornTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="oroLabel">oro-</label></td>
-                        <td><label id="oroTime">0</label></td>
+                        <td><label id="oroLabel">oro</label></td>
+                        <td><label id="oroTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="antLabel">ant-</label></td>
-                        <td><label id="antTime">0</label></td>
+                        <td><label id="antLabel">ant</label></td>
+                        <td><label id="antTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="norLabel">nor+</label></td>
-                        <td><label id="norTime">1</label></td>
+                        <td><label id="norLabel">nor</label></td>
+                        <td><label id="norTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="xorLabel">xor-</label></td>
-                        <td><label id="xorTime">0</label></td>
+                        <td><label id="xorLabel">xor</label></td>
+                        <td><label id="xorTime"></label></td>
                       </tr>
                       <tr>
-                        <td><label id="equLabel">equ-</label></td>
-                        <td><label id="equTime">0</label></td>
+                        <td><label id="equLabel">equ</label></td>
+                        <td><label id="equTime"></label></td>
                       </tr>
                     </tbody>
                   </table>
@@ -270,23 +270,23 @@
                   <tbody>
                     <tr>
                       <td>Pop Size:</td>
-                      <td><label id="popSizeLabel">3594</label></td>
+                      <td><label id="popSizeLabel"></label></td>
                     </tr>
                     <tr>
                       <td>Avg. Fitness:</td>
-                      <td><label id="aFitLabel">234.34</label></td>
+                      <td><label id="aFitLabel"></label></td>
                     </tr>
                     <tr>
                       <td>Avg. Metabolic Rate:</td>
-                      <td><label id="aMetabolicLabel">12345.6</label></td>
+                      <td><label id="aMetabolicLabel"></label></td>
                     </tr>
                     <tr>
                       <td>Avg. Gestation:</td>
-                      <td><label id="aGestateLabel">169.3</label></td>
+                      <td><label id="aGestateLabel"></label></td>
                     </tr>
                     <tr>
                       <td>Avg. Age (updates):</td>
-                      <td><label id="aAgeLabel">7.36</label></td>
+                      <td><label id="aAgeLabel"></label></td>
                     </tr>
                   </tbody>
                 </table>
@@ -495,7 +495,7 @@
                     <canvas data-dojo-type="dojo.dnd.Source" id="gridCanvas" width="300" height="100" style="border:1px solid #DDDDDD;"></canvas>
                 </div>
                 <div id="scaleDiv">
-                    <canvas data-dojo-type="dojo.dnd.Source" id="scaleCanvas" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
+                    <canvas id="scaleCanvas" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
                 </div>
                 <div id="seedTray"></div>
              </div>
@@ -611,7 +611,7 @@
           <tbody>
             <tr style="valign: middle; line-height: 30px">
               <td>
-                  <div class="lftmargin"><img src="avida-ed-ancestor-icon.png" style="height: 32px;"></img>Organism: </div>
+                  <div class="lftmargin"><img src="avida-ed-ancestor-icon.png" style="height: 32px;"></img></div>
                   <div id="OrganCurrentNode" class="popContainer"></div>&nbsp;
               </td>
               <td style="text-align: right;">

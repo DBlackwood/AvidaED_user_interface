@@ -1142,11 +1142,13 @@ var OriginalCubehelix_cmap = [
     ,'rgb(255,   0, 255)'  // 22 hot pink
     ,'rgb(  0, 138, 255)'  // 23 sky blue
     ,'rgb(255,  97,   0)'  // 24 red-orange
-    ,'rgb(127, 127, 127)'  // 25 grey
+    //,'rgb(127, 127, 127)'  // 25 grey
     ,'rgb(  0, 245, 255)'  // 26 bright light blue
     ];
     var ParentColors = ColorBlind;
     ParentColors.reverse();
+    
+    var defaultParentColor = 'rgb(187, 187, 187)';
     
   //colors too close to others already in use
   //,'rgb(255, 204, 0)'  // 32 dark yellow
@@ -2045,7 +2047,6 @@ var rainbow3 = [
   ,'rgb(255, 252, 100)'
   ,'rgb(255, 255, 100)'
 ];
-
 
 /* web sites about color 
  *  * 

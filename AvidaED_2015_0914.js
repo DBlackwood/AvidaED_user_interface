@@ -246,7 +246,7 @@ require([
     //document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
 
     /* ********************************************************************** */
-    /* Dojo Drag N Drop Freezer ***********************************************/
+    /* Drag N Drop Freezer ****************************************************/
     /* ********************************************************************** */
     
     dojo.declare("AcceptOneItemSource", dndSource, {
@@ -311,6 +311,13 @@ require([
       return items;
     }
     
+    // does not work
+    on(dom.byId("gridCanvas"),"drop", function(event){
+      domGeometry.normalizeEvent(event);
+      console.log("xx ", event.pageX);
+      console.log("yy ", event.pageY);
+    })
+
     //-------- Configuration DnD ---------------------------------------
     //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
     //and reinserting the most resent one after a drop event.
@@ -338,8 +345,8 @@ require([
       }
     });
     
-    //Process when an Configuration is added to the Freezer
-    freezeConfigure.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
+    //This triggers for every dnd drop, not just those of freezeConfigureNode
+    freezeConfigure.on("DndDrop", function(source, nodes, copy, target){
       if ("freezeConfigureNode" == target.node.id){
         var strItem = Object.keys(target.selection)[0];
         var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
@@ -350,7 +357,7 @@ require([
             unique = false;
             for (var ii = 0; ii < namelist.length; ii++){
               //console.log ("name ", namelist[ii].innerHTML);
-              if (dishCon == namelist[ii].textContent) {
+              if (dishCon == namelist[ii].innerHTML) {
                 dishCon = prompt("Please give your configured dish a unique name ", dishCon+"_1")
                 unique = true;
               }
@@ -359,9 +366,15 @@ require([
           if (null != dishCon) {
             document.getElementById(strItem).textContent=dishCon;
             target.map[strItem].data = dishCon;
+            //console.log(target.map[strItem].data); need to make sure this is unique
             //Now find which node has the new content so it can get a context menu. 
-            
+            //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+            var orderedDataItems = freezeConfigure.getAllNodes().map(function(node){
+              return freezeConfigure.getItem(node.id).data;
+            });
+            //console.log("orderedDataItems", orderedDataItems); 
             var domItems = Object.keys(freezeConfigure.map);
+            //console.log("domItems=", domItems);
             var nodeIndex = -1;
             for (var ii=0; ii< domItems.length; ii++) {
               if (freezeConfigure.map[domItems[ii]].data == dishCon) {
@@ -372,7 +385,7 @@ require([
             contextMenu(target, domItems[nodeIndex]); 
           }
         }
-        else {  //user cancelled so the item should NOT be added to the freezer. 
+        else {  //cancelled so the item should NOT be added to the freezer. 
           freezeConfigure.deleteSelectedNodes();  //clear items  
           freezeConfigure.sync();   //should be done after insertion or deletion
         }
@@ -411,18 +424,19 @@ require([
       
     //This triggers for every dnd drop, not just those of AncestorBoxNode
     AncestorBox.on("DndDrop", function(source, nodes, copy, target){
-      //Do not copy parents if one is moved within Ancestor Box
       if ("AncestorBoxNode" == target.node.id && "AncestorBoxNode" != source.node.id) {
         nn = parents.name.length;
         parents.autoNdx.push(nn);
         parents.name.push(nodes[0].textContent);
         parents.howPlaced.push('auto');
+        //parents.domId.push(nodes[0].id); //got domId from freezer
+        //tiba
         parents.domId.push(Object.keys(target.selection)[0]);  
         //Find color of ancestor
         if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
-        else {parents.color.push(defaultParentColor)};
+        else {parents.color.push('rgb(187, 187, 187)')};
         PlaceAncestors(parents);
-        console.log('ancestorBox: target.map', target.map, '; parents.dom', parents.domId);
+        //console.log("parents", parents.color); 
       }
     });
 
@@ -443,24 +457,18 @@ require([
         if (parents.col[nn] >=0 && parents.col[nn] < grd.cols && parents.row[nn] >=0 && parents.row[nn] < grd.rows) {
           parents.AvidaNdx[nn] = parents.row[nn] * grd.cols + parents.col[nn];
           //Add organism to AncestorBox in settings. 
-          freezeOrgan.forInSelectedItems(function(item, id){
-            //console.log('selected: item', item, '; id', id);
+          freezeOrgan.forInSelectedItems(function(item, id){  
             AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
-            //console.log('gridBox.map', gridBox.map);
-            //console.log('AncestorBox.map', AncestorBox.map);
           });
-          //update parents structure
+          //console.log('before',parents);
           var nn = parents.name.length;
           parents.handNdx.push(nn);
           parents.howPlaced[nn] = 'hand';
           parents.name[nn] = nodes[0].textContent;
-          //find domId of parent as listed in AncestorBox
-          var mapItems = Object.keys(AncestorBox.map);
-          parents.domId.push(mapItems[mapItems.length-1]);
-          console.log('mapItems', mapItems, mapItems.length, '; p.domId', parents.domId[nn]);
+          parents.domId.push(Object.keys(target.selection)[0]);  
           //Find color of ancestor
           if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
-          else {parents.color.push(defaultParentColor)};
+          else {parents.color.push('rgb(187, 187, 187)')};
           //console.log('after', parents)
           //Re-Draw Grid
           DrawGridSetup();
@@ -473,10 +481,9 @@ require([
     });
 
     //When something is added to the Organism Freezer ------------------
-    freezeOrgan.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of Organism Freezer
-      if ("freezeOrganNode" == target.node.id && "AncestorBoxNode" == source.node.id) {
-        console.log('target.map', target.map);
-        console.log('nodes[0].id', nodes[0].id);
+    //This triggers for every dnd drop, not just those of Organism Freezer
+    freezeOrgan.on("DndDrop", function(source, nodes, copy, target){
+      if ("freezeOrganNode" == target.node.id){
         var strItem = Object.keys(target.selection)[0];
         var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
         if (avidian) {
@@ -496,30 +503,23 @@ require([
           if (null != avidian) { 
             document.getElementById(strItem).textContent=avidian; 
             target.map[strItem].data = avidian; 
-            
-            // need to remove organism from parents list. 
-            var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
-            console.log('nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
-
+            //console.log(target.map[strItem].data); need to make sure this is unique
+            //Now find which node has the new content so it can get a context menu. 
+            //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+            var orderedDataItems = freezeOrgan.getAllNodes().map(function(node){
+              return freezeOrgan.getItem(node.id).data;
+            });
+            //console.log("orderedDataItems", orderedDataItems);
             var domItems = Object.keys(freezeOrgan.map);
+            //console.log("domItems=", domItems);
             var nodeIndex = -1;
             for (var ii=0; ii< domItems.length; ii++) {
               if (freezeOrgan.map[domItems[ii]].data == avidian) {
                 nodeIndex = ii;
-                break;
               }
             }
-            console.log('domItems[nodeIndex]', domItems[nodeIndex]);
-
-            removeParent(Ndx);
-            PlaceAncestors(parents);
-            
             //create a right mouse-click context menue for the item just created. 
-            contextMenu(target, nodes[0].id); 
-          }
-          else { //Not given a name, so it should NOT be added to the freezer.
-            freezeOrgan.deleteSelectedNodes();  //clear items  
-            freezeOrgan.sync();   //should be done after insertion or deletion
+            contextMenu(target, domItems[nodeIndex]); 
           }
         }
         else {  //cancelled so the item should NOT be added to the freezer. 
@@ -527,16 +527,9 @@ require([
           freezeOrgan.sync();   //should be done after insertion or deletion
         }
       }
-      else if ("freezeOrganNode" == target.node.id && "AncestorBoxNode" != source.node.id) {
-        console.log('dojo dnd to Organ Freezer, not from Ancestor Box');
-      }
     });
-
-
-
     
-    //OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
-    organismIcon.on("DndDrop", function(source, nodes, copy, target){
+    OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
       if ("organismIcon" == target.node.id){
         //clear out the old data if an organism is already there
         var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
@@ -567,11 +560,11 @@ require([
 
     //Need to have only the most recent dropped organism in OrganCurrent. Do this by deleting everything in organCurrent
     //and reinserting the most resent one after a drop event.
-    OrganCurrent.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of OrganCurrentNode
+    //This triggers for every dnd drop, not just those of OrganCurrentNode
+    OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
       if ("OrganCurrentNode" == target.node.id){
         //clear out the old data if an organism is already there
-        var items = getAllItems(OrganCurrent);    //used to see if there is more than one item in Organ Current
-        //console.log('items', items, items.length);
+        var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
         if (1<items.length){
           OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
           OrganCurrent.sync();   //should be done after insertion or deletion
@@ -583,6 +576,16 @@ require([
           });
           //console.log("OrganCurrent.map=", OrganCurrent.map);
         }
+        //At one time I was tryign to store the orignal name on .data 
+        //and the current name in the .textContent. This would update textContent separately from data 
+        //var currentItem = Object.keys(OrganCurrent.map)[0];
+        //var freezeItem = Object.keys(freezeOrgan.selection)[0];
+        //console.log("currentI", currentItem, " freezeI", freezeItem);
+        //var tmp = document.getElementById(freezeItem).textContent;
+        //document.getElementById(currentItem).textContent = tmp;
+        //console.log("OrganCurrent.map=", OrganCurrent.map);
+        //console.log(Object.keys(OrganCurrent.map))  //gets the dom ids 
+
         doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
     });
@@ -610,6 +613,19 @@ require([
         doOrgTrace();  //request new Organism Trace from Avida and draw that.
         }
     });
+
+    //adds offspring to Canvs, but I can't grab it to drag it off the canvas, so does not work for my purpose
+    function addOffspring() {
+      var parentID = Object.keys(OrganCurrent.map)[0];
+      var parent = document.getElementById(parentID).textContent;
+      var items = getAllItems(OrganCanvas);
+      //console.log('items', items.length, items);
+      if (0 == items.length) {
+        OrganCanvas.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
+        OrganCanvas.sync();
+        //console.log('offspring', OrganCanvas.map);
+      }
+    }
     
     //uiWorker function
     function doOrgTrace() {
@@ -674,10 +690,10 @@ require([
         }
         // items from ancestor box require ancestor (parent) handling. 
         else if ("AncestorBoxNode" == source.node.id) {
-          //find index into parents    
+          //find index into parents     //tiba
           console.log('source', source.map);
           console.log('nodes', nodes[0], nodes[0].id);
-          //Find index into parent structure
+          //Find indext into parent structure
           var Ndx = parents.domId.indexOf(nodes[0].id);
           console.log('nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
           removeParent(Ndx);
@@ -1208,6 +1224,11 @@ require([
         freezeConfigure.sync();
         //Create context menu for right-click on this item
         //Find out the dom ID the node element just inserted. 
+        //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+        var orderedDataItems = freezeConfigure.getAllNodes().map(function(node){
+          return freezeConfigure.getItem(node.id).data;
+        });
+        //console.log("orderedDataItems", orderedDataItems);
         var domItems = Object.keys(freezeConfigure.map);
         //console.log("domItems=", domItems);
         var nodeIndex = -1;
@@ -1249,6 +1270,11 @@ require([
         freezePopDish.sync();
         //Create context menu for right-click on this item
         //Find out the dom ID the node element just inserted. 
+        //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+        var orderedDataItems = freezePopDish.getAllNodes().map(function(node){
+          return freezePopDish.getItem(node.id).data;
+        });
+        //console.log("orderedDataItems", orderedDataItems);
         var domItems = Object.keys(freezePopDish.map);
         //console.log("domItems=", domItems);
         var nodeIndex = -1;
@@ -1306,6 +1332,11 @@ require([
         freezeOrgan.sync();
         
         //Find out the dom ID the node element just inserted. 
+        //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+        var orderedDataItems = freezeOrgan.getAllNodes().map(function(node){
+          return freezeOrgan.getItem(node.id).data;
+        });
+        //console.log("orderedDataItems", orderedDataItems);
         var domItems = Object.keys(freezeOrgan.map);
         //console.log("domItems=", domItems);
         var nodeIndex = -1;
@@ -1355,9 +1386,6 @@ require([
       }
     }
 
-  //********************************************************************
-  //    Mouse DND functions
-  //********************************************************************
     var mouseDnoffsetPos = [];
 
     var nearly = function(aa, bb) {
@@ -1392,34 +1420,20 @@ require([
       //console.log('mx,y', mouseX, mouseY, '; selected Col, Row', grd.ColSelected, grd.RowSelected);
     }
 
-    var mouse = {};
-      mouse.Dn = false;
-      mouse.DnGridPos = [];
-      mouse.UpGridPos = [];
-      mouse.DnOrganPos = [];
-      mouse.Move = false;
-      mouse.Drag = false; 
-      mouse.ParentNdx = -1;
-      mouse.ParentSelected = false;
-      mouse.Picked = "";
-  
-    $(document.getElementById('organismCanvas')).on('mousedown', function (evt) {
-      mouse.DnOrganPos=[evt.offsetX, evt.offsetY];
-      mouse.Dn = true;
-      var distance = Math.sqrt(Math.pow(evt.offsetX-gen.cx[1],2) + Math.pow(evt.offsetY-gen.cy[1],2));
-      if (25 > distance) { 
-        document.getElementById('organismIcon').style.cursor = 'copy';
-        document.getElementById('organismCanvas').style.cursor = 'copy';
-        document.getElementById('mainBC').style.cursor = 'move';
-        mouse.Picked = "offspring"; 
-      }
-      else { mouse.Picked = ""; }
-    });
+var mouse = {};
+  mouse.Dn = false;
+  mouse.DnGridPos = [];
+  mouse.UpGridPos = [];
+  mouse.Move = false;
+  mouse.Drag = false; 
+  mouse.ParentSelected = false;
+  mouse.ParentNdx = -1;
   
     //mouse down on the grid
     $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
       mouse.DnGridPos=[evt.offsetX, evt.offsetY];
-      mouse.Dn = true;          
+      mouse.Dn = true;
+        
       // Select if it is in the grid
       findSelected(evt);
       //check to see if in the grid part of the canvas
@@ -1437,7 +1451,7 @@ require([
             document.getElementById('gridCanvas').style.cursor = 'copy';
             document.getElementById('TrashCan').style.cursor = 'copy';
             document.getElementById('mainBC').style.cursor = 'move';
-            mouse.Picked = 'parent';
+            mouse.ParentSelected = true;
             //console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
           }
         }
@@ -1458,10 +1472,9 @@ require([
       $(document).off('mousemove', handler);
     });
 
-    //When mouse button is released, return cursor to default values
+    //If the mouse button is released, return cursor to default values
     $(document).on('mouseup', function (evt) {
       //console.log('mouseup anywhere in document -------------');
-      document.getElementById('organismCanvas').style.cursor = 'default';
       document.getElementById('gridCanvas').style.cursor = 'default';
       document.getElementById('TrashCan').style.cursor = 'default';
       document.getElementById('mainBC').style.cursor = 'default';
@@ -1469,38 +1482,8 @@ require([
       mouse.UpGridPos=[evt.offsetX, evt.offsetY];
       mouse.Dn = false;
       
-      // --------- process if something picked to dnd ------------------
-      if ('parent' == mouse.Picked) {
-        mouse.Picked = ""
-        ParentMouseDn(evt) ;
-      }
-      else if ('offspring' == mouse.Picked) {
-        mouse.Picked = "";
-        OffspringMouseDn(evt)
-      }
-      mouse.Picked = "";
-    });
-
-    function OffspringMouseDn(evt) {
-      if ('organismIcon' == evt.target.id) { // needs work!!  tiba
-        //Get name of parent that is in OrganCurrentNode
-        var parent;
-        var parentID = Object.keys(OrganCurrent.map)[0];
-        console.log('parentID', parentID);
-        if (undefined == parentID) parent = '';
-        else parent = document.getElementById(parentID).textContent;
-        OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
-        OrganCurrent.sync();   //should be done after insertion or deletion
-        //Put name of offspring in OrganCurrentNode
-        OrganCurrent.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
-        OrganCurrent.sync();
-        
-        //get genome from offspring data //needs work!!
-        doOrgTrace();  //request new Organism Trace from Avida and draw that.
-      }
-    }
-
-    function ParentMouseDn(evt) {
+      if (mouse.ParentSelected) {
+        mouse.ParentSelected = false;
         if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
           mouse.UpGridPos=[evt.offsetX, evt.offsetY]; //not used for now
           //Move the ancestor on the canvas
@@ -1535,7 +1518,7 @@ require([
           DrawGridSetup();
         }
         //-------------------------------------------- organism view
-        else if ('organismIcon' == evt.target.id) { 
+        else if ('organismIcon' == evt.target.id) { //but keep on grid
           //Change to Organism Page
           mainBoxSwap("organismBlock"); 
           OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
@@ -1545,19 +1528,17 @@ require([
           document.getElementById("ExecuteAbout").style.height = height+"px";
           document.getElementById("ExecuteJust").style.width = "100%";  
           document.getElementById("ExecuteAbout").style.width = "100%";
-
-          OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
-          OrganCurrent.sync();   //should be done after insertion or deletion
-          //Put name of offspring in OrganCurrentNode
-          OrganCurrent.insertNodes(false, [{ data: parents.name[mouse.ParentNdx], type: ["organism"]}]);
-          OrganCurrent.sync();
-          //genome data should be in parents.genome[mouse.ParentNdx];
-
           doOrgTrace();  //request new Organism Trace from Avida and draw that.
         }
-    }
+        mouse.ParentSelected = false;
+      }
+    });
 
     function fromAncestorBoxRemove(removeName) {
+      var orderedDataItems = AncestorBox.getAllNodes().map(function(node){
+        return AncestorBox.getItem(node.id).data;
+      });
+      //console.log("orderedDataItems", orderedDataItems);
       var domItems = Object.keys(AncestorBox.map);
       console.log("domItems=", domItems);
       var nodeIndex = -1;
@@ -1575,7 +1556,7 @@ require([
     //removes the parent at index ParentNdx
     function removeParent(ParentNdx) {
       //console.log('rP', ParentColors)
-      console.log('rp ndx, domId, parents',ParentNdx, parents.domId, parents);
+      console.log('rp',ParentNdx, parents);
       ParentColors.push(parents.color[ParentNdx]);
       parents.color.splice(ParentNdx,1);      
       parents.name.splice(ParentNdx,1);
@@ -1780,6 +1761,24 @@ require([
         //xx = leftPad + col*(maxWide+colorWide+legendPad);
         xx = leftPad + col*(colWide);
         yy = 2+row*RowHt; 
+/*        switch(grd.colorMap) {
+          case "Viridis":
+            if (ii<26) {parents.color[ii] = ColorBlind[ii];}
+            else {parents.color[ii] = get_color1(Viridis_cmap, ii-11, 0, Math.max(1, parents.name.length-11))};  //linear map into color map
+            break;
+          case 'Cubehelix':
+            if (ii<26) {parents.color[ii] = ColorBlind[ii];}
+            else { parents.color[ii] = get_color1(Cubehelix_cmap, ii-11, 0, Math.max(1,parents.name.length-11.5))}    //linear map into color map
+            console.log(parents.color[ii],ii);
+            break;
+          case 'Gnuplot2':
+            if (ii<26) {parents.color[ii] = ColorBlind[ii];}
+            else { parents.color[ii] = get_color(Gnuplot2_cmap, ii-11, 0, Math.max(1,parents.name.length-11.5), 20);}    //linear map into color map
+            console.log(parents.color[ii], ii);
+            break;
+        }
+*/
+        //console.log('color', parents.color[ii], ii);
         sCtx.fillStyle = parents.color[ii];
         sCtx.fillRect(xx,yy, colorWide, colorWide);
         yy = textOffset+row*RowHt; 
@@ -1813,6 +1812,11 @@ require([
         case 'Cubehelix':
           for (var ii=0; ii < Cubehelix_cmap.length; ii++) {
             grad.addColorStop(ii/(Cubehelix_cmap.length-1), Cubehelix_cmap[ii]); 
+          }
+          break;
+        case 'Rainbow3':
+          for (var ii=0; ii < rainbow3.length; ii++) {
+            grad.addColorStop(ii/(rainbow3.length-1), rainbow3[ii]); 
           }
           break;
       }
@@ -1882,6 +1886,8 @@ require([
     function toggle(button) {
       if ('on' == document.getElementById(button).value) {
         document.getElementById(button).value = 'off';
+        //document.getElementById(button).style.background = '#fff';
+        //document.getElementById(button).style.height = '10px';
         document.getElementById(button).className = 'bitButtonOff';
         console.log('now off');
       }
@@ -2364,7 +2370,7 @@ require([
     //Draw offspring Icon once cell divides  from http://stackoverflow.com/questions/8977369/drawing-png-to-a-canvas-element-not-showing-transparency
     function drawIcon(gen) {
       var txt = "Offspring Genome"; 
-      var drw = new Image();
+      drw = new Image();
       drw.src = "avida-ed-ancestor-icon.png";
       drw.onload = function () {   //image size(width, height) from http://stackoverflow.com/questions/5173796/html5-get-image-dimension
         ctx.drawImage(drw, gen.cx[1]-drw.width/2, gen.cy[1]-drw.height/2);
@@ -2413,6 +2419,7 @@ require([
           gen.cx[1] = OrgCanvas.width/2 + 1.1*gen.bigR[1];
           gen.rotate[1] = 0;
           drawIcon(gen);
+          addOffspring();
           //there is an offspring, so it can be saved in the freezer or fed back into Organism viewer
           dijit.byId("mnFzOffspring").attr("disabled", false);
           dijit.byId("mnOffspringTrace").attr("disabled", false);
@@ -2770,7 +2777,7 @@ require([
     //});
     
     // from http://dojotoolkit.org/reference-guide/1.10/dojo/dnd.html
-    function OrderedItem(container, f, o){
+    function OrderedIter(container, f, o){
       // similar to:
       // container.forInItems(f, o);
       // but iterates in the listed order
@@ -2808,13 +2815,6 @@ require([
       ctx.stroke();
     }
     
-    // does not work
-    on(dom.byId("gridCanvas"),"drop", function(event){
-      domGeometry.normalizeEvent(event);
-      console.log("Not work xx ", event.pageX);
-      console.log("NOt work yy ", event.pageY);
-    })
-    
     //Notes on things I learned writing this code, that is not directly used in the code
     //use FileMerge to compare to versions of the same file on a Mac
     //js fiddle of dragging image to cavans and dragging it around http://jsfiddle.net/XU2a3/41/
@@ -2822,15 +2822,5 @@ require([
     //http://dojo-toolkit.33424.n3.nabble.com/dojo-dnd-problems-selection-object-from-nodes-etc-td3753366.html
     //This is supposed to select a node; lists as selected programatically, but does not show up on screen.
 
-    //A method to distinguish a mouse click from a mouse drag
-    //http://stackoverflow.com/questions/6042202/how-to-distinguish-mouse-click-and-drag
-    
-    //A method to get the data items in a dojo DND container in order
-    //freezeConfigure.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
-    //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-    //var orderedDataItems = freezeConfigure.getAllNodes().map(function(node){
-    //  return freezeConfigure.getItem(node.id).data;
-    //});
-    //console.log("orderedDataItems", orderedDataItems); 
 
   });
