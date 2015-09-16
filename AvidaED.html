@@ -75,8 +75,8 @@
             <span data-dojo-type="dijit/MenuItem" id="Hardware" label="Ancestor and Hardware"></span>
             <div data-dojo-type="dijit/MenuSeparator"></div>
             <div data-dojo-type="dijit/PopupMenuItem">
-              <span>Color</span>
-              <span data-dojo-type="dijit/Menu" id="Color" label="Color">
+              <span>Color Gradient</span>
+              <span data-dojo-type="dijit/Menu" id="ColorGradient" label="Color">
               <span data-dojo-type="dijit/MenuItem" id="mnViridis" label="Viridis"></span>
               <span data-dojo-type="dijit/MenuItem" id="mnCubehelix" label="Cubehelix"></span>
               <span data-dojo-type="dijit/MenuItem" id="mnGnuplot2" label="Gnuplot2"></span>
@@ -458,14 +458,6 @@
                    <tr>
                      <td>
                        Time: <label id="TimeLabel">(not started)</label><br />
-                      <!--  <br>
-                        Color Map
-                        <select data-dojo-type="dijit/form/Select" id="colorMap" data-dojo-props="name: 'colorMap'">
-                          <option value="Viridis" selected="selected">Viridis</option>
-                          <option value="Rainbow">Rainbow</option>
-                          <option value="Rainbow2">Rainbow2</option>
-                          <option value="Rainbow3">Rainbow3</option>
-                        </select> -->
                      </td>
                      <td style="text-align: center">
                         Mode
@@ -499,102 +491,102 @@
                 </div>
                 <div id="seedTray"></div>
              </div>
-           </div>
-         </div>
-         <div data-dojo-type="dijit/layout/ContentPane" title="SetupB" id="setupBlock" extractContent="false" 
-              preventCache="false" preload="false" refreshOnShow="false" doLayout="true" selected="true" closable="false">
-           <label>Environmental Settings</label>
-           <div style="height: 19px;" class="odd">
-             Dish Size:
-              <input id="sizeCols" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
-                  data-dojo-props="constraints:{min:0, max:500,places:0},
-                  invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
-                  style="width: 3em; height:1.8em"></input>
-              &nbsp; x &nbsp;
-              <input id="sizeRows" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
-                  required="true" value="10" data-dojo-props="constraints:{min:0, max:500,places:0},
-                  invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
-                  style="width:4em; height:1.8em"/></input>
-              cells&nbsp;<span id="sizeCells"></span>
-           </div>
-            <div class="even">
-              <span class="lftmargin">Per Site Mutation Rate:</span>
-              <span id="muteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
-              <!-- style done here for the slider; margin to keep it from overlapping;
-                                    without width the slider is the full width of the browser window-->
-              <input id="muteInput" type="text" style="width: 4em; height:1.8em"></input>
-              <div class="fltLeft">%; or the slider value is &nbsp;</div>
-              <input id="mRate" type="text" readonly style="width: 4em; height:1.8em"></input>
             </div>
-
-           <div class="odd">Ancestral Organism(s):
-              <div class="ancestorContainer" id="AncestorBoxNode"></div>
-           </div>
-           <div class="even">
-             <form id="offspringForm">
-             Place Offspring:
-             <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childParentRadio" intermediateChanges="false" 
-                  iconClass="dijitNoIcon" name="child" checked value="nearParent"></input>
-             <label id="childParentLabel">Near their parent</label>
-             <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childRandomRadio" intermediateChanges="false" 
-                  iconClass="dijitNoIcon" name="child" value="random"></input>
-             <label id="childRandomLabel">Anywhere, randomly</label>
-             </form>
-           </div>
-           <div class="odd">
-             <label>
-               What resources are available in the environment? (strength of metabolic reward shown in parentheses)</label>
-             <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; text-align: left">
-               <tbody>
-                 <tr>
-                   <td>Easy (x2)    </td>
-                   <td>Moderate (x4)</td>
-                   <td>Hard (x8)    </td>
-                   <td>Very hard (x16)</td>
-                   <td>Brutal (x32) </td>
-                 </tr>
-                 <tr>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="notose" label="notose"></input>notose</td>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="andose" label="andose"></input>andose</td>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="orose" label="orose"></input>orose</td>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="norose" label="norose"></input>norose</td>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="equose" label="equose"></input>equose</td>
-                 </tr>
-                 <tr>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="nanose" label="nanose"></input>nanose</td>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="ornose" label="ornose"></input>orose</td>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="andnose" label="andnose"></input>andnose</td>
-                   <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="xorose" label="xorose"></input>xorose</td>
-                   <td>&nbsp;</td>
-                 </tr>
-               </tbody>
-             </table>
-           </div>
-           <div class="even">
-             <form id="repeatForm">
-               <label id="label_31">Repeatability Mode:</label>
-               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="experimentRadio" 
-                  intermediateChanges="false" iconClass="dijitNoIcon" name="repeat" checked value="experimental"></input>
-               <label id="experimentLabel">Experimental</label>
-               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="demoRadio" 
-                  intermediateChanges="false" iconClass="dijitNoIcon" name="repeat" value="demo"></input>
-               <label id="demoLabel">Demo</label>
+          </div>
+          <div data-dojo-type="dijit/layout/ContentPane" title="SetupB" id="setupBlock" extractContent="false" 
+              preventCache="false" preload="false" refreshOnShow="false" doLayout="true" selected="true" closable="false">
+            <form id="setupForm">
+              <label>Environmental Settings</label>
+              <div style="height: 19px;" class="odd">
+                Dish Size:
+                <input id="sizeCols" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
+                    data-dojo-props="constraints:{min:0, max:500,places:0},
+                    invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
+                    style="width: 3em; height:1.8em"></input>
+                &nbsp; x &nbsp;
+                <input id="sizeRows" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
+                    required="true" value="10" data-dojo-props="constraints:{min:0, max:500,places:0},
+                    invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
+                    style="width:4em; height:1.8em"/></input>
+                cells&nbsp;<span id="sizeCells"></span>
+            </div>
+              <div class="even">
+                <span class="lftmargin">Per Site Mutation Rate:</span>
+                <span id="muteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
+                <!-- style done here for the slider; margin to keep it from overlapping;
+                                      without width the slider is the full width of the browser window-->
+                <!--<input id="muteInput" type="text" style="width: 4em; height:1.8em"></input> -->
+                <input id="muteInput" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
+                    data-dojo-props="constraints:{min:0, max:100},
+                    invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid mutation rate.'"
+                    style="width: 4.5em; height:1.8em"></input> %
+                <!--; or the slider value is &nbsp;</div>
+                <input id="mRate" type="text" readonly style="width: 4em; height:1.8em"></input> -->
+   
+              <div class="odd">Ancestral Organism(s):
+                 <div class="ancestorContainer" id="AncestorBoxNode"></div>
+              </div>
+              <div class="even">
+                Place Offspring:
+                <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childParentRadio" intermediateChanges="false" 
+                     iconClass="dijitNoIcon" name="child" checked value="nearParent"></input>
+                <label id="childParentLabel">Near their parent</label>
+                <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childRandomRadio" intermediateChanges="false" 
+                     iconClass="dijitNoIcon" name="child" value="random"></input>
+                <label id="childRandomLabel">Anywhere, randomly</label>
+              </div>
+              <div class="odd">
+                <label>
+                  What resources are available in the environment? (strength of metabolic reward shown in parentheses)</label>
+                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; text-align: left">
+                  <tbody>
+                    <tr>
+                      <td>Easy (x2)    </td>
+                      <td>Moderate (x4)</td>
+                      <td>Hard (x8)    </td>
+                      <td>Very hard (x16)</td>
+                      <td>Brutal (x32) </td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="notose" label="notose"></input>notose</td>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="andose" label="andose"></input>andose</td>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="orose" label="orose"></input>orose</td>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="norose" label="norose"></input>norose</td>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="equose" label="equose"></input>equose</td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="nanose" label="nanose"></input>nanose</td>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="ornose" label="ornose"></input>ornose</td>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="andnose" label="andnose"></input>andnose</td>
+                      <td><input type="checkbox" data-dojo-type="dijit/form/CheckBox" class="resourceButton" id="xorose" label="xorose"></input>xorose</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="even">
+                  <label id="label_31">Repeatability Mode:</label>
+                  <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="experimentRadio" 
+                     intermediateChanges="false" iconClass="dijitNoIcon" name="repeat" checked value="experimental"></input>
+                  <label id="experimentLabel">Experimental</label>
+                  <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="demoRadio" 
+                     intermediateChanges="false" iconClass="dijitNoIcon" name="repeat" value="demo"></input>
+                  <label id="demoLabel">Demo</label>
+              </div>
+              <div class="odd">
+                  <label>Pause Run:</label>
+                  <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="manRadio" 
+                       intermediateChanges="false" iconClass="dijitNoIcon" name="pauseType" checked value="manual"></input>
+                  <label id="ManLabel">Manually</label>
+                  <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="updateRadio" 
+                       intermediateChanges="false" iconClass="dijitNoIcon" name="pauseType" value="setupdate"></input>
+                  <label id="updateLabel">At update:</label>
+                  <input type="text" data-dojo-type="dijit/form/NumberSpinner" id="updateSpinner" intermediateChanges="false" 
+                       trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$"
+                       value="1000" data-dojo-props="smallDelta:100, constraints:{places:0}" style="width:80px"></input>
+              </div>
             </form>
-           </div>
-           <div class="odd">
-             <form id="runPauseForm">
-               <label>Pause Run:</label>
-               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="manRadio" 
-                    intermediateChanges="false" iconClass="dijitNoIcon" name="pauseType" checked value="manual"></input>
-               <label id="ManLabel">Manually</label>
-               <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="updateRadio" 
-                    intermediateChanges="false" iconClass="dijitNoIcon" name="pauseType" value="setupdate"></input>
-               <label id="updateLabel">At update:</label>
-               <input type="text" data-dojo-type="dijit/form/NumberSpinner" id="updateSpinner" intermediateChanges="false" 
-                    trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$"></input>
-              </form>
-           </div>
-         </div>
+          </div>
         <!-- </span> -->
         </div>
       </div>

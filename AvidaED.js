@@ -914,7 +914,27 @@ require([
       }
       else { // setup for a new run by sending config data to avida
         if (newrun) {
+          dom.byId("AncestorBoxNode").isSource = false;
           newrun = false;  //the run will no longer be "new"
+          //Disable some of the options on the Setup page
+          $( "#muteSlide" ).slider( { disabled: true });  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
+          dijit.byId("sizeCols").attr("disabled", true);
+          dijit.byId("sizeRows").attr("disabled", true);
+          dijit.byId("muteInput").attr("disabled", true);
+          dijit.byId("childParentRadio").attr("disabled", true);
+          dijit.byId("childRandomRadio").attr("disabled", true);
+          dijit.byId("notose").attr("disabled", true);
+          dijit.byId("nanose").attr("disabled", true);
+          dijit.byId("andose").attr("disabled", true);
+          dijit.byId("ornose").attr("disabled", true);
+          dijit.byId("orose").attr("disabled", true);
+          dijit.byId("andnose").attr("disabled", true);
+          dijit.byId("norose").attr("disabled", true);
+          dijit.byId("xorose").attr("disabled", true);
+          dijit.byId("equose").attr("disabled", true);
+          dijit.byId("experimentRadio").attr("disabled", true);
+          dijit.byId("demoRadio").attr("disabled", true);
+          
           //there will be a population so it can now be frozen. 
           dijit.byId("mnFzPopulation").attr("disabled", false);
           //collect setup data to send to avida
@@ -1074,6 +1094,25 @@ require([
       newrun = true;
       // send rest to Avida adaptor
       doReset();
+      //Disable some of the options on the Setup page
+      $( "#muteSlide" ).slider( { disabled: false });  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
+      dijit.byId("sizeCols").attr("disabled", false);
+      dijit.byId("sizeRows").attr("disabled", false);
+      dijit.byId("muteInput").attr("disabled", false);
+      dijit.byId("childParentRadio").attr("disabled", false);
+      dijit.byId("childRandomRadio").attr("disabled", false);
+      dijit.byId("notose").attr("disabled", false);
+      dijit.byId("nanose").attr("disabled", false);
+      dijit.byId("andose").attr("disabled", false);
+      dijit.byId("ornose").attr("disabled", false);
+      dijit.byId("orose").attr("disabled", false);
+      dijit.byId("andnose").attr("disabled", false);
+      dijit.byId("norose").attr("disabled", false);
+      dijit.byId("xorose").attr("disabled", false);
+      dijit.byId("equose").attr("disabled", false);
+      dijit.byId("experimentRadio").attr("disabled", false);
+      dijit.byId("demoRadio").attr("disabled", false);
+
       //reset Ancestor Color stack
       ParentColors = ColorBlind;
       ParentColors.reverse();
@@ -1517,7 +1556,22 @@ require([
         else if ('TrashCan' == evt.target.id) {
           //Remove this Parent from the grid  
           //remove node from AncestorBoxNode
-          fromAncestorBoxRemove(parents.name[mouse.ParentNdx]);
+          /*fromAncestorBoxRemove(parents.name[mouse.ParentNdx]);
+          var domItems = Object.keys(AncestorBox.map);
+          console.log("domItems=", domItems);
+          console.log('parents.domId', parents.domId[mouse.ParentNdx]);
+          var nodeIndex = -1;
+          for (var ii=0; ii< domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+            if (AncestorBox.map[domItems[ii]].data == parents.name[mouse.ParentNdx]) {
+              nodeIndex = ii;
+            }
+          }
+          console.log('nodeIndex', nodeIndex, domItems[nodeIndex] );
+          */
+          var node = dojo.byId(parents.domId[mouse.ParentNdx]);
+          AncestorBox.parent.removeChild(node);
+          AncestorBox.sync();
+
           //remove from main list.
           removeParent(mouse.ParentNdx);
           DrawGridSetup();
@@ -1547,7 +1601,7 @@ require([
 
     function fromAncestorBoxRemove(removeName) {
       var domItems = Object.keys(AncestorBox.map);
-      console.log("domItems=", domItems);
+      //console.log("domItems=", domItems);
       var nodeIndex = -1;
       for (var ii=0; ii< domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
         if (AncestorBox.map[domItems[ii]].data == removeName) {
@@ -1701,6 +1755,11 @@ require([
       //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
 
       DrawGridBackground();
+      //Check to see if run has started
+      //if (newrun) { DrawParent();}
+      if (true) { DrawParent();}
+      else { // running so draw grid data from Avida
+      }
       //Draw Selected as one of the last items to draw
       if (grd.flagSelected) { DrawSelected() };
     }
@@ -1716,15 +1775,9 @@ require([
       //cntx.translate(grd.xOffset, grd.yOffset);
       cntx.fillStyle=dictColor['Black'];
       cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
-      //console.log("cntx grd", grd);
       
-      //console.log('grd.sizeX,Y', grd.sizeX, grd.sizeY, '; cellWd, Ht', grd.cellWd, grd.cellHt, 
-      // '; product',grd.cellWd*grd.cols, grd.cellHt*grd.rows,  '; marginX, Y', grd.marginX, grd.marginY);
-      //console.log ("cellWd, Ht", grd.cellWd, grd.cellHt);
-
       backgroundSqares();      
       //Draw parents if run has not started. 
-      DrawParent();
     }
 
     //--------------- Draw legend --------------------------------------
@@ -1755,7 +1808,7 @@ require([
         legendRows = Math.trunc(parents.name.length/legendCols);
       }
       else { legendRows = Math.trunc(parents.name.length/legendCols)+1; }
-      //set cavas height based on space needed
+      //set canvas height based on space needed
       CanvasScale.height = RowHt * legendRows;
       sCtx.fillStyle = dictColor["ltGrey"];
       sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
@@ -1777,6 +1830,7 @@ require([
       }
     }
     
+    //needs numbers from Avida
     function GradientScale() {
       CanvasScale.width = $("#gridHolder").innerWidth()-6;
       CanvasScale.height = 30;
@@ -1840,29 +1894,32 @@ require([
     }, "ZoomSlide");
 
     grd.colorMap = 'Gnuplot2';
+    dijit.byId("mnGnuplot2").attr("disabled", true);
+    
     dijit.byId("mnViridis").on("Click", function(){ 
-//      dijit.byId("colorMap").set("value", 'Viridis');
+      dijit.byId("mnCubehelix").attr("disabled", false);
+      dijit.byId("mnGnuplot2").attr("disabled", false);
+      dijit.byId("mnViridis").attr("disabled", true);
       grd.colorMap = 'Viridis';
       DrawGridSetup();
     });
 
     dijit.byId("mnGnuplot2").on("Click", function(){ 
-      //dijit.byId("colorMap").set("value", 'Gnuplot2');
+      dijit.byId("mnCubehelix").attr("disabled", false);
+      dijit.byId("mnGnuplot2").attr("disabled", true);
+      dijit.byId("mnViridis").attr("disabled", false);
       grd.colorMap = 'Gnuplot2';
       DrawGridSetup();
     });
 
     dijit.byId("mnCubehelix").on("Click", function(){ 
-      //dijit.byId("colorMap").set("value", 'Cubehelix');
+      dijit.byId("mnCubehelix").attr("disabled", true);
+      dijit.byId("mnGnuplot2").attr("disabled", false);
+      dijit.byId("mnViridis").attr("disabled", false);
       grd.colorMap = 'Cubehelix';
       DrawGridSetup();
     });
     
-/*    dijit.byId("colorMap").on("Change", function(){
-      grd.colorMap = dijit.byId("colorMap").value
-      DrawGridSetup();
-    });
-*/
     // *************************************************************** */
     //    Buttons that select organisms that perform a logic function 
     // *************************************************************** */
@@ -1931,12 +1988,12 @@ require([
         min: 0.0,
         max: 461512,
         slide: function( event, ui ) {
-          $( "#mRate" ).val( ui.value);  /*put slider value in the text above the slider */
+          //$( "#mRate" ).val( ui.value);  /*put slider value in the text above the slider */
           $( "#muteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3));  /*put the value in the text box */
         }
       });
       /* initialize */
-      $( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));
+      //$( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));  //used in testing nonlinear scale
       $( "#muteInput" ).val(muteDefault);
       /*update slide based on textbox */
       $( "#muteInput" ).change(function() {
@@ -1945,7 +2002,7 @@ require([
         //console.log("in mute change");
       });
     });
-    
+       
     /* --------------------------------------------------------------- */
     /*                    Population Chart                             */
     /* --------------------------------------------------------------- */
@@ -2725,6 +2782,9 @@ require([
     
     removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
     removeScrollbar('popStatistics', 'popTopRight', 'populationBlock');
+    
+    
+    
     
     //************************************************************************
     //Usefull Generic Functions
