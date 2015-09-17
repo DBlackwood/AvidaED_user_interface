@@ -917,6 +917,10 @@ require([
           dom.byId("AncestorBoxNode").isSource = false;
           newrun = false;  //the run will no longer be "new"
           //Disable some of the options on the Setup page
+          AncestorBox.isSource = false;
+          ConfigCurrent.isSource = false;
+          delete AncestorBox.accept["organism"];
+          delete ConfigCurrent.accept["conDish"];
           $( "#muteSlide" ).slider( { disabled: true });  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
           dijit.byId("sizeCols").attr("disabled", true);
           dijit.byId("sizeRows").attr("disabled", true);
@@ -1094,7 +1098,11 @@ require([
       newrun = true;
       // send rest to Avida adaptor
       doReset();
-      //Disable some of the options on the Setup page
+      //Enable the options on the Setup page
+      AncestorBox.accept["organism"] = 1;     
+      ConfigCurrent.accept["conDish"] = 1;     
+      AncestorBox.isSource = true;  
+      ConfigCurrent.isSource = true;  
       $( "#muteSlide" ).slider( { disabled: false });  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
       dijit.byId("sizeCols").attr("disabled", false);
       dijit.byId("sizeRows").attr("disabled", false);
