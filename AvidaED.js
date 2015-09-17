@@ -222,13 +222,16 @@ require([
     };
   
     // Buttons that call MainBoxSwap 
-    document.getElementById("populationButton").onclick = function(){ 
+    document.getElementById("populationButton").onclick = function(){
+      console.log('in populationButton');
       mainBoxSwap("populationBlock"); 
       DrawGridSetup();
     }
     
-    document.getElementById("organismButton").onclick = function(){ 
-      mainBoxSwap("organismBlock"); 
+    document.getElementById("organismButton").onclick = function(){
+      console.log('in organismButton');
+      mainBoxSwap("organismBlock");
+      console.log('after mainBoxSwap');
       OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
       OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
       var height = ($("#rightDetail").innerHeight()-375)/2;
@@ -240,6 +243,7 @@ require([
         console.log('traceObj.len', traceObj.length);
         updateOrgTrace(traceObj, cycle);
       }
+      console.log('after orgTrace');
     }
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
     //Take testBlock out completely later
@@ -2788,12 +2792,9 @@ require([
       //  document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
     }
     
-    //removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
-    //removeScrollbar('popStatistics', 'popTopRight', 'populationBlock');
-    
-    
-    
-    
+    removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
+    removeScrollbar('popStatistics', 'popTopRight', 'populationBlock');
+
     //************************************************************************
     //Usefull Generic Functions
     //************************************************************************
@@ -2813,7 +2814,7 @@ require([
     };
     
     //************************************************************************
-    //Functions not in use, but might be usefull ------------------------
+    //Functions not in use, but might be usefull; could be deleted -----------
     //************************************************************************
 
     var hexColor = invertHash(dictColor);
@@ -2874,6 +2875,8 @@ require([
     //Notes on things I learned writing this code, that is not directly used in the code
     //use FileMerge to compare to versions of the same file on a Mac
     //js fiddle of dragging image to cavans and dragging it around http://jsfiddle.net/XU2a3/41/
+
+    //Use Meld to compare two folders worth of stuff. Evoke from a terminal prompt. Does not seem to be be in applications folder
 
     //http://dojo-toolkit.33424.n3.nabble.com/dojo-dnd-problems-selection-object-from-nodes-etc-td3753366.html
     //This is supposed to select a node; lists as selected programatically, but does not show up on screen.
