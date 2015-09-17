@@ -2788,8 +2788,8 @@ require([
       //  document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
     }
     
-    removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
-    removeScrollbar('popStatistics', 'popTopRight', 'populationBlock');
+    //removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
+    //removeScrollbar('popStatistics', 'popTopRight', 'populationBlock');
     
     
     
