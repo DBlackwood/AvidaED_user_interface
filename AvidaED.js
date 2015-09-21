@@ -56,6 +56,8 @@ require([
               DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, ready, $, jqueryui){
 
     parser.parse();
+
+    //uiWorker used when communicating with the web worker and avida
     var uiWorker = new Worker('ui-test.js');
 
     //process message from web worker
@@ -128,14 +130,18 @@ require([
       if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
       if ("block"==domStyle.get("populationBlock","display")){popChartFn();DrawGridSetup();};
       if ("block"==domStyle.get("organismBlock","display")){
-        var height = ($("#rightDetail").innerHeight()-375)/2;
+        var rd = $("#rightDetail").innerHeight();
+        var height = ($("#rightDetail").innerHeight()-395)/2;  //was 375
         document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
         document.getElementById("ExecuteAbout").style.height = height+"px";
-        document.getElementById("ExecuteJust").style.width = "100%";  
+        document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
-        if (undefined != traceObj) { 
-          updateOrgTrace(traceObj, cycle);
-        }; 
+        console.log('rightDetail', height, rd);
+        if (undefined != traceObj) { updateOrgTrace(traceObj, cycle) }
+        else {
+          OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
+          OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
+        }
       } 
     }
 
@@ -198,6 +204,7 @@ require([
     dijit.byId("setupBlock").set("style", "display: none;");
     
     //this section gets rid of scroll bars, but then page no longer resizes correctly
+    // delete later if fix that uses 96% of height takes care of the problem.
 /*    var popNewHt = $("#blockHolder").height()-10;
     dijit.byId("populationBlock").set("style", "height: "+ popNewHt +"px");
     dijit.byId("popBC").set("style", "height: "+ popNewHt+"px");
@@ -223,31 +230,36 @@ require([
   
     // Buttons that call MainBoxSwap 
     document.getElementById("populationButton").onclick = function(){
-      console.log('in populationButton');
-      mainBoxSwap("populationBlock"); 
+      mainBoxSwap("populationBlock");
       DrawGridSetup();
     }
     
     document.getElementById("organismButton").onclick = function(){
-      console.log('in organismButton');
       mainBoxSwap("organismBlock");
       console.log('after mainBoxSwap');
       OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
       OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
-      var height = ($("#rightDetail").innerHeight()-375)/2;
+      var height = ($("#rightDetail").innerHeight()-395)/2;
       document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
       document.getElementById("ExecuteAbout").style.height = height+"px";
       document.getElementById("ExecuteJust").style.width = "100%";  
       document.getElementById("ExecuteAbout").style.width = "100%";
       if (undefined != traceObj) {
-        console.log('traceObj.len', traceObj.length);
         updateOrgTrace(traceObj, cycle);
       }
-      console.log('after orgTrace');
     }
+
     document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
     //Take testBlock out completely later
-    //document.getElementById("testButton").onclick = function(){ mainBoxSwap("testBlock"); }
+    var outlineColor  = '#00FF00';
+    document.getElementById("testButton").onclick = function(){
+      mainBoxSwap("testBlock");
+      if ('#00FF00'==outlineColor) {outlineColor = '#00FFFF'}
+      else if ('#00FFFF'==outlineColor) {outlineColor = '#FFFFFF'}
+      else {outlineColor = '#00FF00'}
+      placeChips();
+      drawCheckerSetup(CanvasChipScale, ctxSc);
+    }
 
     /* ********************************************************************** */
     /* Dojo Drag N Drop Freezer ***********************************************/
@@ -584,7 +596,7 @@ require([
         OrganCurrent.selectAll().deleteSelectedNodes();  //clear items  
         OrganCurrent.sync();   //should be done after insertion or deletion
         
-        //Clear canvas because we should only drag offspring from the canvas
+        //Clear canvas because we only store the 'Mom' in the OrganCurrentNode
         ItemID = Object.keys(OrganCurrent.map)[0];
         OrganCanvas.selectAll().deleteSelectedNodes();  //clear items  
         OrganCanvas.sync();   //should be done after insertion or deletion
@@ -1358,42 +1370,6 @@ require([
     }
 
     // End of Freezer Functions 
-    /* *************************************************************** */
-    // ****************  Draw Population Grid ************************ */
-    /* *************************************************************** */
-
-    var CanvasScale = document.getElementById("scaleCanvas");
-    var sCtx = CanvasScale.getContext("2d");
-    CanvasScale.width = $("#gridHolder").innerWidth()-6;
-
-    var CanvasGrid = document.getElementById("gridCanvas");
-    var cntx = CanvasGrid.getContext("2d");
-    CanvasGrid.width = $("#gridHolder").innerWidth()-6;
-    CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
-    
-    grd = {};       //data about the grid canvas
-    grd.cols = 30;  //Number of columns in the grid
-    grd.rows = 30;  //Number of rows in the grid
-    grd.sizeX = 300;  //size of canvas in pixels
-    grd.sizeY = 300;  //size of canvas in pixels
-    grd.flagSelected = false; //is a cell selected
-    grd.zoom = 1;     //magnification for zooming.
-
-    function backgroundSqares() {
-      var boxColor = '#111';
-      for (ii=0; ii<grd.cols; ii++) {
-        xx = grd.marginX + grd.xOffset + ii*grd.cellWd;
-        for (jj=0; jj<grd.rows; jj++) {
-          yy = grd.marginY + grd.yOffset + jj*grd.cellHt;
-          //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
-          //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
-          //console.log('color=', boxColor);
-          cntx.fillStyle = '#222';
-          cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
-        }
-      }
-    }
-
   //********************************************************************
   //    Mouse DND functions
   //********************************************************************
@@ -1422,7 +1398,7 @@ require([
       }
       return MomNdx;
     }
-    
+
     function findSelected(evt) {
       mouseX = evt.offsetX - grd.marginX - grd.xOffset;
       mouseY = evt.offsetY - grd.marginY - grd.yOffset;
@@ -1659,7 +1635,43 @@ require([
       }
     };
 
-    //Draw Cell outline or including special case for Selected
+  /* *************************************************************** */
+  // ****************  Draw Population Grid ************************ */
+  /* *************************************************************** */
+
+  var CanvasScale = document.getElementById("scaleCanvas");
+  var sCtx = CanvasScale.getContext("2d");
+  CanvasScale.width = $("#gridHolder").innerWidth()-6;
+
+  var CanvasGrid = document.getElementById("gridCanvas");
+  var cntx = CanvasGrid.getContext("2d");
+  CanvasGrid.width = $("#gridHolder").innerWidth()-6;
+  CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
+
+  grd = {};       //data about the grid canvas
+  grd.cols = 30;  //Number of columns in the grid
+  grd.rows = 30;  //Number of rows in the grid
+  grd.sizeX = 300;  //size of canvas in pixels
+  grd.sizeY = 300;  //size of canvas in pixels
+  grd.flagSelected = false; //is a cell selected
+  grd.zoom = 1;     //magnification for zooming.
+
+  function backgroundSquares() {
+    var boxColor = '#111';
+    for (ii=0; ii<grd.cols; ii++) {
+      xx = grd.marginX + grd.xOffset + ii*grd.cellWd;
+      for (jj=0; jj<grd.rows; jj++) {
+        yy = grd.marginY + grd.yOffset + jj*grd.cellHt;
+        //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
+        //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
+        //console.log('color=', boxColor);
+        cntx.fillStyle = '#222';
+        cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
+      }
+    }
+  }
+
+  //Draw Cell outline or including special case for Selected
     function DrawSelected() {
       grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
       grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
@@ -1788,7 +1800,7 @@ require([
       cntx.fillStyle=dictColor['Black'];
       cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
       
-      backgroundSqares();      
+      backgroundSquares();
       //Draw parents if run has not started. 
     }
 
@@ -2431,7 +2443,7 @@ require([
       var txtWd = ctx.measureText(txt).width;
       ctx.fillText(txt, gen.cx[1]-txtWd/2, gen.cy[1]+drw.height);       
     }
-    
+
     //*****************************************************************/
     //main function to update the Organism Trace on the Organism Page
     function updateOrgTrace(obj, cycle){
@@ -2892,4 +2904,371 @@ require([
     //});
     //console.log("orderedDataItems", orderedDataItems); 
 
+    //********************************************************
+    //   Color Test Section - Temp this will all be removed later
+    //********************************************************
+    //structure to hold color test chips
+    var chips = {};
+    chips.name = [];
+    chips.genome = [];
+    chips.color = [];
+    chips.col = [];
+    chips.row = [];
+    chips.AvidaNdx = [];
+    chips.autoNdx = [];
+    chips.handNdx = [];
+    chips.howPlaced = [];
+    chips.domId = [];
+
+    var CanvasCheck = document.getElementById("colorDemo");
+    var ctxt = CanvasCheck.getContext("2d");
+
+    var CanvasChipScale = document.getElementById("scaleDemo");
+    //console.log('Chip', CanvasChipScale);
+    var ctxSc = CanvasChipScale.getContext("2d");
+    CanvasChipScale.width = $("#demoHolder").innerWidth()-6;
+
+    CanvasCheck.width = $("#demoHolder").innerWidth()-6;
+    CanvasCheck.height = $("#demoHolder").innerHeight()-16-$("#scaleDemo").innerHeight();
+
+    chck = {};       //data about the ckecker canvas
+    chck.cols = 30;  //Number of columns in the grid
+    chck.rows = 30;  //Number of rows in the grid
+    chck.sizeX = 300;  //size of canvas in pixels
+    chck.sizeY = 300;  //size of canvas in pixels
+    chck.flagSelected = false; //is a cell selected
+    chck.zoom = 1;     //magnification for zooming.
+
+// Test of colors to see if a color blind person can tell the colors apart.
+
+//Clear chips
+  function clearChips() {
+    chips = {};
+    chips.name = [];
+    chips.genome = [];
+    chips.color = [];
+    chips.col = [];
+    chips.row = [];
+    chips.AvidaNdx = [];
+    chips.autoNdx = [];
+    chips.handNdx = [];
+    chips.howPlaced = [];
+    chips.domId = [];
+  }
+
+  function placeChips(){
+    var cols = dijit.byId("sizeCols").get('value');
+    var rows = dijit.byId("sizeRows").get('value');
+    /*  if (Math.trunc(Math.sqrt(ChipColors.length)) == Math.sqrt(ChipColors.length)) {
+        sqLength = Math.sqrt(ChipColors.length);
+      }
+      else {
+        sqLength = Math.trunc(Math.sqrt(ChipColors.length))+1;
+      }
+     */
+    var sqLength = 5; // 5 by 6 in demo
+      for (ii = 0; ii < ChipColors.length; ii++) {
+        cc = ii%sqLength;
+        rr = Math.trunc(ii/sqLength);
+        chips.col[ii] = Math.trunc(cols*(2*cc+1)/(2*sqLength));
+        chips.row[ii] = Math.trunc(rows*(2*rr+1)/(2*6));
+        chips.name[ii] = ColorNames[ii];
+        chips.color[ii]= ChipColors[ii];
+      }
+  }
+
+  function backgroundBoard() {
+    var boxColor = '#111';
+    for (ii=0; ii<chck.cols; ii++) {
+      xx = chck.marginX + chck.xOffset + ii*chck.cellWd;
+      for (jj=0; jj<chck.rows; jj++) {
+        yy = chck.marginY + chck.yOffset + jj*chck.cellHt;
+        //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
+        //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
+        //console.log('color=', boxColor);
+        ctxt.fillStyle = '#222';
+        ctxt.fillRect(xx, yy, chck.cellWd-1, chck.cellHt-1);
+      }
+    }
+  }
+
+//Draw Cell outline or including special case for Selected
+  function drawSelected() {
+    chck.selectX = chck.marginX + chck.xOffset + chck.ColSelected * chck.cellWd;
+    chck.selectY = chck.marginY + chck.yOffset + chck.RowSelected * chck.cellHt;
+    drawCellOutline(2, outlineColor, chck.selectX, chck.selectY, chck.cellWd, chck.cellHt)
+  }
+
+  function drawCellOutline(lineThickness, color, xx, yy, wide, tall) {
+    ctxt.rect(xx, yy, wide, tall);
+    ctxt.strokeStyle = color;
+    ctxt.lineWidth = lineThickness;
+    ctxt.stroke();
+  }
+
+  function drawChip() {
+    //console.log('chips.col.length, marginX, xOffset', chips.col.length, chck.marginX, chck.xOffset);
+    for (ii = 0; ii < chips.col.length; ii++) {
+      xx = chck.marginX + chck.xOffset + chips.col[ii]*chck.cellWd;
+      yy = chck.marginY + chck.yOffset + chips.row[ii]*chck.cellHt;
+      ctxt.fillStyle = chips.color[ii];
+      ctxt.fillRect(xx, yy, chck.cellWd-1, chck.cellHt-1);
+      //console.log('x, y, wd, Ht', xx, yy, chck.cellWd, chck.cellHt);
+    }
+  };
+
+  function drawCheckerSetup() {
+    //Get the size of the div that holds the grid and the scale or legend
+    var CheckHolderHt = $("#demoHolder").innerHeight();
+    //console.log('in drawCheckerSetup');
+
+    drawCheckLegend();
+    //console.log('after drawCheckLegend');
+
+    //find the height for the div that holds the grid Canvas
+    var ChckNodeHt = CheckHolderHt - 16 - $("#scaleDemo").innerHeight();
+    document.getElementById("checkerHolder").style.height = ChckNodeHt+'px';
+    document.getElementById("checkerHolder").style.overflowY = "scroll";
+    //console.log('ChckNodeHt=',ChckNodeHt);
+
+    // When zoom = 1x, set canvas size based on space available and cell size
+    // based on rows and columns requested by the user. Zoom acts as a factor 
+    // to multiply the size of each cell. When the size of the grid become larger
+    // than the canvas, then the canvas is set to the size of the grid and the 
+    // offset in that direction goes to zero.
+
+    //find the space available to display the grid in pixels
+    chck.spaceX = $("#demoHolder").innerWidth()-6;
+    chck.spaceY = ChckNodeHt-5;
+    //console.log('spaceY', chck.spaceY, '; gdHolder', CheckHolderHt, '; scaleCanv', $("#scaleDemo").innerHeight());
+    // First find sizes based on zoom 
+    chck.boxX = chck.zoom * chck.spaceX;
+    chck.boxY = chck.zoom * chck.spaceY;
+    //get rows and cols based on user input form
+    chck.cols = dijit.byId("sizeCols").get('value');
+    chck.rows = dijit.byId("sizeRows").get('value');
+    //max size of box based on width or height based on ratio of cols:rows and width:height
+    if (chck.spaceX/chck.spaceY > chck.cols/chck.rows) {
+      //set based  on height as that is the limiting factor. 
+      chck.sizeY = chck.boxY;
+      chck.sizeX = chck.sizeY*chck.cols/chck.rows;
+      chck.spaceCellWd = chck.spaceY/chck.rows;
+      chck.spaceCells = chck.rows;  //rows exactly fit the space when zoom = 1x
+    }
+    else {
+      //set based on width as that is the limiting direction
+      chck.sizeX = chck.boxX;
+      chck.sizeY = chck.sizeX * chck.rows/chck.cols;
+      chck.spaceCellWd = chck.spaceX/chck.cols;
+      chck.spaceCells = chck.cols;  //cols exactly fit the space when zoom = 1x
+    }
+
+    //Determine offset and size of canvas based on grid size relative to space size in that direction
+    if (chck.sizeX < chck.spaceX) {
+      CanvasCheck.width = chck.spaceX;
+      chck.xOffset =(chck.spaceX-chck.sizeX)/2;
+    }
+    else {
+      CanvasCheck.width = chck.sizeX;
+      chck.xOffset = 0;
+    }
+    if (chck.sizeY < chck.spaceY) {
+      CanvasCheck.height = chck.spaceY;
+      chck.yOffset =(chck.spaceY-chck.sizeY)/2;
+    }
+    else {
+      CanvasCheck.height = chck.sizeY;
+      chck.yOffset = 0;
+    }
+    //console.log('Xsize', chck.sizeX, '; Ysize', chck.sizeY, '; zoom=', chck.zoom);
+
+    //get cell size based on grid size and number of columns and rows
+    chck.marginX = 1;  //width of black line between the cells
+    chck.marginY = 1;  //width of black line between the cells
+    chck.cellWd = ((chck.sizeX-chck.marginX)/chck.cols);
+    chck.cellHt = ((chck.sizeY-chck.marginY)/chck.rows);
+
+    //Find a reasonable maximum zoom for this grid and screen space
+    zMaxCells = Math.trunc(chck.spaceCells/25);  // at least 10 cells
+    zMaxWide = Math.trunc(10/chck.spaceCellWd);  // at least 10 pixels
+    zMax = ((zMaxCells > zMaxWide) ? zMaxCells: zMaxWide); //Max of two methods 
+    zMax = ((zMax > 2) ? zMax: 2); //max zoom power of at least 2x
+
+    ZoomSlide.set("maximum", zMax);
+    ZoomSlide.set("discreteValues", 2*(zMax-1)+1);
+    //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, chck.zoom);
+
+    DrawCheckBackground();
+    drawChip();
+
+    //Draw Selected as one of the last items to draw
+    if (chck.flagSelected) { drawSelected() };
+  }
+
+  function DrawCheckBackground() {
+    // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+    ctxt.setTransform(1, 0, 0, 1, 0, 0);
+    ctxt.clearRect(0, 0, CanvasCheck.width, CanvasCheck.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+    //draw grey rectangle as back ground
+    ctxt.fillStyle = dictColor["ltGrey"];
+    ctxt.fillRect(0,0, CanvasCheck.width, CanvasCheck.height);
+
+    ctxt.fillStyle=dictColor['Black'];
+    ctxt.fillRect(chck.xOffset,chck.yOffset,chck.sizeX,chck.sizeY);
+
+    backgroundBoard();
+  }
+
+//--------------- Draw legend --------------------------------------
+//Draws the color and name of each Ancestor (parent) organism 
+//to lay out the legend we need the width of the longest name and we
+//allow for the width of the color box to see how many columns fit across
+//the width of CanvasChipScale. We will need to increase the size of the 
+//legend box by the height of a line for each additional line.
+  function drawCheckLegend() {
+    //console.log('drawCheckLegend');
+    var legendPad = 10;   //padding on left so it is not right at edge of canvas
+    var colorWide = 13;   //width and heigth of color square
+    var RowHt = 20;       //height of each row of text
+    var textOffset = 15;  //vertical offset to get to the bottom of the text
+    var leftPad = 10;     //padding to allow space between each column of text in the legend
+    var legendCols = 1;   //max number of columns based on width of canvas and longest name
+    var txtWide = 0;      //width of text for an ancestor (parent) name
+    var maxWide = 0;      //maximum width needed for any of the ancestor names in this set
+    //console.log('in drawLedgend')
+    CanvasChipScale.width = $("#demoHolder").innerWidth()-6;
+    ctxSc.font = "14px Arial";
+    //find out how much space is needed
+    for (ii=0; ii< chips.name.length; ii++) {
+      txtWide = ctxSc.measureText(chips.name[ii]).width;
+      if (txtWide > maxWide) { maxWide = txtWide }
+    }
+    legendCols = Math.trunc((CanvasChipScale.width-leftPad)/(maxWide + colorWide + legendPad));
+    if (Math.trunc(chips.name.length/legendCols) == chips.name.length/legendCols) {
+      legendRows = Math.trunc(chips.name.length/legendCols);
+    }
+    else { legendRows = Math.trunc(chips.name.length/legendCols)+1; }
+    //console.log('chip_names',chips.name.length, '; legCol', legendCols, '; legRow', legendRows);
+    //set canvas height based on space needed
+    CanvasChipScale.height = RowHt * legendRows;
+    ctxSc.fillStyle = dictColor["ltGrey"];
+    ctxSc.fillRect(0,0, CanvasCheck.width, CanvasCheck.height);
+    var colWide = (CanvasChipScale.width-leftPad)/legendCols
+    var col = 0;
+    var row = 0;
+    for (ii = 0; ii< chips.name.length; ii++) {
+      col = ii%legendCols;
+      row = Math.trunc(ii/legendCols);
+      //xx = leftPad + col*(maxWide+colorWide+legendPad);
+      xx = leftPad + col*(colWide);
+      yy = 2+row*RowHt;
+      ctxSc.fillStyle = chips.color[ii];
+      ctxSc.fillRect(xx,yy, colorWide, colorWide);
+      yy = textOffset+row*RowHt;
+      ctxSc.font = "14px Arial";
+      ctxSc.fillStyle='black';
+      ctxSc.fillText(chips.name[ii],xx+colorWide+legendPad/2, yy);
+    }
+  }
+  
+  //*****************************
+
+  function findShrew(evt) {
+    mouseX = evt.offsetX - chck.marginX - chck.xOffset;
+    mouseY = evt.offsetY - chck.marginY - chck.yOffset;
+    chck.ColSelected = Math.floor(mouseX/chck.cellWd);
+    chck.RowSelected = Math.floor(mouseY/chck.cellHt);
+    console.log('Shrew col,row', chck.ColSelected, chck.RowSelected);
+  }
+
+  var shrew = {};
+  shrew.Dn = false;
+  shrew.DnGridPos = [];
+  shrew.UpGridPos = [];
+  shrew.DnOrganPos = [];
+  shrew.Move = false;
+  shrew.Drag = false;
+  shrew.chipNdx = -1;
+  shrew.chipSelected = false;
+  shrew.Picked = "";
+
+  //shrew down on the grid
+  $(document.getElementById('colorDemo')).on('mousedown', function (evt) {
+    shrew.DnGridPos=[evt.offsetX, evt.offsetY];
+    shrew.Dn = true;
+    // Select if it is in the grid
+    findShrew(evt);
+    console.log('colorDemo', shrew.DnGridPos);
+    //check to see if in the grid part of the canvas
+    if (chck.ColSelected >=0 && chck.ColSelected < chck.cols && chck.RowSelected >=0 && chck.RowSelected < chck.rows) {
+      chck.flagSelected = true;
+      drawCheckerSetup();
+      dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
+
+      //In the grid and selected. Now look to see contents of cell are dragable. 
+      shrew.chipNdx=-1; //index into chips array if chip selected else -1;
+      if (newrun) {  //run has not started so look to see if cell contains ancestor
+        shrew.chipNdx = findchipNdx();
+        if (-1 < shrew.chipNdx) { //selected a chip, check for dragging
+          document.getElementById('colorDemo').style.cursor = 'copy';
+          shrew.Picked = 'chip';
+          //console.log('chip cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
+        }
+      }
+    }
   });
+  //When mouse button is released, return cursor to default values
+  $(document).on('mouseup', function (evt) {
+    //console.log('mouseup anywhere in document -------------');
+    document.getElementById('colorDemo').style.cursor = 'default';
+    shrew.UpGridPos=[evt.offsetX, evt.offsetY];
+    shrew.Dn = false;
+
+    // --------- process if something picked to dnd ------------------
+    if ('chip' == shrew.Picked) {
+      shrew.Picked = ""
+      chipshrewDn(evt) ;
+    }
+    shrew.Picked = "";
+  });
+
+  function chipshrewDn(evt) {
+    if ('colorDemo' == evt.target.id) { // chip moved to another location on grid canvas
+      shrew.UpGridPos=[evt.offsetX, evt.offsetY]; //not used for now
+      //Move the ancestor on the canvas
+      //console.log("on checkCanvas")
+      console.log('before', chck.ColSelected, chck.RowSelected);
+      findShrew(evt);
+      // look to see if this is a valid grid cell
+      if (chck.ColSelected >=0 && chck.ColSelected < chck.cols && chck.RowSelected >=0 && chck.RowSelected < chck.rows) {
+        console.log('chipFound', chck.ColSelected, chck.RowSelected);
+        chips.col[shrew.chipNdx] = chck.ColSelected;
+        chips.row[shrew.chipNdx] = chck.RowSelected;
+        chips.AvidaNdx[chips.handNdx[ii]] = chips.col[chips.handNdx[ii]] + chck.cols * chips.row[chips.handNdx[ii]];
+        console.log('mv', chips.col[shrew.chipNdx], chips.row[shrew.chipNdx], shrew.chipNdx);
+        //change from auto placed to hand placed if needed
+        if ('auto' == chips.howPlaced[shrew.chipNdx] ) {
+          chips.howPlaced[shrew.chipNdx] = 'hand';
+          makeHandAutoNdx();
+          //PlaceAncestors(chips);
+        }
+        //console.log('auto', chips.autoNdx.length, chips.autoNdx, chips.name);
+        //console.log('hand', chips.handNdx.length, chips.handNdx);
+        drawCheckerSetup();
+      }
+    }  // close on canvas
+  }
+
+  var findchipNdx = function() {
+    var ChipedNdx = -1;
+    for (var ii=0; ii<chips.name.length; ii++) {
+      if (matches([chck.ColSelected, chck.RowSelected], [chips.col[ii], chips.row[ii]])) {
+        ChipedNdx = ii;
+        //console.log('chip found in function', ChipedNdx);
+        break;  //found a chip no need to keep looking
+      }
+    }
+    return ChipedNdx;
+  }
+
+});

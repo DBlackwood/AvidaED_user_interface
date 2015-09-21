@@ -115,8 +115,8 @@
            </tr>
          </tbody>
        </table>
+          <input type="button" id="testButton" intermediateChanges="false" label="Test" value="Test" iconClass="dijitNoIcon"></input>
        <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
-       <input type="button" id="testButton" intermediateChanges="false" label="Test" value="Test" iconClass="dijitNoIcon"></input>
        -->
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -448,9 +448,9 @@
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" style="height: 100%;"
               refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity" ID="mapBlockHold">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false" 
-                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"  style="height: 97%;">
+                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"  style="height: 96%;">
            <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" id="mapBC"
-                  style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+                  style="min-width: 343px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
              <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id = "popBot"
                     refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity" style="height: 38px;">
                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
@@ -459,7 +459,7 @@
                      <td>
                        Time: <label id="TimeLabel">(not started)</label><br />
                      </td>
-                     <td style="text-align: center">
+                     <td style="text-align: center; width:166px">
                         Mode
                         <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
                           <option value="Fitness" selected="selected">Fitness</option>
@@ -499,20 +499,20 @@
               <label>Environmental Settings</label>
               <div style="height: 19px;" class="odd">
                 Dish Size:
-                <input id="sizeCols" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
+                <input id="sizeCols" type="text" data-dojo-type="dijit/form/NumberTextBox" value=21 required="true";
                     data-dojo-props="constraints:{min:0, max:500,places:0},
                     invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                     style="width: 3em; height:1.8em"></input>
                 &nbsp; x &nbsp;
                 <input id="sizeRows" type="text" data-dojo-type="dijit/form/NumberTextBox" name= "size"
-                    required="true" value="10" data-dojo-props="constraints:{min:0, max:500,places:0},
+                    required="true" value="13" data-dojo-props="constraints:{min:0, max:500,places:0},
                     invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid grid size.'"
                     style="width:4em; height:1.8em"/></input>
                 cells&nbsp;<span id="sizeCells"></span>
             </div>
               <div class="even">
                 <span class="lftmargin">Per Site Mutation Rate:</span>
-                <span id="muteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
+                <span id="muteSlide" style="width:100px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
                 <!-- style done here for the slider; margin to keep it from overlapping;
                                       without width the slider is the full width of the browser window-->
                 <!--<input id="muteInput" type="text" style="width: 4em; height:1.8em"></input> -->
@@ -594,9 +594,9 @@
     <!-- Organism main block ---------------------------------------->
     <div data-dojo-type="dijit/layout/ContentPane" title="Organism" id="organismBlock" extractContent="false" 
                   preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false" 
-                  style="height: 100%; visibility:hidden;">
+                  style="height: 97%; visibility:hidden;">
       <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
-            style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+            style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 90%;" id="organismBC">
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
             refreshOnShow="false" doLayout="true" region="top" splitter="false" maxSize="Infinity" style="height:37px;">
         <table style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
@@ -614,7 +614,7 @@
           </tbody>
         </table>
       </div>
-      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
+      <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="organismBottom"
             refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity" style="height: 50px;">
           <div id="cycleSlider"></div>
           <br />
@@ -711,7 +711,7 @@
       </div>
     </div>
     <div data-dojo-type="dijit/layout/ContentPane" title="Analysis" id="analysisBlock" extractContent="false" preventCache="false" preload="false" 
-          refreshOnShow="false" doLayout="true" closable="false"  style="height: 100%; visibility:hidden;">
+          refreshOnShow="false" doLayout="true" closable="false"  style="height: 97%; visibility:hidden;">
       <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
             style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
@@ -788,7 +788,7 @@
       </div>
     </div>
     <div data-dojo-type="dijit/layout/ContentPane" title="Test" id="testBlock" extractContent="false" 
-          preventCache="false" preload="false" refreshOnShow="false" closable="false" style="height: 100%; visibility:hidden;">
+          preventCache="false" preload="false" refreshOnShow="false" closable="false" style="height: 97%; visibility:hidden;">
       <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" 
             style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
@@ -803,12 +803,19 @@
             Stop</button>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" 
-              refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
-         <textarea id="consoleTextArea"></textarea>
+              refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="demoHolder">
+        <!-- <textarea id="consoleTextArea"></textarea>
          <br></br>
          <textarea type="text" data-dojo-type="dijit/form/Textarea" id="conDigTextArea" intermediateChanges="false" rows="3" trim="false" 
                     uppercase="false" lowercase="false" propercase="false" style="width: 200px; height: auto;"></textarea>
-       </div>
+                    -->
+            <div id="checkerHolder">
+              <canvas id="colorDemo" width="300" height="300" style="border:1px solid #DDDDDD;"></canvas>
+            </div>
+            <div id="scaleHolder">
+              <canvas id="scaleDemo" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
+            </div>
+        </div>
       </div>
     </div>
   </div>

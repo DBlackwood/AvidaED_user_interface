@@ -1126,7 +1126,7 @@ var OriginalCubehelix_cmap = [
     ,'#DB6D00'            //7  orange brown      used digital color meter to match #5 on website; 
     ,'rgb(156,  10,  10)' //8  red brown         website #11 modified was 146,   0,   0
     ,'rgb(109, 182, 255)' //9  lt blue           website #9
-    ,'rgb(182, 109, 255)' //10 lavendar          website #8
+    ,'rgb(182, 109, 255)' //10 lavender          website #8
     ,'rgb(255, 182, 119)' //11 pale orange       website #5 but does not look pink
     ,'rgb(182, 219, 255)' //12 pale blue         website #10
     ,'rgb(  0,  93,  93)' //13 dark blue-green   website #2 modified was 0, 73, 73
@@ -1135,21 +1135,55 @@ var OriginalCubehelix_cmap = [
     ,'rgb( 0,  195,   0)' //16 green             website #14 modied was 36, 255,  36
 
     ,'rgb(179,   0, 255)'  // 17 magenta
-    ,'#FFFF9B'             // 18 paie yellow
+    ,'#FFFF9B'             // 18 pale yellow
     ,'rgb(255,   0,  10)'  // 19 red
     ,'rgb(  0, 182, 158)'  // 20 blue-green
     ,'rgb(  0,   0, 186)'  // 21 dark blue
     ,'rgb(255,   0, 255)'  // 22 hot pink
     ,'rgb(  0, 138, 255)'  // 23 sky blue
     ,'rgb(255,  97,   0)'  // 24 red-orange
-    //,'rgb(127, 127, 127)'  // 25 grey
+    ,'rgb(127, 127, 127)'  // 25 grey
     ,'rgb(  0, 245, 255)'  // 26 bright light blue
+    ,'rgb(187, 187, 187)'  // 27 dark grey
     ];
 
-    var ParentColors = ColorBlind.slice();
+var ColorNames = [  //http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
+    'A blue' //               website #7
+   ,'B yellow'  //            website #15 modified was 255, 255, 109
+   ,'C medium blue green' // website #3
+   ,'D pink' //              website #4
+   ,'E brown' //             website #12 modified was 146, 73, 0
+   ,'F lt pink' //           used digital color meter to match #5 on website lt pink
+   ,'G orange brown' //      used digital color meter to match #5 on website;
+   ,'H red brown' //         website #11 modified was 146,   0,   0
+   ,'I lt blue' //           website #9
+   ,'J lavender' //          website #8
+   ,'K pale orange' //       website #5 but does not look pink
+   ,'L pale blue' //         website #10
+   ,'M dark blue-green' //   website #2 modified was 0, 73, 73
+   ,'N dark yellow' //       website #13 modified was 219, 209, 0
+   ,'O purple' //            website #6 modified was 73,   0, 146
+   ,'P green' //             website #14 modied was 36, 255,  36
+   ,'Q magenta' //
+   ,'R pale yellow' //
+   ,'S red'
+   ,'T blue-green'
+   ,'U dark blue'
+   ,'V hot pink'
+   ,'W sky blue'
+   ,'X red-orange'
+   ,'Y dark grey'
+   ,'Z bright light blue'
+   ,'2 grey'
+];
 
+    var ParentColors = ColorBlind.slice();
+    var ChipColors = ColorBlind.slice();
+
+    //ChipColors.reverse();
     ParentColors.reverse();
-    
+    //ColorNames.reverse();
+
     var defaultParentColor = 'rgb(187, 187, 187)';
     
   //colors too close to others already in use
