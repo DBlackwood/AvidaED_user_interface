@@ -137,7 +137,7 @@ var get_color = function(cmap, dx, d1, d2, r1){
           //console.log('case6');
         case 7:
           //console.log('case7');
-          if (cols > rows) {  //place parents horizontally
+/*          if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
               if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
               else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
@@ -164,7 +164,7 @@ var get_color = function(cmap, dx, d1, d2, r1){
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
-          break;
+          break; */
         case 8:
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {

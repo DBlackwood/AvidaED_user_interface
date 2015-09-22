@@ -138,10 +138,7 @@ require([
         document.getElementById("ExecuteAbout").style.width = "100%";
         console.log('rightDetail', height, rd);
         if (undefined != traceObj) { updateOrgTrace(traceObj, cycle) }
-        else {
-          OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-          OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
-        }
+        else { organismCanvasHolderSize ();}
       } 
     }
 
@@ -222,7 +219,7 @@ require([
       dijit.byId("testBlock").set("style", "display: none;");       //take testBlock out completely later 
       dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
       dijit.byId(showBlock).resize();
-      
+
       //disable menu options. they will be enabled when relevant canvas is drawn
       dijit.byId("mnFzOffspring").attr("disabled", true);
       dijit.byId("mnOffspringTrace").attr("disabled", true);
@@ -230,6 +227,7 @@ require([
   
     // Buttons that call MainBoxSwap 
     document.getElementById("populationButton").onclick = function(){
+      console.log('in populationButton');
       mainBoxSwap("populationBlock");
       DrawGridSetup();
     }
@@ -237,8 +235,7 @@ require([
     document.getElementById("organismButton").onclick = function(){
       mainBoxSwap("organismBlock");
       console.log('after mainBoxSwap');
-      OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-      OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
+      organismCanvasHolderSize ();
       var height = ($("#rightDetail").innerHeight()-395)/2;
       document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
       document.getElementById("ExecuteAbout").style.height = height+"px";
@@ -554,9 +551,8 @@ require([
         organismIcon.selectAll().deleteSelectedNodes();  //clear items  
         organismIcon.sync();   //should be done after insertion or deletion
         //Change to Organism Page
-        mainBoxSwap("organismBlock"); 
-        OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-        OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
+        mainBoxSwap("organismBlock");
+        organismCanvasHolderSize ();
         var height = ($("#rightDetail").innerHeight()-375)/2;
         document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
         document.getElementById("ExecuteAbout").style.height = height+"px";
@@ -1567,9 +1563,8 @@ require([
         //-------------------------------------------- organism view
         else if ('organismIcon' == evt.target.id) { 
           //Change to Organism Page
-          mainBoxSwap("organismBlock"); 
-          OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-          OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
+          mainBoxSwap("organismBlock");
+          organismCanvasHolderSize ();
           var height = ($("#rightDetail").innerHeight()-375)/2;
           document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
           document.getElementById("ExecuteAbout").style.height = height+"px";
@@ -2065,12 +2060,12 @@ require([
                     domGeometry.position(document.getElementById("popChartHolder")).h-30);
       popChart.render();
     };
-    popChartFn();
-   
+
     //Set Y-axis title and choose the correct array to plot
     dijit.byId("yaxis").on("Change", function(){
       ytitle = dijit.byId("yaxis").value;
       //need to get correct array to plot from freezer
+      //console.log('changeyaxis popChartFn');
       popChartFn();
     });
     
@@ -2136,9 +2131,8 @@ require([
       var SelectedName = 'selectedOrganism';  //replace this with data from Avida later
       // . . . need avida stuff first
       //Open Oranism view 
-      mainBoxSwap("organismBlock"); 
-      OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-      OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
+      mainBoxSwap("organismBlock");
+      organismCanvasHolderSize ();
       var height = ($("#rightDetail").innerHeight()-375)/2;
       document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
       document.getElementById("ExecuteAbout").style.height = height+"px";
@@ -2164,9 +2158,8 @@ require([
       var Name = 'offspring';  //replace this with data from Avida later
       // . . . need avida stuff first
       //Open Oranism view 
-      mainBoxSwap("organismBlock"); 
-      OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-      OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
+      mainBoxSwap("organismBlock");
+      organismCanvasHolderSize ();
       var height = ($("#rightDetail").innerHeight()-375)/2;
       document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
       document.getElementById("ExecuteAbout").style.height = height+"px";
@@ -2444,13 +2437,17 @@ require([
       ctx.fillText(txt, gen.cx[1]-txtWd/2, gen.cy[1]+drw.height);       
     }
 
+    //set canvas size; called from many places
+    function organismCanvasHolderSize () {
+      OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
+      OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-12;
+    }
     //*****************************************************************/
     //main function to update the Organism Trace on the Organism Page
     function updateOrgTrace(obj, cycle){
       //set canvas size
-      OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-      OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-6;
-      //Find size and content of each genome. 
+      organismCanvasHolderSize ();
+      //Find size and content of each genome.
       for (var ii=0; ii < obj[cycle].MemSpace.length; ii++) {
         gen.dna[ii] = obj[cycle].MemSpace[ii].Memory;
         gen.size[ii] = obj[cycle].MemSpace[ii].Memory.length;
@@ -2775,10 +2772,8 @@ require([
     //************************************************************************
     //Tasks that Need to be run when page is loaded but after chart is defined
     //************************************************************************
-    
-    DrawGridSetup(); //Draw initial background
-        
-    //Eliminate scrollbars (we hope
+
+    //Eliminate scrollbars on population page
     
     //used to set the height so the data just fits. Done because different monitor/brower combinations require a diffent height in pixels.
     //may need to take out as requires loading twice now.
@@ -2807,7 +2802,10 @@ require([
     removeScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
     removeScrollbar('popStatistics', 'popTopRight', 'populationBlock');
 
-    //************************************************************************
+    popChartFn();
+    DrawGridSetup(); //Draw initial background
+
+  //************************************************************************
     //Usefull Generic Functions
     //************************************************************************
     
