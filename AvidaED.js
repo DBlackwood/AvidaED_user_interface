@@ -63,17 +63,17 @@ require([
     //process message from web worker
     uiWorker.onmessage = function(ee){
       var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
-      switch(msg.Key){
-        case 'RunPause':
+      switch(msg.name){
+        case 'runPause':
           if (true != msg["Success"]) {
             console.log("Error: ", msg);  // msg failed
             runStopFn();  //flip state back since the message failed to get to Avida
           }
           break;
-        case 'Reset':
+        case 'reset':
           if (true != msg["Success"]) { console.log("Reset failed: ", msg)};
           break;
-        case 'OrgTrace': //reset values and call organism tracing routines. 
+        case 'orgTrace': //reset values and call organism tracing routines.
           traceObj = msg;
           cycle = 0;
           dijit.byId("orgCycle").set("value", 0);
@@ -81,11 +81,11 @@ require([
           cycleSlider.set("discreteValues", traceObj.length);
           updateOrgTrace(traceObj, cycle);
           break;
-        case 'PopulationStats':
+        case 'populationStats':
           updatePopStats(msg);
           //doPopMap();  //Call to update grid colors;
           break;
-        case 'PopMap':
+        case 'popMap':
           //updatePopMap(msg);
           break;
         default:
@@ -990,13 +990,29 @@ require([
     //sends message to worker to tell Avida to run/pause as a toggle. 
     //uiWorker function
     function doRunPause() {
-       var request = {
-          'Key':'RunPause'
-       };
+      var request;
+      if (dijit.byId("manRadio").get('checked')) {
+        request = {
+          'type': 'addEvent',
+          'name': 'runPause',
+          'triggerType': 'immediate'
+        };
+      }
+      else {
+        var num = dijit.byId("updateSpinner").get('value');
+        console.log('num', num);
+        request = {
+          'type': 'addEvent',
+          'name': 'runPause',
+          'start': num ,
+          'interval': 'once'
+        }
+        console.log(request);
+      }
        uiWorker.postMessage(request);
     }
 
-    //Dummy Data 
+  //Dummy Data
     //var dataManDict={}
     //dataManDict["core.world.update"]=1;
     //var dataManJson = dojo.toJson(dataManDict);
@@ -2917,6 +2933,7 @@ require([
     chips.handNdx = [];
     chips.howPlaced = [];
     chips.domId = [];
+    chips.outColor = [];
 
     var CanvasCheck = document.getElementById("colorDemo");
     var ctxt = CanvasCheck.getContext("2d");
@@ -2952,18 +2969,12 @@ require([
     chips.handNdx = [];
     chips.howPlaced = [];
     chips.domId = [];
+    chips.outColor = [];
   }
 
   function placeChips(){
     var cols = dijit.byId("sizeCols").get('value');
     var rows = dijit.byId("sizeRows").get('value');
-    /*  if (Math.trunc(Math.sqrt(ChipColors.length)) == Math.sqrt(ChipColors.length)) {
-        sqLength = Math.sqrt(ChipColors.length);
-      }
-      else {
-        sqLength = Math.trunc(Math.sqrt(ChipColors.length))+1;
-      }
-     */
     var sqLength = 5; // 5 by 6 in demo
       for (ii = 0; ii < ChipColors.length; ii++) {
         cc = ii%sqLength;
@@ -2972,6 +2983,7 @@ require([
         chips.row[ii] = Math.trunc(rows*(2*rr+1)/(2*6));
         chips.name[ii] = ColorNames[ii];
         chips.color[ii]= ChipColors[ii];
+        chips.outColor[ii] = outColor[ii];
       }
   }
 
