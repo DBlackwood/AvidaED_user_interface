@@ -1923,6 +1923,7 @@ require([
       sCtx.moveTo(xStart, CanvasScale.height-1);
       sCtx.lineTo(xStart+gradWidth, CanvasScale.height-1);
       sCtx.stroke();
+      console.log('Take out after color test');
     }
     
     // *************************************************************** */
@@ -2010,7 +2011,7 @@ require([
     document.getElementById("xorButton").onclick = function(){ toggle('xorButton');}
     document.getElementById("equButton").onclick = function(){ toggle('equButton');}
 
-    //
+
     // *************************************************************** */
     // ******* Population Setup Buttons from 'Setup' subpage ********* */
     // *************************************************************** */
@@ -2023,8 +2024,8 @@ require([
       //Linear scale the position for Ancestors added by hand;
       for (var ii=0; ii<parents.handNdx.length; ii++) {
         //console.log('old cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
-        parents.col[parents.handNdx[ii]] = Math.round(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);
-        parents.row[parents.handNdx[ii]] = Math.round(NewRows * parents.row[parents.handNdx[ii]] / gridWasRows);
+        parents.col[parents.handNdx[ii]] = Math.trunc(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);
+        parents.row[parents.handNdx[ii]] = Math.trunc(NewRows * parents.row[parents.handNdx[ii]] / gridWasRows);
         parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
         //console.log('New cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
       }
@@ -2033,25 +2034,70 @@ require([
       //reset zoom power to 1 
       ZoomSlide.set("value", 1);
       PlaceAncestors(parents);
+      console.log('resize', parents.AvidaNdx, parents.col);
       //are any parents on the same cell?
+      cellConflict(NewCols, NewRows);
     }
 
     function cellConflict(NewCols, NewRows) {
+      console.log('cellConflict',NewCols, NewRows )
       var flg = false;
+      var tryCol, tryRow;
+      var avNdx;
       for (ii=0; ii< parents.handNdx.length; ii++) {
-        flg = cellFilled(ii);
-        if (flg) {
-          parents.col[parents.handNdx[ii]] = ((parents.col[parents.handNdx[ii]] + 1 <= grd.rows) ? parents.col[parents.handNdx[ii]] + 1 : grd.rows);
-          parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
+        flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]]);
+        console.log('pre', flg);
+        console.log('start conflict',ii,parents.col, parents.row);
+        if ( flg ) {
+          console.log('in if');
+          tryCol = ((parents.col[parents.handNdx[ii]] + 1 <= NewCols-1) ? parents.col[parents.handNdx[ii]] + 1 : NewCols-1);
+          avNdx = tryCol + NewCols * parents.row[parents.handNdx[ii]];
+          flg = cellFilled(avNdx);
+          console.log('tryCol+', tryCol);
+          if (!flg) {
+            parents.col[parents.handNdx[ii]] = tryCol;
+            parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
+          }
+          else {
+            tryRow = ((parents.row[parents.handNdx[ii]] + 1 <= NewRows-1) ? parents.row[parents.handNdx[ii]] + 1 : NewRows-1);
+            avNdx = parents.col[parents.handNdx[ii]] + NewCols * tryRow;
+            flg = cellFilled(avNdx);
+            console.log('tryRow+', tryRow);
+            if (!flg) {
+              parents.row[parents.handNdx[ii]] = tryRow;
+              parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
+            }
+            else {
+              tryCol = ((parents.col[parents.handNdx[ii]] - 1 >= 0) ? parents.col[parents.handNdx[ii]] - 1 : 0);
+              avNdx = tryCol + NewCols * parents.row[parents.handNdx[ii]];
+              flg = cellFilled(avNdx);
+              console.log('tryCol-', tryCol);
+              if (!flg) {
+                parents.col[parents.handNdx[ii]] = tryCol;
+                parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
+              }
+              else {
+                tryRow = ((parents.row[parents.handNdx[ii]] - 1 >= 0) ? parents.row[parents.handNdx[ii]] - 1 : 0);
+                avNdx = parents.col[parents.handNdx[ii]] + NewCols * tryRow;
+                flg = cellFilled(avNdx);
+                console.log('tryRow-', tryRow);
+                if (!flg) {
+                  parents.row[parents.handNdx[ii]] = tryRow;
+                  parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
+                }
+                console.log('end conflict',parents.col, parents.row);
+              }
+            }
+          }
         }
       }
     }
 
-    var cellFilled = function (ii) {
+    var cellFilled = function (AvNdx) {
       var flag = false;
       for (var jj = 0; jj < parents.name.length; jj++) {
         if (parents.handNdx[ii] != jj) {
-          if (parents.AvidaNdx[parents.handNdx[ii]] == parents.AvidaNdx[jj]) {
+          if (AvNdx == parents.AvidaNdx[jj]) {
             flag = true;
             return flag;
             break;
@@ -2060,6 +2106,7 @@ require([
       }
       return flag;
     }
+
     dijit.byId("sizeCols").on("Change", popSizeFn);
     dijit.byId("sizeRows").on("Change", popSizeFn);
 
