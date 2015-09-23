@@ -1125,13 +1125,13 @@ var OriginalCubehelix_cmap = [
     ,'rgb(156,  82,  10)' //5  brown             website #12 modified was 146, 73, 0
     ,'#FEB6DB'            //6  lt pink           used digital color meter to match #5 on website lt pink
     ,'#DB6D00'            //7  orange brown      used digital color meter to match #5 on website;
-    ,'rgb(182, 109, 255)' //10 lavender          website #8
-    ,'rgb(156,  10,  10)' //8  red brown         website #11 modified was 146,   0,   0
-    ,'rgb(109, 182, 255)' //9  lt blue           website #9
+    ,'rgb(182, 109, 255)' //8 lavender          website #8
+    ,'rgb(156,  10,  10)' //9  red brown         website #11 modified was 146,   0,   0
+    ,'rgb(  0,  93,  93)' //10 dark blue-green   website #2 modified was 0, 73, 73
     ,'rgb(255, 182, 119)' //11 pale orange       website #5 but does not look pink
     ,'rgb(182, 219, 255)' //12 pale blue         website #10
-    ,'rgb(  0,  93,  93)' //13 dark blue-green   website #2 modified was 0, 73, 73
-    ,'rgb(200, 190,   0)' //14 dark yellow       website #13 modified was 219, 209, 0
+    ,'rgb(200, 190,   0)' //13 dark yellow       website #13 modified was 219, 209, 0
+    ,'rgb(109, 182, 255)' //14  lt blue           website #9
     ,'rgb( 93,  20, 166)' //15 purple            website #6 modified was 73,   0, 146
     ,'rgb( 0,  195,   0)' //16 green             website #14 modied was 36, 255,  36
 
@@ -1149,33 +1149,33 @@ var OriginalCubehelix_cmap = [
     ];
 
 var ColorNames = [
-    'A blue'    //               website #7
-   ,'B yellow'  //            website #15 modified was 255, 255, 109
+    'A blue'    //1               website #7
+   ,'B yellow'  //2            website #15 modified was 255, 255, 109
    ,'C medium blue green' // website #3
-   ,'D pink'    //              website #4
-   ,'E brown'   //             website #12 modified was 146, 73, 0
-   ,'F lt pink' //           used digital color meter to match #5 on website lt pink
-   ,'G orange brown' //      used digital color meter to match #5 on website;
-   ,'J lavender'  //          website #8
-   ,'H red brown' //         website #11 modified was 146,   0,   0
-   ,'I lt blue'   //           website #9
-   ,'K pale orange' //       website #5 but does not look pink
-   ,'L pale blue' //         website #10
-   ,'M dark blue-green' //   website #2 modified was 0, 73, 73
-   ,'N dark yellow' //       website #13 modified was 219, 209, 0
-   ,'O purple' //            website #6 modified was 73,   0, 146
-   ,'P green' //             website #14 modied was 36, 255,  36
-   ,'Q magenta' //
-   ,'R pale yellow' //
-   ,'S red'
-   ,'T blue-green'
-   ,'U dark blue'
-   ,'V hot pink'
-   ,'W sky blue'
-   ,'X red-orange'
-   ,'Y dark grey'
-   ,'Z bright light blue'
-   ,'2 grey'
+   ,'D pink'    //4              website #4
+   ,'E brown'   //5             website #12 modified was 146, 73, 0
+   ,'F lt pink' //6           used digital color meter to match #5 on website lt pink
+   ,'G orange brown' //7      used digital color meter to match #5 on website;
+   ,'H lavender'  //8          website #8
+   ,'I red brown' //9         website #11 modified was 146,   0,   0
+   ,'J dark blue-green' //10   website #2 modified was 0, 73, 73
+   ,'K pale orange' //11       website #5 but does not look pink
+   ,'L pale blue' //12         website #10
+   ,'M dark yellow' //13       website #13 modified was 219, 209, 0
+   ,'N lt blue'   //14           website #9
+   ,'O purple' //15            website #6 modified was 73,   0, 146
+   ,'P green' //16             website #14 modied was 36, 255,  36
+   ,'Q magenta' //17
+   ,'R pale yellow' //18
+   ,'S red'  //19
+   ,'T blue-green'  //20
+   ,'U dark blue'  //21
+   ,'V hot pink'  //22
+   ,'W sky blue'  //23
+   ,'X red-orange'  //24
+   ,'Y dark grey'  //25
+   ,'Z bright light blue'  //26
+   ,'2 grey'   //27
 ];
 
 var outColor = [

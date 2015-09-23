@@ -63,34 +63,41 @@ require([
     //process message from web worker
     uiWorker.onmessage = function(ee){
       var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
-      switch(msg.name){
-        case 'runPause':
-          if (true != msg["Success"]) {
-            console.log("Error: ", msg);  // msg failed
-            runStopFn();  //flip state back since the message failed to get to Avida
+      if ('userFeedback' == msg.type) {
+        if ('data' = msg.level) {
+          switch (msg.message.name) {
+            case 'runPause':
+              if (true != msg["Success"]) {
+                console.log("Error: ", msg);  // msg failed
+                runStopFn();  //flip state back since the message failed to get to Avida
+              }
+              break;
+            case 'reset':
+              if (true != msg["Success"]) {
+                console.log("Reset failed: ", msg)
+              }
+              ;
+              break;
+            case 'orgTrace': //reset values and call organism tracing routines.
+              traceObj = msg;
+              cycle = 0;
+              dijit.byId("orgCycle").set("value", 0);
+              cycleSlider.set("maximum", traceObj.length - 1);
+              cycleSlider.set("discreteValues", traceObj.length);
+              updateOrgTrace(traceObj, cycle);
+              break;
+            case 'webPopulationStats':
+              updatePopStats(msg.message);
+              //doPopMap();  //Call to update grid colors;
+              break;
+            case 'popMap':
+              //updatePopMap(msg);
+              break;
+            default:
+              console.log('UnknownRequest: ', msg);
+              break;
           }
-          break;
-        case 'reset':
-          if (true != msg["Success"]) { console.log("Reset failed: ", msg)};
-          break;
-        case 'orgTrace': //reset values and call organism tracing routines.
-          traceObj = msg;
-          cycle = 0;
-          dijit.byId("orgCycle").set("value", 0);
-          cycleSlider.set("maximum", traceObj.length-1);
-          cycleSlider.set("discreteValues", traceObj.length);
-          updateOrgTrace(traceObj, cycle);
-          break;
-        case 'populationStats':
-          updatePopStats(msg);
-          //doPopMap();  //Call to update grid colors;
-          break;
-        case 'popMap':
-          //updatePopMap(msg);
-          break;
-        default:
-          console.log('UnknownRequest: ', msg);
-          break;
+        }
       }
     }
     
@@ -991,6 +998,7 @@ require([
     //uiWorker function
     function doRunPause() {
       var request;
+
       if (dijit.byId("manRadio").get('checked')) {
         request = {
           'type': 'addEvent',
@@ -1014,33 +1022,33 @@ require([
 
   //Dummy Data
     //var dataManDict={}
-    //dataManDict["core.world.update"]=1;
+    //dataManDict["update"]=1;
     //var dataManJson = dojo.toJson(dataManDict);
     //var DataManJson = JSON.stringify(dataManDict) //does the same thing as dojo.toJason
     //console.log("man ", dataManJson);
     //console.log("str ", DataManJson);
 
     function updatePopStats(msg){
-        document.getElementById("TimeLabel").textContent = msg["core.update"].formatNum(0)+" updates";
-        document.getElementById("popSizeLabel").textContent = msg["core.world.organisms"].formatNum(0);
-        document.getElementById("aFitLabel").textContent = msg["core.world.ave_fitness"].formatNum(2);
-        document.getElementById("aMetabolicLabel").textContent = msg["core.world.ave_metabolic_rate"].formatNum(1);
-        document.getElementById("aGestateLabel").textContent = msg["core.world.ave_gestation_time"].formatNum(1);
-        document.getElementById("aAgeLabel").textContent = msg["core.world.ave_age"].formatNum(2);
-        document.getElementById("notPop").textContent = msg["core.environment.triggers.not.test_organisms"];
-        document.getElementById("nanPop").textContent = msg["core.environment.triggers.nand.test_organisms"];
-        document.getElementById("andPop").textContent = msg["core.environment.triggers.and.test_organisms"];
-        document.getElementById("ornPop").textContent = msg["core.environment.triggers.orn.test_organisms"];
-        document.getElementById("oroPop").textContent = msg["core.environment.triggers.or.test_organisms"];
-        document.getElementById("antPop").textContent = msg["core.environment.triggers.andn.test_organisms"];
-        document.getElementById("norPop").textContent = msg["core.environment.triggers.nor.test_organisms"];
-        document.getElementById("xorPop").textContent = msg["core.environment.triggers.xor.test_organisms"];
-        document.getElementById("equPop").textContent = msg["core.environment.triggers.equ.test_organisms"];
+        document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0)+" updates";
+        document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
+        document.getElementById("aFitLabel").textContent = msg["ave_fitness"].formatNum(2);
+        document.getElementById("aMetabolicLabel").textContent = msg["ave_metabolic_rate"].formatNum(1);
+        document.getElementById("aGestateLabel").textContent = msg["ave_gestation_time"].formatNum(1);
+        document.getElementById("aAgeLabel").textContent = msg["ave_age"].formatNum(2);
+        document.getElementById("notPop").textContent = msg["not"];
+        document.getElementById("nanPop").textContent = msg["nand"];
+        document.getElementById("andPop").textContent = msg["and"];
+        document.getElementById("ornPop").textContent = msg["orn"];
+        document.getElementById("oroPop").textContent = msg["or"];
+        document.getElementById("antPop").textContent = msg["andn"];
+        document.getElementById("norPop").textContent = msg["nor"];
+        document.getElementById("xorPop").textContent = msg["xor"];
+        document.getElementById("equPop").textContent = msg["equ"];
         //update graph arrays
-        ave_fitness.push(msg["core.world.ave_fitness"]); 
-        ave_gestation_time.push(msg["core.world.ave_gestation_time"]);
-        ave_metabolic_rate.push(msg["core.world.ave_metabolic_rate"]);
-        population_size.push(msg["core.world.organisms"]);
+        ave_fitness.push(msg["ave_fitness"]);
+        ave_gestation_time.push(msg["ave_gestation_time"]);
+        ave_metabolic_rate.push(msg["ave_metabolic_rate"]);
+        population_size.push(msg["organisms"]);
         popChartFn();
     }
     
@@ -1895,6 +1903,16 @@ require([
       }
       sCtx.fillStyle = grad;
       sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
+      sCtx.beginPath();
+      sCtx.strokeStyle='#00FF00';
+      sCtx.moveTo(xStart, legendHt);
+      sCtx.lineTo(xStart+gradWidth, legendHt);
+      sCtx.stroke();
+      sCtx.beginPath();
+      sCtx.strokeStyle='#44FFFF';
+      sCtx.moveTo(xStart, CanvasScale.height-1);
+      sCtx.lineTo(xStart+gradWidth, CanvasScale.height-1);
+      sCtx.stroke();
     }
     
     // *************************************************************** */
@@ -1992,7 +2010,7 @@ require([
       var NewCols = Number(document.getElementById("sizeCols").value);
       var NewRows = Number(document.getElementById("sizeRows").value);
       document.getElementById("sizeCells").innerHTML = "is a total of " + NewCols * NewRows + " cells";
-      //Linear scale the positon for Ancestors added by hand; 
+      //Linear scale the position for Ancestors added by hand;
       for (var ii=0; ii<parents.handNdx.length; ii++) {
         //console.log('old cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
         parents.col[parents.handNdx[ii]] = Math.round(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);
@@ -2005,8 +2023,31 @@ require([
       //reset zoom power to 1 
       ZoomSlide.set("value", 1);
       PlaceAncestors(parents);
+      //are any parents on the same cell?
     }
 
+    function cellConflict(NewCols, NewRows) {
+      var flg = false;
+      for (ii=0; ii< parents.handNdx.length; ii++){
+        flg = cellFilled(ii);
+        parents.col[parents.handNdx[ii]] = ((parents.col[parents.handNdx[ii]]+1 <= grd.rows) ? parents.col[parents.handNdx[ii]]+1 : grd.rows);
+        parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
+      }
+    }
+
+    var cellFilled = function (ii) {
+      var flag = false;
+      for (var jj = 0; jj < parents.name.length; jj++) {
+        if (parents.handNdx[ii] != jj) {
+          if (parents.AvidaNdx[parents.handNdx[ii]] == parents.AvidaNdx[jj]) {
+            flag = true;
+            return flag;
+            break;
+          }
+        }
+      }
+      return flag;
+    }
     dijit.byId("sizeCols").on("Change", popSizeFn);
     dijit.byId("sizeRows").on("Change", popSizeFn);
 
