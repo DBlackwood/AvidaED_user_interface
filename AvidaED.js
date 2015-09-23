@@ -58,7 +58,7 @@ require([
     parser.parse();
 
     //uiWorker used when communicating with the web worker and avida
-    var uiWorker = new Worker('ui-test.js');
+    var uiWorker = new Worker('avida.js');
 
     //process message from web worker
     uiWorker.onmessage = function(ee){
@@ -988,7 +988,7 @@ require([
           //dijit.byId("manRadio").set('checked',true); 
            
           var setjson = dojo.toJson(setDict);
-          //console.log("setjson ", setjson);   
+          console.log("setjson ", setjson);
         }  
         doRunPause();
       }
