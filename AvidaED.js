@@ -64,7 +64,7 @@ require([
     uiWorker.onmessage = function(ee){
       var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
       if ('userFeedback' == msg.type) {
-        if ('data' = msg.level) {
+        if ('data' == msg.level) {
           switch (msg.message.name) {
             case 'runPause':
               if (true != msg["Success"]) {
@@ -933,6 +933,7 @@ require([
       }
       else { // setup for a new run by sending config data to avida
         if (newrun) {
+          requestPopStats();
           dom.byId("AncestorBoxNode").isSource = false;
           newrun = false;  //the run will no longer be "new"
           //Disable some of the options on the Setup page
@@ -993,12 +994,21 @@ require([
       }
       //update screen based on data from C++
     }
- 
-    //sends message to worker to tell Avida to run/pause as a toggle. 
+
+  //uiWorker function
+  function requestPopStats() {
+    var request = {
+      'type': 'addEvent',
+      'name': 'webPopulationStats',
+      'start': 'now',
+      'interval': 'always'
+    }
+    uiWorker.postMessage(request);
+  }
+
+    //sends message to worker to tell Avida to run/pause as a toggle.
     //uiWorker function
     function doRunPause() {
-      var request;
-
       if (dijit.byId("manRadio").get('checked')) {
         request = {
           'type': 'addEvent',
@@ -2028,10 +2038,12 @@ require([
 
     function cellConflict(NewCols, NewRows) {
       var flg = false;
-      for (ii=0; ii< parents.handNdx.length; ii++){
+      for (ii=0; ii< parents.handNdx.length; ii++) {
         flg = cellFilled(ii);
-        parents.col[parents.handNdx[ii]] = ((parents.col[parents.handNdx[ii]]+1 <= grd.rows) ? parents.col[parents.handNdx[ii]]+1 : grd.rows);
-        parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
+        if (flg) {
+          parents.col[parents.handNdx[ii]] = ((parents.col[parents.handNdx[ii]] + 1 <= grd.rows) ? parents.col[parents.handNdx[ii]] + 1 : grd.rows);
+          parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
+        }
       }
     }
 
