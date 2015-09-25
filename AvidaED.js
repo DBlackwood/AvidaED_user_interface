@@ -999,6 +999,7 @@ require([
 
         var setjson = dojo.toJson(setDict);
         //console.log("commented out setjson ", setjson);
+        console.log('test comment; delete me');
         injectAncestors(); //uiWorker
       }
       doRunPause();
