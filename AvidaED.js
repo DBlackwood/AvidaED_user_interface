@@ -60,7 +60,7 @@ require([
   parser.parse();
 
   //uiWorker used when communicating with the web worker and avida
-  var uiWorker = new Worker('ui-test.js');
+  var uiWorker = new Worker('avida.js');
 
   dummy();
   //process message from web worker
