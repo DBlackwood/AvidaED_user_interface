@@ -113,12 +113,17 @@ var get_color = function(cmap, dx, d1, d2, r1){
           }
           break;
         case 4:
+          //var cc, rr;
           for (ii = 0; ii < parents.autoNdx.length; ii++) {
             if (ii<2) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
             else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
             if (ii%2 < 1) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
             else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
             parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
+            //console.log('c,r,a', parents.col[parents.autoNdx[ii]],parents.row[parents.autoNdx[ii]],parents.AvidaNdx[parents.autoNdx[ii]]);
+            //cc = parents.AvidaNdx[parents.autoNdx[ii]] % cols;
+            //rr = Math.trunc(parents.AvidaNdx[parents.autoNdx[ii]]/cols);
+            //console.log('cols,rows, cc, rr', cols, rows, cc, rr);
           }
         case 5:
           for (ii = 0; ii < parents.autoNdx.length; ii++) {
