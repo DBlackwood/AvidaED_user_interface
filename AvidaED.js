@@ -107,6 +107,7 @@ require([
     }
   }
 
+  console.log('line110');
   //Create lastMax values
   var mxFit = 0;
   var mxGest = 0;
@@ -434,6 +435,7 @@ require([
 
   //Organsim dnd------------------------------------------------------
 
+  console.log('before parents');
   //structure to hole list of ancestor organisms
   var parents = {};
   parents.name = [];
@@ -680,9 +682,9 @@ require([
        'name': 'getOrgTraceBySequence',
        'triggerType': 'immediate',
        'args': [
-          currentOrgan.genome,   //genome string
-          dijit.byId("orMuteInput").get('value'),         // point mutation rate
-          seed                       //seed where 0 = random; >0 to replay that number
+          currentOrgan.genome,                        //genome string
+          dijit.byId("orMuteInput").get('value'),     // point mutation rate
+          seed                                        //seed where 0 = random; >0 to replay that number
        ]
         //'PtMuteRate': '0.02',
         //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
@@ -936,6 +938,7 @@ require([
     }))
   };
 
+
   var findFzOrganNdx = function(domId, fzOrgan) {
     for (var ii=0; ii<fzOrgan.length; ii++){
       if (domId == fzOrgan[ii].domId) {
@@ -991,6 +994,7 @@ require([
   /* *************************************************************** */
   /* ******* Map Grid buttons - New  Run/Pause Freeze ************** */
   /* *************************************************************** */
+  console.log('before map grid buttons');
   var newrun = true;
   var ave_fitness = [];
   var ave_gestation_time = [];
@@ -1087,7 +1091,7 @@ require([
       request = {
         'type': 'addEvent',
         'name': 'injectSequence',
-        'start': 'begin',
+        'start': 'now',   //was begin
         'args': [
           parents.genome[ii],           //'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab',  //genome_sequence,
           parents.AvidaNdx[ii], //cell_start,
@@ -2029,6 +2033,7 @@ require([
   }
 
   //needs numbers from Avida
+  console.log('GradientScale');
   function GradientScale() {
     CanvasScale.width = $("#gridHolder").innerWidth()-6;
     CanvasScale.height = 30;
@@ -2432,6 +2437,7 @@ require([
     doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
 
+  console.log('before Organsims View');
   /* ****************************************************************/
   /*                  Canvas for Organsim (genome) view
   /* ************************************************************** */
@@ -2841,6 +2847,7 @@ require([
   /*             End of Canvas to draw genome and update details
   /* ************************************************************** */
 
+  console.log('control buttons for organism page');
   /* **** Controls bottum of organism page **************************/
   var update_timer = null;
 
@@ -2928,6 +2935,7 @@ require([
       }
   }, "cycleSlider");
 
+  console.log('Analysis Page');
   /* ****************************************************************/
   /* Analysis Page **************************************************/
   /* ****************************************************************/
@@ -2941,6 +2949,7 @@ require([
   dictPlotb["m2w30u1000nand"] = [80, 70, 75, 60, 50, 50, 40, 40, 30];
   dictPlota["newPopulation"] = [0.5,  1,  2, 1.7,  2, 2.7, 3.2, 3.2];
   dictPlotb["newPopulation"] = [ 65, 50, 50,  47, 40,  37,  32, 22];
+  console.log('after dictPlotb');
   var pop1a = [];
   var pop1b = [];
   var pop2a = [];
@@ -2951,9 +2960,13 @@ require([
   var color2 = dictColor[dijit.byId("pop2color").value];
   var color3 = dictColor[dijit.byId("pop3color").value];
   var y1title = "Average Fitness";
-  var y2title = 'Average Gestation Time'
-  var anaChart = new Chart("analyzeChart");
+  var y2title = 'Average Gestation Time';
+  console.log('before anaChart');
+  //var anaChart = new Chart("analyzeChart");  //from today
+  //var anaChart = new Chart("analyzeChart"); //from last week
+  var abaChart = new Chart('achart');
 
+  console.log('before AnaChartFn');
   function AnaChartFn(){
     anaChart.addPlot("default", {type: "Lines", hAxis:"x", vAxis:"y"});
     anaChart.addPlot("other", {type: "Lines", hAxis: "x", vAxis: "right y"});
@@ -2976,8 +2989,9 @@ require([
     var dZoom = new MouseZoomAndPan(anaChart, "default");
           //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
     anaChart.render();
-  };
+  }
 
+  console.log('chart buttons');
   /* Chart buttons ****************************************/
   document.getElementById("pop1delete").onclick = function(){
     graphPop1.selectAll().deleteSelectedNodes();
@@ -3028,7 +3042,7 @@ require([
   //************************************************************************
 
   //Eliminate scrollbars on population page
-
+  console.log('eliminate scroll bars');
   //used to set the height so the data just fits. Done because different monitor/brower combinations require a diffent height in pixels.
   //may need to take out as requires loading twice now.
   function removeScrollbar(scrollDiv, htChangeDiv, page) {
