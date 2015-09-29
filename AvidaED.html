@@ -515,7 +515,6 @@
                 <span id="muteSlide" style="width:100px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
                 <!-- style done here for the slider; margin to keep it from overlapping;
                                       without width the slider is the full width of the browser window-->
-                <!--<input id="muteInput" type="text" style="width: 4em; height:1.8em"></input> -->
                 <input id="muteInput" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
                     data-dojo-props="constraints:{min:0, max:100},
                     invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid mutation rate.'"
@@ -852,22 +851,27 @@
   <!-- Single Organism Replication Settings Dialog Box -->
   <div data-dojo-type="dijit/Dialog" data-dojo-id="OrganSetupDialog" title="Settings for single organism replication">
     <div class = "dijitDialogPaneContentArea">
-      <div class="even">
-        <span class="lftmargin">Per Site Mutation Rate:</span>
-        <span id="orMuteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
-        <!-- style done here for the slider; margin to keep it from overlapping;
+      <form id="OrganRepeatForm">
+        <div class="even">
+          <span class="lftmargin">Per Site Mutation Rate:</span>
+          <span id="orMuteSlide" style="width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px"></span>
+          <!-- style done here for the slider; margin to keep it from overlapping;
                               without width the slider is the full width of the browser window-->
-        <input id="orMuteInput" type="text" style="width: 4em; height:1.8em"></input>
-        <!--<div class="fltLeft">%</div>
-        <input id="orMRate" type="text" readonly style="width: 4em; height:1.8em"></input>-->
-      </div>
-       <form id="OrganRepeatForm">
-         <h3>Repeatability Mode:</h3>
-         <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganExperimentRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-         <label id="OrganExperimentLabel">Experimental (Natural Variation)</label>
-         <br />
-         <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganDemoRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
-         <label id="OrganDemoLabel">Demo (forces exact replay)</label>
+          <!--<input id="orMuteInput" type="text" style="width: 4em; height:1.8em"></input>%-->
+          <input id="orMuteInput" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true";
+                 data-dojo-props="constraints:{min:0, max:100},
+                    invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid mutation rate.'"
+                 style="width: 4.5em; height:1.8em"></input> %
+
+          <!--<div class="fltLeft">%</div>
+          <input id="orMRate" type="text" readonly style="width: 4em; height:1.8em"></input>-->
+        </div>
+        <h3>Repeatability Mode:</h3>
+        <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganExperimentRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+        <label id="OrganExperimentLabel">Experimental (Natural Variation)</label>
+        <br />
+        <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganDemoRadio" intermediateChanges="false" iconClass="dijitNoIcon"></input>
+        <label id="OrganDemoLabel">Demo (forces exact replay)</label>
       </form>
     </div>
     <div class="dijitDialogPaneActionBar">

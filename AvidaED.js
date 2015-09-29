@@ -61,9 +61,12 @@ require([
 
   //uiWorker used when communicating with the web worker and avida
   var uiWorker = new Worker('avida.js');
+  //var uiWorker = new Worker('ui-test.js');
 
   dummy();
   //process message from web worker
+  var traceObj; //global that holds the traceObject that was sent from Avida
+  var DidDivide = false;
   uiWorker.onmessage = function(ee){
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('type' == msg.type) {
@@ -297,13 +300,13 @@ require([
   ]);
   var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: true, singular: true , selfAccept: false});
   freezeOrgan.insertNodes(false, [
-    { data: "@ancestor",   type: ["organism"]},
-    { data: "bravo",       type: ["organism"]},
-    { data: "charlie",     type: ["organism"]},
-    { data: "delta",       type: ["organism"]},
-    { data: "echo",        type: ["organism"]},
-    { data: "foxtrot",     type: ["organism"]},
-    { data: "golf",        type: ["organism"]}
+    { data: "@ancestor",   type: ["organism"]}
+    ,{ data: "bravo",       type: ["organism"]}
+    ,{ data: "charlie",     type: ["organism"]}
+    //,{ data: "delta",       type: ["organism"]}
+    //,{ data: "echo",        type: ["organism"]}
+    //,{ data: "foxtrot",     type: ["organism"]}
+    //,{ data: "golf",        type: ["organism"]}
   ]);
 
   var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], singular: true, copyOnly: true, selfAccept: false});
@@ -331,6 +334,25 @@ require([
   var graphPop1 = new dndTarget("graphPop1Node", {accept: ["popDish"], singular: true});
   var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
   var graphPop3 = new dndTarget("graphPop3Node", {accept: ["popDish"], singular: true});
+
+  //structure to hold data about freezer items
+  fzOrgan = [];
+  var domList = Object.keys(freezeOrgan.map);
+  var neworg;
+  for (var ii=0; ii<domList.length;ii++){
+    neworg = {
+      'name' : freezeOrgan.map[domList[ii]].data,
+      'domId' : domList[ii],
+      'genome' : 'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'
+    };
+    fzOrgan.push(neworg);
+  }
+
+  var currentOrgan = {
+    'name' : "",
+    'domId' : "",
+    'genome' : ""
+  }
 
   // General Drag and Drop (DnD) functions --------------------------------------
   //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
@@ -444,10 +466,13 @@ require([
   AncestorBox.on("DndDrop", function(source, nodes, copy, target){
     //Do not copy parents if one is moved within Ancestor Box
     if ("AncestorBoxNode" == target.node.id && "AncestorBoxNode" != source.node.id) {
+      //find genome by finding source
+      var domId = Object.keys(source.selection)[0];
+      var ndx = findFzOrganNdx(domId,fzOrgan);
+      parents.genome.push(fzOrgan[ndx].genome);
       nn = parents.name.length;
       parents.autoNdx.push(nn);
       parents.name.push(nodes[0].textContent);
-      parents.genome.push('wzcagccccccccccccccaaaacccccccccccccccccczvfcaxgab');  //tiba all the same
       parents.howPlaced.push('auto');
       parents.domId.push(Object.keys(target.selection)[0]);
       //Find color of ancestor
@@ -485,7 +510,9 @@ require([
         parents.handNdx.push(nn);
         parents.howPlaced[nn] = 'hand';
         parents.name[nn] = nodes[0].textContent;
-        parents.genome.push('wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab');  //tiba all the same
+        var domId = Object.keys(source.selection)[0];
+        var ndx = findFzOrganNdx(domId,fzOrgan);
+        parents.genome.push(fzOrgan[ndx].genome);
         //find domId of parent as listed in AncestorBox
         var mapItems = Object.keys(AncestorBox.map);
         parents.domId.push(mapItems[mapItems.length-1]);
@@ -526,13 +553,20 @@ require([
         if (null != avidian) {  //give dom item new avidian name
           document.getElementById(strItem).textContent=avidian;
           target.map[strItem].data = avidian;
+          //update struture to hold freezer data for Organsims.
+          var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
+          neworg = {
+            'name' : freezeOrgan.map[strItem].data,
+            'domId' : strItem,
+            'genome' : parents.genome[Ndx]
+          };
+          fzOrgan.push(neworg);
 
           // need to remove organism from parents list.
-          var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
           removeParent(Ndx);
           PlaceAncestors(parents);
 
-          //create a right mouse-click context menue for the item just created.
+          //create a right mouse-click context menu for the item just created.
           contextMenu(target, nodes[0].id);
         }
         else { //Not given a name, so it should NOT be added to the freezer.
@@ -550,7 +584,6 @@ require([
     }
   });
 
-  //OrganCurrent.on("DndDrop", function(source, nodes, copy, target){
   organismIcon.on("DndDrop", function(source, nodes, copy, target){
     if ("organismIcon" == target.node.id){
       //clear out the old data if an organism is already there
@@ -560,10 +593,11 @@ require([
         OrganCurrent.sync();   //should be done after insertion or deletion
       }
       //get the data for the new organism
-      freezeOrgan.forInSelectedItems(function(item, id){
+      source.forInSelectedItems(function(item, id){
         OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         OrganCurrent.sync();
       });
+      updateCurrentOrgan(source,target);
       //clear out organismIcon as nothing is stored there - just moved on to OrganismCurrent
       organismIcon.selectAll().deleteSelectedNodes();  //clear items
       organismIcon.sync();   //should be done after insertion or deletion
@@ -597,9 +631,21 @@ require([
         });
         //console.log("OrganCurrent.map=", OrganCurrent.map);
       }
+      updateCurrentOrgan(source,target);
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
+
+  function updateCurrentOrgan(source,target){
+    if ("freezeOrganNode" == source.node.id) {
+      var domId = Object.keys(source.selection)[0];
+      var ndx = findFzOrganNdx(domId, fzOrgan);
+      currentOrgan.name = fzOrgan[ndx].name;
+      currentOrgan.domId = Object.keys(target.map)[0];
+      currentOrgan.genome = fzOrgan[ndx].genome;
+    }
+    console.log('currentOrgan',currentOrgan);
+  }
 
   //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
   //will be put in OrganCurrent.
@@ -620,17 +666,26 @@ require([
         OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
       });
       OrganCurrent.sync();
-
+      updateCurrentOrgan(source,target);
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
   });
 
   //uiWorker function
   function doOrgTrace() {
+     var seed = 0;
+     if (dijit.byId("OrganDemoRadio").get('checked',true)) {seed=1}
      var request = {
-        'Key':'OrgTrace',
-        'PtMuteRate': '0.02',
-        'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
+       'type':'addEvent',
+       'name': 'getOrgTraceBySequence',
+       'triggerType': 'immediate',
+       'args': [
+          currentOrgan.genome,   //genome string
+          dijit.byId("orMuteInput").get('value'),         // point mutation rate
+          seed                       //seed where 0 = random; >0 to replay that number
+       ]
+        //'PtMuteRate': '0.02',
+        //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
      };
      uiWorker.postMessage(request);
   }
@@ -639,23 +694,24 @@ require([
   //This should never happen as there is only one source for populated dishes
   //This triggers for every dnd drop, not just those of freezePopDish
   freezePopDish.on("DndDrop", function(source, nodes, copy, target){
-    if ("freezePopDishNode" == target.node.id){
+    if ("freezePopDishNode" != target.node.id) {
+    } else {
       //var items = getAllItems(freezePopDish);  not used
-      var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
+      var popDish = prompt("Please name your populated dish", nodes[0].textContent + "_1");
       var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
       var unique = true;
       while (unique) {
         unique = false;
-        for (var ii = 0; ii < namelist.length; ii++){
+        for (var ii = 0; ii < namelist.length; ii++) {
           if (popDish == namelist[ii].innerHTML) {
-            popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
+            popDish = prompt("Please give your populated dish a unique name ", popDish + "_1")
             unique = true;
             break;
           }
         }
       }
-      if (null!=popDish) {
-        nodes[0].textContent=popDish;
+      if (null != popDish) {
+        nodes[0].textContent = popDish;
         //to change data value not fully tested, but keep as it was hard to figure out
         //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
       }
@@ -684,6 +740,7 @@ require([
         if (!('@default' == nodes[0].textContent ||'@ancestor'==nodes[0].textContent ||
               '@example'==nodes[0].textContent)) {
           source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+          //need to remove from freezer structure as well.
         }
       }
       // items from ancestor box require ancestor (parent) handling.
@@ -825,7 +882,7 @@ require([
     var fzSection = target.node.id;
     //console.log("target.node.id=",target.node.id);
     //console.log("target.map", target.map);
-    //console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
+    console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
     var aMenu;
     aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
     aMenu.addChild(new dijit.MenuItem({
@@ -851,6 +908,12 @@ require([
           //document.getElementById(fzItemID).innerHTML = fzName;  //either works
           document.getElementById(fzItemID).textContent = fzName;
           //console.log(".data=", target.map[fzItemID].data);
+          //update freezer structure
+          if ('freezeOrganNode'==fzSection) {
+            var Ndx = findFzOrganNdx(fzItemID, fzOrgan);
+            fzOrgan[Ndx].name = fzName;
+            //console.log('contextMenu', fzOrgan);
+          }
         }
       }
     }));
@@ -859,8 +922,11 @@ require([
       onClick: function() {
         var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
         if (sure) {
-          //target.parent.removeChild(fzItemID);
-          target.selectNone();
+          if ('freezeOrganNode'==fzSection) {
+            var Ndx = findFzOrganNdx(fzItemID, fzOrgan);
+            fzOrgan.splice(Ndx,1);
+          }
+            target.selectNone();
           //console.log('frzITem', fzItemID);
           dojo.destroy(fzItemID);
           target.delItem(fzItemID);
@@ -869,14 +935,18 @@ require([
       }
     }))
   };
-/*  
-*  //commented out on 4 sept delete completely later
-  // create the delete dialog:
-  deleteDlg = new dijit.Dialog({
-      title: "Delete",
-      style: "width: 300px"
-  });
-*/
+
+  var findFzOrganNdx = function(domId, fzOrgan) {
+    for (var ii=0; ii<fzOrgan.length; ii++){
+      if (domId == fzOrgan[ii].domId) {
+        return ii;
+        break;
+      }
+    }
+    console.log('fzOrganNdx not found');
+    return -1;
+  }
+
   /* *************************************************************** */
   /* Population page script ******************************************/
   /* *************************************************************** */
@@ -944,6 +1014,7 @@ require([
     else { // setup for a new run by sending config data to avida
       if (newrun) {
         requestPopStats();  //uiWorker
+        requestGridData();  //uiWorker
         dom.byId("AncestorBoxNode").isSource = false;
         newrun = false;  //the run will no longer be "new"
         //Disable some of the options on the Setup page
@@ -996,10 +1067,7 @@ require([
         setDict["equose"]=dijit.byId("equose").get('checked',true);
         setDict["repeatMode"]=dijit.byId("experimentRadio").get('checked',true);
         //dijit.byId("manRadio").set('checked',true);
-
-        var setjson = dojo.toJson(setDict);
-        //console.log("commented out setjson ", setjson);
-        console.log('test comment; delete me');
+        sendConfig(setDict);
         injectAncestors(); //uiWorker
       }
       doRunPause();
@@ -1007,6 +1075,12 @@ require([
     //update screen based on data from C++
   }
 
+  function sendConfig(setDict) {
+    var setjson = dojo.toJson(setDict);
+    //console.log("commented out setjson ", setjson);
+    console.log('test comment; delete me');
+
+  }
   function injectAncestors(){
     var request;
     for (ii=0; ii<parents.name.length; ii++) {
@@ -1038,6 +1112,16 @@ require([
     uiWorker.postMessage(request);
   }
 
+  //uiWorker function
+  function requestGridData() {
+    var request = {
+      'type': 'addEvent',
+      'name': 'webGridData',
+      'start': 'now',
+      'interval': 'always'
+    }
+    uiWorker.postMessage(request);
+  }
 
   //sends message to worker to tell Avida to run/pause as a toggle.
   //uiWorker function
@@ -1484,14 +1568,17 @@ require([
   $(document.getElementById('organismCanvas')).on('mousedown', function (evt) {
     mouse.DnOrganPos=[evt.offsetX, evt.offsetY];
     mouse.Dn = true;
-    var distance = Math.sqrt(Math.pow(evt.offsetX-gen.cx[1],2) + Math.pow(evt.offsetY-gen.cy[1],2));
-    if (25 > distance) {
-      document.getElementById('organismIcon').style.cursor = 'copy';
-      document.getElementById('organismCanvas').style.cursor = 'copy';
-      document.getElementById('mainBC').style.cursor = 'move';
-      mouse.Picked = "offspring";
+    mouse.Picked = '';
+    if (DidDivide) {  //offpsring exists
+      var distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
+      if (25 > distance) {
+        document.getElementById('organismIcon').style.cursor = 'copy';
+        document.getElementById('organismCanvas').style.cursor = 'copy';
+        document.getElementById('freezeOrganNode').style.cursor = 'copy';
+        document.getElementById('mainBC').style.cursor = 'move';
+        mouse.Picked = "offspring";
+      }
     }
-    else { mouse.Picked = ""; }
   });
 
   //mouse down on the grid
@@ -1544,6 +1631,7 @@ require([
     document.getElementById('TrashCan').style.cursor = 'default';
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organismIcon').style.cursor = 'default';
+    document.getElementById('freezeOrganNode').style.cursor = 'default';
     mouse.UpGridPos=[evt.offsetX, evt.offsetY];
     mouse.Dn = false;
 
@@ -1573,8 +1661,14 @@ require([
       OrganCurrent.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
       OrganCurrent.sync();
 
+      currentOrgan.name = parent+"_offspring";
+      currentOrgan.genme=gen.dna[1];  //this should be the full genome when the offspring is complete.
+      currentOrgan.domId = Object.keys(OrganCurrent.map)[0];
       //get genome from offspring data //needs work!!
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
+    }
+    else if ('freezeOrganNode' == evt.target.id) {
+      //create a new freezer item
     }
   }
 
@@ -2272,7 +2366,8 @@ require([
     });
     /* initialize */
     //$( "#orMRate" ).val( ($( "#orMuteSlide").slider( "value" )));
-    $( "#orMuteInput" ).val(muteDefault+"%");
+    //$( "#orMuteInput" ).val(muteDefault+"%");
+    $( "#orMuteInput" ).val(muteDefault);//tibaslide
     /*update slide based on textbox */
     $( "#orMuteInput" ).change(function() {
       slides.slider( "value", 100000.0*Math.log(1+(parseFloat(this.value))) );
@@ -2603,6 +2698,7 @@ require([
   //*****************************************************************/
   //main function to update the Organism Trace on the Organism Page
   function updateOrgTrace(obj, cycle){
+    DidDivide = obj[cycle].DidDivide; //update global version of didDivide
     //set canvas size
     organismCanvasHolderSize ();
     //Find size and content of each genome.
