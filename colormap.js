@@ -261,8 +261,8 @@ var Viridis_cmap = [
 ];
 
 var Gnuplot2_cmap = [
- 'rgb(0, 0, 0)'
-, 'rgb(0, 0, 4)'
+// 'rgb(0, 0, 0)'
+  'rgb(0, 0, 4)'
 , 'rgb(0, 0, 8)'
 , 'rgb(0, 0, 12)'
 , 'rgb(0, 0, 16)'
@@ -515,8 +515,8 @@ var Gnuplot2_cmap = [
 , 'rgb(255, 255, 205)'
 , 'rgb(255, 255, 218)'
 , 'rgb(255, 255, 230)'
-, 'rgb(255, 255, 243)'
-, 'rgb(255, 255, 255)'
+//, 'rgb(255, 255, 243)'
+//, 'rgb(255, 255, 255)'
   ];
 
 var Cubehelix_cmap = [  //djb version

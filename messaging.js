@@ -1,6 +1,6 @@
 function dummy() {
     console.log('dummy');
-//    console.log(dijit.byId("sizeCols").get('value'));
+    console.log(dijit.byId("sizeCols").get('value'));
 }
 
 /*

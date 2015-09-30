@@ -60,8 +60,8 @@ require([
   parser.parse();
 
   //uiWorker used when communicating with the web worker and avida
-  var uiWorker = new Worker('avida.js');
-  //var uiWorker = new Worker('ui-test.js');
+  //var uiWorker = new Worker('avida.js');
+  var uiWorker = new Worker('ui-test.js');
 
   dummy();
   //process message from web worker
@@ -107,7 +107,6 @@ require([
     }
   }
 
-  console.log('line110');
   //Create lastMax values
   var mxFit = 0;
   var mxGest = 0;
@@ -301,7 +300,7 @@ require([
   ]);
   var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: true, singular: true , selfAccept: false});
   freezeOrgan.insertNodes(false, [
-    { data: "@ancestor",   type: ["organism"]}
+     { data: "@ancestor",   type: ["organism"]}
     ,{ data: "bravo",       type: ["organism"]}
     ,{ data: "charlie",     type: ["organism"]}
     //,{ data: "delta",       type: ["organism"]}
@@ -435,7 +434,6 @@ require([
 
   //Organsim dnd------------------------------------------------------
 
-  console.log('before parents');
   //structure to hole list of ancestor organisms
   var parents = {};
   parents.name = [];
@@ -696,17 +694,16 @@ require([
   //This should never happen as there is only one source for populated dishes
   //This triggers for every dnd drop, not just those of freezePopDish
   freezePopDish.on("DndDrop", function(source, nodes, copy, target){
-    if ("freezePopDishNode" != target.node.id) {
-    } else {
+    if ("freezePopDishNode" == target.node.id){
       //var items = getAllItems(freezePopDish);  not used
-      var popDish = prompt("Please name your populated dish", nodes[0].textContent + "_1");
+      var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
       var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
       var unique = true;
       while (unique) {
         unique = false;
         for (var ii = 0; ii < namelist.length; ii++) {
           if (popDish == namelist[ii].innerHTML) {
-            popDish = prompt("Please give your populated dish a unique name ", popDish + "_1")
+            popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
             unique = true;
             break;
           }
@@ -884,7 +881,7 @@ require([
     var fzSection = target.node.id;
     //console.log("target.node.id=",target.node.id);
     //console.log("target.map", target.map);
-    console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
+    //console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
     var aMenu;
     aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
     aMenu.addChild(new dijit.MenuItem({
@@ -994,7 +991,6 @@ require([
   /* *************************************************************** */
   /* ******* Map Grid buttons - New  Run/Pause Freeze ************** */
   /* *************************************************************** */
-  console.log('before map grid buttons');
   var newrun = true;
   var ave_fitness = [];
   var ave_gestation_time = [];
@@ -1018,7 +1014,6 @@ require([
     else { // setup for a new run by sending config data to avida
       if (newrun) {
         requestPopStats();  //uiWorker
-        requestGridData();  //uiWorker
         dom.byId("AncestorBoxNode").isSource = false;
         newrun = false;  //the run will no longer be "new"
         //Disable some of the options on the Setup page
@@ -1182,19 +1177,6 @@ require([
       population_size.push(msg["organisms"]);
       popChartFn();
   }
-
-  //from http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
-  //formats numbers with commas
-  Number.prototype.formatNum = function(c, d, t){
-  var n = this,
-      c = isNaN(c = Math.abs(c)) ? 2 : c,
-      d = d == undefined ? "." : d,
-      t = t == undefined ? "," : t,
-      s = n < 0 ? "-" : "",
-      i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
-      j = (j = i.length) > 3 ? j % 3 : 0;
-     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-   };
 
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById("runStopButton").onclick = function(){runStopFn()}
@@ -1582,6 +1564,13 @@ require([
         document.getElementById('mainBC').style.cursor = 'move';
         mouse.Picked = "offspring";
       }
+
+    //var distance = Math.sqrt(Math.pow(evt.offsetX-gen.cx[1],2) + Math.pow(evt.offsetY-gen.cy[1],2));
+    //if (25 > distance) {
+    //  document.getElementById('organismIcon').style.cursor = 'copy';
+    //  document.getElementById('organismCanvas').style.cursor = 'copy';
+    //  document.getElementById('mainBC').style.cursor = 'move';
+    //  mouse.Picked = "offspring";
     }
   });
 
@@ -1964,7 +1953,7 @@ require([
     }
       //else ChildGradient();}
     //Draw Selected as one of the last items to draw
-    if (grd.flagSelected) { DrawSelected() };
+    if (grd.flagSelected) { DrawSelected() }
   }
 
   function DrawGridBackground() {
@@ -2437,7 +2426,6 @@ require([
     doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
 
-  console.log('before Organsims View');
   /* ****************************************************************/
   /*                  Canvas for Organsim (genome) view
   /* ************************************************************** */
@@ -2597,8 +2585,8 @@ require([
       ctx.beginPath();
       ctx.arc(SmallCenterX, SmallCenterY, gen.smallR, 0, 2*Math.PI);
       //Assign color based on letter code of instruction
-        //ctx.fillStyle = letterColor[gen.dna[gg].substr(ii,1)];  //use if gen.dna is a string
-      ctx.fillStyle = letterColor[gen.dna[gg][ii]];  //use if gen.dna is an array
+      ctx.fillStyle = letterColor[gen.dna[gg].substr(ii,1)];  //use if gen.dna is a string
+      //ctx.fillStyle = letterColor[gen.dna[gg][ii]];  //use if gen.dna is an array
       ctx.fill();   //required to render fill
       //Draw ring if there was a mutation in the offspring
       if (undefined != obj[cycle].MemSpace[1]) {
@@ -2623,10 +2611,10 @@ require([
       //Draw letter inside circle
       ctx.fillStyle = dictColor["Black"];
       ctx.font = gen.fontsize+"px Arial";
-        //txtW = ctx.measureText(gen.dna[gg].substr(ii,1)).width;  //use if gen.dna is a string
-      txtW = ctx.measureText(gen.dna[gg][ii]).width;     //use if gen.dna is an array
-        //ctx.fillText(gen.dna[gg].substr(ii,1),SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is a string
-      ctx.fillText(gen.dna[gg][ii],SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);
+      txtW = ctx.measureText(gen.dna[gg].substr(ii,1)).width;  //use if gen.dna is a string
+      //txtW = ctx.measureText(gen.dna[gg][ii]).width;     //use if gen.dna is an array
+      ctx.fillText(gen.dna[gg].substr(ii,1),SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is a string
+      //ctx.fillText(gen.dna[gg][ii],SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is an array
     }
     //Draw center of circle to test max arc height - should not go past center of circle
     //ctx.arc(gen.cx[gg], gen.cy[gg], gen.smallR/4, 0, 2*Math.PI);
@@ -2961,10 +2949,7 @@ require([
   var color3 = dictColor[dijit.byId("pop3color").value];
   var y1title = "Average Fitness";
   var y2title = 'Average Gestation Time';
-  console.log('before anaChart');
-  //var anaChart = new Chart("analyzeChart");  //from today
-  //var anaChart = new Chart("analyzeChart"); //from last week
-  var abaChart = new Chart('achart');
+  var anaChart = new Chart("analyzeChart");
 
   console.log('before AnaChartFn');
   function AnaChartFn(){
@@ -2989,7 +2974,7 @@ require([
     var dZoom = new MouseZoomAndPan(anaChart, "default");
           //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
     anaChart.render();
-  }
+  };
 
   console.log('chart buttons');
   /* Chart buttons ****************************************/
@@ -3042,7 +3027,7 @@ require([
   //************************************************************************
 
   //Eliminate scrollbars on population page
-  console.log('eliminate scroll bars');
+
   //used to set the height so the data just fits. Done because different monitor/brower combinations require a diffent height in pixels.
   //may need to take out as requires loading twice now.
   function removeScrollbar(scrollDiv, htChangeDiv, page) {
