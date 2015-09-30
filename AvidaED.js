@@ -303,7 +303,7 @@ require([
   freezeOrgan.insertNodes(false, [
      { data: "@ancestor",   type: ["organism"]}
     ,{ data: "bravo",       type: ["organism"]}
-    ,{ data: "charlie",     type: ["organism"]}
+    //,{ data: "charlie",     type: ["organism"]}
     //,{ data: "delta",       type: ["organism"]}
     //,{ data: "echo",        type: ["organism"]}
     //,{ data: "foxtrot",     type: ["organism"]}
@@ -317,7 +317,7 @@ require([
     { data: "m2w30u1000not",  type: ["popDish"]}
   ]);
   var organismIcon = new dndTarget("organismIcon", {accept: ["organism"], selfAccept: false});
-  var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"], selfAccept: false});
+  var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"], copyOnly: true, selfAccept: false});
   //Have not made final decision about which div the dnd will connect to
   //var gridBoxNode = "gridBoxNode";  //the div around the grid
   var gridBoxNode = "gridCanvas";   //the actual canvas object
@@ -336,7 +336,7 @@ require([
   var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
   var graphPop3 = new dndTarget("graphPop3Node", {accept: ["popDish"], singular: true});
 
-  //structure to hold data about freezer items
+  //structure to hold data about freezer items temporary until files work.
   fzOrgan = [];
   var domList = Object.keys(freezeOrgan.map);
   var neworg;
@@ -349,7 +349,7 @@ require([
     fzOrgan.push(neworg);
   }
 
-  var currentOrgan = {
+  var chosen = {
     'name' : "",
     'domId' : "",
     'genome' : ""
@@ -534,8 +534,9 @@ require([
 
   //When something is added to the Organism Freezer ------------------
   freezeOrgan.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of Organism Freezer
-    if ("freezeOrganNode" == target.node.id && "AncestorBoxNode" == source.node.id) {
+    if ("freezeOrganNode" == target.node.id) {
       var strItem = Object.keys(target.selection)[0];
+
       var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
       if (avidian) {
         var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
@@ -554,21 +555,40 @@ require([
         if (null != avidian) {  //give dom item new avidian name
           document.getElementById(strItem).textContent=avidian;
           target.map[strItem].data = avidian;
-          //update struture to hold freezer data for Organsims.
-          var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
-          neworg = {
-            'name' : freezeOrgan.map[strItem].data,
-            'domId' : strItem,
-            'genome' : parents.genome[Ndx]
-          };
-          fzOrgan.push(neworg);
 
-          // need to remove organism from parents list.
-          removeParent(Ndx);
-          PlaceAncestors(parents);
+          if ("AncestorBoxNode" == source.node.id) {
+            //update structure to hold freezer data for Organisms.
+            var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
+            neworg = {
+              'name': freezeOrgan.map[strItem].data,
+              'domId': strItem,
+              'genome': parents.genome[Ndx]
+            };
+            fzOrgan.push(neworg);
 
+            // need to remove organism from parents list.
+            removeParent(Ndx);
+            PlaceAncestors(parents);
+
+            // need to remove organism from the Ancestor Box.
+            // AncestorBox is dojo dnd copyonly to prevent loss of that organsim when the user clicks cancel. The user will
+            // see the cancel as cancelling the dnd rather than canceling the rename.
+            AncestorBox.deleteSelectedNodes();  //clear items
+            AncestorBox.sync();   //should be done after insertion or deletion
+            //console.log('neworg', neworg);
+          }
+          else if ("OrganCurrentNode" == source.node.id) {
+            neworg = {
+              'name': freezeOrgan.map[strItem].data,
+              'domId': strItem,
+              'genome': chosen.genome
+            }
+            fzOrgan.push(neworg);
+          }
+          console.log('fzOrgan',fzOrgan);
           //create a right mouse-click context menu for the item just created.
-          contextMenu(target, nodes[0].id);
+          //console.log('nodes[0].id', nodes[0].id, '; target',target);
+          contextMenu(target, neworg.domId);
         }
         else { //Not given a name, so it should NOT be added to the freezer.
           freezeOrgan.deleteSelectedNodes();  //clear items
@@ -632,20 +652,20 @@ require([
         });
         //console.log("OrganCurrent.map=", OrganCurrent.map);
       }
-      updateCurrentOrgan(source,target);
+      updateCurrentOrgan(source);
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
 
-  function updateCurrentOrgan(source,target){
+  function updateCurrentOrgan(source){
     if ("freezeOrganNode" == source.node.id) {
       var domId = Object.keys(source.selection)[0];
       var ndx = findFzOrganNdx(domId, fzOrgan);
-      currentOrgan.name = fzOrgan[ndx].name;
-      currentOrgan.domId = Object.keys(target.map)[0];
-      currentOrgan.genome = fzOrgan[ndx].genome;
+      chosen.name = fzOrgan[ndx].name;
+      chosen.domId = Object.keys(OrganCurrent.map)[0];
+      chosen.genome = fzOrgan[ndx].genome;
     }
-    console.log('currentOrgan',currentOrgan);
+    console.log('chosen',chosen);
   }
 
   //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
@@ -667,10 +687,12 @@ require([
         OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
       });
       OrganCurrent.sync();
-      updateCurrentOrgan(source,target);
+
+      updateCurrentOrgan(source);
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
   });
+
 
   //uiWorker function
   function doOrgTrace() {
@@ -681,7 +703,7 @@ require([
        'name': 'getOrgTraceBySequence',
        'triggerType': 'immediate',
        'args': [
-          currentOrgan.genome,                        //genome string
+          chosen.genome,                        //genome string
           dijit.byId("orMuteInput").get('value'),     // point mutation rate
           seed                                        //seed where 0 = random; >0 to replay that number
        ]
@@ -1655,9 +1677,9 @@ require([
       OrganCurrent.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
       OrganCurrent.sync();
 
-      currentOrgan.name = parent+"_offspring";
-      currentOrgan.genme=gen.dna[1];  //this should be the full genome when the offspring is complete.
-      currentOrgan.domId = Object.keys(OrganCurrent.map)[0];
+      chosen.name = parent+"_offspring";
+      chosen.genme=gen.dna[1];  //this should be the full genome when the offspring is complete.
+      chosen.domId = Object.keys(OrganCurrent.map)[0];
       //get genome from offspring data //needs work!!
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
@@ -1940,7 +1962,7 @@ require([
     gridWasCols = Number(document.getElementById("sizeCols").value);
     gridWasRows = Number(document.getElementById("sizeRows").value);
     //reset zoom power to 1
-    ZoomSlide.set("value", 1);
+    grd.ZoomSlide.set("value", 1);
     PlaceAncestors(parents);
     //are any parents on the same cell?
     cellConflict(NewCols, NewRows);
@@ -2584,7 +2606,6 @@ require([
   /*             End of Canvas to draw genome and update details
   /* ************************************************************** */
 
-  console.log('control buttons for organism page');
   /* **** Controls bottum of organism page **************************/
   var update_timer = null;
 
@@ -2672,7 +2693,6 @@ require([
       }
   }, "cycleSlider");
 
-  console.log('Analysis Page');
   /* ****************************************************************/
   /* Analysis Page **************************************************/
   /* ****************************************************************/
@@ -2686,7 +2706,6 @@ require([
   dictPlotb["m2w30u1000nand"] = [80, 70, 75, 60, 50, 50, 40, 40, 30];
   dictPlota["newPopulation"] = [0.5,  1,  2, 1.7,  2, 2.7, 3.2, 3.2];
   dictPlotb["newPopulation"] = [ 65, 50, 50,  47, 40,  37,  32, 22];
-  console.log('after dictPlotb');
   var pop1a = [];
   var pop1b = [];
   var pop2a = [];
@@ -2700,7 +2719,6 @@ require([
   var y2title = 'Average Gestation Time';
   var anaChart = new Chart("analyzeChart");
 
-  console.log('before AnaChartFn');
   function AnaChartFn(){
     anaChart.addPlot("default", {type: "Lines", hAxis:"x", vAxis:"y"});
     anaChart.addPlot("other", {type: "Lines", hAxis: "x", vAxis: "right y"});
@@ -2725,7 +2743,6 @@ require([
     anaChart.render();
   };
 
-  console.log('chart buttons');
   /* Chart buttons ****************************************/
   document.getElementById("pop1delete").onclick = function(){
     graphPop1.selectAll().deleteSelectedNodes();
@@ -2807,8 +2824,8 @@ require([
   popChartFn();
   DrawGridSetup(); //Draw initial background
 
-//************************************************************************
-  //Usefull Generic Functions
+  //************************************************************************
+  //Useful Generic Functions
   //************************************************************************
 
   //Modulo that is more accurate than %; Math.fmod(aa, bb);
@@ -2825,57 +2842,10 @@ require([
     return new_obj;
   };
 
-  //************************************************************************
-  //Functions not in use, but might be usefull; could be deleted -----------
-  //************************************************************************
-
+  //------- not in use
   var hexColor = invertHash(dictColor);
   var theColor = hexColor["#000000"];  //This should get 'Black'
   //console.log("theColor=", theColor);
-
-  //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-  //var orderedDataItems = source.getAllNodes().map(function(node){
-  //    return source.getItem(node.id).data;
-  //});
-
-  // from http://dojotoolkit.org/reference-guide/1.10/dojo/dnd.html
-  function OrderedItem(container, f, o){
-    // similar to:
-    // container.forInItems(f, o);
-    // but iterates in the listed order
-    o = o || dojo.global;
-    container.getAllNodes().forEach(function(node){
-      var id = node.id;
-      f.call(o, container.getItem(id), id, container);
-    });
-  }
-
-  //sigmoid for use in converting a floating point into hue, saturation, brightness
-  function sigmoid (xx, midpoint, steepness) {
-    var val = steepness * (xx-midpoint);
-    return Math.exp(val) /(1.0 + Math.exp(val));
-  }
-
-  //Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
-  function drawArc1(gen, spot1, spot2, rep){
-    var xx1, yy1, xx2, yy2, xxc, yyc;
-    ctx.lineWidth = 1;
-    if (0 < spot2 - spot1) {
-      ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
-    } else { ctx.strokeStyle = dictColor["Red"];}
-    ctx.beginPath();
-    xx1 = gen.cx[0] + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size[0]); //Draw line from Spot1
-    yy1 = gen.cy[0] + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size[0]);
-    ctx.moveTo(xx1, yy1);
-    xx2 = gen.cx[0] + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size[0]); //Draw line to Spot2
-    yy2 = gen.cy[0] + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size[0]);
-    //Set Control point on line perpendicular to line between Spot1 & spot2
-    gen.pathR = gen.bigR-(2+rep)*gen.smallR;
-    xxc = gen.cx[0] + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
-    yyc = gen.cy[0] + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
-    ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
-    ctx.stroke();
-  }
 
   // does not work
   on(dom.byId("gridCanvas"),"drop", function(event){
@@ -2883,6 +2853,7 @@ require([
     console.log("Not work xx ", event.pageX);
     console.log("NOt work yy ", event.pageY);
   })
+
 
   //Notes on things I learned writing this code, that is not directly used in the code
   //use FileMerge to compare to versions of the same file on a Mac
@@ -2996,7 +2967,7 @@ require([
     document.getElementById('colorDemo').style.cursor = 'default';
     shrew.UpGridPos=[evt.offsetX, evt.offsetY];
     shrew.Dn = false;
-    console.log('mouseup, picked', shrew.Picked);
+    //console.log('mouseup, picked', shrew.Picked);
     // --------- process if something picked to dnd ------------------
     if ('chip' == shrew.Picked) {
       shrew.Picked = "";

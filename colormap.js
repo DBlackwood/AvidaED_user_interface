@@ -1,4 +1,4 @@
-//Definition of Viridis and other dictionaries. 
+//Definition of Viridis and other dictionaries or color data sets
 
 var Viridis_cmap = [
    'rgb(0, 0, 0)'
@@ -1178,6 +1178,7 @@ var ColorNames = [
    ,'2 grey'   //27
 ];
 
+//not in use, I was going to try different outlines with rectangles with different color fill
 var outColor = [
      '#00FF00' //'A blue' //               website #7
     ,'#00FF00'//,'B yellow'  //            website #15 modified was 255, 255, 109
@@ -1211,9 +1212,7 @@ var outColor = [
     var ParentColors = ColorBlind.slice();
     var ChipColors = ColorBlind.slice();
 
-    //ChipColors.reverse();
-    ParentColors.reverse();
-    //ColorNames.reverse();
+    ParentColors.reverse();  //needed for the stack to have the "easy to see" colors on top
 
     var defaultParentColor = 'rgb(187, 187, 187)';
     
@@ -1233,36 +1232,7 @@ var outColor = [
   //,'rgb(170,  22, 233)'  // 20 dark pink
   //,'rgb(  0, 102,  51)'  // 24 dark green
 
-    
-    var Gnuplot218 = [
-     'rgb(255, 255,   5)'  // 1
-    ,'rgb(232,  62, 193)'  // 2
-    ,'rgb(255, 178,  77)'  // 3
-    ,'rgb(107,   0, 255)'  // 4
-    ,'rgb(255, 100, 155)'  // 5
-    ,'rgb(255, 218,  37)'  // 6
-    ,'rgb( 75,   0, 255)'  // 7
-    ,'rgb(170,  22, 233)'  // 8
-    ,'rgb(255, 140, 115)'  // 9
-    ,'rgb(  0,   0, 186)'  // 10
-    ,'rgb(0, 200,   0)'  // 11
-    ,'rgb(255, 0, 255)'  // 12
-    ,'rgb(0, 138, 255)'  // 13
-    ,'rgb(0, 102,  51)'  // 14
-    ,'rgb(0, 182, 158)'  // 15
-    ,'rgb(255, 97,  0)'  // 16
-    ,'rgb(0, 245, 255)'  // 17
-    ,'rgb(255, 0,  10)'  // 18
-    ];
-
-  // ,'rgb( 48,   0, 255)'  // 2
-  //,'rgb(179, 0, 255)'  // 6
-  //,'rgb(255, 204, 0)'  // 10
-  //,'rgb(0,   0, 255)'  // 5
-  //,'rgb(255, 255, 0)'  // 11
-
-    
-    var dictColor =  {}
+    var dictColor =  {};
     dictColor["Red"] = "#FF0000";
     //dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
     dictColor["Green"] = "#00FF00";
@@ -1303,6 +1273,7 @@ var outColor = [
     letterColor["w"] = "#F725E5"; //color Meter
     letterColor["y"] = "#AE2CFF"; //color Meter
     letterColor["z"] = "#9DE14E"; //color Meter
+
     var orgColorCodes = {};
     orgColorCodes["mutate_old"] = "#00FF00"; //color Meter green
     orgColorCodes["mutate"] = "#000000"; //color black

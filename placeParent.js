@@ -1,3 +1,4 @@
+// Place Parent on grid and other useful functions
 
 /* ----------------------------------------
 linmap
@@ -408,3 +409,53 @@ Number.prototype.formatNum = function(c, d, t){
  * 
  * 00fc91d4a98002ba5fdbee7bfa12eb58f129dd60
 */
+
+
+//************************************************************************
+//Functions not in use, but might be usefull; could be deleted -----------
+//************************************************************************
+
+//http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+//var orderedDataItems = source.getAllNodes().map(function(node){
+//    return source.getItem(node.id).data;
+//});
+
+// from http://dojotoolkit.org/reference-guide/1.10/dojo/dnd.html
+function OrderedItem(container, f, o){
+  // similar to:
+  // container.forInItems(f, o);
+  // but iterates in the listed order
+  o = o || dojo.global;
+  container.getAllNodes().forEach(function(node){
+    var id = node.id;
+    f.call(o, container.getItem(id), id, container);
+  });
+}
+
+//sigmoid for use in converting a floating point into hue, saturation, brightness
+function sigmoid (xx, midpoint, steepness) {
+  var val = steepness * (xx-midpoint);
+  return Math.exp(val) /(1.0 + Math.exp(val));
+}
+
+//Draw arc using quadraticCurve and 1 control point http://www.w3schools.com/tags/canvas_quadraticcurveto.asp
+function drawArc1(gen, spot1, spot2, rep){
+  var xx1, yy1, xx2, yy2, xxc, yyc;
+  ctx.lineWidth = 1;
+  if (0 < spot2 - spot1) {
+    ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+  } else { ctx.strokeStyle = dictColor["Red"];}
+  ctx.beginPath();
+  xx1 = gen.cx[0] + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size[0]); //Draw line from Spot1
+  yy1 = gen.cy[0] + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size[0]);
+  ctx.moveTo(xx1, yy1);
+  xx2 = gen.cx[0] + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size[0]); //Draw line to Spot2
+  yy2 = gen.cy[0] + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size[0]);
+  //Set Control point on line perpendicular to line between Spot1 & spot2
+  gen.pathR = gen.bigR-(2+rep)*gen.smallR;
+  xxc = gen.cx[0] + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
+  yyc = gen.cy[0] + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
+  ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
+  ctx.stroke();
+}
+
