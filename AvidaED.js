@@ -1322,8 +1322,8 @@ require([
   //for now this is hard coded to what would be in @default. will need a way to request data from C++
   //and read the returned json string.
   function writeSettings(){
-    dijit.byId("sizeCols").set('value','60');
-    dijit.byId("sizeRows").set('value','60');
+    dijit.byId("sizeCols").set('value','20');
+    dijit.byId("sizeRows").set('value','20');
     document.getElementById("muteInput").value='2';
     var event = new Event('change');
     document.getElementById("muteInput").dispatchEvent(event);
