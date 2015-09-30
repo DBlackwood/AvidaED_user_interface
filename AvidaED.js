@@ -61,8 +61,8 @@ require([
   parser.parse();
 
   //uiWorker used when communicating with the web worker and avida
-  //var uiWorker = new Worker('avida.js');
-  var uiWorker = new Worker('ui-test.js');
+  var uiWorker = new Worker('avida.js');
+  //var uiWorker = new Worker('ui-test.js');
 
   dummy();
   //process message from web worker
@@ -70,7 +70,7 @@ require([
   var DidDivide = false;
   uiWorker.onmessage = function(ee){
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
-    if ('type' == msg.type) {
+    if ('data' == msg.type) {
       switch (msg.name) {
         case 'runPause':
           if (true != msg["Success"]) {
@@ -92,10 +92,10 @@ require([
           updateOrgTrace(traceObj, cycle);
           break;
         case 'webPopulationStats':
-          updatePopStats(msg.message);
+          updatePopStats(msg);
           //doPopMap();  //Call to update grid colors;
           break;
-        case 'getGridData':
+        case 'webGridData':
           doPopMap(msg);
           break;
         case 'popMap':
