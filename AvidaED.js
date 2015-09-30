@@ -49,6 +49,7 @@ require([
   "jquery-ui",
     "messaging.js",
     "colorTest.js",
+    "PopulationGrid.js",
   "dojo/domReady!"
   ], function(dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
               BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
@@ -1787,89 +1788,37 @@ require([
   /* *************************************************************** */
   // ****************  Draw Population Grid ************************ */
   /* *************************************************************** */
-
-  var CanvasScale = document.getElementById("scaleCanvas");
-  var sCtx = CanvasScale.getContext("2d");
-  CanvasScale.width = $("#gridHolder").innerWidth()-6;
-
-  var CanvasGrid = document.getElementById("gridCanvas");
-  var cntx = CanvasGrid.getContext("2d");
-  CanvasGrid.width = $("#gridHolder").innerWidth()-6;
-  CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
-
-  grd = {};       //data about the grid canvas
-  grd.cols = 30;  //Number of columns in the grid
-  grd.rows = 30;  //Number of rows in the grid
+  
+  grd = {};         //data about the grid canvas
+  grd.cols = 30;    //Number of columns in the grid
+  grd.rows = 30;    //Number of rows in the grid
   grd.sizeX = 300;  //size of canvas in pixels
   grd.sizeY = 300;  //size of canvas in pixels
+  grd.boxX = 300;   //size based zoom
+  grd.boxY = 300;   //size based zoom
   grd.flagSelected = false; //is a cell selected
   grd.zoom = 1;     //magnification for zooming.
   //structure for colors in the grid
   grd.fill = [];  //deasl with color to fill a grid cell
   grd.out = [];   // deals with the color of the grid outline
   grd.max = 0;    // max value for grid scale for the gradient color
+  //Set up canvas objects
+  grd.CanvasScale = document.getElementById("scaleCanvas");
+  grd.sCtx = grd.CanvasScale.getContext("2d");
+  grd.CanvasScale.width = $("#gridHolder").innerWidth()-6;
 
-  function backgroundSquares() {
-    var boxColor = '#111';
-    for (ii=0; ii<grd.cols; ii++) {
-      xx = grd.marginX + grd.xOffset + ii*grd.cellWd;
-      for (jj=0; jj<grd.rows; jj++) {
-        yy = grd.marginY + grd.yOffset + jj*grd.cellHt;
-        //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
-        //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
-        //console.log('color=', boxColor);
-        cntx.fillStyle = '#222';
-        cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
-      }
-    }
-  }
-
-//Draw Cell outline or including special case for Selected
-  function DrawSelected() {
-    grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
-    grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
-    DrawCellOutline(2, '#00ff00', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt)
-  }
-
-  function DrawCellOutline(lineThickness, color, xx, yy, wide, tall) {
-    cntx.rect(xx, yy, wide, tall);
-    cntx.strokeStyle = color;
-    cntx.lineWidth = lineThickness;
-    cntx.stroke();
-  }
-
-  function DrawParent() {
-    //console.log('parents.col.length, marginX, xOffset', parents.col.length, grd.marginX, grd.xOffset);
-    for (ii = 0; ii < parents.col.length; ii++) {
-      xx = grd.marginX + grd.xOffset + parents.col[ii]*grd.cellWd;
-      yy = grd.marginY + grd.yOffset + parents.row[ii]*grd.cellHt;
-      if ("Ancestor Organism" == dijit.byId("colorMode").value) { cntx.fillStyle = parents.color[ii];}
-      else { cntx.fillStyle = '#eee'}
-      cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
-      //console.log('x, y, wd, Ht', xx, yy, grd.cellWd, grd.cellHt);
-    }
-  }
-
-  function DrawChildren() {  //Draw the children of parents
-    var cc, rr, xx, yy;
-    for (ii=0; ii< grd.fill.length; ii++) {
-      cc = ii % grd.cols;
-      rr = Math.trunc(ii/grd.cols);
-      xx = grd.marginX + grd.xOffset + cc*grd.cellWd;
-      yy = grd.marginY + grd.yOffset + rr*grd.cellHt;
-      if (nan == grd.fill[ii]) {cntx.fillStyle='#000'}
-      else {cntx.fillStyle = parents.color[grd.fill[ii]]}
-      cntx.fillRect(xx, yy, grd.cellWd-1, grd.cellHt-1);
-    }
-  }
+  grd.CanvasGrid = document.getElementById("gridCanvas");
+  grd.cntx = grd.CanvasGrid.getContext("2d");
+  grd.CanvasGrid.width = $("#gridHolder").innerWidth()-6;
+  grd.CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
 
   function DrawGridSetup() {
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
 
     //Determine if a color gradient or legend will be displayed
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend() }
-    else { GradientScale() }
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(grd, parents) }
+    else { GradientScale(grd) }
 
     //find the height for the div that holds the grid Canvas
     var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
@@ -1877,215 +1826,15 @@ require([
     document.getElementById("gridBoxNode").style.overflowY = "scroll";
     //console.log('GrdNodeHt=',GrdNodeHt);
 
-    // When zoom = 1x, set canvas size based on space available and cell size
-    // based on rows and columns requested by the user. Zoom acts as a factor
-    // to multiply the size of each cell. When the size of the grid become larger
-    // than the canvas, then the canvas is set to the size of the grid and the
-    // offset in that direction goes to zero.
-
     //find the space available to display the grid in pixels
     grd.spaceX = $("#gridHolder").innerWidth()-6;
     grd.spaceY = GrdNodeHt-5;
     //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
-    // First find sizes based on zoom
-    grd.boxX = grd.zoom * grd.spaceX;
-    grd.boxY = grd.zoom * grd.spaceY;
-    //get rows and cols based on user input form
-    grd.cols = dijit.byId("sizeCols").get('value');
-    grd.rows = dijit.byId("sizeRows").get('value');
-    //max size of box based on width or height based on ratio of cols:rows and width:height
-    if (grd.spaceX/grd.spaceY > grd.cols/grd.rows) {
-      //set based  on height as that is the limiting factor.
-      grd.sizeY = grd.boxY;
-      grd.sizeX = grd.sizeY*grd.cols/grd.rows;
-      grd.spaceCellWd = grd.spaceY/grd.rows;
-      grd.spaceCells = grd.rows;  //rows exactly fit the space when zoom = 1x
-    }
-    else {
-      //set based on width as that is the limiting direction
-      grd.sizeX = grd.boxX;
-      grd.sizeY = grd.sizeX * grd.rows/grd.cols;
-      grd.spaceCellWd = grd.spaceX/grd.cols;
-      grd.spaceCells = grd.cols;  //cols exactly fit the space when zoom = 1x
-    }
 
-    //Determine offset and size of canvas based on grid size relative to space size in that direction
-    if (grd.sizeX < grd.spaceX) {
-      CanvasGrid.width = grd.spaceX;
-      grd.xOffset =(grd.spaceX-grd.sizeX)/2;
-    }
-    else {
-      CanvasGrid.width = grd.sizeX;
-      grd.xOffset = 0;
-    }
-    if (grd.sizeY < grd.spaceY) {
-      CanvasGrid.height = grd.spaceY;
-      grd.yOffset =(grd.spaceY-grd.sizeY)/2;
-    }
-    else {
-      CanvasGrid.height = grd.sizeY;
-      grd.yOffset = 0;
-    }
-    //console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom);
-
-    //get cell size based on grid size and number of columns and rows
-    grd.marginX = 1;  //width of black line between the cells
-    grd.marginY = 1;  //width of black line between the cells
-    grd.cellWd = ((grd.sizeX-grd.marginX)/grd.cols);
-    grd.cellHt = ((grd.sizeY-grd.marginY)/grd.rows);
-
-    //Find a reasonable maximum zoom for this grid and screen space
-    zMaxCells = Math.trunc(grd.spaceCells/25);  // at least 10 cells
-    zMaxWide = Math.trunc(10/grd.spaceCellWd);  // at least 10 pixels
-    zMax = ((zMaxCells > zMaxWide) ? zMaxCells: zMaxWide); //Max of two methods
-    zMax = ((zMax > 2) ? zMax: 2); //max zoom power of at least 2x
-
-    ZoomSlide.set("maximum", zMax);
-    ZoomSlide.set("discreteValues", 2*(zMax-1)+1);
-    //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
-
-    DrawGridBackground();
-    //Check to see if run has started
-    //if (newrun) { DrawParent();}
-    if (true) { DrawParent();}
-    else if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-      DrawChildren();
-    }
-      //else ChildGradient();}
-    //Draw Selected as one of the last items to draw
-    if (grd.flagSelected) { DrawSelected() }
+    DrawGridUpdate(grd,parents);   //look in PopulationGrid.js
   }
-
-  function DrawGridBackground() {
-    // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
-    cntx.setTransform(1, 0, 0, 1, 0, 0);
-    cntx.clearRect(0, 0, CanvasGrid.width, CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
-    //draw grey rectangle as back ground
-    cntx.fillStyle = dictColor["ltGrey"];
-    cntx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
-
-    //cntx.translate(grd.xOffset, grd.yOffset);
-    cntx.fillStyle=dictColor['Black'];
-    cntx.fillRect(grd.xOffset,grd.yOffset,grd.sizeX,grd.sizeY);
-
-    backgroundSquares();
-  }
-
-  //--------------- Draw legend --------------------------------------
-  //Draws the color and name of each Ancestor (parent) organism
-  //to lay out the legend we need the width of the longest name and we
-  //allow for the width of the color box to see how many columns fit across
-  //the width of CanvasScale. We will need to increase the size of the
-  //legend box by the height of a line for each additional line.
-  function drawLegend() {
-    var legendPad = 10;   //padding on left so it is not right at edge of canvas
-    var colorWide = 13;   //width and heigth of color square
-    var RowHt = 20;       //height of each row of text
-    var textOffset = 15;  //vertical offset to get to the bottom of the text
-    var leftPad = 10;     //padding to allow space between each column of text in the legend
-    var legendCols = 1;   //max number of columns based on width of canvas and longest name
-    var txtWide = 0;      //width of text for an ancestor (parent) name
-    var maxWide = 0;      //maximum width needed for any of the ancestor names in this set
-    //console.log('in drawLedgend')
-    CanvasScale.width = $("#gridHolder").innerWidth()-6;
-    sCtx.font = "14px Arial";
-    //find out how much space is needed
-    for (ii=0; ii< parents.name.length; ii++) {
-      txtWide = sCtx.measureText(parents.name[ii]).width;
-      if (txtWide > maxWide) { maxWide = txtWide }
-    }
-    legendCols = Math.trunc((CanvasScale.width-leftPad)/(maxWide + colorWide + legendPad));
-    if (Math.trunc(parents.name.length/legendCols) == parents.name.length/legendCols) {
-      legendRows = Math.trunc(parents.name.length/legendCols);
-    }
-    else { legendRows = Math.trunc(parents.name.length/legendCols)+1; }
-    //set canvas height based on space needed
-    CanvasScale.height = RowHt * legendRows;
-    sCtx.fillStyle = dictColor["ltGrey"];
-    sCtx.fillRect(0,0, CanvasGrid.width, CanvasGrid.height);
-    var colWide = (CanvasScale.width-leftPad)/legendCols
-    var col = 0;
-    var row = 0;
-    for (ii = 0; ii< parents.name.length; ii++) {
-      col = ii%legendCols;
-      row = Math.trunc(ii/legendCols);
-      //xx = leftPad + col*(maxWide+colorWide+legendPad);
-      xx = leftPad + col*(colWide);
-      yy = 2+row*RowHt;
-      sCtx.fillStyle = parents.color[ii];
-      sCtx.fillRect(xx,yy, colorWide, colorWide);
-      yy = textOffset+row*RowHt;
-      sCtx.font = "14px Arial";
-      sCtx.fillStyle='black';
-      sCtx.fillText(parents.name[ii],xx+colorWide+legendPad/2, yy);
-    }
-  }
-
-  //needs numbers from Avida
-  console.log('GradientScale');
-  function GradientScale() {
-    CanvasScale.width = $("#gridHolder").innerWidth()-6;
-    CanvasScale.height = 30;
-    sCtx.fillStyle = dictColor["ltGrey"];
-    sCtx.fillRect(0,0, CanvasScale.width, CanvasScale.height);
-    var xStart = 15;
-    var xEnd = CanvasScale.width - 2.5*xStart;
-    var gradWidth = xEnd-xStart
-    var grad = sCtx.createLinearGradient(xStart+2, 0, xEnd-2, 0)
-    var legendHt = 15;
-    switch(grd.colorMap) {
-      case "Viridis":
-        for (var ii=0; ii < Viridis_cmap.length; ii++) {
-          grad.addColorStop(ii/(Viridis_cmap.length-1), Viridis_cmap[ii]);
-        }
-        break;
-      case 'Gnuplot2':
-        for (var ii=0; ii < Gnuplot2_cmap.length; ii++) {
-          grad.addColorStop(ii/(Gnuplot2_cmap.length-1), Gnuplot2_cmap[ii]);
-        }
-        break;
-      case 'Cubehelix':
-        for (var ii=0; ii < Cubehelix_cmap.length; ii++) {
-          grad.addColorStop(ii/(Cubehelix_cmap.length-1), Cubehelix_cmap[ii]);
-        }
-        break;
-    }
-    sCtx.fillStyle = grad;
-    sCtx.fillRect(xStart, legendHt, gradWidth, CanvasScale.height-legendHt);
-    //Draw Values if run started
-    //if (!newrun) {
-    if (true) {  grd.max = 805040;
-      sCtx.font = "14px Arial";
-      sCtx.fillStyle = "#000";
-      var maxTxtWd = gradWidth/5;
-      var place = 2;
-      var xx = 0;
-      var marks = 4;
-      var txt = "";
-      if (grd.max > 4000) {place = 0}
-      else if (grd.max > 400) {place = 1}
-      for (var ii= 0; ii<=marks; ii++) {
-        xx = ii*grd.max/marks;
-        txt = xx.formatNum(place);  //2 in this case is number of decimal places
-        txtW = ctx.measureText(txt).width;
-        xx = xStart + ii*gradWidth/marks-txtW/2;
-        sCtx.fillText(txt, xx, legendHt - 2, maxTxtWd);
-      }
-    }
-    //part of colorTest, delete later
-    sCtx.beginPath();
-    sCtx.strokeStyle='#00FF00';
-    sCtx.moveTo(xStart, legendHt);
-    sCtx.lineTo(xStart+gradWidth, legendHt);
-    sCtx.stroke();
-    sCtx.beginPath();
-    sCtx.strokeStyle='#44FFFF';
-    sCtx.moveTo(xStart, CanvasScale.height-1);
-    sCtx.lineTo(xStart+gradWidth, CanvasScale.height-1);
-    sCtx.stroke();
-    console.log('Take out after color test');
-  }
-
+  //
+  // The rest of this code is in PopulationGrid.js
   // *************************************************************** */
   //        Color Map Color Mode and Zoom Slide Controls             //
   // *************************************************************** */
@@ -2100,9 +1849,8 @@ require([
   });
 
   //Only effect display, not Avida
-
   // Zoom slide
-  var ZoomSlide = new HorizontalSlider({
+  grd.ZoomSlide = new HorizontalSlider({
       name: "ZoomSlide",
       value: 1,
       minimum: 1,
@@ -2429,6 +2177,22 @@ require([
   /* ****************************************************************/
   /*                  Canvas for Organsim (genome) view
   /* ************************************************************** */
+  //initialize gen (genome) object.
+  var gen = {};
+  gen.bigR = [120, 120]; //radius of full circle
+  gen.size = [50, 50];
+  gen.smallR = gen.bigR*2*Math.PI/(2*gen.size[0]); //radius of each small circle
+  gen.tanR = gen.bigR[0]-gen.smallR;         //radius of circle tanget to inside of small circles
+  gen.pathR = gen.bigR[0]-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
+  gen.headR = [gen.bigR[0]-2*gen.smallR,gen.bigR[1]-2*gen.smallR];      //radius of circle made by center of head positions.
+  gen.cx = [150, 350];  //center of main circle x
+  gen.cy = [150, 150];  //center of main circle y
+  gen.fontsize = Math.round(1.8*gen.smallR);
+  gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
+  gen.dna = ["",""];
+  gen.TimeLineHeight = 60;
+  gen.imageXY = {x: 5, y: 5};
+
   //initialize all canvases needed for Organism page
   var bufferCvs = document.getElementById("buffer");
   var bufferCtx = bufferCvs.getContext("2d");
@@ -2448,21 +2212,6 @@ require([
   var OrgCanvas = document.getElementById("organismCanvas");
   var ctx = OrgCanvas.getContext("2d");
   ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
-  //initialize gen (genome) object.
-  var gen = {};
-  gen.bigR = [120, 120]; //radius of full circle
-  gen.size = [50, 50];
-  gen.smallR = gen.bigR*2*Math.PI/(2*gen.size[0]); //radius of each small circle
-  gen.tanR = gen.bigR[0]-gen.smallR;         //radius of circle tanget to inside of small circles
-  gen.pathR = gen.bigR[0]-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
-  gen.headR = [gen.bigR[0]-2*gen.smallR,gen.bigR[1]-2*gen.smallR];      //radius of circle made by center of head positions.
-  gen.cx = [150, 350];  //center of main circle x
-  gen.cy = [150, 150];  //center of main circle y
-  gen.fontsize = Math.round(1.8*gen.smallR);
-  gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
-  gen.dna = ["",""];
-  gen.TimeLineHeight = 60;
-  gen.imageXY = {x: 5, y: 5};
 
   function DrawTimeline(obj, cycle) {
     var startX, lineY, endX, length, cycles, upLabelY, dnLabelY, txtWide, dnTickX, dnNum;
