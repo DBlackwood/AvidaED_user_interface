@@ -29,172 +29,215 @@
  *
  * [1] http://www.w3.org/TR/CSS21/cascade.html#cascade
  */
-html,body {
-	height: 100%;
-	width: 100%;
+html, body {
+  height: 100%;
+  width: 100%;
 }
 
-.bit32{
-    font-family: Courier New;
-    font-size: .8em;
-    text-height: .2em;
-  }
+.bit32 {
+  font-family: Courier New;
+  font-size: .8em;
+  text-height: .2em;
+}
 
-p
-  { margin-top: 0px;
-    margin-bottom: 0px;
-  }
-li 
-  { margin: 0px 0px 0px 0px;}
-ul
-  { margin-top: 0px;
-    margin-bottom: 0px;
-  }
+p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
 
-button
-  {
-    width: 50px;
-  }
+li {
+  margin: 0px 0px 0px 0px;
+}
 
-div { margin:0}
+ul {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
 
-#analyzeChart { width: 100%; height: 100%;}
+button {
+  width: 50px;
+}
 
-div.odd
-  { background-color: #CCCCCC;
-    padding: 0.5em 0.3em 1em 0.3em;
-    clear: left;
-  }
-.even
-  { background-color: #EEEEEE;
-    padding: 0.5em 0.3em 1em 0.3em;
-    clear: left;
-  }
-  
-.fltLeft
-  { float: left;
-  }
+div {
+  margin: 0
+}
 
-.lftmargin
-  { float : left; clear: left; }
+#analyzeChart {
+  width: 100%;
+  height: 100%;
+}
 
-#muteSlide
-  { float: left;
-    background-color: yellow;
-  }
+div.odd {
+  background-color: #CCCCCC;
+  padding: 0.5em 0.3em 1em 0.3em;
+  clear: left;
+}
 
-#muteInput{ float: left; }
-#mRate{ float: left; }
-#muteSlidedojo{ float: left; }
+.even {
+  background-color: #EEEEEE;
+  padding: 0.5em 0.3em 1em 0.3em;
+  clear: left;
+}
+
+.fltLeft {
+  float: left;
+}
+
+.lftmargin {
+  float: left;
+  clear: left;
+}
+
+#muteSlide {
+  float: left;
+  background-color: yellow;
+}
+
+#muteInput {
+  float: left;
+}
+
+#mRate {
+  float: left;
+}
+
+#muteSlidedojo {
+  float: left;
+}
 
 button, input,
-
-.dijitToggleButton
-  {
-    height : 21px;
-  }
-.bitButton {
-     width:75px;
-     height:10px;
+.dijitToggleButton {
+  height: 21px;
 }
+
+.bitButton {
+  width: 75px;
+  height: 10px;
+}
+
 .bitButtonOnWas {
-     width:75px;
-     height:10px;
-     background-color:#99f;
+  width: 75px;
+  height: 10px;
+  background-color: #99f;
 }
 
 .bitButtonOff {
-    background-color: #fff; 
-    color: #000;
-    font: 11px sans-serif;
-    text-decoration: none;
-    border: 1px solid #000;
-    border-color: #aaa;
-    border-radius: 5px;
-    padding: 0px 00px 2px 0px;
-    height: 15px;
-    width: 75px;
-    display:block;
+  background-color: #fff;
+  color: #000;
+  font: 11px sans-serif;
+  text-decoration: none;
+  border: 1px solid #000;
+  border-color: #aaa;
+  border-radius: 5px;
+  padding: 0px 00px 2px 0px;
+  height: 15px;
+  width: 75px;
+  display: block;
 }
+
 .bitButtonOn {
-    background-color: #fff; 
-    color: #00f;
-    font: 11px sans-serif;
-    text-decoration: none;
-    border: 1px solid #000;
-    border-color: #00f;
-    border-radius: 5px;
-    padding: 0px 00px 2px 0px;
-    height: 15px;
-    width: 75px;
-    display:block;
+  background-color: #fff;
+  color: #00f;
+  font: 11px sans-serif;
+  text-decoration: none;
+  border: 1px solid #000;
+  border-color: #00f;
+  border-radius: 5px;
+  padding: 0px 00px 2px 0px;
+  height: 15px;
+  width: 75px;
+  display: block;
 }
-.resourceButton{
-    width:100px
+
+.resourceButton {
+  width: 100px
 }
+
 .dojoDndItem {
-    padding:3px;
+  padding: 3px;
 }
+
 .dojoDndItemOver {
-    background-color:#EDEDED;
-    cursor:pointer;
+  background-color: #EDEDED;
+  cursor: pointer;
 }
+
 .dojoDndItemSelected {
-    background-color:#5BBDEA;
-    color:#444444;
+  background-color: #5BBDEA;
+  color: #444444;
 }
+
 .dojoDndItemAnchor {
-    background-color:#5BBDEA;
-    color:black;
+  background-color: #5BBDEA;
+  color: black;
 }
+
 .dojoDndItemOver .dojoDndItemSelected {
-    background-color:#EDEDED;
+  background-color: #EDEDED;
 }
+
 .dojoDndItemOver .dojoDndItemAnchor {
-    background-color:#EDEDED;
+  background-color: #EDEDED;
 }
+
 .dojoDndItemBefore {
-    border-top:2px solid #336699;
+  border-top: 2px solid #336699;
 }
+
 .dojoDndItemAfter {
-    border-bottom:2px solid #336699;
+  border-bottom: 2px solid #336699;
 }
+
 .dojoDndAvatar {
-    border:2px solid #CCCCCC;
+  border: 2px solid #CCCCCC;
 }
+
 .dojoDndAvatarHeader {
-    background-color:#AAAAAA;
+  background-color: #AAAAAA;
 }
+
 .dojoDndAvatarItem {
-    background-color:#FFFFFF;
-    border-bottom:1px solid #666666;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #666666;
 }
+
 .dojoDndAvatarItem .itemText {
-    font-size:120%;
+  font-size: 120%;
 }
 
 .container {
-    min-height: 10px;
-    width: 100%;
+  min-height: 10px;
+  width: 100%;
 }
-.ancestorContainer{
-    min-height: 30px;
-    width: 200px;
-    border: 1px solid black;
-    background-color: white;
+
+.ancestorContainer {
+  min-height: 30px;
+  width: 200px;
+  border: 1px solid black;
+  background-color: white;
 }
-.popContainer{
-    float: left;
-    min-height: 1.6em;
-    width: 20em;
-    border: 1px solid black;
-    background-color: white;
-    display:block;
+
+.popContainer {
+  float: left;
+  min-height: 1.6em;
+  width: 20em;
+  border: 1px solid black;
+  background-color: white;
+  display: block;
 }
 
 /* dojo css */
 
-.dijitBorderContainer {padding: 1px;}.claro
+.dijitBorderContainer {
+  padding: 1px;
+}
 
-.dijitBorderContainer-dijitContentPane {background-color: #ffffff; padding: 1px 1px 6px 1px; margin:1px}.claro 
+.claro
+.dijitBorderContainer-dijitContentPane {
+  background-color: #ffffff;
+  padding: 1px 1px 6px 1px;
+  margin: 1px
+}
+
+.claro
 

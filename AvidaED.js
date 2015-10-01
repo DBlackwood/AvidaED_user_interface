@@ -24,7 +24,7 @@ require([
   "dojo/dom-style",
   "dojo/dom",
   "dojo/aspect",
-  "dojo/on", 
+  "dojo/on",
   "dijit/registry",
   "dijit/form/Select",
   "dijit/form/HorizontalSlider",
@@ -37,26 +37,26 @@ require([
   "dijit/form/DropDownButton",
   "dijit/form/ComboBox",
   "dijit/form/Textarea",
-  "dojox/charting/Chart", 
-  "dojox/charting/axis2d/Default", 
+  "dojox/charting/Chart",
+  "dojox/charting/axis2d/Default",
   "dojox/charting/plot2d/Lines",
-  "dojox/charting/plot2d/Grid", 
+  "dojox/charting/plot2d/Grid",
   "dojox/charting/action2d/MouseZoomAndPan",
 //  "dojox/charting/Theme",
   "dojox/charting/themes/Wetland",
   "dojo/ready",
   "jquery",
   "jquery-ui",
-    "messaging.js",
-    "colorTest.js",
-    "PopulationGrid.js",
+  "messaging.js",
+  "colorTest.js",
+  "PopulationGrid.js",
   "dojo/domReady!"
-  ], function(dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
-              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu, 
-              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
-              aspect, on, registry, Select,
-              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, ready, $, jqueryui){
+], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
+             BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
+             Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
+             aspect, on, registry, Select,
+             HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
+             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, ready, $, jqueryui) {
 
   parser.parse();
 
@@ -68,7 +68,7 @@ require([
   //process message from web worker
   var traceObj; //global that holds the traceObject that was sent from Avida
   var DidDivide = false;
-  uiWorker.onmessage = function(ee){
+  uiWorker.onmessage = function (ee) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -96,10 +96,8 @@ require([
           //doPopMap();  //Call to update grid colors;
           break;
         case 'webGridData':
-          doPopMap(msg);
-          break;
-        case 'popMap':
-          //updatePopMap(msg);
+          grd.msg = msg;
+          DrawGridSetup();
           break;
         default:
           console.log('UnknownRequest: ', msg);
@@ -108,74 +106,64 @@ require([
     }
   }
 
-  //Create lastMax values
-  var mxFit = 0;
-  var mxGest = 0;
-  var mxRate = 0;
-  //uiWorker function to get color data for the grid
-  function doPopMap() {
-    var str = "";
-    switch(dijit.byId("colorMode").value) {
-      case 'Fitness':
-        grd.fill = msg.fitness.data;
-        str = 'last_fitness';
-        if (mxFit < msg.maxVal) {mxFit = 1.2 * msg.maxVal};
-        grd.max = mxFit;
-        break;
-      case 'Gestation Time':
-        str = 'last_gestation_time';
-        grd.fill = msg.gestation.data;
-        if (mxGest < msg.maxVal) {mxGest = 1.2 * msg.maxVal};
-        break
-      case 'Metabolic Rate':
-        str = 'Metabolic Rate';
-        grd.fill = msg.metabolism.data;
-        if (mxRate < msg.maxVal) {mxRate = 1.2 * msg.maxVal};
-        break;
-      case 'Ancestor Organism':
-        str = 'clade';
-        grd.fill = msg.ancestor.data;
-        break;
-    }
-    findLogicOutline(msg)
-    DrawGridSetup();
-  }
-
   function findLogicOutline(msg) {
-    for (ii=0; ii < msg.not.length; ii++) {grd.out[ii] = 0}
-    if ('on' == document.getElementById(notButton).value){ for (ii=0; ii < msg.not.length; ii++) {grd.out[ii] = grd.out[ii] * msg.not[ii];} }
+    for (ii = 0; ii < msg.not.length; ii++) {
+      grd.out[ii] = 0
+    }
+    if ('on' == document.getElementById('notButton').value) {
+      for (ii = 0; ii < msg.not.length; ii++) {
+        grd.out[ii] = grd.out[ii] * msg.not[ii];
+      }
+    }
   }
 
   // Resize window helpers -------------------------------------------
   // called from script in html file as well as below
-  BrowserResizeEventHandler=function(){
-    if ("block"==domStyle.get("analysisBlock","display")){AnaChartFn();};
-    if ("block"==domStyle.get("populationBlock","display")){popChartFn();DrawGridSetup();};
-    if ("block"==domStyle.get("organismBlock","display")){
+  BrowserResizeEventHandler = function () {
+    if ("block" == domStyle.get("analysisBlock", "display")) {
+      AnaChartFn();
+    }
+    ;
+    if ("block" == domStyle.get("populationBlock", "display")) {
+      popChartFn();
+      DrawGridSetup();
+    }
+    ;
+    if ("block" == domStyle.get("organismBlock", "display")) {
       var rd = $("#rightDetail").innerHeight();
-      var height = ($("#rightDetail").innerHeight()-395)/2;  //was 375
-      document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById("ExecuteAbout").style.height = height+"px";
+      var height = ($("#rightDetail").innerHeight() - 395) / 2;  //was 375
+      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
       console.log('rightDetail', height, rd);
-      if (undefined != traceObj) { updateOrgTrace(traceObj, cycle) }
-      else { organismCanvasHolderSize ();}
+      if (undefined != traceObj) {
+        updateOrgTrace(traceObj, cycle)
+      }
+      else {
+        organismCanvasHolderSize();
+      }
     }
   }
 
-  ready(function(){
-    aspect.after(registry.byId("gridHolder"), "resize", function(){BrowserResizeEventHandler()});
-    aspect.after(registry.byId("popChartHolder"), "resize", function(){BrowserResizeEventHandler()});
-    aspect.after(registry.byId("organismCanvasHolder"), "resize", function(){BrowserResizeEventHandler()});
+  ready(function () {
+    aspect.after(registry.byId("gridHolder"), "resize", function () {
+      BrowserResizeEventHandler()
+    });
+    aspect.after(registry.byId("popChartHolder"), "resize", function () {
+      BrowserResizeEventHandler()
+    });
+    aspect.after(registry.byId("organismCanvasHolder"), "resize", function () {
+      BrowserResizeEventHandler()
+    });
   });
 
   var oldwidth = 0;
-  aspect.after(registry.byId("popRight"), "resize", function(){
+  aspect.after(registry.byId("popRight"), "resize", function () {
     if (registry.byId("popRight").domNode.style.width != oldwidth) {
       oldwidth = registry.byId("popRight").domNode.style.width;
       var str = registry.byId("popRight").domNode.style.width;
-      registry.byId("selectOrganPane").domNode.style.width=Math.round((Number(str.substr(0,str.length-2))-50)*0.45)+"px"
+      registry.byId("selectOrganPane").domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + "px"
       registry.byId("mainBC").layout();
     }
   });
@@ -194,7 +182,7 @@ require([
     position: 'relative'
   });
 
-  dijit.byId("Hardware").on("Click", function(){
+  dijit.byId("Hardware").on("Click", function () {
     if (!HardwareDialog) {
       HardwareDialog = new Dialog({
         title: "Avida : A Guided Tour of an Ancestor and its Hardware",
@@ -210,7 +198,7 @@ require([
 
   //initialize globals needed to hold Organism Trace Data
   var traceObj;
-  var cycle=0;
+  var cycle = 0;
 
   // main button scripts-------------------------------------------
 
@@ -224,16 +212,16 @@ require([
 
   //this section gets rid of scroll bars, but then page no longer resizes correctly
   // delete later if fix that uses 96% of height takes care of the problem.
-/*    var popNewHt = $("#blockHolder").height()-10;
-  dijit.byId("populationBlock").set("style", "height: "+ popNewHt +"px");
-  dijit.byId("popBC").set("style", "height: "+ popNewHt+"px");
+  /*    var popNewHt = $("#blockHolder").height()-10;
+   dijit.byId("populationBlock").set("style", "height: "+ popNewHt +"px");
+   dijit.byId("popBC").set("style", "height: "+ popNewHt+"px");
 
-  var mapNewHt = $("#mapBlockHold").height()-10;
-  dijit.byId("mapBlock").set("style", "height: "+ mapNewHt +"px");
-  //mapNewHt = mapNewHt - 5;
-  dijit.byId("mapBC").set("style", "height: "+ mapNewHt +"px;");
-*/
-  function mainBoxSwap(showBlock){
+   var mapNewHt = $("#mapBlockHold").height()-10;
+   dijit.byId("mapBlock").set("style", "height: "+ mapNewHt +"px");
+   //mapNewHt = mapNewHt - 5;
+   dijit.byId("mapBC").set("style", "height: "+ mapNewHt +"px;");
+   */
+  function mainBoxSwap(showBlock) {
     //console.log("in mainBoxSwap");
     dijit.byId("populationBlock").set("style", "display: none;");
     dijit.byId("organismBlock").set("style", "display: none;");
@@ -248,19 +236,19 @@ require([
   };
 
   // Buttons that call MainBoxSwap
-  document.getElementById("populationButton").onclick = function(){
+  document.getElementById("populationButton").onclick = function () {
     console.log('in populationButton');
     mainBoxSwap("populationBlock");
     DrawGridSetup();
   }
 
-  document.getElementById("organismButton").onclick = function(){
+  document.getElementById("organismButton").onclick = function () {
     mainBoxSwap("organismBlock");
     console.log('after mainBoxSwap');
-    organismCanvasHolderSize ();
-    var height = ($("#rightDetail").innerHeight()-395)/2;
-    document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById("ExecuteAbout").style.height = height+"px";
+    organismCanvasHolderSize();
+    var height = ($("#rightDetail").innerHeight() - 395) / 2;
+    document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
     if (undefined != traceObj) {
@@ -268,14 +256,22 @@ require([
     }
   }
 
-  document.getElementById("analysisButton").onclick = function(){ mainBoxSwap("analysisBlock"); }
+  document.getElementById("analysisButton").onclick = function () {
+    mainBoxSwap("analysisBlock");
+  }
   //Take testBlock out completely later
 
-  document.getElementById("testButton").onclick = function(){
+  document.getElementById("testButton").onclick = function () {
     mainBoxSwap("testBlock");
-    if ('#00FF00'==chck.outlineColor) {chck.outlineColor = '#00FFFF'}
-    else if ('#00FFFF'==chck.outlineColor) {chck.outlineColor = '#FFFFFF'}
-    else {chck.outlineColor = '#00FF00'}
+    if ('#00FF00' == chck.outlineColor) {
+      chck.outlineColor = '#00FFFF'
+    }
+    else if ('#00FFFF' == chck.outlineColor) {
+      chck.outlineColor = '#FFFFFF'
+    }
+    else {
+      chck.outlineColor = '#00FF00'
+    }
     placeChips(chips);
     drawCheckerSetup(chck, chips);
   }
@@ -285,24 +281,34 @@ require([
   /* ********************************************************************** */
 
   dojo.declare("AcceptOneItemSource", dndSource, {
-    checkAcceptance : function(source, nodes) {
+    checkAcceptance: function (source, nodes) {
       if (this.node.children.length >= 1) {
-         return false;
+        return false;
       }
       return this.inherited(arguments);
     }
   });
 
-  var freezeConfigure = new dndSource("freezeConfigureNode", {accept: ["conDish"], copyOnly: true, singular: true, selfAccept: false});
+  var freezeConfigure = new dndSource("freezeConfigureNode", {
+    accept: ["conDish"],
+    copyOnly: true,
+    singular: true,
+    selfAccept: false
+  });
   freezeConfigure.insertNodes(false, [
-    { data: "@default",      type: ["conDish"]},
-    { data: "s20m.2Nand",    type: ["conDish"]},
-    { data: "s30m.2Not",     type: ["conDish"]}
+    {data: "@default", type: ["conDish"]},
+    {data: "s20m.2Nand", type: ["conDish"]},
+    {data: "s30m.2Not", type: ["conDish"]}
   ]);
-  var freezeOrgan = new dndSource("freezeOrganNode", {accept: ["organism"], copyOnly: true, singular: true , selfAccept: false});
+  var freezeOrgan = new dndSource("freezeOrganNode", {
+    accept: ["organism"],
+    copyOnly: true,
+    singular: true,
+    selfAccept: false
+  });
   freezeOrgan.insertNodes(false, [
-     { data: "@ancestor",   type: ["organism"]}
-    ,{ data: "bravo",       type: ["organism"]}
+    {data: "@ancestor", type: ["organism"]}
+    , {data: "bravo", type: ["organism"]}
     //,{ data: "charlie",     type: ["organism"]}
     //,{ data: "delta",       type: ["organism"]}
     //,{ data: "echo",        type: ["organism"]}
@@ -310,11 +316,16 @@ require([
     //,{ data: "golf",        type: ["organism"]}
   ]);
 
-  var freezePopDish = new dndSource("freezePopDishNode", {accept: ["popDish"], singular: true, copyOnly: true, selfAccept: false});
+  var freezePopDish = new dndSource("freezePopDishNode", {
+    accept: ["popDish"],
+    singular: true,
+    copyOnly: true,
+    selfAccept: false
+  });
   freezePopDish.insertNodes(false, [
-    { data: "@example",       type: ["popDish"]},
-    { data: "m2w30u1000nand", type: ["popDish"]},
-    { data: "m2w30u1000not",  type: ["popDish"]}
+    {data: "@example", type: ["popDish"]},
+    {data: "m2w30u1000nand", type: ["popDish"]},
+    {data: "m2w30u1000not", type: ["popDish"]}
   ]);
   var organismIcon = new dndTarget("organismIcon", {accept: ["organism"], selfAccept: false});
   var AncestorBox = new dndSource("AncestorBoxNode", {accept: ["organism"], copyOnly: true, selfAccept: false});
@@ -325,13 +336,23 @@ require([
 
   var trash = new dndSource("trashNode", {accept: ['conDish', 'organism', 'popDish'], singular: true});
 
-  var ConfigCurrent = new dndSource("ConfigCurrentNode", {accept: ["conDish"], singular:true, copyOnly: true, selfAccept: false});
-  ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
+  var ConfigCurrent = new dndSource("ConfigCurrentNode", {
+    accept: ["conDish"],
+    singular: true,
+    copyOnly: true,
+    selfAccept: false
+  });
+  ConfigCurrent.insertNodes(false, [{data: "@default", type: ["conDish"]}]);
 
   //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-  var OrganCurrent = new dndSource("OrganCurrentNode", {accept: ["organism"], singular: true, copyOnly: true, selfAccept: false});
+  var OrganCurrent = new dndSource("OrganCurrentNode", {
+    accept: ["organism"],
+    singular: true,
+    copyOnly: true,
+    selfAccept: false
+  });
   var OrganCanvas = new dndSource("organismCanvas", {accept: ["organism"], singular: true, selfAccept: false});
-   //Targets only accept object, source can do both
+  //Targets only accept object, source can do both
   var graphPop1 = new dndTarget("graphPop1Node", {accept: ["popDish"], singular: true});
   var graphPop2 = new dndTarget("graphPop2Node", {accept: ["popDish"], singular: true});
   var graphPop3 = new dndTarget("graphPop3Node", {accept: ["popDish"], singular: true});
@@ -340,26 +361,26 @@ require([
   fzOrgan = [];
   var domList = Object.keys(freezeOrgan.map);
   var neworg;
-  for (var ii=0; ii<domList.length;ii++){
+  for (var ii = 0; ii < domList.length; ii++) {
     neworg = {
-      'name' : freezeOrgan.map[domList[ii]].data,
-      'domId' : domList[ii],
-      'genome' : 'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'
+      'name': freezeOrgan.map[domList[ii]].data,
+      'domId': domList[ii],
+      'genome': 'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'
     };
     fzOrgan.push(neworg);
   }
 
   var chosen = {
-    'name' : "",
-    'domId' : "",
-    'genome' : ""
+    'name': "",
+    'domId': "",
+    'genome': ""
   }
 
   // General Drag and Drop (DnD) functions --------------------------------------
   //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
   //Puts the contents of the source in a object (list) called items.
-  function getAllItems(source){
-    var items = source.getAllNodes().map(function(node){
+  function getAllItems(source) {
+    var items = source.getAllNodes().map(function (node) {
       return source.getItem(node.id);
     });
     return items;
@@ -369,12 +390,12 @@ require([
   //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
   //and reinserting the most resent one after a drop event.
   //This triggers for every dnd drop, not just those of freezeConfigureNode
-  ConfigCurrent.on("DndDrop", function(source, nodes, copy, target){
-    if ("ConfigCurrentNode" == target.node.id){
+  ConfigCurrent.on("DndDrop", function (source, nodes, copy, target) {
+    if ("ConfigCurrentNode" == target.node.id) {
       //clear all data so when we add one there will never be more than one.
       ConfigCurrent.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
       //get the data for the new configuration
-      freezeConfigure.forInSelectedItems(function(item, id){
+      freezeConfigure.forInSelectedItems(function (item, id) {
         ConfigCurrent.insertNodes(false, [item]);  //assign the node that is selected from the only valid source.
       });
       ConfigCurrent.sync();
@@ -393,31 +414,31 @@ require([
   });
 
   //Process when an Configuration is added to the Freezer
-  freezeConfigure.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
-    if ("freezeConfigureNode" == target.node.id){
+  freezeConfigure.on("DndDrop", function (source, nodes, copy, target) {  //This triggers for every dnd drop, not just those of freezeConfigureNode
+    if ("freezeConfigureNode" == target.node.id) {
       var strItem = Object.keys(target.selection)[0];
-      var dishCon = prompt("Please name your dish configuration", nodes[0].textContent+"_1");
+      var dishCon = prompt("Please name your dish configuration", nodes[0].textContent + "_1");
       if (dishCon) {
         var namelist = dojo.query('> .dojoDndItem', 'freezeConfigureNode');
         var unique = true;
         while (unique) {
           unique = false;
-          for (var ii = 0; ii < namelist.length; ii++){
+          for (var ii = 0; ii < namelist.length; ii++) {
             //console.log ("name ", namelist[ii].innerHTML);
             if (dishCon == namelist[ii].textContent) {
-              dishCon = prompt("Please give your configured dish a unique name ", dishCon+"_1")
+              dishCon = prompt("Please give your configured dish a unique name ", dishCon + "_1")
               unique = true;
             }
           }
         }
         if (null != dishCon) {
-          document.getElementById(strItem).textContent=dishCon;
+          document.getElementById(strItem).textContent = dishCon;
           target.map[strItem].data = dishCon;
           //Now find which node has the new content so it can get a context menu.
 
           var domItems = Object.keys(freezeConfigure.map);
           var nodeIndex = -1;
-          for (var ii=0; ii< domItems.length; ii++) {
+          for (var ii = 0; ii < domItems.length; ii++) {
             if (freezeConfigure.map[domItems[ii]].data == dishCon) {
               nodeIndex = ii;
             }
@@ -464,12 +485,12 @@ require([
   }
 
   //This triggers for every dnd drop, not just those of AncestorBoxNode
-  AncestorBox.on("DndDrop", function(source, nodes, copy, target){
+  AncestorBox.on("DndDrop", function (source, nodes, copy, target) {
     //Do not copy parents if one is moved within Ancestor Box
     if ("AncestorBoxNode" == target.node.id && "AncestorBoxNode" != source.node.id) {
       //find genome by finding source
       var domId = Object.keys(source.selection)[0];
-      var ndx = findFzOrganNdx(domId,fzOrgan);
+      var ndx = findFzOrganNdx(domId, fzOrgan);
       parents.genome.push(fzOrgan[ndx].genome);
       nn = parents.name.length;
       parents.autoNdx.push(nn);
@@ -477,16 +498,21 @@ require([
       parents.howPlaced.push('auto');
       parents.domId.push(Object.keys(target.selection)[0]);
       //Find color of ancestor
-      if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
-      else {parents.color.push(defaultParentColor)};
+      if (0 < ParentColors.length) {
+        parents.color.push(ParentColors.pop())
+      }
+      else {
+        parents.color.push(defaultParentColor)
+      }
+      ;
       PlaceAncestors(parents);
     }
   });
 
   // Process Drop on gridBox
   //This triggers for every dnd drop, not just those of gridBoxNode
-  gridBox.on("DndDrop", function(source, nodes, copy, target){
-    if (target.node.id==gridBoxNode){
+  gridBox.on("DndDrop", function (source, nodes, copy, target) {
+    if (target.node.id == gridBoxNode) {
       //was it dropped on the grid of cells?
       //console.log('xOff, yOff, xUP, y', grd.xOffset, grd.yOffset, mouse.UpGridPos[0];, mouse.UpGridPos[1];);
       //calculated grid cell to see if it was a valid grid position.
@@ -494,13 +520,13 @@ require([
       var mouseX = mouse.UpGridPos[0] - grd.marginX - grd.xOffset;
       var mouseY = mouse.UpGridPos[1] - grd.marginY - grd.yOffset;
       //console.log('mouseX, y', mouseX, mouseY);
-      parents.col[nn] = Math.floor(mouseX/grd.cellWd);
-      parents.row[nn] = Math.floor(mouseY/grd.cellHt);
+      parents.col[nn] = Math.floor(mouseX / grd.cellWd);
+      parents.row[nn] = Math.floor(mouseY / grd.cellHt);
       //check to see if in the grid part of the canvas
-      if (parents.col[nn] >=0 && parents.col[nn] < grd.cols && parents.row[nn] >=0 && parents.row[nn] < grd.rows) {
+      if (parents.col[nn] >= 0 && parents.col[nn] < grd.cols && parents.row[nn] >= 0 && parents.row[nn] < grd.rows) {
         parents.AvidaNdx[nn] = parents.row[nn] * grd.cols + parents.col[nn];
         //Add organism to AncestorBox in settings.
-        freezeOrgan.forInSelectedItems(function(item, id){
+        freezeOrgan.forInSelectedItems(function (item, id) {
           //console.log('selected: item', item, '; id', id);
           AncestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
           //console.log('gridBox.map', gridBox.map);
@@ -512,15 +538,20 @@ require([
         parents.howPlaced[nn] = 'hand';
         parents.name[nn] = nodes[0].textContent;
         var domId = Object.keys(source.selection)[0];
-        var ndx = findFzOrganNdx(domId,fzOrgan);
+        var ndx = findFzOrganNdx(domId, fzOrgan);
         parents.genome.push(fzOrgan[ndx].genome);
         //find domId of parent as listed in AncestorBox
         var mapItems = Object.keys(AncestorBox.map);
-        parents.domId.push(mapItems[mapItems.length-1]);
+        parents.domId.push(mapItems[mapItems.length - 1]);
 
         //Find color of ancestor
-        if (0 < ParentColors.length) {parents.color.push(ParentColors.pop())}
-        else {parents.color.push(defaultParentColor)};
+        if (0 < ParentColors.length) {
+          parents.color.push(ParentColors.pop())
+        }
+        else {
+          parents.color.push(defaultParentColor)
+        }
+        ;
         //console.log('after', parents)
         //Re-Draw Grid
         DrawGridSetup();
@@ -533,7 +564,7 @@ require([
   });
 
   //When something is added to the Organism Freezer ------------------
-  freezeOrgan.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of Organism Freezer
+  freezeOrgan.on("DndDrop", function (source, nodes, copy, target) {  //This triggers for every dnd drop, not just those of Organism Freezer
     if ("freezeOrganNode" == target.node.id) {
       var strItem = Object.keys(target.selection)[0];
 
@@ -544,16 +575,16 @@ require([
         while (unique) {
           //console.log('namelen', namelist.length, '; aviLen', avidian.length);
           unique = false;
-          for (var ii = 0; ii < namelist.length; ii++){
+          for (var ii = 0; ii < namelist.length; ii++) {
             if (avidian == namelist[ii].textContent) {
-              avidian = prompt("Please give your avidian a unique name ", avidian+"_1")
+              avidian = prompt("Please give your avidian a unique name ", avidian + "_1")
               unique = true;
               //break;
             }
           }
         }
         if (null != avidian) {  //give dom item new avidian name
-          document.getElementById(strItem).textContent=avidian;
+          document.getElementById(strItem).textContent = avidian;
           target.map[strItem].data = avidian;
 
           if ("AncestorBoxNode" == source.node.id) {
@@ -585,7 +616,7 @@ require([
             }
             fzOrgan.push(neworg);
           }
-          console.log('fzOrgan',fzOrgan);
+          console.log('fzOrgan', fzOrgan);
           //create a right mouse-click context menu for the item just created.
           //console.log('nodes[0].id', nodes[0].id, '; target',target);
           contextMenu(target, neworg.domId);
@@ -605,29 +636,29 @@ require([
     }
   });
 
-  organismIcon.on("DndDrop", function(source, nodes, copy, target){
-    if ("organismIcon" == target.node.id){
+  organismIcon.on("DndDrop", function (source, nodes, copy, target) {
+    if ("organismIcon" == target.node.id) {
       //clear out the old data if an organism is already there
       var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
-      if (1<items.length){
+      if (1 < items.length) {
         OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
         OrganCurrent.sync();   //should be done after insertion or deletion
       }
       //get the data for the new organism
-      source.forInSelectedItems(function(item, id){
+      source.forInSelectedItems(function (item, id) {
         OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         OrganCurrent.sync();
       });
-      updateCurrentOrgan(source,target);
+      updateCurrentOrgan(source, target);
       //clear out organismIcon as nothing is stored there - just moved on to OrganismCurrent
       organismIcon.selectAll().deleteSelectedNodes();  //clear items
       organismIcon.sync();   //should be done after insertion or deletion
       //Change to Organism Page
       mainBoxSwap("organismBlock");
-      organismCanvasHolderSize ();
-      var height = ($("#rightDetail").innerHeight()-375)/2;
-      document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById("ExecuteAbout").style.height = height+"px";
+      organismCanvasHolderSize();
+      var height = ($("#rightDetail").innerHeight() - 375) / 2;
+      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -636,17 +667,17 @@ require([
 
   //Need to have only the most recent dropped organism in OrganCurrent. Do this by deleting everything in organCurrent
   //and reinserting the most resent one after a drop event.
-  OrganCurrent.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of OrganCurrentNode
-    if ("OrganCurrentNode" == target.node.id){
+  OrganCurrent.on("DndDrop", function (source, nodes, copy, target) {  //This triggers for every dnd drop, not just those of OrganCurrentNode
+    if ("OrganCurrentNode" == target.node.id) {
       //clear out the old data if an organism is already there
       var items = getAllItems(OrganCurrent);    //used to see if there is more than one item in Organ Current
       //console.log('items', items, items.length);
-      if (1<items.length){
+      if (1 < items.length) {
         OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
         OrganCurrent.sync();   //should be done after insertion or deletion
 
         //get the data for the new organism
-        freezeOrgan.forInSelectedItems(function(item, id){
+        freezeOrgan.forInSelectedItems(function (item, id) {
           OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
           OrganCurrent.sync();
         });
@@ -657,7 +688,7 @@ require([
     }
   });
 
-  function updateCurrentOrgan(source){
+  function updateCurrentOrgan(source) {
     if ("freezeOrganNode" == source.node.id) {
       var domId = Object.keys(source.selection)[0];
       var ndx = findFzOrganNdx(domId, fzOrgan);
@@ -665,13 +696,13 @@ require([
       chosen.domId = Object.keys(OrganCurrent.map)[0];
       chosen.genome = fzOrgan[ndx].genome;
     }
-    console.log('chosen',chosen);
+    console.log('chosen', chosen);
   }
 
   //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
   //will be put in OrganCurrent.
-  OrganCanvas.on("DndDrop", function(source, nodes, copy, target){
-    if (target.node.id=="organismCanvas"){
+  OrganCanvas.on("DndDrop", function (source, nodes, copy, target) {
+    if (target.node.id == "organismCanvas") {
       //Clear current to put the new organism in there.
       OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
       OrganCurrent.sync();   //should be done after insertion or deletion
@@ -683,50 +714,52 @@ require([
       dojo.destroy(ItemID);
 
       //get the data for the new organism
-      freezeOrgan.forInSelectedItems(function(item, id){
+      freezeOrgan.forInSelectedItems(function (item, id) {
         OrganCurrent.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
       });
       OrganCurrent.sync();
 
       updateCurrentOrgan(source);
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
-      }
+    }
   });
 
 
   //uiWorker function
   function doOrgTrace() {
-     var seed = 0;
-     if (dijit.byId("OrganDemoRadio").get('checked',true)) {seed=1}
-     var request = {
-       'type':'addEvent',
-       'name': 'getOrgTraceBySequence',
-       'triggerType': 'immediate',
-       'args': [
-          chosen.genome,                        //genome string
-          dijit.byId("orMuteInput").get('value'),     // point mutation rate
-          seed                                        //seed where 0 = random; >0 to replay that number
-       ]
-        //'PtMuteRate': '0.02',
-        //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
-     };
-     uiWorker.postMessage(request);
+    var seed = 0;
+    if (dijit.byId("OrganDemoRadio").get('checked', true)) {
+      seed = 1
+    }
+    var request = {
+      'type': 'addEvent',
+      'name': 'getOrgTraceBySequence',
+      'triggerType': 'immediate',
+      'args': [
+        chosen.genome,                        //genome string
+        dijit.byId("orMuteInput").get('value'),     // point mutation rate
+        seed                                        //seed where 0 = random; >0 to replay that number
+      ]
+      //'PtMuteRate': '0.02',
+      //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
+    };
+    uiWorker.postMessage(request);
   }
 
   //------------------------------------- Populated Dishes DND ---------------------
   //This should never happen as there is only one source for populated dishes
   //This triggers for every dnd drop, not just those of freezePopDish
-  freezePopDish.on("DndDrop", function(source, nodes, copy, target){
-    if ("freezePopDishNode" == target.node.id){
+  freezePopDish.on("DndDrop", function (source, nodes, copy, target) {
+    if ("freezePopDishNode" == target.node.id) {
       //var items = getAllItems(freezePopDish);  not used
-      var popDish = prompt("Please name your populated dish", nodes[0].textContent+"_1");
+      var popDish = prompt("Please name your populated dish", nodes[0].textContent + "_1");
       var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
       var unique = true;
       while (unique) {
         unique = false;
         for (var ii = 0; ii < namelist.length; ii++) {
           if (popDish == namelist[ii].innerHTML) {
-            popDish = prompt("Please give your populated dish a unique name ", popDish+"_1")
+            popDish = prompt("Please give your populated dish a unique name ", popDish + "_1")
             unique = true;
             break;
           }
@@ -753,14 +786,14 @@ require([
 
   // Process trash ---------------------------------------------------
   //This triggers for every dnd drop, not just those of trashNode
-  trash.on("DndDrop", function(source, nodes, copy, target){
-    if ("trashNode" == target.node.id){
+  trash.on("DndDrop", function (source, nodes, copy, target) {
+    if ("trashNode" == target.node.id) {
       //if the item is from the freezer, delete from freezer unless it is original stock (@)
       if ("freezeConfigureNode" == source.node.id ||
-          "freezeOrganNode" == source.node.id || "freezePopDishNode" == source.node.id) {
+        "freezeOrganNode" == source.node.id || "freezePopDishNode" == source.node.id) {
         // find name of item in node; don't remove starter (@) items
-        if (!('@default' == nodes[0].textContent ||'@ancestor'==nodes[0].textContent ||
-              '@example'==nodes[0].textContent)) {
+        if (!('@default' == nodes[0].textContent || '@ancestor' == nodes[0].textContent ||
+          '@example' == nodes[0].textContent)) {
           source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
           //need to remove from freezer structure as well.
         }
@@ -785,18 +818,18 @@ require([
   //-----------------------------------------------------------------//
   //The following cases should never happen as they are defined as 'target' not as 'source'
   //This triggers for every dnd drop, not just those of freezePopDish
-  trash.on("DndDrop", function(source, nodes, copy, target){
-    if (source.node.id =="graphPop1Node"){
+  trash.on("DndDrop", function (source, nodes, copy, target) {
+    if (source.node.id == "graphPop1Node") {
       pop1a = [];       //remove lines from population 1
       pop1b = [];
       AnaChartFn();
     }
-    if (source.node.id =="graphPop2Node"){
+    if (source.node.id == "graphPop2Node") {
       pop2a = [];       //remove lines from population 2
       pop2b = [];
       AnaChartFn();
     }
-    if (source.node.id =="graphPop3Node"){
+    if (source.node.id == "graphPop3Node") {
       pop3a = [];       //remove lines from population 3
       pop3b = [];
       AnaChartFn();
@@ -807,8 +840,8 @@ require([
   var currentItem;
   var freezeItem;
   //This triggers for every dnd drop, not just those of graphPop1
-  graphPop1.on("DndDrop", function(source, nodes, copy, target){
-    if (target.node.id=="graphPop1Node"){
+  graphPop1.on("DndDrop", function (source, nodes, copy, target) {
+    if (target.node.id == "graphPop1Node") {
       var items = getAllItems(graphPop1);
       //if there is an existing item, need to clear all nodes and assign most recent to item 0
       if (1 < items.length) {
@@ -817,7 +850,7 @@ require([
         graphPop1.sync();   //should be done after insertion or deletion
 
         //get the data for the new organism
-        freezePopDish.forInSelectedItems(function(item, id){
+        freezePopDish.forInSelectedItems(function (item, id) {
           graphPop1.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         });
         graphPop1.sync();
@@ -840,8 +873,8 @@ require([
   });
 
   //This triggers for every dnd drop, not just those of graphPop1
-  graphPop2.on("DndDrop", function(source, nodes, copy, target){
-    if (target.node.id=="graphPop2Node"){
+  graphPop2.on("DndDrop", function (source, nodes, copy, target) {
+    if (target.node.id == "graphPop2Node") {
       var items = getAllItems(graphPop2);
       //if there is an existing item, need to clear all nodes and assign most recent to item 0
       if (1 < items.length) {
@@ -850,7 +883,7 @@ require([
         graphPop2.sync();   //should be done after insertion or deletion
 
         //get the data for the new organism
-        freezePopDish.forInSelectedItems(function(item, id){
+        freezePopDish.forInSelectedItems(function (item, id) {
           graphPop2.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         });
         graphPop2.sync();
@@ -869,8 +902,8 @@ require([
   });
 
   //This triggers for every dnd drop, not just those of graphPop1
-  graphPop3.on("DndDrop", function(source, nodes, copy, target){
-    if (target.node.id=="graphPop3Node"){
+  graphPop3.on("DndDrop", function (source, nodes, copy, target) {
+    if (target.node.id == "graphPop3Node") {
       var items = getAllItems(graphPop3);
       //if there is an existing item, need to clear all nodes and assign most recent to item 0
       if (1 < items.length) {
@@ -879,7 +912,7 @@ require([
         graphPop3.sync();   //should be done after insertion or deletion
 
         //get the data for the new organism
-        freezePopDish.forInSelectedItems(function(item, id){
+        freezePopDish.forInSelectedItems(function (item, id) {
           graphPop3.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
         });
         graphPop3.sync();
@@ -906,32 +939,32 @@ require([
     //console.log("target.map", target.map);
     //console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
     var aMenu;
-    aMenu = new dijit.Menu({ targetNodeIds: [fzItemID]});
+    aMenu = new dijit.Menu({targetNodeIds: [fzItemID]});
     aMenu.addChild(new dijit.MenuItem({
       label: "Rename",
-      onClick: function() {
+      onClick: function () {
         var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).textContent);
         var namelist = dojo.query('> .dojoDndItem', fzSection);
         var unique = true;
         while (unique) {
           unique = false;
-          if (fzName != document.getElementById(fzItemID).innerHTML){
-            for (var ii = 0; ii < namelist.length; ii++){
+          if (fzName != document.getElementById(fzItemID).innerHTML) {
+            for (var ii = 0; ii < namelist.length; ii++) {
               //console.log ("name ", namelist[ii].innerHTML);
               if (fzName == namelist[ii].innerHTML) {
-                fzName = prompt("Please give your freezer item a unique name ", fzName+"_1")
+                fzName = prompt("Please give your freezer item a unique name ", fzName + "_1")
                 unique = true;
                 break;
               }
             }
           }
         }
-        if (null!=fzName) {
+        if (null != fzName) {
           //document.getElementById(fzItemID).innerHTML = fzName;  //either works
           document.getElementById(fzItemID).textContent = fzName;
           //console.log(".data=", target.map[fzItemID].data);
           //update freezer structure
-          if ('freezeOrganNode'==fzSection) {
+          if ('freezeOrganNode' == fzSection) {
             var Ndx = findFzOrganNdx(fzItemID, fzOrgan);
             fzOrgan[Ndx].name = fzName;
             //console.log('contextMenu', fzOrgan);
@@ -941,14 +974,14 @@ require([
     }));
     aMenu.addChild(new dijit.MenuItem({
       label: "delete",
-      onClick: function() {
+      onClick: function () {
         var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
         if (sure) {
-          if ('freezeOrganNode'==fzSection) {
+          if ('freezeOrganNode' == fzSection) {
             var Ndx = findFzOrganNdx(fzItemID, fzOrgan);
-            fzOrgan.splice(Ndx,1);
+            fzOrgan.splice(Ndx, 1);
           }
-            target.selectNone();
+          target.selectNone();
           //console.log('frzITem', fzItemID);
           dojo.destroy(fzItemID);
           target.delItem(fzItemID);
@@ -959,8 +992,8 @@ require([
   };
 
 
-  var findFzOrganNdx = function(domId, fzOrgan) {
-    for (var ii=0; ii<fzOrgan.length; ii++){
+  var findFzOrganNdx = function (domId, fzOrgan) {
+    for (var ii = 0; ii < fzOrgan.length; ii++) {
       if (domId == fzOrgan[ii].domId) {
         return ii;
         break;
@@ -974,12 +1007,12 @@ require([
   /* Population page script ******************************************/
   /* *************************************************************** */
   // shifts the population page from Map (grid) view to setup parameters view and back again.
-  function popBoxSwap(){
-    if ("Map"== document.getElementById("PopSetupButton").innerHTML ) {
-    var height = $("#mapBlock").innerHeight()-6;
+  function popBoxSwap() {
+    if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
+      var height = $("#mapBlock").innerHeight() - 6;
 
-      dijit.byId("mapBlock").set("style", "display: block; height: "+height+"px");
-      dijit.byId("mapBC").set("style", "height: "+height+"px");
+      dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
+      dijit.byId("mapBC").set("style", "height: " + height + "px");
       dijit.byId("setupBlock").set("style", "display: none");
       document.getElementById("PopSetupButton").innerHTML = "Setup";
       DrawGridSetup();
@@ -989,11 +1022,14 @@ require([
       dijit.byId("mapBlock").set("style", "display: none;");
     }
   }
-  document.getElementById("PopSetupButton").onclick = function(){popBoxSwap();};
+
+  document.getElementById("PopSetupButton").onclick = function () {
+    popBoxSwap();
+  };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
   var popStatFlag = true;
-  document.getElementById("PopStatsButton").onclick = function(){
+  document.getElementById("PopStatsButton").onclick = function () {
     if (popStatFlag) {
       popStatFlag = false;
       registry.byId("popRight").domNode.style.width = "1px";
@@ -1024,12 +1060,12 @@ require([
   dijit.byId("mnFzOffspring").attr("disabled", true);
   dijit.byId("mnFzPopulation").attr("disabled", true);
 
-  function runPopFn(){
+  function runPopFn() {
     //check for ancestor organism in configuration data
     var namelist = dojo.query('> .dojoDndItem', 'AncestorBoxNode');
     //console.log("namelist", namelist);
-    if (1>namelist.length){
-      document.getElementById("runStopButton").innerHTML="Run";
+    if (1 > namelist.length) {
+      document.getElementById("runStopButton").innerHTML = "Run";
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);
       NeedAncestorDialog.show();
@@ -1037,6 +1073,7 @@ require([
     else { // setup for a new run by sending config data to avida
       if (newrun) {
         requestPopStats();  //uiWorker
+        requestGridData();  //uiWorker
         dom.byId("AncestorBoxNode").isSource = false;
         newrun = false;  //the run will no longer be "new"
         //Disable some of the options on the Setup page
@@ -1044,7 +1081,7 @@ require([
         ConfigCurrent.isSource = false;
         delete AncestorBox.accept["organism"];
         delete ConfigCurrent.accept["conDish"];
-        $( "#muteSlide" ).slider( { disabled: true });  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
+        $("#muteSlide").slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
         dijit.byId("sizeCols").attr("disabled", true);
         dijit.byId("sizeRows").attr("disabled", true);
         dijit.byId("muteInput").attr("disabled", true);
@@ -1065,29 +1102,31 @@ require([
         //there will be a population so it can now be frozen.
         dijit.byId("mnFzPopulation").attr("disabled", false);
         //collect setup data to send to avida
-        var setDict={};
-        setDict["sizeCols"]=dijit.byId("sizeCols").get('value');
-        setDict["sizeRows"]=dijit.byId("sizeRows").get('value');
-        setDict["muteInput"]=document.getElementById("muteInput").value;
+        var setDict = {};
+        setDict["sizeCols"] = dijit.byId("sizeCols").get('value');
+        setDict["sizeRows"] = dijit.byId("sizeRows").get('value');
+        setDict["muteInput"] = document.getElementById("muteInput").value;
         var nmlist = [];
-        for (var ii=0; ii<namelist.length; ii++){
+        for (var ii = 0; ii < namelist.length; ii++) {
           nmlist.push(namelist[ii].innerHTML);
         }
         setDict["ancestor"] = nmlist;
-        if (dijit.byId("childParentRadio").get('checked')){
-          setDict["birthMethod"]=0}
+        if (dijit.byId("childParentRadio").get('checked')) {
+          setDict["birthMethod"] = 0
+        }
         else {
-        setDict["birthMethod"]=1}
-        setDict["notose"]=dijit.byId("notose").get('checked');
-        setDict["nanose"]=dijit.byId("nanose").get('checked');
-        setDict["andose"]=dijit.byId("andose").get('checked');
-        setDict["ornose"]=dijit.byId("ornose").get('checked');
-        setDict["orose"]=dijit.byId("orose").get('checked',true);
-        setDict["andnose"]=dijit.byId("andnose").get('checked',true);
-        setDict["norose"]=dijit.byId("norose").get('checked',true);
-        setDict["xorose"]=dijit.byId("xorose").get('checked',true);
-        setDict["equose"]=dijit.byId("equose").get('checked',true);
-        setDict["repeatMode"]=dijit.byId("experimentRadio").get('checked',true);
+          setDict["birthMethod"] = 1
+        }
+        setDict["notose"] = dijit.byId("notose").get('checked');
+        setDict["nanose"] = dijit.byId("nanose").get('checked');
+        setDict["andose"] = dijit.byId("andose").get('checked');
+        setDict["ornose"] = dijit.byId("ornose").get('checked');
+        setDict["orose"] = dijit.byId("orose").get('checked', true);
+        setDict["andnose"] = dijit.byId("andnose").get('checked', true);
+        setDict["norose"] = dijit.byId("norose").get('checked', true);
+        setDict["xorose"] = dijit.byId("xorose").get('checked', true);
+        setDict["equose"] = dijit.byId("equose").get('checked', true);
+        setDict["repeatMode"] = dijit.byId("experimentRadio").get('checked', true);
         //dijit.byId("manRadio").set('checked',true);
         sendConfig(setDict);
         injectAncestors(); //uiWorker
@@ -1103,13 +1142,15 @@ require([
     console.log('test comment; delete me');
 
   }
-  function injectAncestors(){
+
+  function injectAncestors() {
     var request;
-    for (ii=0; ii<parents.name.length; ii++) {
+    for (ii = 0; ii < parents.name.length; ii++) {
       request = {
         'type': 'addEvent',
         'name': 'injectSequence',
         'start': 'now',   //was begin
+        'interval': 'once',
         'args': [
           parents.genome[ii],           //'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab',  //genome_sequence,
           parents.AvidaNdx[ii], //cell_start,
@@ -1161,12 +1202,12 @@ require([
       request = {
         'type': 'addEvent',
         'name': 'runPause',
-        'start': num ,
+        'start': num,
         'interval': 'once'
       }
       console.log(request);
     }
-     uiWorker.postMessage(request);
+    uiWorker.postMessage(request);
   }
 
 //Dummy Data
@@ -1177,40 +1218,42 @@ require([
   //console.log("man ", dataManJson);
   //console.log("str ", DataManJson);
 
-  function updatePopStats(msg){
-      document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0)+" updates";
-      document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
-      document.getElementById("aFitLabel").textContent = msg["ave_fitness"].formatNum(2);
-      document.getElementById("aMetabolicLabel").textContent = msg["ave_metabolic_rate"].formatNum(1);
-      document.getElementById("aGestateLabel").textContent = msg["ave_gestation_time"].formatNum(1);
-      document.getElementById("aAgeLabel").textContent = msg["ave_age"].formatNum(2);
-      document.getElementById("notPop").textContent = msg["not"];
-      document.getElementById("nanPop").textContent = msg["nand"];
-      document.getElementById("andPop").textContent = msg["and"];
-      document.getElementById("ornPop").textContent = msg["orn"];
-      document.getElementById("oroPop").textContent = msg["or"];
-      document.getElementById("antPop").textContent = msg["andn"];
-      document.getElementById("norPop").textContent = msg["nor"];
-      document.getElementById("xorPop").textContent = msg["xor"];
-      document.getElementById("equPop").textContent = msg["equ"];
-      //update graph arrays
-      ave_fitness.push(msg["ave_fitness"]);
-      ave_gestation_time.push(msg["ave_gestation_time"]);
-      ave_metabolic_rate.push(msg["ave_metabolic_rate"]);
-      population_size.push(msg["organisms"]);
-      popChartFn();
+  function updatePopStats(msg) {
+    document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0) + " updates";
+    document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
+    document.getElementById("aFitLabel").textContent = msg["ave_fitness"].formatNum(2);
+    document.getElementById("aMetabolicLabel").textContent = msg["ave_metabolic_rate"].formatNum(1);
+    document.getElementById("aGestateLabel").textContent = msg["ave_gestation_time"].formatNum(1);
+    document.getElementById("aAgeLabel").textContent = msg["ave_age"].formatNum(2);
+    document.getElementById("notPop").textContent = msg["not"];
+    document.getElementById("nanPop").textContent = msg["nand"];
+    document.getElementById("andPop").textContent = msg["and"];
+    document.getElementById("ornPop").textContent = msg["orn"];
+    document.getElementById("oroPop").textContent = msg["or"];
+    document.getElementById("antPop").textContent = msg["andn"];
+    document.getElementById("norPop").textContent = msg["nor"];
+    document.getElementById("xorPop").textContent = msg["xor"];
+    document.getElementById("equPop").textContent = msg["equ"];
+    //update graph arrays
+    ave_fitness.push(msg["ave_fitness"]);
+    ave_gestation_time.push(msg["ave_gestation_time"]);
+    ave_metabolic_rate.push(msg["ave_metabolic_rate"]);
+    population_size.push(msg["organisms"]);
+    popChartFn();
   }
 
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
-  document.getElementById("runStopButton").onclick = function(){runStopFn()}
-  function runStopFn(){
-    if ("Run"==document.getElementById("runStopButton").innerHTML) {
-      document.getElementById("runStopButton").innerHTML="Pause";
+  document.getElementById("runStopButton").onclick = function () {
+    runStopFn()
+  }
+  function runStopFn() {
+    if ("Run" == document.getElementById("runStopButton").innerHTML) {
+      document.getElementById("runStopButton").innerHTML = "Pause";
       dijit.byId("mnPause").attr("disabled", false);
       dijit.byId("mnRun").attr("disabled", true);
       runPopFn();
     } else {
-      document.getElementById("runStopButton").innerHTML="Run";
+      document.getElementById("runStopButton").innerHTML = "Run";
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);
       doRunPause()
@@ -1219,34 +1262,34 @@ require([
   };
 
   //process run/Stop buttons as above but for drop down menu
-  dijit.byId("mnRun").on("Click", function(){
-      dijit.byId("mnPause").attr("disabled", false);
-      dijit.byId("mnRun").attr("disabled", true);
-      document.getElementById("runStopButton").innerHTML="Pause";
-      runPopFn();
+  dijit.byId("mnRun").on("Click", function () {
+    dijit.byId("mnPause").attr("disabled", false);
+    dijit.byId("mnRun").attr("disabled", true);
+    document.getElementById("runStopButton").innerHTML = "Pause";
+    runPopFn();
   });
-  dijit.byId("mnPause").on("Click", function(){
-      dijit.byId("mnPause").attr("disabled", true);
-      dijit.byId("mnRun").attr("disabled", false);
-      document.getElementById("runStopButton").innerHTML="Run";
-      doRunPause()
+  dijit.byId("mnPause").on("Click", function () {
+    dijit.byId("mnPause").attr("disabled", true);
+    dijit.byId("mnRun").attr("disabled", false);
+    document.getElementById("runStopButton").innerHTML = "Run";
+    doRunPause()
   });
 
   /* ************** New Button and new Dialog ***********************/
-  dijit.byId("newDiscard").on("Click", function(){
+  dijit.byId("newDiscard").on("Click", function () {
     newDialog.hide();
     resetDishFn();
     //console.log("newDiscard click");
   });
 
-  dijit.byId("newSave").on("Click", function(){
+  dijit.byId("newSave").on("Click", function () {
     newDialog.hide();
     resetDishFn();
     FrPopulationFn();
     //console.log("newSave click");
   });
 
-  function newButtonBoth(){
+  function newButtonBoth() {
     if (newrun) {// reset petri dish
       resetDishFn();
     }
@@ -1254,13 +1297,18 @@ require([
       newDialog.show();
     }
   }
-  document.getElementById("newDishButton").onclick = function(){newButtonBoth()};
-  dijit.byId("mnNewpop").on("Click", function(){newButtonBoth()});
+
+  document.getElementById("newDishButton").onclick = function () {
+    newButtonBoth()
+  };
+  dijit.byId("mnNewpop").on("Click", function () {
+    newButtonBoth()
+  });
 
   //uiWorker function
   function doReset() {
     var request = {
-      'Key':'Reset'
+      'Key': 'Reset'
     };
     uiWorker.postMessage(request);
   }
@@ -1275,7 +1323,7 @@ require([
     ConfigCurrent.accept["conDish"] = 1;
     AncestorBox.isSource = true;
     ConfigCurrent.isSource = true;
-    $( "#muteSlide" ).slider( { disabled: false });  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
+    $("#muteSlide").slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
     dijit.byId("sizeCols").attr("disabled", false);
     dijit.byId("sizeRows").attr("disabled", false);
     dijit.byId("muteInput").attr("disabled", false);
@@ -1299,10 +1347,10 @@ require([
     //set run/stop and drop down menu to the 'stopped' state
     dijit.byId("mnPause").attr("disabled", true);
     dijit.byId("mnRun").attr("disabled", false);
-    document.getElementById("runStopButton").innerHTML="Run";
+    document.getElementById("runStopButton").innerHTML = "Run";
     //set configuation to default
     ConfigCurrent.selectAll().deleteSelectedNodes();
-    ConfigCurrent.insertNodes(false, [{ data: "@default",      type: ["conDish"]}]);
+    ConfigCurrent.insertNodes(false, [{data: "@default", type: ["conDish"]}]);
     ConfigCurrent.sync();
     //clear the time series graphs
     ave_fitness = [];
@@ -1321,10 +1369,10 @@ require([
   //writes data to Environmental Settings page based on the content of ConfigCurrent
   //for now this is hard coded to what would be in @default. will need a way to request data from C++
   //and read the returned json string.
-  function writeSettings(){
-    dijit.byId("sizeCols").set('value','20');
-    dijit.byId("sizeRows").set('value','20');
-    document.getElementById("muteInput").value='2';
+  function writeSettings() {
+    dijit.byId("sizeCols").set('value', '3');
+    dijit.byId("sizeRows").set('value', '3');
+    document.getElementById("muteInput").value = '2';
     var event = new Event('change');
     document.getElementById("muteInput").dispatchEvent(event);
     AncestorBox.selectAll().deleteSelectedNodes();
@@ -1333,57 +1381,57 @@ require([
     gridBox.sync();
     AncestorList = [];
     TimeLabel.textContent = 0;
-    document.getElementById("seedTray").innerHTML="";
-    dijit.byId("childParentRadio").set('checked',true);
-    dijit.byId("notose").set('checked',true);
-    dijit.byId("nanose").set('checked',true);
-    dijit.byId("andose").set('checked',true);
-    dijit.byId("ornose").set('checked',true);
-    dijit.byId("orose").set('checked',true);
-    dijit.byId("andnose").set('checked',true);
-    dijit.byId("norose").set('checked',true);
-    dijit.byId("xorose").set('checked',true);
-    dijit.byId("equose").set('checked',true);
-    dijit.byId("experimentRadio").set('checked',true);
-    dijit.byId("manRadio").set('checked',true);
+    document.getElementById("seedTray").innerHTML = "";
+    dijit.byId("childParentRadio").set('checked', true);
+    dijit.byId("notose").set('checked', true);
+    dijit.byId("nanose").set('checked', true);
+    dijit.byId("andose").set('checked', true);
+    dijit.byId("ornose").set('checked', true);
+    dijit.byId("orose").set('checked', true);
+    dijit.byId("andnose").set('checked', true);
+    dijit.byId("norose").set('checked', true);
+    dijit.byId("xorose").set('checked', true);
+    dijit.byId("equose").set('checked', true);
+    dijit.byId("experimentRadio").set('checked', true);
+    dijit.byId("manRadio").set('checked', true);
     //Selected Organism Type
-    document.getElementById("nameLabel").textContent="-";
-    document.getElementById("fitLabel").innerHTML="-";
-    document.getElementById("metabolicLabel").textContent="-";
-    document.getElementById("generateLabel").textContent="-";
-    document.getElementById("ageLabel").textContent="-";
-    document.getElementById("ancestorLabel").textContent="-";
-    document.getElementById("notLabel").textContent="not-";
-    document.getElementById("nanLabel").textContent="nan-";
-    document.getElementById("andLabel").textContent="and-";
-    document.getElementById("ornLabel").textContent="orn-";
-    document.getElementById("antLabel").textContent="ant-";
-    document.getElementById("norLabel").textContent="nor-";
-    document.getElementById("xorLabel").textContent="xor-";
-    document.getElementById("equLabel").textContent="equ-";
-    document.getElementById("notTime").textContent="0";
-    document.getElementById("nanTime").textContent="0";
-    document.getElementById("andTime").textContent="0";
-    document.getElementById("ornTime").textContent="0";
-    document.getElementById("antTime").textContent="0";
-    document.getElementById("norTime").textContent="0";
-    document.getElementById("xorTime").textContent="0";
-    document.getElementById("equTime").textContent="0";
+    document.getElementById("nameLabel").textContent = "-";
+    document.getElementById("fitLabel").innerHTML = "-";
+    document.getElementById("metabolicLabel").textContent = "-";
+    document.getElementById("generateLabel").textContent = "-";
+    document.getElementById("ageLabel").textContent = "-";
+    document.getElementById("ancestorLabel").textContent = "-";
+    document.getElementById("notLabel").textContent = "not-";
+    document.getElementById("nanLabel").textContent = "nan-";
+    document.getElementById("andLabel").textContent = "and-";
+    document.getElementById("ornLabel").textContent = "orn-";
+    document.getElementById("antLabel").textContent = "ant-";
+    document.getElementById("norLabel").textContent = "nor-";
+    document.getElementById("xorLabel").textContent = "xor-";
+    document.getElementById("equLabel").textContent = "equ-";
+    document.getElementById("notTime").textContent = "0";
+    document.getElementById("nanTime").textContent = "0";
+    document.getElementById("andTime").textContent = "0";
+    document.getElementById("ornTime").textContent = "0";
+    document.getElementById("antTime").textContent = "0";
+    document.getElementById("norTime").textContent = "0";
+    document.getElementById("xorTime").textContent = "0";
+    document.getElementById("equTime").textContent = "0";
     //Population Statistics
-    document.getElementById("popSizeLabel").textContent="-";
-    document.getElementById("aFitLabel").textContent="-";
-    document.getElementById("aMetabolicLabel").textContent="-";
-    document.getElementById("aGestateLabel").textContent="-";
-    document.getElementById("aAgeLabel").textContent="-";
-    document.getElementById("notPop").textContent="-";
-    document.getElementById("nanPop").textContent="-";
-    document.getElementById("andPop").textContent="-";
-    document.getElementById("ornPop").textContent="-";
-    document.getElementById("oroPop").textContent="-";
-    document.getElementById("antPop").textContent="-";
-    document.getElementById("norPop").textContent="-";
-    document.getElementById("xorPop").textContent="-";
-    document.getElementById("equPop").textContent="-";
+    document.getElementById("popSizeLabel").textContent = "-";
+    document.getElementById("aFitLabel").textContent = "-";
+    document.getElementById("aMetabolicLabel").textContent = "-";
+    document.getElementById("aGestateLabel").textContent = "-";
+    document.getElementById("aAgeLabel").textContent = "-";
+    document.getElementById("notPop").textContent = "-";
+    document.getElementById("nanPop").textContent = "-";
+    document.getElementById("andPop").textContent = "-";
+    document.getElementById("ornPop").textContent = "-";
+    document.getElementById("oroPop").textContent = "-";
+    document.getElementById("antPop").textContent = "-";
+    document.getElementById("norPop").textContent = "-";
+    document.getElementById("xorPop").textContent = "-";
+    document.getElementById("equPop").textContent = "-";
     grd.flagSelected = false;
     dijit.byId("mnFzOrganism").attr("disabled", true);
   }
@@ -1391,34 +1439,34 @@ require([
   //******* Freeze Button ********************************************
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.
-  document.getElementById("freezeButton").onclick = function(){
+  document.getElementById("freezeButton").onclick = function () {
     fzDialog.show();
   }
 
-  function FrConfigFn(){
+  function FrConfigFn() {
     var fzName = prompt("Please name the new configuration", "newConfig");
     var namelist = dojo.query('> .dojoDndItem', "freezeConfigureNode");
     var unique = true;
     while (unique) {
       unique = false;
-      for (var ii = 0; ii < namelist.length; ii++){
+      for (var ii = 0; ii < namelist.length; ii++) {
         //console.log ("name ", namelist[ii].innerHTML);
         if (fzName == namelist[ii].innerHTML) {
-          fzName = prompt("Please give your new configuration a unique name ", fzName+"_1")
+          fzName = prompt("Please give your new configuration a unique name ", fzName + "_1")
           unique = true;
           break;
         }
       }
     }
-    if (null!=fzName) {
-      freezeConfigure.insertNodes(false, [ {data: fzName,   type: ["conDish"]}]);
+    if (null != fzName) {
+      freezeConfigure.insertNodes(false, [{data: fzName, type: ["conDish"]}]);
       freezeConfigure.sync();
       //Create context menu for right-click on this item
       //Find out the dom ID the node element just inserted.
       var domItems = Object.keys(freezeConfigure.map);
       //console.log("domItems=", domItems);
       var nodeIndex = -1;
-      for (var ii=0; ii< domItems.length; ii++) {
+      for (var ii = 0; ii < domItems.length; ii++) {
         if (freezeConfigure.map[domItems[ii]].data == fzName) {
           nodeIndex = ii;
         }
@@ -1427,39 +1475,41 @@ require([
     }
   }
 
-  dijit.byId("FzConfiguration").on("Click", function(){
+  dijit.byId("FzConfiguration").on("Click", function () {
     fzDialog.hide();
     FrConfigFn();
   });
 
   //Drop down menu to save a configuration item
-  dijit.byId("mnFzConfig").on("Click", function(){ FrConfigFn() });
+  dijit.byId("mnFzConfig").on("Click", function () {
+    FrConfigFn()
+  });
 
   //Save a populated dish
-  function FrPopulationFn(){
+  function FrPopulationFn() {
     var fzName = prompt("Please name the new population", "newPopulation");
     var namelist = dojo.query('> .dojoDndItem', "freezePopDishNode");
     var unique = true;
     while (unique) {
       unique = false;
-      for (var ii = 0; ii < namelist.length; ii++){
+      for (var ii = 0; ii < namelist.length; ii++) {
         //console.log ("name ", namelist[ii].innerHTML);
         if (fzName == namelist[ii].innerHTML) {
-          fzName = prompt("Please give your new Population a unique name ", fzName+"_1")
+          fzName = prompt("Please give your new Population a unique name ", fzName + "_1")
           unique = true;
           break;
         }
       }
     }
-    if (null!=fzName) {
-      freezePopDish.insertNodes(false, [ {data: fzName,   type: ["popDish"]}]);
+    if (null != fzName) {
+      freezePopDish.insertNodes(false, [{data: fzName, type: ["popDish"]}]);
       freezePopDish.sync();
       //Create context menu for right-click on this item
       //Find out the dom ID the node element just inserted.
       var domItems = Object.keys(freezePopDish.map);
       //console.log("domItems=", domItems);
       var nodeIndex = -1;
-      for (var ii=0; ii< domItems.length; ii++) {
+      for (var ii = 0; ii < domItems.length; ii++) {
         if (freezePopDish.map[domItems[ii]].data == fzName) {
           nodeIndex = ii;
         }
@@ -1469,18 +1519,22 @@ require([
   }
 
   //button to freeze a population
-  dijit.byId("FzPopulation").on("Click", function(){
+  dijit.byId("FzPopulation").on("Click", function () {
     fzDialog.hide();
     FrPopulationFn();
   });
 
   //Buttons on drop down menu to save population
-  dijit.byId("mnFzPopulation").on("Click", function() {FrPopulationFn() });
+  dijit.byId("mnFzPopulation").on("Click", function () {
+    FrPopulationFn()
+  });
   //Buttons on drop down menu to save configured dish
-  dijit.byId("mnFzOrganism").on("Click", function(){ FrOrganismFn('selected') });
+  dijit.byId("mnFzOrganism").on("Click", function () {
+    FrOrganismFn('selected')
+  });
 
   //Freeze the selected organism
-  function FrOrganismFn(trigger){
+  function FrOrganismFn(trigger) {
     var fzName = 'new';
     var parentName = "";
     if ('selected' == trigger) {
@@ -1498,25 +1552,25 @@ require([
     var unique = true;
     while (unique) {
       unique = false;
-      for (var ii = 0; ii < namelist.length; ii++){
+      for (var ii = 0; ii < namelist.length; ii++) {
         //console.log ("name ", namelist[ii].innerHTML);
         if (fzName == namelist[ii].innerHTML) {
-          fzName = prompt("Please give your new Organism a unique name ", fzName+"_1")
+          fzName = prompt("Please give your new Organism a unique name ", fzName + "_1")
           unique = true;
           break;
         }
       }
     }
-    if (null!=fzName) {
+    if (null != fzName) {
       //insert new item into the freezer.
-      freezeOrgan.insertNodes(false, [ {data: fzName,   type: ["organism"]}]);
+      freezeOrgan.insertNodes(false, [{data: fzName, type: ["organism"]}]);
       freezeOrgan.sync();
 
       //Find out the dom ID the node element just inserted.
       var domItems = Object.keys(freezeOrgan.map);
       //console.log("domItems=", domItems);
       var nodeIndex = -1;
-      for (var ii=0; ii< domItems.length; ii++) {
+      for (var ii = 0; ii < domItems.length; ii++) {
         if (freezeOrgan.map[domItems[ii]].data == fzName) {
           nodeIndex = ii;
         }
@@ -1531,21 +1585,21 @@ require([
 //********************************************************************
   var mouseDnoffsetPos = [];
 
-  var nearly = function(aa, bb) {
+  var nearly = function (aa, bb) {
     var epsilon = 3;
-    var distance = Math.sqrt(Math.pow(aa[0]-bb[0],2) + Math.pow(aa[1]-bb[1],2))
+    var distance = Math.sqrt(Math.pow(aa[0] - bb[0], 2) + Math.pow(aa[1] - bb[1], 2))
     if (distance > epsilon) return false;
     else return true;
   }
 
-  var matches = function(aa, bb) {
-    if (aa[0]==bb[0] && aa[1]==bb[1]) return true;
+  var matches = function (aa, bb) {
+    if (aa[0] == bb[0] && aa[1] == bb[1]) return true;
     else return false;
   }
 
-  var findParentNdx = function() {
+  var findParentNdx = function () {
     var MomNdx = -1;
-    for (var ii=0; ii<parents.name.length; ii++) {
+    for (var ii = 0; ii < parents.name.length; ii++) {
       if (matches([grd.ColSelected, grd.RowSelected], [parents.col[ii], parents.row[ii]])) {
         MomNdx = ii;
         //console.log('parent found in function', MomNdx);
@@ -1558,24 +1612,24 @@ require([
   function findSelected(evt) {
     mouseX = evt.offsetX - grd.marginX - grd.xOffset;
     mouseY = evt.offsetY - grd.marginY - grd.yOffset;
-    grd.ColSelected = Math.floor(mouseX/grd.cellWd);
-    grd.RowSelected = Math.floor(mouseY/grd.cellHt);
+    grd.ColSelected = Math.floor(mouseX / grd.cellWd);
+    grd.RowSelected = Math.floor(mouseY / grd.cellHt);
     //console.log('mx,y', mouseX, mouseY, '; selected Col, Row', grd.ColSelected, grd.RowSelected);
   }
 
   var mouse = {};
-    mouse.Dn = false;
-    mouse.DnGridPos = [];
-    mouse.UpGridPos = [];
-    mouse.DnOrganPos = [];
-    mouse.Move = false;
-    mouse.Drag = false;
-    mouse.ParentNdx = -1;
-    mouse.ParentSelected = false;
-    mouse.Picked = "";
+  mouse.Dn = false;
+  mouse.DnGridPos = [];
+  mouse.UpGridPos = [];
+  mouse.DnOrganPos = [];
+  mouse.Move = false;
+  mouse.Drag = false;
+  mouse.ParentNdx = -1;
+  mouse.ParentSelected = false;
+  mouse.Picked = "";
 
   $(document.getElementById('organismCanvas')).on('mousedown', function (evt) {
-    mouse.DnOrganPos=[evt.offsetX, evt.offsetY];
+    mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
     mouse.Picked = '';
     if (DidDivide) {  //offpsring exists
@@ -1588,29 +1642,29 @@ require([
         mouse.Picked = "offspring";
       }
 
-    //var distance = Math.sqrt(Math.pow(evt.offsetX-gen.cx[1],2) + Math.pow(evt.offsetY-gen.cy[1],2));
-    //if (25 > distance) {
-    //  document.getElementById('organismIcon').style.cursor = 'copy';
-    //  document.getElementById('organismCanvas').style.cursor = 'copy';
-    //  document.getElementById('mainBC').style.cursor = 'move';
-    //  mouse.Picked = "offspring";
+      //var distance = Math.sqrt(Math.pow(evt.offsetX-gen.cx[1],2) + Math.pow(evt.offsetY-gen.cy[1],2));
+      //if (25 > distance) {
+      //  document.getElementById('organismIcon').style.cursor = 'copy';
+      //  document.getElementById('organismCanvas').style.cursor = 'copy';
+      //  document.getElementById('mainBC').style.cursor = 'move';
+      //  mouse.Picked = "offspring";
     }
   });
 
   //mouse down on the grid
   $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
-    mouse.DnGridPos=[evt.offsetX, evt.offsetY];
+    mouse.DnGridPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
     // Select if it is in the grid
     findSelected(evt);
     //check to see if in the grid part of the canvas
-    if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
+    if (grd.ColSelected >= 0 && grd.ColSelected < grd.cols && grd.RowSelected >= 0 && grd.RowSelected < grd.rows) {
       grd.flagSelected = true;
       DrawGridSetup();
       dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
 
       //In the grid and selected. Now look to see contents of cell are dragable.
-      mouse.ParentNdx=-1; //index into parents array if parent selected else -1;
+      mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
       if (newrun) {  //run has not started so look to see if cell contains ancestor
         mouse.ParentNdx = findParentNdx();
         if (-1 < mouse.ParentNdx) { //selected a parent, check for dragging
@@ -1631,7 +1685,7 @@ require([
     //document.getElementById('gridCanvas').style.cursor = 'copy';
     //document.getElementById('TrashCan').style.cursor = 'copy';
     //console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
-    if(!nearly([evt.offsetX, evt.offsetY], mouse.DnGridPos)) {
+    if (!nearly([evt.offsetX, evt.offsetY], mouse.DnGridPos)) {
       console.log("gd draging");
       if (mouse.Dn) mouse.Drag = true;
       else mouse.Drag = true;
@@ -1648,13 +1702,13 @@ require([
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organismIcon').style.cursor = 'default';
     document.getElementById('freezeOrganNode').style.cursor = 'default';
-    mouse.UpGridPos=[evt.offsetX, evt.offsetY];
+    mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = false;
 
     // --------- process if something picked to dnd ------------------
     if ('parent' == mouse.Picked) {
       mouse.Picked = ""
-      ParentMouseDn(evt) ;
+      ParentMouseDn(evt);
     }
     else if ('offspring' == mouse.Picked) {
       mouse.Picked = "";
@@ -1674,11 +1728,11 @@ require([
       OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
       OrganCurrent.sync();   //should be done after insertion or deletion
       //Put name of offspring in OrganCurrentNode
-      OrganCurrent.insertNodes(false, [{ data: parent+"_offspring",      type: ["organism"]}]);
+      OrganCurrent.insertNodes(false, [{data: parent + "_offspring", type: ["organism"]}]);
       OrganCurrent.sync();
 
-      chosen.name = parent+"_offspring";
-      chosen.genme=gen.dna[1];  //this should be the full genome when the offspring is complete.
+      chosen.name = parent + "_offspring";
+      chosen.genme = gen.dna[1];  //this should be the full genome when the offspring is complete.
       chosen.domId = Object.keys(OrganCurrent.map)[0];
       //get genome from offspring data //needs work!!
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -1689,87 +1743,87 @@ require([
   }
 
   function ParentMouseDn(evt) {
-      if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
-        mouse.UpGridPos=[evt.offsetX, evt.offsetY]; //not used for now
-        //Move the ancestor on the canvas
-        //console.log("on gridCanvas")
-        findSelected(evt);
-        // look to see if this is a valid grid cell
-        if (grd.ColSelected >=0 && grd.ColSelected < grd.cols && grd.RowSelected >=0 && grd.RowSelected < grd.rows) {
-          parents.col[mouse.ParentNdx] = grd.ColSelected;
-          parents.row[mouse.ParentNdx] = grd.RowSelected;
-          parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
-          //console.log('mvparent', mouse.ParentNdx, parents.col[mouse.ParentNdx], parents.row[mouse.ParentNdx]);
-          //console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-          //console.log('b hand', parents.handNdx.length, parents.handNdx);
-          //change from auto placed to hand placed if needed
-          if ('auto' == parents.howPlaced[mouse.ParentNdx] ) {
-            parents.howPlaced[mouse.ParentNdx] = 'hand';
-            makeHandAutoNdx();
-            //PlaceAncestors(parents);
-          }
-          //console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-          //console.log('hand', parents.handNdx.length, parents.handNdx);
-          DrawGridSetup();
+    if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
+      mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
+      //Move the ancestor on the canvas
+      //console.log("on gridCanvas")
+      findSelected(evt);
+      // look to see if this is a valid grid cell
+      if (grd.ColSelected >= 0 && grd.ColSelected < grd.cols && grd.RowSelected >= 0 && grd.RowSelected < grd.rows) {
+        parents.col[mouse.ParentNdx] = grd.ColSelected;
+        parents.row[mouse.ParentNdx] = grd.RowSelected;
+        parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
+        //console.log('mvparent', mouse.ParentNdx, parents.col[mouse.ParentNdx], parents.row[mouse.ParentNdx]);
+        //console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
+        //console.log('b hand', parents.handNdx.length, parents.handNdx);
+        //change from auto placed to hand placed if needed
+        if ('auto' == parents.howPlaced[mouse.ParentNdx]) {
+          parents.howPlaced[mouse.ParentNdx] = 'hand';
+          makeHandAutoNdx();
+          //PlaceAncestors(parents);
         }
-      }  // close on canvas
-      //-------------------------------------------- trash
-      else if ('TrashCan' == evt.target.id) {
-        //Remove this Parent from the grid
-        //remove node from AncestorBoxNode
-        /*fromAncestorBoxRemove(parents.name[mouse.ParentNdx]);
-        var domItems = Object.keys(AncestorBox.map);
-        console.log("domItems=", domItems);
-        console.log('parents.domId', parents.domId[mouse.ParentNdx]);
-        var nodeIndex = -1;
-        for (var ii=0; ii< domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-          if (AncestorBox.map[domItems[ii]].data == parents.name[mouse.ParentNdx]) {
-            nodeIndex = ii;
-          }
-        }
-        console.log('nodeIndex', nodeIndex, domItems[nodeIndex] );
-        */
-        var node = dojo.byId(parents.domId[mouse.ParentNdx]);
-        AncestorBox.parent.removeChild(node);
-        AncestorBox.sync();
-
-        //remove from main list.
-        removeParent(mouse.ParentNdx);
+        //console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
+        //console.log('hand', parents.handNdx.length, parents.handNdx);
         DrawGridSetup();
       }
-      //-------------------------------------------- organism view
-      else if ('organismIcon' == evt.target.id) {
-        //Change to Organism Page
-        mainBoxSwap("organismBlock");
-        organismCanvasHolderSize ();
-        var height = ($("#rightDetail").innerHeight()-375)/2;
-        document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-        document.getElementById("ExecuteAbout").style.height = height+"px";
-        document.getElementById("ExecuteJust").style.width = "100%";
-        document.getElementById("ExecuteAbout").style.width = "100%";
+    }  // close on canvas
+    //-------------------------------------------- trash
+    else if ('TrashCan' == evt.target.id) {
+      //Remove this Parent from the grid
+      //remove node from AncestorBoxNode
+      /*fromAncestorBoxRemove(parents.name[mouse.ParentNdx]);
+       var domItems = Object.keys(AncestorBox.map);
+       console.log("domItems=", domItems);
+       console.log('parents.domId', parents.domId[mouse.ParentNdx]);
+       var nodeIndex = -1;
+       for (var ii=0; ii< domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+       if (AncestorBox.map[domItems[ii]].data == parents.name[mouse.ParentNdx]) {
+       nodeIndex = ii;
+       }
+       }
+       console.log('nodeIndex', nodeIndex, domItems[nodeIndex] );
+       */
+      var node = dojo.byId(parents.domId[mouse.ParentNdx]);
+      AncestorBox.parent.removeChild(node);
+      AncestorBox.sync();
 
-        OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
-        OrganCurrent.sync();   //should be done after insertion or deletion
-        //Put name of offspring in OrganCurrentNode
-        OrganCurrent.insertNodes(false, [{ data: parents.name[mouse.ParentNdx], type: ["organism"]}]);
-        OrganCurrent.sync();
-        //genome data should be in parents.genome[mouse.ParentNdx];
+      //remove from main list.
+      removeParent(mouse.ParentNdx);
+      DrawGridSetup();
+    }
+    //-------------------------------------------- organism view
+    else if ('organismIcon' == evt.target.id) {
+      //Change to Organism Page
+      mainBoxSwap("organismBlock");
+      organismCanvasHolderSize();
+      var height = ($("#rightDetail").innerHeight() - 375) / 2;
+      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById("ExecuteAbout").style.height = height + "px";
+      document.getElementById("ExecuteJust").style.width = "100%";
+      document.getElementById("ExecuteAbout").style.width = "100%";
 
-        doOrgTrace();  //request new Organism Trace from Avida and draw that.
-      }
+      OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
+      OrganCurrent.sync();   //should be done after insertion or deletion
+      //Put name of offspring in OrganCurrentNode
+      OrganCurrent.insertNodes(false, [{data: parents.name[mouse.ParentNdx], type: ["organism"]}]);
+      OrganCurrent.sync();
+      //genome data should be in parents.genome[mouse.ParentNdx];
+
+      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+    }
   }
 
   function fromAncestorBoxRemove(removeName) {
     var domItems = Object.keys(AncestorBox.map);
     //console.log("domItems=", domItems);
     var nodeIndex = -1;
-    for (var ii=0; ii< domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+    for (var ii = 0; ii < domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
       if (AncestorBox.map[domItems[ii]].data == removeName) {
         nodeIndex = ii;
       }
     }
     var node = dojo.byId(domItems[nodeIndex]);
-    console.log('nodeIndex', nodeIndex, domItems[nodeIndex] );
+    console.log('nodeIndex', nodeIndex, domItems[nodeIndex]);
     AncestorBox.parent.removeChild(node);
     AncestorBox.sync();
   }
@@ -1779,12 +1833,12 @@ require([
     //console.log('rP', ParentColors)
     //console.log('rp ndx, domId, parents',ParentNdx, parents.domId, parents);
     ParentColors.push(parents.color[ParentNdx]);
-    parents.color.splice(ParentNdx,1);
-    parents.name.splice(ParentNdx,1);
-    parents.genome.splice(ParentNdx,1);
-    parents.col.splice(ParentNdx,1);
-    parents.row.splice(ParentNdx,1);
-    parents.AvidaNdx.splice(ParentNdx,1);
+    parents.color.splice(ParentNdx, 1);
+    parents.name.splice(ParentNdx, 1);
+    parents.genome.splice(ParentNdx, 1);
+    parents.col.splice(ParentNdx, 1);
+    parents.row.splice(ParentNdx, 1);
+    parents.AvidaNdx.splice(ParentNdx, 1);
     parents.howPlaced.splice(ParentNdx, 1);
     parents.domId.splice(ParentNdx, 1);
     makeHandAutoNdx();
@@ -1810,51 +1864,109 @@ require([
   /* *************************************************************** */
   // ****************  Draw Population Grid ************************ */
   /* *************************************************************** */
-  
-  grd = {};         //data about the grid canvas
-  grd.cols = 30;    //Number of columns in the grid
-  grd.rows = 30;    //Number of rows in the grid
-  grd.sizeX = 300;  //size of canvas in pixels
-  grd.sizeY = 300;  //size of canvas in pixels
-  grd.boxX = 300;   //size based zoom
-  grd.boxY = 300;   //size based zoom
-  grd.flagSelected = false; //is a cell selected
-  grd.zoom = 1;     //magnification for zooming.
-  //structure for colors in the grid
-  grd.fill = [];  //deasl with color to fill a grid cell
-  grd.out = [];   // deals with the color of the grid outline
-  grd.max = 0;    // max value for grid scale for the gradient color
-  //Set up canvas objects
-  grd.CanvasScale = document.getElementById("scaleCanvas");
-  grd.sCtx = grd.CanvasScale.getContext("2d");
-  grd.CanvasScale.width = $("#gridHolder").innerWidth()-6;
 
-  grd.CanvasGrid = document.getElementById("gridCanvas");
-  grd.cntx = grd.CanvasGrid.getContext("2d");
-  grd.CanvasGrid.width = $("#gridHolder").innerWidth()-6;
-  grd.CanvasGrid.height = $("#gridHolder").innerHeight()-16-$("#scaleCanvas").innerHeight();
+  grd = {};         //data about the grid canvas
+
+  function clearGrd() {
+    grd.cols = 0;    //Number of columns in the grid
+    grd.rows = 0;    //Number of rows in the grid
+    grd.sizeX = 0;  //size of canvas in pixels
+    grd.sizeY = 0;  //size of canvas in pixels
+    grd.boxX = 0;   //size based zoom
+    grd.boxY = 0;   //size based zoom
+    grd.flagSelected = false; //is a cell selected
+    grd.zoom = 1;     //magnification for zooming.
+    //structure for colors in the grid
+    grd.fill = [];  //deals with color to fill a grid cell
+    grd.out = [];   // deals with the color of the grid outline
+    grd.fillmax = 0;    // max value for grid scale for the gradient color
+    grd.msg = {};
+    //Set up canvas objects
+    grd.CanvasScale = document.getElementById("scaleCanvas");
+    grd.sCtx = grd.CanvasScale.getContext("2d");
+    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
+
+    grd.CanvasGrid = document.getElementById("gridCanvas");
+    grd.cntx = grd.CanvasGrid.getContext("2d");
+    grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
+    grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
+    grd.mxFit = 0;   //store maximum fitness during an experiment
+    grd.mxGest = 0;  //store maximum gestation time during an experiment
+    grd.mxRate = 0;  //store maximum metabolic rate during an experiment
+  }
+  clearGrd();
+
+  //Create lastMax values
+
+  function setMapData(msg) {
+    var str = "";
+    switch (dijit.byId("colorMode").value) {
+      case 'Fitness':
+        grd.fill = msg.fitness.data;
+        str = 'last_fitness';
+        if (grd.mxFit < msg.fitness.maxVal) {
+          grd.mxFit = 1.2 * msg.fitness.maxVal
+        }
+        grd.fillmax = grd.mxFit;
+        grd.fillmin = msg.fitness.minVal;
+        break;
+      case 'Gestation Time':
+        str = 'last_gestation_time';
+        grd.fill = msg.gestation.data;
+        if (grd.mxGest < msg.gestation.maxVal) {
+          grd.mxGest = 1.2 * msg.gestation.maxVal
+        }
+        grd.fillmax = grd.mxGest;
+        grd.fillmin = msg.gestation.minVal;
+        break;
+      case 'Metabolic Rate':
+        str = 'Metabolic Rate';
+        grd.fill = msg.metabolism.data;
+        if (grd.mxRate < msg.metabolism.maxVal) {
+          grd.mxRate = 1.2 * msg.metabolism.maxVal
+        }
+        grd.fillmax = grd.mxRate;
+        grd.fillmin = msg.metabolism.minVal;
+        break;
+      case 'Ancestor Organism':
+        str = 'clade';
+        grd.fill = msg.ancestor.data;
+        break;
+    }
+    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    console.log('fitmax',msg.fitness.maxVal,'; Gest',msg.gestation.maxVal,'; rate',msg.metabolism.maxVal,'; fillmax',grd.fillmax);
+    findLogicOutline(msg);
+  }
+
 
   function DrawGridSetup() {
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
 
     //Determine if a color gradient or legend will be displayed
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(grd, parents) }
-    else { GradientScale(grd) }
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) {
+      drawLegend(grd, parents)
+    }
+    else {
+      GradientScale(grd)
+    }
 
     //find the height for the div that holds the grid Canvas
     var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
-    document.getElementById("gridBoxNode").style.height = GrdNodeHt+'px';
+    document.getElementById("gridBoxNode").style.height = GrdNodeHt + 'px';
     document.getElementById("gridBoxNode").style.overflowY = "scroll";
     //console.log('GrdNodeHt=',GrdNodeHt);
 
     //find the space available to display the grid in pixels
-    grd.spaceX = $("#gridHolder").innerWidth()-6;
-    grd.spaceY = GrdNodeHt-5;
+    grd.spaceX = $("#gridHolder").innerWidth() - 6;
+    grd.spaceY = GrdNodeHt - 5;
     //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
 
-    DrawGridUpdate(grd,parents);   //look in PopulationGrid.js
+    grd.newrun = newrun;
+    if(!grd.newrun) setMapData(grd.msg);
+    DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
   }
+
   //
   // The rest of this code is in PopulationGrid.js
   // *************************************************************** */
@@ -1862,7 +1974,7 @@ require([
   // *************************************************************** */
 
   //Get color map data from Avida and draw
-  dijit.byId("colorMode").on("Change", function(){
+  dijit.byId("colorMode").on("Change", function () {
     var scaleType = dijit.byId("colorMode").value;
     //need to request data to update the color map from Avida
     // code for that
@@ -1873,24 +1985,24 @@ require([
   //Only effect display, not Avida
   // Zoom slide
   grd.ZoomSlide = new HorizontalSlider({
-      name: "ZoomSlide",
-      value: 1,
-      minimum: 1,
-      maximum: 10,
-      intermediateChanges: true,
-      discreteValues: 19,
-      style: "height: auto; width: 120px;float:right",
-      onChange: function(value){
-          grd.zoom = value;
-          //console.log('ZoomSlide', grd.zoom);
-          DrawGridSetup();
-      }
+    name: "ZoomSlide",
+    value: 1,
+    minimum: 1,
+    maximum: 10,
+    intermediateChanges: true,
+    discreteValues: 19,
+    style: "height: auto; width: 120px;float:right",
+    onChange: function (value) {
+      grd.zoom = value;
+      //console.log('ZoomSlide', grd.zoom);
+      DrawGridSetup();
+    }
   }, "ZoomSlide");
 
   grd.colorMap = 'Gnuplot2';
   dijit.byId("mnGnuplot2").attr("disabled", true);
 
-  dijit.byId("mnViridis").on("Click", function(){
+  dijit.byId("mnViridis").on("Click", function () {
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", true);
@@ -1898,7 +2010,7 @@ require([
     DrawGridSetup();
   });
 
-  dijit.byId("mnGnuplot2").on("Click", function(){
+  dijit.byId("mnGnuplot2").on("Click", function () {
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", true);
     dijit.byId("mnViridis").attr("disabled", false);
@@ -1906,7 +2018,7 @@ require([
     DrawGridSetup();
   });
 
-  dijit.byId("mnCubehelix").on("Click", function(){
+  dijit.byId("mnCubehelix").on("Click", function () {
     dijit.byId("mnCubehelix").attr("disabled", true);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", false);
@@ -1931,15 +2043,33 @@ require([
     }
   }
 
-  document.getElementById("notButton").onclick = function(){ toggle('notButton');}
-  document.getElementById("nanButton").onclick = function(){ toggle('nanButton');}
-  document.getElementById("andButton").onclick = function(){ toggle('andButton');}
-  document.getElementById("ornButton").onclick = function(){ toggle('ornButton');}
-  document.getElementById("oroButton").onclick = function(){ toggle('oroButton');}
-  document.getElementById("antButton").onclick = function(){ toggle('antButton');}
-  document.getElementById("norButton").onclick = function(){ toggle('norButton');}
-  document.getElementById("xorButton").onclick = function(){ toggle('xorButton');}
-  document.getElementById("equButton").onclick = function(){ toggle('equButton');}
+  document.getElementById("notButton").onclick = function () {
+    toggle('notButton');
+  }
+  document.getElementById("nanButton").onclick = function () {
+    toggle('nanButton');
+  }
+  document.getElementById("andButton").onclick = function () {
+    toggle('andButton');
+  }
+  document.getElementById("ornButton").onclick = function () {
+    toggle('ornButton');
+  }
+  document.getElementById("oroButton").onclick = function () {
+    toggle('oroButton');
+  }
+  document.getElementById("antButton").onclick = function () {
+    toggle('antButton');
+  }
+  document.getElementById("norButton").onclick = function () {
+    toggle('norButton');
+  }
+  document.getElementById("xorButton").onclick = function () {
+    toggle('xorButton');
+  }
+  document.getElementById("equButton").onclick = function () {
+    toggle('equButton');
+  }
 
 
   // *************************************************************** */
@@ -1952,7 +2082,7 @@ require([
     var NewRows = Number(document.getElementById("sizeRows").value);
     document.getElementById("sizeCells").innerHTML = "is a total of " + NewCols * NewRows + " cells";
     //Linear scale the position for Ancestors added by hand;
-    for (var ii=0; ii<parents.handNdx.length; ii++) {
+    for (var ii = 0; ii < parents.handNdx.length; ii++) {
       //console.log('old cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
       parents.col[parents.handNdx[ii]] = Math.trunc(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);
       parents.row[parents.handNdx[ii]] = Math.trunc(NewRows * parents.row[parents.handNdx[ii]] / gridWasRows);
@@ -1969,19 +2099,23 @@ require([
   }
 
   function cellConflict(NewCols, NewRows) {
-    var places = [[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]];
+    var places = [[1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]];
     var flg = false;
     var tryCol, tryRow, avNdx;
-    for (var ii=0;ii<parents.handNdx.length;ii++) {
+    for (var ii = 0; ii < parents.handNdx.length; ii++) {
       flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]], ii);
       if (flg) {
         for (var jj = 0; jj < places.length; jj++) {
           tryCol = parents.col[parents.handNdx[ii]] + places[jj][0];
           tryRow = parents.row[parents.handNdx[ii]] + places[jj][1];
-          avNdx = tryCol + tryRow*NewCols;
-          if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {flg = cellFilled(avNdx,ii)}
-          else {flg = true}
-          if (!flg){
+          avNdx = tryCol + tryRow * NewCols;
+          if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {
+            flg = cellFilled(avNdx, ii)
+          }
+          else {
+            flg = true
+          }
+          if (!flg) {
             parents.col[parents.handNdx[ii]] = tryCol;
             parents.row[parents.handNdx[ii]] = tryRow;
             parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
@@ -1994,7 +2128,7 @@ require([
 
   var cellFilled = function (AvNdx, ii) {
     var flag = false;
-    console.log('cellFilled',AvNdx, parents.AvidaNdx)
+    console.log('cellFilled', AvNdx, parents.AvidaNdx)
     for (var jj = 0; jj < parents.name.length; jj++) {
       if (parents.handNdx[ii] != jj) {
         if (AvNdx == parents.AvidaNdx[jj]) {
@@ -2015,25 +2149,27 @@ require([
     /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
     /* so I multiplied by 100,000 to get 100.000% to come out even. */
     //console.log("before defaultslide value");
-    var muteSlideDefault = 109861.   /* results in 2% as a default */
-    var muteDefault = (Math.pow(Math.E, (muteSlideDefault/100000))-1).toFixed(3)
-    var slides = $( "#muteSlide" ).slider({
+    var muteSlideDefault = 109861.
+    /* results in 2% as a default */
+    var muteDefault = (Math.pow(Math.E, (muteSlideDefault / 100000)) - 1).toFixed(3)
+    var slides = $("#muteSlide").slider({
       // range: "min",   /*causes the left side of the scroll bar to be grey */
       value: muteSlideDefault,
       min: 0.0,
       max: 461512,
-      slide: function( event, ui ) {
+      slide: function (event, ui) {
         //$( "#mRate" ).val( ui.value);  /*put slider value in the text above the slider */
-        $( "#muteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3));  /*put the value in the text box */
+        $("#muteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3));
+        /*put the value in the text box */
       }
     });
     /* initialize */
     //$( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));  //used in testing nonlinear scale
-    $( "#muteInput" ).val(muteDefault);
+    $("#muteInput").val(muteDefault);
     /*update slide based on textbox */
-    $( "#muteInput" ).change(function() {
-      slides.slider( "value", 100000.0*Math.log(1+(parseFloat(this.value))) );
-      $( "#mRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
+    $("#muteInput").change(function () {
+      slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
+      $("#mRate").val(100000 * Math.log(1 + (parseFloat(this.value))));
       //console.log("in mute change");
     });
   });
@@ -2054,31 +2190,45 @@ require([
   //myTheme.axis.majorTick.color = "#CCC";  //grey
   //myTheme.axis.minorTick.color = "red";
 
-  function popChartFn(){
-    if ("Average Fitness" == dijit.byId("yaxis").value) {popY = ave_fitness;}
-    else if ("Average Gestation Time" == dijit.byId("yaxis").value) {popY = ave_gestation_time;}
-    else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {popY = ave_metabolic_rate;}
-    else if ("Number of Organisms" == dijit.byId("yaxis").value) {popY = population_size;}
+  function popChartFn() {
+    if ("Average Fitness" == dijit.byId("yaxis").value) {
+      popY = ave_fitness;
+    }
+    else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
+      popY = ave_gestation_time;
+    }
+    else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
+      popY = ave_metabolic_rate;
+    }
+    else if ("Number of Organisms" == dijit.byId("yaxis").value) {
+      popY = population_size;
+    }
     //popChart.setTheme(myTheme);
     popChart.addPlot("default", {type: "Lines"});
     //popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
     // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-    popChart.addPlot("grid", {type:Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
-                                        vMajorLines: true, majorVLine: {color: "#CCC", width: 1}});
+    popChart.addPlot("grid", {
+      type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
+      vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
+    });
 
-    popChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away', titleGap: 2,
-                           titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"});
+    popChart.addAxis("x", {
+      fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
+      titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"
+    });
     //popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
-    popChart.addAxis("y", {vertical: true,
-                  fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,});
-    popChart.addSeries("Series y", popY, {stroke: {color:"blue", width: 2}});
-    popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w-10,
-                  domGeometry.position(document.getElementById("popChartHolder")).h-30);
+    popChart.addAxis("y", {
+      vertical: true,
+      fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
+    });
+    popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 2}});
+    popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
+      domGeometry.position(document.getElementById("popChartHolder")).h - 30);
     popChart.render();
   };
 
   //Set Y-axis title and choose the correct array to plot
-  dijit.byId("yaxis").on("Change", function(){
+  dijit.byId("yaxis").on("Change", function () {
     ytitle = dijit.byId("yaxis").value;
     //need to get correct array to plot from freezer
     //console.log('changeyaxis popChartFn');
@@ -2090,13 +2240,13 @@ require([
   /* *************************************************************** */
   /* **** Organism Setup Dialog */
 
-  document.getElementById("OrgSetting").onclick = function(){
+  document.getElementById("OrgSetting").onclick = function () {
     OrganSetupDialog.show();
   }
 
   //process button to hide or show Organism detail panal.
   var DetailsFlag = true;
-  document.getElementById("OrgDetailsButton").onclick = function(){
+  document.getElementById("OrgDetailsButton").onclick = function () {
     if (DetailsFlag) {
       DetailsFlag = false;
       dijit.byId("rightDetail").set("style", "display: none;");
@@ -2116,25 +2266,27 @@ require([
     /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
     /* so I multiplied by 100,000 to get 100.000% to come out even. */
     //console.log("before defaultslide value");
-    var muteSlideDefault = 109861.   /* results in 2% as a default */
-    var muteDefault = (Math.pow(Math.E, (muteSlideDefault/100000))-1).toFixed(3)
-    var slides = $( "#orMuteSlide" ).slider({
+    var muteSlideDefault = 109861.
+    /* results in 2% as a default */
+    var muteDefault = (Math.pow(Math.E, (muteSlideDefault / 100000)) - 1).toFixed(3)
+    var slides = $("#orMuteSlide").slider({
       // range: "min",   /*causes the left side of the scroll bar to be grey */
       value: muteSlideDefault,
       min: 0.0,
       max: 461512,
-      slide: function( event, ui ) {
+      slide: function (event, ui) {
         //$( "#orMRate" ).val( ui.value);  /*put slider value in the text near slider */
-        $( "#orMuteInput" ).val( (Math.pow(Math.E, (ui.value/100000))-1).toFixed(3) + "%");  /*put the value in the text box */
+        $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3) + "%");
+        /*put the value in the text box */
       }
     });
     /* initialize */
     //$( "#orMRate" ).val( ($( "#orMuteSlide").slider( "value" )));
     //$( "#orMuteInput" ).val(muteDefault+"%");
-    $( "#orMuteInput" ).val(muteDefault);//tibaslide
+    $("#orMuteInput").val(muteDefault);//tibaslide
     /*update slide based on textbox */
-    $( "#orMuteInput" ).change(function() {
-      slides.slider( "value", 100000.0*Math.log(1+(parseFloat(this.value))) );
+    $("#orMuteInput").change(function () {
+      slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
       //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log("in mute change");
     });
@@ -2143,26 +2295,26 @@ require([
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
-    dijit.byId("mnOrganismTrace").on("Click", function(){
+  dijit.byId("mnOrganismTrace").on("Click", function () {
     //get name and genome for selected cell
     var SelectedName = 'selectedOrganism';  //replace this with data from Avida later
     // . . . need avida stuff first
     //Open Oranism view
     mainBoxSwap("organismBlock");
-    organismCanvasHolderSize ();
-    var height = ($("#rightDetail").innerHeight()-375)/2;
-    document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById("ExecuteAbout").style.height = height+"px";
+    organismCanvasHolderSize();
+    var height = ($("#rightDetail").innerHeight() - 375) / 2;
+    document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
     //and put organsim in place
     //clear out the old data
     var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
-    if (0<items.length){
+    if (0 < items.length) {
       OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
       OrganCurrent.sync();   //should be done after insertion or deletion
     }
-    OrganCurrent.insertNodes(false, [ {data: SelectedName,   type: ["organism"]}]);
+    OrganCurrent.insertNodes(false, [{data: SelectedName, type: ["organism"]}]);
     OrganCurrent.sync();
 
     //call organismTrace
@@ -2170,26 +2322,26 @@ require([
   });
 
   //Put the offspring in the parent position on Organism Trace
-    dijit.byId("mnOffspringTrace").on("Click", function(){
+  dijit.byId("mnOffspringTrace").on("Click", function () {
     //get name and genome for offspring cell
     var Name = 'offspring';  //replace this with data from Avida later
     // . . . need avida stuff first
     //Open Oranism view
     mainBoxSwap("organismBlock");
-    organismCanvasHolderSize ();
-    var height = ($("#rightDetail").innerHeight()-375)/2;
-    document.getElementById("ExecuteJust").style.height = height+"px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById("ExecuteAbout").style.height = height+"px";
+    organismCanvasHolderSize();
+    var height = ($("#rightDetail").innerHeight() - 375) / 2;
+    document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
     //and put organsim in place
     //clear out the old data
     var items = getAllItems(OrganCurrent);    //gets some data about the items in the container
-    if (0<items.length){
+    if (0 < items.length) {
       OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
       OrganCurrent.sync();   //should be done after insertion or deletion
     }
-    OrganCurrent.insertNodes(false, [ {data: Name,   type: ["organism"]}]);
+    OrganCurrent.insertNodes(false, [{data: Name, type: ["organism"]}]);
     OrganCurrent.sync();
 
     //call organismTrace
@@ -2198,20 +2350,20 @@ require([
 
   /* ****************************************************************/
   /*                  Canvas for Organsim (genome) view
-  /* ************************************************************** */
+   /* ************************************************************** */
   //initialize gen (genome) object.
   var gen = {};
   gen.bigR = [120, 120]; //radius of full circle
   gen.size = [50, 50];
-  gen.smallR = gen.bigR*2*Math.PI/(2*gen.size[0]); //radius of each small circle
-  gen.tanR = gen.bigR[0]-gen.smallR;         //radius of circle tanget to inside of small circles
-  gen.pathR = gen.bigR[0]-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
-  gen.headR = [gen.bigR[0]-2*gen.smallR,gen.bigR[1]-2*gen.smallR];      //radius of circle made by center of head positions.
+  gen.smallR = gen.bigR * 2 * Math.PI / (2 * gen.size[0]); //radius of each small circle
+  gen.tanR = gen.bigR[0] - gen.smallR;         //radius of circle tanget to inside of small circles
+  gen.pathR = gen.bigR[0] - 3 * gen.smallR;      //radius of circle used to define reference point of arcs on path
+  gen.headR = [gen.bigR[0] - 2 * gen.smallR, gen.bigR[1] - 2 * gen.smallR];      //radius of circle made by center of head positions.
   gen.cx = [150, 350];  //center of main circle x
   gen.cy = [150, 150];  //center of main circle y
-  gen.fontsize = Math.round(1.8*gen.smallR);
+  gen.fontsize = Math.round(1.8 * gen.smallR);
   gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
-  gen.dna = ["",""];
+  gen.dna = ["", ""];
   gen.TimeLineHeight = 60;
   gen.imageXY = {x: 5, y: 5};
 
@@ -2248,75 +2400,102 @@ require([
     var dnTickSpaces = 24;
     var radius = 5;
 
-    lineY = OrgCanvas.height - gen.TimeLineHeight/2;
+    lineY = OrgCanvas.height - gen.TimeLineHeight / 2;
     upTickY = lineY - tickLength;
     dnTickY = lineY + tickLength;
     upLabelY = lineY - upLabelYoffset;
     dnLabelY = lineY + dnLabelYoffset;
     startX = 26;                //The number are fudge factors to account for the end of the slider
-    endX = OrgCanvas.width-25;
-    length = endX-startX;
-    cycles = obj.length-1;
+    endX = OrgCanvas.width - 25;
+    length = endX - startX;
+    cycles = obj.length - 1;
     //go through all cycles comparing the current with the previous cycle
     //Start with comparing cycle 1 to cycle 0 since there are no negative cycles.
-    for (var ii = 1; ii < obj.length; ii++){
-      if (obj[ii-1].Functions.not < obj[ii].Functions.not) {upNum.push("0"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.nand < obj[ii].Functions.nand) {upNum.push("1"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.and < obj[ii].Functions.and) {upNum.push("2"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.orn < obj[ii].Functions.orn) {upNum.push("3"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.or < obj[ii].Functions.or) {upNum.push("4"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.andn < obj[ii].Functions.andn) {upNum.push("5"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.nor < obj[ii].Functions.nor) {upNum.push("6"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.xor < obj[ii].Functions.xor) {upNum.push("7"); upNdx.push(ii);}
-      if (obj[ii-1].Functions.equ < obj[ii].Functions.equ) {upNum.push("8"); upNdx.push(ii);}
+    for (var ii = 1; ii < obj.length; ii++) {
+      if (obj[ii - 1].Functions.not < obj[ii].Functions.not) {
+        upNum.push("0");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.nand < obj[ii].Functions.nand) {
+        upNum.push("1");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.and < obj[ii].Functions.and) {
+        upNum.push("2");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.orn < obj[ii].Functions.orn) {
+        upNum.push("3");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.or < obj[ii].Functions.or) {
+        upNum.push("4");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.andn < obj[ii].Functions.andn) {
+        upNum.push("5");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.nor < obj[ii].Functions.nor) {
+        upNum.push("6");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.xor < obj[ii].Functions.xor) {
+        upNum.push("7");
+        upNdx.push(ii);
+      }
+      if (obj[ii - 1].Functions.equ < obj[ii].Functions.equ) {
+        upNum.push("8");
+        upNdx.push(ii);
+      }
     }
     //Draw horizontal line
     ctx.lineWidth = 1;
     ctx.strokeStyle = dictColor["Black"];
     ctx.beginPath();
-    ctx.moveTo(startX,lineY);
-    ctx.lineTo(endX,lineY);
+    ctx.moveTo(startX, lineY);
+    ctx.lineTo(endX, lineY);
     ctx.stroke();
     //Draw upTicks for indicating when logic functions complete
     ctx.font = "12px Arial";
     ctx.fillStyle = dictColor["Black"];
-    for (var ii=0; ii<upNum.length; ii++) {
-      upTickX[ii] = startX + length*upNdx[ii]/cycles;
+    for (var ii = 0; ii < upNum.length; ii++) {
+      upTickX[ii] = startX + length * upNdx[ii] / cycles;
       ctx.moveTo(upTickX[ii], lineY);
       ctx.lineTo(upTickX[ii], upTickY);
       ctx.stroke();
       txtWide = ctx.measureText(upNum[ii]).width;
-      ctx.fillText(upNum[ii],upTickX[ii]-txtWide/2, upLabelY);
+      ctx.fillText(upNum[ii], upTickX[ii] - txtWide / 2, upLabelY);
     }
     //Draw downTicks for indicating cycles on the time line.
-    for (var ii = 0; ii <= dnTickSpaces; ii++){
-      dnTickX = startX + ii*length/dnTickSpaces;
-      dnNum = Math.round(ii * cycles/ dnTickSpaces);
+    for (var ii = 0; ii <= dnTickSpaces; ii++) {
+      dnTickX = startX + ii * length / dnTickSpaces;
+      dnNum = Math.round(ii * cycles / dnTickSpaces);
       ctx.moveTo(dnTickX, lineY);
       ctx.lineTo(dnTickX, dnTickY);
       ctx.stroke();
-      if (0==Math.fmod(ii,4)) {
+      if (0 == Math.fmod(ii, 4)) {
         txtWide = ctx.measureText(dnNum).width;
-        ctx.fillText(dnNum,dnTickX-txtWide/2, dnLabelY);
+        ctx.fillText(dnNum, dnTickX - txtWide / 2, dnLabelY);
       }
     }
     //Draw red circle indicating current cycle
     ctx.beginPath();
-    dnTickX = startX + cycle*length/cycles;
+    dnTickX = startX + cycle * length / cycles;
     ctx.fillStyle = dictColor["Red"];
-    ctx.arc(dnTickX, lineY, radius, 0, 2*Math.PI);
+    ctx.arc(dnTickX, lineY, radius, 0, 2 * Math.PI);
     ctx.fill();
   }
 
-  function drawBitStr (context, row, bitStr) {
+  function drawBitStr(context, row, bitStr) {
     var recWidth = 5;   //The width of the rectangle, in pixels
     var recHeight = 5;  //The height of the rectangle, in pixels
     var xx; //The x-coordinate of the upper-left corner of the rectangle
-    var yy = row*recHeight;    //upper-left corner of rectangle
+    var yy = row * recHeight;    //upper-left corner of rectangle
     var str = "1";
     var color;
-    for (var ii = 0; ii < bitStr.length; ii++){
-      xx = ii*(recWidth);
+    for (var ii = 0; ii < bitStr.length; ii++) {
+      xx = ii * (recWidth);
       //draw outline of rectangle
       context.beginPath();
       context.lineWidth = 1;
@@ -2325,18 +2504,22 @@ require([
       context.stroke();
       //fill in rectangle
       context.beginPath();
-      str = bitStr.substr(ii,1);
-      if ("0" == str) {context.fillStyle = orgColorCodes["0"];}
-      else {context.fillStyle = orgColorCodes["1"];}
+      str = bitStr.substr(ii, 1);
+      if ("0" == str) {
+        context.fillStyle = orgColorCodes["0"];
+      }
+      else {
+        context.fillStyle = orgColorCodes["1"];
+      }
       context.fillRect(xx, yy, recWidth, recHeight);
       context.fill();
       //draw black lines every so many bits
-      if (0 == Math.fmod(ii,4)) {
+      if (0 == Math.fmod(ii, 4)) {
         context.beginPath();
         context.lineWidth = 1;
         context.strokeStyle = dictColor["Black"];
-        context.moveTo(xx,yy);
-        context.lineTo(xx,yy+recHeight);
+        context.moveTo(xx, yy);
+        context.lineTo(xx, yy + recHeight);
         context.stroke();
       }
       //console.log("fs=", context.fillStyle, "; xx=", xx, "; yy=", yy, "; w=", recWidth, "; h=", recHeight,
@@ -2344,27 +2527,27 @@ require([
     }
   }
 
-  function genomeCircle(gen, gg, obj, cycle){ //gg is generation
+  function genomeCircle(gen, gg, obj, cycle) { //gg is generation
     var SmallCenterX, SmallCenterY;  //center of small circle
     var txtW;      // width of txt
     //var tickR;        //mutation tick mark: radius used to find position for tick Mark
     //var tickX, tickY  //mutation tick mark: position of inner tick mark
     //var tanX, tanY    //mutation tick mark: position of end of tick mark tangent to instruction circle.
-    for (var ii = 0; ii < gen.dna[gg].length; ii++){
-      SmallCenterX = gen.cx[gg] + gen.bigR[gg]*Math.cos(ii*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
-      SmallCenterY = gen.cy[gg] + gen.bigR[gg]*Math.sin(ii*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
+    for (var ii = 0; ii < gen.dna[gg].length; ii++) {
+      SmallCenterX = gen.cx[gg] + gen.bigR[gg] * Math.cos(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
+      SmallCenterY = gen.cy[gg] + gen.bigR[gg] * Math.sin(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
       ctx.beginPath();
-      ctx.arc(SmallCenterX, SmallCenterY, gen.smallR, 0, 2*Math.PI);
+      ctx.arc(SmallCenterX, SmallCenterY, gen.smallR, 0, 2 * Math.PI);
       //Assign color based on letter code of instruction
-      ctx.fillStyle = letterColor[gen.dna[gg].substr(ii,1)];  //use if gen.dna is a string
+      ctx.fillStyle = letterColor[gen.dna[gg].substr(ii, 1)];  //use if gen.dna is a string
       //ctx.fillStyle = letterColor[gen.dna[gg][ii]];  //use if gen.dna is an array
       ctx.fill();   //required to render fill
       //Draw ring if there was a mutation in the offspring
       if (undefined != obj[cycle].MemSpace[1]) {
-        if (1==gg && obj[cycle].MemSpace[1].Mutated[ii]) {
+        if (1 == gg && obj[cycle].MemSpace[1].Mutated[ii]) {
           ctx.strokeStyle = orgColorCodes["mutate"];
           ctx.lineWidth = 3;
-          ctx.arc(SmallCenterX, SmallCenterY, gen.SmallR, 0, 2*Math.PI);
+          ctx.arc(SmallCenterX, SmallCenterY, gen.SmallR, 0, 2 * Math.PI);
           ctx.stroke();
           //Draw tick mark to interior of circle for mutated instruction
           //tickR = gen.bigR[gg]-3*gen.smallR;
@@ -2381,10 +2564,10 @@ require([
       }
       //Draw letter inside circle
       ctx.fillStyle = dictColor["Black"];
-      ctx.font = gen.fontsize+"px Arial";
-      txtW = ctx.measureText(gen.dna[gg].substr(ii,1)).width;  //use if gen.dna is a string
+      ctx.font = gen.fontsize + "px Arial";
+      txtW = ctx.measureText(gen.dna[gg].substr(ii, 1)).width;  //use if gen.dna is a string
       //txtW = ctx.measureText(gen.dna[gg][ii]).width;     //use if gen.dna is an array
-      ctx.fillText(gen.dna[gg].substr(ii,1),SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is a string
+      ctx.fillText(gen.dna[gg].substr(ii, 1), SmallCenterX - txtW / 2, SmallCenterY + gen.smallR / 2);  //use if gen.dna is a string
       //ctx.fillText(gen.dna[gg][ii],SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is an array
     }
     //Draw center of circle to test max arc height - should not go past center of circle
@@ -2396,46 +2579,48 @@ require([
     var hx, hy; //center of head and used as center of ring
     var txtW;  // width of txt
     //draw circumference around instruction that the head points to.
-    hx = gen.cx[gg] + gen.bigR[gg]*Math.cos(spot*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
-    hy = gen.cy[gg] + gen.bigR[gg]*Math.sin(spot*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
+    hx = gen.cx[gg] + gen.bigR[gg] * Math.cos(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
+    hy = gen.cy[gg] + gen.bigR[gg] * Math.sin(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     ctx.beginPath();
-    ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
+    ctx.arc(hx, hy, gen.smallR, 0, 2 * Math.PI);
     ctx.strokeStyle = orgColorCodes[head];
     ctx.lineWidth = 2;
     ctx.stroke();
     //draw head tangent to instruction
-    hx = gen.cx[gg] + gen.headR[gg]*Math.cos(spot*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
-    hy = gen.cy[gg] + gen.headR[gg]*Math.sin(spot*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
+    hx = gen.cx[gg] + gen.headR[gg] * Math.cos(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
+    hy = gen.cy[gg] + gen.headR[gg] * Math.sin(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     ctx.beginPath();
-    ctx.arc(hx, hy, gen.smallR, 0, 2*Math.PI);
+    ctx.arc(hx, hy, gen.smallR, 0, 2 * Math.PI);
     ctx.fillStyle = orgColorCodes["headFill"];
     ctx.fill();
     ctx.fillStyle = orgColorCodes[head];
-    ctx.font = gen.fontsize+"px Arial";
+    ctx.font = gen.fontsize + "px Arial";
     txtW = ctx.measureText(headCodes[head]).width;
-    ctx.fillText(headCodes[head],hx-txtW/2, hy+gen.smallR/2);
+    ctx.fillText(headCodes[head], hx - txtW / 2, hy + gen.smallR / 2);
   }
 
   //Draw arc using Bézier curve and two control points http://www.w3schools.com/tags/canvas_beziercurveto.asp
-  function drawArc2(gen, spot1, spot2, rep){ //draw an arc
+  function drawArc2(gen, spot1, spot2, rep) { //draw an arc
     var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2;
     ctx.lineWidth = 1;
     if (spot2 >= spot1) {
       ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
-    } else { ctx.strokeStyle = dictColor["Red"];}
+    } else {
+      ctx.strokeStyle = dictColor["Red"];
+    }
     ctx.beginPath();
-    xx1 = gen.cx[0] + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size[0]); //Draw line from Spot1
-    yy1 = gen.cy[0] + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size[0]);
+    xx1 = gen.cx[0] + gen.tanR * Math.cos(spot1 * 2 * Math.PI / gen.size[0]); //Draw line from Spot1
+    yy1 = gen.cy[0] + gen.tanR * Math.sin(spot1 * 2 * Math.PI / gen.size[0]);
     ctx.moveTo(xx1, yy1);
-    xx2 = gen.cx[0] + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size[0]); //Draw line to Spot2
-    yy2 = gen.cy[0] + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size[0]);
+    xx2 = gen.cx[0] + gen.tanR * Math.cos(spot2 * 2 * Math.PI / gen.size[0]); //Draw line to Spot2
+    yy2 = gen.cy[0] + gen.tanR * Math.sin(spot2 * 2 * Math.PI / gen.size[0]);
     //Set Control points on same radial as the spots
-    gen.pathR = gen.bigR[0]-2*gen.smallR-rep*gen.bigR[0]/gen.size[0];
+    gen.pathR = gen.bigR[0] - 2 * gen.smallR - rep * gen.bigR[0] / gen.size[0];
     //gen.pathR = gen.bigR[0]-(2+rep/3)*gen.smallR;
-    xc1 = gen.cx[0] + gen.pathR*Math.cos(spot1*2*Math.PI/gen.size[0]);
-    yc1 = gen.cy[0] + gen.pathR*Math.sin(spot1*2*Math.PI/gen.size[0]);
-    xc2 = gen.cx[0] + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size[0]);
-    yc2 = gen.cy[0] + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size[0]);
+    xc1 = gen.cx[0] + gen.pathR * Math.cos(spot1 * 2 * Math.PI / gen.size[0]);
+    yc1 = gen.cy[0] + gen.pathR * Math.sin(spot1 * 2 * Math.PI / gen.size[0]);
+    xc2 = gen.cx[0] + gen.pathR * Math.cos(spot2 * 2 * Math.PI / gen.size[0]);
+    yc2 = gen.cy[0] + gen.pathR * Math.sin(spot2 * 2 * Math.PI / gen.size[0]);
     //console.log(xc1, yc1, xc2, yc2, xx2, yy2);
     ctx.bezierCurveTo(xc1, yc1, xc2, yc2, xx2, yy2);
     ctx.stroke();
@@ -2447,55 +2632,57 @@ require([
     var drw = new Image();
     drw.src = "avida-ed-ancestor-icon.png";
     drw.onload = function () {   //image size(width, height) from http://stackoverflow.com/questions/5173796/html5-get-image-dimension
-      ctx.drawImage(drw, gen.cx[1]-drw.width/2, gen.cy[1]-drw.height/2);
+      ctx.drawImage(drw, gen.cx[1] - drw.width / 2, gen.cy[1] - drw.height / 2);
     }
     ctx.fillStyle = dictColor["black"];
-    ctx.font = gen.fontsize+"px Arial";
+    ctx.font = gen.fontsize + "px Arial";
     var txtWd = ctx.measureText(txt).width;
-    ctx.fillText(txt, gen.cx[1]-txtWd/2, gen.cy[1]+drw.height);
+    ctx.fillText(txt, gen.cx[1] - txtWd / 2, gen.cy[1] + drw.height);
   }
 
   //set canvas size; called from many places
-  function organismCanvasHolderSize () {
-    OrgCanvas.width = $("#organismCanvasHolder").innerWidth()-6;
-    OrgCanvas.height = $("#organismCanvasHolder").innerHeight()-12;
+  function organismCanvasHolderSize() {
+    OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
+    OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
   }
+
   //*****************************************************************/
   //main function to update the Organism Trace on the Organism Page
-  function updateOrgTrace(obj, cycle){
+  function updateOrgTrace(obj, cycle) {
     DidDivide = obj[cycle].DidDivide; //update global version of didDivide
     //set canvas size
-    organismCanvasHolderSize ();
+    organismCanvasHolderSize();
     //Find size and content of each genome.
-    for (var ii=0; ii < obj[cycle].MemSpace.length; ii++) {
+    for (var ii = 0; ii < obj[cycle].MemSpace.length; ii++) {
       gen.dna[ii] = obj[cycle].MemSpace[ii].Memory;
       gen.size[ii] = obj[cycle].MemSpace[ii].Memory.length;
     }
     //Draw Timeline
     DrawTimeline(obj, cycle);
     //Find radius and center of big circle for each genome
-    if (OrgCanvas.height < .55*(OrgCanvas.width-gen.TimeLineHeight)) {
-      gen.bigR[0] = Math.round(0.45*(OrgCanvas.height-gen.TimeLineHeight)) }//set size based on height
+    if (OrgCanvas.height < .55 * (OrgCanvas.width - gen.TimeLineHeight)) {
+      gen.bigR[0] = Math.round(0.45 * (OrgCanvas.height - gen.TimeLineHeight))
+    }//set size based on height
     else {
-      gen.bigR[0] = Math.round(0.2*OrgCanvas.width) //set size based on width
+      gen.bigR[0] = Math.round(0.2 * OrgCanvas.width) //set size based on width
     }
-    gen.cx[0] = OrgCanvas.width/2 - 1.2*gen.bigR[0];        //center of 1st (parent) circle x
-    gen.cy[0] = (OrgCanvas.height-gen.TimeLineHeight)/2;  //center of 1st (parent) circle y
+    gen.cx[0] = OrgCanvas.width / 2 - 1.2 * gen.bigR[0];        //center of 1st (parent) circle x
+    gen.cy[0] = (OrgCanvas.height - gen.TimeLineHeight) / 2;  //center of 1st (parent) circle y
     // Draw parent (Mom) genome in a circle----------------------------------------
-    gen.smallR = gen.bigR[0]*2*Math.PI/(2*gen.size[0]); //radius of each small circle
-    gen.tanR = gen.bigR[0]-gen.smallR;         //radius of circle tanget to inside of small circles
-    gen.pathR = gen.bigR[0]-3*gen.smallR;      //radius of circle used to define reference point of arcs on path
-    gen.headR[0] = gen.bigR[0]-2*gen.smallR;      //radius of circle made by center of head positions.
-    gen.fontsize = Math.round(1.8*gen.smallR);
+    gen.smallR = gen.bigR[0] * 2 * Math.PI / (2 * gen.size[0]); //radius of each small circle
+    gen.tanR = gen.bigR[0] - gen.smallR;         //radius of circle tanget to inside of small circles
+    gen.pathR = gen.bigR[0] - 3 * gen.smallR;      //radius of circle used to define reference point of arcs on path
+    gen.headR[0] = gen.bigR[0] - 2 * gen.smallR;      //radius of circle made by center of head positions.
+    gen.fontsize = Math.round(1.8 * gen.smallR);
     genomeCircle(gen, 0, obj, cycle);
     // Draw child (Son) genome in a circle ---------
     if (1 < obj[cycle].MemSpace.length) {
-      gen.bigR[1] = gen.smallR*2*gen.size[1]/(2*Math.PI);
-      gen.bigR[1] = gen.bigR[1]+gen.bigR[1]/gen.size[1];
+      gen.bigR[1] = gen.smallR * 2 * gen.size[1] / (2 * Math.PI);
+      gen.bigR[1] = gen.bigR[1] + gen.bigR[1] / gen.size[1];
       gen.cy[1] = gen.cy[0];
-      gen.headR[1] = gen.bigR[1]-2*gen.smallR;      //radius of circle made by center of head positions.
+      gen.headR[1] = gen.bigR[1] - 2 * gen.smallR;      //radius of circle made by center of head positions.
       if (obj[cycle].DidDivide) {
-        gen.cx[1] = OrgCanvas.width/2 + 1.1*gen.bigR[1];
+        gen.cx[1] = OrgCanvas.width / 2 + 1.1 * gen.bigR[1];
         gen.rotate[1] = 0;
         drawIcon(gen);
         //there is an offspring, so it can be saved in the freezer or fed back into Organism viewer
@@ -2503,7 +2690,7 @@ require([
         dijit.byId("mnOffspringTrace").attr("disabled", false);
       }
       else {
-        gen.cx[1] = gen.cx[0] + gen.bigR[0] + 2*gen.smallR + gen.bigR[1];
+        gen.cx[1] = gen.cx[0] + gen.bigR[0] + 2 * gen.smallR + gen.bigR[1];
         gen.rotate[1] = Math.PI;            //offspring rotated 180 degrees when still growing.
         //no organism, so menu item is disabled
         dijit.byId("mnFzOffspring").attr("disabled", true);
@@ -2514,44 +2701,48 @@ require([
     }
     //Draw path of acrs
     //drawArc2(gen, spot1, spot2, rep)
-    for (var ii = 0; ii<obj[cycle].Jumps.length; ii++) {
-      drawArc2(gen,  obj[cycle].Jumps[ii].FromIDX,  obj[cycle].Jumps[ii].ToIDX, obj[cycle].Jumps[ii].Freq);
+    for (var ii = 0; ii < obj[cycle].Jumps.length; ii++) {
+      drawArc2(gen, obj[cycle].Jumps[ii].FromIDX, obj[cycle].Jumps[ii].ToIDX, obj[cycle].Jumps[ii].Freq);
     }
     //drawHead(gen, spot, generation, head) // draws the various heads for parent (Mom)
-    for (var ii=0; ii < obj[cycle].MemSpace.length; ii++) {
-      if (undefined != obj[cycle].MemSpace[ii].Heads.READ)
-        {drawHead(gen, obj[cycle].MemSpace[ii].Heads.READ, ii, "READ");}
-      if (undefined != obj[cycle].MemSpace[ii].Heads.WRITE)
-        {drawHead(gen, obj[cycle].MemSpace[ii].Heads.WRITE, ii, "WRITE");}
-      if (undefined != obj[cycle].MemSpace[ii].Heads.FLOW)
-        {drawHead(gen, obj[cycle].MemSpace[ii].Heads.FLOW, ii, "FLOW");}
-      if (undefined != obj[cycle].MemSpace[ii].Heads.IP)
-        {drawHead(gen, obj[cycle].MemSpace[ii].Heads.IP, ii, "IP");}
+    for (var ii = 0; ii < obj[cycle].MemSpace.length; ii++) {
+      if (undefined != obj[cycle].MemSpace[ii].Heads.READ) {
+        drawHead(gen, obj[cycle].MemSpace[ii].Heads.READ, ii, "READ");
+      }
+      if (undefined != obj[cycle].MemSpace[ii].Heads.WRITE) {
+        drawHead(gen, obj[cycle].MemSpace[ii].Heads.WRITE, ii, "WRITE");
+      }
+      if (undefined != obj[cycle].MemSpace[ii].Heads.FLOW) {
+        drawHead(gen, obj[cycle].MemSpace[ii].Heads.FLOW, ii, "FLOW");
+      }
+      if (undefined != obj[cycle].MemSpace[ii].Heads.IP) {
+        drawHead(gen, obj[cycle].MemSpace[ii].Heads.IP, ii, "IP");
+      }
     }
     //Draw Buffers ---------------------------------------------------
     //drawBitStr (name, row, bitStr);
-    for (var ii = 0; ii < obj[cycle].Buffers.input.length; ii++){
-      drawBitStr (bufferCtx, ii, obj[cycle].Buffers.input[ii]);
+    for (var ii = 0; ii < obj[cycle].Buffers.input.length; ii++) {
+      drawBitStr(bufferCtx, ii, obj[cycle].Buffers.input[ii]);
     }
-    drawBitStr (registerCtx, 0, obj[cycle].Registers['AX']);
-    drawBitStr (registerCtx, 1, obj[cycle].Registers['BX']);
-    drawBitStr (registerCtx, 2, obj[cycle].Registers['CX']);
+    drawBitStr(registerCtx, 0, obj[cycle].Registers['AX']);
+    drawBitStr(registerCtx, 1, obj[cycle].Registers['BX']);
+    drawBitStr(registerCtx, 2, obj[cycle].Registers['CX']);
     //console.log("A", obj[cycle].Buffers);
-    for (var ii = 0; ii<2; ii++){ //only showing the top 2 in the stack of 10
+    for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
       //console.log(ii, obj[cycle].Buffers["stack A"][ii]);
-      drawBitStr (AstackCtx, ii, obj[cycle].Buffers["stack A"][ii]);
-      }
-    for (var ii = 0; ii<2; ii++){ //only showing the top 2 in the stack of 10
-      drawBitStr (BstackCtx, ii, obj[cycle].Buffers["stack B"][ii]);
+      drawBitStr(AstackCtx, ii, obj[cycle].Buffers["stack A"][ii]);
     }
-    drawBitStr (outputCtx, 0, obj[cycle].Buffers.output[0]);
+    for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
+      drawBitStr(BstackCtx, ii, obj[cycle].Buffers["stack B"][ii]);
+    }
+    drawBitStr(outputCtx, 0, obj[cycle].Buffers.output[0]);
     // update details
     updateTimesPerformed(obj, cycle);   //Update Times Functions are performed.
     writeInstructDetails(obj, cycle);   //Write Instruction Details
     //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
   }
 
-  function updateTimesPerformed(obj, cycle){
+  function updateTimesPerformed(obj, cycle) {
     document.getElementById("notPerf").textContent = obj[cycle].Functions.not;
     document.getElementById("nanPerf").textContent = obj[cycle].Functions.nand;
     document.getElementById("andPerf").textContent = obj[cycle].Functions.and;
@@ -2561,34 +2752,70 @@ require([
     document.getElementById("norPerf").textContent = obj[cycle].Functions.nor;
     document.getElementById("xorPerf").textContent = obj[cycle].Functions.xor;
     document.getElementById("equPerf").textContent = obj[cycle].Functions.equ;
-    if (0 < obj[cycle].Functions.not) {document.getElementById("notOrg").textContent="0 not+";}
-    else {document.getElementById("notOrg").textContent="0 not-";}
-    if (0 < obj[cycle].Functions.nand) {document.getElementById("nanOrg").textContent="1 nan+";}
-    else {document.getElementById("nanOrg").textContent="1 nan-";}
-    if (0 < obj[cycle].Functions.and) {document.getElementById("andOrg").textContent="2 and+";}
-    else {document.getElementById("andOrg").textContent="2 and-";}
-    if (0 < obj[cycle].Functions.orn) {document.getElementById("ornOrg").textContent="3 orn+";}
-    else {document.getElementById("ornOrg").textContent="3 orn-";}
-    if (0 < obj[cycle].Functions.or) {document.getElementById("oroOrg").textContent="4 oro+";}
-    else {document.getElementById("oroOrg").textContent="4 oro-";}
-    if (0 < obj[cycle].Functions.andn) {document.getElementById("antOrg").textContent="5 ant+";}
-    else {document.getElementById("antOrg").textContent="5 ant-";}
-    if (0 < obj[cycle].Functions.nor) {document.getElementById("norOrg").textContent="6 nor+";}
-    else {document.getElementById("norOrg").textContent="6 nor-";}
-    if (0 < obj[cycle].Functions.xor) {document.getElementById("xorOrg").textContent="7 xor+";}
-    else {document.getElementById("xorOrg").textContent="7 xor-";}
-    if (0 < obj[cycle].Functions.equ) {document.getElementById("equOrg").textContent="8 equ+";}
-    else {document.getElementById("equOrg").textContent="8 equ-";}
+    if (0 < obj[cycle].Functions.not) {
+      document.getElementById("notOrg").textContent = "0 not+";
+    }
+    else {
+      document.getElementById("notOrg").textContent = "0 not-";
+    }
+    if (0 < obj[cycle].Functions.nand) {
+      document.getElementById("nanOrg").textContent = "1 nan+";
+    }
+    else {
+      document.getElementById("nanOrg").textContent = "1 nan-";
+    }
+    if (0 < obj[cycle].Functions.and) {
+      document.getElementById("andOrg").textContent = "2 and+";
+    }
+    else {
+      document.getElementById("andOrg").textContent = "2 and-";
+    }
+    if (0 < obj[cycle].Functions.orn) {
+      document.getElementById("ornOrg").textContent = "3 orn+";
+    }
+    else {
+      document.getElementById("ornOrg").textContent = "3 orn-";
+    }
+    if (0 < obj[cycle].Functions.or) {
+      document.getElementById("oroOrg").textContent = "4 oro+";
+    }
+    else {
+      document.getElementById("oroOrg").textContent = "4 oro-";
+    }
+    if (0 < obj[cycle].Functions.andn) {
+      document.getElementById("antOrg").textContent = "5 ant+";
+    }
+    else {
+      document.getElementById("antOrg").textContent = "5 ant-";
+    }
+    if (0 < obj[cycle].Functions.nor) {
+      document.getElementById("norOrg").textContent = "6 nor+";
+    }
+    else {
+      document.getElementById("norOrg").textContent = "6 nor-";
+    }
+    if (0 < obj[cycle].Functions.xor) {
+      document.getElementById("xorOrg").textContent = "7 xor+";
+    }
+    else {
+      document.getElementById("xorOrg").textContent = "7 xor-";
+    }
+    if (0 < obj[cycle].Functions.equ) {
+      document.getElementById("equOrg").textContent = "8 equ+";
+    }
+    else {
+      document.getElementById("equOrg").textContent = "8 equ-";
+    }
   }
 
   function writeInstructDetails(obj, cycle) {
     var letter;
     var IPspot = obj[cycle].MemSpace[0].Heads.IP
-    if (undefined == obj[cycle-1]) {
+    if (undefined == obj[cycle - 1]) {
       document.getElementById("ExecuteJust").textContent = "(none)";
     }
     else {
-      letter = obj[cycle-1].NextInstruction;
+      letter = obj[cycle - 1].NextInstruction;
       document.getElementById("ExecuteJust").textContent = letter + ": " + InstDescribe[letter];
       //console.log("Inst", InstDescribe[letter]);
     }
@@ -2604,7 +2831,7 @@ require([
 
   /* ****************************************************************/
   /*             End of Canvas to draw genome and update details
-  /* ************************************************************** */
+   /* ************************************************************** */
 
   /* **** Controls bottum of organism page **************************/
   var update_timer = null;
@@ -2613,7 +2840,7 @@ require([
     document.querySelector('#orgCycle').value = vol;
   }
 
-  dijit.byId("orgBack").on("Click", function() {
+  dijit.byId("orgBack").on("Click", function () {
     var ii = Number(document.getElementById("orgCycle").value);
     if (cycleSlider.get("minimum") < cycleSlider.get("value")) {
       ii--;
@@ -2623,7 +2850,7 @@ require([
     }
   });
 
-  dijit.byId("orgForward").on("Click", function() {
+  dijit.byId("orgForward").on("Click", function () {
     var ii = Number(document.getElementById("orgCycle").value);
     if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
       ii++;
@@ -2633,7 +2860,7 @@ require([
     }
   });
 
-  dijit.byId("orgReset").on("Click", function(){
+  dijit.byId("orgReset").on("Click", function () {
     dijit.byId("orgCycle").set("value", 0);
     cycle = 0;
     updateOrgTrace(traceObj, cycle);
@@ -2641,36 +2868,42 @@ require([
   });
 
   function orgStopFn() {
-    if (update_timer){ clearInterval(update_timer);}
+    if (update_timer) {
+      clearInterval(update_timer);
+    }
     dijit.byId("orgRun").set("label", "Run");
   }
 
-  function orgRunFn(){
+  function orgRunFn() {
     if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
       cycle++;
       dijit.byId("orgCycle").set("value", cycle);
       updateOrgTrace(traceObj, cycle);
     }
-    else {orgStopFn();}
+    else {
+      orgStopFn();
+    }
   }
-  dijit.byId("orgRun").on("Click", function(){
+
+  dijit.byId("orgRun").on("Click", function () {
     if ("Run" == dijit.byId("orgRun").get("label")) {
       dijit.byId("orgRun").set("label", "Stop");
       update_timer = setInterval(orgRunFn, 100);
     }
-    else { orgStopFn();
+    else {
+      orgStopFn();
     }
   });
 
-  dijit.byId("orgEnd").on("Click", function() {
+  dijit.byId("orgEnd").on("Click", function () {
     dijit.byId("orgCycle").set("value", cycleSlider.get("maximum"));
     cycle = cycleSlider.get("maximum");
     updateOrgTrace(traceObj, cycle);
     orgStopFn()
   });
 
-  dijit.byId("orgCycle").on("Change", function(value){
-    cycleSlider.set("value",value);
+  dijit.byId("orgCycle").on("Change", function (value) {
+    cycleSlider.set("value", value);
     cycle = value;
     //console.log('orgCycle.change');
     updateOrgTrace(traceObj, cycle);
@@ -2678,19 +2911,19 @@ require([
 
   /* Organism Gestation Length Slider */
   var cycleSlider = new HorizontalSlider({
-      name: "cycleSlider",
-      value: 0,
-      minimum: 0,
-      maximum: 200,
-      intermediateChanges: true,
-      discreteValues:201,
-      style: "width:100%;",
-      onChange: function(value){
-          document.getElementById("orgCycle").value = value;
-          cycle = value;
-          //console.log('cycleSlider');
-          updateOrgTrace(traceObj, cycle);
-      }
+    name: "cycleSlider",
+    value: 0,
+    minimum: 0,
+    maximum: 200,
+    intermediateChanges: true,
+    discreteValues: 201,
+    style: "width:100%;",
+    onChange: function (value) {
+      document.getElementById("orgCycle").value = value;
+      cycle = value;
+      //console.log('cycleSlider');
+      updateOrgTrace(traceObj, cycle);
+    }
   }, "cycleSlider");
 
   /* ****************************************************************/
@@ -2698,14 +2931,14 @@ require([
   /* ****************************************************************/
   var dictPlota = {};
   var dictPlotb = {};
-  dictPlota["@example"] = [1, 2, 1, 2, 2, 3,   2, 3, 3,    4];
+  dictPlota["@example"] = [1, 2, 1, 2, 2, 3, 2, 3, 3, 4];
   dictPlota["m2w30u1000not"] = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
   dictPlota["m2w30u1000nand"] = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
   dictPlotb["@example"] = [60, 50, 50, 40, 40, 37, 30, 20, 15, 7];
-  dictPlotb["m2w30u1000not"] = [70,   68, 60, 50, 50,   47, 40];
+  dictPlotb["m2w30u1000not"] = [70, 68, 60, 50, 50, 47, 40];
   dictPlotb["m2w30u1000nand"] = [80, 70, 75, 60, 50, 50, 40, 40, 30];
-  dictPlota["newPopulation"] = [0.5,  1,  2, 1.7,  2, 2.7, 3.2, 3.2];
-  dictPlotb["newPopulation"] = [ 65, 50, 50,  47, 40,  37,  32, 22];
+  dictPlota["newPopulation"] = [0.5, 1, 2, 1.7, 2, 2.7, 3.2, 3.2];
+  dictPlotb["newPopulation"] = [65, 50, 50, 47, 40, 37, 32, 22];
   var pop1a = [];
   var pop1b = [];
   var pop2a = [];
@@ -2719,70 +2952,79 @@ require([
   var y2title = 'Average Gestation Time';
   var anaChart = new Chart("analyzeChart");
 
-  function AnaChartFn(){
-    anaChart.addPlot("default", {type: "Lines", hAxis:"x", vAxis:"y"});
+  function AnaChartFn() {
+    anaChart.addPlot("default", {type: "Lines", hAxis: "x", vAxis: "y"});
     anaChart.addPlot("other", {type: "Lines", hAxis: "x", vAxis: "right y"});
     //grid line info on https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-    anaChart.addPlot("grid", {type:Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
-                                        vMajorLines: true, majorVLine: {color: "#CCC", width: 1}});
-    anaChart.addAxis("x", {fixLower: "major", fixUpper: "major",title:'Time (updates)', titleOrientation: 'away'});
-    anaChart.addAxis("y", {vertical: true, fixLower: "major", title: y1title, titleOrientation: 'axis',fixUpper: "major", min: 0});
+    anaChart.addPlot("grid", {
+      type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
+      vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
+    });
+    anaChart.addAxis("x", {fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away'});
+    anaChart.addAxis("y", {
+      vertical: true,
+      fixLower: "major",
+      title: y1title,
+      titleOrientation: 'axis',
+      fixUpper: "major",
+      min: 0
+    });
     //anaChart.addAxis("top x", {leftBottom: false});
-    anaChart.addAxis("right y", {vertical: true, leftBottom: false, min: 0, title:y2title});
-    anaChart.addSeries("Series 1a", pop1a, {stroke: {color:color1, width: 2}});
-    anaChart.addSeries("Series 2a", pop2a, {stroke: {color:color2, width: 2}});
-    anaChart.addSeries("Series 3a", pop3a, {stroke: {color:color3, width: 2}});
-    anaChart.addSeries("Series 1b", pop1b, {plot: "other", stroke: {color:color1, width: .3}});
-    anaChart.addSeries("Series 2b", pop2b, {plot: "other", stroke: {color:color2, width: .3}});
-    anaChart.addSeries("Series 3b", pop3b, {plot: "other", stroke: {color:color3, width: .3}});
+    anaChart.addAxis("right y", {vertical: true, leftBottom: false, min: 0, title: y2title});
+    anaChart.addSeries("Series 1a", pop1a, {stroke: {color: color1, width: 2}});
+    anaChart.addSeries("Series 2a", pop2a, {stroke: {color: color2, width: 2}});
+    anaChart.addSeries("Series 3a", pop3a, {stroke: {color: color3, width: 2}});
+    anaChart.addSeries("Series 1b", pop1b, {plot: "other", stroke: {color: color1, width: .3}});
+    anaChart.addSeries("Series 2b", pop2b, {plot: "other", stroke: {color: color2, width: .3}});
+    anaChart.addSeries("Series 3b", pop3b, {plot: "other", stroke: {color: color3, width: .3}});
 
-    anaChart.resize(domGeometry.position(document.getElementById("chartHolder")).w-10,
-                  domGeometry.position(document.getElementById("chartHolder")).h-15);
+    anaChart.resize(domGeometry.position(document.getElementById("chartHolder")).w - 10,
+      domGeometry.position(document.getElementById("chartHolder")).h - 15);
     var dZoom = new MouseZoomAndPan(anaChart, "default");
-          //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
+    //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
     anaChart.render();
   };
 
   /* Chart buttons ****************************************/
-  document.getElementById("pop1delete").onclick = function(){
+  document.getElementById("pop1delete").onclick = function () {
     graphPop1.selectAll().deleteSelectedNodes();
     pop1a = [];
     pop1b = [];
     AnaChartFn();
   }
-  document.getElementById("pop2delete").onclick = function(){
+  document.getElementById("pop2delete").onclick = function () {
     pop2a = [];
     pop2b = [];
     AnaChartFn();
     graphPop2.selectAll().deleteSelectedNodes();
   }
-  document.getElementById("pop3delete").onclick = function(){
+  document.getElementById("pop3delete").onclick = function () {
     pop3a = [];
     pop3b = [];
     AnaChartFn();
     graphPop3.selectAll().deleteSelectedNodes();
   }
-  dijit.byId("pop1color").on("Change", function(){
+  dijit.byId("pop1color").on("Change", function () {
     color1 = dictColor[dijit.byId("pop1color").value];
     AnaChartFn();
   });
-  dijit.byId("pop2color").on("Change", function(){
+  dijit.byId("pop2color").on("Change", function () {
     color2 = dictColor[dijit.byId("pop2color").value];
     AnaChartFn();
   });
-  dijit.byId("pop3color").on("Change", function(){
+  dijit.byId("pop3color").on("Change", function () {
     color3 = dictColor[dijit.byId("pop3color").value];
     AnaChartFn();
   });
 
   //Set Y-axis title and choose the correct array to plot
-  dijit.byId("y1select").on("Change", function(){
+  dijit.byId("y1select").on("Change", function () {
     y1title = dijit.byId("y1select").value;
     //need to get correct array to plot from freezer
     AnaChartFn();
   });
 
-  dijit.byId("y2select").on("Change", function(){
+  dijit.byId("y2select").on("Change", function () {
     y2title = dijit.byId("y2select").value;
     //need to get correct array to plot from freezer
     AnaChartFn();
@@ -2798,8 +3040,8 @@ require([
   //may need to take out as requires loading twice now.
   function removeScrollbar(scrollDiv, htChangeDiv, page) {
     https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
-    //if the two heights are different then there is a scroll bar
-    var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
+      //if the two heights are different then there is a scroll bar
+      var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
     var hasScrollbar = 0 < ScrollDif;
     //console.log(scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
     //  document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
@@ -2807,7 +3049,7 @@ require([
 
     var divHt = document.getElementById(htChangeDiv).style.height.match(/\d/g);  //get 0-9 globally in the string  //http://stackoverflow.com/questions/10003683/javascript-get-number-from-string
     divHt = divHt.join(''); //converts array to string
-    var NewHt = Number(divHt)+1+ScrollDif;  //add the ht difference to the outer div that holds this one
+    var NewHt = Number(divHt) + 1 + ScrollDif;  //add the ht difference to the outer div that holds this one
     //line below is where the height of the div actually changes
     document.getElementById(htChangeDiv).style.height = NewHt + 'px';
 
@@ -2829,13 +3071,15 @@ require([
   //************************************************************************
 
   //Modulo that is more accurate than %; Math.fmod(aa, bb);
-  Math.fmod = function (aa, bb) { return Number((aa - (Math.floor(aa/bb) * bb)).toPrecision(8));}
+  Math.fmod = function (aa, bb) {
+    return Number((aa - (Math.floor(aa / bb) * bb)).toPrecision(8));
+  }
 
   //http://nelsonwells.net/2011/10/swap-object-key-and-values-in-javascript/
   var invertHash = function (obj) {
     var new_obj = {};
     for (var prop in obj) {
-      if(obj.hasOwnProperty(prop)) {
+      if (obj.hasOwnProperty(prop)) {
         new_obj[obj[prop]] = prop;
       }
     }
@@ -2848,7 +3092,7 @@ require([
   //console.log("theColor=", theColor);
 
   // does not work
-  on(dom.byId("gridCanvas"),"drop", function(event){
+  on(dom.byId("gridCanvas"), "drop", function (event) {
     domGeometry.normalizeEvent(event);
     console.log("Not work xx ", event.pageX);
     console.log("NOt work yy ", event.pageY);
@@ -2907,10 +3151,10 @@ require([
   chck.CanvasChipScale = document.getElementById("scaleDemo");
 //console.log('Chip', CanvasChipScale);
   chck.ctxSc = chck.CanvasChipScale.getContext("2d");
-  chck.CanvasChipScale.width = $("#demoHolder").innerWidth()-6;
+  chck.CanvasChipScale.width = $("#demoHolder").innerWidth() - 6;
 
-  chck.CanvasCheck.width = $("#demoHolder").innerWidth()-6;
-  chck.CanvasCheck.height = $("#demoHolder").innerHeight()-16-$("#scaleDemo").innerHeight();
+  chck.CanvasCheck.width = $("#demoHolder").innerWidth() - 6;
+  chck.CanvasCheck.height = $("#demoHolder").innerHeight() - 16 - $("#scaleDemo").innerHeight();
 
 // Test of colors to see if a color blind person can tell the colors apart.
 
@@ -2919,8 +3163,8 @@ require([
   function findShrew(evt) {
     var mouseX = evt.offsetX - chck.marginX - chck.xOffset;
     var mouseY = evt.offsetY - chck.marginY - chck.yOffset;
-    chck.ColSelected = Math.floor(mouseX/chck.cellWd);
-    chck.RowSelected = Math.floor(mouseY/chck.cellHt);
+    chck.ColSelected = Math.floor(mouseX / chck.cellWd);
+    chck.RowSelected = Math.floor(mouseY / chck.cellHt);
     console.log('Shrew col,row', chck.ColSelected, chck.RowSelected);
   }
 
@@ -2937,19 +3181,19 @@ require([
 
 //shrew down on the grid
   $(document.getElementById('colorDemo')).on('mousedown', function (evt) {
-    shrew.DnGridPos=[evt.offsetX, evt.offsetY];
+    shrew.DnGridPos = [evt.offsetX, evt.offsetY];
     shrew.Dn = true;
     // Select if it is in the grid
     findShrew(evt);
     console.log('colorDemo', shrew.DnGridPos);
     //check to see if in the grid part of the canvas
-    if (chck.ColSelected >=0 && chck.ColSelected < chck.cols && chck.RowSelected >=0 && chck.RowSelected < chck.rows) {
+    if (chck.ColSelected >= 0 && chck.ColSelected < chck.cols && chck.RowSelected >= 0 && chck.RowSelected < chck.rows) {
       chck.flagSelected = true;
       drawCheckerSetup(chck, chips);
       dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
 
       //In the grid and selected. Now look to see contents of cell are dragable.
-      shrew.chipNdx=-1; //index into chips array if chip selected else -1;
+      shrew.chipNdx = -1; //index into chips array if chip selected else -1;
       if (newrun) {  //run has not started so look to see if cell contains ancestor
         shrew.chipNdx = findchipNdx(chck, chips);
         if (-1 < shrew.chipNdx) { //selected a chip, check for dragging
@@ -2965,35 +3209,35 @@ require([
   $(document).on('mouseup', function (evt) {
     //console.log('mouseup anywhere in document -------------');
     document.getElementById('colorDemo').style.cursor = 'default';
-    shrew.UpGridPos=[evt.offsetX, evt.offsetY];
+    shrew.UpGridPos = [evt.offsetX, evt.offsetY];
     shrew.Dn = false;
     //console.log('mouseup, picked', shrew.Picked);
     // --------- process if something picked to dnd ------------------
     if ('chip' == shrew.Picked) {
       shrew.Picked = "";
       console.log('before call findChipIndex');
-      findchipIndex(evt,chck, chips) ;
+      findchipIndex(evt, chck, chips);
     }
     shrew.Picked = "";
   });
 
-  function findchipIndex(evt,chck, chips) {
+  function findchipIndex(evt, chck, chips) {
     console.log('in findchipIndex');
     if ('colorDemo' == evt.target.id) { // chip moved to another location on grid canvas
-      shrew.UpGridPos=[evt.offsetX, evt.offsetY]; //not used for now
+      shrew.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
       //Move the ancestor on the canvas
       //console.log("on checkCanvas")
       console.log('before', chck.ColSelected, chck.RowSelected);
       findShrew(evt);
       // look to see if this is a valid grid cell
-      if (chck.ColSelected >=0 && chck.ColSelected < chck.cols && chck.RowSelected >=0 && chck.RowSelected < chck.rows) {
+      if (chck.ColSelected >= 0 && chck.ColSelected < chck.cols && chck.RowSelected >= 0 && chck.RowSelected < chck.rows) {
         console.log('chipFound', chck.ColSelected, chck.RowSelected);
         chips.col[shrew.chipNdx] = chck.ColSelected;
         chips.row[shrew.chipNdx] = chck.RowSelected;
         chips.AvidaNdx[chips.handNdx[ii]] = chips.col[chips.handNdx[ii]] + chck.cols * chips.row[chips.handNdx[ii]];
         console.log('mv', chips.col[shrew.chipNdx], chips.row[shrew.chipNdx], shrew.chipNdx);
         //change from auto placed to hand placed if needed
-        if ('auto' == chips.howPlaced[shrew.chipNdx] ) {
+        if ('auto' == chips.howPlaced[shrew.chipNdx]) {
           chips.howPlaced[shrew.chipNdx] = 'hand';
           makeHandAutoNdx();
           //PlaceAncestors(chips);
@@ -3005,9 +3249,9 @@ require([
     }  // close on canvas
   }
 
-  var findchipNdx = function() {
+  var findchipNdx = function () {
     var ChipedNdx = -1;
-    for (var ii=0; ii<chips.name.length; ii++) {
+    for (var ii = 0; ii < chips.name.length; ii++) {
       if (matches([chck.ColSelected, chck.RowSelected], [chips.col[ii], chips.row[ii]])) {
         ChipedNdx = ii;
         //console.log('chip found in function', ChipedNdx);
