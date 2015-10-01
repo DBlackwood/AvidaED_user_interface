@@ -1,7 +1,7 @@
 //Definition of Viridis and other dictionaries or color data sets
 
 var Viridis_cmap = [
-   'rgb(0, 0, 0)'
+   'rgb(34, 1, 42)'
    ,'rgb(68, 1, 84)'
    ,'rgb(68, 2, 86)'
    ,'rgb(69, 4, 87)'
@@ -261,15 +261,15 @@ var Viridis_cmap = [
 ];
 
 var Gnuplot2_cmap = [
-// 'rgb(0, 0, 0)'
-  'rgb(0, 0, 4)'
+/* 'rgb(0, 0, 0)'
+, 'rgb(0, 0, 4)'
 , 'rgb(0, 0, 8)'
 , 'rgb(0, 0, 12)'
 , 'rgb(0, 0, 16)'
 , 'rgb(0, 0, 20)'
 , 'rgb(0, 0, 24)'
-, 'rgb(0, 0, 28)'
-, 'rgb(0, 0, 32)'
+, 'rgb(0, 0, 28)'*/
+ 'rgb(0, 0, 32)'
 , 'rgb(0, 0, 36)'
 , 'rgb(0, 0, 40)'
 , 'rgb(0, 0, 44)'
@@ -520,16 +520,16 @@ var Gnuplot2_cmap = [
   ];
 
 var Cubehelix_cmap = [  //djb version
- 'rgb(0, 0, 0)'
-/*, 'rgb(3, 3, 1)'
+/* 'rgb(0, 0, 0)'
+, 'rgb(3, 3, 1)'
 , 'rgb(5, 5, 1)'
 , 'rgb(6, 7, 2)'
 , 'rgb(8, 9, 2)'
 , 'rgb(9, 11, 2)'
 , 'rgb(10, 12, 1)'
 , 'rgb(11, 14, 1)'
-, 'rgb(12, 16, 1)'
-, 'rgb(14, 18, 1)'
+, 'rgb(12, 16, 1)'*/
+ 'rgb(14, 18, 1)'
 , 'rgb(14, 20, 1)'
 , 'rgb(15, 21, 1)'
 , 'rgb(16, 23, 1)'
@@ -542,7 +542,7 @@ var Cubehelix_cmap = [  //djb version
 , 'rgb(19, 35, 1)'
 , 'rgb(20, 37, 1)'
 , 'rgb(20, 39, 1)'
-, 'rgb(20, 41, 1)'*/
+, 'rgb(20, 41, 1)'
 , 'rgb(20, 42, 1)'
 , 'rgb(20, 44, 1)'
 , 'rgb(20, 46, 1)'
@@ -843,8 +843,7 @@ var Cubehelix_cmap = [  //djb version
   ];
 
 var OriginalCubehelix_cmap = [
- 'rgb(0, 0, 0)'
-, 'rgb(2, 1, 2)'
+ 'rgb(2, 1, 2)'
 , 'rgb(3, 1, 3)'
 , 'rgb(5, 2, 5)'
 , 'rgb(7, 2, 6)'
@@ -2113,4 +2112,8 @@ var rainbow3 = [
  * http://phrogz.net/css/distinct-colors.html
  * 
  * http://stackoverflow.com/questions/3620663/color-theory-how-to-convert-munsell-hvc-to-rgb-hsb-hsl
+ *
+ * Color tools to see what image looks like to colorblind from Mike
+ *  http://www.color-blindness.com/coblis-color-blindness-simulator/
+ *  http://www.vischeck.com/vischeck/vischeckImage.php
 */

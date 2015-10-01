@@ -104,17 +104,43 @@ require([
           break;
       }
     }
-  }
-
-  function findLogicOutline(msg) {
-    for (ii = 0; ii < msg.not.length; ii++) {
-      grd.out[ii] = 0
-    }
-    if ('on' == document.getElementById('notButton').value) {
-      for (ii = 0; ii < msg.not.length; ii++) {
-        grd.out[ii] = grd.out[ii] * msg.not[ii];
+    else if ('userFeedback' == msg.type) {
+      switch (msg.level) {
+        case 'notification':
+          console.log('avida:notify: ',msg.message);
+          break;
+        case 'warning':
+          console.log('avida:warn: ',msg.message);
+          break;
+        case 'fatal':
+          console.log('avida:fatal: ',msg.message);
+          break;
+        default:
+          console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
+          break;
       }
     }
+  }
+
+  //uiWorker function
+  function doOrgTrace() {
+    var seed = 0;
+    if (dijit.byId("OrganDemoRadio").get('checked', true)) {
+      seed = 1
+    }
+    var request = {
+      'type': 'addEvent',
+      'name': 'webOrgTraceBySequence',
+      'triggerType': 'immediate',
+      'args': [
+        chosen.genome,                                  //genome string
+        dijit.byId("orMuteInput").get('value')/100,     // point mutation rate
+        seed                                            //seed where 0 = random; >0 to replay that number
+      ]
+      //'PtMuteRate': '0.02',
+      //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
+    };
+    uiWorker.postMessage(request);
   }
 
   // Resize window helpers -------------------------------------------
@@ -272,7 +298,7 @@ require([
     else {
       chck.outlineColor = '#00FF00'
     }
-    placeChips(chips);
+    placeChips(chips, chck);
     drawCheckerSetup(chck, chips);
   }
 
@@ -723,28 +749,6 @@ require([
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
-
-
-  //uiWorker function
-  function doOrgTrace() {
-    var seed = 0;
-    if (dijit.byId("OrganDemoRadio").get('checked', true)) {
-      seed = 1
-    }
-    var request = {
-      'type': 'addEvent',
-      'name': 'getOrgTraceBySequence',
-      'triggerType': 'immediate',
-      'args': [
-        chosen.genome,                        //genome string
-        dijit.byId("orMuteInput").get('value'),     // point mutation rate
-        seed                                        //seed where 0 = random; >0 to replay that number
-      ]
-      //'PtMuteRate': '0.02',
-      //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
-    };
-    uiWorker.postMessage(request);
-  }
 
   //------------------------------------- Populated Dishes DND ---------------------
   //This should never happen as there is only one source for populated dishes
@@ -1370,8 +1374,8 @@ require([
   //for now this is hard coded to what would be in @default. will need a way to request data from C++
   //and read the returned json string.
   function writeSettings() {
-    dijit.byId("sizeCols").set('value', '3');
-    dijit.byId("sizeRows").set('value', '3');
+    dijit.byId("sizeCols").set('value', '20');
+    dijit.byId("sizeRows").set('value', '5');
     document.getElementById("muteInput").value = '2';
     var event = new Event('change');
     document.getElementById("muteInput").dispatchEvent(event);
@@ -1865,7 +1869,7 @@ require([
   // ****************  Draw Population Grid ************************ */
   /* *************************************************************** */
 
-  grd = {};         //data about the grid canvas
+  var grd = {};         //data about the grid canvas
 
   function clearGrd() {
     grd.cols = 0;    //Number of columns in the grid
@@ -1890,58 +1894,29 @@ require([
     grd.cntx = grd.CanvasGrid.getContext("2d");
     grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
     grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
-    grd.mxFit = 0;   //store maximum fitness during an experiment
-    grd.mxGest = 0;  //store maximum gestation time during an experiment
-    grd.mxRate = 0;  //store maximum metabolic rate during an experiment
+    grd.mxFit = 0.1;   //store maximum fitness during an experiment
+    grd.mxGest = 0.1;  //store maximum gestation time during an experiment
+    grd.mxRate = 0.1;  //store maximum metabolic rate during an experiment
   }
   clearGrd();
 
-  //Create lastMax values
-
-  function setMapData(msg) {
-    var str = "";
-    switch (dijit.byId("colorMode").value) {
-      case 'Fitness':
-        grd.fill = msg.fitness.data;
-        str = 'last_fitness';
-        if (grd.mxFit < msg.fitness.maxVal) {
-          grd.mxFit = 1.2 * msg.fitness.maxVal
-        }
-        grd.fillmax = grd.mxFit;
-        grd.fillmin = msg.fitness.minVal;
-        break;
-      case 'Gestation Time':
-        str = 'last_gestation_time';
-        grd.fill = msg.gestation.data;
-        if (grd.mxGest < msg.gestation.maxVal) {
-          grd.mxGest = 1.2 * msg.gestation.maxVal
-        }
-        grd.fillmax = grd.mxGest;
-        grd.fillmin = msg.gestation.minVal;
-        break;
-      case 'Metabolic Rate':
-        str = 'Metabolic Rate';
-        grd.fill = msg.metabolism.data;
-        if (grd.mxRate < msg.metabolism.maxVal) {
-          grd.mxRate = 1.2 * msg.metabolism.maxVal
-        }
-        grd.fillmax = grd.mxRate;
-        grd.fillmin = msg.metabolism.minVal;
-        break;
-      case 'Ancestor Organism':
-        str = 'clade';
-        grd.fill = msg.ancestor.data;
-        break;
+  function findLogicOutline(grd) {
+    for (ii = 0; ii < grd.msg.not.length; ii++) {
+      grd.out[ii] = 1;
     }
-    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    console.log('fitmax',msg.fitness.maxVal,'; Gest',msg.gestation.maxVal,'; rate',msg.metabolism.maxVal,'; fillmax',grd.fillmax);
-    findLogicOutline(msg);
+    if ('on' == document.getElementById('notButton').value) {
+      for (ii = 0; ii < grd.msg.not.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not[ii];}
+    }
   }
-
 
   function DrawGridSetup() {
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
+    grd.newrun = newrun;
+    if(!grd.newrun) {  //update color information for offpsring once run has started
+      setMapData(grd);
+      findLogicOutline(grd);
+    }
 
     //Determine if a color gradient or legend will be displayed
     if ("Ancestor Organism" == dijit.byId("colorMode").value) {
@@ -1962,8 +1937,6 @@ require([
     grd.spaceY = GrdNodeHt - 5;
     //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
 
-    grd.newrun = newrun;
-    if(!grd.newrun) setMapData(grd.msg);
     DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
   }
 
@@ -3136,9 +3109,9 @@ require([
   chips.domId = [];
   chips.outColor = [];
 
-  chck = {};       //data about the ckecker canvas
-  chck.cols = 30;  //Number of columns in the grid
-  chck.rows = 30;  //Number of rows in the grid
+  var chck = {};       //data about the ckecker canvas
+  chck.cols = 20;  //Number of columns in the grid
+  chck.rows = 6;  //Number of rows in the grid
   chck.sizeX = 300;  //size of canvas in pixels
   chck.sizeY = 300;  //size of canvas in pixels
   chck.flagSelected = false; //is a cell selected

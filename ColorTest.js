@@ -14,9 +14,9 @@ function clearChips(chips) {
     chips.outColor = [];
 }
 
-function placeChips(chips){
-    var cols = dijit.byId("sizeCols").get('value');
-    var rows = dijit.byId("sizeRows").get('value');
+function placeChips(chips, chck){
+    var cols = chck.cols;
+    var rows = chck.rows;
     var sqLength = 5; // 5 by 6 in demo
     for (ii = 0; ii < ChipColors.length; ii++) {
         cc = ii%sqLength;
@@ -48,10 +48,10 @@ function backgroundBoard(chck) {
 function drawSelected(chck) {
     chck.selectX = chck.marginX + chck.xOffset + chck.ColSelected * chck.cellWd;
     chck.selectY = chck.marginY + chck.yOffset + chck.RowSelected * chck.cellHt;
-    drawCellOutline(2, chck.outlineColor, chck.selectX, chck.selectY, chck.cellWd, chck.cellHt)
+    drawCellOutline(2, chck.outlineColor, chck.selectX, chck.selectY, chck.cellWd, chck.cellHt, chck)
 }
 
-function drawCellOutline(lineThickness, color, xx, yy, wide, tall) {
+function drawCellOutline(lineThickness, color, xx, yy, wide, tall, chck) {
     chck.ctxt.rect(xx, yy, wide, tall);
     chck.ctxt.strokeStyle = color;
     chck.ctxt.lineWidth = lineThickness;
@@ -96,9 +96,9 @@ function drawCheckerSetup(chck, chips) {
     // First find sizes based on zoom
     chck.boxX = chck.zoom * chck.spaceX;
     chck.boxY = chck.zoom * chck.spaceY;
-    //get rows and cols based on user input form
-    chck.cols = dijit.byId("sizeCols").get('value');
-    chck.rows = dijit.byId("sizeRows").get('value');
+    //get rows and cols based
+    chck.cols = 20;
+    chck.rows = 6;
     //max size of box based on width or height based on ratio of cols:rows and width:height
     if (chck.spaceX/chck.spaceY > chck.cols/chck.rows) {
         //set based  on height as that is the limiting factor.

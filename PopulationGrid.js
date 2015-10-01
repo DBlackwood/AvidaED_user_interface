@@ -1,4 +1,5 @@
 function backgroundSquares(grd) {
+  console.log('in backgroundSq');
   var boxColor = '#111';
   for (ii = 0; ii < grd.cols; ii++) {
     xx = grd.marginX + grd.xOffset + ii * grd.cellWd;
@@ -7,24 +8,49 @@ function backgroundSquares(grd) {
       //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
       //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
       //console.log('color=', boxColor);
-      grd.cntx.fillStyle = '#222';
+      grd.cntx.fillStyle = 'rgb(40, 40, 40)';
       grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
     }
   }
 }
 
-//Draw Cell outline or including special case for Selected
-function DrawSelected(grd) {
-  grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
-  grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
-  DrawCellOutline(2, '#00ff00', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt)
-}
-
-function DrawCellOutline(lineThickness, color, xx, yy, wide, tall) {
-  grd.cntx.rect(xx, yy, wide, tall);
-  grd.cntx.strokeStyle = color;
-  grd.cntx.lineWidth = lineThickness;
-  grd.cntx.stroke();
+function setMapData(grd) {
+  var str = "";
+  switch (dijit.byId("colorMode").value) {
+    case 'Fitness':
+      grd.fill = grd.msg.fitness.data;
+      str = 'last_fitness';
+      if (grd.mxFit < grd.msg.fitness.maxVal) {
+        grd.mxFit = 1.2 * grd.msg.fitness.maxVal
+      }
+      grd.fillmax = grd.mxFit;
+      grd.fillmin = grd.msg.fitness.minVal;
+      break;
+    case 'Gestation Time':
+      str = 'last_gestation_time';
+      grd.fill = grd.msg.gestation.data;
+      if (grd.mxGest < grd.msg.gestation.maxVal) {
+        grd.mxGest = 1.2 * grd.msg.gestation.maxVal
+      }
+      grd.fillmax = grd.mxGest;
+      grd.fillmin = grd.msg.gestation.minVal;
+      break;
+    case 'Metabolic Rate':
+      str = 'Metabolic Rate';
+      grd.fill = grd.msg.metabolism.data;
+      if (grd.mxRate < grd.msg.metabolism.maxVal) {
+        grd.mxRate = 1.2 * grd.msg.metabolism.maxVal
+      }
+      grd.fillmax = grd.mxRate;
+      grd.fillmin = grd.msg.metabolism.minVal;
+      break;
+    case 'Ancestor Organism':
+      str = 'clade';
+      grd.fill = grd.msg.ancestor.data;
+      break;
+  }
+  //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+  //console.log('fitmax',grd.msg.fitness.maxVal,'; Gest',grd.msg.gestation.maxVal,'; rate',grd.msg.metabolism.maxVal,'; fillmax',grd.fillmax);
 }
 
 function DrawParent(grd, parents) {
@@ -70,7 +96,9 @@ function DrawChildren(grd, parents) {  //Draw the children of parents
       xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
       yy = grd.marginY + grd.yOffset + rr * grd.cellHt;
       if (null === grd.fill[ii]) {
-        grd.cntx.fillStyle = '#000'
+        //console.log('ii', ii, '; msg.ancestor.data[ii]',grd.msg.ancestor.data[ii]);
+        if (null === grd.msg.ancestor.data[ii]) grd.cntx.fillStyle = '#000';
+        else grd.cntx.fillStyle = '#888';
       }
       else {  //get_color0 = function(cmap, dx, d1, d2)
         grd.cntx.fillStyle = get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax);
@@ -79,6 +107,34 @@ function DrawChildren(grd, parents) {  //Draw the children of parents
       grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
     }
   }
+}
+
+function DrawLogicSelected(grd) {
+  var cc, rr, xx, yy;
+  for (ii = 0; ii < grd.out.length; ii++) {
+    if (0 != grd.out) {
+      cc = ii % grd.cols;
+      rr = Math.trunc(ii / grd.cols);
+      xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
+      yy = grd.marginY + grd.yOffset + rr * grd.cellHt;
+      DrawCellOutline(2, '#00ffff', xx, yy, grd.cellWd, grd.cellHt, grd)
+    }
+  }
+
+}
+
+//Draw Cell outline or including special case for Selected
+function DrawSelected(grd) {
+  grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
+  grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
+  DrawCellOutline(2, '#00ff00', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt, grd)
+}
+
+function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {
+  grd.cntx.rect(xx, yy, wide, tall);
+  grd.cntx.strokeStyle = color;
+  grd.cntx.lineWidth = lineThickness;
+  grd.cntx.stroke();
 }
 
 function DrawGridUpdate(grd, parents) {
