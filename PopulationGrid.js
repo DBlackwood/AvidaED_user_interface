@@ -1,5 +1,4 @@
 function backgroundSquares(grd) {
-  console.log('in backgroundSq');
   var boxColor = '#111';
   for (ii = 0; ii < grd.cols; ii++) {
     xx = grd.marginX + grd.xOffset + ii * grd.cellWd;
@@ -20,16 +19,14 @@ function setMapData(grd) {
     case 'Fitness':
       grd.fill = grd.msg.fitness.data;
       str = 'last_fitness';
-      if (grd.mxFit < grd.msg.fitness.maxVal) {
-        grd.mxFit = 1.2 * grd.msg.fitness.maxVal
-      }
+      if (grd.mxFit < grd.msg.fitness.maxVal) { grd.mxFit = 1.2 * grd.msg.fitness.maxVal }
       grd.fillmax = grd.mxFit;
       grd.fillmin = grd.msg.fitness.minVal;
       break;
     case 'Gestation Time':
       str = 'last_gestation_time';
       grd.fill = grd.msg.gestation.data;
-      if (grd.mxGest < grd.msg.gestation.maxVal) {
+      if (grd.mxGest < grd.msg.gestation.maxVal || 0.7*grd.mxGest > grd.msg.gestation.maxVal ) {
         grd.mxGest = 1.2 * grd.msg.gestation.maxVal
       }
       grd.fillmax = grd.mxGest;
@@ -38,9 +35,7 @@ function setMapData(grd) {
     case 'Metabolic Rate':
       str = 'Metabolic Rate';
       grd.fill = grd.msg.metabolism.data;
-      if (grd.mxRate < grd.msg.metabolism.maxVal) {
-        grd.mxRate = 1.2 * grd.msg.metabolism.maxVal
-      }
+      if (grd.mxRate < grd.msg.metabolism.maxVal) { grd.mxRate = 1.2 * grd.msg.metabolism.maxVal }
       grd.fillmax = grd.mxRate;
       grd.fillmin = grd.msg.metabolism.minVal;
       break;
@@ -49,8 +44,8 @@ function setMapData(grd) {
       grd.fill = grd.msg.ancestor.data;
       break;
   }
-  //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-  //console.log('fitmax',grd.msg.fitness.maxVal,'; Gest',grd.msg.gestation.maxVal,'; rate',grd.msg.metabolism.maxVal,'; fillmax',grd.fillmax);
+  console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+  console.log('fitmax',grd.msg.fitness.maxVal,'; Gest',grd.msg.gestation.maxVal,'; rate',grd.msg.metabolism.maxVal,'; fillmax',grd.fillmax);
 }
 
 function DrawParent(grd, parents) {
@@ -73,7 +68,7 @@ function DrawParent(grd, parents) {
 //inside the loop. Need to time things to see if it makes a difference
 function DrawChildren(grd, parents) {  //Draw the children of parents
   var cc, rr, xx, yy;
-  console.log('fill', grd.fill);
+  //console.log('fill', grd.fill);
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
     for (ii = 0; ii < grd.fill.length; ii++) {
       cc = ii % grd.cols;
@@ -102,7 +97,7 @@ function DrawChildren(grd, parents) {  //Draw the children of parents
       }
       else {  //get_color0 = function(cmap, dx, d1, d2)
         grd.cntx.fillStyle = get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax);
-        console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));
+        //console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));
       }
       grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
     }
@@ -111,6 +106,8 @@ function DrawChildren(grd, parents) {  //Draw the children of parents
 
 function DrawLogicSelected(grd) {
   var cc, rr, xx, yy;
+  console.log('=========================')
+  console.log('logic', grd.out);
   for (ii = 0; ii < grd.out.length; ii++) {
     if (0 != grd.out) {
       cc = ii % grd.cols;
@@ -210,9 +207,8 @@ function DrawGridUpdate(grd, parents) {
     DrawChildren(grd, parents);
   }
   //Draw Selected as one of the last items to draw
-  if (grd.flagSelected) {
-    DrawSelected(grd)
-  }
+  if (grd.flagSelected) { DrawSelected(grd) }
+  if (!grd.newrun) DrawLogicSelected(grd);
 }
 
 function DrawGridBackground(grd) {

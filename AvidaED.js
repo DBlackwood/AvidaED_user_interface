@@ -67,7 +67,7 @@ require([
   dummy();
   //process message from web worker
   var traceObj; //global that holds the traceObject that was sent from Avida
-  var DidDivide = false;
+  var didDivide = false;
   uiWorker.onmessage = function (ee) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
@@ -83,8 +83,9 @@ require([
             console.log("Reset failed: ", msg)
           }
           break;
-        case 'orgTrace': //reset values and call organism tracing routines.
-          traceObj = msg;
+        case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
+          console.log('in webOrgTraceBySequence')
+          traceObj = msg.snapshots;
           cycle = 0;
           dijit.byId("orgCycle").set("value", 0);
           cycleSlider.set("maximum", traceObj.length - 1);
@@ -100,7 +101,7 @@ require([
           DrawGridSetup();
           break;
         default:
-          console.log('UnknownRequest: ', msg);
+          console.log('____________UnknownRequest: ', msg);
           break;
       }
     }
@@ -133,7 +134,7 @@ require([
       'name': 'webOrgTraceBySequence',
       'triggerType': 'immediate',
       'args': [
-        chosen.genome,                                  //genome string
+        '0,heads_default,' + chosen.genome,                                  //genome string
         dijit.byId("orMuteInput").get('value')/100,     // point mutation rate
         seed                                            //seed where 0 = random; >0 to replay that number
       ]
@@ -1583,7 +1584,7 @@ require([
     }
   }
 
-  // End of Freezer Functions
+  // End of Freezer functions
 //********************************************************************
 //    Mouse DND functions
 //********************************************************************
@@ -1636,7 +1637,7 @@ require([
     mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
     mouse.Picked = '';
-    if (DidDivide) {  //offpsring exists
+    if (didDivide) {  //offpsring exists
       var distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
       if (25 > distance) {
         document.getElementById('organismIcon').style.cursor = 'copy';
@@ -1901,12 +1902,17 @@ require([
   clearGrd();
 
   function findLogicOutline(grd) {
-    for (ii = 0; ii < grd.msg.not.length; ii++) {
+    var alloff = true;
+    console.log('not',grd.msg.not.data);
+    for (ii = 0; ii < grd.msg.not.data.length; ii++) {
       grd.out[ii] = 1;
     }
     if ('on' == document.getElementById('notButton').value) {
-      for (ii = 0; ii < grd.msg.not.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not[ii];}
+      alloff = false;
+      for (ii = 0; ii < grd.msg.not.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not.data[ii];}
     }
+    if (alloff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
+    console.log('setLogic', grd.out);
   }
 
   function DrawGridSetup() {
@@ -2385,39 +2391,39 @@ require([
     //go through all cycles comparing the current with the previous cycle
     //Start with comparing cycle 1 to cycle 0 since there are no negative cycles.
     for (var ii = 1; ii < obj.length; ii++) {
-      if (obj[ii - 1].Functions.not < obj[ii].Functions.not) {
+      if (obj[ii - 1].functions.not < obj[ii].functions.not) {
         upNum.push("0");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.nand < obj[ii].Functions.nand) {
+      if (obj[ii - 1].functions.nand < obj[ii].functions.nand) {
         upNum.push("1");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.and < obj[ii].Functions.and) {
+      if (obj[ii - 1].functions.and < obj[ii].functions.and) {
         upNum.push("2");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.orn < obj[ii].Functions.orn) {
+      if (obj[ii - 1].functions.orn < obj[ii].functions.orn) {
         upNum.push("3");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.or < obj[ii].Functions.or) {
+      if (obj[ii - 1].functions.or < obj[ii].functions.or) {
         upNum.push("4");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.andn < obj[ii].Functions.andn) {
+      if (obj[ii - 1].functions.andn < obj[ii].functions.andn) {
         upNum.push("5");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.nor < obj[ii].Functions.nor) {
+      if (obj[ii - 1].functions.nor < obj[ii].functions.nor) {
         upNum.push("6");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.xor < obj[ii].Functions.xor) {
+      if (obj[ii - 1].functions.xor < obj[ii].functions.xor) {
         upNum.push("7");
         upNdx.push(ii);
       }
-      if (obj[ii - 1].Functions.equ < obj[ii].Functions.equ) {
+      if (obj[ii - 1].functions.equ < obj[ii].functions.equ) {
         upNum.push("8");
         upNdx.push(ii);
       }
@@ -2516,8 +2522,8 @@ require([
       //ctx.fillStyle = letterColor[gen.dna[gg][ii]];  //use if gen.dna is an array
       ctx.fill();   //required to render fill
       //Draw ring if there was a mutation in the offspring
-      if (undefined != obj[cycle].MemSpace[1]) {
-        if (1 == gg && obj[cycle].MemSpace[1].Mutated[ii]) {
+      if (undefined != obj[cycle].memSpace[1]) {
+        if (1 == gg && obj[cycle].memSpace[1].mutated[ii]) {
           ctx.strokeStyle = orgColorCodes["mutate"];
           ctx.lineWidth = 3;
           ctx.arc(SmallCenterX, SmallCenterY, gen.SmallR, 0, 2 * Math.PI);
@@ -2622,13 +2628,15 @@ require([
   //*****************************************************************/
   //main function to update the Organism Trace on the Organism Page
   function updateOrgTrace(obj, cycle) {
-    DidDivide = obj[cycle].DidDivide; //update global version of didDivide
+    console.log('updateOrgTrace')
+    didDivide = obj[cycle].didDivide; //update global version of didDivide
     //set canvas size
     organismCanvasHolderSize();
     //Find size and content of each genome.
-    for (var ii = 0; ii < obj[cycle].MemSpace.length; ii++) {
-      gen.dna[ii] = obj[cycle].MemSpace[ii].Memory;
-      gen.size[ii] = obj[cycle].MemSpace[ii].Memory.length;
+    for (var ii = 0; ii < obj[cycle].memSpace.length; ii++) {
+      gen.dna[ii] = obj[cycle].memSpace[ii].memory.join('');
+      gen.size[ii] = obj[cycle].memSpace[ii].memory.length;
+      console.log('ii',ii,'; gen.dna',gen.dna[ii]);
     }
     //Draw Timeline
     DrawTimeline(obj, cycle);
@@ -2649,12 +2657,12 @@ require([
     gen.fontsize = Math.round(1.8 * gen.smallR);
     genomeCircle(gen, 0, obj, cycle);
     // Draw child (Son) genome in a circle ---------
-    if (1 < obj[cycle].MemSpace.length) {
+    if (1 < obj[cycle].memSpace.length) {
       gen.bigR[1] = gen.smallR * 2 * gen.size[1] / (2 * Math.PI);
       gen.bigR[1] = gen.bigR[1] + gen.bigR[1] / gen.size[1];
       gen.cy[1] = gen.cy[0];
       gen.headR[1] = gen.bigR[1] - 2 * gen.smallR;      //radius of circle made by center of head positions.
-      if (obj[cycle].DidDivide) {
+      if (obj[cycle].didDivide) {
         gen.cx[1] = OrgCanvas.width / 2 + 1.1 * gen.bigR[1];
         gen.rotate[1] = 0;
         drawIcon(gen);
@@ -2674,106 +2682,106 @@ require([
     }
     //Draw path of acrs
     //drawArc2(gen, spot1, spot2, rep)
-    for (var ii = 0; ii < obj[cycle].Jumps.length; ii++) {
-      drawArc2(gen, obj[cycle].Jumps[ii].FromIDX, obj[cycle].Jumps[ii].ToIDX, obj[cycle].Jumps[ii].Freq);
+    for (var ii = 0; ii < obj[cycle].jumps.length; ii++) {
+      drawArc2(gen, obj[cycle].jumps[ii].fromIDX, obj[cycle].jumps[ii].toIDX, obj[cycle].jumps[ii].freq);
     }
     //drawHead(gen, spot, generation, head) // draws the various heads for parent (Mom)
-    for (var ii = 0; ii < obj[cycle].MemSpace.length; ii++) {
-      if (undefined != obj[cycle].MemSpace[ii].Heads.READ) {
-        drawHead(gen, obj[cycle].MemSpace[ii].Heads.READ, ii, "READ");
+    for (var ii = 0; ii < obj[cycle].memSpace.length; ii++) {
+      if (undefined != obj[cycle].memSpace[ii].heads.read) {
+        drawHead(gen, obj[cycle].memSpace[ii].heads.read, ii, "READ");
       }
-      if (undefined != obj[cycle].MemSpace[ii].Heads.WRITE) {
-        drawHead(gen, obj[cycle].MemSpace[ii].Heads.WRITE, ii, "WRITE");
+      if (undefined != obj[cycle].memSpace[ii].heads.write) {
+        drawHead(gen, obj[cycle].memSpace[ii].heads.write, ii, "WRITE");
       }
-      if (undefined != obj[cycle].MemSpace[ii].Heads.FLOW) {
-        drawHead(gen, obj[cycle].MemSpace[ii].Heads.FLOW, ii, "FLOW");
+      if (undefined != obj[cycle].memSpace[ii].heads.flow) {
+        drawHead(gen, obj[cycle].memSpace[ii].heads.flow, ii, "FLOW");
       }
-      if (undefined != obj[cycle].MemSpace[ii].Heads.IP) {
-        drawHead(gen, obj[cycle].MemSpace[ii].Heads.IP, ii, "IP");
+      if (undefined != obj[cycle].memSpace[ii].heads.ip) {
+        drawHead(gen, obj[cycle].memSpace[ii].heads.ip, ii, "IP");
       }
     }
-    //Draw Buffers ---------------------------------------------------
+    //Draw buffers ---------------------------------------------------
     //drawBitStr (name, row, bitStr);
-    for (var ii = 0; ii < obj[cycle].Buffers.input.length; ii++) {
-      drawBitStr(bufferCtx, ii, obj[cycle].Buffers.input[ii]);
+    for (var ii = 0; ii < obj[cycle].buffers.input.length; ii++) {
+      drawBitStr(bufferCtx, ii, obj[cycle].buffers.input[ii]);
     }
-    drawBitStr(registerCtx, 0, obj[cycle].Registers['AX']);
-    drawBitStr(registerCtx, 1, obj[cycle].Registers['BX']);
-    drawBitStr(registerCtx, 2, obj[cycle].Registers['CX']);
-    //console.log("A", obj[cycle].Buffers);
+    drawBitStr(registerCtx, 0, obj[cycle].registers['ax']);
+    drawBitStr(registerCtx, 1, obj[cycle].registers['bx']);
+    drawBitStr(registerCtx, 2, obj[cycle].registers['cx']);
+    //console.log("A", obj[cycle].buffers);
     for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
-      //console.log(ii, obj[cycle].Buffers["stack A"][ii]);
-      drawBitStr(AstackCtx, ii, obj[cycle].Buffers["stack A"][ii]);
+      //console.log(ii, obj[cycle].buffers["stack A"][ii]);
+      drawBitStr(AstackCtx, ii, obj[cycle].buffers["stack A"][ii]);
     }
     for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
-      drawBitStr(BstackCtx, ii, obj[cycle].Buffers["stack B"][ii]);
+      drawBitStr(BstackCtx, ii, obj[cycle].buffers["stack B"][ii]);
     }
-    drawBitStr(outputCtx, 0, obj[cycle].Buffers.output[0]);
+    drawBitStr(outputCtx, 0, obj[cycle].buffers.output[0]);
     // update details
-    updateTimesPerformed(obj, cycle);   //Update Times Functions are performed.
+    updateTimesPerformed(obj, cycle);   //Update Times functions are performed.
     writeInstructDetails(obj, cycle);   //Write Instruction Details
     //context.clearRect(0, 0, canvas.width, canvas.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
   }
 
   function updateTimesPerformed(obj, cycle) {
-    document.getElementById("notPerf").textContent = obj[cycle].Functions.not;
-    document.getElementById("nanPerf").textContent = obj[cycle].Functions.nand;
-    document.getElementById("andPerf").textContent = obj[cycle].Functions.and;
-    document.getElementById("ornPerf").textContent = obj[cycle].Functions.orn;
-    document.getElementById("oroPerf").textContent = obj[cycle].Functions.or;
-    document.getElementById("antPerf").textContent = obj[cycle].Functions.andn;
-    document.getElementById("norPerf").textContent = obj[cycle].Functions.nor;
-    document.getElementById("xorPerf").textContent = obj[cycle].Functions.xor;
-    document.getElementById("equPerf").textContent = obj[cycle].Functions.equ;
-    if (0 < obj[cycle].Functions.not) {
+    document.getElementById("notPerf").textContent = obj[cycle].functions.not;
+    document.getElementById("nanPerf").textContent = obj[cycle].functions.nand;
+    document.getElementById("andPerf").textContent = obj[cycle].functions.and;
+    document.getElementById("ornPerf").textContent = obj[cycle].functions.orn;
+    document.getElementById("oroPerf").textContent = obj[cycle].functions.or;
+    document.getElementById("antPerf").textContent = obj[cycle].functions.andn;
+    document.getElementById("norPerf").textContent = obj[cycle].functions.nor;
+    document.getElementById("xorPerf").textContent = obj[cycle].functions.xor;
+    document.getElementById("equPerf").textContent = obj[cycle].functions.equ;
+    if (0 < obj[cycle].functions.not) {
       document.getElementById("notOrg").textContent = "0 not+";
     }
     else {
       document.getElementById("notOrg").textContent = "0 not-";
     }
-    if (0 < obj[cycle].Functions.nand) {
+    if (0 < obj[cycle].functions.nand) {
       document.getElementById("nanOrg").textContent = "1 nan+";
     }
     else {
       document.getElementById("nanOrg").textContent = "1 nan-";
     }
-    if (0 < obj[cycle].Functions.and) {
+    if (0 < obj[cycle].functions.and) {
       document.getElementById("andOrg").textContent = "2 and+";
     }
     else {
       document.getElementById("andOrg").textContent = "2 and-";
     }
-    if (0 < obj[cycle].Functions.orn) {
+    if (0 < obj[cycle].functions.orn) {
       document.getElementById("ornOrg").textContent = "3 orn+";
     }
     else {
       document.getElementById("ornOrg").textContent = "3 orn-";
     }
-    if (0 < obj[cycle].Functions.or) {
+    if (0 < obj[cycle].functions.or) {
       document.getElementById("oroOrg").textContent = "4 oro+";
     }
     else {
       document.getElementById("oroOrg").textContent = "4 oro-";
     }
-    if (0 < obj[cycle].Functions.andn) {
+    if (0 < obj[cycle].functions.andn) {
       document.getElementById("antOrg").textContent = "5 ant+";
     }
     else {
       document.getElementById("antOrg").textContent = "5 ant-";
     }
-    if (0 < obj[cycle].Functions.nor) {
+    if (0 < obj[cycle].functions.nor) {
       document.getElementById("norOrg").textContent = "6 nor+";
     }
     else {
       document.getElementById("norOrg").textContent = "6 nor-";
     }
-    if (0 < obj[cycle].Functions.xor) {
+    if (0 < obj[cycle].functions.xor) {
       document.getElementById("xorOrg").textContent = "7 xor+";
     }
     else {
       document.getElementById("xorOrg").textContent = "7 xor-";
     }
-    if (0 < obj[cycle].Functions.equ) {
+    if (0 < obj[cycle].functions.equ) {
       document.getElementById("equOrg").textContent = "8 equ+";
     }
     else {
@@ -2783,20 +2791,20 @@ require([
 
   function writeInstructDetails(obj, cycle) {
     var letter;
-    var IPspot = obj[cycle].MemSpace[0].Heads.IP
+    var IPspot = obj[cycle].memSpace[0].heads.ip
     if (undefined == obj[cycle - 1]) {
       document.getElementById("ExecuteJust").textContent = "(none)";
     }
     else {
-      letter = obj[cycle - 1].NextInstruction;
+      letter = obj[cycle - 1].nextInstruction;
       document.getElementById("ExecuteJust").textContent = letter + ": " + InstDescribe[letter];
       //console.log("Inst", InstDescribe[letter]);
     }
-    if (undefined == obj[cycle].MemSpace[0].Memory[IPspot]) {
+    if (undefined == obj[cycle].memSpace[0].memory[IPspot]) {
       document.getElementById("ExecuteAbout").textContent = "(none)";
     }
     else {
-      letter = obj[cycle].MemSpace[0].Memory[IPspot];
+      letter = obj[cycle].memSpace[0].memory[IPspot];
       document.getElementById("ExecuteAbout").textContent = letter + ": " + InstDescribe[letter];
     }
     //console.log('spot=', IPspot, ' letter=', letter, " Instr=", InstDescribe[letter]);
@@ -3040,7 +3048,7 @@ require([
   DrawGridSetup(); //Draw initial background
 
   //************************************************************************
-  //Useful Generic Functions
+  //Useful Generic functions
   //************************************************************************
 
   //Modulo that is more accurate than %; Math.fmod(aa, bb);
