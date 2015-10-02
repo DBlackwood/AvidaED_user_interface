@@ -67,7 +67,6 @@ require([
   dummy();
   //process message from web worker
   var traceObj; //global that holds the traceObject that was sent from Avida
-  var didDivide = false;
   uiWorker.onmessage = function (ee) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
@@ -84,7 +83,6 @@ require([
           }
           break;
         case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
-          console.log('in webOrgTraceBySequence')
           traceObj = msg.snapshots;
           cycle = 0;
           dijit.byId("orgCycle").set("value", 0);
@@ -125,10 +123,8 @@ require([
 
   //uiWorker function
   function doOrgTrace() {
-    var seed = 0;
-    if (dijit.byId("OrganDemoRadio").get('checked', true)) {
-      seed = 1
-    }
+    var seed = 100*Math.random();
+    if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0 }
     var request = {
       'type': 'addEvent',
       'name': 'webOrgTraceBySequence',
@@ -150,12 +146,10 @@ require([
     if ("block" == domStyle.get("analysisBlock", "display")) {
       AnaChartFn();
     }
-    ;
     if ("block" == domStyle.get("populationBlock", "display")) {
       popChartFn();
       DrawGridSetup();
     }
-    ;
     if ("block" == domStyle.get("organismBlock", "display")) {
       var rd = $("#rightDetail").innerHeight();
       var height = ($("#rightDetail").innerHeight() - 395) / 2;  //was 375
@@ -335,13 +329,19 @@ require([
   });
   freezeOrgan.insertNodes(false, [
     {data: "@ancestor", type: ["organism"]}
-    , {data: "bravo", type: ["organism"]}
-    //,{ data: "charlie",     type: ["organism"]}
-    //,{ data: "delta",       type: ["organism"]}
+    , {data: "bravo_not", type: ["organism"]}
+    ,{ data: "allFunctions",     type: ["organism"]}
+    ,{ data: "oro",       type: ["organism"]}
     //,{ data: "echo",        type: ["organism"]}
     //,{ data: "foxtrot",     type: ["organism"]}
     //,{ data: "golf",        type: ["organism"]}
   ]);
+  var genes = [
+    'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'  //ancestor
+    ,'wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab'  //not
+    ,'whjagchmivznzbxbvmbzpfvfpwubypsmyuuobyufycvovrxguw'  //all functions
+    ,'wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro
+  ]
 
   var freezePopDish = new dndSource("freezePopDishNode", {
     accept: ["popDish"],
@@ -392,7 +392,7 @@ require([
     neworg = {
       'name': freezeOrgan.map[domList[ii]].data,
       'domId': domList[ii],
-      'genome': 'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'
+      'genome': genes[ii]
     };
     fzOrgan.push(neworg);
   }
@@ -1637,7 +1637,7 @@ require([
     mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
     mouse.Picked = '';
-    if (didDivide) {  //offpsring exists
+    if (gen.didDivide) {  //offpsring exists
       var distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
       if (25 > distance) {
         document.getElementById('organismIcon').style.cursor = 'copy';
@@ -1645,6 +1645,7 @@ require([
         document.getElementById('freezeOrganNode').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
         mouse.Picked = "offspring";
+        if (gen.debug) console.log('gen.dna', gen.dna);
       }
 
       //var distance = Math.sqrt(Math.pow(evt.offsetX-gen.cx[1],2) + Math.pow(evt.offsetY-gen.cy[1],2));
@@ -1737,8 +1738,9 @@ require([
       OrganCurrent.sync();
 
       chosen.name = parent + "_offspring";
-      chosen.genme = gen.dna[1];  //this should be the full genome when the offspring is complete.
+      chosen.genome = gen.dna[1];  //this should be the full genome when the offspring is complete.
       chosen.domId = Object.keys(OrganCurrent.map)[0];
+      console.log('chosen', chosen.genome);
       //get genome from offspring data //needs work!!
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
@@ -1908,10 +1910,43 @@ require([
       grd.out[ii] = 1;
     }
     if ('on' == document.getElementById('notButton').value) {
-      alloff = false;
       for (ii = 0; ii < grd.msg.not.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('nanButton').value) {
+      for (ii = 0; ii < grd.msg.nan.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nan.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('andButton').value) {
+      for (ii = 0; ii < grd.msg.and.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.and.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('ornButton').value) {
+      for (ii = 0; ii < grd.msg.orn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.orn.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('oroButton').value) {
+      for (ii = 0; ii < grd.msg.oro.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.oro.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('antButton').value) {
+      for (ii = 0; ii < grd.msg.ant.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.ant.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('norButton').value) {
+      for (ii = 0; ii < grd.msg.nor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nor.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('xorButton').value) {
+      for (ii = 0; ii < grd.msg.xor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.xor.data[ii];}
+      alloff = false;
+    }
+    if ('on' == document.getElementById('equButton').value) {
+      for (ii = 0; ii < grd.msg.equ.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.equ.data[ii];}
+      alloff = false;
     }
     if (alloff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
+    console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
     console.log('setLogic', grd.out);
   }
 
@@ -2345,26 +2380,28 @@ require([
   gen.dna = ["", ""];
   gen.TimeLineHeight = 60;
   gen.imageXY = {x: 5, y: 5};
+  gen.didDivide = false;
+  gen.debug = true;
 
   //initialize all canvases needed for Organism page
-  var bufferCvs = document.getElementById("buffer");
-  var bufferCtx = bufferCvs.getContext("2d");
-  bufferCtx.translate(0.5, 0.5);
-  var registerCvs = document.getElementById("register");
-  var registerCtx = registerCvs.getContext("2d");
-  registerCtx.translate(0.5, 0.5);
-  var AstackCvs = document.getElementById("Astack");
-  var AstackCtx = AstackCvs.getContext("2d");
-  AstackCtx.translate(0.5, 0.5);
-  var BstackCvs = document.getElementById("Bstack");
-  var BstackCtx = BstackCvs.getContext("2d");
-  BstackCtx.translate(0.5, 0.5);
-  var outputCvs = document.getElementById("output");
-  var outputCtx = outputCvs.getContext("2d");
-  //outputCtx.imageSmoothingEnabled= false;
-  var OrgCanvas = document.getElementById("organismCanvas");
-  var ctx = OrgCanvas.getContext("2d");
-  ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
+  gen.bufferCvs = document.getElementById("buffer");
+  gen.bufferCtx = gen.bufferCvs.getContext("2d");
+  gen.bufferCtx.translate(0.5, 0.5);
+  gen.registerCvs = document.getElementById("register");
+  gen.registerCtx = gen.registerCvs.getContext("2d");
+  gen.registerCtx.translate(0.5, 0.5);
+  gen.AstackCvs = document.getElementById("Astack");
+  gen.AstackCtx = gen.AstackCvs.getContext("2d");
+  gen.AstackCtx.translate(0.5, 0.5);
+  gen.BstackCvs = document.getElementById("Bstack");
+  gen.BstackCtx = gen.BstackCvs.getContext("2d");
+  gen.BstackCtx.translate(0.5, 0.5);
+  gen.outputCvs = document.getElementById("output");
+  gen.outputCtx = gen.outputCvs.getContext("2d");
+  //gen.outputCtx.imageSmoothingEnabled= false;
+  gen.OrgCanvas = document.getElementById("organismCanvas");
+  gen.ctx = gen.OrgCanvas.getContext("2d");
+  gen.ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
 
   function DrawTimeline(obj, cycle) {
     var startX, lineY, endX, length, cycles, upLabelY, dnLabelY, txtWide, dnTickX, dnNum;
@@ -2379,13 +2416,13 @@ require([
     var dnTickSpaces = 24;
     var radius = 5;
 
-    lineY = OrgCanvas.height - gen.TimeLineHeight / 2;
+    lineY = gen.OrgCanvas.height - gen.TimeLineHeight / 2;
     upTickY = lineY - tickLength;
     dnTickY = lineY + tickLength;
     upLabelY = lineY - upLabelYoffset;
     dnLabelY = lineY + dnLabelYoffset;
     startX = 26;                //The number are fudge factors to account for the end of the slider
-    endX = OrgCanvas.width - 25;
+    endX = gen.OrgCanvas.width - 25;
     length = endX - startX;
     cycles = obj.length - 1;
     //go through all cycles comparing the current with the previous cycle
@@ -2429,41 +2466,41 @@ require([
       }
     }
     //Draw horizontal line
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = dictColor["Black"];
-    ctx.beginPath();
-    ctx.moveTo(startX, lineY);
-    ctx.lineTo(endX, lineY);
-    ctx.stroke();
+    gen.ctx.lineWidth = 1;
+    gen.ctx.strokeStyle = dictColor["Black"];
+    gen.ctx.beginPath();
+    gen.ctx.moveTo(startX, lineY);
+    gen.ctx.lineTo(endX, lineY);
+    gen.ctx.stroke();
     //Draw upTicks for indicating when logic functions complete
-    ctx.font = "12px Arial";
-    ctx.fillStyle = dictColor["Black"];
+    gen.ctx.font = "12px Arial";
+    gen.ctx.fillStyle = dictColor["Black"];
     for (var ii = 0; ii < upNum.length; ii++) {
       upTickX[ii] = startX + length * upNdx[ii] / cycles;
-      ctx.moveTo(upTickX[ii], lineY);
-      ctx.lineTo(upTickX[ii], upTickY);
-      ctx.stroke();
-      txtWide = ctx.measureText(upNum[ii]).width;
-      ctx.fillText(upNum[ii], upTickX[ii] - txtWide / 2, upLabelY);
+      gen.ctx.moveTo(upTickX[ii], lineY);
+      gen.ctx.lineTo(upTickX[ii], upTickY);
+      gen.ctx.stroke();
+      txtWide = gen.ctx.measureText(upNum[ii]).width;
+      gen.ctx.fillText(upNum[ii], upTickX[ii] - txtWide / 2, upLabelY);
     }
     //Draw downTicks for indicating cycles on the time line.
     for (var ii = 0; ii <= dnTickSpaces; ii++) {
       dnTickX = startX + ii * length / dnTickSpaces;
       dnNum = Math.round(ii * cycles / dnTickSpaces);
-      ctx.moveTo(dnTickX, lineY);
-      ctx.lineTo(dnTickX, dnTickY);
-      ctx.stroke();
+      gen.ctx.moveTo(dnTickX, lineY);
+      gen.ctx.lineTo(dnTickX, dnTickY);
+      gen.ctx.stroke();
       if (0 == Math.fmod(ii, 4)) {
-        txtWide = ctx.measureText(dnNum).width;
-        ctx.fillText(dnNum, dnTickX - txtWide / 2, dnLabelY);
+        txtWide = gen.ctx.measureText(dnNum).width;
+        gen.ctx.fillText(dnNum, dnTickX - txtWide / 2, dnLabelY);
       }
     }
     //Draw red circle indicating current cycle
-    ctx.beginPath();
+    gen.ctx.beginPath();
     dnTickX = startX + cycle * length / cycles;
-    ctx.fillStyle = dictColor["Red"];
-    ctx.arc(dnTickX, lineY, radius, 0, 2 * Math.PI);
-    ctx.fill();
+    gen.ctx.fillStyle = dictColor["Red"];
+    gen.ctx.arc(dnTickX, lineY, radius, 0, 2 * Math.PI);
+    gen.ctx.fill();
   }
 
   function drawBitStr(context, row, bitStr) {
@@ -2515,19 +2552,19 @@ require([
     for (var ii = 0; ii < gen.dna[gg].length; ii++) {
       SmallCenterX = gen.cx[gg] + gen.bigR[gg] * Math.cos(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
       SmallCenterY = gen.cy[gg] + gen.bigR[gg] * Math.sin(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
-      ctx.beginPath();
-      ctx.arc(SmallCenterX, SmallCenterY, gen.smallR, 0, 2 * Math.PI);
+      gen.ctx.beginPath();
+      gen.ctx.arc(SmallCenterX, SmallCenterY, gen.smallR, 0, 2 * Math.PI);
       //Assign color based on letter code of instruction
-      ctx.fillStyle = letterColor[gen.dna[gg].substr(ii, 1)];  //use if gen.dna is a string
-      //ctx.fillStyle = letterColor[gen.dna[gg][ii]];  //use if gen.dna is an array
-      ctx.fill();   //required to render fill
+      gen.ctx.fillStyle = letterColor[gen.dna[gg].substr(ii, 1)];  //use if gen.dna is a string
+      //gen.ctx.fillStyle = letterColor[gen.dna[gg][ii]];  //use if gen.dna is an array
+      gen.ctx.fill();   //required to render fill
       //Draw ring if there was a mutation in the offspring
       if (undefined != obj[cycle].memSpace[1]) {
         if (1 == gg && obj[cycle].memSpace[1].mutated[ii]) {
-          ctx.strokeStyle = orgColorCodes["mutate"];
-          ctx.lineWidth = 3;
-          ctx.arc(SmallCenterX, SmallCenterY, gen.SmallR, 0, 2 * Math.PI);
-          ctx.stroke();
+          gen.ctx.strokeStyle = orgColorCodes["mutate"];
+          gen.ctx.lineWidth = 3;
+          gen.ctx.arc(SmallCenterX, SmallCenterY, gen.SmallR, 0, 2 * Math.PI);
+          gen.ctx.stroke();
           //Draw tick mark to interior of circle for mutated instruction
           //tickR = gen.bigR[gg]-3*gen.smallR;
           //tickX = gen.cx[gg] + tickR*Math.cos(ii*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
@@ -2535,23 +2572,23 @@ require([
           //tickR = gen.bigR[gg]-gen.smallR;
           //tanX = gen.cx[gg] + tickR*Math.cos(ii*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
           //tanY = gen.cy[gg] + tickR*Math.sin(ii*2*Math.PI/gen.size[gg]+gen.rotate[gg]);
-          //ctx.beginPath();
-          //ctx.moveTo(tickX, tickY);
-          //ctx.lineTo(tanX, tanY);
-          //ctx.stroke();
+          //gen.ctx.beginPath();
+          //gen.ctx.moveTo(tickX, tickY);
+          //gen.ctx.lineTo(tanX, tanY);
+          //gen.ctx.stroke();
         }
       }
       //Draw letter inside circle
-      ctx.fillStyle = dictColor["Black"];
-      ctx.font = gen.fontsize + "px Arial";
-      txtW = ctx.measureText(gen.dna[gg].substr(ii, 1)).width;  //use if gen.dna is a string
-      //txtW = ctx.measureText(gen.dna[gg][ii]).width;     //use if gen.dna is an array
-      ctx.fillText(gen.dna[gg].substr(ii, 1), SmallCenterX - txtW / 2, SmallCenterY + gen.smallR / 2);  //use if gen.dna is a string
-      //ctx.fillText(gen.dna[gg][ii],SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is an array
+      gen.ctx.fillStyle = dictColor["Black"];
+      gen.ctx.font = gen.fontsize + "px Arial";
+      txtW = gen.ctx.measureText(gen.dna[gg].substr(ii, 1)).width;  //use if gen.dna is a string
+      //txtW = gen.ctx.measureText(gen.dna[gg][ii]).width;     //use if gen.dna is an array
+      gen.ctx.fillText(gen.dna[gg].substr(ii, 1), SmallCenterX - txtW / 2, SmallCenterY + gen.smallR / 2);  //use if gen.dna is a string
+      //gen.ctx.fillText(gen.dna[gg][ii],SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is an array
     }
     //Draw center of circle to test max arc height - should not go past center of circle
-    //ctx.arc(gen.cx[gg], gen.cy[gg], gen.smallR/4, 0, 2*Math.PI);
-    //ctx.fill();
+    //gen.ctx.arc(gen.cx[gg], gen.cy[gg], gen.smallR/4, 0, 2*Math.PI);
+    //gen.ctx.fill();
   }
 
   function drawHead(gen, spot, gg, head) {
@@ -2560,37 +2597,37 @@ require([
     //draw circumference around instruction that the head points to.
     hx = gen.cx[gg] + gen.bigR[gg] * Math.cos(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     hy = gen.cy[gg] + gen.bigR[gg] * Math.sin(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
-    ctx.beginPath();
-    ctx.arc(hx, hy, gen.smallR, 0, 2 * Math.PI);
-    ctx.strokeStyle = orgColorCodes[head];
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    gen.ctx.beginPath();
+    gen.ctx.arc(hx, hy, gen.smallR, 0, 2 * Math.PI);
+    gen.ctx.strokeStyle = orgColorCodes[head];
+    gen.ctx.lineWidth = 2;
+    gen.ctx.stroke();
     //draw head tangent to instruction
     hx = gen.cx[gg] + gen.headR[gg] * Math.cos(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     hy = gen.cy[gg] + gen.headR[gg] * Math.sin(spot * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
-    ctx.beginPath();
-    ctx.arc(hx, hy, gen.smallR, 0, 2 * Math.PI);
-    ctx.fillStyle = orgColorCodes["headFill"];
-    ctx.fill();
-    ctx.fillStyle = orgColorCodes[head];
-    ctx.font = gen.fontsize + "px Arial";
-    txtW = ctx.measureText(headCodes[head]).width;
-    ctx.fillText(headCodes[head], hx - txtW / 2, hy + gen.smallR / 2);
+    gen.ctx.beginPath();
+    gen.ctx.arc(hx, hy, gen.smallR, 0, 2 * Math.PI);
+    gen.ctx.fillStyle = orgColorCodes["headFill"];
+    gen.ctx.fill();
+    gen.ctx.fillStyle = orgColorCodes[head];
+    gen.ctx.font = gen.fontsize + "px Arial";
+    txtW = gen.ctx.measureText(headCodes[head]).width;
+    gen.ctx.fillText(headCodes[head], hx - txtW / 2, hy + gen.smallR / 2);
   }
 
   //Draw arc using Bézier curve and two control points http://www.w3schools.com/tags/canvas_beziercurveto.asp
   function drawArc2(gen, spot1, spot2, rep) { //draw an arc
     var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2;
-    ctx.lineWidth = 1;
+    gen.ctx.lineWidth = 1;
     if (spot2 >= spot1) {
-      ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+      gen.ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
     } else {
-      ctx.strokeStyle = dictColor["Red"];
+      gen.ctx.strokeStyle = dictColor["Red"];
     }
-    ctx.beginPath();
+    gen.ctx.beginPath();
     xx1 = gen.cx[0] + gen.tanR * Math.cos(spot1 * 2 * Math.PI / gen.size[0]); //Draw line from Spot1
     yy1 = gen.cy[0] + gen.tanR * Math.sin(spot1 * 2 * Math.PI / gen.size[0]);
-    ctx.moveTo(xx1, yy1);
+    gen.ctx.moveTo(xx1, yy1);
     xx2 = gen.cx[0] + gen.tanR * Math.cos(spot2 * 2 * Math.PI / gen.size[0]); //Draw line to Spot2
     yy2 = gen.cy[0] + gen.tanR * Math.sin(spot2 * 2 * Math.PI / gen.size[0]);
     //Set Control points on same radial as the spots
@@ -2601,8 +2638,8 @@ require([
     xc2 = gen.cx[0] + gen.pathR * Math.cos(spot2 * 2 * Math.PI / gen.size[0]);
     yc2 = gen.cy[0] + gen.pathR * Math.sin(spot2 * 2 * Math.PI / gen.size[0]);
     //console.log(xc1, yc1, xc2, yc2, xx2, yy2);
-    ctx.bezierCurveTo(xc1, yc1, xc2, yc2, xx2, yy2);
-    ctx.stroke();
+    gen.ctx.bezierCurveTo(xc1, yc1, xc2, yc2, xx2, yy2);
+    gen.ctx.stroke();
   }
 
   //Draw offspring Icon once cell divides  from http://stackoverflow.com/questions/8977369/drawing-png-to-a-canvas-element-not-showing-transparency
@@ -2611,44 +2648,44 @@ require([
     var drw = new Image();
     drw.src = "avida-ed-ancestor-icon.png";
     drw.onload = function () {   //image size(width, height) from http://stackoverflow.com/questions/5173796/html5-get-image-dimension
-      ctx.drawImage(drw, gen.cx[1] - drw.width / 2, gen.cy[1] - drw.height / 2);
+      gen.ctx.drawImage(drw, gen.cx[1] - drw.width / 2, gen.cy[1] - drw.height / 2);
     }
-    ctx.fillStyle = dictColor["black"];
-    ctx.font = gen.fontsize + "px Arial";
-    var txtWd = ctx.measureText(txt).width;
-    ctx.fillText(txt, gen.cx[1] - txtWd / 2, gen.cy[1] + drw.height);
+    gen.ctx.fillStyle = dictColor["black"];
+    gen.ctx.font = gen.fontsize + "px Arial";
+    var txtWd = gen.ctx.measureText(txt).width;
+    gen.ctx.fillText(txt, gen.cx[1] - txtWd / 2, gen.cy[1] + drw.height);
   }
 
   //set canvas size; called from many places
   function organismCanvasHolderSize() {
-    OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
-    OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
+    gen.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
+    gen.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
   }
 
   //*****************************************************************/
   //main function to update the Organism Trace on the Organism Page
   function updateOrgTrace(obj, cycle) {
-    console.log('updateOrgTrace')
-    didDivide = obj[cycle].didDivide; //update global version of didDivide
+    gen.didDivide = obj[cycle].didDivide; //update global version of didDivide
     //set canvas size
     organismCanvasHolderSize();
     //Find size and content of each genome.
     for (var ii = 0; ii < obj[cycle].memSpace.length; ii++) {
       gen.dna[ii] = obj[cycle].memSpace[ii].memory.join('');
       gen.size[ii] = obj[cycle].memSpace[ii].memory.length;
-      console.log('ii',ii,'; gen.dna',gen.dna[ii]);
+      console.log('updateOrgTrace: ii',ii,'; gen.dna',gen.dna[ii]);
+      console.log('obj[cycle].memSpace',obj[cycle].memSpace[ii].memory);
     }
     //Draw Timeline
     DrawTimeline(obj, cycle);
     //Find radius and center of big circle for each genome
-    if (OrgCanvas.height < .55 * (OrgCanvas.width - gen.TimeLineHeight)) {
-      gen.bigR[0] = Math.round(0.45 * (OrgCanvas.height - gen.TimeLineHeight))
+    if (gen.OrgCanvas.height < .55 * (gen.OrgCanvas.width - gen.TimeLineHeight)) {
+      gen.bigR[0] = Math.round(0.45 * (gen.OrgCanvas.height - gen.TimeLineHeight))
     }//set size based on height
     else {
-      gen.bigR[0] = Math.round(0.2 * OrgCanvas.width) //set size based on width
+      gen.bigR[0] = Math.round(0.2 * gen.OrgCanvas.width) //set size based on width
     }
-    gen.cx[0] = OrgCanvas.width / 2 - 1.2 * gen.bigR[0];        //center of 1st (parent) circle x
-    gen.cy[0] = (OrgCanvas.height - gen.TimeLineHeight) / 2;  //center of 1st (parent) circle y
+    gen.cx[0] = gen.OrgCanvas.width / 2 - 1.2 * gen.bigR[0];        //center of 1st (parent) circle x
+    gen.cy[0] = (gen.OrgCanvas.height - gen.TimeLineHeight) / 2;  //center of 1st (parent) circle y
     // Draw parent (Mom) genome in a circle----------------------------------------
     gen.smallR = gen.bigR[0] * 2 * Math.PI / (2 * gen.size[0]); //radius of each small circle
     gen.tanR = gen.bigR[0] - gen.smallR;         //radius of circle tanget to inside of small circles
@@ -2663,7 +2700,7 @@ require([
       gen.cy[1] = gen.cy[0];
       gen.headR[1] = gen.bigR[1] - 2 * gen.smallR;      //radius of circle made by center of head positions.
       if (obj[cycle].didDivide) {
-        gen.cx[1] = OrgCanvas.width / 2 + 1.1 * gen.bigR[1];
+        gen.cx[1] = gen.OrgCanvas.width / 2 + 1.1 * gen.bigR[1];
         gen.rotate[1] = 0;
         drawIcon(gen);
         //there is an offspring, so it can be saved in the freezer or fed back into Organism viewer
@@ -2703,20 +2740,20 @@ require([
     //Draw buffers ---------------------------------------------------
     //drawBitStr (name, row, bitStr);
     for (var ii = 0; ii < obj[cycle].buffers.input.length; ii++) {
-      drawBitStr(bufferCtx, ii, obj[cycle].buffers.input[ii]);
+      drawBitStr(gen.bufferCtx, ii, obj[cycle].buffers.input[ii]);
     }
-    drawBitStr(registerCtx, 0, obj[cycle].registers['ax']);
-    drawBitStr(registerCtx, 1, obj[cycle].registers['bx']);
-    drawBitStr(registerCtx, 2, obj[cycle].registers['cx']);
+    drawBitStr(gen.registerCtx, 0, obj[cycle].registers['ax']);
+    drawBitStr(gen.registerCtx, 1, obj[cycle].registers['bx']);
+    drawBitStr(gen.registerCtx, 2, obj[cycle].registers['cx']);
     //console.log("A", obj[cycle].buffers);
     for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
       //console.log(ii, obj[cycle].buffers["stack A"][ii]);
-      drawBitStr(AstackCtx, ii, obj[cycle].buffers["stack A"][ii]);
+      drawBitStr(gen.AstackCtx, ii, obj[cycle].buffers["stack A"][ii]);
     }
     for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
-      drawBitStr(BstackCtx, ii, obj[cycle].buffers["stack B"][ii]);
+      drawBitStr(gen.BstackCtx, ii, obj[cycle].buffers["stack B"][ii]);
     }
-    drawBitStr(outputCtx, 0, obj[cycle].buffers.output[0]);
+    drawBitStr(gen.outputCtx, 0, obj[cycle].buffers.output[0]);
     // update details
     updateTimesPerformed(obj, cycle);   //Update Times functions are performed.
     writeInstructDetails(obj, cycle);   //Write Instruction Details

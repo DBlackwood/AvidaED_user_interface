@@ -109,7 +109,7 @@ function DrawLogicSelected(grd) {
   console.log('=========================')
   console.log('logic', grd.out);
   for (ii = 0; ii < grd.out.length; ii++) {
-    if (0 != grd.out) {
+    if (0 != grd.out[ii]) {
       cc = ii % grd.cols;
       rr = Math.trunc(ii / grd.cols);
       xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
