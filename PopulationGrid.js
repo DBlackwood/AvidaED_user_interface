@@ -66,7 +66,7 @@ function DrawParent(grd, parents) {
 
 //only one line changes between the two loops. Thought it would be faster to do the if outside the loop rather than
 //inside the loop. Need to time things to see if it makes a difference
-function DrawChildren(grd, parents) {  //Draw the children of parents
+function DrawKids(grd, parents) {  //Draw the children of parents
   var cc, rr, xx, yy;
   //console.log('fill', grd.fill);
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
@@ -102,6 +102,53 @@ function DrawChildren(grd, parents) {  //Draw the children of parents
       grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
     }
   }
+}
+
+function findLogicOutline(grd) {
+  var alloff = true;
+  console.log('not',grd.msg.not.data);
+  for (ii = 0; ii < grd.msg.not.data.length; ii++) {
+    grd.out[ii] = 1;
+  }
+  if ('on' == document.getElementById('notButton').value) {
+    for (ii = 0; ii < grd.msg.not.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('nanButton').value) {
+    for (ii = 0; ii < grd.msg.nand.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nand.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('andButton').value) {
+    for (ii = 0; ii < grd.msg.and.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.and.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('ornButton').value) {
+    for (ii = 0; ii < grd.msg.orn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.orn.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('ornButton').value) {
+    for (ii = 0; ii < grd.msg.or.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.or.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('antButton').value) {
+    for (ii = 0; ii < grd.msg.andn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.andn.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('norButton').value) {
+    for (ii = 0; ii < grd.msg.nor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nor.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('xorButton').value) {
+    for (ii = 0; ii < grd.msg.xor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.xor.data[ii];}
+    alloff = false;
+  }
+  if ('on' == document.getElementById('equButton').value) {
+    for (ii = 0; ii < grd.msg.equ.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.equ.data[ii];}
+    alloff = false;
+  }
+  if (alloff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
+  //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
+  //console.log('setLogic', grd.out);
 }
 
 function DrawLogicSelected(grd) {
@@ -204,7 +251,7 @@ function DrawGridUpdate(grd, parents) {
     DrawParent(grd, parents);
   }
   else {
-    DrawChildren(grd, parents);
+    DrawKids(grd, parents);
   }
   //Draw Selected as one of the last items to draw
   if (grd.flagSelected) { DrawSelected(grd) }

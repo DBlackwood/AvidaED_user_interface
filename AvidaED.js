@@ -98,6 +98,9 @@ require([
           grd.msg = msg;
           DrawGridSetup();
           break;
+        case 'getOrgDataByCell':
+          updateSelectedOrganismType(msg);
+          break;
         default:
           console.log('____________UnknownRequest: ', msg);
           break;
@@ -140,7 +143,19 @@ require([
     uiWorker.postMessage(request);
   }
 
+  //request data from Avida to update SelectedOrganismType
+  function doSelectedOrganismType(grd) {
+    var request = {
+      'type': 'addEvent',
+      'name': 'getOrgDataByCell',
+      'args': grd.NdxSelected
+    }
+    uiWorker.postMessage(request);
+  }
+
+  //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
+  //********************************************************************************************************************
   // called from script in html file as well as below
   BrowserResizeEventHandler = function () {
     if ("block" == domStyle.get("analysisBlock", "display")) {
@@ -1441,6 +1456,48 @@ require([
     dijit.byId("mnFzOrganism").attr("disabled", true);
   }
 
+  function updateSelectedOrganismType(msg) {
+    document.getElementById("nameLabel").textContent = msg.genotypeName;
+    var prefix = "";
+    if (msg.isEstimate) prefix = "est. ";
+    document.getElementById("fitLabel").innerHTML = prefix + msg.fitness;
+    document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism;
+    document.getElementById("generateLabel").textContent = prefix + msg.gestation;
+    document.getElementById("ageLabel").textContent = prefix + msg.age;
+    document.getElementById("ancestorLabel").textContent = msg.ancestor ;
+    //add + or - to text of logic function
+    if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";
+    else document.getElementById("notLabel").textContent = "not+";
+    if (0 == msg.tasks.nan) document.getElementById("nanLabel").textContent = "nan-";
+    else document.getElementById("nanLabel").textContent = "nan+";
+    if (0 == msg.tasks.and) document.getElementById("andLabel").textContent = "and-";
+    else document.getElementById("andLabel").textContent = "and+";
+    if (0 == msg.tasks.orn) document.getElementById("ornLabel").textContent = "orn-";
+    else document.getElementById("ornLabel").textContent = "orn+";
+    if (0 == msg.tasks.oro) document.getElementById("oroLabel").textContent = "oro-";
+    else document.getElementById("oroLabel").textContent = "oro+";
+    if (0 == msg.tasks.ant) document.getElementById("antLabel").textContent = "ant-";
+    else document.getElementById("antLabel").textContent = "ant+";
+    if (0 == msg.tasks.nor) document.getElementById("norLabel").textContent = "nor-";
+    else document.getElementById("norLabel").textContent = "nor+";
+    if (0 == msg.tasks.xor) document.getElementById("xorLabel").textContent = "xor-";
+    else document.getElementById("xorLabel").textContent = "xor+";
+    if (0 == msg.tasks.equ) document.getElementById("equLabel").textContent = "equ-";
+    else document.getElementById("equLabel").textContent = "equ+";
+    //now put in the actual numbers
+    document.getElementById("notTime").textContent = msg.tasks.not;
+    document.getElementById("nanTime").textContent = msg.tasks.nan;
+    document.getElementById("andTime").textContent = msg.tasks.and;
+    document.getElementById("ornTime").textContent = msg.tasks.orn;
+    document.getElementById("ornTime").textContent = msg.tasks.oro;
+    document.getElementById("antTime").textContent = msg.tasks.ant;
+    document.getElementById("norTime").textContent = msg.tasks.nor;
+    document.getElementById("xorTime").textContent = msg.tasks.xor;
+    document.getElementById("equTime").textContent = msg.tasks.equ;
+    //debug
+    document.getElementById("dnaLabel").textContent = msg.genome;
+  }
+
   //******* Freeze Button ********************************************
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.
@@ -1619,6 +1676,7 @@ require([
     mouseY = evt.offsetY - grd.marginY - grd.yOffset;
     grd.ColSelected = Math.floor(mouseX / grd.cellWd);
     grd.RowSelected = Math.floor(mouseY / grd.cellHt);
+    grd.NdxSelected = grd.RowSelected*grd.cols + grd.ColSelected;
     //console.log('mx,y', mouseX, mouseY, '; selected Col, Row', grd.ColSelected, grd.RowSelected);
   }
 
@@ -1682,8 +1740,21 @@ require([
           //console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
         }
       }
+      else {  //look for decendents (bugs)
+        doSelectedOrganismType(grd);
+        //if ancestor not null then there is a cell there.
+        if ('null' != grd.msg.ancestor.data[grd.NdxSelected]) {
+          updateSelectedKid(grd);
+          mouse.Picked = 'kid';
+        }
+      }
     }
   });
+
+  //update data about a kid in the selecred organism to move = primarily genome and name
+  function updateSelectedKid(grd) {
+
+  }
 
   //mouse move anywhere on screen
   $(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
@@ -1902,53 +1973,6 @@ require([
     grd.mxRate = 0.1;  //store maximum metabolic rate during an experiment
   }
   clearGrd();
-
-  function findLogicOutline(grd) {
-    var alloff = true;
-    console.log('not',grd.msg.not.data);
-    for (ii = 0; ii < grd.msg.not.data.length; ii++) {
-      grd.out[ii] = 1;
-    }
-    if ('on' == document.getElementById('notButton').value) {
-      for (ii = 0; ii < grd.msg.not.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('nanButton').value) {
-      for (ii = 0; ii < grd.msg.nan.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nan.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('andButton').value) {
-      for (ii = 0; ii < grd.msg.and.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.and.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('ornButton').value) {
-      for (ii = 0; ii < grd.msg.orn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.orn.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('oroButton').value) {
-      for (ii = 0; ii < grd.msg.oro.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.oro.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('antButton').value) {
-      for (ii = 0; ii < grd.msg.ant.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.ant.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('norButton').value) {
-      for (ii = 0; ii < grd.msg.nor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nor.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('xorButton').value) {
-      for (ii = 0; ii < grd.msg.xor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.xor.data[ii];}
-      alloff = false;
-    }
-    if ('on' == document.getElementById('equButton').value) {
-      for (ii = 0; ii < grd.msg.equ.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.equ.data[ii];}
-      alloff = false;
-    }
-    if (alloff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
-    console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
-    console.log('setLogic', grd.out);
-  }
 
   function DrawGridSetup() {
     //Get the size of the div that holds the grid and the scale or legend
@@ -2673,7 +2697,7 @@ require([
       gen.dna[ii] = obj[cycle].memSpace[ii].memory.join('');
       gen.size[ii] = obj[cycle].memSpace[ii].memory.length;
       console.log('updateOrgTrace: ii',ii,'; gen.dna',gen.dna[ii]);
-      console.log('obj[cycle].memSpace',obj[cycle].memSpace[ii].memory);
+      console.log('obj[cycle].memSpace',obj[cycle].memSpace[ii]);
     }
     //Draw Timeline
     DrawTimeline(obj, cycle);
