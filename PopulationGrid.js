@@ -44,8 +44,8 @@ function setMapData(grd) {
       grd.fill = grd.msg.ancestor.data;
       break;
   }
-  console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-  console.log('fitmax',grd.msg.fitness.maxVal,'; Gest',grd.msg.gestation.maxVal,'; rate',grd.msg.metabolism.maxVal,'; fillmax',grd.fillmax);
+  //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+  //console.log('fitmax',grd.msg.fitness.maxVal,'; Gest',grd.msg.gestation.maxVal,'; rate',grd.msg.metabolism.maxVal,'; fillmax',grd.fillmax);
 }
 
 function DrawParent(grd, parents) {
@@ -151,17 +151,45 @@ function findLogicOutline(grd) {
   //console.log('setLogic', grd.out);
 }
 
+function cellConflict(NewCols, NewRows, grd, parents) {
+  var places = [[1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]];
+  var flg = false;
+  var tryCol, tryRow, avNdx;
+  for (var ii = 0; ii < parents.handNdx.length; ii++) {
+    flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]], ii);
+    if (flg) {
+      for (var jj = 0; jj < places.length; jj++) {
+        tryCol = parents.col[parents.handNdx[ii]] + places[jj][0];
+        tryRow = parents.row[parents.handNdx[ii]] + places[jj][1];
+        avNdx = tryCol + tryRow * NewCols;
+        if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {
+          flg = cellFilled(avNdx, ii)
+        }
+        else {
+          flg = true
+        }
+        if (!flg) {
+          parents.col[parents.handNdx[ii]] = tryCol;
+          parents.row[parents.handNdx[ii]] = tryRow;
+          parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
+          break;
+        }
+      }
+    }
+  }
+}
+
 function DrawLogicSelected(grd) {
   var cc, rr, xx, yy;
-  console.log('=========================')
-  console.log('logic', grd.out);
+  //console.log('=========================')
+  //console.log('logic', grd.out);
   for (ii = 0; ii < grd.out.length; ii++) {
     if (0 != grd.out[ii]) {
       cc = ii % grd.cols;
       rr = Math.trunc(ii / grd.cols);
       xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
       yy = grd.marginY + grd.yOffset + rr * grd.cellHt;
-      DrawCellOutline(2, '#00ffff', xx, yy, grd.cellWd, grd.cellHt, grd)
+      DrawCellOutline(2, grd.LogicColor, xx, yy, grd.cellWd, grd.cellHt, grd)
     }
   }
 
@@ -171,10 +199,11 @@ function DrawLogicSelected(grd) {
 function DrawSelected(grd) {
   grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
   grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
-  DrawCellOutline(2, '#00ff00', grd.selectX, grd.selectY, grd.cellWd, grd.cellHt, grd)
+  DrawCellOutline(2, grd.SelectedColor, grd.selectX, grd.selectY, grd.cellWd, grd.cellHt, grd)
 }
 
 function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {
+  grd.cntx.beginPath();
   grd.cntx.rect(xx, yy, wide, tall);
   grd.cntx.strokeStyle = color;
   grd.cntx.lineWidth = lineThickness;
@@ -254,8 +283,8 @@ function DrawGridUpdate(grd, parents) {
     DrawKids(grd, parents);
   }
   //Draw Selected as one of the last items to draw
-  if (grd.flagSelected) { DrawSelected(grd) }
   if (!grd.newrun) DrawLogicSelected(grd);
+  if (grd.flagSelected) { DrawSelected(grd) }
 }
 
 function DrawGridBackground(grd) {

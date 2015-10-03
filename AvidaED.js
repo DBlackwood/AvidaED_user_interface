@@ -1496,6 +1496,12 @@ require([
     document.getElementById("equTime").textContent = msg.tasks.equ;
     //debug
     document.getElementById("dnaLabel").textContent = msg.genome;
+
+    if ('getgenome'==grd.kidStatus) {
+      grd.kidStatus = "havegenome";
+      grd.kidName = msg.genotypeName;
+      grd.kidGenome = msg.genome;
+    }
   }
 
   //******* Freeze Button ********************************************
@@ -1740,7 +1746,8 @@ require([
           //console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
         }
       }
-      else {  //look for decendents (bugs)
+      else {  //look for decendents (kids)
+        grd.kidStatus='getgenome';
         doSelectedOrganismType(grd);
         //if ancestor not null then there is a cell there.
         if ('null' != grd.msg.ancestor.data[grd.NdxSelected]) {
@@ -1749,11 +1756,15 @@ require([
         }
       }
     }
+    else grd.flagSelected = false;
+    DrawGridSetup();
   });
 
   //update data about a kid in the selecred organism to move = primarily genome and name
   function updateSelectedKid(grd) {
-
+    document.getElementById('organismIcon').style.cursor = 'copy';
+    document.getElementById('freezeOrganNode').style.cursor = 'copy';
+    document.getElementById('gridCanvas').style.cursor = 'copy';
   }
 
   //mouse move anywhere on screen
@@ -1779,6 +1790,7 @@ require([
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organismIcon').style.cursor = 'default';
     document.getElementById('freezeOrganNode').style.cursor = 'default';
+    document.getElementById('freezeOrganNode').style.cursor = 'default';
     mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = false;
 
@@ -1790,6 +1802,10 @@ require([
     else if ('offspring' == mouse.Picked) {
       mouse.Picked = "";
       OffspringMouseDn(evt)
+    }
+    else if ('offspring' == mouse.Picked) {
+      mouse.Picked = "";
+      KidMouseDn(evt);
     }
     mouse.Picked = "";
   });
@@ -1817,6 +1833,35 @@ require([
     }
     else if ('freezeOrganNode' == evt.target.id) {
       //create a new freezer item
+    }
+  }
+
+  function KidMouseDn(evt){
+  if ('organismIcon' == evt.target.id) {
+      //Change to Organism Page
+      mainBoxSwap("organismBlock");
+      organismCanvasHolderSize();
+      var height = ($("#rightDetail").innerHeight() - 375) / 2;
+      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById("ExecuteAbout").style.height = height + "px";
+      document.getElementById("ExecuteJust").style.width = "100%";
+      document.getElementById("ExecuteAbout").style.width = "100%";
+
+      OrganCurrent.selectAll().deleteSelectedNodes();  //clear items
+      OrganCurrent.sync();   //should be done after insertion or deletion
+      //Put name of offspring in OrganCurrentNode
+      OrganCurrent.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
+      OrganCurrent.sync();
+      //genome data should be in parents.genome[mouse.ParentNdx];
+      chosen.genome = grd.kidGenome;
+      chosen.name = grd.kidName;
+      chosen.domId = "";
+      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+    }
+    else if ('freezeOrganNode' == eve.target.id){
+      //make sure there is a name.
+      freezeOrgan.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
+      freezeOrgan.sync();
     }
   }
 
@@ -1971,6 +2016,9 @@ require([
     grd.mxFit = 0.1;   //store maximum fitness during an experiment
     grd.mxGest = 0.1;  //store maximum gestation time during an experiment
     grd.mxRate = 0.1;  //store maximum metabolic rate during an experiment
+    grd.SelectedColor = '#ffffff';
+    grd.LogicColor = '#00ff00';
+    grd.kidStatus = '';
   }
   clearGrd();
 
@@ -2079,35 +2127,18 @@ require([
       document.getElementById(button).className = 'bitButtonOn';
       console.log('now on');
     }
+    DrawGridSetup();
   }
 
-  document.getElementById("notButton").onclick = function () {
-    toggle('notButton');
-  }
-  document.getElementById("nanButton").onclick = function () {
-    toggle('nanButton');
-  }
-  document.getElementById("andButton").onclick = function () {
-    toggle('andButton');
-  }
-  document.getElementById("ornButton").onclick = function () {
-    toggle('ornButton');
-  }
-  document.getElementById("oroButton").onclick = function () {
-    toggle('oroButton');
-  }
-  document.getElementById("antButton").onclick = function () {
-    toggle('antButton');
-  }
-  document.getElementById("norButton").onclick = function () {
-    toggle('norButton');
-  }
-  document.getElementById("xorButton").onclick = function () {
-    toggle('xorButton');
-  }
-  document.getElementById("equButton").onclick = function () {
-    toggle('equButton');
-  }
+  document.getElementById("notButton").onclick = function () {toggle('notButton');}
+  document.getElementById("nanButton").onclick = function () {toggle('nanButton');}
+  document.getElementById("andButton").onclick = function () {toggle('andButton');}
+  document.getElementById("ornButton").onclick = function () {toggle('ornButton');}
+  document.getElementById("oroButton").onclick = function () {toggle('oroButton');}
+  document.getElementById("antButton").onclick = function () {toggle('antButton');}
+  document.getElementById("norButton").onclick = function () {toggle('norButton');}
+  document.getElementById("xorButton").onclick = function () {toggle('xorButton');}
+  document.getElementById("equButton").onclick = function () {toggle('equButton');}
 
 
   // *************************************************************** */
@@ -2133,35 +2164,7 @@ require([
     grd.ZoomSlide.set("value", 1);
     PlaceAncestors(parents);
     //are any parents on the same cell?
-    cellConflict(NewCols, NewRows);
-  }
-
-  function cellConflict(NewCols, NewRows) {
-    var places = [[1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]];
-    var flg = false;
-    var tryCol, tryRow, avNdx;
-    for (var ii = 0; ii < parents.handNdx.length; ii++) {
-      flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]], ii);
-      if (flg) {
-        for (var jj = 0; jj < places.length; jj++) {
-          tryCol = parents.col[parents.handNdx[ii]] + places[jj][0];
-          tryRow = parents.row[parents.handNdx[ii]] + places[jj][1];
-          avNdx = tryCol + tryRow * NewCols;
-          if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {
-            flg = cellFilled(avNdx, ii)
-          }
-          else {
-            flg = true
-          }
-          if (!flg) {
-            parents.col[parents.handNdx[ii]] = tryCol;
-            parents.row[parents.handNdx[ii]] = tryRow;
-            parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
-            break;
-          }
-        }
-      }
-    }
+    cellConflict(NewCols, NewRows, grd, parents);
   }
 
   var cellFilled = function (AvNdx, ii) {
@@ -3245,6 +3248,7 @@ require([
         }
       }
     }
+    else chck.flagSelected = false;
   });
 
 //When mouse button is released, return cursor to default values
