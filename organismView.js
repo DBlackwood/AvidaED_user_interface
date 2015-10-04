@@ -1,3 +1,43 @@
+function clearGen() {
+  gen.cycle = 0;
+  gen.bigR = [120, 120]; //radius of full circle
+  gen.size = [50, 50];
+  gen.smallR = gen.bigR * 2 * Math.PI / (2 * gen.size[0]); //radius of each small circle
+  gen.tanR = gen.bigR[0] - gen.smallR;         //radius of circle tanget to inside of small circles
+  gen.pathR = gen.bigR[0] - 3 * gen.smallR;      //radius of circle used to define reference point of arcs on path
+  gen.headR = [gen.bigR[0] - 2 * gen.smallR, gen.bigR[1] - 2 * gen.smallR];      //radius of circle made by center of head positions.
+  gen.cx = [150, 350];  //center of main circle x
+  gen.cy = [150, 150];  //center of main circle y
+  gen.fontsize = Math.round(1.8 * gen.smallR);
+  gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
+  gen.dna = ["", ""];
+  gen.TimeLineHeight = 60;
+  gen.imageXY = {x: 5, y: 5};
+  gen.didDivide = false;
+  gen.debug = true;
+  gen.mom = 0;
+  gen.son = 1;
+  //initialize all canvases needed for Organism page
+  gen.bufferCvs = document.getElementById("buffer");
+  gen.bufferCtx = gen.bufferCvs.getContext("2d");
+  gen.bufferCtx.translate(0.5, 0.5);
+  gen.registerCvs = document.getElementById("register");
+  gen.registerCtx = gen.registerCvs.getContext("2d");
+  gen.registerCtx.translate(0.5, 0.5);
+  gen.AstackCvs = document.getElementById("Astack");
+  gen.AstackCtx = gen.AstackCvs.getContext("2d");
+  gen.AstackCtx.translate(0.5, 0.5);
+  gen.BstackCvs = document.getElementById("Bstack");
+  gen.BstackCtx = gen.BstackCvs.getContext("2d");
+  gen.BstackCtx.translate(0.5, 0.5);
+  gen.outputCvs = document.getElementById("output");
+  gen.outputCtx = gen.outputCvs.getContext("2d");
+  //gen.outputCtx.imageSmoothingEnabled= false;
+  gen.OrgCanvas = document.getElementById("organismCanvas");
+  gen.ctx = gen.OrgCanvas.getContext("2d");
+  gen.ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
+}
+
 function DrawTimeline(obj, gen) {
   var startX, lineY, endX, length, numCycles, upLabelY, dnLabelY, txtWide, dnTickX, dnNum;
   var tickLength = 10;

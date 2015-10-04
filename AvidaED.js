@@ -418,6 +418,35 @@ require([
     return items;
   }
 
+  var getUniqueName = function(name, target) {
+    var namelist = dojo.query('> .dojoDndItem', target.node.id);
+    var unique = true;
+    while (unique) {
+      unique = false;
+      for (var ii = 0; ii < namelist.length; ii++) {
+        //console.log ("name ", namelist[ii].innerHTML);
+        if (name == namelist[ii].textContent) {
+          name = prompt("Please give your item a unique name ", name + "_1")
+          unique = true;
+        }
+      }
+    }
+    return name;
+  }
+
+  var getDomID = function (name, target){
+    //Now find which node has the new content so it can get a context menu.
+    var domItems = Object.keys(target.map);
+    var nodeIndex = -1;
+    for (var ii = 0; ii < domItems.length; ii++) {
+      if (target.map[domItems[ii]].data == name) {
+        nodeIndex = ii;
+        break;
+      }
+    }
+    return domItems[nodeIndex];
+  }
+
   //-------- Configuration DnD ---------------------------------------
   //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
   //and reinserting the most resent one after a drop event.
@@ -451,32 +480,15 @@ require([
       var strItem = Object.keys(target.selection)[0];
       var dishCon = prompt("Please name your dish configuration", nodes[0].textContent + "_1");
       if (dishCon) {
-        var namelist = dojo.query('> .dojoDndItem', 'freezeConfigureNode');
-        var unique = true;
-        while (unique) {
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++) {
-            //console.log ("name ", namelist[ii].innerHTML);
-            if (dishCon == namelist[ii].textContent) {
-              dishCon = prompt("Please give your configured dish a unique name ", dishCon + "_1")
-              unique = true;
-            }
-          }
-        }
-        if (null != dishCon) {
-          document.getElementById(strItem).textContent = dishCon;
-          target.map[strItem].data = dishCon;
-          //Now find which node has the new content so it can get a context menu.
+        var configName = getUniqueName(dishCon, target);
+        if (null != configName) {
+          document.getElementById(strItem).textContent = configName;
+          target.map[strItem].data = configName;
 
-          var domItems = Object.keys(freezeConfigure.map);
-          var nodeIndex = -1;
-          for (var ii = 0; ii < domItems.length; ii++) {
-            if (freezeConfigure.map[domItems[ii]].data == dishCon) {
-              nodeIndex = ii;
-            }
-          }
-          //create a right mouse-click context menue for the item just created.
-          contextMenu(target, domItems[nodeIndex]);
+          //Now find which node has the new content so it can get a context menu.
+          var domID = getDomID(configName, target);
+          //create a right mouse-click context menu for the item just created.
+          contextMenu(target, domID);
         }
       }
       else {  //user cancelled so the item should NOT be added to the freezer.
@@ -572,22 +584,10 @@ require([
       var strItem = Object.keys(target.selection)[0];
       var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
       if (avidian) {
-        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-        var unique = true;
-        while (unique) {
-          //console.log('namelen', namelist.length, '; aviLen', avidian.length);
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++) {
-            if (avidian == namelist[ii].textContent) {
-              avidian = prompt("Please give your avidian a unique name ", avidian + "_1")
-              unique = true;
-              //break;
-            }
-          }
-        }
-        if (null != avidian) {  //give dom item new avidian name
-          document.getElementById(strItem).textContent = avidian;
-          target.map[strItem].data = avidian;
+        var avName = getUniqueName(avidian, target);
+        if (null != avName) {  //give dom item new avName name
+          document.getElementById(strItem).textContent = avName;
+          target.map[strItem].data = avName;
 
           if ("AncestorBoxNode" == source.node.id) {
             //update structure to hold freezer data for Organisms.
@@ -732,35 +732,26 @@ require([
   freezePopDish.on("DndDrop", function (source, nodes, copy, target) {
     if ("freezePopDishNode" == target.node.id) {
       //var items = getAllItems(freezePopDish);  not used
-      var popDish = prompt("Please name your populated dish", nodes[0].textContent + "_1");
-      var namelist = dojo.query('> .dojoDndItem', 'freezePopDishNode');
-      var unique = true;
-      while (unique) {
-        unique = false;
-        for (var ii = 0; ii < namelist.length; ii++) {
-          if (popDish == namelist[ii].innerHTML) {
-            popDish = prompt("Please give your populated dish a unique name ", popDish + "_1")
-            unique = true;
-            break;
-          }
+      var populatedDish = prompt("Please name your populated dish", nodes[0].textContent + "_1");
+      if (populatedDish) {
+        var popDish = getUniqueName(populatedDishcon, target);
+        if (null != popDish) {
+          nodes[0].textContent = popDish;
+          //to change data value not fully tested, but keep as it was hard to figure out
+          //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
         }
+        //ways to get information about the Dnd containers
+        //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
+        //console.log(Object.keys(target.selection)[0]);
+        //console.log("map: ", target.map);
+        //console.log("id: ", target.node.id);
+        //console.log("textContent: ", nodes[0].textContent);
+        //console.log("nodes[0].id: ", nodes[0].id);
+        //console.log("target.selection: ",target.selection);
+        //console.log("target.selection: ",Object.keys(target.selection)[0]);
+        //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
+        //console.log("allnodes: ",target.getAllNodes());
       }
-      if (null != popDish) {
-        nodes[0].textContent = popDish;
-        //to change data value not fully tested, but keep as it was hard to figure out
-        //freezePopDish.setItem(target.node.id, {data: popDish, type: ["popDish"]});
-      }
-      //ways to get information about the Dnd containers
-      //console.log("nodes[0].id, target.node.id = ", nodes[0].id, target.node.id);
-      //console.log(Object.keys(target.selection)[0]);
-      //console.log("map: ", target.map);
-      //console.log("id: ", target.node.id);
-      //console.log("textContent: ", nodes[0].textContent);
-      //console.log("nodes[0].id: ", nodes[0].id);
-      //console.log("target.selection: ",target.selection);
-      //console.log("target.selection: ",Object.keys(target.selection)[0]);
-      //console.log(document.getElementById(Object.keys(target.selection)[0]).innerHTML)
-      //console.log("allnodes: ",target.getAllNodes());
     }
   });
 
@@ -915,7 +906,7 @@ require([
   //http://jsfiddle.net/bEurr/10/
   function contextMenu(target, fzItemID) {
     var fzSection = target.node.id;
-    //console.log("target.node.id=",target.node.id);
+    console.log("target.node.id=",target.node.id);
     //console.log("target.map", target.map);
     //console.log("fzItemID=",fzItemID, " fzSection=", fzSection);
     var aMenu;
@@ -924,30 +915,18 @@ require([
       label: "Rename",
       onClick: function () {
         var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).textContent);
-        var namelist = dojo.query('> .dojoDndItem', fzSection);
-        var unique = true;
-        while (unique) {
-          unique = false;
-          if (fzName != document.getElementById(fzItemID).innerHTML) {
-            for (var ii = 0; ii < namelist.length; ii++) {
-              //console.log ("name ", namelist[ii].innerHTML);
-              if (fzName == namelist[ii].innerHTML) {
-                fzName = prompt("Please give your freezer item a unique name ", fzName + "_1")
-                unique = true;
-                break;
-              }
+        if (fzName) {
+          fzName = getUniqueName(fzName, target);
+          if (null != fzName) {
+            //document.getElementById(fzItemID).innerHTML = fzName;  //either works
+            document.getElementById(fzItemID).textContent = fzName;
+            //console.log(".data=", target.map[fzItemID].data);
+            //update freezer structure
+            if ('freezeOrganNode' == fzSection) {
+              var Ndx = findFzOrganNdx(fzItemID, fzOrgan);
+              fzOrgan[Ndx].name = fzName;
+              //console.log('contextMenu', fzOrgan);
             }
-          }
-        }
-        if (null != fzName) {
-          //document.getElementById(fzItemID).innerHTML = fzName;  //either works
-          document.getElementById(fzItemID).textContent = fzName;
-          //console.log(".data=", target.map[fzItemID].data);
-          //update freezer structure
-          if ('freezeOrganNode' == fzSection) {
-            var Ndx = findFzOrganNdx(fzItemID, fzOrgan);
-            fzOrgan[Ndx].name = fzName;
-            //console.log('contextMenu', fzOrgan);
           }
         }
       }
@@ -1461,32 +1440,13 @@ require([
   function FrConfigFn() {
     var fzName = prompt("Please name the new configuration", "newConfig");
     var namelist = dojo.query('> .dojoDndItem', "freezeConfigureNode");
-    var unique = true;
-    while (unique) {
-      unique = false;
-      for (var ii = 0; ii < namelist.length; ii++) {
-        //console.log ("name ", namelist[ii].innerHTML);
-        if (fzName == namelist[ii].innerHTML) {
-          fzName = prompt("Please give your new configuration a unique name ", fzName + "_1")
-          unique = true;
-          break;
-        }
-      }
-    }
+    fzName = getUniqueName(fzname, freezeConfigure);
     if (null != fzName) {
       freezeConfigure.insertNodes(false, [{data: fzName, type: ["conDish"]}]);
       freezeConfigure.sync();
       //Create context menu for right-click on this item
-      //Find out the dom ID the node element just inserted.
-      var domItems = Object.keys(freezeConfigure.map);
-      //console.log("domItems=", domItems);
-      var nodeIndex = -1;
-      for (var ii = 0; ii < domItems.length; ii++) {
-        if (freezeConfigure.map[domItems[ii]].data == fzName) {
-          nodeIndex = ii;
-        }
-      }
-      contextMenu(freezeConfigure, domItems[nodeIndex]);
+      var domID = getDomID(fzname,freezeConfigure);
+      contextMenu(freezeConfigure, domID);
     }
   }
 
@@ -1503,33 +1463,14 @@ require([
   //Save a populated dish
   function FrPopulationFn() {
     var fzName = prompt("Please name the new population", "newPopulation");
-    var namelist = dojo.query('> .dojoDndItem', "freezePopDishNode");
-    var unique = true;
-    while (unique) {
-      unique = false;
-      for (var ii = 0; ii < namelist.length; ii++) {
-        //console.log ("name ", namelist[ii].innerHTML);
-        if (fzName == namelist[ii].innerHTML) {
-          fzName = prompt("Please give your new Population a unique name ", fzName + "_1")
-          unique = true;
-          break;
-        }
-      }
-    }
+    fzName = getUniqueName(fzname, freezePopDish);
     if (null != fzName) {
       freezePopDish.insertNodes(false, [{data: fzName, type: ["popDish"]}]);
       freezePopDish.sync();
       //Create context menu for right-click on this item
       //Find out the dom ID the node element just inserted.
-      var domItems = Object.keys(freezePopDish.map);
-      //console.log("domItems=", domItems);
-      var nodeIndex = -1;
-      for (var ii = 0; ii < domItems.length; ii++) {
-        if (freezePopDish.map[domItems[ii]].data == fzName) {
-          nodeIndex = ii;
-        }
-      }
-      contextMenu(freezePopDish, domItems[nodeIndex]);
+      var domID = getDomID(fzName, freezePopDish);
+      contextMenu(freezePopDish, domID);
     }
   }
 
@@ -1563,34 +1504,15 @@ require([
     else {
       fzName = prompt("Please name the organism", "newOrganism");
     }
-    var namelist = dojo.query('> .dojoDndItem', "freezeOrganNode");
-    var unique = true;
-    while (unique) {
-      unique = false;
-      for (var ii = 0; ii < namelist.length; ii++) {
-        //console.log ("name ", namelist[ii].innerHTML);
-        if (fzName == namelist[ii].innerHTML) {
-          fzName = prompt("Please give your new Organism a unique name ", fzName + "_1")
-          unique = true;
-          break;
-        }
-      }
-    }
+    fzName = getUniqueName(fzName, freezeOrgan);
     if (null != fzName) {
       //insert new item into the freezer.
       freezeOrgan.insertNodes(false, [{data: fzName, type: ["organism"]}]);
       freezeOrgan.sync();
 
       //Find out the dom ID the node element just inserted.
-      var domItems = Object.keys(freezeOrgan.map);
-      //console.log("domItems=", domItems);
-      var nodeIndex = -1;
-      for (var ii = 0; ii < domItems.length; ii++) {
-        if (freezeOrgan.map[domItems[ii]].data == fzName) {
-          nodeIndex = ii;
-        }
-      }
-      contextMenu(freezeOrgan, domItems[nodeIndex]);
+      var domID = getDomID(fzName,freezeOrgan);
+      contextMenu(freezeOrgan, domID);
     }
   }
 
@@ -1794,19 +1716,7 @@ require([
       //make sure there is a name.
       var avidian = prompt("Please name your avidian", grd.kidName);
       if (avidian) {
-        var namelist = dojo.query('> .dojoDndItem', 'freezeOrganNode');
-        var unique = true;
-        while (unique) {
-          //console.log('namelen', namelist.length, '; aviLen', avidian.length);
-          unique = false;
-          for (var ii = 0; ii < namelist.length; ii++) {
-            if (avidian == namelist[ii].textContent) {
-              avidian = prompt("Please give your avidian a unique name ", avidian + "_1")
-              unique = true;
-              //break;
-            }
-          }
-        }
+        avidian = getUniqueName(avidian, fzOrgan);
         if (null != avidian) {  //add to Freezer
           freezeOrgan.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
           freezeOrgan.sync();
@@ -2332,26 +2242,7 @@ require([
   /*                  Canvas for Organsim View (genome)
   /* ************************************************************** */
 
-  //initialize all canvases needed for Organism page
-  gen.bufferCvs = document.getElementById("buffer");
-  gen.bufferCtx = gen.bufferCvs.getContext("2d");
-  gen.bufferCtx.translate(0.5, 0.5);
-  gen.registerCvs = document.getElementById("register");
-  gen.registerCtx = gen.registerCvs.getContext("2d");
-  gen.registerCtx.translate(0.5, 0.5);
-  gen.AstackCvs = document.getElementById("Astack");
-  gen.AstackCtx = gen.AstackCvs.getContext("2d");
-  gen.AstackCtx.translate(0.5, 0.5);
-  gen.BstackCvs = document.getElementById("Bstack");
-  gen.BstackCtx = gen.BstackCvs.getContext("2d");
-  gen.BstackCtx.translate(0.5, 0.5);
-  gen.outputCvs = document.getElementById("output");
-  gen.outputCtx = gen.outputCvs.getContext("2d");
-  //gen.outputCtx.imageSmoothingEnabled= false;
-  gen.OrgCanvas = document.getElementById("organismCanvas");
-  gen.ctx = gen.OrgCanvas.getContext("2d");
-  gen.ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
-
+  clearGen();
 //set canvas size; called from many places
   function organismCanvasHolderSize() {
     gen.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
