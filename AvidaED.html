@@ -110,7 +110,7 @@
                        value="Population" iconClass="dijitNoIcon"></input></td>
           </tr>
           <tr>
-            <td><img src="avida-ed-organism-icon.png" style="width: 32px; height: 32px;" id="organismIcon"></img></td>
+            <td><img src="avida-ed-organism-icon.png" style="width: 32px; height: 32px;" id="organIcon"></img></td>
             <td><input type="button" id="organismButton" intermediateChanges="false"
                        value="Organism" iconClass="dijitNoIcon"></input></td>
           </tr>
@@ -129,7 +129,7 @@
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
            style="height:35px;">
-        <div data-dojo-type="dojo.dnd.Source" id="trashNode" class="container">
+        <div data-dojo-type="dojo.dnd.Target" id="trashCan" class="container">
           <img id="TrashCan" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
         </div>
       </div>
@@ -139,17 +139,17 @@
         <span data-dojo-type="dijit/TitlePane" title="Configured Dishes" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
               style="min-width: 1px; width: 100%; height: auto;">
-          <div id="freezeConfigureNode" class="container"></div>
+          <div id="fzConfig" class="container"></div>
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Organisms" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
               style="min-width: 1px; width: 100%; height: auto;">
-          <div id="freezeOrganNode" class="container"></div>
+          <div id="fzOrgan" class="container"></div>
         </span>
         <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
               style="min-width: 1px; width: 100%; height: auto;">
-          <div id="freezePopDishNode" class="container" jsId="freezePopDish"></div>
+          <div id="fzPopDish" class="container" jsId="freezePopDish"></div>
         </span>
       </div>
     </div>
@@ -177,7 +177,7 @@
             <tr style="vertical-align: middle; line-height: 25px">
               <td style="vertical-align: top;">
                 <div class="lftmargin"><img src="avida-ed-dish-icon.png"></img></div>
-                <div id="ConfigCurrentNode" class="popContainer"></div>
+                <div id="activeConfig" class="popContainer"></div>
               </td>
               <td style="text-align: right;">
                 <button id="PopSetupButton">Setup</button>
@@ -523,8 +523,8 @@
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                  refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity"
                  id="gridHolder">
-              <div id="gridBoxNode" style="overflow: scroll">
-                <canvas data-dojo-type="dojo.dnd.Source" id="gridCanvas" width="300" height="100"
+              <div id="gridBoxDiv" style="overflow: scroll">
+                <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" width="300" height="100"
                         style="border:1px solid #DDDDDD;"></canvas>
               </div>
               <div id="scaleDiv">
@@ -568,7 +568,7 @@
               <input id="mRate" type="text" readonly style="width: 4em; height:1.8em"></input> -->
             </div>
             <div class="odd">Ancestral Organism(s):
-              <div class="ancestorContainer" id="AncestorBoxNode"></div>
+              <div class="ancestorContainer" id="ancestorBox"></div>
             </div>
             <div class="even">
               Place Offspring:
@@ -673,7 +673,7 @@
           <tr style="valign: middle; line-height: 30px">
             <td>
               <div class="lftmargin"><img src="avida-ed-ancestor-icon.png" style="height: 32px;"></img></div>
-              <div id="OrganCurrentNode" class="popContainer"></div>
+              <div id="activeOrgan" class="popContainer"></div>
               &nbsp;
             </td>
             <td style="text-align: right;">
@@ -788,7 +788,7 @@
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity"
            id="organismCanvasHolder">
-        <canvas data-dojo-type="dojo.dnd.Source" id="organismCanvas" width="100" height="100"
+        <canvas data-dojo-type="dojo.dnd.Target" id="organCanvas" width="100" height="100"
                 style="border:1px solid #000000;"></canvas>
       </div>
     </div>
@@ -821,7 +821,7 @@
               <option value="Yellow">Yellow</option>
             </select>
 
-            <div id="graphPop1Node" class="popContainer"></div>
+            <div id="graphPop1" class="popContainer"></div>
 
             <div class="lftmargin">
               <button id="pop2delete">X</button>
@@ -837,8 +837,7 @@
               <option value="Yellow">Yellow</option>
             </select>
 
-            <div id="graphPop2Node" class="popContainer"></div>
-
+            <div id="graphPop2" class="popContainer"></div>
             <div class="lftmargin">
               <button id="pop3delete">X</button>
               <select data-dojo-type="dijit/form/Select" id="pop3color" data-dojo-props="name: 'color'">
@@ -852,7 +851,7 @@
                 <option value="Yellow">Yellow</option>
               </select>
             </div>
-            <div id="graphPop3Node" class="popContainer"></div>
+            <div id="graphPop3" class="popContainer"></div>
           </div>
           <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">

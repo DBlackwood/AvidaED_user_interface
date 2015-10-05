@@ -33,7 +33,7 @@ function clearGen() {
   gen.outputCvs = document.getElementById("output");
   gen.outputCtx = gen.outputCvs.getContext("2d");
   //gen.outputCtx.imageSmoothingEnabled= false;
-  gen.OrgCanvas = document.getElementById("organismCanvas");
+  gen.OrgCanvas = document.getElementById("organCanvas");
   gen.ctx = gen.OrgCanvas.getContext("2d");
   gen.ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
 }
