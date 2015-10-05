@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismView.js" afterPath="$PROJECT_DIR$/organismView.js" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -108,8 +106,8 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.7108793">
-              <caret line="503" column="0" selection-start-line="503" selection-start-column="0" selection-end-line="503" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.21428572">
+              <caret line="500" column="2" selection-start-line="500" selection-start-column="2" selection-end-line="500" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -732,8 +730,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.7108793">
-          <caret line="503" column="0" selection-start-line="503" selection-start-column="0" selection-end-line="503" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.21428572">
+          <caret line="500" column="2" selection-start-line="500" selection-start-column="2" selection-end-line="500" selection-end-column="2" />
           <folding />
         </state>
       </provider>
