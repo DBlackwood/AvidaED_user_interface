@@ -1208,10 +1208,7 @@ var outColor = [
     ,'#00FF00'//,'2 grey'
 ];
 
-    var ParentColors = ColorBlind.slice();
     var ChipColors = ColorBlind.slice();
-
-    ParentColors.reverse();  //needed for the stack to have the "easy to see" colors on top
 
     var defaultParentColor = 'rgb(187, 187, 187)';
     

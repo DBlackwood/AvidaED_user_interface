@@ -1,29 +1,6 @@
-
-//hold genome for current organism in Organism View
-var chosen = {
-  'name': "",
-  'domId': "",
-  'genome': ""
-}
-
-//structure to hole list of ancestor organisms
-var parents = {};
-clearParents();
-
-//Clear parents/Ancestors
-function clearParents() {
-  parents = {};
-  parents.name = [];
-  parents.genome = [];
-  parents.color = [];
-  parents.col = [];
-  parents.row = [];
-  parents.AvidaNdx = [];
-  parents.autoNdx = [];
-  parents.handNdx = [];
-  parents.howPlaced = [];
-  parents.domId = [];
-}
+//Debug flags
+var debug = {};
+debug.root = false;  //statemens that look for failiers when the code executes outside of functions
 
 var newrun = true;
 var ave_fitness = [];
