@@ -57,7 +57,7 @@ function DrawParent(grd, parents) {
       grd.cntx.fillStyle = parents.color[ii];
     }
     else {
-      grd.cntx.fillStyle = '#eee'
+      grd.cntx.fillStyle = defaultParentColor;
     }
     grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
     //console.log('x, y, wd, Ht', xx, yy, grd.cellWd, grd.cellHt);
@@ -95,6 +95,7 @@ function DrawKids(grd, parents) {  //Draw the children of parents
         if (null === grd.msg.ancestor.data[ii]) grd.cntx.fillStyle = '#000';
         else grd.cntx.fillStyle = '#888';
       }
+      else if (0 == grd.fill[ii]) grd.cntx.fillStyle = defaultKidColor;
       else {  //get_color0 = function(cmap, dx, d1, d2)
         grd.cntx.fillStyle = get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax);
         //console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));
@@ -106,7 +107,7 @@ function DrawKids(grd, parents) {  //Draw the children of parents
 
 function findLogicOutline(grd) {
   var alloff = true;
-  console.log('not',grd.msg.not.data);
+  //console.log('not',grd.msg.not.data);
   for (ii = 0; ii < grd.msg.not.data.length; ii++) {
     grd.out[ii] = 1;
   }
@@ -125,10 +126,12 @@ function findLogicOutline(grd) {
   if ('on' == document.getElementById('ornButton').value) {
     for (ii = 0; ii < grd.msg.orn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.orn.data[ii];}
     alloff = false;
+    if (debug.logic) console.log('or', grd.msg.orn.data);
   }
-  if ('on' == document.getElementById('ornButton').value) {
+  if ('on' == document.getElementById('oroButton').value) {
     for (ii = 0; ii < grd.msg.or.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.or.data[ii];}
     alloff = false;
+    if (debug.logic) console.log('or', grd.msg.or.data);
   }
   if ('on' == document.getElementById('antButton').value) {
     for (ii = 0; ii < grd.msg.andn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.andn.data[ii];}
@@ -148,7 +151,7 @@ function findLogicOutline(grd) {
   }
   if (alloff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
-  //console.log('setLogic', grd.out);
+  if (debug.logic) console.log('setLogic', grd.out);
 }
 
 function cellConflict(NewCols, NewRows, grd, parents) {
@@ -180,16 +183,19 @@ function cellConflict(NewCols, NewRows, grd, parents) {
 }
 
 function DrawLogicSelected(grd) {
+  //console.log('DrawLogic', grd.out);
   var cc, rr, xx, yy;
+  var inner = 1; //how far inside the square to put the outline.
+  var thick = 1; //thickness of line to draw
   //console.log('=========================')
   //console.log('logic', grd.out);
   for (ii = 0; ii < grd.out.length; ii++) {
     if (0 != grd.out[ii]) {
       cc = ii % grd.cols;
       rr = Math.trunc(ii / grd.cols);
-      xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
-      yy = grd.marginY + grd.yOffset + rr * grd.cellHt;
-      DrawCellOutline(2, grd.LogicColor, xx, yy, grd.cellWd, grd.cellHt, grd)
+      xx = grd.marginX + grd.xOffset + cc * grd.cellWd + inner;
+      yy = grd.marginY + grd.yOffset + rr * grd.cellHt + inner;
+      DrawCellOutline(thick, grd.LogicColor, xx, yy, grd.cellWd-2*inner, grd.cellHt-2*inner, grd)
     }
   }
 

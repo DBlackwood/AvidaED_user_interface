@@ -187,7 +187,6 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
 
       if ('ancestorBox' == source.node.id) {
         //update structure to hold freezer data for Organisms.
-        console.log('source', Object.keys(source.selection));
         var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
         var neworg = {
           'name': dnd.fzOrgan.map[strItem].data,
@@ -199,14 +198,13 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
         // need to remove organism from parents list.
         removeParent(Ndx, parents);
         PlaceAncestors(parents);
-        console.log('after PlaceAncestors')
 
         // need to remove organism from the Ancestor Box.
         // dnd.ancestorBox is dojo dnd copyonly to prevent loss of that organsim when the user clicks cancel. The user will
         // see the cancel as cancelling the dnd rather than canceling the rename.
         dnd.ancestorBox.deleteSelectedNodes();  //clear items
         dnd.ancestorBox.sync();   //should be done after insertion or deletion
-        console.log('neworg', neworg);
+        if (debug.dnd) console.log('neworg', neworg);
       }
       else if ('activeOrgan' == source.node.id) {
         neworg = {
@@ -216,11 +214,10 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
         }
         fzr.organism.push(neworg);
       }
-      console.log('fzOrgan', fzOrgan);
+      if (debug.dnd) console.log('fzOrgan', dnd.fzOrgan);
       //create a right mouse-click context menu for the item just created.
-      console.log('target',target, '; neworg.domId', neworg.domId );
+      if (debug.dnd) console.log('target',target, '; neworg.domId', neworg.domId );
       contextMenu(target, neworg.domId);
-      console.log('after context menu')
     }
     else { //Not given a name, so it should NOT be added to the freezer.
       dnd.fzOrgan.deleteSelectedNodes();  //clear items
@@ -278,24 +275,23 @@ function landActiveOrgan(dnd, fzr, source, nodes, target) {
 
 function updateFromFzrOrganism(dnd, fzr) {
   var domId = Object.keys(dnd.fzOrgan.selection)[0];
-  console.log('domId', domId);
+  if (debug.dnd) console.log('domId', domId);
   var ndx = fndGenomeNdx(domId, fzr.organism)
   fzr.actOrgan.name = fzr.organism[ndx].name;
   fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
   fzr.actOrgan.genome = fzr.organism[ndx].genome;
-  console.log('fzr.actOrgan', fzr.actOrgan);
+  if (debug.dnd) console.log('fzr.actOrgan', fzr.actOrgan);
 }
 
 //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
 //will be put in dnd.activeOrgan.
 function landOrganCanvas(dnd, fzr, source, nodes, target) {
-  console.log('in landOrganCanvas');
   //Clear current to put the new organism in there.
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   dnd.activeOrgan.sync();   //should be done after insertion or deletion
 
   //Clear canvas because we only store the 'Mom' in the OrganCurrentNode
-  ItemID = Object.keys(dnd.activeOrgan.map)[0];
+  var ItemID = Object.keys(dnd.activeOrgan.map)[0];
   dnd.organCanvas.selectAll().deleteSelectedNodes();  //clear items
   dnd.organCanvas.sync();   //should be done after insertion or deletion
   dojo.destroy(ItemID);
@@ -337,26 +333,35 @@ function landFzPopDish(dnd, pkg) {
 
 // Process dnd.trashCan ---------------------------------------------------
 function landTrashCan(dnd, fzr, parents, source, nodes, target) {
+  if (debug.dnd) console.log('in LandTrashCan');
+  if ('fzOrgan' == source.node.id && '@ancestor' != nodes[0].textContent) {
+    if (debug.dnd) console.log('fzOrgan->trash', fzr.organism)
+    var domId = Object.keys(dnd.fzOrgan.selection)[0];
+    if (debug.dnd) console.log('domId', domId);
+    var ndx = fndGenomeNdx(domId, fzr.organism);
+    fzr.organism.splice(ndx,1);
+    source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+  }
   //if the item is from the freezer, delete from freezer unless it is original stock (@)
-  if ('fzConfig' == source.node.id ||
-    'fzOrgan' == source.node.id || 'fzPopDish' == source.node.id) {
+  else if ('fzConfig' == source.node.id || 'fzPopDish' == source.node.id) {
     // find name of item in node; don't remove starter (@) items
-    if (!('@default' == nodes[0].textContent || '@ancestor' == nodes[0].textContent ||
-      '@example' == nodes[0].textContent)) {
+    if (!('@default' == nodes[0].textContent || '@example' == nodes[0].textContent)) {
       source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
-      //need to remove from freezer structure as well.
     }
   }
   // items from ancestor box require ancestor (parent) handling.
   else if ('ancestorBox' == source.node.id) {
     //find index into parents
-    console.log('source', source.map);
-    console.log('nodes', nodes[0], nodes[0].id);
+    if (debug.dnd) console.log('ancestorBox->trash; source', source.map);
     //Find index into parent structure
     var Ndx = parents.domId.indexOf(nodes[0].id);
-    console.log('nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
+    if (debug.dnd) console.log('ancestorBox->trash, nodes[0].id', nodes[0].id);
+    if (debug.dnd) console.log('ancestorBox->trash, parents', parents.domId[0]);
+
+    if (debug.dnd) console.log('nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
     removeParent(Ndx, parents);
     PlaceAncestors(parents);
+    if (debug.dnd) console.log('ancestorBox->trash, parents', parents);
   }
   dnd.trashCan.selectAll().deleteSelectedNodes();  //in all cases, empty the dnd.trashCan
 }

@@ -129,23 +129,28 @@
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
            style="height:35px;">
-        <div data-dojo-type="dojo.dnd.Target" id="trashCan" class="container">
-          <img id="TrashCan" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
-        </div>
+        <span id="trashCan" class="container">
+          <img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
+        </span>&nbsp;&nbsp;
+        <span class="container">
+          <img id="SnowFlakeImage" src="avida-ed-snowflake.png" style="width: 36px;"></img>
+        </span>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-           refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
+           refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="freezerDiv">
         Freezer
         <span data-dojo-type="dijit/TitlePane" title="Configured Dishes" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
               style="min-width: 1px; width: 100%; height: auto;">
           <div id="fzConfig" class="container"></div>
         </span>
-        <span data-dojo-type="dijit/TitlePane" title="Organisms" extractContent="false" preventCache="false"
-              preload="false" refreshOnShow="false" duration="200" open="true"
-              style="min-width: 1px; width: 100%; height: auto;">
-          <div id="fzOrgan" class="container"></div>
-        </span>
+        <div id="OrganFreezer">
+          <span data-dojo-type="dijit/TitlePane" title="Organisms" extractContent="false" preventCache="false"
+                preload="false" refreshOnShow="false" duration="200" open="true" id="OrganismsFzr"
+                style="min-width: 1px; width: 100%; height: auto;">
+            <div id="fzOrgan" class="container"></div>
+          </span>
+        </div>
         <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
               style="min-width: 1px; width: 100%; height: auto;">
@@ -530,7 +535,6 @@
               <div id="scaleDiv">
                 <canvas id="scaleCanvas" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
               </div>
-              <div id="seedTray"></div>
             </div>
           </div>
         </div>

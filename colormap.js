@@ -1,8 +1,11 @@
 //Definition of Viridis and other dictionaries or color data sets
 
+var defaultParentColor = 'rgb(200, 200, 200)';
+var defaultKidColor = 'rgb(130, 130, 130)';
+
 var Viridis_cmap = [
-   'rgb(34, 1, 42)'
-   ,'rgb(68, 1, 84)'
+//   'rgb(34, 1, 42)'
+   'rgb(68, 1, 84)'
    ,'rgb(68, 2, 86)'
    ,'rgb(69, 4, 87)'
    ,'rgb(69, 5, 89)'
@@ -268,16 +271,16 @@ var Gnuplot2_cmap = [
 , 'rgb(0, 0, 16)'
 , 'rgb(0, 0, 20)'
 , 'rgb(0, 0, 24)'
-, 'rgb(0, 0, 28)'*/
- 'rgb(0, 0, 32)'
+, 'rgb(0, 0, 28)'
+, 'rgb(0, 0, 32)'
 , 'rgb(0, 0, 36)'
 , 'rgb(0, 0, 40)'
 , 'rgb(0, 0, 44)'
 , 'rgb(0, 0, 48)'
 , 'rgb(0, 0, 52)'
 , 'rgb(0, 0, 56)'
-, 'rgb(0, 0, 60)'
-, 'rgb(0, 0, 64)'
+, 'rgb(0, 0, 60)'*/
+  'rgb(0, 0, 64)'
 , 'rgb(0, 0, 68)'
 , 'rgb(0, 0, 72)'
 , 'rgb(0, 0, 76)'
@@ -1210,8 +1213,6 @@ var outColor = [
 
     var ChipColors = ColorBlind.slice();
 
-    var defaultParentColor = 'rgb(187, 187, 187)';
-    
   //colors too close to others already in use
   //,'rgb(255, 204, 0)'  // 32 dark yellow
   //,'rgb(255, 255,   5)'  // 17 yellow

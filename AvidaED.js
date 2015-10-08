@@ -355,6 +355,7 @@ require([
     ,'wsjagcvtvazystorcauoyucuyquufydpbusmyfqoocvvopxgxu'  //allbut2logic
   ]
 
+  if (debug.root) console.log('before frz structure');
   var fzr = {};
   //hold genome for active organism in Organism View
   fzr.actOrgan = {
@@ -375,6 +376,7 @@ require([
     }
     fzr.organism.push(neworg);
   }
+  if (debug.root) console.log('after fzr.orgnaism');
 
   dnd.fzPopDish = new dndSource('fzPopDish', {
     accept: ["popDish"],
@@ -393,6 +395,7 @@ require([
   dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ["organism"]});
 
   dnd.trashCan = new dndSource('trashCan', {accept: ['conDish', 'organism', 'popDish'], singular: true});
+  if (debug.root) console.log('after trashCan');
 
   dnd.activeConfig = new dndSource('activeConfig', {
     accept: ["conDish"],
@@ -436,6 +439,7 @@ require([
     parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
   }
 
+  if (debug.root) console.log('before dnd triggers');
   //*******************************************************************************************************************
   //       Dojo Dnd drop function - triggers for all dojo dnd drop events
   //*******************************************************************************************************************
@@ -629,11 +633,11 @@ require([
       NeedAncestorDialog.show();
     }
     else { // setup for a new run by sending config data to avida
-      if (newrun) {
+      if (grd.newrun) {
         requestPopStats();  //uiWorker
         requestGridData();  //uiWorker
         dom.byId('ancestorBox').isSource = false;
-        newrun = false;  //the run will no longer be "new"
+        grd.newrun = false;  //the run will no longer be "new"
         //Disable some of the options on the Setup page
         dnd.ancestorBox.isSource = false;
         dnd.activeConfig.isSource = false;
@@ -840,7 +844,7 @@ require([
   });
 
   function newButtonBoth() {
-    if (newrun) {// reset petri dish
+    if (grd.newrun) {// reset petri dish
       resetDishFn();
     }
     else {// check to see about saving current population
@@ -863,9 +867,9 @@ require([
     uiWorker.postMessage(request);
   }
 
-  //reset values with hard coded defaults Needs to be updated when Avida workss
+  //reset values with hard coded defaults Needs to be updated when Avida works
   function resetDishFn() { //Need to reset all settings to @default
-    newrun = true;
+    grd.newrun = true;
     // send rest to Avida adaptor
     doReset();
     //Enable the options on the Setup page
@@ -920,9 +924,12 @@ require([
   //for now this is hard coded to what would be in @default. will need a way to request data from C++
   //and read the returned json string.
   function writeSettings() {
-    dijit.byId("sizeCols").set('value', '20');
-    dijit.byId("sizeRows").set('value', '5');
-    document.getElementById("muteInput").value = '2';
+    TimeLabel.textContent = 0;
+    dijit.byId("sizeCols").set('value', dft.sizeCols);
+    dijit.byId("sizeRows").set('value', dft.sizeRows);
+    dijit.byId("sizeCols").set('value', '20');    //delete later; debug only taba
+    dijit.byId("sizeRows").set('value', '5');     //delete lager; debug only tiba
+    document.getElementById("muteInput").value = dft.muteInput;
     var event = new Event('change');
     document.getElementById("muteInput").dispatchEvent(event);
     dnd.ancestorBox.selectAll().deleteSelectedNodes();
@@ -930,20 +937,42 @@ require([
     dnd.gridCanvas.selectAll().deleteSelectedNodes();
     dnd.gridCanvas.sync();
     AncestorList = [];
-    TimeLabel.textContent = 0;
-    document.getElementById("seedTray").innerHTML = "";
-    dijit.byId("childParentRadio").set('checked', true);
-    dijit.byId("notose").set('checked', true);
-    dijit.byId("nanose").set('checked', true);
-    dijit.byId("andose").set('checked', true);
-    dijit.byId("ornose").set('checked', true);
-    dijit.byId("orose").set('checked', true);
-    dijit.byId("andnose").set('checked', true);
-    dijit.byId("norose").set('checked', true);
-    dijit.byId("xorose").set('checked', true);
-    dijit.byId("equose").set('checked', true);
+    if ('childParentRadio'==dft.child) {
+      dijit.byId("childParentRadio").set('checked', true);
+      dijit.byId("childRandomRadio").set('checked', false);
+    }
+    else {
+      dijit.byId("childParentRadio").set('checked', false);
+      dijit.byId("childRandomRadio").set('checked', true);
+    }
+    dijit.byId("notose").set('checked', dft.notose);
+    dijit.byId("nanose").set('checked', dft.nanose);
+    dijit.byId("andose").set('checked', dft.andose);
+    dijit.byId("ornose").set('checked', dft.ornose);
+    dijit.byId("orose").set('checked', dft.orose);
+    dijit.byId("andnose").set('checked', dft.andnose);
+    dijit.byId("norose").set('checked', dft.norose);
+    dijit.byId("xorose").set('checked', dft.xorose);
+    dijit.byId("equose").set('checked', dft.equose);
     dijit.byId("experimentRadio").set('checked', true);
     dijit.byId("manRadio").set('checked', true);
+    if ('experimentRadio'==dft.repeat) {
+      dijit.byId("experimentRadio").set('checked', true);
+      dijit.byId("demoRadio").set('checked', false);
+    }
+    else {
+      dijit.byId("experimentRadio").set('checked', false);
+      dijit.byId("demoRadio").set('checked', true);
+    }
+    if ('manRadio'==dft.pauseType) {
+      dijit.byId("manRadio").set('checked', true);
+      dijit.byId("updateRadio").set('checked', false);
+    }
+    else {
+      dijit.byId("manRadio").set('checked', false);
+      dijit.byId("updateRadio").set('checked', true);
+    }
+
     //Selected Organism Type
     document.getElementById("nameLabel").textContent = "-";
     document.getElementById("fitLabel").innerHTML = "-";
@@ -1168,7 +1197,7 @@ require([
       if (25 > distance) {
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
-        document.getElementById('fzOrgan').style.cursor = 'copy';
+        document.getElementById('SnowFlakeImage').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
         mouse.Picked = "offspring";
         if (gen.debug) console.log('gen.dna', gen.dna);
@@ -1190,15 +1219,15 @@ require([
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
-      if (newrun) {  //run has not started so look to see if cell contains ancestor
+      if (grd.newrun) {  //run has not started so look to see if cell contains ancestor
         mouse.ParentNdx = findParentNdx();
         if (-1 < mouse.ParentNdx) { //selected a parent, check for dragging
           document.getElementById('organIcon').style.cursor = 'copy';
           document.getElementById('gridCanvas').style.cursor = 'copy';
-          document.getElementById('TrashCan').style.cursor = 'copy';
+          document.getElementById('TrashCanImage').style.cursor = 'copy';
           document.getElementById('mainBC').style.cursor = 'move';
           mouse.Picked = 'parent';
-          //console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
+          //console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCanImage').style.cursor);
         }
       }
       else {  //look for decendents (kids)
@@ -1221,6 +1250,7 @@ require([
     document.getElementById('organIcon').style.cursor = 'copy';
     document.getElementById('fzOrgan').style.cursor = 'copy';
     document.getElementById('gridCanvas').style.cursor = 'copy';
+    document.getElementById('SnowFlakeImage').style.cursor = 'copy';
     grd.kidName = 'temporary';
     grd.kidGenome = 'wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab'  //ancestor
   }
@@ -1229,8 +1259,8 @@ require([
   $(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
     //console.log('gd move');
     //document.getElementById('gridCanvas').style.cursor = 'copy';
-    //document.getElementById('TrashCan').style.cursor = 'copy';
-    //console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
+    //document.getElementById('trashCan').style.cursor = 'copy';
+    //console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('trashCan').style.cursor);
     if (!nearly([evt.offsetX, evt.offsetY], mouse.DnGridPos)) {
       console.log("gd draging");
       if (mouse.Dn) mouse.Drag = true;
@@ -1244,7 +1274,7 @@ require([
     //console.log('mouseup anywhere in document -------------');
     document.getElementById('organCanvas').style.cursor = 'default';
     document.getElementById('gridCanvas').style.cursor = 'default';
-    document.getElementById('TrashCan').style.cursor = 'default';
+    document.getElementById('trashCan').style.cursor = 'default';
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
@@ -1254,20 +1284,20 @@ require([
     // --------- process if something picked to dnd ------------------
     if ('parent' == mouse.Picked) {
       mouse.Picked = "";
-      ParentMouseDn(evt);
+      ParentMouse(evt);
     }
     else if ('offspring' == mouse.Picked) {
       mouse.Picked = "";
-      OffspringMouseDn(evt)
+      OffspringMouse(evt)
     }
     else if ('kid' == mouse.Picked) {
       mouse.Picked = "";
-      KidMouseDn(evt);
+      KidMouse(evt);
     }
     mouse.Picked = "";
   });
 
-  function OffspringMouseDn(evt) {
+  function OffspringMouse(evt) {
     if ('organIcon' == evt.target.id) { // needs work!!  tiba
       //Get name of parent that is in OrganCurrentNode
       var parent;
@@ -1293,8 +1323,9 @@ require([
     }
   }
 
-  function KidMouseDn(evt){
-  if ('organIcon' == evt.target.id) {
+  function KidMouse(evt){
+    if (debug.mouse) console.log('in KidMouse', evt.target.id, evt);
+    if ('organIcon' == evt.target.id) {
       //Change to Organism Page
       mainBoxSwap("organismBlock");
       organismCanvasHolderSize();
@@ -1315,7 +1346,8 @@ require([
       fzr.actOrgan.domId = "";
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
-    else if ('fzOrgan' == evt.target.id){
+    else if ('SnowFlakeImage' == evt.target.id){
+      if (debug.mouse) console.log('in SnowFlakeImage');
       //make sure there is a name.
       var avidian = prompt("Please name your avidian", grd.kidName);
       if (avidian) {
@@ -1326,7 +1358,7 @@ require([
           //find domId of parent as listed in dnd.ancestorBox
           var mapItems = Object.keys(dnd.fzOrgan.map);
           var domStr = "";
-          neworg = {
+          var neworg = {
             'name': avidian,
             'domId': mapItems[mapItems.length - 1],
             'genome': grd.kidGenome
@@ -1334,14 +1366,15 @@ require([
           fzr.organism.push(neworg);
           console.log('KidfzOrgan', fzr.organism);
           //create a right mouse-click context menu for the item just created.
-          //console.log('pkg.nodes[0].id', pkg.nodes[0].id, '; target',target);
+          console.log('kid to fzOrgan', neworg);
           contextMenu(dnd.fzOrgan, neworg.domId);
         }
       }
     }
   }
 
-  function ParentMouseDn(evt) {
+  function ParentMouse(evt) {
+    if (debug.mouse) console.log('ParentMouse', evt.target.id, evt);
     if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
       mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
       //Move the ancestor on the canvas
@@ -1367,21 +1400,8 @@ require([
       }
     }  // close on canvas
     //-------------------------------------------- dnd.trashCan
-    else if ('TrashCan' == evt.target.id) {
-      //Remove this Parent from the grid
-      //remove node from AncestorBoxNode
-      /*fromAncestorBoxRemove(parents.name[mouse.ParentNdx]);
-       var domItems = Object.keys(dnd.ancestorBox.map);
-       console.log("domItems=", domItems);
-       console.log('parents.domId', parents.domId[mouse.ParentNdx]);
-       var nodeIndex = -1;
-       for (var ii=0; ii< domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-       if (dnd.ancestorBox.map[domItems[ii]].data == parents.name[mouse.ParentNdx]) {
-       nodeIndex = ii;
-       }
-       }
-       console.log('nodeIndex', nodeIndex, domItems[nodeIndex] );
-       */
+    else if ('TrashCanImage' == evt.target.id) {
+      if (debug.mouse) console.log('parent->trashCan', evt);
       var node = dojo.byId(parents.domId[mouse.ParentNdx]);
       dnd.ancestorBox.parent.removeChild(node);
       dnd.ancestorBox.sync();
@@ -1446,7 +1466,6 @@ require([
   function DrawGridSetup() {
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
-    grd.newrun = newrun;
     if(!grd.newrun) {  //update color information for offpsring once run has started
       setMapData(grd);
       findLogicOutline(grd);
@@ -2194,12 +2213,11 @@ require([
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       shrew.chipNdx = -1; //index into chips array if chip selected else -1;
-      if (newrun) {  //run has not started so look to see if cell contains ancestor
+      if (grd.newrun) {  //run has not started so look to see if cell contains ancestor
         shrew.chipNdx = findchipNdx(chck, chips);
         if (-1 < shrew.chipNdx) { //selected a chip, check for dragging
           document.getElementById('colorDemo').style.cursor = 'copy';
           shrew.Picked = 'chip';
-          //console.log('chip cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCan').style.cursor);
         }
       }
     }

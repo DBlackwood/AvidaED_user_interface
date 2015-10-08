@@ -1,8 +1,31 @@
 //Debug flags
 var debug = {};
-debug.root = false;  //statemens that look for failiers when the code executes outside of functions
+debug.root = true;  //statemens that look for failiers when the code executes outside of functions
+debug.logic = false;  //debug statements that look for errors outlining logic functions
+debug.mouse = true;   //debug statemetns about non-dojo drag and drop
+debug.dnd = true;     //debut statemesnt about dojo dnd
 
-var newrun = true;
+//default values - these may be overwritten by those in a file once we get the file system working.
+dft = {};
+dft.sizeCols = 60;
+dft.sizeRows = 60;
+dft.muteInput = 2;
+dft.child = 'childParentRadio';  //alternate = childRandomRadio
+dft.nearParent = true;
+dft.notose = true;
+dft.nanose = true;
+dft.andose = true;
+dft.ornose = true;
+dft.orose = true;
+dft.andnose = true;
+dft.norose = true;
+dft.xorose = true;
+dft.equose = true;
+dft.repeat = 'experimentRadio';   //alternate = 'demoRadio'
+dft.pauseType = 'manRadio';     //alternate = 'updateRadio'
+dft.updateSpinner = 1000;
+
+
 var ave_fitness = [];
 var ave_gestation_time = [];
 var ave_metabolic_rate = [];
@@ -33,6 +56,7 @@ var grd = {};         //data about the grid canvas
 clearGrd();
 
 function clearGrd() {
+  grd.newrun = true;
   grd.cols = 0;    //Number of columns in the grid
   grd.rows = 0;    //Number of rows in the grid
   grd.sizeX = 0;  //size of canvas in pixels
