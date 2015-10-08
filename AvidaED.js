@@ -52,6 +52,7 @@ require([
   "PopulationGrid.js",
   "organismView.js",
   'dojoDnd.js',
+  'popControls.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
@@ -272,7 +273,7 @@ require([
 
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
-    if (debug.dnd) console.log('PopulationButton, fzr.organism', fzr.organism);
+    if (debug.dnd || debug.mouse) console.log('PopulationButton, fzr.organism', fzr.organism);
     mainBoxSwap("populationBlock");
     DrawGridSetup();
   }
@@ -573,6 +574,7 @@ require([
   /* *************************************************************** */
   /* Population page script ******************************************/
   /* *************************************************************** */
+
   // shifts the population page from Map (grid) view to setup parameters view and back again.
   function popBoxSwap() {
     if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
@@ -1271,7 +1273,7 @@ require([
 
   //When mouse button is released, return cursor to default values
   $(document).on('mouseup', function (evt) {
-    //console.log('mouseup anywhere in document -------------');
+    if (debug.mouse) console.log('mouseup; evt', evt.target.id, evt);
     document.getElementById('organCanvas').style.cursor = 'default';
     document.getElementById('gridCanvas').style.cursor = 'default';
     document.getElementById('trashCan').style.cursor = 'default';
@@ -1318,8 +1320,37 @@ require([
       //get genome from offspring data //needs work!!
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
-    else if ('fzOrgan' == evt.target.id) {
+    else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id) {
       //create a new freezer item
+      if (debug.mouse) console.log('offSpring->freezerDiv');
+      if (debug.mouse) console.log('in SnowFlakeImage');
+      var parent;
+      var parentID = Object.keys(dnd.activeOrgan.map)[0];
+      console.log('parentID', parentID);
+      if (undefined == parentID) parent = 'noParentName';
+      else parent = document.getElementById(parentID).textContent;
+      //make sure there is a name.
+      var avidian = prompt("Please name your avidian", parent+'_offspring');
+      if (avidian) {
+        avidian = getUniqueName(avidian, dnd.fzOrgan);
+        if (null != avidian) {  //add to Freezer
+          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
+          dnd.fzOrgan.sync();
+          //find domId of parent as listed in dnd.fzOrgan
+          var mapItems = Object.keys(dnd.fzOrgan.map);
+          var domStr = "";
+          var neworg = {
+            'name': avidian,
+            'domId': mapItems[mapItems.length - 1],
+            'genome': gen.dna[1]
+          }
+          fzr.organism.push(neworg);
+          if (debug.mouse) console.log('Offspring-->Snow, fzr.organism', fzr.organism);
+          //create a right mouse-click context menu for the item just created.
+          if (debug.mouse) console.log('Offspring-->snowFlake; neworg', neworg);
+          contextMenu(fzr, dnd.fzOrgan, neworg.domId);
+        }
+      }
     }
   }
 
@@ -1346,7 +1377,7 @@ require([
       fzr.actOrgan.domId = "";
       doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
-    else if ('SnowFlakeImage' == evt.target.id){
+    else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id){
       if (debug.mouse) console.log('in SnowFlakeImage');
       //make sure there is a name.
       var avidian = prompt("Please name your avidian", grd.kidName);

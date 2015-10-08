@@ -3,7 +3,7 @@ var debug = {};
 debug.root = false;  //statemens that look for failiers when the code executes outside of functions
 debug.logic = false;  //debug statements that look for errors outlining logic functions
 debug.mouse = true;   //debug statemetns about non-dojo drag and drop
-debug.dnd = true;     //debut statemesnt about dojo dnd
+debug.dnd = false;     //debut statemesnt about dojo dnd
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};
