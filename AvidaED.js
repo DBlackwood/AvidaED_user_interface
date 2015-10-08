@@ -272,7 +272,7 @@ require([
 
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
-    console.log('in populationButton');
+    if (debug.dnd) console.log('PopulationButton, fzr.organism', fzr.organism);
     mainBoxSwap("populationBlock");
     DrawGridSetup();
   }
@@ -452,7 +452,7 @@ require([
 
   dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' == target.node.id) {
-      landFzConfig(dnd, source, nodes, target);
+      landFzConfig(dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
     }
   });
 
@@ -1353,7 +1353,7 @@ require([
       if (avidian) {
         avidian = getUniqueName(avidian, dnd.fzOrgan);
         if (null != avidian) {  //add to Freezer
-          dnd.fzOrgan.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
+          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
           dnd.fzOrgan.sync();
           //find domId of parent as listed in dnd.ancestorBox
           var mapItems = Object.keys(dnd.fzOrgan.map);
@@ -1364,10 +1364,10 @@ require([
             'genome': grd.kidGenome
           }
           fzr.organism.push(neworg);
-          console.log('KidfzOrgan', fzr.organism);
+          if (debug.mouse) console.log('Kid-->Snow', fzr.organism);
           //create a right mouse-click context menu for the item just created.
-          console.log('kid to fzOrgan', neworg);
-          contextMenu(dnd.fzOrgan, neworg.domId);
+          if (debug.mouse) console.log('kid to snowFlake', neworg);
+          contextMenu(fzr, dnd.fzOrgan, neworg.domId);
         }
       }
     }
@@ -1561,12 +1561,10 @@ require([
     if ('on' == document.getElementById(button).value) {
       document.getElementById(button).value = 'off';
       document.getElementById(button).className = 'bitButtonOff';
-      console.log('now off');
     }
     else {
       document.getElementById(button).value = 'on';
       document.getElementById(button).className = 'bitButtonOn';
-      console.log('now on');
     }
     DrawGridSetup();
   }

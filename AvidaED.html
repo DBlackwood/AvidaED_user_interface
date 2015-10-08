@@ -129,12 +129,20 @@
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
            style="height:35px;">
-        <span id="trashCan" class="container">
-          <img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
-        </span>&nbsp;&nbsp;
-        <span class="container">
-          <img id="SnowFlakeImage" src="avida-ed-snowflake.png" style="width: 36px;"></img>
-        </span>
+        <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+          <tr>
+            <td>
+              <span id="trashCan" class="container">
+                <img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
+              </span>
+            </td>
+            <td style="text-align: right;">
+              <span class="container">
+                <img id="SnowFlakeImage" src="avida-ed-snowflake.png" style="width: 36px;"></img>
+              </span>
+            </td>
+          </tr>
+        </table>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="freezerDiv">
@@ -174,10 +182,6 @@
              refreshOnShow="false" doLayout="true" region="top" splitter="false" maxSize="Infinity"
              style="height: 30px;">
           <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
-            <colgroup>
-              <col></col>
-              <col></col>
-            </colgroup>
             <tbody>
             <tr style="vertical-align: middle; line-height: 25px">
               <td style="vertical-align: top;">
