@@ -1,7 +1,6 @@
 //functions used to process events that happen when a dojo drag and drop lands on the particular dnd 'target'.
 //Note that all dnd 'source' elements can also be 'targets'.
 
-if (debug.root) console.log('before general dnd functions')
 // General Drag and Drop (DnD) functions --------------------------------------
 
 //not sure that this is in use
@@ -52,20 +51,24 @@ var getDomID = function (name, target){
   return domItems[nodeIndex];
 }
 
-if (debug.root) console.log('before Configuration DND');
 //-------- Configuration DnD ---------------------------------------
 //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
 //and reinserting the most resent one after a drop event.
 
 function landActiveConfig(dnd, pkg) {
   //there is always a node here, so it must always be cleared when adding a new one.
-  //clear all data so when we add one there will never be more than one.
+
   dnd.activeConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   //get the data for the new configuration
   dnd.fzConfig.forInSelectedItems(function (item, id) {
     dnd.activeConfig.insertNodes(false, [item]);  //assign the node that is selected from the only valid source.
   });
   dnd.activeConfig.sync();
+
+  //I tried to see if I could just remove the one node rather than all of them and re-instering. Seems to work.
+  //source.parent.removeChild(nodes[0]);    this statement works in trash to remove node from fzOrgan
+  //statement below only works if new config added to the bottom
+  //pkg.target.parent.removeChild(pkg.target.parent.childNodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
 
   //Dojo uses .data to help keep track of .textContent or .innerHTML
   //At one time I was trying to keep the original name in .data and allow the user
@@ -340,6 +343,8 @@ function landTrashCan(dnd, fzr, parents, source, nodes, target) {
     if (debug.dnd) console.log('domId', domId);
     var ndx = fndGenomeNdx(domId, fzr.organism);
     fzr.organism.splice(ndx,1);
+    if (debug.dnd) console.log('fzOrgan->trash; nodes[0]',nodes[0]);
+    if (debug.dnd) console.log('fzOrgan->trash; source.parent',source.parent);
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
   }
   //if the item is from the freezer, delete from freezer unless it is original stock (@)
@@ -358,7 +363,7 @@ function landTrashCan(dnd, fzr, parents, source, nodes, target) {
     if (debug.dnd) console.log('ancestorBox->trash, nodes[0].id', nodes[0].id);
     if (debug.dnd) console.log('ancestorBox->trash, parents', parents.domId[0]);
 
-    if (debug.dnd) console.log('nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
+    if (debug.dnd) console.log('ancestorBox->trash; nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
     removeParent(Ndx, parents);
     PlaceAncestors(parents);
     if (debug.dnd) console.log('ancestorBox->trash, parents', parents);

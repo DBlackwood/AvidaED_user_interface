@@ -4,6 +4,7 @@ debug.root = false;  //statemens that look for failiers when the code executes o
 debug.logic = false;  //debug statements that look for errors outlining logic functions
 debug.mouse = true;   //debug statemetns about non-dojo drag and drop
 debug.dnd = false;     //debut statemesnt about dojo dnd
+debug.msg = true;
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};
@@ -24,12 +25,6 @@ dft.equose = true;
 dft.repeat = 'experimentRadio';   //alternate = 'demoRadio'
 dft.pauseType = 'manRadio';     //alternate = 'updateRadio'
 dft.updateSpinner = 1000;
-
-
-var ave_fitness = [];
-var ave_gestation_time = [];
-var ave_metabolic_rate = [];
-var population_size = [];
 
 var mouse = {};
 clearMouse();
@@ -54,6 +49,7 @@ var gen = {};
 
 var grd = {};         //data about the grid canvas
 clearGrd();
+grd.popStatFlag = true;
 
 function clearGrd() {
   grd.newrun = true;
@@ -76,6 +72,10 @@ function clearGrd() {
   grd.SelectedColor = '#ffffff';
   grd.LogicColor = '#00ff00';
   grd.kidStatus = '';
+  grd.ave_fitness = [];
+  grd.ave_gestation_time = [];
+  grd.ave_metabolic_rate = [];
+  grd.population_size = [];
 }
 
 //***************************************

@@ -63,13 +63,11 @@ require([
 
   parser.parse();
 
-  //uiWorker used when communicating with the web worker and avida
-  var uiWorker = new Worker('avida.js');
-  //var uiWorker = new Worker('ui-test.js');
 
-  dummy();
   //process message from web worker
-  uiWorker.onmessage = function (ee) {
+  uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
+
+  function readMsg(ee, dft, dnd, parents) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -93,15 +91,15 @@ require([
           updateOrgTrace(traceObj, gen);
           break;
         case 'webPopulationStats':
-          updatePopStats(msg);
-          //doPopMap();  //Call to update grid colors;
+          updatePopStats(grd, msg);
+          popChartFn();
           break;
         case 'webGridData':
           grd.msg = msg;
           DrawGridSetup();
           break;
         case 'getOrgDataByCell':
-          updateSelectedOrganismType(msg);
+          updateSelectedOrganismType(grd, msg);  //in messageing
           break;
         default:
           console.log('____________UnknownRequest: ', msg);
@@ -124,35 +122,6 @@ require([
           break;
       }
     }
-  }
-
-  //uiWorker function
-  function doOrgTrace() {
-    var seed = 100*Math.random();
-    if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0 }
-    var request = {
-      'type': 'addEvent',
-      'name': 'webOrgTraceBySequence',
-      'triggerType': 'immediate',
-      'args': [
-        '0,heads_default,' + fzr.actOrgan.genome,                                  //genome string
-        dijit.byId("orMuteInput").get('value')/100,     // point mutation rate
-        seed                                            //seed where 0 = random; >0 to replay that number
-      ]
-      //'PtMuteRate': '0.02',
-      //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
-    };
-    uiWorker.postMessage(request);
-  }
-
-  //request data from Avida to update SelectedOrganismType
-  function doSelectedOrganismType(grd) {
-    var request = {
-      'type': 'addEvent',
-      'name': 'getOrgDataByCell',
-      'args': grd.NdxSelected
-    }
-    uiWorker.postMessage(request);
   }
 
   if (debug.root) console.log('before Resize helpers');
@@ -480,7 +449,7 @@ require([
     if ('organCanvas' == target.node.id) {
       console.log('landOrganCanvas: s, t', source, target);
       landOrganCanvas(dnd, fzr, source, nodes, target);
-      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -496,7 +465,7 @@ require([
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
-      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -504,7 +473,7 @@ require([
     if ('activeOrgan' == target.node.id) {
       console.log('activeOrgan: s, t', source, target);
       landActiveOrgan(dnd, fzr, source, nodes, target);
-      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -575,46 +544,17 @@ require([
   /* Population page script ******************************************/
   /* *************************************************************** */
 
-  // shifts the population page from Map (grid) view to setup parameters view and back again.
-  function popBoxSwap() {
-    if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
-      var height = $("#mapBlock").innerHeight() - 6;
-
-      dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
-      dijit.byId("mapBC").set("style", "height: " + height + "px");
-      dijit.byId("setupBlock").set("style", "display: none");
-      document.getElementById("PopSetupButton").innerHTML = "Setup";
-      DrawGridSetup();
-    } else {
-      document.getElementById("PopSetupButton").innerHTML = "Map";
-      dijit.byId("setupBlock").set("style", "display: block;");
-      dijit.byId("mapBlock").set("style", "display: none;");
-    }
-  }
-
+// shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById("PopSetupButton").onclick = function () {
-    popBoxSwap();
+    if ("Map" == document.getElementById("PopSetupButton").innerHTML) DrawGridSetup();
+    popBoxSwap();   //in popControls.js
   };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
-  var popStatFlag = true;
   document.getElementById("PopStatsButton").onclick = function () {
-    if (popStatFlag) {
-      popStatFlag = false;
-      registry.byId("popRight").domNode.style.width = "1px";
-      registry.byId("mainBC").layout();
-      dijit.byId("popRight").set("style", "display: block; visibility: visible;");
-
-    }
-    else {
-      popStatFlag = true;
-      registry.byId("selectOrganPane").domNode.style.width = "150px";
-      registry.byId("popRight").domNode.style.width = "395px";
-      registry.byId("mainBC").layout();
-      dijit.byId("popRight").set("style", "display: block; visibility: visible;");
-
-    }
-  };
+    popStatView(grd);
+  }
+  // hides and shows the population and selected organsim data on right of population page with "Stats" button
 
   /* *************************************************************** */
   /* ******* Map Grid buttons - New  Run/Pause Freeze ************** */
@@ -638,164 +578,18 @@ require([
       if (grd.newrun) {
         requestPopStats();  //uiWorker
         requestGridData();  //uiWorker
-        dom.byId('ancestorBox').isSource = false;
-        grd.newrun = false;  //the run will no longer be "new"
-        //Disable some of the options on the Setup page
-        dnd.ancestorBox.isSource = false;
-        dnd.activeConfig.isSource = false;
-        delete dnd.ancestorBox.accept["organism"];
-        delete dnd.activeConfig.accept["conDish"];
-        $("#muteSlide").slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
-        dijit.byId("sizeCols").attr("disabled", true);
-        dijit.byId("sizeRows").attr("disabled", true);
-        dijit.byId("muteInput").attr("disabled", true);
-        dijit.byId("childParentRadio").attr("disabled", true);
-        dijit.byId("childRandomRadio").attr("disabled", true);
-        dijit.byId("notose").attr("disabled", true);
-        dijit.byId("nanose").attr("disabled", true);
-        dijit.byId("andose").attr("disabled", true);
-        dijit.byId("ornose").attr("disabled", true);
-        dijit.byId("orose").attr("disabled", true);
-        dijit.byId("andnose").attr("disabled", true);
-        dijit.byId("norose").attr("disabled", true);
-        dijit.byId("xorose").attr("disabled", true);
-        dijit.byId("equose").attr("disabled", true);
-        dijit.byId("experimentRadio").attr("disabled", true);
-        dijit.byId("demoRadio").attr("disabled", true);
 
-        //there will be a population so it can now be frozen.
-        dijit.byId("mnFzPopulation").attr("disabled", false);
+        //change ui parameters for the correct state when the avida population has started running
+        popRunningState_ui(dnd, grd);
+        dom.byId('ancestorBox').isSource = false;
+
         //collect setup data to send to avida
-        var setDict = {};
-        setDict["sizeCols"] = dijit.byId("sizeCols").get('value');
-        setDict["sizeRows"] = dijit.byId("sizeRows").get('value');
-        setDict["muteInput"] = document.getElementById("muteInput").value;
-        var nmlist = [];
-        for (var ii = 0; ii < namelist.length; ii++) {
-          nmlist.push(namelist[ii].innerHTML);
-        }
-        setDict["ancestor"] = nmlist;
-        if (dijit.byId("childParentRadio").get('checked')) {
-          setDict["birthMethod"] = 0
-        }
-        else {
-          setDict["birthMethod"] = 1
-        }
-        setDict["notose"] = dijit.byId("notose").get('checked');
-        setDict["nanose"] = dijit.byId("nanose").get('checked');
-        setDict["andose"] = dijit.byId("andose").get('checked');
-        setDict["ornose"] = dijit.byId("ornose").get('checked');
-        setDict["orose"] = dijit.byId("orose").get('checked', true);
-        setDict["andnose"] = dijit.byId("andnose").get('checked', true);
-        setDict["norose"] = dijit.byId("norose").get('checked', true);
-        setDict["xorose"] = dijit.byId("xorose").get('checked', true);
-        setDict["equose"] = dijit.byId("equose").get('checked', true);
-        setDict["repeatMode"] = dijit.byId("experimentRadio").get('checked', true);
-        //dijit.byId("manRadio").set('checked',true);
-        sendConfig(setDict);
-        injectAncestors(); //uiWorker
+        sendConfig(grd);
+        injectAncestors(parents); //uiWorker
       }
       doRunPause();
     }
     //update screen based on data from C++
-  }
-
-  function sendConfig(setDict) {
-    var setjson = dojo.toJson(setDict);
-    //console.log("commented out setjson ", setjson);
-    console.log('test comment; delete me');
-
-  }
-
-  function injectAncestors() {
-    var request;
-    for (ii = 0; ii < parents.name.length; ii++) {
-      request = {
-        'type': 'addEvent',
-        'name': 'injectSequence',
-        'start': 'now',   //was begin
-        'interval': 'once',
-        'args': [
-          parents.genome[ii],           //'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab',  //genome_sequence,
-          parents.AvidaNdx[ii], //cell_start,
-          -1, //cell_end,
-          -1, //default_merit,
-          ii, // lineage_label,  @ancestor
-          0 //neutral_metric
-        ]
-      }
-      uiWorker.postMessage(request);
-    }
-  }
-
-  //uiWorker function
-  function requestPopStats() {
-    var request = {
-      'type': 'addEvent',
-      'name': 'webPopulationStats',
-      'start': 'now',
-      'interval': 'always'
-    }
-    uiWorker.postMessage(request);
-  }
-
-  //uiWorker function
-  function requestGridData() {
-    var request = {
-      'type': 'addEvent',
-      'name': 'webGridData',
-      'start': 'now',
-      'interval': 'always'
-    }
-    uiWorker.postMessage(request);
-  }
-
-  //sends message to worker to tell Avida to run/pause as a toggle.
-  //uiWorker function
-  function doRunPause() {
-    if (dijit.byId("manRadio").get('checked')) {
-      request = {
-        'type': 'addEvent',
-        'name': 'runPause',
-        'triggerType': 'immediate'
-      };
-    }
-    else {
-      var num = dijit.byId("updateSpinner").get('value');
-      console.log('num', num);
-      request = {
-        'type': 'addEvent',
-        'name': 'runPause',
-        'start': num,
-        'interval': 'once'
-      }
-      console.log(request);
-    }
-    uiWorker.postMessage(request);
-  }
-
-  function updatePopStats(msg) {
-    document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0) + " updates";
-    document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
-    document.getElementById("aFitLabel").textContent = msg["ave_fitness"].formatNum(2);
-    document.getElementById("aMetabolicLabel").textContent = msg["ave_metabolic_rate"].formatNum(1);
-    document.getElementById("aGestateLabel").textContent = msg["ave_gestation_time"].formatNum(1);
-    document.getElementById("aAgeLabel").textContent = msg["ave_age"].formatNum(2);
-    document.getElementById("notPop").textContent = msg["not"];
-    document.getElementById("nanPop").textContent = msg["nand"];
-    document.getElementById("andPop").textContent = msg["and"];
-    document.getElementById("ornPop").textContent = msg["orn"];
-    document.getElementById("oroPop").textContent = msg["or"];
-    document.getElementById("antPop").textContent = msg["andn"];
-    document.getElementById("norPop").textContent = msg["nor"];
-    document.getElementById("xorPop").textContent = msg["xor"];
-    document.getElementById("equPop").textContent = msg["equ"];
-    //update graph arrays
-    ave_fitness.push(msg["ave_fitness"]);
-    ave_gestation_time.push(msg["ave_gestation_time"]);
-    ave_metabolic_rate.push(msg["ave_metabolic_rate"]);
-    population_size.push(msg["organisms"]);
-    popChartFn();
   }
 
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
@@ -813,7 +607,7 @@ require([
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);
       doRunPause()
-      //console.log("pop size ", population_size);
+      //console.log("pop size ", grd.population_size);
     }
   };
 
@@ -861,208 +655,25 @@ require([
     newButtonBoth()
   });
 
-  //uiWorker function
-  function doReset() {
-    var request = {
-      'Key': 'Reset'
-    };
-    uiWorker.postMessage(request);
-  }
-
-  //reset values with hard coded defaults Needs to be updated when Avida works
+  //reset values with hard coded defaults needs to be updated when Avida works
   function resetDishFn() { //Need to reset all settings to @default
     grd.newrun = true;
     // send rest to Avida adaptor
     doReset();
     //Enable the options on the Setup page
-    dnd.ancestorBox.accept["organism"] = 1;
-    dnd.activeConfig.accept["conDish"] = 1;
-    dnd.ancestorBox.isSource = true;
-    dnd.activeConfig.isSource = true;
-    $("#muteSlide").slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
-    dijit.byId("sizeCols").attr("disabled", false);
-    dijit.byId("sizeRows").attr("disabled", false);
-    dijit.byId("muteInput").attr("disabled", false);
-    dijit.byId("childParentRadio").attr("disabled", false);
-    dijit.byId("childRandomRadio").attr("disabled", false);
-    dijit.byId("notose").attr("disabled", false);
-    dijit.byId("nanose").attr("disabled", false);
-    dijit.byId("andose").attr("disabled", false);
-    dijit.byId("ornose").attr("disabled", false);
-    dijit.byId("orose").attr("disabled", false);
-    dijit.byId("andnose").attr("disabled", false);
-    dijit.byId("norose").attr("disabled", false);
-    dijit.byId("xorose").attr("disabled", false);
-    dijit.byId("equose").attr("disabled", false);
-    dijit.byId("experimentRadio").attr("disabled", false);
-    dijit.byId("demoRadio").attr("disabled", false);
-
-    //reset Ancestor Color stack
-    parents.Colors = ColorBlind;
-    parents.Colors.reverse();
-    //set run/stop and drop down menu to the 'stopped' state
-    dijit.byId("mnPause").attr("disabled", true);
-    dijit.byId("mnRun").attr("disabled", false);
-    document.getElementById("runStopButton").innerHTML = "Run";
-    //set configuation to default
-    dnd.activeConfig.selectAll().deleteSelectedNodes();
-    dnd.activeConfig.insertNodes(false, [{data: "@default", type: ["conDish"]}]);
-    dnd.activeConfig.sync();
+    popNewExState(dnd, grd, parents);
     //clear the time series graphs
-    ave_fitness = [];
-    ave_gestation_time = [];
-    ave_metabolic_rate = [];
-    population_size = [];
+    grd.ave_fitness = [];
+    grd.ave_gestation_time = [];
+    grd.ave_metabolic_rate = [];
+    grd.population_size = [];
     popChartFn();
     //Clear grid settings
     clearParents();
     //reset values in population settings either based on a 'file' @default or a @default string
-    writeSettings();
+    writeSettings(dft, dnd, grd);
     //re-write grid if that page is visible
     DrawGridSetup();
-  }
-
-  //writes data to Environmental Settings page based on the content of dnd.activeConfig
-  //for now this is hard coded to what would be in @default. will need a way to request data from C++
-  //and read the returned json string.
-  function writeSettings() {
-    TimeLabel.textContent = 0;
-    dijit.byId("sizeCols").set('value', dft.sizeCols);
-    dijit.byId("sizeRows").set('value', dft.sizeRows);
-    dijit.byId("sizeCols").set('value', '20');    //delete later; debug only taba
-    dijit.byId("sizeRows").set('value', '5');     //delete lager; debug only tiba
-    document.getElementById("muteInput").value = dft.muteInput;
-    var event = new Event('change');
-    document.getElementById("muteInput").dispatchEvent(event);
-    dnd.ancestorBox.selectAll().deleteSelectedNodes();
-    dnd.ancestorBox.sync();
-    dnd.gridCanvas.selectAll().deleteSelectedNodes();
-    dnd.gridCanvas.sync();
-    AncestorList = [];
-    if ('childParentRadio'==dft.child) {
-      dijit.byId("childParentRadio").set('checked', true);
-      dijit.byId("childRandomRadio").set('checked', false);
-    }
-    else {
-      dijit.byId("childParentRadio").set('checked', false);
-      dijit.byId("childRandomRadio").set('checked', true);
-    }
-    dijit.byId("notose").set('checked', dft.notose);
-    dijit.byId("nanose").set('checked', dft.nanose);
-    dijit.byId("andose").set('checked', dft.andose);
-    dijit.byId("ornose").set('checked', dft.ornose);
-    dijit.byId("orose").set('checked', dft.orose);
-    dijit.byId("andnose").set('checked', dft.andnose);
-    dijit.byId("norose").set('checked', dft.norose);
-    dijit.byId("xorose").set('checked', dft.xorose);
-    dijit.byId("equose").set('checked', dft.equose);
-    dijit.byId("experimentRadio").set('checked', true);
-    dijit.byId("manRadio").set('checked', true);
-    if ('experimentRadio'==dft.repeat) {
-      dijit.byId("experimentRadio").set('checked', true);
-      dijit.byId("demoRadio").set('checked', false);
-    }
-    else {
-      dijit.byId("experimentRadio").set('checked', false);
-      dijit.byId("demoRadio").set('checked', true);
-    }
-    if ('manRadio'==dft.pauseType) {
-      dijit.byId("manRadio").set('checked', true);
-      dijit.byId("updateRadio").set('checked', false);
-    }
-    else {
-      dijit.byId("manRadio").set('checked', false);
-      dijit.byId("updateRadio").set('checked', true);
-    }
-
-    //Selected Organism Type
-    document.getElementById("nameLabel").textContent = "-";
-    document.getElementById("fitLabel").innerHTML = "-";
-    document.getElementById("metabolicLabel").textContent = "-";
-    document.getElementById("generateLabel").textContent = "-";
-    document.getElementById("ageLabel").textContent = "-";
-    document.getElementById("ancestorLabel").textContent = "-";
-    document.getElementById("notLabel").textContent = "not-";
-    document.getElementById("nanLabel").textContent = "nan-";
-    document.getElementById("andLabel").textContent = "and-";
-    document.getElementById("ornLabel").textContent = "orn-";
-    document.getElementById("antLabel").textContent = "ant-";
-    document.getElementById("norLabel").textContent = "nor-";
-    document.getElementById("xorLabel").textContent = "xor-";
-    document.getElementById("equLabel").textContent = "equ-";
-    document.getElementById("notTime").textContent = "0";
-    document.getElementById("nanTime").textContent = "0";
-    document.getElementById("andTime").textContent = "0";
-    document.getElementById("ornTime").textContent = "0";
-    document.getElementById("antTime").textContent = "0";
-    document.getElementById("norTime").textContent = "0";
-    document.getElementById("xorTime").textContent = "0";
-    document.getElementById("equTime").textContent = "0";
-    //Population Statistics
-    document.getElementById("popSizeLabel").textContent = "-";
-    document.getElementById("aFitLabel").textContent = "-";
-    document.getElementById("aMetabolicLabel").textContent = "-";
-    document.getElementById("aGestateLabel").textContent = "-";
-    document.getElementById("aAgeLabel").textContent = "-";
-    document.getElementById("notPop").textContent = "-";
-    document.getElementById("nanPop").textContent = "-";
-    document.getElementById("andPop").textContent = "-";
-    document.getElementById("ornPop").textContent = "-";
-    document.getElementById("oroPop").textContent = "-";
-    document.getElementById("antPop").textContent = "-";
-    document.getElementById("norPop").textContent = "-";
-    document.getElementById("xorPop").textContent = "-";
-    document.getElementById("equPop").textContent = "-";
-    grd.flagSelected = false;
-    dijit.byId("mnFzOrganism").attr("disabled", true);
-  }
-
-  function updateSelectedOrganismType(msg) {
-    document.getElementById("nameLabel").textContent = msg.genotypeName;
-    var prefix = "";
-    if (msg.isEstimate) prefix = "est. ";
-    document.getElementById("fitLabel").innerHTML = prefix + msg.fitness;
-    document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism;
-    document.getElementById("generateLabel").textContent = prefix + msg.gestation;
-    document.getElementById("ageLabel").textContent = prefix + msg.age;
-    document.getElementById("ancestorLabel").textContent = msg.ancestor ;
-    //add + or - to text of logic function
-    if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";
-    else document.getElementById("notLabel").textContent = "not+";
-    if (0 == msg.tasks.nan) document.getElementById("nanLabel").textContent = "nan-";
-    else document.getElementById("nanLabel").textContent = "nan+";
-    if (0 == msg.tasks.and) document.getElementById("andLabel").textContent = "and-";
-    else document.getElementById("andLabel").textContent = "and+";
-    if (0 == msg.tasks.orn) document.getElementById("ornLabel").textContent = "orn-";
-    else document.getElementById("ornLabel").textContent = "orn+";
-    if (0 == msg.tasks.oro) document.getElementById("oroLabel").textContent = "oro-";
-    else document.getElementById("oroLabel").textContent = "oro+";
-    if (0 == msg.tasks.ant) document.getElementById("antLabel").textContent = "ant-";
-    else document.getElementById("antLabel").textContent = "ant+";
-    if (0 == msg.tasks.nor) document.getElementById("norLabel").textContent = "nor-";
-    else document.getElementById("norLabel").textContent = "nor+";
-    if (0 == msg.tasks.xor) document.getElementById("xorLabel").textContent = "xor-";
-    else document.getElementById("xorLabel").textContent = "xor+";
-    if (0 == msg.tasks.equ) document.getElementById("equLabel").textContent = "equ-";
-    else document.getElementById("equLabel").textContent = "equ+";
-    //now put in the actual numbers
-    document.getElementById("notTime").textContent = msg.tasks.not;
-    document.getElementById("nanTime").textContent = msg.tasks.nan;
-    document.getElementById("andTime").textContent = msg.tasks.and;
-    document.getElementById("ornTime").textContent = msg.tasks.orn;
-    document.getElementById("ornTime").textContent = msg.tasks.oro;
-    document.getElementById("antTime").textContent = msg.tasks.ant;
-    document.getElementById("norTime").textContent = msg.tasks.nor;
-    document.getElementById("xorTime").textContent = msg.tasks.xor;
-    document.getElementById("equTime").textContent = msg.tasks.equ;
-    //debug
-    document.getElementById("dnaLabel").textContent = msg.genome;
-
-    if ('getgenome'==grd.kidStatus) {
-      grd.kidStatus = "havegenome";
-      grd.kidName = msg.genotypeName;
-      grd.kidGenome = msg.genome;
-    }
   }
 
   //******* Freeze Button ********************************************
@@ -1214,8 +825,10 @@ require([
     // Select if it is in the grid
     findSelected(evt);
     //check to see if in the grid part of the canvas
+    if (debug.mouse) console.log('mousedown', grd.NdxSelected);
     if (grd.ColSelected >= 0 && grd.ColSelected < grd.cols && grd.RowSelected >= 0 && grd.RowSelected < grd.rows) {
       grd.flagSelected = true;
+      if (debug.mouse) console.log('ongrid', grd.NdxSelected);
       DrawGridSetup();
       dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
 
@@ -1223,6 +836,7 @@ require([
       mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
       if (grd.newrun) {  //run has not started so look to see if cell contains ancestor
         mouse.ParentNdx = findParentNdx();
+        if (debug.mouse) console.log('parent', mouse.ParentNdx);
         if (-1 < mouse.ParentNdx) { //selected a parent, check for dragging
           document.getElementById('organIcon').style.cursor = 'copy';
           document.getElementById('gridCanvas').style.cursor = 'copy';
@@ -1234,6 +848,7 @@ require([
       }
       else {  //look for decendents (kids)
         grd.kidStatus='getgenome';
+        if (debug.mouse) console.log('kidSelected; NdxSelected', grd.NdxSelected);
         doSelectedOrganismType(grd);
         //if ancestor not null then there is a cell there.
         if ('null' != grd.msg.ancestor.data[grd.NdxSelected]) {
@@ -1244,6 +859,8 @@ require([
       }
     }
     else grd.flagSelected = false;
+    grd.NdxSelected = -1;
+    doSelectedOrganismType(grd);
     DrawGridSetup();
   });
 
@@ -1318,7 +935,7 @@ require([
       fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
       console.log('fzr.actOrgan', fzr.actOrgan.genome);
       //get genome from offspring data //needs work!!
-      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
     else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id) {
       //create a new freezer item
@@ -1375,7 +992,7 @@ require([
       fzr.actOrgan.genome = grd.kidGenome;
       fzr.actOrgan.name = grd.kidName;
       fzr.actOrgan.domId = "";
-      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
     else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id){
       if (debug.mouse) console.log('in SnowFlakeImage');
@@ -1461,7 +1078,7 @@ require([
       fzr.actOrgan.genome = parents.genome[mouse.ParentNdx];
       fzr.actOrgan.name = parents.name[mouse.ParentNdx];
       fzr.actOrgan.domId = parents.domId[mouse.ParentNdx];
-      doOrgTrace();  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
   }
 
@@ -1703,16 +1320,16 @@ require([
 
   function popChartFn() {
     if ("Average Fitness" == dijit.byId("yaxis").value) {
-      popY = ave_fitness;
+      popY = grd.ave_fitness;
     }
     else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
-      popY = ave_gestation_time;
+      popY = grd.ave_gestation_time;
     }
     else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
-      popY = ave_metabolic_rate;
+      popY = grd.ave_metabolic_rate;
     }
     else if ("Number of Organisms" == dijit.byId("yaxis").value) {
-      popY = population_size;
+      popY = grd.population_size;
     }
     //popChart.setTheme(myTheme);
     popChart.addPlot("default", {type: "Lines"});
@@ -1829,7 +1446,7 @@ require([
     dnd.activeOrgan.sync();
 
     //call organismTrace
-    doOrgTrace();  //request new Organism Trace from Avida and draw that.
+    doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
   });
 
   //Put the offspring in the parent position on Organism Trace
@@ -1856,7 +1473,7 @@ require([
     dnd.activeOrgan.sync();
 
     //call organismTrace
-    doOrgTrace();  //request new Organism Trace from Avida and draw that.
+    doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
   });
 
   /* ****************************************************************/
