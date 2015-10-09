@@ -316,13 +316,13 @@ require([
   ]);
   //Temporary - I think this will be removed once we have a files system.
   dnd.genes = [
-    'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'  //ancestor
-    ,'wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab'  //not
-    ,'wzcagckchsdctcbqkwicclsdycygcubemcccqyjcizvfcaxgab'  //nan
-    ,'wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro
-    ,'wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro-orn
-    ,'whjagchmivznzbxbvmbzpfvfpwubypsmyuuobyufycvovrxguw'  //all functions
-    ,'wsjagcvtvazystorcauoyucuyquufydpbusmyfqoocvvopxgxu'  //allbut2logic
+     '0,heads_default,wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'  //ancestor
+    ,'0,heads_default,wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab'  //not
+    ,'0,heads_default,wzcagckchsdctcbqkwicclsdycygcubemcccqyjcizvfcaxgab'  //nan
+    ,'0,heads_default,wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro
+    ,'0,heads_default,wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro-orn
+    ,'0,heads_default,whjagchmivznzbxbvmbzpfvfpwubypsmyuuobyufycvovrxguw'  //all functions
+    ,'0,heads_default,wsjagcvtvazystorcauoyucuyquufydpbusmyfqoocvvopxgxu'  //allbut2logic
   ]
 
   if (debug.root) console.log('before frz structure');

@@ -11,12 +11,14 @@ var uiWorker = new Worker('avida.js');
 function doOrgTrace(fzr) {
   var seed = 100*Math.random();
   if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0 }
+  else {seed = -1}
   var request = {
     'type': 'addEvent',
     'name': 'webOrgTraceBySequence',
     'triggerType': 'immediate',
     'args': [
-      '0,heads_default,' + fzr.actOrgan.genome,                                  //genome string
+      //'0,heads_default,' + fzr.actOrgan.genome,                                  //genome string
+      fzr.actOrgan.genome,                                  //genome string
       dijit.byId("orMuteInput").get('value')/100,     // point mutation rate
       seed                                            //seed where 0 = random; >0 to replay that number
     ]
