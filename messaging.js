@@ -30,7 +30,7 @@ function doOrgTrace(fzr) {
 function doSelectedOrganismType(grd) {
   var request = {
     'type': 'addEvent',
-    'name': 'getOrgDataByCell',
+    'name': 'WebOrgDataByCellID',
     'args': grd.NdxSelected
   }
   if (debug.msg) console.log('doSelectedOrganismType; NdxSelected', grd.NdxSelected)
@@ -166,26 +166,27 @@ function updatePopStats(grd, msg) {
 }
 
 function updateSelectedOrganismType(grd, msg) {
-    document.getElementById("nameLabel").textContent = msg.genotypeName;
-    var prefix = "";
-    if (msg.isEstimate) prefix = "est. ";
-    document.getElementById("fitLabel").innerHTML = prefix + msg.fitness;
-    document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism;
-    document.getElementById("generateLabel").textContent = prefix + msg.gestation;
-    document.getElementById("ageLabel").textContent = prefix + msg.age;
-    document.getElementById("ancestorLabel").textContent = msg.ancestor ;
-    //add + or - to text of logic function
+  document.getElementById("nameLabel").textContent = msg.genotypeName;
+  var prefix = "";
+  if (msg.isEstimate) prefix = "est. ";
+  document.getElementById("fitLabel").innerHTML = prefix + msg.fitness;
+  document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism;
+  document.getElementById("generateLabel").textContent = prefix + msg.gestation;
+  document.getElementById("ageLabel").textContent = prefix + msg.age;
+  document.getElementById("ancestorLabel").textContent = msg.ancestor ;
+  //add + or - to text of logic function
+  if (0 < msg.tasks) {
     if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";
     else document.getElementById("notLabel").textContent = "not+";
-    if (0 == msg.tasks.nan) document.getElementById("nanLabel").textContent = "nan-";
+    if (0 == msg.tasks.nand) document.getElementById("nanLabel").textContent = "nan-";
     else document.getElementById("nanLabel").textContent = "nan+";
     if (0 == msg.tasks.and) document.getElementById("andLabel").textContent = "and-";
     else document.getElementById("andLabel").textContent = "and+";
     if (0 == msg.tasks.orn) document.getElementById("ornLabel").textContent = "orn-";
     else document.getElementById("ornLabel").textContent = "orn+";
-    if (0 == msg.tasks.oro) document.getElementById("oroLabel").textContent = "oro-";
+    if (0 == msg.tasks.or) document.getElementById("oroLabel").textContent = "oro-";
     else document.getElementById("oroLabel").textContent = "oro+";
-    if (0 == msg.tasks.ant) document.getElementById("antLabel").textContent = "ant-";
+    if (0 == msg.tasks.andn) document.getElementById("antLabel").textContent = "ant-";
     else document.getElementById("antLabel").textContent = "ant+";
     if (0 == msg.tasks.nor) document.getElementById("norLabel").textContent = "nor-";
     else document.getElementById("norLabel").textContent = "nor+";
@@ -195,20 +196,42 @@ function updateSelectedOrganismType(grd, msg) {
     else document.getElementById("equLabel").textContent = "equ+";
     //now put in the actual numbers
     document.getElementById("notTime").textContent = msg.tasks.not;
-    document.getElementById("nanTime").textContent = msg.tasks.nan;
+    document.getElementById("nanTime").textContent = msg.tasks.nand;
     document.getElementById("andTime").textContent = msg.tasks.and;
     document.getElementById("ornTime").textContent = msg.tasks.orn;
-    document.getElementById("ornTime").textContent = msg.tasks.oro;
-    document.getElementById("antTime").textContent = msg.tasks.ant;
+    document.getElementById("ornTime").textContent = msg.tasks.or;
+    document.getElementById("antTime").textContent = msg.tasks.andn;
     document.getElementById("norTime").textContent = msg.tasks.nor;
     document.getElementById("xorTime").textContent = msg.tasks.xor;
     document.getElementById("equTime").textContent = msg.tasks.equ;
     //debug
-    document.getElementById("dnaLabel").textContent = msg.genome;
-
-    if ('getgenome'==grd.kidStatus) {
-      grd.kidStatus = "havegenome";
-      grd.kidName = msg.genotypeName;
-      grd.kidGenome = msg.genome;
-    }
   }
+  else {
+    document.getElementById("notLabel").textContent = "not-";
+    document.getElementById("nanLabel").textContent = "nan-";
+    document.getElementById("andLabel").textContent = "and-";
+    document.getElementById("ornLabel").textContent = "orn-";
+    document.getElementById("oroLabel").textContent = "oro-";
+    document.getElementById("antLabel").textContent = "ant-";
+    document.getElementById("norLabel").textContent = "nor-";
+    document.getElementById("xorLabel").textContent = "xor-";
+    document.getElementById("equLabel").textContent = "equ-";
+
+    document.getElementById("notTime").textContent = '-';
+    document.getElementById("nanTime").textContent = '-';
+    document.getElementById("andTime").textContent = '-';
+    document.getElementById("ornTime").textContent = '-';
+    document.getElementById("ornTime").textContent = '-';
+    document.getElementById("antTime").textContent = '-';
+    document.getElementById("norTime").textContent = '-';
+    document.getElementById("xorTime").textContent = '-';
+    document.getElementById("equTime").textContent = '-';
+  }
+  document.getElementById("dnaLabel").textContent = msg.genome;
+
+  if ('getgenome'==grd.kidStatus) {
+    grd.kidStatus = "havegenome";
+    grd.kidName = msg.genotypeName;
+    grd.kidGenome = msg.genome;
+  }
+}

@@ -98,7 +98,7 @@ require([
           grd.msg = msg;
           DrawGridSetup();
           break;
-        case 'getOrgDataByCell':
+        case 'webOrgDataByCellID':
           updateSelectedOrganismType(grd, msg);  //in messageing
           break;
         default:

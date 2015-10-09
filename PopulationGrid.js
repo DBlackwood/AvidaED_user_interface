@@ -26,7 +26,7 @@ function setMapData(grd) {
     case 'Gestation Time':
       str = 'last_gestation_time';
       grd.fill = grd.msg.gestation.data;
-      if (grd.mxGest < grd.msg.gestation.maxVal || 0.7*grd.mxGest > grd.msg.gestation.maxVal ) {
+      if (grd.mxGest < grd.msg.gestation.maxVal || 0.3*grd.mxGest > grd.msg.gestation.maxVal ) {
         grd.mxGest = 1.2 * grd.msg.gestation.maxVal
       }
       grd.fillmax = grd.mxGest;
