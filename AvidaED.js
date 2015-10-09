@@ -931,7 +931,7 @@ require([
       dnd.activeOrgan.sync();
 
       fzr.actOrgan.name = parent + "_offspring";
-      fzr.actOrgan.genome = gen.dna[1];  //this should be the full genome when the offspring is complete.
+      fzr.actOrgan.genome = '0,heads_default,' + gen.dna[gen.son];  //this should be the full genome when the offspring is complete.
       fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
       console.log('fzr.actOrgan', fzr.actOrgan.genome);
       //get genome from offspring data //needs work!!
@@ -959,7 +959,7 @@ require([
           var neworg = {
             'name': avidian,
             'domId': mapItems[mapItems.length - 1],
-            'genome': gen.dna[1]
+            'genome': '0,heads_default,' + gen.dna[1]
           }
           fzr.organism.push(neworg);
           if (debug.mouse) console.log('Offspring-->Snow, fzr.organism', fzr.organism);
@@ -1481,7 +1481,7 @@ require([
   /* ************************************************************** */
 
   clearGen();
-//set canvas size; called from many places
+  //set canvas size; called from many places
   function organismCanvasHolderSize() {
     gen.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
     gen.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;

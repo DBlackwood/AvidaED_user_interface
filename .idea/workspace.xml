@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/aed20151001.zip" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js.mem" afterPath="$PROJECT_DIR$/avida.js.mem" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,11 +83,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.851852">
-              <caret line="318" column="5" selection-start-line="318" selection-start-column="5" selection-end-line="318" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.66043615">
+              <caret line="933" column="64" selection-start-line="933" selection-start-column="64" selection-end-line="933" selection-end-column="64" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="organismView.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/organismView.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-10.0">
+              <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -109,11 +115,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/messaging.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.46728972">
-              <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+            <state vertical-scroll-proportion="-10.555555">
+              <caret line="19" column="28" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -172,8 +178,8 @@
         <option value="$PROJECT_DIR$/popControls.js" />
         <option value="$PROJECT_DIR$/globals.js" />
         <option value="$PROJECT_DIR$/PopulationGrid.js" />
-        <option value="$PROJECT_DIR$/AvidaED.js" />
         <option value="$PROJECT_DIR$/messaging.js" />
+        <option value="$PROJECT_DIR$/AvidaED.js" />
       </list>
     </option>
   </component>
@@ -695,14 +701,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/organismView.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.407408">
-          <caret line="472" column="11" selection-start-line="472" selection-start-column="4" selection-end-line="472" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/colorTest.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -803,6 +801,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.555555">
+          <caret line="19" column="28" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/placeParent.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -811,18 +817,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AvidaED.js">
+    <entry file="file://$PROJECT_DIR$/organismView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.851852">
-          <caret line="318" column="5" selection-start-line="318" selection-start-column="5" selection-end-line="318" selection-end-column="5" />
+        <state vertical-scroll-proportion="-10.0">
+          <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
+    <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46728972">
-          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.66043615">
+          <caret line="933" column="64" selection-start-line="933" selection-start-column="64" selection-end-line="933" selection-end-column="64" />
           <folding />
         </state>
       </provider>
