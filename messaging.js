@@ -33,6 +33,7 @@ function doSelectedOrganismType(grd) {
   var request = {
     'type': 'addEvent',
     'name': 'WebOrgDataByCellID',
+    //'singleton': true,
     'args': grd.NdxSelected
   }
   if (debug.msg) console.log('doSelectedOrganismType; NdxSelected', grd.NdxSelected)
@@ -168,16 +169,23 @@ function updatePopStats(grd, msg) {
 }
 
 function updateSelectedOrganismType(grd, msg) {
-  document.getElementById("nameLabel").textContent = msg.genotypeName;
+  if (debug.msg) console.log('selected_msg', msg);
+  if (debug.msg) console.log('selected_msg', msg.tasks);
   var prefix = "";
   if (msg.isEstimate) prefix = "est. ";
-  document.getElementById("fitLabel").innerHTML = prefix + msg.fitness;
-  document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism;
-  document.getElementById("generateLabel").textContent = prefix + msg.gestation;
-  document.getElementById("ageLabel").textContent = prefix + msg.age;
-  document.getElementById("ancestorLabel").textContent = msg.ancestor ;
+  document.getElementById("nameLabel").textContent = msg.genotypeName;
+  if (null == msg.fitness) document.getElementById("fitLabel").innerHTML = '-';
+  else document.getElementById("fitLabel").innerHTML = prefix + msg.fitness.formatNum(2);
+  if (null == msg.metabolism) document.getElementById("metabolicLabel").textContent = '-';
+  else document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism.formatNum(2);
+  if (null == msg.gestation) document.getElementById("generateLabel").textContent = prefix + msg.gestation.formatNum(2);
+  else document.getElementById("generateLabel").textContent = '-';
+  if (null == msg.age) document.getElementById("ageLabel").textContent = prefix + msg.age;
+  else document.getElementById("ageLabel").textContent = '-';
+  if (null == msg.ancestor) document.getElementById("ancestorLabel").textContent = msg.ancestor ;
+  else document.getElementById("ancestorLabel").textContent = '-';
   //add + or - to text of logic function
-  if (0 < msg.tasks) {
+  if (null != msg.tasks) {
     if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";
     else document.getElementById("notLabel").textContent = "not+";
     if (0 == msg.tasks.nand) document.getElementById("nanLabel").textContent = "nan-";
@@ -201,12 +209,11 @@ function updateSelectedOrganismType(grd, msg) {
     document.getElementById("nanTime").textContent = msg.tasks.nand;
     document.getElementById("andTime").textContent = msg.tasks.and;
     document.getElementById("ornTime").textContent = msg.tasks.orn;
-    document.getElementById("ornTime").textContent = msg.tasks.or;
+    document.getElementById("oroTime").textContent = msg.tasks.or;
     document.getElementById("antTime").textContent = msg.tasks.andn;
     document.getElementById("norTime").textContent = msg.tasks.nor;
     document.getElementById("xorTime").textContent = msg.tasks.xor;
     document.getElementById("equTime").textContent = msg.tasks.equ;
-    //debug
   }
   else {
     document.getElementById("notLabel").textContent = "not-";
@@ -223,13 +230,13 @@ function updateSelectedOrganismType(grd, msg) {
     document.getElementById("nanTime").textContent = '-';
     document.getElementById("andTime").textContent = '-';
     document.getElementById("ornTime").textContent = '-';
-    document.getElementById("ornTime").textContent = '-';
+    document.getElementById("oroTime").textContent = '-';
     document.getElementById("antTime").textContent = '-';
     document.getElementById("norTime").textContent = '-';
     document.getElementById("xorTime").textContent = '-';
     document.getElementById("equTime").textContent = '-';
   }
-  document.getElementById("dnaLabel").textContent = msg.genome;
+  if (debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
 
   if ('getgenome'==grd.kidStatus) {
     grd.kidStatus = "havegenome";

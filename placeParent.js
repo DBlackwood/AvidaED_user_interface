@@ -78,10 +78,51 @@ Number.prototype.formatNum = function(c, d, t){
   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 
+/*
+ wsb(target, thestring)
+ returns the part of the string that occurs before the target substring
+ or the entire string if the target is not found.
+ */
+function wsb(target, strng){
+  var sb = strng;
+  var tndx = strng.indexOf(target);
+  if (-1 == tndx) {
+    return sb;
+  } else {
+    sb = strng.substr(0, tndx);
+    return sb;
+  }
+};
+
+/*
+ wsa(target, thestring)
+ returns the part of the string that follows the target or
+ the empty string if the target is not found.
+ */
+function wsa(target, strng){
+  var sb = strng;
+  var tndx = strng.indexOf(target);
+  if (-1 == tndx) {
+    return '';
+  } else {
+    sb = strng.substr(tndx + target.length, strng.length);
+    return sb;
+  }
+}
+
+/*
+
+So to extract the genome out of
+
+var genplus = "0,heads-default,abcdefghijklmnopqrstuvwxyz";
+
+var genome = wsa(",", wsa(",", genplus));
+*/
 //---------- set Ancestors ------------------/
     function PlaceAncestors(parents) {
       var cols = dijit.byId("sizeCols").get('value');
       var rows = dijit.byId("sizeRows").get('value');
+      var cc, rr, ii;
       switch(parents.autoNdx.length){
         case 1:   //Place in center
           parents.col[parents.autoNdx[0]] = Math.trunc(cols/2);
@@ -185,6 +226,8 @@ Number.prototype.formatNum = function(c, d, t){
           }
           break; */
         case 8:
+          if (0 != cols%2) cols = cols-1;
+          if (0 != rows%2) rows = rows-1;
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
               if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }

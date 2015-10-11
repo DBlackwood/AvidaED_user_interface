@@ -185,8 +185,10 @@ function cellConflict(NewCols, NewRows, grd, parents) {
 function DrawLogicSelected(grd) {
   //console.log('DrawLogic', grd.out);
   var cc, rr, xx, yy;
-  var inner = 1; //how far inside the square to put the outline.
-  var thick = 1; //thickness of line to draw
+  var inner = 0.08 * grd.cellWd; //how far inside the square to put the outline.
+  var thick = 0.1 * grd.cellWd;; //thickness of line to draw
+  if (1 > inner) inner = 1;
+  if (1 > thick) thick = 1;
   //console.log('=========================')
   //console.log('logic', grd.out);
   for (ii = 0; ii < grd.out.length; ii++) {
@@ -203,9 +205,11 @@ function DrawLogicSelected(grd) {
 
 //Draw Cell outline or including special case for Selected
 function DrawSelected(grd) {
+  var thick = 0.1 * grd.cellWd;
+  if (1 > thick) thick = 1;
   grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
   grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
-  DrawCellOutline(2, grd.SelectedColor, grd.selectX, grd.selectY, grd.cellWd, grd.cellHt, grd)
+  DrawCellOutline(thick, grd.SelectedColor, grd.selectX, grd.selectY, grd.cellWd, grd.cellHt, grd)
 }
 
 function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {

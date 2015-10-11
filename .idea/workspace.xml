@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tester.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ui-test.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PopulationGrid.js" afterPath="$PROJECT_DIR$/PopulationGrid.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/placeParent.js" afterPath="$PROJECT_DIR$/placeParent.js" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,17 +81,17 @@
         <entry file="file://$PROJECT_DIR$/placeParent.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="49" column="43" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="43" />
+              <caret line="118" column="41" selection-start-line="118" selection-start-column="13" selection-end-line="118" selection-end-column="41" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66043615">
-              <caret line="933" column="64" selection-start-line="933" selection-start-column="64" selection-end-line="933" selection-end-column="64" />
+            <state vertical-scroll-proportion="-7.9259257">
+              <caret line="1603" column="31" selection-start-line="1603" selection-start-column="27" selection-end-line="1603" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -115,11 +119,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/messaging.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.555555">
-              <caret line="19" column="28" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.5140187">
+              <caret line="172" column="54" selection-start-line="172" selection-start-column="54" selection-end-line="172" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -128,8 +132,8 @@
       <file leaf-file-name="PopulationGrid.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PopulationGrid.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.965517">
-              <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
+            <state vertical-scroll-proportion="34.13793">
+              <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -150,8 +154,8 @@
       <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.3333333">
-              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="9" />
+            <state vertical-scroll-proportion="-7.2222223">
+              <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -167,7 +171,6 @@
       <list>
         <option value="$PROJECT_DIR$/ColorTest.js" />
         <option value="$PROJECT_DIR$/UI_worker.js" />
-        <option value="$PROJECT_DIR$/placeParent.js" />
         <option value="$PROJECT_DIR$/popGrid.js" />
         <option value="$PROJECT_DIR$/AvidaED.css" />
         <option value="$PROJECT_DIR$/colorTest.js" />
@@ -177,9 +180,10 @@
         <option value="$PROJECT_DIR$/dojoDnd.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
         <option value="$PROJECT_DIR$/globals.js" />
+        <option value="$PROJECT_DIR$/AvidaED.js" />
+        <option value="$PROJECT_DIR$/placeParent.js" />
         <option value="$PROJECT_DIR$/PopulationGrid.js" />
         <option value="$PROJECT_DIR$/messaging.js" />
-        <option value="$PROJECT_DIR$/AvidaED.js" />
       </list>
     </option>
   </component>
@@ -326,7 +330,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32855093" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -727,14 +731,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.3333333">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dojoDnd.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.111111">
@@ -742,14 +738,6 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PopulationGrid.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.965517">
-          <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -801,22 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.555555">
-          <caret line="19" column="28" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/placeParent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="43" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/organismView.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.0">
@@ -827,8 +799,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66043615">
-          <caret line="933" column="64" selection-start-line="933" selection-start-column="64" selection-end-line="933" selection-end-column="64" />
+        <state vertical-scroll-proportion="-7.9259257">
+          <caret line="1603" column="31" selection-start-line="1603" selection-start-column="27" selection-end-line="1603" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/placeParent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="118" column="41" selection-start-line="118" selection-start-column="13" selection-end-line="118" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PopulationGrid.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="34.13793">
+          <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.2222223">
+          <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5140187">
+          <caret line="172" column="54" selection-start-line="172" selection-start-column="54" selection-end-line="172" selection-end-column="54" />
           <folding />
         </state>
       </provider>
