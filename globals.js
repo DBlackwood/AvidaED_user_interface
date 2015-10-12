@@ -4,7 +4,7 @@ debug.root = false;  //statemens that look for failiers when the code executes o
 debug.logic = false;  //debug statements that look for errors outlining logic functions
 debug.mouse = true;   //debug statemetns about non-dojo drag and drop
 debug.dnd = false;     //debut statemesnt about dojo dnd
-debug.msg = true;
+debug.msg = false;
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};

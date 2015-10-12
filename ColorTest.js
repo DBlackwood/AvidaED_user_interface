@@ -46,8 +46,8 @@ function backgroundBoard(chck) {
 
 //Draw Cell outline or including special case for Selected
 function drawSelected(chck) {
-    chck.selectX = chck.marginX + chck.xOffset + chck.ColSelected * chck.cellWd;
-    chck.selectY = chck.marginY + chck.yOffset + chck.RowSelected * chck.cellHt;
+    chck.selectX = chck.marginX + chck.xOffset + chck.selectedCol * chck.cellWd;
+    chck.selectY = chck.marginY + chck.yOffset + chck.selectedRow * chck.cellHt;
     drawCellOutline(2, chck.outlineColor, chck.selectX, chck.selectY, chck.cellWd, chck.cellHt, chck)
 }
 

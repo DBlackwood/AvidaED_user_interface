@@ -140,8 +140,9 @@ button, input,
   color: #00f;
   font: 11px sans-serif;
   text-decoration: none;
+  color: #00bb00;
   border: 1px solid #000;
-  border-color: #00f;
+  border-color: #00dd00;
   border-radius: 5px;
   padding: 0px 00px 2px 0px;
   height: 15px;

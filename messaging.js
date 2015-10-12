@@ -34,9 +34,9 @@ function doSelectedOrganismType(grd) {
     'type': 'addEvent',
     'name': 'WebOrgDataByCellID',
     //'singleton': true,
-    'args': grd.NdxSelected
+    'args': grd.selectedNdx
   }
-  if (debug.msg) console.log('doSelectedOrganismType; NdxSelected', grd.NdxSelected)
+  if (debug.msg) console.log('doSelectedOrganismType; selectedNdx', grd.selectedNdx)
   uiWorker.postMessage(request);
 }
 
@@ -168,7 +168,8 @@ function updatePopStats(grd, msg) {
   grd.population_size.push(msg["organisms"]);
 }
 
-function updateSelectedOrganismType(grd, msg) {
+//writes out data for WebOrgDataByCellID
+function updateSelectedOrganismType(grd, msg, parents) {
   if (debug.msg) console.log('selected_msg', msg);
   if (debug.msg) console.log('selected_msg', msg.tasks);
   var prefix = "";
@@ -178,12 +179,12 @@ function updateSelectedOrganismType(grd, msg) {
   else document.getElementById("fitLabel").innerHTML = prefix + msg.fitness.formatNum(2);
   if (null == msg.metabolism) document.getElementById("metabolicLabel").textContent = '-';
   else document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism.formatNum(2);
-  if (null == msg.gestation) document.getElementById("generateLabel").textContent = prefix + msg.gestation.formatNum(2);
-  else document.getElementById("generateLabel").textContent = '-';
-  if (null == msg.age) document.getElementById("ageLabel").textContent = prefix + msg.age;
-  else document.getElementById("ageLabel").textContent = '-';
-  if (null == msg.ancestor) document.getElementById("ancestorLabel").textContent = msg.ancestor ;
-  else document.getElementById("ancestorLabel").textContent = '-';
+  if (null == msg.gestation) document.getElementById("generateLabel").textContent = '-';
+  else  document.getElementById("generateLabel").textContent = prefix + msg.gestation.formatNum(2);
+  if (null == msg.age) document.getElementById("ageLabel").textContent = '-';
+    else document.getElementById("ageLabel").textContent = prefix + msg.age;
+  if (null == msg.ancestor) document.getElementById("ancestorLabel").textContent = '-';
+  else document.getElementById("ancestorLabel").textContent = msg.ancestor;
   //add + or - to text of logic function
   if (null != msg.tasks) {
     if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";
@@ -238,9 +239,41 @@ function updateSelectedOrganismType(grd, msg) {
   }
   if (debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
 
-  if ('getgenome'==grd.kidStatus) {
+  fillColorBlock(grd, msg, parents);
+  if (debug.msg) console.log('Kidstatus', grd.kidStatus);
+  if ('getgenome' == grd.kidStatus) {
+    if (debug.msg) console.log('in kidStatus');
     grd.kidStatus = "havegenome";
     grd.kidName = msg.genotypeName;
     grd.kidGenome = msg.genome;
   }
 }
+
+  function fillColorBlock(grd, msg, parents) {  //Draw the color block
+    if (debug.msg) console.log('in fillColorBlock');
+    if (debug.msg) console.log('ndx', grd.selectedNdx, '; msg.ancestor.data[ndx]',grd.msg.ancestor.data[grd.selectedNdx]);
+    if (debug.msg) console.log('grd.fill[grd.selectedNdx]',grd.fill[grd.selectedNdx]);
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) {
+      if (null === grd.fill[grd.selectedNdx]) {
+        grd.selCtx.fillStyle = '#000'
+      }
+      else {
+        grd.selCtx.fillStyle = parents.color[grd.fill[grd.selectedNdx]]
+      }
+    }
+    else {
+      if (null === grd.fill[grd.selectedNdx]) {
+        if (null === grd.msg.ancestor.data[grd.selectedNdx]) grd.selCtx.fillStyle = '#000';
+        else grd.selCtx.fillStyle = '#888';
+      }
+      else if (0 == grd.fill[grd.selectedNdx]) grd.selCtx.fillStyle = defaultKidColor;
+      else {  //get_color0 = function(cmap, dx, d1, d2)
+        grd.selCtx.fillStyle = get_color0(grd.cmap, grd.fill[grd.selectedNdx], 0, grd.fillmax);
+        //console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));
+      }
+    }
+    if (debug.msg) console.log('color', grd.selCtx.fillStyle);
+    grd.selCtx.fillRect(0, 0, grd.SelectedWd, grd.SelectedHt);
+
+  }
+

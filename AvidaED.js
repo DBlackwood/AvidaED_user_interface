@@ -53,6 +53,7 @@ require([
   "organismView.js",
   'dojoDnd.js',
   'popControls.js',
+  'mouse.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
@@ -62,6 +63,17 @@ require([
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, ready, $, jqueryui) {
 
   parser.parse();
+
+  /*******************************************************************************************
+   * The files at the end of the require list contain code specific to avida-ED.
+   * The functions they contain can access the dom. They cannot access functions defined anywhere
+   * else in the project. This has resulted in some code split between AvidaED.js and the various
+   * other files.
+   *
+   * The files included in script tags in AvidaED.html cannot access the dom. They contain global
+   * variables and functions that are independent of the dom
+   *
+   *******************************************************************************************/
 
 
   //process message from web worker
@@ -99,7 +111,7 @@ require([
           DrawGridSetup();
           break;
         case 'webOrgDataByCellID':
-          updateSelectedOrganismType(grd, msg);  //in messageing
+          updateSelectedOrganismType(grd, msg, parents);  //in messageing
           break;
         default:
           console.log('____________UnknownRequest: ', msg);
@@ -766,41 +778,6 @@ require([
 //********************************************************************
 //    Mouse DND functions
 //********************************************************************
-  var mouseDnoffsetPos = [];
-
-  var nearly = function (aa, bb) {
-    var epsilon = 3;
-    var distance = Math.sqrt(Math.pow(aa[0] - bb[0], 2) + Math.pow(aa[1] - bb[1], 2))
-    if (distance > epsilon) return false;
-    else return true;
-  }
-
-  var matches = function (aa, bb) {
-    if (aa[0] == bb[0] && aa[1] == bb[1]) return true;
-    else return false;
-  }
-
-  var findParentNdx = function () {
-    var MomNdx = -1;
-    for (var ii = 0; ii < parents.name.length; ii++) {
-      if (matches([grd.ColSelected, grd.RowSelected], [parents.col[ii], parents.row[ii]])) {
-        MomNdx = ii;
-        //console.log('parent found in function', MomNdx);
-        break;  //found a parent no need to keep looking
-      }
-    }
-    return MomNdx;
-  }
-
-  function findSelected(evt) {
-    mouseX = evt.offsetX - grd.marginX - grd.xOffset;
-    mouseY = evt.offsetY - grd.marginY - grd.yOffset;
-    grd.ColSelected = Math.floor(mouseX / grd.cellWd);
-    grd.RowSelected = Math.floor(mouseY / grd.cellHt);
-    grd.NdxSelected = grd.RowSelected*grd.cols + grd.ColSelected;
-    //console.log('mx,y', mouseX, mouseY, '; selected Col, Row', grd.ColSelected, grd.RowSelected);
-  }
-
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
     mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
@@ -823,19 +800,19 @@ require([
     mouse.DnGridPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
     // Select if it is in the grid
-    findSelected(evt);
+    findSelected(evt, grd);
     //check to see if in the grid part of the canvas
-    if (debug.mouse) console.log('mousedown', grd.NdxSelected);
-    if (grd.ColSelected >= 0 && grd.ColSelected < grd.cols && grd.RowSelected >= 0 && grd.RowSelected < grd.rows) {
+    if (debug.mouse) console.log('mousedown', grd.selectedNdx);
+    if (grd.selectedCol >= 0 && grd.selectedCol < grd.cols && grd.selectedRow >= 0 && grd.selectedRow < grd.rows) {
       grd.flagSelected = true;
-      if (debug.mouse) console.log('ongrid', grd.NdxSelected);
+      if (debug.mouse) console.log('ongrid', grd.selectedNdx);
       DrawGridSetup();
       dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
       if (grd.newrun) {  //run has not started so look to see if cell contains ancestor
-        mouse.ParentNdx = findParentNdx();
+        mouse.ParentNdx = findParentNdx(parents);
         if (debug.mouse) console.log('parent', mouse.ParentNdx);
         if (-1 < mouse.ParentNdx) { //selected a parent, check for dragging
           document.getElementById('organIcon').style.cursor = 'copy';
@@ -848,42 +825,36 @@ require([
       }
       else {  //look for decendents (kids)
         grd.kidStatus='getgenome';
-        if (debug.mouse) console.log('kidSelected; NdxSelected', grd.NdxSelected);
+        if (debug.mouse) console.log('kidSelected; selectedNdx', grd.selectedNdx);
         doSelectedOrganismType(grd);
         //if ancestor not null then there is a cell there.
-        if ('null' != grd.msg.ancestor.data[grd.NdxSelected]) {
-          updateSelectedKid(grd);
+        if ('null' != grd.msg.ancestor.data[grd.selectedNdx]) {
+          SelectedKidMouseStyle(grd);
           mouse.Picked = 'kid';
         }
         console.log('kid', grd.kidName, grd.kidGenome);
       }
     }
-    else grd.flagSelected = false;
-    grd.NdxSelected = -1;
+    else {
+      grd.flagSelected = false;
+      grd.selectedNdx = -1;
+    }
     doSelectedOrganismType(grd);
     DrawGridSetup();
   });
 
-  //update data about a kid in the selecred organism to move = primarily genome and name
-  function updateSelectedKid(grd) {
-    document.getElementById('organIcon').style.cursor = 'copy';
-    document.getElementById('fzOrgan').style.cursor = 'copy';
-    document.getElementById('gridCanvas').style.cursor = 'copy';
-    document.getElementById('SnowFlakeImage').style.cursor = 'copy';
-    grd.kidName = 'temporary';
-    grd.kidGenome = 'wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab'  //ancestor
-  }
-
-  //mouse move anywhere on screen
-  $(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
+  //mouse move anywhere on screen - not currently in use.
+  $(document.getElementById('gridCanvas')).on('mousemove', function handler (evt) {
+  //$(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
     //console.log('gd move');
     //document.getElementById('gridCanvas').style.cursor = 'copy';
     //document.getElementById('trashCan').style.cursor = 'copy';
     //console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('trashCan').style.cursor);
+    //if (debug.mouse) console.log('________________________________mousemove');
     if (!nearly([evt.offsetX, evt.offsetY], mouse.DnGridPos)) {
-      console.log("gd draging");
+      //if (debug.mouse) console.log('________________________________');
+      //if (debug.mouse) console.log("gd draging");
       if (mouse.Dn) mouse.Drag = true;
-      else mouse.Drag = true;
     }
     $(document).off('mousemove', handler);
   });
@@ -903,213 +874,61 @@ require([
     // --------- process if something picked to dnd ------------------
     if ('parent' == mouse.Picked) {
       mouse.Picked = "";
-      ParentMouse(evt);
+      ParentMouse(evt, dnd, fzr, parents);
+      if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) DrawGridSetup();
+      else if ('organIcon' == evt.target.id) {
+        //Change to Organism Page
+        mainBoxSwap("organismBlock");
+        organismCanvasHolderSize();
+        var height = ($("#rightDetail").innerHeight() - 375) / 2;
+        document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+        document.getElementById("ExecuteAbout").style.height = height + "px";
+        document.getElementById("ExecuteJust").style.width = "100%";
+        document.getElementById("ExecuteAbout").style.width = "100%";
+        doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+      }
+
     }
     else if ('offspring' == mouse.Picked) {
       mouse.Picked = "";
-      OffspringMouse(evt)
+      OffspringMouse(evt, dnd, fzr)
     }
     else if ('kid' == mouse.Picked) {
       mouse.Picked = "";
-      KidMouse(evt);
+      KidMouse(evt, dnd, fzr);
+      if ('organIcon' == evt.target.id) {
+        //Change to Organism Page
+        mainBoxSwap("organismBlock");
+        organismCanvasHolderSize();
+        var height = ($("#rightDetail").innerHeight() - 375) / 2;
+        document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+        document.getElementById("ExecuteAbout").style.height = height + "px";
+        document.getElementById("ExecuteJust").style.width = "100%";
+        document.getElementById("ExecuteAbout").style.width = "100%";
+        doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+      }
     }
     mouse.Picked = "";
   });
-
-  function OffspringMouse(evt) {
-    if ('organIcon' == evt.target.id) { // needs work!!  tiba
-      //Get name of parent that is in OrganCurrentNode
-      var parent;
-      var parentID = Object.keys(dnd.activeOrgan.map)[0];
-      console.log('parentID', parentID);
-      if (undefined == parentID) parent = '';
-      else parent = document.getElementById(parentID).textContent;
-      dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-      dnd.activeOrgan.sync();   //should be done after insertion or deletion
-      //Put name of offspring in OrganCurrentNode
-      dnd.activeOrgan.insertNodes(false, [{data: parent + "_offspring", type: ["organism"]}]);
-      dnd.activeOrgan.sync();
-
-      fzr.actOrgan.name = parent + "_offspring";
-      fzr.actOrgan.genome = '0,heads_default,' + gen.dna[gen.son];  //this should be the full genome when the offspring is complete.
-      fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
-      console.log('fzr.actOrgan', fzr.actOrgan.genome);
-      //get genome from offspring data //needs work!!
-      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
-    }
-    else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id) {
-      //create a new freezer item
-      if (debug.mouse) console.log('offSpring->freezerDiv');
-      if (debug.mouse) console.log('in SnowFlakeImage');
-      var parent;
-      var parentID = Object.keys(dnd.activeOrgan.map)[0];
-      console.log('parentID', parentID);
-      if (undefined == parentID) parent = 'noParentName';
-      else parent = document.getElementById(parentID).textContent;
-      //make sure there is a name.
-      var avidian = prompt("Please name your avidian", parent+'_offspring');
-      if (avidian) {
-        avidian = getUniqueName(avidian, dnd.fzOrgan);
-        if (null != avidian) {  //add to Freezer
-          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
-          dnd.fzOrgan.sync();
-          //find domId of parent as listed in dnd.fzOrgan
-          var mapItems = Object.keys(dnd.fzOrgan.map);
-          var domStr = "";
-          var neworg = {
-            'name': avidian,
-            'domId': mapItems[mapItems.length - 1],
-            'genome': '0,heads_default,' + gen.dna[1]
-          }
-          fzr.organism.push(neworg);
-          if (debug.mouse) console.log('Offspring-->Snow, fzr.organism', fzr.organism);
-          //create a right mouse-click context menu for the item just created.
-          if (debug.mouse) console.log('Offspring-->snowFlake; neworg', neworg);
-          contextMenu(fzr, dnd.fzOrgan, neworg.domId);
-        }
-      }
-    }
-  }
-
-  function KidMouse(evt){
-    if (debug.mouse) console.log('in KidMouse', evt.target.id, evt);
-    if ('organIcon' == evt.target.id) {
-      //Change to Organism Page
-      mainBoxSwap("organismBlock");
-      organismCanvasHolderSize();
-      var height = ($("#rightDetail").innerHeight() - 375) / 2;
-      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById("ExecuteAbout").style.height = height + "px";
-      document.getElementById("ExecuteJust").style.width = "100%";
-      document.getElementById("ExecuteAbout").style.width = "100%";
-
-      dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-      dnd.activeOrgan.sync();   //should be done after insertion or deletion
-      //Put name of offspring in OrganCurrentNode
-      dnd.activeOrgan.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
-      dnd.activeOrgan.sync();
-      //genome data should be in parents.genome[mouse.ParentNdx];
-      fzr.actOrgan.genome = grd.kidGenome;
-      fzr.actOrgan.name = grd.kidName;
-      fzr.actOrgan.domId = "";
-      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
-    }
-    else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id){
-      if (debug.mouse) console.log('in SnowFlakeImage');
-      //make sure there is a name.
-      var avidian = prompt("Please name your avidian", grd.kidName);
-      if (avidian) {
-        avidian = getUniqueName(avidian, dnd.fzOrgan);
-        if (null != avidian) {  //add to Freezer
-          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
-          dnd.fzOrgan.sync();
-          //find domId of parent as listed in dnd.ancestorBox
-          var mapItems = Object.keys(dnd.fzOrgan.map);
-          var domStr = "";
-          var neworg = {
-            'name': avidian,
-            'domId': mapItems[mapItems.length - 1],
-            'genome': grd.kidGenome
-          }
-          fzr.organism.push(neworg);
-          if (debug.mouse) console.log('Kid-->Snow', fzr.organism);
-          //create a right mouse-click context menu for the item just created.
-          if (debug.mouse) console.log('kid to snowFlake', neworg);
-          contextMenu(fzr, dnd.fzOrgan, neworg.domId);
-        }
-      }
-    }
-  }
-
-  function ParentMouse(evt) {
-    if (debug.mouse) console.log('ParentMouse', evt.target.id, evt);
-    if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
-      mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
-      //Move the ancestor on the canvas
-      //console.log("on gridCanvas")
-      findSelected(evt);
-      // look to see if this is a valid grid cell
-      if (grd.ColSelected >= 0 && grd.ColSelected < grd.cols && grd.RowSelected >= 0 && grd.RowSelected < grd.rows) {
-        parents.col[mouse.ParentNdx] = grd.ColSelected;
-        parents.row[mouse.ParentNdx] = grd.RowSelected;
-        parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
-        //console.log('mvparent', mouse.ParentNdx, parents.col[mouse.ParentNdx], parents.row[mouse.ParentNdx]);
-        //console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-        //console.log('b hand', parents.handNdx.length, parents.handNdx);
-        //change from auto placed to hand placed if needed
-        if ('auto' == parents.howPlaced[mouse.ParentNdx]) {
-          parents.howPlaced[mouse.ParentNdx] = 'hand';
-          makeHandAutoNdx();
-          //PlaceAncestors(parents);
-        }
-        //console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-        //console.log('hand', parents.handNdx.length, parents.handNdx);
-        DrawGridSetup();
-      }
-    }  // close on canvas
-    //-------------------------------------------- dnd.trashCan
-    else if ('TrashCanImage' == evt.target.id) {
-      if (debug.mouse) console.log('parent->trashCan', evt);
-      var node = dojo.byId(parents.domId[mouse.ParentNdx]);
-      dnd.ancestorBox.parent.removeChild(node);
-      dnd.ancestorBox.sync();
-
-      //remove from main list.
-      removeParent(mouse.ParentNdx, parents);
-      DrawGridSetup();
-    }
-    //-------------------------------------------- organism view
-    else if ('organIcon' == evt.target.id) {
-      //Change to Organism Page
-      mainBoxSwap("organismBlock");
-      organismCanvasHolderSize();
-      var height = ($("#rightDetail").innerHeight() - 375) / 2;
-      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById("ExecuteAbout").style.height = height + "px";
-      document.getElementById("ExecuteJust").style.width = "100%";
-      document.getElementById("ExecuteAbout").style.width = "100%";
-
-      dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-      dnd.activeOrgan.sync();   //should be done after insertion or deletion
-      //Put name of offspring in dnd.activeOrganism
-      dnd.activeOrgan.insertNodes(false, [{data: parents.name[mouse.ParentNdx], type: ["organism"]}]);
-      dnd.activeOrgan.sync();
-      //genome data should be in parents.genome[mouse.ParentNdx];
-      fzr.actOrgan.genome = parents.genome[mouse.ParentNdx];
-      fzr.actOrgan.name = parents.name[mouse.ParentNdx];
-      fzr.actOrgan.domId = parents.domId[mouse.ParentNdx];
-      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
-    }
-  }
-
-  function fromAncestorBoxRemove(removeName) {
-    var domItems = Object.keys(dnd.ancestorBox.map);
-    //console.log("domItems=", domItems);
-    var nodeIndex = -1;
-    for (var ii = 0; ii < domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-      if (dnd.ancestorBox.map[domItems[ii]].data == removeName) {
-        nodeIndex = ii;
-      }
-    }
-    var node = dojo.byId(domItems[nodeIndex]);
-    console.log('nodeIndex', nodeIndex, domItems[nodeIndex]);
-    dnd.ancestorBox.parent.removeChild(node);
-    dnd.ancestorBox.sync();
-  }
 
   /* *************************************************************** */
   // ****************  Draw Population Grid ************************ */
   /* *************************************************************** */
 
-    //Set up canvas objects
-    grd.CanvasScale = document.getElementById("scaleCanvas");
-    grd.sCtx = grd.CanvasScale.getContext("2d");
-    grd.CanvasGrid = document.getElementById('gridCanvas');
-    grd.cntx = grd.CanvasGrid.getContext("2d");
+  //Set up canvas objects
+  grd.CanvasScale = document.getElementById("scaleCanvas");
+  grd.sCtx = grd.CanvasScale.getContext("2d");
+  grd.CanvasGrid = document.getElementById('gridCanvas');
+  grd.cntx = grd.CanvasGrid.getContext("2d");
+  grd.CanvasSelected = document.getElementById('SelectedColor');
+  grd.selCtx = grd.CanvasSelected.getContext('2d');
+  grd.SelectedWd = $('#SelectedColor').innerWidth();
+  grd.SelectedHt = $('#SelectedColor').innerHeight();
 
-    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-    grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
-    grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
+
+  grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
+  grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
+  grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
 
   function DrawGridSetup() {
     //Get the size of the div that holds the grid and the scale or legend
@@ -1828,9 +1647,9 @@ require([
   function findShrew(evt) {
     var mouseX = evt.offsetX - chck.marginX - chck.xOffset;
     var mouseY = evt.offsetY - chck.marginY - chck.yOffset;
-    chck.ColSelected = Math.floor(mouseX / chck.cellWd);
-    chck.RowSelected = Math.floor(mouseY / chck.cellHt);
-    console.log('Shrew col,row', chck.ColSelected, chck.RowSelected);
+    chck.selectedCol = Math.floor(mouseX / chck.cellWd);
+    chck.selectedRow = Math.floor(mouseY / chck.cellHt);
+    console.log('Shrew col,row', chck.selectedCol, chck.selectedRow);
   }
 
   var shrew = {};
@@ -1852,7 +1671,7 @@ require([
     findShrew(evt);
     console.log('colorDemo', shrew.DnGridPos);
     //check to see if in the grid part of the canvas
-    if (chck.ColSelected >= 0 && chck.ColSelected < chck.cols && chck.RowSelected >= 0 && chck.RowSelected < chck.rows) {
+    if (chck.selectedCol >= 0 && chck.selectedCol < chck.cols && chck.selectedRow >= 0 && chck.selectedRow < chck.rows) {
       chck.flagSelected = true;
       drawCheckerSetup(chck, chips);
       dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
@@ -1892,13 +1711,13 @@ require([
       shrew.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
       //Move the ancestor on the canvas
       //console.log("on checkCanvas")
-      console.log('before', chck.ColSelected, chck.RowSelected);
+      console.log('before', chck.selectedCol, chck.selectedRow);
       findShrew(evt);
       // look to see if this is a valid grid cell
-      if (chck.ColSelected >= 0 && chck.ColSelected < chck.cols && chck.RowSelected >= 0 && chck.RowSelected < chck.rows) {
-        console.log('chipFound', chck.ColSelected, chck.RowSelected);
-        chips.col[shrew.chipNdx] = chck.ColSelected;
-        chips.row[shrew.chipNdx] = chck.RowSelected;
+      if (chck.selectedCol >= 0 && chck.selectedCol < chck.cols && chck.selectedRow >= 0 && chck.selectedRow < chck.rows) {
+        console.log('chipFound', chck.selectedCol, chck.selectedRow);
+        chips.col[shrew.chipNdx] = chck.selectedCol;
+        chips.row[shrew.chipNdx] = chck.selectedRow;
         chips.AvidaNdx[chips.handNdx[ii]] = chips.col[chips.handNdx[ii]] + chck.cols * chips.row[chips.handNdx[ii]];
         console.log('mv', chips.col[shrew.chipNdx], chips.row[shrew.chipNdx], shrew.chipNdx);
         //change from auto placed to hand placed if needed
@@ -1917,7 +1736,7 @@ require([
   var findchipNdx = function () {
     var ChipedNdx = -1;
     for (var ii = 0; ii < chips.name.length; ii++) {
-      if (matches([chck.ColSelected, chck.RowSelected], [chips.col[ii], chips.row[ii]])) {
+      if (matches([chck.selectedCol, chck.selectedRow], [chips.col[ii], chips.row[ii]])) {
         ChipedNdx = ii;
         //console.log('chip found in function', ChipedNdx);
         break;  //found a chip no need to keep looking
@@ -1925,5 +1744,11 @@ require([
     }
     return ChipedNdx;
   }
+
+  var matches = function (aa, bb) {
+    if (aa[0] == bb[0] && aa[1] == bb[1]) return true;
+    else return false;
+  }
+
 
 });

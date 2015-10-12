@@ -207,8 +207,8 @@ function DrawLogicSelected(grd) {
 function DrawSelected(grd) {
   var thick = 0.1 * grd.cellWd;
   if (1 > thick) thick = 1;
-  grd.selectX = grd.marginX + grd.xOffset + grd.ColSelected * grd.cellWd;
-  grd.selectY = grd.marginY + grd.yOffset + grd.RowSelected * grd.cellHt;
+  grd.selectX = grd.marginX + grd.xOffset + grd.selectedCol * grd.cellWd;
+  grd.selectY = grd.marginY + grd.yOffset + grd.selectedRow * grd.cellHt;
   DrawCellOutline(thick, grd.SelectedColor, grd.selectX, grd.selectY, grd.cellWd, grd.cellHt, grd)
 }
 
