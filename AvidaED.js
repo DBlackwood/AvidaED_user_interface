@@ -358,7 +358,7 @@ require([
     }
     fzr.organism.push(neworg);
   }
-  if (debug.root) console.log('after fzr.orgnaism');
+  if (debug.root) console.log('after fzr.orgnaism', fzr.organism);
 
   dnd.fzPopDish = new dndSource('fzPopDish', {
     accept: ["popDish"],
@@ -575,6 +575,24 @@ require([
   dijit.byId("mnFzOrganism").attr("disabled", true);
   dijit.byId("mnFzOffspring").attr("disabled", true);
   dijit.byId("mnFzPopulation").attr("disabled", true);
+
+  function popStatView(grd) {
+    if (grd.popStatFlag) {
+      grd.popStatFlag = false;
+      registry.byId("popRight").domNode.style.width = "1px";
+      registry.byId("mainBC").layout();
+      dijit.byId("popRight").set("style", "display: block; visibility: visible;");
+
+    }
+    else {
+      grd.popStatFlag = true;
+      registry.byId("selectOrganPane").domNode.style.width = "150px";
+      registry.byId("popRight").domNode.style.width = "395px";
+      registry.byId("mainBC").layout();
+      dijit.byId("popRight").set("style", "display: block; visibility: visible;");
+
+    }
+  }
 
   function runPopFn() {
     //check for ancestor organism in configuration data
@@ -829,7 +847,7 @@ require([
         doSelectedOrganismType(grd);
         //if ancestor not null then there is a cell there.
         if ('null' != grd.msg.ancestor.data[grd.selectedNdx]) {
-          SelectedKidMouseStyle(grd);
+          SelectedKidMouseStyle(dnd, fzr, grd);
           mouse.Picked = 'kid';
         }
         console.log('kid', grd.kidName, grd.kidGenome);

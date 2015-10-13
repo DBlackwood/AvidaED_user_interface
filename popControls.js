@@ -18,23 +18,7 @@ function popBoxSwap() {
   }
 }
 
-function popStatView(grd) {
-  if (grd.popStatFlag) {
-    grd.popStatFlag = false;
-    registry.byId("popRight").domNode.style.width = "1px";
-    registry.byId("mainBC").layout();
-    dijit.byId("popRight").set("style", "display: block; visibility: visible;");
 
-  }
-  else {
-    grd.popStatFlag = true;
-    registry.byId("selectOrganPane").domNode.style.width = "150px";
-    registry.byId("popRight").domNode.style.width = "395px";
-    registry.byId("mainBC").layout();
-    dijit.byId("popRight").set("style", "display: block; visibility: visible;");
-
-  }
-}
 
 function popRunningState_ui(dnd, grd) {
   grd.newrun = false;  //the run will no longer be "new"

@@ -172,19 +172,23 @@ function updatePopStats(grd, msg) {
 function updateSelectedOrganismType(grd, msg, parents) {
   if (debug.msg) console.log('selected_msg', msg);
   if (debug.msg) console.log('selected_msg', msg.tasks);
-  var prefix = "";
   if (msg.isEstimate) prefix = "est. ";
   document.getElementById("nameLabel").textContent = msg.genotypeName;
-  if (null == msg.fitness) document.getElementById("fitLabel").innerHTML = '-';
-  else document.getElementById("fitLabel").innerHTML = prefix + msg.fitness.formatNum(2);
-  if (null == msg.metabolism) document.getElementById("metabolicLabel").textContent = '-';
-  else document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism.formatNum(2);
-  if (null == msg.gestation) document.getElementById("generateLabel").textContent = '-';
-  else  document.getElementById("generateLabel").textContent = prefix + msg.gestation.formatNum(2);
+  if (null === msg.fitness) document.getElementById("fitLabel").innerHTML = '-';
+  else document.getElementById("fitLabel").innerHTML = msg.fitness.formatNum(2);
+  if (null === msg.metabolism) document.getElementById("metabolicLabel").textContent = '-';
+  else document.getElementById("metabolicLabel").textContent = msg.metabolism.formatNum(2);
+  if (null === msg.gestation) document.getElementById("generateLabel").textContent = '-';
+  else  document.getElementById("generateLabel").textContent = msg.gestation.formatNum(2);
   if (null == msg.age) document.getElementById("ageLabel").textContent = '-';
-    else document.getElementById("ageLabel").textContent = prefix + msg.age;
-  if (null == msg.ancestor) document.getElementById("ancestorLabel").textContent = '-';
-  else document.getElementById("ancestorLabel").textContent = msg.ancestor;
+    else document.getElementById("ageLabel").textContent = msg.age;
+  if (null === msg.ancestor) {
+    if (debug.msg) console.log('msg.ancestor === null_______________________________________________________')
+    if (null === grd.msg.ancestor.data[grd.selectedNdx])
+      document.getElementById("ancestorLabel").textContent = '-';
+    else document.getElementById("ancestorLabel").textContent = parents.name[grd.msg.ancestor.data[grd.selectedNdx]];
+  }
+  else document.getElementById("ancestorLabel").textContent = parents.name[msg.ancestor];
   //add + or - to text of logic function
   if (null != msg.tasks) {
     if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";

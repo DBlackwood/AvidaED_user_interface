@@ -28,11 +28,13 @@ function findSelected(evt, grd) {
 }
 
 //update data about a kid in the selecred organism to move = primarily genome and name
-function SelectedKidMouseStyle(grd) {
+function SelectedKidMouseStyle(dnd, fzr, grd) {
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('fzOrgan').style.cursor = 'copy';
+  document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
   document.getElementById('SnowFlakeImage').style.cursor = 'copy';
+  for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'copy';
   grd.kidName = 'temporary';
   grd.kidGenome = 'wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab'  //ancestor
 }
@@ -58,35 +60,41 @@ function OffspringMouse(evt, dnd, fzr) {
     //get genome from offspring data //needs work!!
     doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
   }
-  else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id) {
-    //create a new freezer item
-    if (debug.mouse) console.log('offSpring->freezerDiv');
-    if (debug.mouse) console.log('in SnowFlakeImage');
-    var parent;
-    var parentID = Object.keys(dnd.activeOrgan.map)[0];
-    console.log('parentID', parentID);
-    if (undefined == parentID) parent = 'noParentName';
-    else parent = document.getElementById(parentID).textContent;
-    //make sure there is a name.
-    var avidian = prompt("Please name your avidian", parent+'_offspring');
-    if (avidian) {
-      avidian = getUniqueName(avidian, dnd.fzOrgan);
-      if (null != avidian) {  //add to Freezer
-        dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
-        dnd.fzOrgan.sync();
-        //find domId of parent as listed in dnd.fzOrgan
-        var mapItems = Object.keys(dnd.fzOrgan.map);
-        var domStr = "";
-        var neworg = {
-          'name': avidian,
-          'domId': mapItems[mapItems.length - 1],
-          'genome': '0,heads_default,' + gen.dna[1]
+  else { // look for target in the freezer
+    var found = false;
+    for (var ii=1; ii<fzr.organism.length; ii++) {
+      if (fzr.organism[ii].domId == evt.target.id) {found=true; break;}
+    }
+    if (found || 'freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id) {
+      //create a new freezer item
+      if (debug.mouse) console.log('offSpring->freezerDiv');
+      if (debug.mouse) console.log('in SnowFlakeImage');
+      var parent;
+      var parentID = Object.keys(dnd.activeOrgan.map)[0];
+      console.log('parentID', parentID);
+      if (undefined == parentID) parent = 'noParentName';
+      else parent = document.getElementById(parentID).textContent;
+      //make sure there is a name.
+      var avidian = prompt("Please name your avidian", parent + '_offspring');
+      if (avidian) {
+        avidian = getUniqueName(avidian, dnd.fzOrgan);
+        if (null != avidian) {  //add to Freezer
+          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
+          dnd.fzOrgan.sync();
+          //find domId of parent as listed in dnd.fzOrgan
+          var mapItems = Object.keys(dnd.fzOrgan.map);
+          var domStr = "";
+          var neworg = {
+            'name': avidian,
+            'domId': mapItems[mapItems.length - 1],
+            'genome': '0,heads_default,' + gen.dna[1]
+          }
+          fzr.organism.push(neworg);
+          if (debug.mouse) console.log('Offspring-->Snow, fzr.organism', fzr.organism);
+          //create a right mouse-click context menu for the item just created.
+          if (debug.mouse) console.log('Offspring-->snowFlake; neworg', neworg);
+          contextMenu(fzr, dnd.fzOrgan, neworg.domId);
         }
-        fzr.organism.push(neworg);
-        if (debug.mouse) console.log('Offspring-->Snow, fzr.organism', fzr.organism);
-        //create a right mouse-click context menu for the item just created.
-        if (debug.mouse) console.log('Offspring-->snowFlake; neworg', neworg);
-        contextMenu(fzr, dnd.fzOrgan, neworg.domId);
       }
     }
   }
@@ -105,28 +113,37 @@ function KidMouse(evt, dnd, fzr){
     fzr.actOrgan.name = grd.kidName;
     fzr.actOrgan.domId = "";
   }
-  else if ('freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id){
-    if (debug.mouse) console.log('in SnowFlakeImage');
-    //make sure there is a name.
-    var avidian = prompt("Please name your avidian", grd.kidName);
-    if (avidian) {
-      avidian = getUniqueName(avidian, dnd.fzOrgan);
-      if (null != avidian) {  //add to Freezer
-        dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
-        dnd.fzOrgan.sync();
-        //find domId of parent as listed in dnd.ancestorBox
-        var mapItems = Object.keys(dnd.fzOrgan.map);
-        var domStr = "";
-        var neworg = {
-          'name': avidian,
-          'domId': mapItems[mapItems.length - 1],
-          'genome': grd.kidGenome
+  else { // look for target in the freezer
+    var found = false;
+    for (var ii = 1; ii < fzr.organism.length; ii++) {
+      if (fzr.organism[ii].domId == evt.target.id) {
+        found = true;
+        break;
+      }
+    }
+    if (found || 'freezerDiv' == evt.target.id || 'SnowFlakeImage' == evt.target.id) {
+      if (debug.mouse) console.log('in SnowFlakeImage');
+      //make sure there is a name.
+      var avidian = prompt("Please name your avidian", grd.kidName);
+      if (avidian) {
+        avidian = getUniqueName(avidian, dnd.fzOrgan);
+        if (null != avidian) {  //add to Freezer
+          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
+          dnd.fzOrgan.sync();
+          //find domId of parent as listed in dnd.ancestorBox
+          var mapItems = Object.keys(dnd.fzOrgan.map);
+          var domStr = "";
+          var neworg = {
+            'name': avidian,
+            'domId': mapItems[mapItems.length - 1],
+            'genome': grd.kidGenome
+          }
+          fzr.organism.push(neworg);
+          if (debug.mouse) console.log('Kid-->Snow', fzr.organism);
+          //create a right mouse-click context menu for the item just created.
+          if (debug.mouse) console.log('kid to snowFlake', neworg);
+          contextMenu(fzr, dnd.fzOrgan, neworg.domId);
         }
-        fzr.organism.push(neworg);
-        if (debug.mouse) console.log('Kid-->Snow', fzr.organism);
-        //create a right mouse-click context menu for the item just created.
-        if (debug.mouse) console.log('kid to snowFlake', neworg);
-        contextMenu(fzr, dnd.fzOrgan, neworg.domId);
       }
     }
   }
