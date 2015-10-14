@@ -129,20 +129,7 @@
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
            style="height:35px;">
-        <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
-          <tr>
-            <td>
-              <span id="trashCan" class="container">
-                <img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img>
-              </span>
-            </td>
-            <td style="text-align: right;">
-              <span class="container">
-                <img id="SnowFlakeImage" src="avida-ed-snowflake.png" style="width: 36px;"></img>
-              </span>
-            </td>
-          </tr>
-        </table>
+        <span id="trashCan" class="container"><img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img></span>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="freezerDiv">
@@ -980,11 +967,11 @@
       </div>
       <h3>Repeatability Mode:</h3>
       <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganExperimentRadio"
-             intermediateChanges="false" iconClass="dijitNoIcon"></input>
+             intermediateChanges="false" name="child" checked value="orgExp" iconClass="dijitNoIcon"></input>
       <label id="OrganExperimentLabel">Experimental (Natural Variation)</label>
       <br/>
       <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="OrganDemoRadio"
-             intermediateChanges="false" iconClass="dijitNoIcon"></input>
+             intermediateChanges="false" name="child" value="orgDemo" iconClass="dijitNoIcon"></input>
       <label id="OrganDemoLabel">Demo (forces exact replay)</label>
     </form>
   </div>

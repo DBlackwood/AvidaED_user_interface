@@ -803,9 +803,9 @@ require([
     if (gen.didDivide) {  //offpsring exists
       var distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
       if (25 > distance) {
+        for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'copy';
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
-        document.getElementById('SnowFlakeImage').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
         mouse.Picked = "offspring";
         if (gen.debug) console.log('gen.dna', gen.dna);
@@ -821,6 +821,8 @@ require([
     findSelected(evt, grd);
     //check to see if in the grid part of the canvas
     if (debug.mouse) console.log('mousedown', grd.selectedNdx);
+    //if (debug.mouse) console.log('grid Canvas; selectedNdx', grd.selectedNdx,'________________________________');
+    //if (debug.mouse) console.log('grid Canvas; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
     if (grd.selectedCol >= 0 && grd.selectedCol < grd.cols && grd.selectedRow >= 0 && grd.selectedRow < grd.rows) {
       grd.flagSelected = true;
       if (debug.mouse) console.log('ongrid', grd.selectedNdx);
@@ -842,15 +844,17 @@ require([
         }
       }
       else {  //look for decendents (kids)
-        grd.kidStatus='getgenome';
-        if (debug.mouse) console.log('kidSelected; selectedNdx', grd.selectedNdx);
-        doSelectedOrganismType(grd);
+        if (debug.mouse) console.log('kidSelected; selectedNdx', grd.selectedNdx,'________________________________');
+        if (debug.mouse) console.log('kidSelected; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
+        //find out if there is a kid in that cell
         //if ancestor not null then there is a cell there.
-        if ('null' != grd.msg.ancestor.data[grd.selectedNdx]) {
+        if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
+          grd.kidStatus = 'getgenome';
+          doSelectedOrganismType(grd);
           SelectedKidMouseStyle(dnd, fzr, grd);
           mouse.Picked = 'kid';
+          console.log('kid', grd.kidName, grd.kidGenome);
         }
-        console.log('kid', grd.kidName, grd.kidGenome);
       }
     }
     else {
@@ -886,6 +890,7 @@ require([
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
+    for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'default';
     mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = false;
 
@@ -1252,6 +1257,7 @@ require([
     /*update slide based on textbox */
     $("#orMuteInput").change(function () {
       slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
+      doOrgTrace(fzr);
       //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log("in mute change");
     });
