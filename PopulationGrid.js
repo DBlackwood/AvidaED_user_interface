@@ -226,7 +226,10 @@ function DrawGridUpdate(grd, parents) {
   // than the canvas, then the canvas is set to the size of the grid and the
   // offset in that direction goes to zero.
 
+  // space is the amount of space for the canvas
+
   // First find sizes based on zoom
+  if (debug.grid) console.log('zoom', grd.zoom);
   grd.boxX = grd.zoom * grd.spaceX;
   grd.boxY = grd.zoom * grd.spaceY;
   //get rows and cols based on user input form
@@ -234,19 +237,25 @@ function DrawGridUpdate(grd, parents) {
   grd.rows = dijit.byId("sizeRows").get('value');
   //max size of box based on width or height based on ratio of cols:rows and width:height
   if (grd.spaceX / grd.spaceY > grd.cols / grd.rows) {
+    if (debug.grid) console.log('height limiting direction');
     //set based  on height as that is the limiting factor.
     grd.sizeY = grd.boxY;
-    grd.sizeX = grd.sizeY * grd.cols / grd.rows;
+    grd.sizeX = grd.boxY * grd.cols / grd.rows;
     grd.spaceCellWd = grd.spaceY / grd.rows;
     grd.spaceCells = grd.rows;  //rows exactly fit the space when zoom = 1x
   }
   else {
     //set based on width as that is the limiting direction
+    if (debug.grid) console.log('width limiting direction');
     grd.sizeX = grd.boxX;
-    grd.sizeY = grd.sizeX * grd.rows / grd.cols;
+    grd.sizeY = grd.boxX * grd.rows / grd.cols;
     grd.spaceCellWd = grd.spaceX / grd.cols;
     grd.spaceCells = grd.cols;  //cols exactly fit the space when zoom = 1x
   }
+  if (debug.grid) console.log('after limit: sizeX, Y', grd.sizeX, grd.sizeY);
+  if (debug.grid) console.log('after limit: boxX, Y', grd.boxX, grd.boxY);
+  if (debug.grid) console.log('after limit: spaceX, Y', grd.spaceX, grd.spaceY);
+  if (debug.grid) console.log('after limit: canvasX, Y', grd.CanvasGrid.width, grd.CanvasGrid.height);
 
   if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
   //Determine offset and size of canvas based on grid size relative to space size in that direction
@@ -255,7 +264,7 @@ function DrawGridUpdate(grd, parents) {
     grd.xOffset = (grd.spaceX - grd.sizeX) / 2;
   }
   else {
-    if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; xOffset', grd.xOffset);
+    if (debug.grid) console.log('else grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; xOffset', grd.xOffset);
     grd.CanvasGrid.width = grd.sizeX;
     grd.xOffset = 0;
   }

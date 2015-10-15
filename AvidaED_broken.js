@@ -76,7 +76,7 @@ require([
    *******************************************************************************************/
 
 
-    //process message from web worker
+  //process message from web worker
   uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
 
   function readMsg(ee, dft, dnd, parents) {
@@ -299,7 +299,7 @@ require([
   /* ********************************************************************** */
 
   var dnd = {};
-
+  
   dnd.fzConfig = new dndSource('fzConfig', {
     accept: ["conDish"],
     copyOnly: true,
@@ -328,7 +328,7 @@ require([
   ]);
   //Temporary - I think this will be removed once we have a files system.
   dnd.genes = [
-    '0,heads_default,wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'  //ancestor
+     '0,heads_default,wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'  //ancestor
     ,'0,heads_default,wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab'  //not
     ,'0,heads_default,wzcagckchsdctcbqkwicclsdycygcubemcccqyjcizvfcaxgab'  //nan
     ,'0,heads_default,wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro
@@ -373,7 +373,7 @@ require([
   ]);
   dnd.organIcon = new dndTarget('organIcon', {accept: ["organism"], selfAccept: false});
   dnd.ancestorBox = new dndSource('ancestorBox', {accept: ["organism"], copyOnly: false, selfAccept: false});
-
+  
   dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ["organism"]});
 
   dnd.trashCan = new dndSource('trashCan', {accept: ['conDish', 'organism', 'popDish'], singular: true});
@@ -511,7 +511,7 @@ require([
       AnaChartFn();
     }
   });
-
+  
   dnd.graphPop3.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop3
     if ('graphPop3' == target.node.id) {
       console.log('graphPop3: s, t', source, target);
@@ -550,7 +550,7 @@ require([
         break;
     }
   });
-
+  
   if (debug.root) console.log('before Population Page');
   /* *************************************************************** */
   /* Population page script ******************************************/
@@ -867,7 +867,7 @@ require([
 
   //mouse move anywhere on screen - not currently in use.
   $(document.getElementById('gridCanvas')).on('mousemove', function handler (evt) {
-    //$(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
+  //$(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
     //console.log('gd move');
     //document.getElementById('gridCanvas').style.cursor = 'copy';
     //document.getElementById('trashCan').style.cursor = 'copy';
@@ -948,17 +948,30 @@ require([
   grd.SelectedWd = $('#SelectedColor').innerWidth();
   grd.SelectedHt = $('#SelectedColor').innerHeight();
 
+
   grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
   grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
+
+
   grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
 
   function DrawGridSetup() {
     //set the width for each canvas
     grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-    grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 16;
+    grd.CanvasGrid.width = $("#gridHolder").innerWidth();
+    if (debug.grid) console.log('drawGrid; gridBoxDiv client.wd',document.getElementById('gridBoxDiv').clientWidth);
+    if (debug.grid) console.log('drawGrid; gridBoxDiv scroll.wd',document.getElementById('gridBoxDiv').scrollWidth);
+    var ScrollDif = document.getElementById('gridBoxDiv').scrollWidth - document.getElementById('gridBoxDiv').clientWidth;
+    grd.CanvasGrid.width = grd.CanvasGrid.width - ScrollDif;
+    grd.CanvasScale.width = grd.CanvasGrid.width;
+
     if (debug.grid) console.log('drawGrid; gridHolder wd',$("#gridHolder").innerWidth());
-    if (debug.grid) console.log('drawGrid; gridBoxDiv wd',$("#gridBoxDiv").innerWidth());
     if (debug.grid) console.log('drawGrid; scaleCanvas wd',$("#scaleCanvas").innerWidth());
+    if (debug.grid) console.log('drawGrid; gridCanvas wd',$("#gridCanvas").innerWidth());
+    if (debug.grid) console.log('drawGrid; gridBoxDiv inner.wd',$("#gridBoxDiv").innerWidth());
+    if (debug.grid) console.log('drawGrid; gridBoxDiv client.wd',document.getElementById('gridBoxDiv').clientWidth);
+    if (debug.grid) console.log('drawGrid; gridBoxDiv scroll.wd',document.getElementById('gridBoxDiv').scrollWidth);
+    //    var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
 
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
@@ -968,7 +981,7 @@ require([
     }
 
     //Determine if a color gradient or legend will be displayed
-    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
+    //grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
     if ("Ancestor Organism" == dijit.byId("colorMode").value) {
       drawLegend(grd, parents)
     }
@@ -976,23 +989,37 @@ require([
       GradientScale(grd)
     }
 
+    //check for vertical scroll bar in div
+/*    ScrollDif = document.getElementById('gridHolder').scrollHeight - document.getElementById('gridHolder').clientHeight;
+      var divHt = document.getElementById('gridBoxDiv').clientHeight;
+      var NewHt = divHt - 1 - ScrollDif;  //add the ht difference to the outer div that holds this one
+    document.getElementById('gridBoxDiv').style.height = NewHt + 'px';
+    grd.CanvasGrid.height = document.getElementById('gridHolder').clientHeight - 6;
+*/
     //find the height for the div that holds the grid Canvas
     var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
+    var GrdNodeHt = GridHolderHt - 16 - grd.CanvasScale.Height;
     document.getElementById("gridCanvas").style.height = GrdNodeHt + 'px';
+    grd.CanvasGrid.height = GrdNodeHt;
     document.getElementById("gridCanvas").style.overflowY = "scroll";
     //console.log('GrdNodeHt=',GrdNodeHt);
 
     //find the space available to display the grid in pixels
     //grd.spaceX = $("#gridHolder").innerWidth() - 6;
-    grd.spaceX = $("#gridHolder").innerWidth() - 16;
-    grd.spaceY = GrdNodeHt - 5;
+    //grd.spaceX = $("#gridHolder").innerWidth() - 16;
+    //grd.spaceY = GrdNodeHt - 5;
+    grd.spaceX = grd.CanvasGrid.width;
+    grd.spaceY = grd.CanvasGrid.height;
     //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
 
     DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
     if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
+    if (debug.grid) console.log('drawGrid; gridBoxDiv client.wd',document.getElementById('gridBoxDiv').clientWidth);
+    if (debug.grid) console.log('drawGrid; gridBoxDiv scroll.wd',document.getElementById('gridBoxDiv').scrollWidth);
+    if (debug.grid) console.log('drawGrid; gridCanvas wd',$("#gridCanvas").innerWidth());
 
   }
-  
+
   function removeWideScrollbar(scrollDiv, htChangeDiv, page) {
     //https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
     //if the two heights are different then there is a scroll bar
@@ -1353,7 +1380,7 @@ require([
 
   /* ****************************************************************/
   /*                  Canvas for Organsim View (genome)
-   /* ************************************************************** */
+  /* ************************************************************** */
 
   clearGen();
   //set canvas size; called from many places
@@ -1368,7 +1395,7 @@ require([
     organismCanvasHolderSize();
     updateOrganTrace(obj, gen);
   }
-  /* ****************************************************************/
+    /* ****************************************************************/
   /*             End of Canvas to draw genome and update details
    /* ************************************************************** */
 
@@ -1579,8 +1606,8 @@ require([
 
   function removeVerticalScrollbar(scrollDiv, htChangeDiv, page) {
     //https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
-    //if the two heights are different then there is a scroll bar
-    var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
+      //if the two heights are different then there is a scroll bar
+      var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
     var hasScrollbar = 0 < ScrollDif;
     if (debug.root) console.log('scroll',scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
       document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
