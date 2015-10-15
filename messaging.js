@@ -146,10 +146,13 @@ function sendConfig(grd) {
 
 //---------------------------------
 function updatePopStats(grd, msg) {
+  var place = 2;
   document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0) + " updates";
   document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
   document.getElementById("aFitLabel").textContent = msg["ave_fitness"].formatNum(2);
-  document.getElementById("aMetabolicLabel").textContent = msg["ave_metabolic_rate"].formatNum(1);
+  if (msg.ave_metabolic_rate > 1000) place = 0;
+  else if (msg.ave_metabolic_rate > 100) place = 1;
+  document.getElementById("aMetabolicLabel").textContent = msg.ave_metabolic_rate.formatNum(place);
   document.getElementById("aGestateLabel").textContent = msg["ave_gestation_time"].formatNum(1);
   document.getElementById("aAgeLabel").textContent = msg["ave_age"].formatNum(2);
   document.getElementById("notPop").textContent = msg["not"];

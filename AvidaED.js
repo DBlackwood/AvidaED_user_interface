@@ -954,6 +954,13 @@ require([
   grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
 
   function DrawGridSetup() {
+    //set the width for each canvas
+    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
+    grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 16;
+    if (debug.grid) console.log('drawGrid; gridHolder wd',$("#gridHolder").innerWidth());
+    if (debug.grid) console.log('drawGrid; gridBoxDiv wd',$("#gridBoxDiv").innerWidth());
+    if (debug.grid) console.log('drawGrid; scaleCanvas wd',$("#scaleCanvas").innerWidth());
+
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
     if(!grd.newrun) {  //update color information for offpsring once run has started
@@ -962,6 +969,7 @@ require([
     }
 
     //Determine if a color gradient or legend will be displayed
+    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
     if ("Ancestor Organism" == dijit.byId("colorMode").value) {
       drawLegend(grd, parents)
     }
@@ -976,11 +984,14 @@ require([
     //console.log('GrdNodeHt=',GrdNodeHt);
 
     //find the space available to display the grid in pixels
-    grd.spaceX = $("#gridHolder").innerWidth() - 6;
+    //grd.spaceX = $("#gridHolder").innerWidth() - 6;
+    grd.spaceX = $("#gridHolder").innerWidth() - 16;
     grd.spaceY = GrdNodeHt - 5;
     //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
 
     DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
+    if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
+
   }
 
   //
@@ -1340,7 +1351,7 @@ require([
   /*             End of Canvas to draw genome and update details
    /* ************************************************************** */
 
-  /* **** Controls bottum of organism page **************************/
+  /* **** Controls bottom of organism page **************************/
   var update_timer = null;
 
   function outputUpdate(vol) {
@@ -1544,7 +1555,7 @@ require([
 
   //Eliminate scrollbars on population page
 
-  //used to set the height so the data just fits. Done because different monitor/brower combinations require a diffent height in pixels.
+  //used to set the height so the data just fits. Done because different monitor/browsfer combinations require a diffent height in pixels.
   //may need to take out as requires loading twice now.
   function removeScrollbar(scrollDiv, htChangeDiv, page) {
     https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html

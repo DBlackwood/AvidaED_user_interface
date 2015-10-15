@@ -14,33 +14,32 @@ function backgroundSquares(grd) {
 }
 
 function setMapData(grd) {
-  var str = "";
+  if (grd.mxFit < grd.msg.fitness.maxVal || (1-grd.rescaleTolerance)*grd.mxFit > grd.msg.fitness.maxVal) {
+    grd.mxFit = grd.mxFit+((1+grd.rescaleTolerance)*grd.msg.fitness.maxVal-grd.mxFit)/grd.rescaleTimeConstant;
+  }
+  if (grd.mxGest < grd.msg.gestation.maxVal || (1-grd.rescaleTolerance)*grd.mxGest > grd.msg.gestation.maxVal ) {
+    grd.mxGest = grd.mxGest+((1+grd.rescaleTolerance)*grd.msg.gestation.maxVal-grd.mxGest)/grd.rescaleTimeConstant;
+  }
+  if (grd.mxRate < grd.msg.metabolism.maxVal  || (1-grd.rescaleTolerance)*grd.mxRate > grd.msg.metabolism.maxVal) {
+    grd.mxRate = grd.mxRate+((1+grd.rescaleTolerance)*grd.msg.metabolism.maxVal-grd.mxRate)/grd.rescaleTimeConstant;
+  }
   switch (dijit.byId("colorMode").value) {
     case 'Fitness':
       grd.fill = grd.msg.fitness.data;
-      str = 'last_fitness';
-      if (grd.mxFit < grd.msg.fitness.maxVal) { grd.mxFit = 1.2 * grd.msg.fitness.maxVal }
       grd.fillmax = grd.mxFit;
       grd.fillmin = grd.msg.fitness.minVal;
       break;
     case 'Gestation Time':
-      str = 'last_gestation_time';
       grd.fill = grd.msg.gestation.data;
-      if (grd.mxGest < grd.msg.gestation.maxVal || 0.3*grd.mxGest > grd.msg.gestation.maxVal ) {
-        grd.mxGest = 1.2 * grd.msg.gestation.maxVal
-      }
       grd.fillmax = grd.mxGest;
       grd.fillmin = grd.msg.gestation.minVal;
       break;
     case 'Metabolic Rate':
-      str = 'Metabolic Rate';
       grd.fill = grd.msg.metabolism.data;
-      if (grd.mxRate < grd.msg.metabolism.maxVal) { grd.mxRate = 1.2 * grd.msg.metabolism.maxVal }
       grd.fillmax = grd.mxRate;
       grd.fillmin = grd.msg.metabolism.minVal;
       break;
     case 'Ancestor Organism':
-      str = 'clade';
       grd.fill = grd.msg.ancestor.data;
       break;
   }
@@ -249,12 +248,14 @@ function DrawGridUpdate(grd, parents) {
     grd.spaceCells = grd.cols;  //cols exactly fit the space when zoom = 1x
   }
 
+  if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
   //Determine offset and size of canvas based on grid size relative to space size in that direction
   if (grd.sizeX < grd.spaceX) {
     grd.CanvasGrid.width = grd.spaceX;
     grd.xOffset = (grd.spaceX - grd.sizeX) / 2;
   }
   else {
+    if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; xOffset', grd.xOffset);
     grd.CanvasGrid.width = grd.sizeX;
     grd.xOffset = 0;
   }
@@ -263,6 +264,7 @@ function DrawGridUpdate(grd, parents) {
     grd.yOffset = (grd.spaceY - grd.sizeY) / 2;
   }
   else {
+    if (debug.grid) console.log('grd, CanvasGrid.ht', grd.CanvasGrid.height, '; grd.sizeX',grd.sizeY);
     grd.CanvasGrid.height = grd.sizeY;
     grd.yOffset = 0;
   }
@@ -328,7 +330,6 @@ function drawLegend(grd, parents) {
   var txtWide = 0;      //width of text for an ancestor (parent) name
   var maxWide = 0;      //maximum width needed for any of the ancestor names in this set
   //console.log('in drawLedgend')
-  grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
   grd.sCtx.font = "14px Arial";
   //find out how much space is needed
   for (ii = 0; ii < parents.name.length; ii++) {
@@ -347,7 +348,7 @@ function drawLegend(grd, parents) {
   //set canvas height based on space needed
   grd.CanvasScale.height = RowHt * legendRows;
   grd.sCtx.fillStyle = dictColor["ltGrey"];
-  grd.sCtx.fillRect(0, 0, grd.CanvasGrid.width, grd.CanvasGrid.height);
+  grd.sCtx.fillRect(0, 0, grd.CanvasScale.width, grd.CanvasScale.height);
   var colWide = (grd.CanvasScale.width - leftPad) / legendCols
   var col = 0;
   var row = 0;
@@ -366,10 +367,7 @@ function drawLegend(grd, parents) {
   }
 }
 
-//needs numbers from Avida
-console.log('GradientScale');
 function GradientScale(grd) {
-  grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
   grd.CanvasScale.height = 30;
   grd.sCtx.fillStyle = dictColor["ltGrey"];
   grd.sCtx.fillRect(0, 0, grd.CanvasScale.width, grd.CanvasScale.height);
@@ -403,10 +401,10 @@ function GradientScale(grd) {
     var xx = 0;
     var marks = 4;
     var txt = "";
-    if (grd.fillmax > 4000) {
+    if (grd.fillmax > 1000) {
       place = 0
     }
-    else if (grd.fillmax > 400) {
+    else if (grd.fillmax > 100) {
       place = 1
     }
     for (var ii = 0; ii <= marks; ii++) {

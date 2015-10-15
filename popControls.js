@@ -18,8 +18,6 @@ function popBoxSwap() {
   }
 }
 
-
-
 function popRunningState_ui(dnd, grd) {
   grd.newrun = false;  //the run will no longer be "new"
   //Disable some of the options on the Setup page

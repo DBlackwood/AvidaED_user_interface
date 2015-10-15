@@ -2,10 +2,11 @@
 var debug = {};
 debug.root = true;  //statemens that look for failiers when the code executes outside of functions
 debug.logic = false;  //debug statements that look for errors outlining logic functions
-debug.mouse = true;   //debug statemetns about non-dojo drag and drop
-debug.dnd = false;     //debut statemesnt about dojo dnd
-debug.msg = false;
-debug.trace = false;
+debug.mouse = true;   //debug statements about non-dojo drag and drop
+debug.dnd = false;     //debu statements about dojo dnd
+debug.msg = false;     //messages to and from avida
+debug.trace = false;   //organism page
+debug.grid = true;     //population grid
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};
@@ -67,9 +68,11 @@ function clearGrd() {
   grd.out = [];   // deals with the color of the grid outline
   grd.fillmax = 0;    // max value for grid scale for the gradient color
   grd.msg = {};
-  grd.mxFit = 0.1;   //store maximum fitness during an experiment
-  grd.mxGest = 0.1;  //store maximum gestation time during an experiment
-  grd.mxRate = 0.1;  //store maximum metabolic rate during an experiment
+  grd.mxFit = 0.4;   //store maximum fitness during an experiment
+  grd.mxGest = 400;  //store maximum gestation time during an experiment
+  grd.mxRate = 40;  //store maximum metabolic rate during an experiment
+  grd.rescaleTolerance = 0.1;
+  grd.rescaleTimeConstant = 10;
   grd.SelectedColor = '#ffffff';
   grd.LogicColor = '#00ff00';
   grd.kidStatus = '';
