@@ -887,7 +887,6 @@ require([
     document.getElementById('organCanvas').style.cursor = 'default';
     document.getElementById('gridCanvas').style.cursor = 'default';
     document.getElementById('trashCan').style.cursor = 'default';
-    document.getElementById('TrashCanImage').style.cursor = 'default';
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
@@ -954,37 +953,6 @@ require([
   grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
 
   function DrawGridSetup() {
-    //Get the size of the div that holds the grid and the scale or legend
-    var GridHolderHt = $("#gridHolder").innerHeight();
-    //grd.newrun = newrun;
-    if(!grd.newrun) {  //update color information for offpsring once run has started
-      setMapData(grd);
-      findLogicOutline(grd);
-    }
-
-    //Determine if a color gradient or legend will be displayed
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-      drawLegend(grd, parents)
-    }
-    else {
-      GradientScale(grd)
-    }
-
-    //find the height for the div that holds the grid Canvas
-    var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
-    document.getElementById("gridBoxDiv").style.height = GrdNodeHt + 'px';
-    document.getElementById("gridBoxDiv").style.overflowY = "scroll";
-    //console.log('GrdNodeHt=',GrdNodeHt);
-
-    //find the space available to display the grid in pixels
-    grd.spaceX = $("#gridHolder").innerWidth() - 6;
-    grd.spaceY = GrdNodeHt - 5;
-    //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
-
-    DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
-  }
-
-  function DrawGridSetup_alt() {
     //set the width for each canvas
     grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
     grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 16;

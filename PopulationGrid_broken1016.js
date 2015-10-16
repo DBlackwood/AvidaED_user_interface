@@ -226,83 +226,6 @@ function DrawGridUpdate(grd, parents) {
   // than the canvas, then the canvas is set to the size of the grid and the
   // offset in that direction goes to zero.
 
-  // First find sizes based on zoom
-  grd.boxX = grd.zoom * grd.spaceX;
-  grd.boxY = grd.zoom * grd.spaceY;
-  //get rows and cols based on user input form
-  grd.cols = dijit.byId("sizeCols").get('value');
-  grd.rows = dijit.byId("sizeRows").get('value');
-  //max size of box based on width or height based on ratio of cols:rows and width:height
-  if (grd.spaceX / grd.spaceY > grd.cols / grd.rows) {
-    //set based  on height as that is the limiting factor.
-    grd.sizeY = grd.boxY;
-    grd.sizeX = grd.sizeY * grd.cols / grd.rows;
-    grd.spaceCellWd = grd.spaceY / grd.rows;
-    grd.spaceCells = grd.rows;  //rows exactly fit the space when zoom = 1x
-  }
-  else {
-    //set based on width as that is the limiting direction
-    grd.sizeX = grd.boxX;
-    grd.sizeY = grd.sizeX * grd.rows / grd.cols;
-    grd.spaceCellWd = grd.spaceX / grd.cols;
-    grd.spaceCells = grd.cols;  //cols exactly fit the space when zoom = 1x
-  }
-
-  //Determine offset and size of canvas based on grid size relative to space size in that direction
-  if (grd.sizeX < grd.spaceX) {
-    grd.CanvasGrid.width = grd.spaceX;
-    grd.xOffset = (grd.spaceX - grd.sizeX) / 2;
-  }
-  else {
-    grd.CanvasGrid.width = grd.sizeX;
-    grd.xOffset = 0;
-  }
-  if (grd.sizeY < grd.spaceY) {
-    grd.CanvasGrid.height = grd.spaceY;
-    grd.yOffset = (grd.spaceY - grd.sizeY) / 2;
-  }
-  else {
-    grd.CanvasGrid.height = grd.sizeY;
-    grd.yOffset = 0;
-  }
-  //console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom);
-
-  //get cell size based on grid size and number of columns and rows
-  grd.marginX = 1;  //width of black line between the cells
-  grd.marginY = 1;  //width of black line between the cells
-  grd.cellWd = ((grd.sizeX - grd.marginX) / grd.cols);
-  grd.cellHt = ((grd.sizeY - grd.marginY) / grd.rows);
-
-  //Find a reasonable maximum zoom for this grid and screen space
-  zMaxCells = Math.trunc(grd.spaceCells / 25);  // at least 10 cells
-  zMaxWide = Math.trunc(10 / grd.spaceCellWd);  // at least 10 pixels
-  zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
-  zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
-
-  grd.ZoomSlide.set("maximum", zMax);
-  grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
-  //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
-
-  DrawGridBackground(grd);
-  //Check to see if run has started
-  if (grd.newrun) {
-    DrawParent(grd, parents);
-  }
-  else {
-    DrawKids(grd, parents);
-  }
-  //Draw Selected as one of the last items to draw
-  if (grd.flagSelected) { DrawSelected(grd) }
-  if (!grd.newrun) DrawLogicSelected(grd);
-}
-
-function DrawGridUpdate_alt(grd, parents) {
-  // When zoom = 1x, set canvas size based on space available and cell size
-  // based on rows and columns requested by the user. Zoom acts as a factor
-  // to multiply the size of each cell. When the size of the grid become larger
-  // than the canvas, then the canvas is set to the size of the grid and the
-  // offset in that direction goes to zero.
-
   // space is the amount of space for the canvas
 
   // First find sizes based on zoom
@@ -336,7 +259,6 @@ function DrawGridUpdate_alt(grd, parents) {
 
   if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
   //Determine offset and size of canvas based on grid size relative to space size in that direction
-  /*
   if (grd.sizeX < grd.spaceX) {
     if (debug.grid) console.log('___if grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
     grd.CanvasGrid.width = grd.spaceX;
@@ -344,21 +266,18 @@ function DrawGridUpdate_alt(grd, parents) {
   }
   else {
     if (debug.grid) console.log('___else grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; xOffset', grd.xOffset);
-    //grd.CanvasGrid.width = grd.sizeX;
+    grd.CanvasGrid.width = grd.sizeX;
     grd.xOffset = 0;
   }
-   */
-  if (debug.grid) console.log('canvas before ht', grd.CanvasGrid.width, grd.CanvasGrid.height);
   if (grd.sizeY < grd.spaceY) {
-    //grd.CanvasGrid.height = grd.spaceY;
+    grd.CanvasGrid.height = grd.spaceY;
     grd.yOffset = (grd.spaceY - grd.sizeY) / 2;
   }
   else {
     if (debug.grid) console.log('grd, CanvasGrid.ht', grd.CanvasGrid.height, '; grd.sizeX',grd.sizeY);
-    //grd.CanvasGrid.height = grd.sizeY;
+    grd.CanvasGrid.height = grd.sizeY;
     grd.yOffset = 0;
   }
-  if (debug.grid) console.log('canvas after ht', grd.CanvasGrid.width, grd.CanvasGrid.height);
   console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom, '; canvas.wd', grd.CanvasGrid.width);
 
   //get cell size based on grid size and number of columns and rows
@@ -368,7 +287,7 @@ function DrawGridUpdate_alt(grd, parents) {
   grd.cellHt = ((grd.sizeY - grd.marginY) / grd.rows);
 
   //Find a reasonable maximum zoom for this grid and screen space
-  zMaxCells = Math.trunc(grd.spaceCells / 25);  //
+  zMaxCells = Math.trunc(grd.spaceCells / 25);  // at least 10 cells
   zMaxWide = Math.trunc(10 / grd.spaceCellWd);  // at least 10 pixels
   zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
   zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
@@ -376,10 +295,10 @@ function DrawGridUpdate_alt(grd, parents) {
   grd.ZoomSlide.set("maximum", zMax);
   grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
   //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
-/*
+
+  DrawGridBackground(grd);
   //Check to see if run has started
   if (grd.newrun) {
-    DrawGridBackground(grd);
     DrawParent(grd, parents);
   }
   else {
@@ -388,7 +307,6 @@ function DrawGridUpdate_alt(grd, parents) {
   //Draw Selected as one of the last items to draw
   if (!grd.newrun) DrawLogicSelected(grd);
   if (grd.flagSelected) { DrawSelected(grd) }
-  */
 }
 
 function DrawGridBackground(grd) {
