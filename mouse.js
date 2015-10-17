@@ -100,7 +100,7 @@ function OffspringMouse(evt, dnd, fzr) {
 
 function KidMouse(evt, dnd, fzr){
   if (debug.mouse) console.log('in KidMouse', evt.target.id, evt);
-  if ('-' != grd.kidGenome) {
+  if (5 < grd.kidGenome.length) {
     if ('organIcon' == evt.target.id) {
       dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
       dnd.activeOrgan.sync();   //should be done after insertion or deletion
@@ -147,6 +147,7 @@ function KidMouse(evt, dnd, fzr){
       }
     }
   }
+  else console.log('Kid->OrganismIcon: genome too short ', grd.kidGenome);
 }
 
 function ParentMouse(evt, dnd, fzr, parents) {

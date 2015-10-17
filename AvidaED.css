@@ -221,7 +221,7 @@ button, input,
 .popContainer {
   float: left;
   min-height: 1.6em;
-  width: 20em;
+  width: 15em;
   border: 1px solid black;
   background-color: white;
   display: block;

@@ -228,7 +228,7 @@ require([
   dijit.byId("setupBlock").set("style", "display: none;");
 
   //this section gets rid of scroll bars, but then page no longer resizes correctly
-  // delete later if fix that uses 96% of height takes care of the problem.
+  // delete later if fix that uses 95% to 98% of height takes care of the problem.
   /*    var popNewHt = $("#blockHolder").height()-10;
    dijit.byId("populationBlock").set("style", "height: "+ popNewHt +"px");
    dijit.byId("popBC").set("style", "height: "+ popNewHt+"px");
@@ -706,23 +706,31 @@ require([
     DrawGridSetup();
   }
 
+  //test - delete later
+/*  document.getElementById("grdTestButton").onclick = function () {
+
+  };
+*/
   //******* Freeze Button ********************************************
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.
   document.getElementById("freezeButton").onclick = function () {
-    fzDialog.show();
+    if (grd.newrun) FrConfigFn();
+    else fzDialog.show();
   }
 
   function FrConfigFn() {
     var fzName = prompt("Please name the new configuration", "newConfig");
-    var namelist = dojo.query('> .dojoDndItem', 'fzConfig');
-    fzName = getUniqueName(fzname, dnd.fzConfig);
-    if (null != fzName) {
-      dnd.fzConfig.insertNodes(false, [{data: fzName, type: ["conDish"]}]);
-      dnd.fzConfig.sync();
-      //Create context menu for right-click on this item
-      var domID = getDomID(fzname,dnd.fzConfig);
-      contextMenu(dnd.fzConfig, domID);
+    if (fzName) {
+      var namelist = dojo.query('> .dojoDndItem', 'fzConfig');
+      fzName = getUniqueName(fzName, dnd.fzConfig);
+      if (null != fzName) {
+        dnd.fzConfig.insertNodes(false, [{data: fzName, type: ["conDish"]}]);
+        dnd.fzConfig.sync();
+        //Create context menu for right-click on this item
+        var domID = getDomID(fzName, dnd.fzConfig);
+        contextMenu(fzr, dnd.fzConfig, domID);
+      }
     }
   }
 
@@ -739,14 +747,16 @@ require([
   //Save a populated dish
   function FrPopulationFn() {
     var fzName = prompt("Please name the new population", "newPopulation");
-    fzName = getUniqueName(fzname, dnd.fzPopDish);
-    if (null != fzName) {
-      dnd.fzPopDish.insertNodes(false, [{data: fzName, type: ["popDish"]}]);
-      dnd.fzPopDish.sync();
-      //Create context menu for right-click on this item
-      //Find out the dom ID the node element just inserted.
-      var domID = getDomID(fzName, dnd.fzPopDish);
-      contextMenu(dnd.fzPopDish, domID);
+    if (fzName) {
+      fzName = getUniqueName(fzName, dnd.fzPopDish);
+      if (null != fzName) {
+        dnd.fzPopDish.insertNodes(false, [{data: fzName, type: ["popDish"]}]);
+        dnd.fzPopDish.sync();
+        //Create context menu for right-click on this item
+        //Find out the dom ID the node element just inserted.
+        var domID = getDomID(fzName, dnd.fzPopDish);
+        contextMenu(dnd.fzPopDish, domID);
+      }
     }
   }
 
@@ -770,6 +780,7 @@ require([
     var fzName = 'new';
     var parentName = "";
     if ('selected' == trigger) {
+      //tibanow
       fzName = prompt("Please name the selected organism", "newOrganism");
     }
     else if ('offpring' == trigger) {
@@ -866,7 +877,7 @@ require([
   });
 
   //mouse move anywhere on screen - not currently in use.
-  $(document.getElementById('gridCanvas')).on('mousemove', function handler (evt) {
+/*  $(document.getElementById('gridCanvas')).on('mousemove', function handler (evt) {
     //$(document).on('mousemove', function handler(evt) { //needed so cursor changes shape
     //console.log('gd move');
     //document.getElementById('gridCanvas').style.cursor = 'copy';
@@ -880,12 +891,14 @@ require([
     }
     $(document).off('mousemove', handler);
   });
+*/
 
   //When mouse button is released, return cursor to default values
   $(document).on('mouseup', function (evt) {
     if (debug.mouse) console.log('mouseup; evt', evt.target.id, evt);
     document.getElementById('organCanvas').style.cursor = 'default';
     document.getElementById('gridCanvas').style.cursor = 'default';
+    document.getElementById('freezerDiv').style.cursor = 'default';
     document.getElementById('trashCan').style.cursor = 'default';
     document.getElementById('TrashCanImage').style.cursor = 'default';
     document.getElementById('mainBC').style.cursor = 'default';
@@ -954,6 +967,9 @@ require([
   grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
 
   function DrawGridSetup() {
+    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
+    grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
+
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
     //grd.newrun = newrun;
