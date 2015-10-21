@@ -158,13 +158,13 @@ function ParentMouse(evt, dnd, fzr, parents) {
   if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
     mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
     //Move the ancestor on the canvas
-    console.log("on gridCanvas")
     findSelected(evt, grd);
     // look to see if this is a valid grid cell
     if (grd.selectedCol >= 0 && grd.selectedCol < grd.cols && grd.selectedRow >= 0 && grd.selectedRow < grd.rows) {
+      if (debug.mouse) console.log('parentMouse, selected,',grd.selectedCol, grd.selectedRow, grd.selectedNdx);
       parents.col[mouse.ParentNdx] = grd.selectedCol;
       parents.row[mouse.ParentNdx] = grd.selectedRow;
-      parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
+      parents.AvidaNdx[mouse.ParentNdx] = parents.col[mouse.ParentNdx] + grd.cols * parents.row[mouse.ParentNdx];
       console.log('mvparent', mouse.ParentNdx, parents.col[mouse.ParentNdx], parents.row[mouse.ParentNdx]);
       console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
       console.log('b hand', parents.handNdx.length, parents.handNdx);
