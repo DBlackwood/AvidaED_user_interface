@@ -38,27 +38,29 @@ function SelectedKidMouseStyle(dnd, fzr, grd) {
   grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab'  //ancestor
 }
 
-function OffspringMouse(evt, dnd, fzr) {
-  if ('organIcon' == evt.target.id) { // needs work!!  tiba
-    //Get name of parent that is in OrganCurrentNode
-    var parent;
-    var parentID = Object.keys(dnd.activeOrgan.map)[0];
-    console.log('parentID', parentID);
-    if (undefined == parentID) parent = '';
-    else parent = document.getElementById(parentID).textContent;
-    dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-    dnd.activeOrgan.sync();   //should be done after insertion or deletion
-    //Put name of offspring in OrganCurrentNode
-    dnd.activeOrgan.insertNodes(false, [{data: parent + "_offspring", type: ["organism"]}]);
-    dnd.activeOrgan.sync();
+function offspringTrace(dnd, fzr) {
+  //Get name of parent that is in OrganCurrentNode
+  var parent;
+  var parentID = Object.keys(dnd.activeOrgan.map)[0];
+  console.log('parentID', parentID);
+  if (undefined == parentID) parent = '';
+  else parent = document.getElementById(parentID).textContent;
+  dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
+  dnd.activeOrgan.sync();   //should be done after insertion or deletion
+  //Put name of offspring in OrganCurrentNode
+  dnd.activeOrgan.insertNodes(false, [{data: parent + "_offspring", type: ["organism"]}]);
+  dnd.activeOrgan.sync();
 
-    fzr.actOrgan.name = parent + "_offspring";
-    fzr.actOrgan.genome = '0,heads_default,' + gen.dna[gen.son];  //this should be the full genome when the offspring is complete.
-    fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
-    console.log('fzr.actOrgan', fzr.actOrgan.genome);
-    //get genome from offspring data //needs work!!
-    doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
-  }
+  fzr.actOrgan.name = parent + "_offspring";
+  fzr.actOrgan.genome = '0,heads_default,' + gen.dna[gen.son];  //this should be the full genome when the offspring is complete.
+  fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
+  console.log('fzr.actOrgan', fzr.actOrgan.genome);
+  //get genome from offspring data //needs work!!
+  doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+}
+
+function OffspringMouse(evt, dnd, fzr) {
+  if ('organIcon' == evt.target.id) { offspringTrace(dnd, fzr) }
   else { // look for target in the freezer
     var found = false;
     for (var ii=1; ii<fzr.organism.length; ii++) {
@@ -98,20 +100,22 @@ function OffspringMouse(evt, dnd, fzr) {
   }
 }
 
-function KidMouse(evt, dnd, fzr){
+function traceSelected(dnd, fzr, grd) {
+  dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
+  dnd.activeOrgan.sync();   //should be done after insertion or deletion
+  //Put name of offspring in OrganCurrentNode
+  dnd.activeOrgan.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
+  dnd.activeOrgan.sync();
+  //genome data should be in parents.genome[mouse.ParentNdx];
+  fzr.actOrgan.genome = grd.kidGenome;
+  fzr.actOrgan.name = grd.kidName;
+  fzr.actOrgan.domId = "";
+}
+
+function KidMouse(evt, dnd, fzr, grd){
   if (debug.mouse) console.log('in KidMouse', evt.target.id, evt);
   if (5 < grd.kidGenome.length) {
-    if ('organIcon' == evt.target.id) {
-      dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-      dnd.activeOrgan.sync();   //should be done after insertion or deletion
-      //Put name of offspring in OrganCurrentNode
-      dnd.activeOrgan.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
-      dnd.activeOrgan.sync();
-      //genome data should be in parents.genome[mouse.ParentNdx];
-      fzr.actOrgan.genome = grd.kidGenome;
-      fzr.actOrgan.name = grd.kidName;
-      fzr.actOrgan.domId = "";
-    }
+    if ('organIcon' == evt.target.id) {traceSelected(dnd, fzr, grd)}
     else { // look for target in the freezer
       var found = false;
       for (var ii = 1; ii < fzr.organism.length; ii++) {
@@ -131,7 +135,6 @@ function KidMouse(evt, dnd, fzr){
             dnd.fzOrgan.sync();
             //find domId of parent as listed in dnd.ancestorBox
             var mapItems = Object.keys(dnd.fzOrgan.map);
-            var domStr = "";
             var neworg = {
               'name': avidian,
               'domId': mapItems[mapItems.length - 1],
@@ -155,24 +158,24 @@ function ParentMouse(evt, dnd, fzr, parents) {
   if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
     mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
     //Move the ancestor on the canvas
-    //console.log("on gridCanvas")
+    console.log("on gridCanvas")
     findSelected(evt, grd);
     // look to see if this is a valid grid cell
     if (grd.selectedCol >= 0 && grd.selectedCol < grd.cols && grd.selectedRow >= 0 && grd.selectedRow < grd.rows) {
       parents.col[mouse.ParentNdx] = grd.selectedCol;
       parents.row[mouse.ParentNdx] = grd.selectedRow;
       parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + grd.cols * parents.row[parents.handNdx[ii]];
-      //console.log('mvparent', mouse.ParentNdx, parents.col[mouse.ParentNdx], parents.row[mouse.ParentNdx]);
-      //console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-      //console.log('b hand', parents.handNdx.length, parents.handNdx);
+      console.log('mvparent', mouse.ParentNdx, parents.col[mouse.ParentNdx], parents.row[mouse.ParentNdx]);
+      console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
+      console.log('b hand', parents.handNdx.length, parents.handNdx);
       //change from auto placed to hand placed if needed
       if ('auto' == parents.howPlaced[mouse.ParentNdx]) {
         parents.howPlaced[mouse.ParentNdx] = 'hand';
         makeHandAutoNdx();
         //PlaceAncestors(parents);
       }
-      //console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-      //console.log('hand', parents.handNdx.length, parents.handNdx);
+      console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
+      console.log('hand', parents.handNdx.length, parents.handNdx);
     }
   }  // close on canvas
   //-------------------------------------------- dnd.trashCan

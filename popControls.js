@@ -176,4 +176,5 @@ function writeSettings(dft, dnd, grd) {
   document.getElementById("equPop").textContent = "-";
   grd.flagSelected = false;
   dijit.byId("mnFzOrganism").attr("disabled", true);
+  dijit.byId("mnOrganismTrace").attr("disabled", true);
 }

@@ -575,6 +575,7 @@ require([
   dijit.byId("mnFzOrganism").attr("disabled", true);
   dijit.byId("mnFzOffspring").attr("disabled", true);
   dijit.byId("mnFzPopulation").attr("disabled", true);
+  dijit.byId("mnOrganismTrace").attr("disabled", true);
 
   function popStatView(grd) {
     if (grd.popStatFlag) {
@@ -688,6 +689,9 @@ require([
   //reset values with hard coded defaults needs to be updated when Avida works
   function resetDishFn() { //Need to reset all settings to @default
     grd.newrun = true;
+    dijit.byId("mnOrganismTrace").attr("disabled", true);
+    dijit.byId("mnFzOrganism").attr("disabled", true);
+
     // send rest to Avida adaptor
     doReset();
     //Enable the options on the Setup page
@@ -766,30 +770,43 @@ require([
     FrPopulationFn();
   });
 
+  /* why twice?
   //Buttons on drop down menu to save population
   dijit.byId("mnFzPopulation").on("Click", function () {
     FrPopulationFn()
   });
+  */
+
   //Buttons on drop down menu to save configured dish
+
+  //Buttons on drop down menu to save an organism
   dijit.byId("mnFzOrganism").on("Click", function () {
     FrOrganismFn('selected')
+  });
+
+  //Buttons on drop down menu to save an offspring
+  dijit.byId("mnFzOffspring").on("Click", function () {
+    FrOrganismFn('offspring')
   });
 
   //Freeze the selected organism
   function FrOrganismFn(trigger) {
     var fzName = 'new';
     var parentName = "";
+    var gene;
     if ('selected' == trigger) {
-      //tibanow
       fzName = prompt("Please name the selected organism", "newOrganism");
+      gene = grd.kidGenome;
     }
-    else if ('offpring' == trigger) {
+    else if ('offspring' == trigger) {
       //get name from parent
       parentName = document.getElementById(Object.keys(dnd.activeOrgan.map)[0]).textContent;
       fzName = prompt("Please name the offspring", parentName + '_Offspring');
+      gene = '0,heads_default,' + gen.dna[1];
     }
     else {
       fzName = prompt("Please name the organism", "newOrganism");
+      console.log('source unknwon', trigger);
     }
     fzName = getUniqueName(fzName, dnd.fzOrgan);
     if (null != fzName) {
@@ -798,8 +815,14 @@ require([
       dnd.fzOrgan.sync();
 
       //Find out the dom ID the node element just inserted.
-      var domID = getDomID(fzName,dnd.fzOrgan);
-      contextMenu(dnd.fzOrgan, domID);
+      var mapItems = Object.keys(dnd.fzOrgan.map);
+      var neworg = {
+        'name': fzName,
+        'domId': mapItems[mapItems.length - 1],
+        'genome': gene
+      }
+      fzr.organism.push(neworg);
+      contextMenu(fzr, dnd.fzOrgan, neworg.domId);
     }
   }
 
@@ -807,6 +830,8 @@ require([
 //********************************************************************
 //    Mouse DND functions
 //********************************************************************
+
+  //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
     mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
@@ -838,7 +863,6 @@ require([
       grd.flagSelected = true;
       if (debug.mouse) console.log('ongrid', grd.selectedNdx);
       DrawGridSetup();
-      dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
@@ -865,12 +889,20 @@ require([
           SelectedKidMouseStyle(dnd, fzr, grd);
           mouse.Picked = 'kid';
           console.log('kid', grd.kidName, grd.kidGenome);
+          dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
+          dijit.byId("mnOrganismTrace").attr("disabled", false);
+        }
+        else {
+          dijit.byId("mnOrganismTrace").attr("disabled", true);
+          dijit.byId("mnFzOrganism").attr("disabled", true);  //kid not selected, then it cannot be save via the menu
         }
       }
     }
     else {
       grd.flagSelected = false;
       grd.selectedNdx = -1;
+      dijit.byId("mnOrganismTrace").attr("disabled", true);
+      dijit.byId("mnFzOrganism").attr("disabled", true);
     }
     doSelectedOrganismType(grd);
     DrawGridSetup();
@@ -932,7 +964,7 @@ require([
     }
     else if ('kid' == mouse.Picked) {
       mouse.Picked = "";
-      KidMouse(evt, dnd, fzr);
+      KidMouse(evt, dnd, fzr, grd);
       if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         mainBoxSwap("organismBlock");
@@ -972,7 +1004,6 @@ require([
 
     //Get the size of the div that holds the grid and the scale or legend
     var GridHolderHt = $("#gridHolder").innerHeight();
-    //grd.newrun = newrun;
     if(!grd.newrun) {  //update color information for offpsring once run has started
       setMapData(grd);
       findLogicOutline(grd);
@@ -1306,10 +1337,6 @@ require([
   /* *************************************************************** */
   /* **** Organism Setup Dialog */
 
-  document.getElementById("OrgSetting").onclick = function () {
-    OrganSetupDialog.show();
-  }
-
   //process button to hide or show Organism detail panal.
   var DetailsFlag = true;
   document.getElementById("OrgDetailsButton").onclick = function () {
@@ -1326,6 +1353,18 @@ require([
       registry.byId("mainBC").layout();
     }
   };
+
+  //Opens Settings dialog box
+  document.getElementById("OrgSetting").onclick = function () {
+    gen.settingsChanged = false;
+    OrganSetupDialog.show();
+  }
+
+  //If settings were changed then this will request new data when the settings dialog box is closed.
+  OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
+    console.log('settings dialog closed', gen.settingsChanged);
+    if (gen.settingsChanged) doOrgTrace(fzr);
+  });
 
   $(function slideOrganism() {
     /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
@@ -1344,6 +1383,8 @@ require([
         //$( "#orMRate" ).val( ui.value);  /*put slider value in the text near slider */
         $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3) + "%");
         /*put the value in the text box */
+        gen.settingsChanged = true;
+        if (debug.trace) console.log('orSlide changed', gen.settingsChanged)
       }
     });
     /* initialize */
@@ -1353,20 +1394,23 @@ require([
     /*update slide based on textbox */
     $("#orMuteInput").change(function () {
       slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
-      doOrgTrace(fzr);
+      gen.settingsChanged = true;
+      if (debug.trace) console.log('orMute changed', gen.settingsChanged)
       //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log("in mute change");
     });
   });
 
+  //triggers flag that requests more data when the settings dialog is closed.
+  //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
+  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {gen.settingsChanged=true;});
+  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {gen.settingsChanged=true;});
+
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
   dijit.byId("mnOrganismTrace").on("Click", function () {
-    //get name and genome for selected cell
-    var SelectedName = 'selectedOrganism';  //replace this with data from Avida later
-    // . . . need avida stuff first
-    //Open Oranism view
+    traceSelected(dnd, fzr, grd);
     mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
@@ -1374,25 +1418,11 @@ require([
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    //and put organsim in place
-    //clear out the old data
-    var items = getAllItems(dnd.activeOrgan);    //gets some data about the items in the container
-    if (0 < items.length) {
-      dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-      dnd.activeOrgan.sync();   //should be done after insertion or deletion
-    }
-    dnd.activeOrgan.insertNodes(false, [{data: SelectedName, type: ["organism"]}]);
-    dnd.activeOrgan.sync();
-
-    //call organismTrace
     doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
   });
 
   //Put the offspring in the parent position on Organism Trace
   dijit.byId("mnOffspringTrace").on("Click", function () {
-    //get name and genome for offspring cell
-    var Name = 'offspring';  //replace this with data from Avida later
-    // . . . need avida stuff first
     //Open Oranism view
     mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
@@ -1401,18 +1431,7 @@ require([
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    //and put organsim in place
-    //clear out the old data
-    var items = getAllItems(dnd.activeOrgan);    //gets some data about the items in the container
-    if (0 < items.length) {
-      dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-      dnd.activeOrgan.sync();   //should be done after insertion or deletion
-    }
-    dnd.activeOrgan.insertNodes(false, [{data: Name, type: ["organism"]}]);
-    dnd.activeOrgan.sync();
-
-    //call organismTrace
-    doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+    offspringTrace(dnd, fzr)
   });
 
   /* ****************************************************************/
@@ -1795,7 +1814,6 @@ require([
     if (chck.selectedCol >= 0 && chck.selectedCol < chck.cols && chck.selectedRow >= 0 && chck.selectedRow < chck.rows) {
       chck.flagSelected = true;
       drawCheckerSetup(chck, chips);
-      dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       shrew.chipNdx = -1; //index into chips array if chip selected else -1;

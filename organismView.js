@@ -1,4 +1,5 @@
 function clearGen() {
+  gen.settingsChanged = false;
   gen.cycle = 0;
   gen.bigR = [120, 120]; //radius of full circle
   gen.size = [50, 50];
@@ -11,7 +12,7 @@ function clearGen() {
   gen.fontsize = Math.round(1.8 * gen.smallR);
   gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
   gen.dna = ["", ""];
-  gen.TimeLineHeight = 60;
+  gen.TimeLineHeight = 50;  //was 60;
   gen.imageXY = {x: 5, y: 5};
   gen.didDivide = false;
   gen.debug = true;
