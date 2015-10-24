@@ -1241,6 +1241,7 @@ var outColor = [
     dictColor["Orange"] = "#FFAA00";
     dictColor["Black"] = "#000000";
     dictColor["ltGrey"] = "#CCCCCC";
+    dictColor["White"] = '#FFFFFF';
 
     //Dictionarys
     var letterColor = {};

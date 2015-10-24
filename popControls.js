@@ -5,10 +5,10 @@
 // shifts the population page from Map (grid) view to setup parameters view and back again.
 function popBoxSwap() {
   if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
-    var height = $("#mapBlock").innerHeight() - 6;
-
-    dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
-    dijit.byId("mapBC").set("style", "height: " + height + "px");
+    //var height = $("#mapBlock").innerHeight() - 6;
+    //dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
+    dijit.byId("mapBlock").set("style", "display: block;");
+    //dijit.byId("mapBC").set("style", "height: " + height + "px");
     dijit.byId("setupBlock").set("style", "display: none");
     document.getElementById("PopSetupButton").innerHTML = "Setup";
   } else {

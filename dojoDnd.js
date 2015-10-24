@@ -121,7 +121,7 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
     if (0 < parents.Colors.length) { parents.color.push(parents.Colors.pop()) }
     else { parents.color.push(defaultParentColor) }
     PlaceAncestors(parents);
-    if (debug.dnd) console.log('parents', parents.name[nn], parents.domId[nn], parents.genome[nn])
+    if (debug.dnd) console.log('parents', parents.name[nn], parents.domId[nn], parents.genome[nn]);
   }
 }
 

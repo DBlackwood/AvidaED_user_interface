@@ -459,7 +459,7 @@ require([
 
   dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
-      console.log('landOrganCanvas: s, t', source, target);
+      if (debug.dnd) console.log('landOrganCanvas: s, t', source, target);
       landOrganCanvas(dnd, fzr, source, nodes, target);
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
@@ -467,7 +467,7 @@ require([
 
   dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     if ('organIcon' == target.node.id) {
-      console.log('landOrganIcon: s, t', source, target);
+      if (debug.dnd) console.log('landOrganIcon: s, t', source, target);
       landOrganIcon(dnd, fzr, source, nodes, target);
       //Change to Organism Page
       mainBoxSwap("organismBlock");
@@ -483,7 +483,7 @@ require([
 
   dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
-      console.log('activeOrgan: s, t', source, target);
+      if (debug.dnd) console.log('activeOrgan: s, t', source, target);
       landActiveOrgan(dnd, fzr, source, nodes, target);
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
@@ -491,14 +491,14 @@ require([
 
   dnd.trashCan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
     if ('trashCan' == target.node.id) {
-      console.log('trashCan: s, t', source, target);
+      if (debug.dnd) console.log('trashCan: s, t', source, target);
       landTrashCan(dnd, fzr, parents, source, nodes, target);
     }
   });
 
   dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
-      console.log('graphPop1: s, t', source, target);
+      if (debug.dnd) console.log('graphPop1: s, t', source, target);
       landGraphPop1(dnd, source, nodes, target, plt);
       AnaChartFn();
     }
@@ -506,7 +506,7 @@ require([
 
   dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
-      console.log('graphPop2: s, t', source, target);
+      if (debug.dnd) console.log('graphPop2: s, t', source, target);
       landGraphPop2(dnd, source, nodes, target, plt);
       AnaChartFn();
     }
@@ -514,7 +514,7 @@ require([
 
   dnd.graphPop3.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop3
     if ('graphPop3' == target.node.id) {
-      console.log('graphPop3: s, t', source, target);
+      if (debug.dnd) console.log('graphPop3: s, t', source, target);
       landGraphPop3(dnd, source, nodes, target, plt);
       AnaChartFn();
     }
@@ -558,8 +558,11 @@ require([
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById("PopSetupButton").onclick = function () {
-    if ("Map" == document.getElementById("PopSetupButton").innerHTML) DrawGridSetup();
     popBoxSwap();   //in popControls.js
+    if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
+      cellConflict(grd.cols, grd.rows, grd, parents);
+      DrawGridSetup();
+    }
   };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
@@ -836,8 +839,9 @@ require([
     mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = true;
     mouse.Picked = '';
+    var distance, jj, hh;
     if (gen.didDivide) {  //offpsring exists
-      var distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
+      distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
       if (25 > distance) {
         for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'copy';
         document.getElementById('organIcon').style.cursor = 'copy';
@@ -846,6 +850,36 @@ require([
         mouse.Picked = "offspring";
         if (gen.debug) console.log('gen.dna', gen.dna);
       }
+    }
+    if ('offspring' != mouse.Picked) {
+      for (var gg = 0; gg < traceObj[gen.cycle].memSpace.length; gg++) { //gg is generation
+        for (var ii = 0; ii < gen.dna[gg].length; ii++) {  //ii is the isntruction number
+          distance = Math.sqrt(Math.pow(evt.offsetX - gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - gen.smCenY[gg][ii], 2));
+          if ( gen.smallR >= distance ){
+            console.log('found, gg, ii', gg, ii, '; xy',gen.smCenX[gg][ii],gen.smCenY[gg][ii] );
+            ith = ii; 
+            hh = gg; 
+            mouse.Picked = 'instruction';
+            break;
+          }
+        }
+      }
+    }
+    if ('instruction' == mouse.Picked){  //hh is generation, ith is the instruction
+      var labX = gen.cx[hh] + (gen.bigR[hh] + 2.1*gen.smallR) * Math.cos(ith*2*Math.PI/gen.size[hh]+gen.rotate[hh]);
+      var labY = gen.cy[hh] + (gen.bigR[hh] + 2.1*gen.smallR) * Math.sin(ith*2*Math.PI/gen.size[hh]+gen.rotate[hh]);
+      console.log('ith, gn', ith, hh, '; rotate', gen.rotate[hh], '; xy', labX, labY);
+      gen.ctx.beginPath();
+      gen.ctx.arc(labX, labY, 1.1*gen.smallR, 0, 2 * Math.PI);
+      gen.ctx.fillStyle = dictColor['White'];  //use if gen.dna is a string
+      gen.ctx.fill();   //required to render fill
+      //draw number;
+      gen.ctx.fillStyle = dictColor["Black"];
+      gen.ctx.font = gen.fontsize + "px Arial";
+      instructionNum = ith+1;
+      txtW = gen.ctx.measureText(instructionNum).width;  //use if gen.dna is a string
+      //txtW = gen.ctx.measureText(gen.dna[gg][ith]).width;     //use if gen.dna is an array
+      gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + gen.smallR / 2);  //use if gen.dna is a string
     }
   });
 
@@ -996,14 +1030,27 @@ require([
 
   grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
   grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
-  grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - $("#scaleCanvas").innerHeight();
+  grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - grd.CanvasScale.height;
 
   function DrawGridSetup() {
+    var gridHolderHt = document.getElementById('gridHolder').clientHeight;
+    /*console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+    console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
+    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('gridBoxDiv Ht scroll, client', document.getElementById('gridBoxDiv').scrollHeight,document.getElementById('gridBoxDiv').clientHeight);
+    console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height
+          , document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
+
+    var mapBlockHt = document.getElementById('mapBlockHold').clientHeight - 5;
+    var mapBCht = mapBlockHt - 16;
+    //gridHolderHt = mapBlockHt - document.getElementById('popBot').scrollHeight - 20;
+     */
     grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
     grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
 
-    //Get the size of the div that holds the grid and the scale or legend
-    var GridHolderHt = $("#gridHolder").innerHeight();
     if(!grd.newrun) {  //update color information for offpsring once run has started
       setMapData(grd);
       findLogicOutline(grd);
@@ -1017,78 +1064,33 @@ require([
       GradientScale(grd)
     }
 
-    //find the height for the div that holds the grid Canvas
-    var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
-    document.getElementById("gridBoxDiv").style.height = GrdNodeHt + 'px';
-    document.getElementById("gridBoxDiv").style.overflowY = "scroll";
-    //console.log('GrdNodeHt=',GrdNodeHt);
+    var GrdHt = gridHolderHt - 16 - grd.CanvasScale.height;
+    grd.CanvasGrid.height = GrdHt;
+    //document.getElementById('gridHolder').style.height = gridHolderHt + 'px';
+    //document.getElementById('mapBC').style.height = mapBCht + 'px';
+    //document.getElementById('mapBlock').style.height = mapBlockHt + 'px';
 
     //find the space available to display the grid in pixels
-    grd.spaceX = $("#gridHolder").innerWidth() - 6;
-    grd.spaceY = GrdNodeHt - 5;
-    //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
+    grd.spaceX = grd.CanvasGrid.width;
+    grd.spaceY = grd.CanvasGrid.height;
+    //console.log('spaceY', grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', grd.CanvasScale.height);
 
     DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
+/*    console.log('after');
+    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+    console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
+    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('gridBoxDiv Ht scroll, client', document.getElementById('gridBoxDiv').scrollHeight,document.getElementById('gridBoxDiv').clientHeight);
+    console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height
+      , document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
+    console.log('-----------------------------------------')
+  */
   }
 
-  function DrawGridSetup_alt() {
-    //set the width for each canvas
-    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-    grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 16;
-    if (debug.grid) console.log('drawGrid; gridHolder wd',$("#gridHolder").innerWidth());
-    if (debug.grid) console.log('drawGrid; gridBoxDiv wd',$("#gridBoxDiv").innerWidth());
-    if (debug.grid) console.log('drawGrid; scaleCanvas wd',$("#scaleCanvas").innerWidth());
-
-    if (debug.grid) console.log('drawGrid; gridHolder Wd scroll, client, $inner',
-      document.getElementById('gridHolder').scrollWidth, document.getElementById('gridHolder').clientWidth, $("#gridHolder").innerWidth() );
-
-    if (debug.grid) console.log('drawGrid; gridHolder Ht scroll, client, $inner',
-      document.getElementById('gridHolder').scrollHeight, document.getElementById('gridHolder').clientHeight, $("#gridHolder").innerHeight() );
-    if (debug.grid) console.log('drawGrid; gridBoxDiv Ht scroll, client',
-      document.getElementById('gridBoxDiv').scrollHeight, document.getElementById('gridBoxDiv').clientHeight );
-    if (debug.grid) console.log('drawGrid; scaleDiv Ht scroll, client',
-      document.getElementById('scaleDiv').scrollHeight, document.getElementById('scaleDiv').clientHeight );
-
-    //Get the size of the div that holds the grid and the scale or legend
-    var GridHolderHt = $("#gridHolder").innerHeight();
-
-    if(!grd.newrun) {  //update color information for offpsring once run has started
-      setMapData(grd);
-      findLogicOutline(grd);
-    }
-
-    //Determine if a color gradient or legend will be displayed
-    grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-      drawLegend(grd, parents)
-    }
-    else {
-      GradientScale(grd)
-    }
-
-    //find the height for the div that holds the grid Canvas
-    var GrdNodeHt = GridHolderHt - 16 - $("#scaleCanvas").innerHeight();
-    document.getElementById("gridCanvas").style.height = GrdNodeHt + 'px';
-    document.getElementById("gridCanvas").style.overflowY = "scroll";
-    //console.log('GrdNodeHt=',GrdNodeHt);
-
-    //find the space available to display the grid in pixels
-    //grd.spaceX = $("#gridHolder").innerWidth() - 6;
-    grd.spaceX = $("#gridHolder").innerWidth() - 16;
-    grd.spaceY = GrdNodeHt - 5;
-    //console.log('spaceY', grd.spaceY, '; gdHolder', GridHolderHt, '; scaleCanv', $("#scaleCanvas").innerHeight());
-
-    if (debug.grid) console.log('drawGrid; before CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
-    DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
-    if (debug.grid) console.log('drawGrid; after CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
-
-    if (debug.grid) console.log('drawGrid; after gridHolder Wd scroll, client, $inner',
-      document.getElementById('gridHolder').scrollWidth, document.getElementById('gridHolder').clientWidth, $("#gridHolder").innerWidth() );
-    if (debug.grid) console.log('drawGrid; after gridBoxDiv Wd scroll, client',
-      document.getElementById('gridBoxDiv').scrollWidth, document.getElementById('gridBoxDiv').clientWidth );
-  }
-
-  function removeWideScrollbar(scrollDiv, htChangeDiv, page) {
+  function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {
     //https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
     //if the two heights are different then there is a scroll bar
     var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
@@ -1221,21 +1223,6 @@ require([
     PlaceAncestors(parents);
     //are any parents on the same cell?
     cellConflict(NewCols, NewRows, grd, parents);
-  }
-
-  var cellFilled = function (AvNdx, ii) {
-    var flag = false;
-    console.log('cellFilled', AvNdx, parents.AvidaNdx)
-    for (var jj = 0; jj < parents.name.length; jj++) {
-      if (parents.handNdx[ii] != jj) {
-        if (AvNdx == parents.AvidaNdx[jj]) {
-          flag = true;
-          return flag;
-          break;
-        }
-      }
-    }
-    return flag;
   }
 
   dijit.byId("sizeCols").on("Change", popSizeFn);
@@ -1390,7 +1377,7 @@ require([
     /* initialize */
     //$( "#orMRate" ).val( ($( "#orMuteSlide").slider( "value" )));
     //$( "#orMuteInput" ).val(muteDefault+"%");
-    $("#orMuteInput").val(muteDefault);//tibaslide
+    $("#orMuteInput").val(muteDefault);
     /*update slide based on textbox */
     $("#orMuteInput").change(function () {
       slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));

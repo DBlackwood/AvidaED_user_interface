@@ -382,75 +382,6 @@
                     </tr>
                     </tbody>
                   </table>
-
-                  <!--  version of table with toggle buttons
-                                  <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
-                                    <colgroup>
-                                      <col></col>
-                                      <col></col>
-                                    </colgroup>
-                                    <tbody>
-                                      <tr>
-                                        <td><label>Function</label></td>
-                                        <td><label># Organisms</label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <input type="button" data-dojo-type="dijit/form/ToggleButton" id="notButton" class="bitButton" intermediateChanges="false" label="not" iconClass="dijitCheckBoxIcon"></input>
-                                        </td>
-                                        <td><label id="notPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <input type="button" data-dojo-type="dijit/form/ToggleButton" id="nanButton" class="bitButton" intermediateChanges="false" label="nan" iconClass="dijitCheckBoxIcon" style="width:75px"></input>
-                                        </td>
-                                        <td><label id="nanPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                         <input type="button" data-dojo-type="dijit/form/ToggleButton" id="andButton" class="bitButton" intermediateChanges="false" label="and" iconClass="dijitCheckBoxIcon" style="width:75px"></input>
-                                       </td>
-                                        <td><label id="andPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <input type="button" data-dojo-type="dijit/form/ToggleButton" id="ornButton" class="bitButton" intermediateChanges="false" label="orn" iconClass="dijitCheckBoxIcon"></input>
-                                        </td>
-                                        <td><label id="ornPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <input type="button" data-dojo-type="dijit/form/ToggleButton" id="oroButton" class="bitButton" intermediateChanges="false" label="oro" iconClass="dijitCheckBoxIcon"></input>
-                                        </td>
-                                        <td><label id="oroPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                         <input type="button" data-dojo-type="dijit/form/ToggleButton" id="antButton" class="bitButton" intermediateChanges="false" label="ant" iconClass="dijitCheckBoxIcon"></input>
-                                       </td>
-                                        <td><label id="antPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                         <input type="button" data-dojo-type="dijit/form/ToggleButton" id="norButton" class="bitButton" intermediateChanges="false" label="nor" iconClass="dijitCheckBoxIcon"></input>
-                                       </td>
-                                        <td><label id="norPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                         <input type="button" data-dojo-type="dijit/form/ToggleButton" id="xorButton" class="bitButton" intermediateChanges="false" label="xor" iconClass="dijitCheckBoxIcon"></input>
-                                       </td>
-                                        <td><label id="xorPop"></label></td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                         <input type="button" data-dojo-type="dijit/form/ToggleButton" id="equButton" class="bitButton" intermediateChanges="false" label="equ" iconClass="dijitCheckBoxIcon"></input>
-                                       </td>
-                                        <td><label id="equPop"></label></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                  -->
                 </div>
               </div>
             </div>
@@ -470,19 +401,16 @@
               <div id="popChart"></div>
             </div>
           </div>
-
         </div>
-        <!-- Then end of the main right pane for Population -->
+        <!-- Then end of the main right pane for Population Stop revertion-->
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-             style="height: 100%;"
-             refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity"
-             ID="mapBlockHold">
+             style="height: 100%;" ID="mapBlockHold"
+             refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false"
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"
                style="height: 95%;">
             <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
-                 id="mapBC"
-                 style="min-width: 343px; min-height: 1px; z-index: 0; width: 96%; height: 100%;">
+                 id="mapBC" style="min-width: 343px; min-height: 1px; z-index: 0; width: 96%; height: 100%;">
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                    id="popBot"
                    refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity"
@@ -494,7 +422,6 @@
                     Time: <label id="TimeLabel">(not started)</label><br/>
                   </td>
                   <td style="text-align: center; width:166px">
-                    <button id="grdTestButton">grdTest</button>
                     Mode
                     <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
                       <option value="Fitness" selected="selected">Fitness</option>
@@ -507,6 +434,7 @@
                     <button id="freezeButton">Freeze</button>
                   </td>
                   <td>
+                    <button id="grdTestButton">grdTest</button><br />
                     <div id="ZoomSlide" style="height: auto; width: 120px;float:right">
                       <!--<div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>-->
                       <!--<ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="1x,20x" style="height: 20px;">-->
@@ -520,7 +448,7 @@
                  refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity"
                  id="gridHolder">
               <div id="gridBoxDiv" style="overflow: scroll">
-                <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" width="3000" height="1000"
+                <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" <!--width="3000" height="1000"-->
                         style="border:1px solid #DDDDDD;"></canvas>
               </div>
               <div id="scaleDiv" style="overflow: scroll">

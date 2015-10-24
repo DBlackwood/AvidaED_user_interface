@@ -18,6 +18,8 @@ function clearGen() {
   gen.debug = true;
   gen.mom = 0;
   gen.son = 1;
+  gen.smCenX = [[], []];
+  gen.smCenY = [[], []];
   //initialize all canvases needed for Organism page
   gen.bufferCvs = document.getElementById("buffer");
   gen.bufferCtx = gen.bufferCvs.getContext("2d");
@@ -180,16 +182,16 @@ function drawBitStr(context, row, bitStr) {
 }
 
 function genomeCircle(gen, gg, obj) { //gg is generation
-  var SmallCenterX, SmallCenterY;  //center of small circle
   var txtW;      // width of txt
   //var tickR;        //mutation tick mark: radius used to find position for tick Mark
   //var tickX, tickY  //mutation tick mark: position of inner tick mark
   //var tanX, tanY    //mutation tick mark: position of end of tick mark tangent to instruction circle.
+  //if (debug.trace) console.log('gg, size', gg, gen.size[gg]);
   for (var ii = 0; ii < gen.dna[gg].length; ii++) {
-    SmallCenterX = gen.cx[gg] + gen.bigR[gg] * Math.cos(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
-    SmallCenterY = gen.cy[gg] + gen.bigR[gg] * Math.sin(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
+    gen.smCenX[gg][ii] = gen.cx[gg] + gen.bigR[gg] * Math.cos(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
+    gen.smCenY[gg][ii] = gen.cy[gg] + gen.bigR[gg] * Math.sin(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     gen.ctx.beginPath();
-    gen.ctx.arc(SmallCenterX, SmallCenterY, gen.smallR, 0, 2 * Math.PI);
+    gen.ctx.arc(gen.smCenX[gg][ii], gen.smCenY[gg][ii], gen.smallR, 0, 2 * Math.PI);
     //Assign color based on letter code of instruction
     gen.ctx.fillStyle = letterColor[gen.dna[gg].substr(ii, 1)];  //use if gen.dna is a string
     //gen.ctx.fillStyle = letterColor[gen.dna[gg][ii]];  //use if gen.dna is an array
@@ -198,8 +200,8 @@ function genomeCircle(gen, gg, obj) { //gg is generation
     if (undefined != obj[gen.cycle].memSpace[gen.son]) {
       if (1 == gg && obj[gen.cycle].memSpace[gen.son].mutated[ii]) {
         gen.ctx.strokeStyle = orgColorCodes["mutate"];
-        gen.ctx.lineWidth = 3;
-        gen.ctx.arc(SmallCenterX, SmallCenterY, gen.SmallR, 0, 2 * Math.PI);
+        gen.ctx.lineWidth = 2;
+        gen.ctx.arc(gen.smCenX[gg][ii], gen.smCenY[gg][ii], gen.SmallR, 0, 2 * Math.PI);
         gen.ctx.stroke();
         //Draw tick mark to interior of circle for mutated instruction
         //tickR = gen.bigR[gg]-3*gen.smallR;
@@ -219,8 +221,8 @@ function genomeCircle(gen, gg, obj) { //gg is generation
     gen.ctx.font = gen.fontsize + "px Arial";
     txtW = gen.ctx.measureText(gen.dna[gg].substr(ii, 1)).width;  //use if gen.dna is a string
     //txtW = gen.ctx.measureText(gen.dna[gg][ii]).width;     //use if gen.dna is an array
-    gen.ctx.fillText(gen.dna[gg].substr(ii, 1), SmallCenterX - txtW / 2, SmallCenterY + gen.smallR / 2);  //use if gen.dna is a string
-    //gen.ctx.fillText(gen.dna[gg][ii],SmallCenterX-txtW/2, SmallCenterY+gen.smallR/2);  //use if gen.dna is an array
+    gen.ctx.fillText(gen.dna[gg].substr(ii, 1), gen.smCenX[gg][ii] - txtW / 2, gen.smCenY[gg][ii] + gen.smallR / 2);  //use if gen.dna is a string
+    //gen.ctx.fillText(gen.dna[gg][ii],gen.smCenX[gg][ii]-txtW/2, gen.smCenY[gg][ii]+gen.smallR/2);  //use if gen.dna is an array
   }
   //Draw center of circle to test max arc height - should not go past center of circle
   //gen.ctx.arc(gen.cx[gg], gen.cy[gg], gen.smallR/4, 0, 2*Math.PI);
@@ -306,13 +308,13 @@ function updateOrganTrace(obj, gen) {
   DrawTimeline(obj, gen);
   //Find radius and center of big circle for each genome
   if (gen.OrgCanvas.height < .55 * (gen.OrgCanvas.width - gen.TimeLineHeight)) {
-    gen.bigR[gen.mom] = Math.round(0.45 * (gen.OrgCanvas.height - gen.TimeLineHeight))
-  }//set size based on height
+    gen.bigR[gen.mom] = Math.round(0.43 * (gen.OrgCanvas.height - gen.TimeLineHeight))  //set size based on height
+  }
   else {
     gen.bigR[gen.mom] = Math.round(0.2 * gen.OrgCanvas.width) //set size based on width
   }
   gen.cx[gen.mom] = gen.OrgCanvas.width / 2 - 1.2 * gen.bigR[gen.mom];        //center of 1st (parent) circle x
-  gen.cy[gen.mom] = (gen.OrgCanvas.height - gen.TimeLineHeight) / 2;  //center of 1st (parent) circle y
+  gen.cy[gen.mom] = 0.53 * (gen.OrgCanvas.height - gen.TimeLineHeight);  //center of 1st (parent) circle y
   // Draw parent (Mom) genome in a circle----------------------------------------
   gen.smallR = gen.bigR[gen.mom] * 2 * Math.PI / (2 * gen.size[gen.mom]); //radius of each small circle
   gen.tanR = gen.bigR[gen.mom] - gen.smallR;         //radius of circle tanget to inside of small circles
@@ -327,7 +329,8 @@ function updateOrganTrace(obj, gen) {
     gen.cy[gen.son] = gen.cy[gen.mom];
     gen.headR[gen.son] = gen.bigR[gen.son] - 2 * gen.smallR;      //radius of circle made by center of head positions.
     if (obj[gen.cycle].didDivide) {
-      gen.cx[gen.son] = gen.OrgCanvas.width / 2 + 1.1 * gen.bigR[gen.son];
+      //gen.cx[gen.son] = gen.OrgCanvas.width / 2 + 1.1 * gen.bigR[gen.son];
+      gen.cx[gen.son] = gen.OrgCanvas.width / 2 + 1.2 * gen.bigR[gen.son];
       gen.rotate[gen.son] = 0;
       drawIcon(gen);
       //there is an offspring, so it can be saved in the freezer or fed back into Organism viewer

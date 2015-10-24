@@ -22,9 +22,8 @@ function doOrgTrace(fzr) {
       dijit.byId("orMuteInput").get('value')/100,     // point mutation rate
       seed                                            //seed where 0 = random; >0 to replay that number
     ]
-    //'PtMuteRate': '0.02',
-    //'Seed': '0'  // sets to demo mode; optional if left off it is experimental mode
   };
+  if (debug.msg) console.log('trace', request);
   uiWorker.postMessage(request);
 }
 

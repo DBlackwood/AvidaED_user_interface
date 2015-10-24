@@ -158,14 +158,14 @@ function cellConflict(NewCols, NewRows, grd, parents) {
   var flg = false;
   var tryCol, tryRow, avNdx;
   for (var ii = 0; ii < parents.handNdx.length; ii++) {
-    flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]], ii);
+    flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]], ii, parents);
     if (flg) {
       for (var jj = 0; jj < places.length; jj++) {
         tryCol = parents.col[parents.handNdx[ii]] + places[jj][0];
         tryRow = parents.row[parents.handNdx[ii]] + places[jj][1];
         avNdx = tryCol + tryRow * NewCols;
         if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {
-          flg = cellFilled(avNdx, ii)
+          flg = cellFilled(avNdx, ii, parents)
         }
         else {
           flg = true
@@ -520,3 +520,19 @@ function GradientScale(grd) {
   grd.sCtx.stroke();
   console.log('Take out after color test');
 }
+
+var cellFilled = function (AvNdx, ii, parents) {
+  var flag = false;
+  //console.log('cellFilled', AvNdx, parents.AvidaNdx)
+  for (var jj = 0; jj < parents.name.length; jj++) {
+    if (parents.handNdx[ii] != jj) {
+      if (AvNdx == parents.AvidaNdx[jj]) {
+        flag = true;
+        return flag;
+        break;
+      }
+    }
+  }
+  return flag;
+}
+

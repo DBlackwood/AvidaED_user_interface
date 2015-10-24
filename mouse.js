@@ -171,7 +171,7 @@ function ParentMouse(evt, dnd, fzr, parents) {
       //change from auto placed to hand placed if needed
       if ('auto' == parents.howPlaced[mouse.ParentNdx]) {
         parents.howPlaced[mouse.ParentNdx] = 'hand';
-        makeHandAutoNdx();
+        makeHandAutoNdx(parents);
         //PlaceAncestors(parents);
       }
       console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);

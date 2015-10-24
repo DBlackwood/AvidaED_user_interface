@@ -2,11 +2,11 @@
 var debug = {};
 debug.root = false;  //statemens that look for failiers when the code executes outside of functions
 debug.logic = false;  //debug statements that look for errors outlining logic functions
-debug.mouse = true;   //debug statements about non-dojo drag and drop
+debug.mouse = false;   //debug statements about non-dojo drag and drop
 debug.dnd = false;     //debu statements about dojo dnd
 debug.msg = false;     //messages to and from avida
-debug.trace = false;   //organism page
-debug.grid = true;     //population grid
+debug.trace = true;   //organism page
+debug.grid = false;     //population grid
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};
