@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_broke1251.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_broken.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PopulationGrid_broken1016.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_3x3.js.mem" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_5x20_1002.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_5x20_1002.js.mem" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_multi-length.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_multi-length.js.mem" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js.mem" afterPath="$PROJECT_DIR$/avida.js.mem" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PopulationGrid.js" afterPath="$PROJECT_DIR$/PopulationGrid.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/colormap.js" afterPath="$PROJECT_DIR$/colormap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojoDnd.js" afterPath="$PROJECT_DIR$/dojoDnd.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mouse.js" afterPath="$PROJECT_DIR$/mouse.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismView.js" afterPath="$PROJECT_DIR$/organismView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popControls.js" afterPath="$PROJECT_DIR$/popControls.js" />
-    </list>
+    <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="" />
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
