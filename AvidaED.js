@@ -883,6 +883,53 @@ require([
     }
   });
 
+  //if a cell is selected, arrow keys can move the selection
+  $(document).keydown(function(e) { //tibatiba
+    if (grd.flagSelected) {
+      var moved = false;
+      switch (e.which) {
+        case 37: // left
+          if (0 < grd.selectedCol) {
+            grd.selectedCol = grd.selectedCol - 1;
+            moved = true;
+          }
+          break;
+        case 38: // up
+          if (0 < grd.selectedRow) {
+            grd.selectedRow = grd.selectedRow - 1;
+            moved = true;
+          }
+          break;
+        case 39: // right
+          if (grd.selectedCol < grd.cols - 1) {
+            grd.selectedCol++;
+            moved = true;
+          }
+          break;
+        case 40: // down
+          if (grd.selectedRow < grd.rows - 1) {
+            grd.selectedRow = grd.selectedRow + 1;
+            moved = true;
+          }
+          break;
+      }
+      e.preventDefault(); // prevent the default action (scroll / move caret)
+      grd.selectedNdx = grd.selectedRow*grd.cols + grd.selectedCol;
+      if (moved && !grd.newrun) {  //look for decendents (kids)
+        //find out if there is a kid in that cell
+        //if ancestor not null then there is a 'kid' there.
+        if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
+          grd.kidStatus = 'getgenome';
+          doSelectedOrganismType(grd);
+          console.log('kid', grd.kidName, grd.kidGenome);
+          dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
+          dijit.byId("mnOrganismTrace").attr("disabled", false);
+        }
+      }
+      DrawGridSetup();
+    }
+  });
+
   //mouse down on the grid
   $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
     mouse.DnGridPos = [evt.offsetX, evt.offsetY];
@@ -916,7 +963,7 @@ require([
         if (debug.mouse) console.log('kidSelected; selectedNdx', grd.selectedNdx,'________________________________');
         if (debug.mouse) console.log('kidSelected; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
         //find out if there is a kid in that cell
-        //if ancestor not null then there is a cell there.
+        //if ancestor not null then there is a 'kid' there.
         if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
           grd.kidStatus = 'getgenome';
           doSelectedOrganismType(grd);

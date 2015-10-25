@@ -185,10 +185,13 @@ function updateSelectedOrganismType(grd, msg, parents) {
   if (null == msg.age) document.getElementById("ageLabel").textContent = '-';
     else document.getElementById("ageLabel").textContent = msg.age;
   if (null === msg.ancestor) {
-    if (debug.msg) console.log('msg.ancestor === null_______________________________________________________')
-    if (null === grd.msg.ancestor.data[grd.selectedNdx])
-      document.getElementById("ancestorLabel").textContent = '-';
-    else document.getElementById("ancestorLabel").textContent = parents.name[grd.msg.ancestor.data[grd.selectedNdx]];
+    //console.log('grd.msg', grd.msg);
+    if (debug.msg) console.log('msg.ancestor === null_______________________________________________________');
+    if (null != grd.msg) {
+      if (null === grd.msg.ancestor.data[grd.selectedNdx])
+        document.getElementById("ancestorLabel").textContent = '-';
+      else document.getElementById("ancestorLabel").textContent = parents.name[grd.msg.ancestor.data[grd.selectedNdx]];
+    }
   }
   else document.getElementById("ancestorLabel").textContent = parents.name[msg.ancestor];
   //add + or - to text of logic function
