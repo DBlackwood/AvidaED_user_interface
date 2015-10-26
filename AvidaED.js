@@ -77,9 +77,11 @@ require([
 
 
     //process message from web worker
-  uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
+  //uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
+  uiWorker.onmessage = function (ee) {readMsg(ee)};  // in file messaging.js
 
-  function readMsg(ee, dft, dnd, parents) {
+  //function readMsg(ee, dft, dnd, parents) {
+  function readMsg(ee) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -103,14 +105,22 @@ require([
           updateOrgTrace(traceObj, gen);
           break;
         case 'webPopulationStats':
+          if (debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
           updatePopStats(grd, msg);
           popChartFn();
           break;
         case 'webGridData':
+          //mObj=JSON.parse(JSON.stringify(jsonObject));
           grd.msg = msg;
           DrawGridSetup();
+          if (debug.msgOrder) console.log('webGridData length', grd.ave_fitness.length);
+          if (debug.msgOrder) console.log('ges',grd.msg.gestation.data);
+          if (debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
+          if (debug.msgOrder) console.log('nan',grd.msg.nand.data);
+          if (debug.msgOrder) console.log('out',grd.out);
           break;
         case 'webOrgDataByCellID':
+          //if ('undefined' != typeof grd.msg.ancestor) {console.log('webOrgDataByCellID anc',grd.msg.ancestor.data);}
           updateSelectedOrganismType(grd, msg, parents);  //in messageing
           break;
         default:
@@ -701,9 +711,13 @@ require([
     popNewExState(dnd, grd, parents);
     //clear the time series graphs
     grd.ave_fitness = [];
+    grd.log_fitness = [];
     grd.ave_gestation_time = [];
+    grd.log_gestation_time = [];
     grd.ave_metabolic_rate = [];
+    grd.log_metabolic_rate = [];
     grd.population_size = [];
+    grd.log_pop_size = [];
     popChartFn();
     //Clear grid settings
     clearParents();
@@ -772,13 +786,6 @@ require([
     fzDialog.hide();
     FrPopulationFn();
   });
-
-  /* why twice?
-  //Buttons on drop down menu to save population
-  dijit.byId("mnFzPopulation").on("Click", function () {
-    FrPopulationFn()
-  });
-  */
 
   //Buttons on drop down menu to save configured dish
 
@@ -1081,7 +1088,8 @@ require([
 
   function DrawGridSetup() {
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
-    /*console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    /* the console.log is to look at why scroll bars show up when they should not
+    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
     console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
@@ -1232,6 +1240,12 @@ require([
       document.getElementById(button).value = 'on';
       document.getElementById(button).className = 'bitButtonOn';
     }
+    for (ii=0; ii<grd.ave_fitness.length; ii++){
+      grd.log_fitness[ii] = null;
+      grd.log_gestation_time[ii] = null;
+      grd.log_metabolic_rate[ii] = null;
+      grd.log_pop_size[ii] = null;
+    }
     DrawGridSetup();
   }
 
@@ -1244,7 +1258,6 @@ require([
   document.getElementById("norButton").onclick = function () {toggle('norButton');}
   document.getElementById("xorButton").onclick = function () {toggle('xorButton');}
   document.getElementById("equButton").onclick = function () {toggle('equButton');}
-
 
   // *************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
@@ -1305,9 +1318,9 @@ require([
     });
   });
 
-  /* --------------------------------------------------------------- */
-  /*                    Population Chart                             */
-  /* --------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------- */
+  /*                    Population Chart   ; pop chart; popchart            */
+  /* ---------------------------------------------------------------------- */
 
   //need to get the next two values from real data.
   //var popY = [1, 1, 1, 2, 2, 2, 4, 4, 4, 8,8,8,14,15,16,16,16,24,24,25,26,36,36,36,48,48]; /
@@ -1324,16 +1337,22 @@ require([
   function popChartFn() {
     if ("Average Fitness" == dijit.byId("yaxis").value) {
       popY = grd.ave_fitness;
+      popY2 = grd.log_fitness;
     }
     else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
       popY = grd.ave_gestation_time;
+      popy2 = grd.log_gestation_time;
     }
     else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
       popY = grd.ave_metabolic_rate;
+      popY2 = grd.log_metabolic_rate;
     }
     else if ("Number of Organisms" == dijit.byId("yaxis").value) {
       popY = grd.population_size;
+      popY2 = grd.log_pop_size;
     }
+    console.log('popY',popY);
+    console.log('pop2', popY2);
     //popChart.setTheme(myTheme);
     popChart.addPlot("default", {type: "Lines"});
     //popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
@@ -1352,7 +1371,8 @@ require([
       vertical: true,
       fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
     });
-    popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 2}});
+    popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
+    popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
     popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
       domGeometry.position(document.getElementById("popChartHolder")).h - 30);
     popChart.render();

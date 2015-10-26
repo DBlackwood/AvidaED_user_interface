@@ -7,6 +7,7 @@ debug.dnd = false;     //debu statements about dojo dnd
 debug.msg = false;     //messages to and from avida
 debug.trace = true;   //organism page
 debug.grid = false;     //population grid
+debug.msgOrder = false; //message order
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};
@@ -77,9 +78,14 @@ function clearGrd() {
   grd.LogicColor = '#00ff00';
   grd.kidStatus = '';
   grd.ave_fitness = [];
+  grd.log_fitness = [];
   grd.ave_gestation_time = [];
+  grd.log_gestation_time = [];
   grd.ave_metabolic_rate = [];
+  grd.log_metabolic_rate = [];
   grd.population_size = [];
+  grd.log_pop_size = [];
+  grd.allOff = true;
 }
 
 //***************************************

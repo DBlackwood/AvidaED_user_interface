@@ -12,7 +12,7 @@ function clearGen() {
   gen.fontsize = Math.round(1.8 * gen.smallR);
   gen.rotate = [0, 0];  //used to rotate offspring 180 degrees when growing; otherwise no rotation.
   gen.dna = ["", ""];
-  gen.TimeLineHeight = 50;  //was 60;
+  gen.TimeLineHeight = 44;  //was 50;
   gen.imageXY = {x: 5, y: 5};
   gen.didDivide = false;
   gen.debug = true;
@@ -39,13 +39,15 @@ function clearGen() {
   gen.OrgCanvas = document.getElementById("organCanvas");
   gen.ctx = gen.OrgCanvas.getContext("2d");
   gen.ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
+  //gen.timeLineCanvas = document.getElementById("timeLine");
+  //gen.tLctx = gen.timeLineCanvas.getContext("2d");
 }
 
 function DrawTimeline(obj, gen) {
   var startX, lineY, endX, length, numCycles, upLabelY, dnLabelY, txtWide, dnTickX, dnNum;
-  var tickLength = 10;
-  var upLabelYoffset = 12;
-  var dnLabelYoffset = 22;
+  var tickLength = 6;
+  var upLabelYoffset = 8;  //was 12
+  var dnLabelYoffset = 18;  //was 22
   var upTickX = [];
   var upTickY = 5;
   var upNum = [];
@@ -59,7 +61,7 @@ function DrawTimeline(obj, gen) {
   dnTickY = lineY + tickLength;
   upLabelY = lineY - upLabelYoffset;
   dnLabelY = lineY + dnLabelYoffset;
-  startX = 26;                //The number are fudge factors to account for the end of the slider
+  startX = 26;                //The numbers are fudge factors to account for the end of the slider
   endX = gen.OrgCanvas.width - 25;
   length = endX - startX;
   numCycles = obj.length - 1;
@@ -329,7 +331,6 @@ function updateOrganTrace(obj, gen) {
     gen.cy[gen.son] = gen.cy[gen.mom];
     gen.headR[gen.son] = gen.bigR[gen.son] - 2 * gen.smallR;      //radius of circle made by center of head positions.
     if (obj[gen.cycle].didDivide) {
-      //gen.cx[gen.son] = gen.OrgCanvas.width / 2 + 1.1 * gen.bigR[gen.son];
       gen.cx[gen.son] = gen.OrgCanvas.width / 2 + 1.2 * gen.bigR[gen.son];
       gen.rotate[gen.son] = 0;
       drawIcon(gen);

@@ -43,6 +43,7 @@ function setMapData(grd) {
       grd.fill = grd.msg.ancestor.data;
       break;
   }
+
   //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
   //console.log('fitmax',grd.msg.fitness.maxVal,'; Gest',grd.msg.gestation.maxVal,'; rate',grd.msg.metabolism.maxVal,'; fillmax',grd.fillmax);
 }
@@ -105,50 +106,51 @@ function DrawKids(grd, parents) {  //Draw the children of parents
 }
 
 function findLogicOutline(grd) {
-  var alloff = true;
+  grd.allOff = true;
   //console.log('not',grd.msg.not.data);
   for (ii = 0; ii < grd.msg.not.data.length; ii++) {
     grd.out[ii] = 1;
   }
   if ('on' == document.getElementById('notButton').value) {
     for (ii = 0; ii < grd.msg.not.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not.data[ii];}
-    alloff = false;
+    grd.allOff = false;
   }
   if ('on' == document.getElementById('nanButton').value) {
     for (ii = 0; ii < grd.msg.nand.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nand.data[ii];}
-    alloff = false;
+    grd.allOff = false;
   }
   if ('on' == document.getElementById('andButton').value) {
     for (ii = 0; ii < grd.msg.and.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.and.data[ii];}
-    alloff = false;
+    grd.allOff = false;
   }
   if ('on' == document.getElementById('ornButton').value) {
     for (ii = 0; ii < grd.msg.orn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.orn.data[ii];}
-    alloff = false;
+    grd.allOff = false;
     if (debug.logic) console.log('or', grd.msg.orn.data);
   }
   if ('on' == document.getElementById('oroButton').value) {
     for (ii = 0; ii < grd.msg.or.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.or.data[ii];}
-    alloff = false;
+    grd.allOff = false;
     if (debug.logic) console.log('or', grd.msg.or.data);
   }
   if ('on' == document.getElementById('antButton').value) {
     for (ii = 0; ii < grd.msg.andn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.andn.data[ii];}
-    alloff = false;
+    grd.allOff = false;
   }
   if ('on' == document.getElementById('norButton').value) {
     for (ii = 0; ii < grd.msg.nor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nor.data[ii];}
-    alloff = false;
+    grd.allOff = false;
   }
   if ('on' == document.getElementById('xorButton').value) {
     for (ii = 0; ii < grd.msg.xor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.xor.data[ii];}
-    alloff = false;
+    grd.allOff = false;
   }
   if ('on' == document.getElementById('equButton').value) {
     for (ii = 0; ii < grd.msg.equ.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.equ.data[ii];}
-    alloff = false;
+    grd.allOff = false;
   }
-  if (alloff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
+  if (grd.allOff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
+  
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (debug.logic) console.log('setLogic', grd.out);
 }
@@ -294,101 +296,6 @@ function DrawGridUpdate(grd, parents) {
   //Draw Selected as one of the last items to draw
   if (grd.flagSelected) { DrawSelected(grd) }
   if (!grd.newrun) DrawLogicSelected(grd);
-}
-
-function DrawGridUpdate_alt(grd, parents) {
-  // When zoom = 1x, set canvas size based on space available and cell size
-  // based on rows and columns requested by the user. Zoom acts as a factor
-  // to multiply the size of each cell. When the size of the grid become larger
-  // than the canvas, then the canvas is set to the size of the grid and the
-  // offset in that direction goes to zero.
-
-  // space is the amount of space for the canvas
-
-  // First find sizes based on zoom
-  if (debug.grid) console.log('zoom', grd.zoom);
-  grd.boxX = grd.zoom * grd.spaceX;
-  grd.boxY = grd.zoom * grd.spaceY;
-  //get rows and cols based on user input form
-  grd.cols = dijit.byId("sizeCols").get('value');
-  grd.rows = dijit.byId("sizeRows").get('value');
-  //max size of box based on width or height based on ratio of cols:rows and width:height
-  if (grd.spaceX / grd.spaceY > grd.cols / grd.rows) {
-    if (debug.grid) console.log('height limiting direction');
-    //set based  on height as that is the limiting factor.
-    grd.sizeY = grd.boxY;
-    grd.sizeX = grd.boxY * grd.cols / grd.rows;
-    grd.spaceCellWd = grd.spaceY / grd.rows;
-    grd.spaceCells = grd.rows;  //rows exactly fit the space when zoom = 1x
-  }
-  else {
-    //set based on width as that is the limiting direction
-    if (debug.grid) console.log('width limiting direction');
-    grd.sizeX = grd.boxX;
-    grd.sizeY = grd.boxX * grd.rows / grd.cols;
-    grd.spaceCellWd = grd.spaceX / grd.cols;
-    grd.spaceCells = grd.cols;  //cols exactly fit the space when zoom = 1x
-  }
-  if (debug.grid) console.log('after limit: sizeX, Y', grd.sizeX, grd.sizeY);
-  if (debug.grid) console.log('after limit: boxX, Y', grd.boxX, grd.boxY);
-  if (debug.grid) console.log('after limit: spaceX, Y', grd.spaceX, grd.spaceY);
-  if (debug.grid) console.log('after limit: canvasX, Y', grd.CanvasGrid.width, grd.CanvasGrid.height);
-
-  if (debug.grid) console.log('grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
-  //Determine offset and size of canvas based on grid size relative to space size in that direction
-  /*
-  if (grd.sizeX < grd.spaceX) {
-    if (debug.grid) console.log('___if grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; spaceX', grd.spaceX);
-    grd.CanvasGrid.width = grd.spaceX;
-    grd.xOffset = (grd.spaceX - grd.sizeX) / 2;
-  }
-  else {
-    if (debug.grid) console.log('___else grd, CanvasGrid.wd', grd.CanvasGrid.width, '; grd.sizeX',grd.sizeX, '; xOffset', grd.xOffset);
-    //grd.CanvasGrid.width = grd.sizeX;
-    grd.xOffset = 0;
-  }
-   */
-  if (debug.grid) console.log('canvas before ht', grd.CanvasGrid.width, grd.CanvasGrid.height);
-  if (grd.sizeY < grd.spaceY) {
-    //grd.CanvasGrid.height = grd.spaceY;
-    grd.yOffset = (grd.spaceY - grd.sizeY) / 2;
-  }
-  else {
-    if (debug.grid) console.log('grd, CanvasGrid.ht', grd.CanvasGrid.height, '; grd.sizeX',grd.sizeY);
-    //grd.CanvasGrid.height = grd.sizeY;
-    grd.yOffset = 0;
-  }
-  if (debug.grid) console.log('canvas after ht', grd.CanvasGrid.width, grd.CanvasGrid.height);
-  console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom, '; canvas.wd', grd.CanvasGrid.width);
-
-  //get cell size based on grid size and number of columns and rows
-  grd.marginX = 1;  //width of black line between the cells
-  grd.marginY = 1;  //width of black line between the cells
-  grd.cellWd = ((grd.sizeX - grd.marginX) / grd.cols);
-  grd.cellHt = ((grd.sizeY - grd.marginY) / grd.rows);
-
-  //Find a reasonable maximum zoom for this grid and screen space
-  zMaxCells = Math.trunc(grd.spaceCells / 25);  //
-  zMaxWide = Math.trunc(10 / grd.spaceCellWd);  // at least 10 pixels
-  zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
-  zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
-
-  grd.ZoomSlide.set("maximum", zMax);
-  grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
-  //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, grd.zoom);
-/*
-  //Check to see if run has started
-  if (grd.newrun) {
-    DrawGridBackground(grd);
-    DrawParent(grd, parents);
-  }
-  else {
-    DrawKids(grd, parents);
-  }
-  //Draw Selected as one of the last items to draw
-  if (!grd.newrun) DrawLogicSelected(grd);
-  if (grd.flagSelected) { DrawSelected(grd) }
-  */
 }
 
 function DrawGridBackground(grd) {

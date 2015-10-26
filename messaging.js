@@ -164,10 +164,47 @@ function updatePopStats(grd, msg) {
   document.getElementById("xorPop").textContent = msg["xor"];
   document.getElementById("equPop").textContent = msg["equ"];
   //update graph arrays
-  grd.ave_fitness.push(msg["ave_fitness"]);
-  grd.ave_gestation_time.push(msg["ave_gestation_time"]);
-  grd.ave_metabolic_rate.push(msg["ave_metabolic_rate"]);
-  grd.population_size.push(msg["organisms"]);
+  if (0 <= msg.update) {
+    grd.ave_fitness[msg.update] = msg["ave_fitness"];
+    grd.ave_gestation_time[msg.update] = msg["ave_gestation_time"];
+    grd.ave_metabolic_rate[msg.update] = msg["ave_metabolic_rate"];
+    grd.population_size[msg.update] = msg["organisms"];
+    updateLogicAve(grd, msg);  //for graph data
+  }
+  console.log('update length', msg.update.formatNum(0), grd.ave_fitness.length);
+}
+
+function updateLogicAve(grd, msg){
+  if (grd.allOff) {
+    grd.log_fitness[msg.update] = null;
+    grd.log_gestation_time[msg.update] = null;
+    grd.log_metabolic_rate[msg.update] = null;
+    grd.log_pop_size[msg.update] = null;
+  }
+  else {
+    grd.log_fitness[msg.update] = 0;
+    grd.log_gestation_time[msg.update] = 0;
+    grd.log_metabolic_rate[msg.update] = 0;
+    grd.log_pop_size[msg.update] = 0;
+    console.log('out_', grd.out );
+    console.log('gest', grd.msg.gestation.data);
+    for (var ii=0; ii < grd.out.length; ii++){
+      if (0 < grd.out[ii]) {
+        grd.log_fitness[msg.update] += grd.msg.fitness.data[ii];
+        grd.log_gestation_time[msg.update] += grd.msg.gestation.data[ii];
+        grd.log_metabolic_rate[msg.update] += grd.msg.metabolism.data[ii];
+        grd.log_pop_size[msg.update]++;
+      }
+    }
+    //console.log('fit, ges, met, pop', grd.log_fitness[msg.update],grd.log_gestation_time[msg.update],grd.log_metabolic_rate[msg.update],grd.log_pop_size[msg.update])
+    if (0 < grd.log_pop_size[msg.update]) {
+      grd.log_fitness[msg.update] = grd.log_fitness[msg.update]/grd.log_pop_size[msg.update];
+      grd.log_gestation_time[msg.update] = grd.log_gestation_time[msg.update]/grd.log_pop_size[msg.update];
+      grd.log_metabolic_rate[msg.update] = grd.log_metabolic_rate[msg.update]/grd.log_pop_size[msg.update];
+    }
+    console.log('fit', grd.log_fitness[msg.update].formatNum(2),'; ges',grd.log_gestation_time[msg.update].formatNum(2),
+      '; met',grd.log_metabolic_rate[msg.update].formatNum(2),'; pop',grd.log_pop_size[msg.update])
+  }
 }
 
 //writes out data for WebOrgDataByCellID
@@ -187,11 +224,12 @@ function updateSelectedOrganismType(grd, msg, parents) {
   if (null === msg.ancestor) {
     //console.log('grd.msg', grd.msg);
     if (debug.msg) console.log('msg.ancestor === null_______________________________________________________');
-    if (null != grd.msg) {
+    if ('undefined' != typeof grd.msg.ancestor) {
       if (null === grd.msg.ancestor.data[grd.selectedNdx])
         document.getElementById("ancestorLabel").textContent = '-';
       else document.getElementById("ancestorLabel").textContent = parents.name[grd.msg.ancestor.data[grd.selectedNdx]];
     }
+    else document.getElementById("ancestorLabel").textContent = '-';
   }
   else document.getElementById("ancestorLabel").textContent = parents.name[msg.ancestor];
   //add + or - to text of logic function
