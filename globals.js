@@ -5,7 +5,7 @@ debug.logic = false;  //debug statements that look for errors outlining logic fu
 debug.mouse = false;   //debug statements about non-dojo drag and drop
 debug.dnd = false;     //debu statements about dojo dnd
 debug.msg = false;     //messages to and from avida
-debug.trace = true;   //organism page
+debug.trace = false;   //organism page
 debug.grid = false;     //population grid
 debug.msgOrder = false; //message order
 

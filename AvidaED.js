@@ -77,11 +77,9 @@ require([
 
 
     //process message from web worker
-  //uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
-  uiWorker.onmessage = function (ee) {readMsg(ee)};  // in file messaging.js
+  uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
 
-  //function readMsg(ee, dft, dnd, parents) {
-  function readMsg(ee) {
+  function readMsg(ee, dft, dnd, parents) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -105,17 +103,17 @@ require([
           updateOrgTrace(traceObj, gen);
           break;
         case 'webPopulationStats':
-          if (debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
           updatePopStats(grd, msg);
           popChartFn();
+          if (debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
           break;
         case 'webGridData':
           //mObj=JSON.parse(JSON.stringify(jsonObject));
           grd.msg = msg;
           DrawGridSetup();
           if (debug.msgOrder) console.log('webGridData length', grd.ave_fitness.length);
-          if (debug.msgOrder) console.log('ges',grd.msg.gestation.data);
-          if (debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
+          //if (debug.msgOrder) console.log('ges',grd.msg.gestation.data);
+          //if (debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
           if (debug.msgOrder) console.log('nan',grd.msg.nand.data);
           if (debug.msgOrder) console.log('out',grd.out);
           break;
@@ -1341,7 +1339,7 @@ require([
     }
     else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
       popY = grd.ave_gestation_time;
-      popy2 = grd.log_gestation_time;
+      popY2 = grd.log_gestation_time;
     }
     else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
       popY = grd.ave_metabolic_rate;
@@ -1351,8 +1349,8 @@ require([
       popY = grd.population_size;
       popY2 = grd.log_pop_size;
     }
-    console.log('popY',popY);
-    console.log('pop2', popY2);
+    //console.log('popY',popY);
+    //console.log('pop2', popY2);
     //popChart.setTheme(myTheme);
     popChart.addPlot("default", {type: "Lines"});
     //popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
@@ -1371,8 +1369,10 @@ require([
       vertical: true,
       fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
     });
-    popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
-    popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
+    //popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
+    //popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
+    popChart.addSeries("Series y", popY, {plot: "default", stroke: {color: "blue", width: 1}});
+    popChart.addSeries("Series y2", popY2, {plot: "default", stroke: {color: "red", width: 2}});
     popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
       domGeometry.position(document.getElementById("popChartHolder")).h - 30);
     popChart.render();

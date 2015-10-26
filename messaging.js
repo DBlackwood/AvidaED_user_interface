@@ -155,7 +155,7 @@ function updatePopStats(grd, msg) {
   document.getElementById("aGestateLabel").textContent = msg["ave_gestation_time"].formatNum(1);
   document.getElementById("aAgeLabel").textContent = msg["ave_age"].formatNum(2);
   document.getElementById("notPop").textContent = msg["not"];
-  document.getElementById("nanPop").textContent = msg["nand"];
+  document.getElementById("nanPop").textContent = msg["nand"];  //these do not match
   document.getElementById("andPop").textContent = msg["and"];
   document.getElementById("ornPop").textContent = msg["orn"];
   document.getElementById("oroPop").textContent = msg["or"];
@@ -171,7 +171,7 @@ function updatePopStats(grd, msg) {
     grd.population_size[msg.update] = msg["organisms"];
     updateLogicAve(grd, msg);  //for graph data
   }
-  console.log('update length', msg.update.formatNum(0), grd.ave_fitness.length);
+  //console.log('update length', msg.update.formatNum(0), grd.ave_fitness.length);
 }
 
 function updateLogicAve(grd, msg){
@@ -186,8 +186,8 @@ function updateLogicAve(grd, msg){
     grd.log_gestation_time[msg.update] = 0;
     grd.log_metabolic_rate[msg.update] = 0;
     grd.log_pop_size[msg.update] = 0;
-    console.log('out_', grd.out );
-    console.log('gest', grd.msg.gestation.data);
+    //console.log('out_', grd.out );
+    //console.log('gest', grd.msg.gestation.data);
     for (var ii=0; ii < grd.out.length; ii++){
       if (0 < grd.out[ii]) {
         grd.log_fitness[msg.update] += grd.msg.fitness.data[ii];
@@ -202,8 +202,8 @@ function updateLogicAve(grd, msg){
       grd.log_gestation_time[msg.update] = grd.log_gestation_time[msg.update]/grd.log_pop_size[msg.update];
       grd.log_metabolic_rate[msg.update] = grd.log_metabolic_rate[msg.update]/grd.log_pop_size[msg.update];
     }
-    console.log('fit', grd.log_fitness[msg.update].formatNum(2),'; ges',grd.log_gestation_time[msg.update].formatNum(2),
-      '; met',grd.log_metabolic_rate[msg.update].formatNum(2),'; pop',grd.log_pop_size[msg.update])
+    //console.log('fit', grd.log_fitness[msg.update].formatNum(2),'; ges',grd.log_gestation_time[msg.update].formatNum(2),
+    //  '; met',grd.log_metabolic_rate[msg.update].formatNum(2),'; pop',grd.log_pop_size[msg.update])
   }
 }
 
