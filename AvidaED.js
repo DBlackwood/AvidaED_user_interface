@@ -1372,7 +1372,7 @@ require([
     //popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
     //popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
     popChart.addSeries("Series y", popY, {plot: "default", stroke: {color: "blue", width: 1}});
-    popChart.addSeries("Series y2", popY2, {plot: "default", stroke: {color: "red", width: 2}});
+    popChart.addSeries("Series y2", popY2, {plot: "default", stroke: {color: "green", width: 1}});
     popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
       domGeometry.position(document.getElementById("popChartHolder")).h - 30);
     popChart.render();
