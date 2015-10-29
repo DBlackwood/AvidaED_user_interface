@@ -415,7 +415,7 @@ function GradientScale(grd) {
     }
   }
   //part of colorTest, delete later
-  grd.sCtx.beginPath();
+/*  grd.sCtx.beginPath();
   grd.sCtx.strokeStyle = '#00FF00';
   grd.sCtx.moveTo(xStart, legendHt);
   grd.sCtx.lineTo(xStart + gradWidth, legendHt);
@@ -426,6 +426,7 @@ function GradientScale(grd) {
   grd.sCtx.lineTo(xStart + gradWidth, grd.CanvasScale.height - 1);
   grd.sCtx.stroke();
   console.log('Take out after color test');
+  */
 }
 
 var cellFilled = function (AvNdx, ii, parents) {
