@@ -165,12 +165,7 @@ require([
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
       console.log('rightDetail', height, rd);
-      if (undefined != traceObj) {
-        updateOrgTrace(traceObj, gen)
-      }
-      else {
-        organismCanvasHolderSize();
-      }
+      updateOrgTrace(traceObj, gen)
     }
   }
 
@@ -226,6 +221,22 @@ require([
   });
 
   // main button scripts-------------------------------------------
+
+  //initialize the ht for main buttons and trash can so there is no scroll bar
+  if (document.getElementById('mainButtons').scrollHeight > document.getElementById('mainButtons').clientHeight){
+   document.getElementById('mainButtons').style.height = document.getElementById('mainButtons').scrollHeight + 'px';
+   }
+  if (document.getElementById('trashCP').scrollHeight > document.getElementById('trashCP').clientHeight){
+    document.getElementById('trashCP').style.height = document.getElementById('trashCP').scrollHeight + 'px';
+  }
+  if (document.getElementById('orgTop').scrollHeight > document.getElementById('orgTop').clientHeight){
+    document.getElementById('orgTop').style.height = document.getElementById('orgTop').scrollHeight + 'px';
+  }
+  console.log('orgBot', document.getElementById('organismBottom').scrollHeight, document.getElementById('organismBottom').clientHeight);
+  if (document.getElementById('organismBottom').scrollHeight > document.getElementById('organismBottom').clientHeight){
+    var num = document.getElementById('organismBottom').scrollHeight+9;
+    document.getElementById('organismBottom').style.height = num + 'px';
+  }
 
   //The style display: none cannnot be used in the html during the initial load as the dijits won't work right
   //visibility:hidden can be used, but it leaves the white space and just does not display dijits.
@@ -1087,19 +1098,21 @@ require([
       findLogicOutline(grd);
     }
 
+    var num;
+    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
-    // the console.log is to look at why scroll bars show up when they should not
-     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-     console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
-     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     console.log('gridBoxDiv Ht scroll, client', document.getElementById('gridBoxDiv').scrollHeight,document.getElementById('gridBoxDiv').clientHeight);
-     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-     console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height
-     , document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
-     var mapBlockHt = document.getElementById('mapBlockHold').clientHeight - 5;
-     var mapBCht = mapBlockHt - 16;
+    //the console.log is to look at why scroll bars show up when they should not
+    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+    console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
+    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('gridBoxDiv Ht scroll, client', document.getElementById('gridBoxDiv').scrollHeight,document.getElementById('gridBoxDiv').clientHeight);
+    console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height, document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
+
+     //var mapBlockHt = document.getElementById('mapBlockHold').clientHeight - 5;
+     //var mapBCht = mapBlockHt - 16;
      //gridHolderHt = mapBlockHt - document.getElementById('popBot').scrollHeight - 20;
 
     //grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
@@ -1107,9 +1120,10 @@ require([
     var dif = document.getElementById('gridHolder').scrollWidth-document.getElementById('gridHolder').clientWidth;
     console.log('gridHolder dif', dif);
     grd.CanvasScale.width = document.getElementById('gridHolder').clientWidth - dif;
+
     dif = document.getElementById('scaleDiv').scrollWidth-document.getElementById('scaleDiv').clientWidth;
-    console.log('gridBoxDiv dif', dif);
     grd.CanvasScale.width = document.getElementById('scaleDiv').clientWidth - dif;
+    console.log('scaleDiv dif', dif, '; canvasWd', grd.CanvasScale.width);
 
     grd.CanvasGrid.width = grd.CanvasScale.width;
 
@@ -1117,7 +1131,14 @@ require([
     if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(grd, parents) }
     else { GradientScale(grd) }
 
-    var GrdHt = gridHolderHt - 16 - grd.CanvasScale.height;
+    if (navigator.userAgent.indexOf('Mac OS X') != -1) {
+      document.getElementById('mapBlock').style.height = '96%';
+      var GrdHt = gridHolderHt - 16 - grd.CanvasScale.height;
+    } else {
+      document.getElementById('mapBlock').style.height = '94%';
+      var GrdHt = gridHolderHt - 16 - grd.CanvasScale.height;
+    }
+
     grd.CanvasGrid.height = GrdHt;
     //document.getElementById('gridHolder').style.height = gridHolderHt + 'px';
     //document.getElementById('mapBC').style.height = mapBCht + 'px';
@@ -1129,7 +1150,7 @@ require([
     //console.log('spaceY', grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', grd.CanvasScale.height);
 
     DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
-     console.log('after');
+/*     console.log('after');
      console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
      console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
      console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
@@ -1140,6 +1161,7 @@ require([
      console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height
      , document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
      console.log('-----------------------------------------')
+     */
   }
 
   function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {
@@ -1499,10 +1521,12 @@ require([
   }
 
   function updateOrgTrace(obj, gen) {
-    gen.didDivide = obj[gen.cycle].didDivide; //update global version of didDivide
     //set canvas size
     organismCanvasHolderSize();
-    updateOrganTrace(obj, gen);
+    if (undefined != obj) {
+      gen.didDivide = obj[gen.cycle].didDivide; //update global version of didDivide
+      updateOrganTrace(obj, gen);
+    }
   }
   /* ****************************************************************/
   /*             End of Canvas to draw genome and update details

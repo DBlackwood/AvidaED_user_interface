@@ -54,10 +54,6 @@ ul {
   margin-bottom: 0px;
 }
 
-button {
-  width: 50px;
-}
-
 div {
   margin: 0
 }
@@ -104,6 +100,8 @@ div.odd {
 #muteSlidedojo {
   float: left;
 }
+
+button {display:inline;}
 
 button, input,
 .dijitToggleButton {

@@ -97,7 +97,7 @@
     <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
          style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="mainButtons"
-           refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:120px;">
+           refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:90px;overflow: auto">
         <table style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
           <colgroup>
             <col></col>
@@ -128,7 +128,7 @@
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
-           style="height:35px;">
+           style="height:35px;overflow: auto" id="trashCP">
         <span id="trashCan" class="container"><img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img></span>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -136,19 +136,19 @@
         Freezer
         <span data-dojo-type="dijit/TitlePane" title="Configured Dishes" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
-              style="min-width: 1px; width: 100%; height: auto;">
+              style="min-width: 1px; width: 100%; height: auto; overflow: auto">
           <div id="fzConfig" class="container"></div>
         </span>
         <div id="OrganFreezer">
           <span data-dojo-type="dijit/TitlePane" title="Organisms" extractContent="false" preventCache="false"
                 preload="false" refreshOnShow="false" duration="200" open="true" id="OrganismsFzr"
-                style="min-width: 1px; width: 100%; height: auto;">
+                style="min-width: 1px; width: 100%; height: auto; overflow: auto">
             <div id="fzOrgan" class="container"></div>
           </span>
         </div>
         <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
-              style="min-width: 1px; width: 100%; height: auto;">
+              style="min-width: 1px; width: 100%; height: auto; overflow: auto">
           <div id="fzPopDish" class="container" jsId="freezePopDish"></div>
         </span>
       </div>
@@ -408,9 +408,9 @@
              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false"
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"
-               style="height: 95%;">
+               style="height: 93%;"> <!-- 95%-->
             <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
-                 id="mapBC" style="min-width: 343px; min-height: 1px; z-index: 0; width: 96%; height: 100%;">
+                 id="mapBC" style="min-width: 343px; min-height: 1px; z-index: 0; width: 90%; height: 100%;">  <!--width: 96%;-->
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                    id="popBot" style="height: 8px; min-width: 343px;"
                    refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity">
@@ -446,7 +446,7 @@
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                    refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity"
                    id="gridHolder">
-                <div id="gridBoxDiv" style="overflow: scroll">
+                <div id="gridBoxDiv" style="overflow: auto">  <!--style="overflow: scroll"-->
                   <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" <!--width="3000" height="1000"-->
                   style="border:1px solid #DDDDDD;"></canvas>
                 </div>
@@ -588,8 +588,8 @@
          style="height: 97%; visibility:hidden;">
       <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
            style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 90%;" id="organismBC">
-        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-             refreshOnShow="false" doLayout="true" region="top" splitter="false" maxSize="Infinity" style="height:37px;">
+        <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="orgTop"
+             refreshOnShow="false" doLayout="true" region="top" splitter="false" maxSize="Infinity" style="height:3px;">
           <table style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
             <tbody>
             <tr style="valign: middle; line-height: 30px">
@@ -608,9 +608,8 @@
           </table>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-             id="organismBottom"
-             refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity"
-             style="height: 55px;">
+             id="organismBottom" refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity"
+             style="height: 5px;">
           <!--<canvas id="timeLine"></canvas>-->
           <div id="cycleSlider"></div>
           <br/>
