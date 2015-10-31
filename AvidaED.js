@@ -853,6 +853,17 @@ require([
     mouse.Dn = true;
     mouse.Picked = '';
     var distance, jj, hh;
+    var ith = -10;
+    var isRightMB;
+    evt = evt || window.event;  //for IE since IE does not returnn an event
+    // also there is no e.target property in IE.
+    // instead IE uses window.event.srcElement
+    //var target = e.target || e.srcElement;  //for IE since IE does not have a target.  //not using target here
+    //is a right click instead of a left click?
+    if ("which" in evt)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+      isRightMB = evt.which == 3;
+    else if ("button" in e)  // IE, Opera
+      isRightMB = evt.button == 2;
     if (gen.didDivide) {  //offpsring exists
       distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
       if (25 > distance) {
@@ -869,7 +880,7 @@ require([
         for (var ii = 0; ii < gen.dna[gg].length; ii++) {  //ii is the isntruction number
           distance = Math.sqrt(Math.pow(evt.offsetX - gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - gen.smCenY[gg][ii], 2));
           if ( gen.smallR >= distance ){
-            console.log('found, gg, ii', gg, ii, '; xy',gen.smCenX[gg][ii],gen.smCenY[gg][ii] );
+            //console.log('found, gg, ii', gg, ii, '; xy',gen.smCenX[gg][ii],gen.smCenY[gg][ii] );
             ith = ii;
             hh = gg;
             mouse.Picked = 'instruction';
@@ -878,21 +889,28 @@ require([
         }
       }
     }
-    if ('instruction' == mouse.Picked){  //hh is generation, ith is the instruction
-      var labX = gen.cx[hh] + (gen.bigR[hh] + 2.1*gen.smallR) * Math.cos(ith*2*Math.PI/gen.size[hh]+gen.rotate[hh]);
-      var labY = gen.cy[hh] + (gen.bigR[hh] + 2.1*gen.smallR) * Math.sin(ith*2*Math.PI/gen.size[hh]+gen.rotate[hh]);
-      console.log('ith, gn', ith, hh, '; rotate', gen.rotate[hh], '; xy', labX, labY);
-      gen.ctx.beginPath();
-      gen.ctx.arc(labX, labY, 1.1*gen.smallR, 0, 2 * Math.PI);
-      gen.ctx.fillStyle = dictColor['White'];  //use if gen.dna is a string
-      gen.ctx.fill();   //required to render fill
-      //draw number;
-      gen.ctx.fillStyle = dictColor["Black"];
-      gen.ctx.font = gen.fontsize + "px Arial";
-      instructionNum = ith+1;
-      txtW = gen.ctx.measureText(instructionNum).width;  //use if gen.dna is a string
-      //txtW = gen.ctx.measureText(gen.dna[gg][ith]).width;     //use if gen.dna is an array
-      gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + gen.smallR / 2);  //use if gen.dna is a string
+    var instructionNum = ith + 1;
+    if ('instruction' == mouse.Picked) {
+      if (isRightMB) {  //right click on instruction. allow replacement letter.
+        console.log('right click');
+        evt.preventDefault();  //supposed to prevent default right click menu - does not work
+        return false;         //supposed to prevent default right click menu - does not work
+      }
+      else {//hh is generation, ith is the instruction
+        var labX = gen.cx[hh] + (gen.bigR[hh] + 2.1 * gen.smallR) * Math.cos(ith * 2 * Math.PI / gen.size[hh] + gen.rotate[hh]);
+        var labY = gen.cy[hh] + (gen.bigR[hh] + 2.1 * gen.smallR) * Math.sin(ith * 2 * Math.PI / gen.size[hh] + gen.rotate[hh]);
+        console.log('ith, gn', ith, hh, '; rotate', gen.rotate[hh], '; xy', labX, labY);
+        gen.ctx.beginPath();
+        gen.ctx.arc(labX, labY, 1.1 * gen.smallR, 0, 2 * Math.PI);
+        gen.ctx.fillStyle = dictColor['White'];  //use if gen.dna is a string
+        gen.ctx.fill();   //required to render fill
+        //draw number;
+        gen.ctx.fillStyle = dictColor["Black"];
+        gen.ctx.font = gen.fontsize + "px Arial";
+        txtW = gen.ctx.measureText(instructionNum).width;  //use if gen.dna is a string
+        //txtW = gen.ctx.measureText(gen.dna[gg][ith]).width;     //use if gen.dna is an array
+        gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + gen.smallR / 2);  //use if gen.dna is a string
+      }
     }
   });
 
