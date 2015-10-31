@@ -86,6 +86,9 @@ function clearGrd() {
   grd.population_size = [];
   grd.log_pop_size = [];
   grd.allOff = true;
+  grd.marginX = 1;  //width of black line between the cells
+  grd.marginY = 1;  //width of black line between the cells
+
 }
 
 //***************************************

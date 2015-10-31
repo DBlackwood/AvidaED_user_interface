@@ -221,7 +221,7 @@ function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {
   grd.cntx.stroke();
 }
 
-function DrawGridUpdate(grd, parents) {
+function findGridSize(grd, parents){
   // When zoom = 1x, set canvas size based on space available and cell size
   // based on rows and columns requested by the user. Zoom acts as a factor
   // to multiply the size of each cell. When the size of the grid become larger
@@ -269,9 +269,9 @@ function DrawGridUpdate(grd, parents) {
   }
   //console.log('Xsize', grd.sizeX, '; Ysize', grd.sizeY, '; zoom=', grd.zoom);
 
+}
+function DrawGridUpdate(grd, parents) {
   //get cell size based on grid size and number of columns and rows
-  grd.marginX = 1;  //width of black line between the cells
-  grd.marginY = 1;  //width of black line between the cells
   grd.cellWd = ((grd.sizeX - grd.marginX) / grd.cols);
   grd.cellHt = ((grd.sizeY - grd.marginY) / grd.rows);
 
@@ -313,48 +313,53 @@ function DrawGridBackground(grd) {
   backgroundSquares(grd);
 }
 
-//--------------- Draw legend --------------------------------------
-//Draws the color and name of each Ancestor (parent) organism
-//to lay out the legend we need the width of the longest name and we
+
+//To lay out the legend we need the width of the longest name and we
 //allow for the width of the color box to see how many columns fit across
 //the width of grd.CanvasScale. We will need to increase the size of the
 //legend box by the height of a line for each additional line.
-function drawLegend(grd, parents) {
+function findLegendSize(grd, parents){
+  grd.legendNameWide = 0;      //maximum width needed for any of the ancestor names in this set
   var legendPad = 10;   //padding on left so it is not right at edge of canvas
   var colorWide = 13;   //width and heigth of color square
   var RowHt = 20;       //height of each row of text
-  var textOffset = 15;  //vertical offset to get to the bottom of the text
   var leftPad = 10;     //padding to allow space between each column of text in the legend
-  var legendCols = 1;   //max number of columns based on width of canvas and longest name
-  var txtWide = 0;      //width of text for an ancestor (parent) name
-  var maxWide = 0;      //maximum width needed for any of the ancestor names in this set
-  //console.log('in drawLedgend')
-  grd.sCtx.font = "14px Arial";
+  grd.legendCols = 1;   //max number of columns based on width of canvas and longest name
+
   //find out how much space is needed
-  for (ii = 0; ii < parents.name.length; ii++) {
-    txtWide = grd.sCtx.measureText(parents.name[ii]).width;
-    if (txtWide > maxWide) {
-      maxWide = txtWide
+  for (var ii = 0; ii < parents.name.length; ii++) {
+    var txtWide = grd.sCtx.measureText(parents.name[ii]).width;
+    if (txtWide > grd.legendNameWide) {
+      grd.legendNameWide = txtWide
     }
   }
-  legendCols = Math.trunc((grd.CanvasScale.width - leftPad) / (maxWide + colorWide + legendPad));
-  if (Math.trunc(parents.name.length / legendCols) == parents.name.length / legendCols) {
-    legendRows = Math.trunc(parents.name.length / legendCols);
+  grd.legendCols = Math.trunc((grd.CanvasScale.width - leftPad) / (grd.legendNameWide + colorWide + legendPad));
+  if (Math.trunc(parents.name.length / grd.legendCols) == parents.name.length / grd.legendCols) {
+    legendRows = Math.trunc(parents.name.length / grd.legendCols);
   }
   else {
-    legendRows = Math.trunc(parents.name.length / legendCols) + 1;
+    legendRows = Math.trunc(parents.name.length / grd.legendCols) + 1;
   }
   //set canvas height based on space needed
   grd.CanvasScale.height = RowHt * legendRows;
+  
+}
+//--------------- Draw legend --------------------------------------
+//Draws the color and name of each Ancestor (parent) organism.
+function drawLegend(grd, parents) {
+  var xx, yy;
+  var textOffset = 15;  //vertical offset to get to the bottom of the text
+  //console.log('in drawLedgend')
+  grd.sCtx.font = "14px Arial";
   grd.sCtx.fillStyle = dictColor["ltGrey"];
   grd.sCtx.fillRect(0, 0, grd.CanvasScale.width, grd.CanvasScale.height);
-  var colWide = (grd.CanvasScale.width - leftPad) / legendCols
+  var colWide = (grd.CanvasScale.width - leftPad) / grd.legendCols
   var col = 0;
   var row = 0;
-  for (ii = 0; ii < parents.name.length; ii++) {
-    col = ii % legendCols;
-    row = Math.trunc(ii / legendCols);
-    //xx = leftPad + col*(maxWide+colorWide+legendPad);
+  for (var ii = 0; ii < parents.name.length; ii++) {
+    col = ii % grd.legendCols;
+    row = Math.trunc(ii / grd.legendCols);
+    //xx = leftPad + col*(grd.legendNameWide+colorWide+legendPad);
     xx = leftPad + col * (colWide);
     yy = 2 + row * RowHt;
     grd.sCtx.fillStyle = parents.color[ii];

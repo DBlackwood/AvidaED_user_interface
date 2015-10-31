@@ -1146,7 +1146,7 @@ require([
     grd.CanvasGrid.width = grd.CanvasScale.width;
 
     //Determine if a color gradient or legend will be displayed
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(grd, parents) }
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(grd, parents); drawLegend(grd, parents) }
     else { GradientScale(grd) }
 
     if (navigator.userAgent.indexOf('Mac OS X') != -1) {
@@ -1167,8 +1167,9 @@ require([
     grd.spaceY = grd.CanvasGrid.height;
     //console.log('spaceY', grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', grd.CanvasScale.height);
 
-    DrawGridUpdate(grd, parents);   //look in PopulationGrid.js
-/*     console.log('after');
+    findGridSize(grd, parents);     //in PopulationGrid.js
+    DrawGridUpdate(grd, parents);   //in PopulationGrid.js
+     console.log('after');
      console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
      console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
      console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
@@ -1179,7 +1180,7 @@ require([
      console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height
      , document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
      console.log('-----------------------------------------')
-     */
+     
   }
 
   function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {
