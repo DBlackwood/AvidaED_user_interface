@@ -224,8 +224,8 @@ require([
 
   //initialize the ht for main buttons and trash can so there is no scroll bar
   if (document.getElementById('mainButtons').scrollHeight > document.getElementById('mainButtons').clientHeight){
-    document.getElementById('mainButtons').style.height = document.getElementById('mainButtons').scrollHeight + 'px';
-  }
+   document.getElementById('mainButtons').style.height = document.getElementById('mainButtons').scrollHeight + 'px';
+   }
   if (document.getElementById('trashCP').scrollHeight > document.getElementById('trashCP').clientHeight){
     document.getElementById('trashCP').style.height = document.getElementById('trashCP').scrollHeight + 'px';
   }
@@ -1110,20 +1110,20 @@ require([
   grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
   grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - grd.CanvasScale.height;
 
-  //--------------------------------------------------------------------------------------------------------------------
   function DrawGridSetup() {
     if(!grd.newrun) {  //update color information for offpsring once run has started
       setMapData(grd);
       findLogicOutline(grd);
     }
 
-    grd.CanvasScale.width = document.getElementById('popBot').clientWidth - 4;
-    grd.CanvasGrid.width = grd.CanvasScale.width;
+    grd.CanvasScale.width = document.getElementById('popBot').clientWidth - 1;
+    console.log('canvasWd', grd.CanvasScale.width);
 
     //Determine if a color gradient or legend will be displayed
     if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(grd, parents); drawLegend(grd, parents) }
-    else { GradientScale(grd) }
+    else { GradientScale(grd); console.log('where?') }
 
+    var num;
     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
 
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
@@ -1134,24 +1134,28 @@ require([
     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
     //console.log('gridBoxDiv Ht scroll, client', document.getElementById('gridBoxDiv').scrollHeight,document.getElementById('gridBoxDiv').clientHeight);
     //console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
-      //, document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
+    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height);
+    //, document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
 
-    //var mapBlockHt = document.getElementById('mapBlockHold').clientHeight - 5;
-    //var mapBCht = mapBlockHt - 16;
-    //gridHolderHt = mapBlockHt - document.getElementById('popBot').scrollHeight - 20;
+     //var mapBlockHt = document.getElementById('mapBlockHold').clientHeight - 5;
+     //var mapBCht = mapBlockHt - 16;
+     //gridHolderHt = mapBlockHt - document.getElementById('popBot').scrollHeight - 20;
 
     //grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-    //grd.CanvasScale.width = document.getElementById('gridHolder').clientWidth;
-    //var dif = document.getElementById('gridHolder').scrollWidth-document.getElementById('gridHolder').clientWidth;
-    //console.log('gridHolder dif', dif);
-    //grd.CanvasScale.width = document.getElementById('gridHolder').clientWidth - dif;
+    grd.CanvasScale.width = document.getElementById('gridHolder').clientWidth;
+    var dif = document.getElementById('gridHolder').scrollWidth-document.getElementById('gridHolder').clientWidth;
+    console.log('gridHolder dif', dif);
+    grd.CanvasScale.width = document.getElementById('gridHolder').clientWidth - dif;
 
-    var GrdHt = gridHolderHt - 6;
+
+    grd.CanvasGrid.width = grd.CanvasScale.width;
+
     if (navigator.userAgent.indexOf('Mac OS X') != -1) {
-      document.getElementById('mapBlock').style.height = '96%'; //96
+      document.getElementById('mapBlock').style.height = '95%';
+      var GrdHt = gridHolderHt - 16 - grd.CanvasScale.height;
     } else {
-      document.getElementById('mapBlock').style.height = '94%';  //94
+      document.getElementById('mapBlock').style.height = '94%';
+      var GrdHt = gridHolderHt - 16 - grd.CanvasScale.height;
     }
 
     grd.CanvasGrid.height = GrdHt;
@@ -1166,17 +1170,17 @@ require([
 
     findGridSize(grd, parents);     //in PopulationGrid.js
     DrawGridUpdate(grd, parents);   //in PopulationGrid.js
-    console.log('after');
-    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-    //console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
-    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-    //console.log('gridBoxDiv Ht scroll, client', document.getElementById('gridBoxDiv').scrollHeight,document.getElementById('gridBoxDiv').clientHeight);
-    //console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height);
-    //  , document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
-    console.log('-----------------------------------------')
+     console.log('after');
+     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+     //console.log('mapBC Ht scroll, client', document.getElementById('mapBC').scrollHeight,document.getElementById('mapBC').clientHeight);
+     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+     //console.log('gridBoxDiv Ht scroll, client', document.getElementById('gridBoxDiv').scrollHeight,document.getElementById('gridBoxDiv').clientHeight);
+     //console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+     console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height);
+     //, document.getElementById('gridBoxDiv').clientHeight + document.getElementById('scaleDiv').clientHeight);
+     console.log('-----------------------------------------')
 
   }
 

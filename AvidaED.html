@@ -408,13 +408,14 @@
              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false"
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"
-               style="height: 93%;"> <!-- 95%-->
+               style="height: 100%;"> <!-- 95%-->
             <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                  id="mapBC" style="min-width: 343px; min-height: 1px; z-index: 0; width: 90%; height: 100%;">  <!--width: 96%;-->
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                    id="popBot" style="height: 8px; min-width: 343px;"
                    refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity">
-                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;">
+                <canvas id="scaleCanvas" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
+                <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;" id="gridTable">
                   <tbody>
                   <tr>
                     <td>
@@ -446,13 +447,8 @@
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                    refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity"
                    id="gridHolder">
-                <div id="gridBoxDiv" style="overflow: auto">  <!--style="overflow: scroll"-->
-                  <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" <!--width="3000" height="1000"-->
-                  style="border:1px solid #DDDDDD;"></canvas>
-                </div>
-                <div id="scaleDiv" style="overflow: auto">
-                  <canvas id="scaleCanvas" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
-                </div>
+                <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" <!--width="3000" height="1000"-->
+                style="border:1px solid #DDDDDD;"></canvas>
               </div>
             </div>
           </div>
