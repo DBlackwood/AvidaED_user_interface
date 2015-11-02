@@ -89,6 +89,11 @@ function clearGrd() {
   grd.marginX = 1;  //width of black line between the cells
   grd.marginY = 1;  //width of black line between the cells
 
+  grd.legendPad = 10;   //padding on left so it is not right at edge of canvas
+  grd.colorWide = 13;   //width and heigth of color square
+  grd.RowHt = 20;       //height of each row of text
+  grd.leftpad = 10;     //padding to allow space between each column of text in the legend
+
 }
 
 //***************************************

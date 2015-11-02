@@ -150,7 +150,7 @@ function findLogicOutline(grd) {
     grd.allOff = false;
   }
   if (grd.allOff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
-
+  
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (debug.logic) console.log('setLogic', grd.out);
 }
@@ -313,56 +313,57 @@ function DrawGridBackground(grd) {
   backgroundSquares(grd);
 }
 
-//--------------- Draw legend --------------------------------------
-//Draws the color and name of each Ancestor (parent) organism
-//to lay out the legend we need the width of the longest name and we
+
+//To lay out the legend we need the width of the longest name and we
 //allow for the width of the color box to see how many columns fit across
 //the width of grd.CanvasScale. We will need to increase the size of the
 //legend box by the height of a line for each additional line.
-function drawLegend(grd, parents) {
-  var legendPad = 10;   //padding on left so it is not right at edge of canvas
-  var colorWide = 13;   //width and heigth of color square
-  var RowHt = 20;       //height of each row of text
-  var textOffset = 15;  //vertical offset to get to the bottom of the text
-  var leftPad = 10;     //padding to allow space between each column of text in the legend
-  var legendCols = 1;   //max number of columns based on width of canvas and longest name
-  var txtWide = 0;      //width of text for an ancestor (parent) name
-  var maxWide = 0;      //maximum width needed for any of the ancestor names in this set
-  //console.log('in drawLedgend')
-  grd.sCtx.font = "14px Arial";
+function findLegendSize(grd, parents){
+  grd.legendNameWide = 0;      //maximum width needed for any of the ancestor names in this set
+  grd.legendCols = 1;   //max number of columns based on width of canvas and longest name
+
   //find out how much space is needed
-  for (ii = 0; ii < parents.name.length; ii++) {
-    txtWide = grd.sCtx.measureText(parents.name[ii]).width;
-    if (txtWide > maxWide) {
-      maxWide = txtWide
+  for (var ii = 0; ii < parents.name.length; ii++) {
+    var txtWide = grd.sCtx.measureText(parents.name[ii]).width;
+    if (txtWide > grd.legendNameWide) {
+      grd.legendNameWide = txtWide
     }
   }
-  legendCols = Math.trunc((grd.CanvasScale.width - leftPad) / (maxWide + colorWide + legendPad));
-  if (Math.trunc(parents.name.length / legendCols) == parents.name.length / legendCols) {
-    legendRows = Math.trunc(parents.name.length / legendCols);
+  grd.legendCols = Math.trunc((grd.CanvasScale.width - grd.leftpad) / (grd.legendNameWide + grd.colorWide + grd.legendPad));
+  if (Math.trunc(parents.name.length / grd.legendCols) == parents.name.length / grd.legendCols) {
+    legendRows = Math.trunc(parents.name.length / grd.legendCols);
   }
   else {
-    legendRows = Math.trunc(parents.name.length / legendCols) + 1;
+    legendRows = Math.trunc(parents.name.length / grd.legendCols) + 1;
   }
   //set canvas height based on space needed
-  grd.CanvasScale.height = RowHt * legendRows;
+  grd.CanvasScale.height = grd.RowHt * legendRows;
+  
+}
+//--------------- Draw legend --------------------------------------
+//Draws the color and name of each Ancestor (parent) organism.
+function drawLegend(grd, parents) {
+  var xx, yy;
+  var textOffset = 15;  //vertical offset to get to the bottom of the text
+  //console.log('in drawLedgend')
+  grd.sCtx.font = "14px Arial";
   grd.sCtx.fillStyle = dictColor["ltGrey"];
   grd.sCtx.fillRect(0, 0, grd.CanvasScale.width, grd.CanvasScale.height);
-  var colWide = (grd.CanvasScale.width - leftPad) / legendCols
+  var colWide = (grd.CanvasScale.width - grd.leftpad) / grd.legendCols
   var col = 0;
   var row = 0;
-  for (ii = 0; ii < parents.name.length; ii++) {
-    col = ii % legendCols;
-    row = Math.trunc(ii / legendCols);
-    //xx = leftPad + col*(maxWide+colorWide+legendPad);
-    xx = leftPad + col * (colWide);
-    yy = 2 + row * RowHt;
+  for (var ii = 0; ii < parents.name.length; ii++) {
+    col = ii % grd.legendCols;
+    row = Math.trunc(ii / grd.legendCols);
+    //xx = grd.leftpad + col*(grd.legendNameWide+grd.colorWide+grd.legendPad);
+    xx = grd.leftpad + col * (colWide);
+    yy = 2 + row * grd.RowHt;
     grd.sCtx.fillStyle = parents.color[ii];
-    grd.sCtx.fillRect(xx, yy, colorWide, colorWide);
-    yy = textOffset + row * RowHt;
+    grd.sCtx.fillRect(xx, yy, grd.colorWide, grd.colorWide);
+    yy = textOffset + row * grd.RowHt;
     grd.sCtx.font = "14px Arial";
     grd.sCtx.fillStyle = 'black';
-    grd.sCtx.fillText(parents.name[ii], xx + colorWide + legendPad / 2, yy);
+    grd.sCtx.fillText(parents.name[ii], xx + grd.colorWide + grd.legendPad / 2, yy);
   }
 }
 
@@ -415,18 +416,18 @@ function GradientScale(grd) {
     }
   }
   //part of colorTest, delete later
-  /*  grd.sCtx.beginPath();
-   grd.sCtx.strokeStyle = '#00FF00';
-   grd.sCtx.moveTo(xStart, legendHt);
-   grd.sCtx.lineTo(xStart + gradWidth, legendHt);
-   grd.sCtx.stroke();
-   grd.sCtx.beginPath();
-   grd.sCtx.strokeStyle = '#44FFFF';
-   grd.sCtx.moveTo(xStart, grd.CanvasScale.height - 1);
-   grd.sCtx.lineTo(xStart + gradWidth, grd.CanvasScale.height - 1);
-   grd.sCtx.stroke();
-   console.log('Take out after color test');
-   */
+/*  grd.sCtx.beginPath();
+  grd.sCtx.strokeStyle = '#00FF00';
+  grd.sCtx.moveTo(xStart, legendHt);
+  grd.sCtx.lineTo(xStart + gradWidth, legendHt);
+  grd.sCtx.stroke();
+  grd.sCtx.beginPath();
+  grd.sCtx.strokeStyle = '#44FFFF';
+  grd.sCtx.moveTo(xStart, grd.CanvasScale.height - 1);
+  grd.sCtx.lineTo(xStart + gradWidth, grd.CanvasScale.height - 1);
+  grd.sCtx.stroke();
+  console.log('Take out after color test');
+  */
 }
 
 var cellFilled = function (AvNdx, ii, parents) {
@@ -443,3 +444,4 @@ var cellFilled = function (AvNdx, ii, parents) {
   }
   return flag;
 }
+
