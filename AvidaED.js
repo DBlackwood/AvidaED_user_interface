@@ -855,6 +855,7 @@ require([
     var distance, jj, hh;
     var ith = -10;
     var isRightMB;
+    //http://stackoverflow.com/questions/6926963/understanding-the-window-event-property-and-its-usage
     evt = evt || window.event;  //for IE since IE does not returnn an event
     // also there is no e.target property in IE.
     // instead IE uses window.event.srcElement
@@ -1131,18 +1132,23 @@ require([
     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-    console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.Width, grd.CanvasScale.Width, grd.CanvasGrid.Width+grd.CanvasScale.Width)
+    console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.width, grd.CanvasScale.width, grd.CanvasGrid.width+grd.CanvasScale.width)
     //find width
-    var num = document.getElementById('mapBlockHold').clientWidth-10;
+    var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
+    var mapBlockWd = mapBlockHoldWd-2;
+    var num = mapBlockHoldWd-20;
+    console.log('mapBlockHoldWd, mapBlockWd, num',mapBlockHoldWd, mapBlockWd,num)
     grd.CanvasScale.width = num;
     grd.CanvasGrid.width = grd.CanvasScale.width;
     document.getElementById('gridTable').style.width = num + 'px';
     num += 2;
     document.getElementById('gridHolder').style.width = num + 'px';
     document.getElementById('scaleDiv').style.width = num + 'px';
+    num += 14;
     document.getElementById('popBot').style.width = num + 'px';
-    num += 2;
-    document.getElementById('mapBlock').style.width = num + 'px';
+
+    document.getElementById('mapBlock').style.width = mapBlockWd + 'px';
+    document.getElementById('mapBlockHold').style.width = mapBlockHoldWd + 'px';
 
     //Determine if a color gradient or legend will be displayed
 //    if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(grd, parents); drawLegend(grd, parents) }
@@ -1203,7 +1209,7 @@ require([
     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-    console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.Width, grd.CanvasScale.Width, grd.CanvasGrid.Width+grd.CanvasScale.Width)
+    console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.width, grd.CanvasScale.width, grd.CanvasGrid.width+grd.CanvasScale.width)
     console.log('-----------------------------------------')
 
   }
