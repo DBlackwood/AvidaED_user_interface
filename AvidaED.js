@@ -48,6 +48,7 @@ require([
 //  "dojox/charting/Theme",
   "dojox/charting/themes/Wetland",
   "lib/pouchdb-5.0.0.js",
+  "lib/jszip.js",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -64,7 +65,8 @@ require([
              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, PouchDB, ready, $, jqueryui) {
+             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
+             PouchDB, JSZip, ready, $, jqueryui) {
 
   parser.parse();
 
@@ -151,6 +153,16 @@ require([
   //  pouchdb instance
   //********************************************************************************************************************
   var wsdb = new PouchDB('wsdb'); //for workspace database
+
+  var zip = new JSZip();
+  zip.file('h0/hello.txt', 'Text that says hello\nA new line\n');
+  zip.folder('h1').file('name.txt', 'This is the name file\n');
+  var content = null;
+  if (JSZip.support.uint8array) {
+    content = zip.generate({type : "uint8array"});
+  } else {
+    content = zip.generate({type : "string"});
+  }
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
