@@ -1,6 +1,6 @@
 //Debug flags
 var debug = {};
-debug.root = false;  //statemens that look for failiers when the code executes outside of functions
+debug.root = true;  //statemens that look for failiers when the code executes outside of functions
 debug.logic = false;  //debug statements that look for errors outlining logic functions
 debug.mouse = false;   //debug statements about non-dojo drag and drop
 debug.dnd = false;     //debu statements about dojo dnd

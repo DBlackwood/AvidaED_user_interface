@@ -1,8 +1,3 @@
-function dummy() {
-    console.log('dummy');
-    console.log(dijit.byId("sizeCols").get('value'));
-}
-
 //uiWorker used when communicating with the web worker and avida
 var uiWorker = new Worker('avida.js');
 //var uiWorker = new Worker('ui-test.js');

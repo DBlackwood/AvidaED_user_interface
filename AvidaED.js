@@ -1,3 +1,6 @@
+//python -m SimpleHTTPServer  in the folder with index.html to start a server for using dbpouch
+//Then visit http://127.0.0.1:8000/avidaED.html
+
 define.amd.jQuery = true;
 require([
   "dijit/dijit",
@@ -44,6 +47,7 @@ require([
   "dojox/charting/action2d/MouseZoomAndPan",
 //  "dojox/charting/Theme",
   "dojox/charting/themes/Wetland",
+  "lib/pouchdb-5.0.0.js",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -60,7 +64,7 @@ require([
              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, ready, $, jqueryui) {
+             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland, PouchDB, ready, $, jqueryui) {
 
   parser.parse();
 
@@ -75,8 +79,7 @@ require([
    *
    *******************************************************************************************/
 
-
-    //process message from web worker
+  //process message from web worker
   uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
 
   function readMsg(ee, dft, dnd, parents) {
@@ -144,10 +147,15 @@ require([
     }
   }
 
-  if (debug.root) console.log('before Resize helpers');
+  //********************************************************************************************************************
+  //  pouchdb instance
+  //********************************************************************************************************************
+  var wsdb = new PouchDB('wsdb'); //for workspace database
+
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
+  if (debug.root) console.log('before Resize helpers');
   // called from script in html file as well as below
   BrowserResizeEventHandler = function () {
     if ("block" == domStyle.get("analysisBlock", "display")) {
@@ -371,9 +379,15 @@ require([
     neworg = {
       'name': dnd.fzOrgan.map[domList[ii]].data,
       'domId': domList[ii],
+      '_id': domList[ii],
       'genome': dnd.genes[ii]
     }
     fzr.organism.push(neworg);
+    wsdb.put(neworg).then(function(result) {
+      console.log('wsdb put result', result);
+    }).catch(function (err){
+      console.log('wsdb put error', err);
+    })
   }
   //if (debug.root) console.log('after fzr.orgnaism', fzr.organism);
 
@@ -735,9 +749,38 @@ require([
   }
 
   //test - delete later
-  /*  document.getElementById("grdTestButton").onclick = function () {
-   };
-   */
+  document.getElementById("grdTestButton").onclick = function () {
+    wsdb.allDocs({include_docs:true}).then(function(docObj){
+      console.log('wsdb doc', docObj);
+      console.log(docObj.rows[1].doc._id);
+      console.log(docObj.rows[1].doc.name);
+
+      console.log(docObj.rows[3].doc._id);
+
+      wsdb.get(docObj.rows[2].doc._id).then(function(doc) {
+        console.log('wsdb get doc2', doc);
+      }).catch(function(err){
+        console.log('wsdb get error',err);
+      })
+    }).catch(function(err){
+      console.log('wsdb get error',err);
+    })
+
+    wsdb.allDocs().then(function(docObj){
+      console.log('wsdb doc', docObj);
+      console.log(docObj.rows[4].id);
+      console.log(docObj.rows[5].key);
+
+      wsdb.get(docObj.rows[6].key).then(function(doc) {
+        console.log('wsdb get doc2', doc);
+      }).catch(function(err){
+        console.log('wsdb get error',err);
+      })
+    }).catch(function(err){
+      console.log('wsdb get error',err);
+    })
+  };
+
   //******* Freeze Button ********************************************
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.
@@ -1120,23 +1163,23 @@ require([
     }
 
     //the console.log is to look at why scroll bars show up when they should not
-    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-    console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
-
+    //console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    //console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+    //console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+    //console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    //console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    //console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
+/*
     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
     console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.width, grd.CanvasScale.width, grd.CanvasGrid.width+grd.CanvasScale.width)
-    //find width
-    var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
-    var mapBlockWd = mapBlockHoldWd-2;
-    var num = mapBlockHoldWd-20;
+  */  //find width
+    var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth-2;
+    var mapBlockWd = mapBlockHoldWd-8;
+    var num = mapBlockHoldWd-22;
     console.log('mapBlockHoldWd, mapBlockWd, num',mapBlockHoldWd, mapBlockWd,num)
     grd.CanvasScale.width = num;
     grd.CanvasGrid.width = grd.CanvasScale.width;
@@ -1197,7 +1240,7 @@ require([
     DrawGridUpdate(grd, parents);   //in PopulationGrid.js
 
     console.log('after');
-    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    /*console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
@@ -1211,7 +1254,7 @@ require([
     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
     console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.width, grd.CanvasScale.width, grd.CanvasGrid.width+grd.CanvasScale.width)
     console.log('-----------------------------------------')
-
+*/
   }
 
   function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {
