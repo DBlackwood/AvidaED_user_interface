@@ -53,7 +53,7 @@
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" label="Open Default Workspace"></span>
-            <span data-dojo-type="dijit/MenuItem" label="Open Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnOpenWS' label="Open Workspace"></span>
           </span>
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
@@ -912,8 +912,26 @@
     </button>
   </div>
 </div>
+
+<!-- Open file Dialog -->
+<div data-dojo-type="dijit/Dialog" data-dojo-id="OpenWsDialog"
+     title="Open Dialog.">
+  <div class="dijitDialogPaneContentArea">
+    <p>Select Workspace</p>
+  </div>
+  <div class="dijitDialogPaneActionBar">
+    <input type="file" id="files" name="files[]" multiple />
+    <output id="list"></output>
+    directory version next
+    <input type="file" id="ctrl" webkitdirectory directory multiple/>
+    <button data-dojo-type="dijit/form/Button" type="button"
+            data-dojo-props="onClick:function(){NeedAncestorDialog.hide();}"
+            id="SWokButton">OK
+    </button>
+  </div>
+</div>
+
 <!-- closing the file -->
-<!--<script type="text/javascript" src="lib/pouchdb-5.0.0.js"></script>-->
 
 </body>
 </html>

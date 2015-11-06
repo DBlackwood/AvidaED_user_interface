@@ -52,6 +52,8 @@ require([
   "dojo/ready",
   "jquery",
   "jquery-ui",
+  //"fileIO.js",
+  "pouchDB_IO.js",
   "messaging.js",
   "colorTest.js",
   "PopulationGrid.js",
@@ -163,6 +165,12 @@ require([
   } else {
     content = zip.generate({type : "string"});
   }
+  //saveAs(content, "example.zip");
+
+  //********************************************************************************************************************
+  // Menu file handling
+  //********************************************************************************************************************
+ // dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace() });  //in fileIO.js
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
@@ -395,11 +403,12 @@ require([
       'genome': dnd.genes[ii]
     }
     fzr.organism.push(neworg);
-    wsdb.put(neworg).then(function(result) {
+/*    wsdb.put(neworg).then(function(result) {
       console.log('wsdb put result', result);
     }).catch(function (err){
       console.log('wsdb put error', err);
     })
+    */
   }
   //if (debug.root) console.log('after fzr.orgnaism', fzr.organism);
 
@@ -661,7 +670,7 @@ require([
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        sendConfig(grd);
+        sendConfig(grd);          //messaging.js
         injectAncestors(parents); //uiWorker
       }
       doRunPause();
@@ -1175,12 +1184,12 @@ require([
     }
 
     //the console.log is to look at why scroll bars show up when they should not
-    //console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-    //console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-    //console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-    //console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-    //console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-    //console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
+    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
 /*
     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
@@ -1192,7 +1201,7 @@ require([
     var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth-2;
     var mapBlockWd = mapBlockHoldWd-8;
     var num = mapBlockHoldWd-22;
-    console.log('mapBlockHoldWd, mapBlockWd, num',mapBlockHoldWd, mapBlockWd,num)
+    //console.log('mapBlockHoldWd, mapBlockWd, num',mapBlockHoldWd, mapBlockWd,num)
     grd.CanvasScale.width = num;
     grd.CanvasGrid.width = grd.CanvasScale.width;
     document.getElementById('gridTable').style.width = num + 'px';
@@ -1215,8 +1224,7 @@ require([
     num = document.getElementById('mapBlockHold').clientHeight-6;
     document.getElementById('mapBlock').style.height = num + 'px';
 
-    gridHolderHt = document.getElementById('mapBlock').clientHeight - document.getElementById('popBot').scrollHeight
-                  - document.getElementById('scaleDiv').scrollHeight-16;
+    gridHolderHt = document.getElementById('mapBlock').clientHeight - document.getElementById('popBot').scrollHeight - document.getElementById('scaleDiv').scrollHeight-16;
 
     document.getElementById('gridHolder').style.height = gridHolderHt + 'px';
 
@@ -1247,18 +1255,18 @@ require([
     grd.spaceY = grd.CanvasGrid.height;
     //console.log('spaceY', grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', grd.CanvasScale.height);
 
-    //DrawGridBackground(grd);
-    findGridSize(grd, parents);     //in PopulationGrid.js
-    DrawGridUpdate(grd, parents);   //in PopulationGrid.js
+    DrawGridBackground(grd);
+    //findGridSize(grd, parents);     //in PopulationGrid.js
+    //DrawGridUpdate(grd, parents);   //in PopulationGrid.js
 
     console.log('after');
-    /*console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
-
+    console.log('Canvas Ht Grid, Scale, popBot total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height,document.getElementById('popBot').clientHeight, grd.CanvasGrid.height+grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
+    /*
     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);

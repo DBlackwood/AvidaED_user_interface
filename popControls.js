@@ -84,8 +84,8 @@ function popNewExState(dnd, grd, parents){
 }
 
 //writes data to Environmental Settings page based on the content of dnd.activeConfig
-//for now this is hard coded to what would be in @default. will need a way to request data from C++
-//and read the returned json string.
+//for now this is hard coded to what would be in @default. will need a way to request data from PouchDB
+//and read the returned JSON string.
 function writeSettings(dft, dnd, grd) {
   TimeLabel.textContent = 0;
   dijit.byId("sizeCols").set('value', dft.sizeCols);
