@@ -1255,9 +1255,9 @@ require([
     grd.spaceY = grd.CanvasGrid.height;
     //console.log('spaceY', grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', grd.CanvasScale.height);
 
-    DrawGridBackground(grd);
-    //findGridSize(grd, parents);     //in PopulationGrid.js
-    //DrawGridUpdate(grd, parents);   //in PopulationGrid.js
+    //DrawGridBackground(grd);        //use to test scroll bars instead of the two calls below; in PopulationGrid.js
+    findGridSize(grd, parents);     //in PopulationGrid.js
+    DrawGridUpdate(grd, parents);   //in PopulationGrid.js
 
     console.log('after');
     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);

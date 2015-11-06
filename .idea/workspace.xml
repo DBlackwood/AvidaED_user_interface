@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fileIO.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pouchDB_IO.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Avida-ED_User_Manual_v1.4.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_2015_1101_1111.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_broken.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_broken.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_try1.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_try1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AvidaED_try1a.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/OrganismTrace.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PopulationGrid_sizeDrawSplit.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_1009.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_1009.js.mem" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avidaui-prepend.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popControls.js" afterPath="$PROJECT_DIR$/popControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -136,8 +117,8 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.28846154">
-              <caret line="1226" column="117" selection-start-line="1226" selection-start-column="117" selection-end-line="1226" selection-end-column="117" />
+            <state vertical-scroll-proportion="0.84319526">
+              <caret line="1258" column="4" selection-start-line="1258" selection-start-column="4" selection-end-line="1258" selection-end-column="4" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -1196,8 +1177,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28846154">
-          <caret line="1226" column="117" selection-start-line="1226" selection-start-column="117" selection-end-line="1226" selection-end-column="117" />
+        <state vertical-scroll-proportion="0.84319526">
+          <caret line="1258" column="4" selection-start-line="1258" selection-start-column="4" selection-end-line="1258" selection-end-column="4" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
