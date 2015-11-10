@@ -49,12 +49,13 @@ require([
   "dojox/charting/themes/Wetland",
   "lib/pouchdb-5.0.0.js",
   "lib/jszip.js",
+  "lib/FileSaver.js",
   "dojo/ready",
   "jquery",
   "jquery-ui",
-  //"fileIO.js",
-  "pouchDB_IO.js",
   "messaging.js",
+  "fileIO.js",
+  "pouchDB_IO.js",
   "colorTest.js",
   "PopulationGrid.js",
   "organismView.js",
@@ -68,7 +69,19 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             PouchDB, JSZip, ready, $, jqueryui) {
+             PouchDB,
+             JSZip,
+             FileSaver,
+             ready, $, jqueryui) {
+
+  if (typeof $ != 'undefined') {
+    // jQuery is loaded => print the version
+    console.log($.fn.jquery);
+  }
+  else
+  {
+    console.log("Jquery ($) is not defined.");
+  }
 
   parser.parse();
 
@@ -85,6 +98,41 @@ require([
 
   //process message from web worker
   uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
+
+  //********************************************************************************************************************
+  //  pouchdb instance
+  //********************************************************************************************************************
+  var wsdb = new PouchDB('wsdb'); //for workspace database
+
+  console.log("defining test_jszip()");
+  var test_jszip;
+  test_jszip = function() {
+    console.log("pouchDB and JSZip testing");
+
+    var zip = new JSZip();
+    zip.file('h0/hello.txt', 'Text that says hello\nA new line\n');
+    zip.folder('h1').file('name.txt', 'This is the name file\n');
+    console.log("zip done");
+    var content = null;
+    var blob = null;
+/*
+     if (JSZip.support.uint8array) {
+     console.log("uint8array type");
+     content = zip.generate({type : "uint8array"});
+     } else {
+     console.log("string type");
+     content = zip.generate({type : "string"});
+     }
+*/
+    console.log("content", content);
+    blob = zip.generate({type: "blob"});
+    saveAs(blob, "example102.zip");
+
+    console.log("end pouchDB and JSZip testing");
+
+  };
+
+  //test_jszip();
 
   function readMsg(ee, dft, dnd, parents) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
@@ -150,22 +198,6 @@ require([
       }
     }
   }
-
-  //********************************************************************************************************************
-  //  pouchdb instance
-  //********************************************************************************************************************
-  var wsdb = new PouchDB('wsdb'); //for workspace database
-
-  var zip = new JSZip();
-  zip.file('h0/hello.txt', 'Text that says hello\nA new line\n');
-  zip.folder('h1').file('name.txt', 'This is the name file\n');
-  var content = null;
-  if (JSZip.support.uint8array) {
-    content = zip.generate({type : "uint8array"});
-  } else {
-    content = zip.generate({type : "string"});
-  }
-  //saveAs(content, "example.zip");
 
   //********************************************************************************************************************
   // Menu file handling
@@ -670,7 +702,8 @@ require([
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        sendConfig(grd);          //messaging.js
+        // ???
+        // sendConfig(grd);          //messaging.js
         injectAncestors(parents); //uiWorker
       }
       doRunPause();
@@ -1178,19 +1211,20 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
   function DrawGridSetup() {
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
-    if(!grd.newrun) {  //update color information for offpsring once run has started
-      setMapData(grd);
+
+    if(!grd.newrun && undefined != grd.msg.fitness) {
+      setMapData(grd);  //update color information for offpsring once run has started
       findLogicOutline(grd);
     }
-
+    /*
     //the console.log is to look at why scroll bars show up when they should not
     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
     console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
-/*
+
     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
@@ -1198,7 +1232,15 @@ require([
     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
     console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.width, grd.CanvasScale.width, grd.CanvasGrid.width+grd.CanvasScale.width)
   */  //find width
+
     var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth-2;
+    if (navigator.userAgent.indexOf('Mac OS X') != -1) {
+      //document.getElementById('mapBlock').style.height = '96%'; //96
+    } else {
+      //document.getElementById('mapBlock').style.height = '94%';  //94
+      if (bag.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
+    }
+
     var mapBlockWd = mapBlockHoldWd-8;
     var num = mapBlockHoldWd-22;
     //console.log('mapBlockHoldWd, mapBlockWd, num',mapBlockHoldWd, mapBlockWd,num)
@@ -1226,29 +1268,10 @@ require([
 
     gridHolderHt = document.getElementById('mapBlock').clientHeight - document.getElementById('popBot').scrollHeight - document.getElementById('scaleDiv').scrollHeight-16;
 
+    //console.log('gridHolderHt', gridHolderHt);
     document.getElementById('gridHolder').style.height = gridHolderHt + 'px';
 
-    //var mapBlockHt = document.getElementById('mapBlockHold').clientHeight - 5;
-    //var mapBCht = mapBlockHt - 16;
-    //gridHolderHt = mapBlockHt - document.getElementById('popBot').scrollHeight - 20;
-
-    //grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-    //grd.CanvasScale.width = document.getElementById('gridHolder').clientWidth;
-    //var dif = document.getElementById('gridHolder').scrollWidth-document.getElementById('gridHolder').clientWidth;
-    //console.log('gridHolder dif', dif);
-    //grd.CanvasScale.width = document.getElementById('gridHolder').clientWidth - dif;
-
-    /*
-    if (navigator.userAgent.indexOf('Mac OS X') != -1) {
-      document.getElementById('mapBlock').style.height = '96%'; //96
-    } else {
-      document.getElementById('mapBlock').style.height = '94%';  //94
-    }
-*/
     grd.CanvasGrid.height = gridHolderHt - 6;
-    //document.getElementById('gridHolder').style.height = gridHolderHt + 'px';
-    //document.getElementById('mapBC').style.height = mapBCht + 'px';
-    //document.getElementById('mapBlock').style.height = mapBlockHt + 'px';
 
     //find the space available to display the grid in pixels
     grd.spaceX = grd.CanvasGrid.width;
@@ -1257,15 +1280,23 @@ require([
 
     //DrawGridBackground(grd);        //use to test scroll bars instead of the two calls below; in PopulationGrid.js
     findGridSize(grd, parents);     //in PopulationGrid.js
+    //console.log('mid gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    //console.log('mid Canvas Ht Grid, Scale, popBot total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height,document.getElementById('popBot').clientHeight, grd.CanvasGrid.height+grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
+
+    if (document.getElementById('gridHolder').scrollHeight=document.getElementById('gridHolder').clientHeight+17){
+      var num = document.getElementById('gridHolder').clientHeight;
+      grd.CanvasGrid.height = gridHolderHt - 6-17;
+      findGridSize(grd, parents);     //in PopulationGrid.js
+    }
     DrawGridUpdate(grd, parents);   //in PopulationGrid.js
 
-    console.log('after');
+    //console.log('after');
+ /*   console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('Canvas Ht Grid, Scale, popBot total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height,document.getElementById('popBot').clientHeight, grd.CanvasGrid.height+grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-    console.log('Canvas Ht Grid, Scale, popBot total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height,document.getElementById('popBot').clientHeight, grd.CanvasGrid.height+grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
     /*
     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
@@ -1403,8 +1434,8 @@ require([
     //Linear scale the position for Ancestors added by hand;
     for (var ii = 0; ii < parents.handNdx.length; ii++) {
       //console.log('old cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
-      parents.col[parents.handNdx[ii]] = Math.trunc(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);
-      parents.row[parents.handNdx[ii]] = Math.trunc(NewRows * parents.row[parents.handNdx[ii]] / gridWasRows);
+      parents.col[parents.handNdx[ii]] = Math.floor(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);  //was trunc
+      parents.row[parents.handNdx[ii]] = Math.floor(NewRows * parents.row[parents.handNdx[ii]] / gridWasRows);  //was trunc
       parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
       //console.log('New cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
     }

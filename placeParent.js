@@ -1,5 +1,5 @@
 // Place Parent on grid and other useful functions
-
+// all instances of Math.floorr were Math.floor
 /* ----------------------------------------
 linmap
 Function by Wesley R. Elsberry, based on 
@@ -125,22 +125,22 @@ var genome = wsa(",", wsa(",", genplus));
       var cc, rr, ii;
       switch(parents.autoNdx.length){
         case 1:   //Place in center
-          parents.col[parents.autoNdx[0]] = Math.trunc(cols/2);
-          parents.row[parents.autoNdx[0]] = Math.trunc(rows/2);
+          parents.col[parents.autoNdx[0]] = Math.floor(cols/2);
+          parents.row[parents.autoNdx[0]] = Math.floor(rows/2);
           parents.AvidaNdx[parents.autoNdx[0]] = parents.col[parents.autoNdx[0]] + cols * parents.row[parents.autoNdx[0]];
           break;
         case 2:
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*ii+1)/4);
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*ii+1)/4);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows/2);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           else {  //place parents vertically
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*ii+1)/4);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols/2);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*ii+1)/4);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
@@ -148,47 +148,47 @@ var genome = wsa(",", wsa(",", genplus));
         case 3:
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < 2; ii++) {
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*ii+1)/4);
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows/3);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*ii+1)/4);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows/3);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
-            parents.col[parents.autoNdx[2]] = Math.trunc(cols/2);
-            parents.row[parents.autoNdx[2]] = Math.trunc(rows*2/3);
+            parents.col[parents.autoNdx[2]] = Math.floor(cols/2);
+            parents.row[parents.autoNdx[2]] = Math.floor(rows*2/3);
             parents.AvidaNdx[parents.autoNdx[2]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
           }
           else {  //place parents vertically
             for (ii = 0; ii < 2; ii++) {
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols/3);
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*ii+1)/4);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols/3);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*ii+1)/4);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
-            parents.col[parents.autoNdx[2]] = Math.trunc(cols*2/3);
-            parents.row[parents.autoNdx[2]] = Math.trunc(rows/2);
+            parents.col[parents.autoNdx[2]] = Math.floor(cols*2/3);
+            parents.row[parents.autoNdx[2]] = Math.floor(rows/2);
             parents.AvidaNdx[parents.autoNdx[2]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
           }
           break;
         case 4:
           //var cc, rr;
           for (ii = 0; ii < parents.autoNdx.length; ii++) {
-            if (ii<2) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
-            else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
-            if (ii%2 < 1) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
-            else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
+            if (ii<2) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/4) }
+            else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*3/4) }
+            if (ii%2 < 1) { parents.col[parents.autoNdx[ii]] = Math.floor(cols/4) }
+            else { parents.col[parents.autoNdx[ii]] = Math.floor(cols*3/4) }
             parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             //console.log('c,r,a', parents.col[parents.autoNdx[ii]],parents.row[parents.autoNdx[ii]],parents.AvidaNdx[parents.autoNdx[ii]]);
             //cc = parents.AvidaNdx[parents.autoNdx[ii]] % cols;
-            //rr = Math.trunc(parents.AvidaNdx[parents.autoNdx[ii]]/cols);
+            //rr = Math.floor(parents.AvidaNdx[parents.autoNdx[ii]]/cols);
             //console.log('cols,rows, cc, rr', cols, rows, cc, rr);
           }
         case 5:
           for (ii = 0; ii < parents.autoNdx.length; ii++) {
-            if (ii<2) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/5) }
-            else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*4/5) }
-            if (ii%2 < 1) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/5) }
-            else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*4/5) }
+            if (ii<2) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/5) }
+            else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*4/5) }
+            if (ii%2 < 1) { parents.col[parents.autoNdx[ii]] = Math.floor(cols/5) }
+            else { parents.col[parents.autoNdx[ii]] = Math.floor(cols*4/5) }
             if (4 == ii) {
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols/2);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows/2);
             }
             parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
           }
@@ -199,27 +199,27 @@ var genome = wsa(",", wsa(",", genplus));
           //console.log('case7');
 /*          if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
-              else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
+              if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/4) }
+              else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*3/4) }
               cc = ii%3;
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/6);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/6);
               //console.log('ii, cc, col, row',ii, cc, parents.col[parents.autoNdx[ii]], parents.row[parents.autoNdx[ii]]);
               if (6 == ii) {
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols/2);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           else {
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<3) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
-              else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
+              if (ii<3) { parents.col[parents.autoNdx[ii]] = Math.floor(cols/4) }
+              else { parents.col[parents.autoNdx[ii]] = Math.floor(cols*3/4) }
               cc = ii%3;
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*cc+1)/6);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*cc+1)/6);
               if (6 == ii) {
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols/2);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
@@ -230,29 +230,29 @@ var genome = wsa(",", wsa(",", genplus));
           if (0 != rows%2) rows = rows-1;
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
-              else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
+              if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/4) }
+              else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*3/4) }
               cc = ii%3;
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/6);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/6);
               //console.log('ii, cc, col, row',ii, cc, parents.col[parents.autoNdx[ii]], parents.row[parents.autoNdx[ii]]);
               if (6 <= ii) {
                 cc = ii-5;
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols*cc/3);
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols*cc/3);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           else {
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<3) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
-              else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
+              if (ii<3) { parents.col[parents.autoNdx[ii]] = Math.floor(cols/4) }
+              else { parents.col[parents.autoNdx[ii]] = Math.floor(cols*3/4) }
               cc = ii%3;
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*cc+1)/6);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*cc+1)/6);
               if (6 <= ii) {
                 cc = ii-5;
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows*cc/3);
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows*cc/3);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
@@ -261,40 +261,40 @@ var genome = wsa(",", wsa(",", genplus));
         case 9:
           console.log('case9');
           for (ii = 0; ii < parents.autoNdx.length; ii++) {
-            if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/5) }
-            else if (ii < 6) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2) }
-            else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*4/5) }
+            if (ii<3) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/5) }
+            else if (ii < 6) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/2) }
+            else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*4/5) }
             cc = ii%3;
-            parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/6);
+            parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/6);
             parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
           }
           break;
         case 10:
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/4) }
-              else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*3/4) }
+              if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/4) }
+              else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*3/4) }
               cc = ii%4;
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/8);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/8);
               //console.log('ii, cc, col, row',ii, cc, parents.col[parents.autoNdx[ii]], parents.row[parents.autoNdx[ii]]);
               if (8 <= ii) {
                 cc = ii-8;
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/4);
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/4);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           else {
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/4) }
-              else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*3/4) }
+              if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.floor(cols/4) }
+              else { parents.col[parents.autoNdx[ii]] = Math.floor(cols*3/4) }
               cc = ii%4;
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*cc+1)/8);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*cc+1)/8);
               if (8 <= ii) {
                 cc = ii-8;
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*cc+1)/4);
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*cc+1)/4);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
@@ -303,28 +303,28 @@ var genome = wsa(",", wsa(",", genplus));
         case 11:
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/5) }
-              else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*4/5) }
+              if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/5) }
+              else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*4/5) }
               cc = ii%4;
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/8);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/8);
               if (8 <= ii) {
                 cc = ii-7;
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols*cc/4);
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols*cc/4);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           else {
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/5) }
-              else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*4/5) }
+              if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.floor(cols/5) }
+              else { parents.col[parents.autoNdx[ii]] = Math.floor(cols*4/5) }
               cc = ii%4;
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*cc+1)/8);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*cc+1)/8);
               if (8 <= ii) {
                 cc = ii-7;
-                parents.row[parents.autoNdx[ii]] = Math.trunc(rows*cc/4);
-                parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2);
+                parents.row[parents.autoNdx[ii]] = Math.floor(rows*cc/4);
+                parents.col[parents.autoNdx[ii]] = Math.floor(cols/2);
               }
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
@@ -333,38 +333,38 @@ var genome = wsa(",", wsa(",", genplus));
         case 12:
           if (cols > rows) {  //place parents horizontally
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.trunc(rows/6) }
-              else if (ii < 8){ parents.row[parents.autoNdx[ii]] = Math.trunc(rows/2) }
-              else { parents.row[parents.autoNdx[ii]] = Math.trunc(rows*5/6) }
+              if (ii<4) { parents.row[parents.autoNdx[ii]] = Math.floor(rows/6) }
+              else if (ii < 8){ parents.row[parents.autoNdx[ii]] = Math.floor(rows/2) }
+              else { parents.row[parents.autoNdx[ii]] = Math.floor(rows*5/6) }
               cc = ii%4;
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/8);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/8);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           else {
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
-              if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.trunc(cols/6) }
-              else if (ii < 8){ parents.col[parents.autoNdx[ii]] = Math.trunc(cols/2) }
-              else { parents.col[parents.autoNdx[ii]] = Math.trunc(cols*5/6) }
+              if (ii<4) { parents.col[parents.autoNdx[ii]] = Math.floor(cols/6) }
+              else if (ii < 8){ parents.col[parents.autoNdx[ii]] = Math.floor(cols/2) }
+              else { parents.col[parents.autoNdx[ii]] = Math.floor(cols*5/6) }
               cc = ii%4;
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*cc+1)/8);
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*cc+1)/8);
               parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
             }
           }
           break;
         default:
           //console.log('bigger than 12');
-          if (Math.trunc(Math.sqrt(parents.autoNdx.length)) == Math.sqrt(parents.autoNdx.length)) {
+          if (Math.floor(Math.sqrt(parents.autoNdx.length)) == Math.sqrt(parents.autoNdx.length)) {
             sqLength = Math.sqrt(parents.autoNdx.length);
           } 
           else {
-            sqLength = Math.trunc(Math.sqrt(parents.autoNdx.length))+1;
+            sqLength = Math.floor(Math.sqrt(parents.autoNdx.length))+1;
           }
             for (ii = 0; ii < parents.autoNdx.length; ii++) {
               cc = ii%sqLength;
-              rr = Math.trunc(ii/sqLength);
-              parents.col[parents.autoNdx[ii]] = Math.trunc(cols*(2*cc+1)/(2*sqLength));
-              parents.row[parents.autoNdx[ii]] = Math.trunc(rows*(2*rr+1)/(2*sqLength));
+              rr = Math.floor(ii/sqLength);
+              parents.col[parents.autoNdx[ii]] = Math.floor(cols*(2*cc+1)/(2*sqLength));
+              parents.row[parents.autoNdx[ii]] = Math.floor(rows*(2*rr+1)/(2*sqLength));
             }
           break;
       }

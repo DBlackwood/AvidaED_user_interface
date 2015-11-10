@@ -20,9 +20,9 @@ function placeChips(chips, chck){
     var sqLength = 5; // 5 by 6 in demo
     for (ii = 0; ii < ChipColors.length; ii++) {
         cc = ii%sqLength;
-        rr = Math.trunc(ii/sqLength);
-        chips.col[ii] = Math.trunc(cols*(2*cc+1)/(2*sqLength));
-        chips.row[ii] = Math.trunc(rows*(2*rr+1)/(2*6));
+        rr = Math.floor(ii/sqLength);
+        chips.col[ii] = Math.floor(cols*(2*cc+1)/(2*sqLength));
+        chips.row[ii] = Math.floor(rows*(2*rr+1)/(2*6));
         chips.name[ii] = ColorNames[ii];
         chips.color[ii]= ChipColors[ii];
         chips.outColor[ii] = outColor[ii];
@@ -141,8 +141,8 @@ function drawCheckerSetup(chck, chips) {
     chck.cellHt = ((chck.sizeY-chck.marginY)/chck.rows);
 
     //Find a reasonable maximum zoom for this grid and screen space
-    zMaxCells = Math.trunc(chck.spaceCells/25);  // at least 10 cells
-    zMaxWide = Math.trunc(10/chck.spaceCellWd);  // at least 10 pixels
+    zMaxCells = Math.floor(chck.spaceCells/25);  // at least 10 cells
+    zMaxWide = Math.floor(10/chck.spaceCellWd);  // at least 10 pixels
     zMax = ((zMaxCells > zMaxWide) ? zMaxCells: zMaxWide); //Max of two methods
     zMax = ((zMax > 2) ? zMax: 2); //max zoom power of at least 2x
 
@@ -196,11 +196,11 @@ function drawCheckLegend(chck, chips) {
         txtWide = chck.ctxSc.measureText(chips.name[ii]).width;
         if (txtWide > maxWide) { maxWide = txtWide }
     }
-    legendCols = Math.trunc((chck.CanvasChipScale.width-leftPad)/(maxWide + colorWide + legendPad));
-    if (Math.trunc(chips.name.length/legendCols) == chips.name.length/legendCols) {
-        legendRows = Math.trunc(chips.name.length/legendCols);
+    legendCols = Math.floor((chck.CanvasChipScale.width-leftPad)/(maxWide + colorWide + legendPad));
+    if (Math.floor(chips.name.length/legendCols) == chips.name.length/legendCols) {
+        legendRows = Math.floor(chips.name.length/legendCols);
     }
-    else { legendRows = Math.trunc(chips.name.length/legendCols)+1; }
+    else { legendRows = Math.floor(chips.name.length/legendCols)+1; }
     //console.log('chip_names',chips.name.length, '; legCol', legendCols, '; legRow', legendRows);
     //set canvas height based on space needed
     chck.CanvasChipScale.height = RowHt * legendRows;
@@ -211,7 +211,7 @@ function drawCheckLegend(chck, chips) {
     var row = 0;
     for (ii = 0; ii< chips.name.length; ii++) {
         col = ii%legendCols;
-        row = Math.trunc(ii/legendCols);
+        row = Math.floor(ii/legendCols);
         //xx = leftPad + col*(maxWide+colorWide+legendPad);
         xx = leftPad + col*(colWide);
         yy = 2+row*RowHt;

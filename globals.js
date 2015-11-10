@@ -93,7 +93,24 @@ function clearGrd() {
   grd.colorWide = 13;   //width and heigth of color square
   grd.RowHt = 20;       //height of each row of text
   grd.leftpad = 10;     //padding to allow space between each column of text in the legend
+}
 
+// please note,
+// that IE11 now returns undefined again for window.chrome
+// and new Opera 30 outputs true for window.chrome
+// and new IE Edge outputs to true now for window.chrome
+// so use the below updated condition
+
+var bag = {};
+
+bag.isChromium = window.chrome;
+  bag.vendorName = window.navigator.vendor;
+  bag.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
+  bag.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
+if(bag.isChromium !== null && bag.isChromium !== undefined && bag.vendorName === "Google Inc." && bag.isOpera == false && bag.isIEedge == false) {
+  bag.chrome = true;
+} else {
+  bag.chrome = false; // not Google chrome
 }
 
 //***************************************

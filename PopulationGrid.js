@@ -14,36 +14,37 @@ function backgroundSquares(grd) {
 }
 
 function setMapData(grd) {
-  if (grd.mxFit < grd.msg.fitness.maxVal || (1-grd.rescaleTolerance)*grd.mxFit > grd.msg.fitness.maxVal) {
-    grd.mxFit = grd.mxFit+((1+grd.rescaleTolerance)*grd.msg.fitness.maxVal-grd.mxFit)/grd.rescaleTimeConstant;
+  if (undefined != grd.msg.fitness) {
+    if (grd.mxFit < grd.msg.fitness.maxVal || (1 - grd.rescaleTolerance) * grd.mxFit > grd.msg.fitness.maxVal) {
+      grd.mxFit = grd.mxFit + ((1 + grd.rescaleTolerance) * grd.msg.fitness.maxVal - grd.mxFit) / grd.rescaleTimeConstant;
+    }
+    if (grd.mxGest < grd.msg.gestation.maxVal || (1 - grd.rescaleTolerance) * grd.mxGest > grd.msg.gestation.maxVal) {
+      grd.mxGest = grd.mxGest + ((1 + grd.rescaleTolerance) * grd.msg.gestation.maxVal - grd.mxGest) / grd.rescaleTimeConstant;
+    }
+    if (grd.mxRate < grd.msg.metabolism.maxVal || (1 - grd.rescaleTolerance) * grd.mxRate > grd.msg.metabolism.maxVal) {
+      grd.mxRate = grd.mxRate + ((1 + grd.rescaleTolerance) * grd.msg.metabolism.maxVal - grd.mxRate) / grd.rescaleTimeConstant;
+    }
+    switch (dijit.byId("colorMode").value) {
+      case 'Fitness':
+        grd.fill = grd.msg.fitness.data;
+        grd.fillmax = grd.mxFit;
+        grd.fillmin = grd.msg.fitness.minVal;
+        break;
+      case 'Gestation Time':
+        grd.fill = grd.msg.gestation.data;
+        grd.fillmax = grd.mxGest;
+        grd.fillmin = grd.msg.gestation.minVal;
+        break;
+      case 'Metabolic Rate':
+        grd.fill = grd.msg.metabolism.data;
+        grd.fillmax = grd.mxRate;
+        grd.fillmin = grd.msg.metabolism.minVal;
+        break;
+      case 'Ancestor Organism':
+        grd.fill = grd.msg.ancestor.data;
+        break;
+    }
   }
-  if (grd.mxGest < grd.msg.gestation.maxVal || (1-grd.rescaleTolerance)*grd.mxGest > grd.msg.gestation.maxVal ) {
-    grd.mxGest = grd.mxGest+((1+grd.rescaleTolerance)*grd.msg.gestation.maxVal-grd.mxGest)/grd.rescaleTimeConstant;
-  }
-  if (grd.mxRate < grd.msg.metabolism.maxVal  || (1-grd.rescaleTolerance)*grd.mxRate > grd.msg.metabolism.maxVal) {
-    grd.mxRate = grd.mxRate+((1+grd.rescaleTolerance)*grd.msg.metabolism.maxVal-grd.mxRate)/grd.rescaleTimeConstant;
-  }
-  switch (dijit.byId("colorMode").value) {
-    case 'Fitness':
-      grd.fill = grd.msg.fitness.data;
-      grd.fillmax = grd.mxFit;
-      grd.fillmin = grd.msg.fitness.minVal;
-      break;
-    case 'Gestation Time':
-      grd.fill = grd.msg.gestation.data;
-      grd.fillmax = grd.mxGest;
-      grd.fillmin = grd.msg.gestation.minVal;
-      break;
-    case 'Metabolic Rate':
-      grd.fill = grd.msg.metabolism.data;
-      grd.fillmax = grd.mxRate;
-      grd.fillmin = grd.msg.metabolism.minVal;
-      break;
-    case 'Ancestor Organism':
-      grd.fill = grd.msg.ancestor.data;
-      break;
-  }
-
   //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
   //console.log('fitmax',grd.msg.fitness.maxVal,'; Gest',grd.msg.gestation.maxVal,'; rate',grd.msg.metabolism.maxVal,'; fillmax',grd.fillmax);
 }
@@ -72,7 +73,7 @@ function DrawKids(grd, parents) {  //Draw the children of parents
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
     for (ii = 0; ii < grd.fill.length; ii++) {
       cc = ii % grd.cols;
-      rr = Math.trunc(ii / grd.cols);
+      rr = Math.floor(ii / grd.cols);       //was trunc
       xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
       yy = grd.marginY + grd.yOffset + rr * grd.cellHt;
       if (null === grd.fill[ii]) {
@@ -87,7 +88,7 @@ function DrawKids(grd, parents) {  //Draw the children of parents
   else {
     for (ii = 0; ii < grd.fill.length; ii++) {
       cc = ii % grd.cols;
-      rr = Math.trunc(ii / grd.cols);
+      rr = Math.floor(ii / grd.cols);     //was trunc
       xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
       yy = grd.marginY + grd.yOffset + rr * grd.cellHt;
       if (null === grd.fill[ii]) {
@@ -195,7 +196,7 @@ function DrawLogicSelected(grd) {
   for (ii = 0; ii < grd.out.length; ii++) {
     if (0 != grd.out[ii]) {
       cc = ii % grd.cols;
-      rr = Math.trunc(ii / grd.cols);
+      rr = Math.floor(ii / grd.cols);  //was trunc
       xx = grd.marginX + grd.xOffset + cc * grd.cellWd + inner;
       yy = grd.marginY + grd.yOffset + rr * grd.cellHt + inner;
       DrawCellOutline(thick, grd.LogicColor, xx, yy, grd.cellWd-2*inner, grd.cellHt-2*inner, grd)
@@ -276,8 +277,8 @@ function DrawGridUpdate(grd, parents) {
   grd.cellHt = ((grd.sizeY - grd.marginY) / grd.rows);
 
   //Find a reasonable maximum zoom for this grid and screen space
-  zMaxCells = Math.trunc(grd.spaceCells / 25);  // at least 10 cells
-  zMaxWide = Math.trunc(10 / grd.spaceCellWd);  // at least 10 pixels
+  zMaxCells = Math.floor(grd.spaceCells / 25);  // at least 10 cells   was trunc
+  zMaxWide = Math.floor(10 / grd.spaceCellWd);  // at least 10 pixels  was trunc
   zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
   zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
 
@@ -337,12 +338,12 @@ function drawLegend(grd, parents) {
       maxWide = txtWide
     }
   }
-  legendCols = Math.trunc((grd.CanvasScale.width - leftPad) / (maxWide + colorWide + legendPad));
-  if (Math.trunc(parents.name.length / legendCols) == parents.name.length / legendCols) {
-    legendRows = Math.trunc(parents.name.length / legendCols);
+  legendCols = Math.floor((grd.CanvasScale.width - leftPad) / (maxWide + colorWide + legendPad));  //was trunc
+  if (Math.floor(parents.name.length / legendCols) == parents.name.length / legendCols) {          //was trunc
+    legendRows = Math.floor(parents.name.length / legendCols);
   }
   else {
-    legendRows = Math.trunc(parents.name.length / legendCols) + 1;
+    legendRows = Math.floor(parents.name.length / legendCols) + 1;    //was trunc
   }
   //set canvas height based on space needed
   grd.CanvasScale.height = RowHt * legendRows;
@@ -353,7 +354,7 @@ function drawLegend(grd, parents) {
   var row = 0;
   for (ii = 0; ii < parents.name.length; ii++) {
     col = ii % legendCols;
-    row = Math.trunc(ii / legendCols);
+    row = Math.floor(ii / legendCols);    //was trunc
     //xx = leftPad + col*(maxWide+colorWide+legendPad);
     xx = leftPad + col * (colWide);
     yy = 2 + row * RowHt;

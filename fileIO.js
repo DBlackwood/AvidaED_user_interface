@@ -1,3 +1,5 @@
+//console.log("Start of FileIO.js");
+//console.log("declaring mnOpenWorkSpace()");
 function mnOpenWorkSpace() {
   console.log('test message');
   OpenWsDialog.show();
@@ -7,7 +9,7 @@ function mnOpenWorkSpace() {
   } else {
     alert('The File APIs are not fully supported in this browser.');
   }
-
+  console.log("declaring handleFileSelect()");
   function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
 
@@ -30,7 +32,7 @@ function mnOpenWorkSpace() {
 */
 
 
-
+//console.log("declaring _getAllFilesFromFolder()");
 var _getAllFilesFromFolder = function(dir) {
 
   var filesystem = require("fs");
@@ -67,6 +69,7 @@ var _getAllFilesFromFolder = function(dir) {
 
 //add a comma at t
 
+//console.log("declaring flexsplit()");
 var flexsplit;
 flexsplit = function (instr) {
   var str1 = instr.replace(/,/g, '').replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(/[\s,]+/g, ',');
@@ -74,6 +77,7 @@ flexsplit = function (instr) {
   return str1;
 };
 
+//console.log("declaring cfglineparse()");
 var cfglineparse;
 cfglineparse = function(instr){
   var cfgary = flexsplit(instr).split(',');
@@ -85,6 +89,7 @@ cfglineparse = function(instr){
   return rslt;
 };
 
+//console.log("declaring avidacfgparse()");
 var avidacfgparse;
 avidacfgparse = function (filestr) {
   var rslt = {};
@@ -98,6 +103,7 @@ avidacfgparse = function (filestr) {
   return rslt;
 };
 
+//console.log("declaring download()");
 // http://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
 function download(filename, text) {
   var pom = document.createElement('a');
@@ -114,6 +120,7 @@ function download(filename, text) {
   }
 }
 
+//console.log("declaring window.downloadFile()");
 // http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
 window.downloadFile = function(sUrl) {
 
@@ -144,8 +151,9 @@ window.downloadFile = function(sUrl) {
   window.open(sUrl + query);
 }
 
-window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') &gt; -1;
-window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') &gt; -1;
+//console.log("tests for different browsers for download");
+window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
 
 
 // Dojo file uploads and downloads
@@ -162,3 +170,4 @@ window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari
 // Pure JS
 // http://jsfiddle.net/uselesscode/qm5ag/
 
+//console.log("end of FileIO.js");
