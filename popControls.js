@@ -7,14 +7,16 @@ function popBoxSwap() {
   if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
     //var height = $("#mapBlock").innerHeight() - 6;
     //dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
-    dijit.byId("mapBlock").set("style", "display: block;");
+    //dijit.byId("mapBlock").set("style", "display: block;");
+    document.getElementById('mapBlock').style.display = 'block'
     //dijit.byId("mapBC").set("style", "height: " + height + "px");
     dijit.byId("setupBlock").set("style", "display: none");
     document.getElementById("PopSetupButton").innerHTML = "Setup";
   } else {
     document.getElementById("PopSetupButton").innerHTML = "Map";
     dijit.byId("setupBlock").set("style", "display: block;");
-    dijit.byId("mapBlock").set("style", "display: none;");
+    //dijit.byId("mapBlock").set("style", "display: none;");
+    document.getElementById('mapBlock').style.display = 'none'
   }
 }
 

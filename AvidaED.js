@@ -944,6 +944,29 @@ require([
 //    Mouse DND functions
 //********************************************************************
 
+  //http://maffelu.net/jquery-handle-left-click-right-click-and-double-click-at-the-same-time/
+  // I just had to handle a left-click, right-click and a dbl-click at the same time which turned
+  // out to be a bit tricky at first using just the mousedown function, but the solution was simple:
+/*$("#Foo")
+ .click(function() //Left click
+ {
+ //Do something
+ })
+ .mousedown(function(e) //Right click
+ {
+ if(e.which == 3) //1: left, 2: middle, 3: right
+ {
+ //Do something
+ }
+ })
+ .dblclick(function() //Double click
+ {
+ //Do something
+ });
+   */
+
+
+
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
     mouse.DnOrganPos = [evt.offsetX, evt.offsetY];

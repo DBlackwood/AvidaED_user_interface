@@ -1,7 +1,7 @@
 //need to write string to be the data 'file' to put in pouchDB
 function sendConfig(grd) {
   grd.setDict = {};
-  grd.setDict["sizeCols"] = dijit.byId("sizeCols").get('value');
+  grd.setDict["sizeCols"] == dijit.byId("sizeCols").get('value');
   grd.setDict["sizeRows"] = dijit.byId("sizeRows").get('value');
   grd.setDict["muteInput"] = document.getElementById("muteInput").value;
   // parents (ancestors) are injected into avida separately.
