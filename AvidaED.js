@@ -1,4 +1,4 @@
-//python -m SimpleHTTPServer  in the folder with index.html to start a server for using dbpouch
+//python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 //Then visit http://127.0.0.1:8000/avidaED.html
 
 define.amd.jQuery = true;
@@ -76,12 +76,9 @@ require([
 
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
-    console.log($.fn.jquery);
+    // console.log($.fn.jquery);
   }
-  else
-  {
-    console.log("Jquery ($) is not defined.");
-  }
+  else {console.log("Jquery ($) is not defined.");}
 
   parser.parse();
 
@@ -102,12 +99,25 @@ require([
   //********************************************************************************************************************
   //  pouchdb instance
   //********************************************************************************************************************
-  var wsdb = new PouchDB('wsdb'); //for workspace database
+
+  var dbName = 'wsdb';  //for workspace database
+  var wsdb = null;
+  var oldDb = new PouchDB(dbName);
+
+  //clear any old database first
+  oldDb.destroy(dbName).then(function (response) {//success
+    oldDb = null;
+    wsdb = new PouchDB(dbName); //for workspace database
+  }).catch(function(err) {
+    wsdb = new PouchDB(dbName); //for workspace database
+    console.log('destroy db err', err)
+  });
+
 
   console.log("defining test_jszip()");
   var test_jszip;
   test_jszip = function() {
-    console.log("pouchDB and JSZip testing");
+    console.log("JSZip testing");
 
     var zip = new JSZip();
     zip.file('h0/hello.txt', 'Text that says hello\nA new line\n');
@@ -128,7 +138,7 @@ require([
     blob = zip.generate({type: "blob"});
     saveAs(blob, "example102.zip");
 
-    console.log("end pouchDB and JSZip testing");
+    console.log("end JSZip testing");
 
   };
 
@@ -702,8 +712,7 @@ require([
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        // ???
-        // sendConfig(grd);          //messaging.js
+        sendConfig(grd, wsdb);          //pouchDB_IO.js
         injectAncestors(parents); //uiWorker
       }
       doRunPause();
@@ -802,31 +811,23 @@ require([
     DrawGridSetup();
   }
 
-  //test - delete later
+  //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
-    wsdb.allDocs({include_docs:true}).then(function(docObj){
-      console.log('wsdb doc', docObj);
-      console.log(docObj.rows[1].doc._id);
-      console.log(docObj.rows[1].doc.name);
-
-      console.log(docObj.rows[3].doc._id);
-
-      wsdb.get(docObj.rows[2].doc._id).then(function(doc) {
-        console.log('wsdb get doc2', doc);
+    wsdb.allDocs({include_docs:true}).then(function(docInc){
+      console.log('Include doc', docInc);
+      wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
+        console.log('wsdb get doc0', doc);
       }).catch(function(err){
         console.log('wsdb get error',err);
       })
     }).catch(function(err){
-      console.log('wsdb get error',err);
+      console.log('allDocs get error',err);
     })
 
     wsdb.allDocs().then(function(docObj){
       console.log('wsdb doc', docObj);
-      console.log(docObj.rows[4].id);
-      console.log(docObj.rows[5].key);
-
-      wsdb.get(docObj.rows[6].key).then(function(doc) {
-        console.log('wsdb get doc2', doc);
+      wsdb.get(docObj.rows[1].key).then(function(doc) {
+        console.log('wsdb get doc1', doc);
       }).catch(function(err){
         console.log('wsdb get error',err);
       })
