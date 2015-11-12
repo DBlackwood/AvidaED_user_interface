@@ -712,7 +712,7 @@ require([
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        sendConfig(grd, wsdb);          //pouchDB_IO.js
+        sendConfig(wsdb);          //pouchDB_IO.js
         injectAncestors(parents); //uiWorker
       }
       doRunPause();
@@ -854,6 +854,7 @@ require([
         dnd.fzConfig.sync();
         //Create context menu for right-click on this item
         var domID = getDomID(fzName, dnd.fzConfig);
+        writeConfig(domID)
         contextMenu(fzr, dnd.fzConfig, domID);
       }
     }

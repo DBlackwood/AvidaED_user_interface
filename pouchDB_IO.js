@@ -1,31 +1,23 @@
 //need to write string to be the data 'file' to put in pouchDB
-function sendConfig(grd, wsdb) {
-  idStr = 'ws/cT'
-  writeAvida_cfg(grd, idStr, wsdb);
-  writeEnvironment_cfg(idStr, wsdb)
+function sendConfig(wsdb) {
+  idStr = 'ws/cT';
+  writeAvida_cfg(idStr, wsdb, '');
+  writeEnvironment_cfg(idStr, wsdb, '');
   // write events.cfg so far always empty
 
   wsdb.get(idStr + '/events.cfg').then(function (doc) {
-    if (debug.pdb) console.log('get events doc', doc);
-    wsdb.put({
-      _id: idStr + '/events.cfg',
-      _rev: doc._rev,
-      text: ''
-    }).then(function (response) {// handle response to put
-    }).catch(function (err) {console.log('put err', err);
-    })
+    if (debug.pdb) console.log('get events doc', doc);  //always empty so no reason to update
   }).catch(function (err) {
-    if (debug.pdb) console.log('get events.cfg err', err);
+    if (debug.pdb) console.log('get events.cfg err', err);  //does not exist, so create.
     wsdb.put({
       _id: idStr + '/events.cfg',
       text: ''
     }).then(function (response) {// handle response to put
     }).catch(function (err) {console.log('put err', err);
     })
-
   });
 
-  if (debug.pdb) {
+  if (debug.pdb) {  //may run before the PouchDB function complete, this is not an error
     wsdb.allDocs({
       include_docs: true,
       attachments: true
@@ -37,7 +29,7 @@ function sendConfig(grd, wsdb) {
   }
 }
 
-function writeAvida_cfg(grd, idStr, wsdb) {
+function writeAvida_cfg(idStr, wsdb, domID) {
   var txt = 'WORLD_X ' + dijit.byId("sizeCols").get('value') + '\n';
   txt += 'WORLD_Y ' + dijit.byId("sizeRows").get('value') + '\n';
   txt += 'WORLD_GEOMETRY 1 \n';
@@ -53,29 +45,27 @@ function writeAvida_cfg(grd, idStr, wsdb) {
   txt += '#include instset.cfg\n';
   txt += 'I\n';
 
+  var ifile = {
+    _id: idStr + '/avida.cfg',
+    domID: domID,
+    text: txt
+  };
+  var rev = null;
   wsdb.get(idStr + '/avida.cfg').then(function (doc) {
-    if (debug.pdb) console.log('get avida doc', doc);
-    wsdb.put({
-      _id: idStr + '/avida.cfg',
-      _rev: doc._rev,
-      text: txt
-    }).then(function (response) {// handle response to put
-    }).catch(function (err) {console.log('put err', err);
-    })
+    rev = doc._rev;
+    if (debug.pdb) console.log('get events doc', doc);
   }).catch(function (err) {
-    if (debug.pdb) console.log('get avida.cfg err', err);
-    wsdb.put({
-      _id: idStr + '/avida.cfg',
-      text: txt
-    }).then(function (response) {// handle response to put
-    }).catch(function (err) {
-      console.log('put err', err);
-    })
   });
+  if (null != rev) ifile._rev = rev;
+
+  wsdb.put(ifile).then(function (response) {// handle response to put
+  }).catch(function (err) {console.log('put err', err);
+  })
+
   if (debug.pdb) console.log('txt \n',txt);
 }
 
-function writeEnvironment_cfg(idStr, wsdb) {
+function writeEnvironment_cfg(idStr, wsdb, domID) {
   var txt = '';
   if(dijit.byId("notose").get('checked'))  txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("nanose").get('checked')) txt += 'REACTION  NAND nand  process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NAND nand  process:value=0:type=pow  requisite:max_count=1\n';
@@ -88,13 +78,14 @@ function writeEnvironment_cfg(idStr, wsdb) {
   if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1\n';
   var ifile = {
     _id: idStr + '/environment.cfg',
+    domID : domID,
     text: txt
   }
 
   var rev = null;
   wsdb.get(idStr + '/environment.cfg').then(function (doc) {
     rev = doc._rev;
-    console.log('get events doc', doc);
+    if (debug.pdb) console.log('get events doc', doc);
   }).catch(function (err) {
   });
   if (null != rev) ifile._rev = rev;
