@@ -6,9 +6,9 @@ function sendConfig(wsdb) {
   // write events.cfg so far always empty
 
   wsdb.get(idStr + '/events.cfg').then(function (doc) {
-    if (debug.pdb) console.log('get events doc', doc);  //always empty so no reason to update
+    if (debug.pdb) console.log('get events doc, ok no reason to update', doc);  //always empty so no reason to update
   }).catch(function (err) {
-    if (debug.pdb) console.log('get events.cfg err', err);  //does not exist, so create.
+    if (debug.pdb) console.log('get events.cfg not really an err, just not already there', err);  //does not exist, so create.
     wsdb.put({
       _id: idStr + '/events.cfg',
       text: ''
@@ -50,17 +50,18 @@ function writeAvida_cfg(idStr, wsdb, domID) {
     domID: domID,
     text: txt
   };
-  var rev = null;
   wsdb.get(idStr + '/avida.cfg').then(function (doc) {
-    rev = doc._rev;
-    if (debug.pdb) console.log('get events doc', doc);
+    ifile._rev = doc._rev;
+    if (debug.pdb) console.log('get avida doc already exists, ok update', doc);
+    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    }).catch(function (err) {console.log('put err', err);
+    })
   }).catch(function (err) {
+    if (debug.pdb) console.log('get avida err', err);  //not really an error, just not already there.
+    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    }).catch(function (err) {console.log('put err', err);
+    })
   });
-  if (null != rev) ifile._rev = rev;
-
-  wsdb.put(ifile).then(function (response) {// handle response to put
-  }).catch(function (err) {console.log('put err', err);
-  })
 
   if (debug.pdb) console.log('txt \n',txt);
 }
@@ -81,18 +82,20 @@ function writeEnvironment_cfg(idStr, wsdb, domID) {
     domID : domID,
     text: txt
   }
-
-  var rev = null;
   wsdb.get(idStr + '/environment.cfg').then(function (doc) {
-    rev = doc._rev;
-    if (debug.pdb) console.log('get events doc', doc);
+    ifile._rev = doc._rev;
+    if (debug.pdb) console.log('get environment doc already exists, ok update', doc);
+    wsdb.put(ifile).then(function (response) { if (debug.pdb) console.log('ok correct', response);// handle response to put
+    }).catch(function (err) {console.log('put err', err);
+    })
   }).catch(function (err) {
+    if (debug.pdb) console.log('get environment not really an err, just not already there', err);  //not really an error, just not already there.
+    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response);// handle response to put
+    }).catch(function (err) {console.log('put err', err);
+    })
   });
-  if (null != rev) ifile._rev = rev;
-
-  wsdb.put(ifile).then(function (response) {// handle response to put
-  }).catch(function (err) {console.log('put err', err);
-  })
 
   if (debug.pdb) console.log('Environment txt \n', txt);
 }
+
+

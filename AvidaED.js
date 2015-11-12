@@ -103,8 +103,7 @@ require([
   var dbName = 'wsdb';  //for workspace database
   var wsdb = null;
   var oldDb = new PouchDB(dbName);
-
-  //clear any old database first
+  //clear any old database and create new one for this session
   oldDb.destroy(dbName).then(function (response) {//success
     oldDb = null;
     wsdb = new PouchDB(dbName); //for workspace database
@@ -112,7 +111,6 @@ require([
     wsdb = new PouchDB(dbName); //for workspace database
     console.log('destroy db err', err)
   });
-
 
   console.log("defining test_jszip()");
   var test_jszip;
@@ -854,7 +852,7 @@ require([
         dnd.fzConfig.sync();
         //Create context menu for right-click on this item
         var domID = getDomID(fzName, dnd.fzConfig);
-        writeConfig(domID)
+        writeConfig(fzName, domID);
         contextMenu(fzr, dnd.fzConfig, domID);
       }
     }

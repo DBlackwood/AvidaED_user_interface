@@ -68,14 +68,12 @@ function doRunPause() {
   }
   else {
     var num = dijit.byId("updateSpinner").get('value');
-    console.log('num', num);
     request = {
       'type': 'addEvent',
       'name': 'runPause',
       'start': num,
       'interval': 'once'
     }
-    console.log(request);
   }
   uiWorker.postMessage(request);
 }
