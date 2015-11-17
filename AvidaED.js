@@ -325,43 +325,7 @@ require([
   /* ********************************************************************** */
   /* Dojo Drag N Drop Initialization ****************************************/
   /* ********************************************************************** */
-
-  if (debug.root) console.log('before frz structure');
-
-  dnd.fzConfig = new dndSource('fzConfig', {
-    accept: ['c'],
-    copyOnly: true,
-    singular: true,
-    selfAccept: false
-  });
-  dnd.fzConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
-  var  newConfig = {
-      'name': '@default',
-      'domId': '',
-      '_id': 'ws/c0',
-      'fileNum': 0,
-  }
-  fzr.config.push(newConfig);
-  fzr.cNum ++;
-  //console.log('wsdb',wsdb); //tiba fix this
-  //pdbConfig(fzr, wsdb);
-
-  dnd.fzOrgan = new dndSource('fzOrgan', {
-    accept: ['g'],
-    copyOnly: true,
-    singular: true,
-    selfAccept: false
-  });
-  dnd.fzOrgan.insertNodes(false, [
-    {data: "@ancestor", type: ['g']}
-    , {data: "bravo_not", type: ['g']}
-    ,{ data: "charlie-nan",     type: ['g']}
-    ,{ data: "oro",       type: ['g']}
-    ,{ data: "Oro_orn",        type: ['g']}
-    ,{ data: "allFunctions",     type: ['g']}
-    ,{ data: "AllBut2logic",        type: ['g']}
-  ]);
-  //Temporary - I think this will be removed once we have a files system.
+  /*Temporary - I think this will be removed once we have a files system.
   dnd.genes = [
     '0,heads_default,wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'  //ancestor
     ,'0,heads_default,wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab'  //not
@@ -371,32 +335,21 @@ require([
     ,'0,heads_default,whjagchmivznzbxbvmbzpfvfpwubypsmyuuobyufycvovrxguw'  //all functions
     ,'0,heads_default,wsjagcvtvazystorcauoyucuyquufydpbusmyfqoocvvopxgxu'  //allbut2logic
   ];
+*/
+  if (debug.root) console.log('before frz structure');
 
-  //hold genome for active organism in Organism View
-  fzr.actOrgan = {
-    'name': "",
-    'domId': "",
-    'genome': ""
-  }
-
-  //structure to keep track of genomes for organisms in freezer and the active organism in organism.view
-
-  var domList = Object.keys(dnd.fzOrgan.map);
-  var neworg = {};
-  for (var ii=0; ii<domList.length; ii++) {
-    neworg = {
-      'name': dnd.fzOrgan.map[domList[ii]].data,
-      'domId': domList[ii],
-      '_id': 'ws/g' + ii,
-      'fileNum': ii,
-      'genome': dnd.genes[ii]
-    };
-    fzr.organism.push(neworg);
-    fzr.gNum++;
-    //pdbOrganism(fzr, wsdb);  //tiba make this function
-  }
-  //if (debug.root) console.log('after fzr.orgnaism', fzr.organism);
-
+  dnd.fzConfig = new dndSource('fzConfig', {
+    accept: ['c'],
+    copyOnly: true,
+    singular: true,
+    selfAccept: false
+  });
+  dnd.fzOrgan = new dndSource('fzOrgan', {
+    accept: ['g'],
+    copyOnly: true,
+    singular: true,
+    selfAccept: false
+  });
   dnd.fzWorld = new dndSource('fzWorld', {
     accept: ['w'],
     singular: true,
@@ -404,16 +357,21 @@ require([
     selfAccept: false
   });
   dnd.fzWorld.insertNodes(false, [
-    {data: "@example", type: ['w']},
     {data: "m2w30u1000nand", type: ['w']},
     {data: "m2w30u1000not", type: ['w']}
   ]);
+
+  //hold genome for active organism in Organism View
+  fzr.actOrgan = {
+    'name': "",
+    'domId': "",
+    'genome': ""
+  };
+
   dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
   dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
-
   dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
-
-  dnd.trashCan = new dndSource('trashCan', {accept: ['conDish', 'g', 'popDish'], singular: true});
+  dnd.trashCan = new dndSource('trashCan', {accept: ['c', 'g', 'w'], singular: true});
   if (debug.root) console.log('after trashCan');
 
   dnd.activeConfig = new dndSource('activeConfig', {

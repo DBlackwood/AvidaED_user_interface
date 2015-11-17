@@ -90,18 +90,18 @@ function popNewExState(dnd, grd, parents){
 //and read the returned JSON string.
 function writeSettings(dft, dnd, grd) {
   TimeLabel.textContent = 0;
-  dijit.byId("sizeCols").set('value', dft.sizeCols);
-  dijit.byId("sizeRows").set('value', dft.sizeRows);
-  dijit.byId("sizeCols").set('value', '20');    //delete later; debug only taba
-  dijit.byId("sizeRows").set('value', '5');     //delete lager; debug only tiba
-  document.getElementById("muteInput").value = dft.muteInput;
-  var event = new Event('change');
-  document.getElementById("muteInput").dispatchEvent(event);
+  //avidaCFG2form(fileStr);
   dnd.ancestorBox.selectAll().deleteSelectedNodes();
   dnd.ancestorBox.sync();
   dnd.gridCanvas.selectAll().deleteSelectedNodes();
   dnd.gridCanvas.sync();
   AncestorList = [];
+
+
+  dijit.byId("sizeCols").set('value', dft.sizeCols);
+  dijit.byId("sizeRows").set('value', dft.sizeRows);
+  dijit.byId("sizeCols").set('value', '20');    //delete later; debug only taba
+  dijit.byId("sizeRows").set('value', '5');     //delete lager; debug only tiba
   if ('childParentRadio'==dft.child) {
     dijit.byId("childParentRadio").set('checked', true);
     dijit.byId("childRandomRadio").set('checked', false);

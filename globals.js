@@ -11,8 +11,8 @@ debug.msg = false;     //messages to and from avida
 debug.trace = false;   //organism page
 debug.grid = false;     //population grid
 debug.msgOrder = false; //message order
-debug.pdb = true; //pouchDB
-debug.fio = true; // file io
+debug.pdb = false; //pouchDB
+debug.fio = false; // file io
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};

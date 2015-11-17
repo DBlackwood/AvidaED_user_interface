@@ -476,7 +476,7 @@
                 <!-- style done here for the slider; margin to keep it from overlapping;
                                       without width the slider is the full width of the browser window-->
                 <!--<input id="muteInput" type="text" style="width: 4em; height:1.8em"></input> -->
-                <input id="muteInput" type="text" data-dojo-type="dijit/form/NumberTextBox" value=20 required="true" ;
+                <input id="muteInput" type="text" data-dojo-type="dijit/form/NumberTextBox" value=1 required="true" ;
                        data-dojo-props="constraints:{min:0, max:100},
                      invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid mutation rate.'"
                        style="width: 4.5em; height:1.8em"></input> %
@@ -490,11 +490,11 @@
                 Place Offspring:
                 <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childParentRadio"
                        intermediateChanges="false"
-                       iconClass="dijitNoIcon" name="child" checked value="nearParent"></input>
+                       iconClass="dijitNoIcon" name="child" value="nearParent"></input>
                 <label id="childParentLabel">Near their parent</label>
                 <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="childRandomRadio"
                        intermediateChanges="false"
-                       iconClass="dijitNoIcon" name="child" value="random"></input>
+                       iconClass="dijitNoIcon" name="child" checked value="random"></input>
                 <label id="childRandomLabel">Anywhere, randomly</label>
               </div>
               <div class="odd">
@@ -549,10 +549,10 @@
               <div class="even">
                 <label id="label_31">Repeatability Mode:</label>
                 <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="experimentRadio"
-                       intermediateChanges="false" iconClass="dijitNoIcon" name="repeat" checked
+                       intermediateChanges="false" iconClass="dijitNoIcon" name="repeat"
                        value="experimental"></input>
                 <label id="experimentLabel">Experimental</label>
-                <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="demoRadio"
+                <input showlabel="true" type="radio" data-dojo-type="dijit/form/RadioButton" id="demoRadio" checked
                        intermediateChanges="false" iconClass="dijitNoIcon" name="repeat" value="demo"></input>
                 <label id="demoLabel">Demo</label>
               </div>

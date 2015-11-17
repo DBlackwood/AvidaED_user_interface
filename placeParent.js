@@ -93,6 +93,7 @@ function wsb(target, strng){
     return sb;
   }
 }
+//string.trim() removes leading and trailing white space
 
 /*
  wsa(target, thestring)
@@ -109,15 +110,20 @@ function wsa(target, strng){
     return sb;
   }
 }
-
 /*
+ So to extract the genome out of
+ var genplus = "0,heads-default,abcdefghijklmnopqrstuvwxyz";
+ var genome = wsa(",", wsa(",", genplus));
+ */
 
-So to extract the genome out of
+//remove all commas; remove preceeding and trailing spaces; replace spaces with comma
+var flexsplit;
+flexsplit = function (instr) {
+  var str1 = instr.replace(/,/g, '').replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(/[\s,]+/g, ',');
 
-var genplus = "0,heads-default,abcdefghijklmnopqrstuvwxyz";
+  return str1;
+};
 
-var genome = wsa(",", wsa(",", genplus));
-*/
 //---------- set Ancestors ------------------/
     function PlaceAncestors(parents) {
       var cols = dijit.byId("sizeCols").get('value');

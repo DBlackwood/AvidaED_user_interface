@@ -51,7 +51,7 @@ function add2freezer(dnd,fio, fzr) {
   var num = tmp.substr(1, tmp.length-1);
   var name;
   if (null == fio.thisfile.asText()) { name = fio.anID; }
-  else { name = fio.thisfile.asText(); }
+  else { name = wsb("\n", fio.thisfile.asText()); }
   var item = {
     'name': name,
     'fileNum': num,
@@ -77,7 +77,6 @@ function processFiles(dnd, fio, fzr){
   "use strict";
   fio.anID = wsa(fio.target+'/', fio.fName);
   var fileType = wsa('/', fio.anID);
-  //console.log("  within zip: full, ", fio.fName, '; id ',anID, '; type ', fileType);
   switch (fileType) {
     case 'entryname.txt':
       add2freezer(dnd, fio, fzr);
@@ -99,6 +98,8 @@ function processFiles(dnd, fio, fzr){
         _id: fio.anID,
         text: fio.thisfile.asText()
       };
+      if ('c0/avida.cfg'==fio.anID) {avidaCFG2form(fio.thisfile.asText()); }
+      if ('c0/environment.cfg'==fio.anID) {environmentCFG2form(ifile.text); }
       fio.wsdb.get(fio.anID).then(function (doc) {
         ifile._rev = doc._rev;
         if (debug.pdb) console.log('get entryName doc already exists, ok update', doc);
@@ -115,9 +116,107 @@ function processFiles(dnd, fio, fzr){
       //if (debug.fio) console.log('undefined file type in zip: full ', fio.fName, '; id ', fio.anID, '; type ', fileType);
       break;
   }
-  if (debug.fio) console.log('file type in zip: fname ', fio.fName, '; id ', fio.anID, '; type ', fileType);
+  //if (debug.fio) console.log('file type in zip: fname ', fio.fName, '; id ', fio.anID, '; type ', fileType);
 }
 
+//----------------------- section to put data from environment.cfg into setup form of population page ------------------
+
+var environmentCFGlineParse = function(instr){
+  'use strict';
+  var num = 0;
+  var flag = true;
+  var cfgary = flexsplit(instr).split(',');
+  if (0 < cfgary[3].length) {num = wsb(':',wsa('=',cfgary[3]));}
+  if (0 === num) {flag = false;}
+  var rslt = {
+    name : cfgary[1],
+    value : flag
+  };
+  return rslt;
+};
+
+// makes a dictionary out of a environment.cfg file
+var environmentCFGparse = function (filestr) {
+  'use strict';
+  var rslt = {};
+  var lineobj;
+  var lines = filestr.split("\n");
+  for (var ii = 0; ii < lines.length; ii++) {
+    if (3 < lines[ii].length) {
+      lineobj = environmentCFGlineParse(lines[ii]);
+      rslt[lineobj.name.toUpperCase()] = lineobj.value;
+    }
+  } // for
+  return rslt;
+};
+
+// puts data from the environment.cfg into the setup form for the population page
+function environmentCFG2form(fileStr) {
+  'use strict';
+  var dict = environmentCFGparse(fileStr);
+  dijit.byId("notose").set('checked', dict.NOT);
+  dijit.byId("nanose").set('checked', dict.NAND);
+  dijit.byId("andose").set('checked', dict.AND);
+  dijit.byId("ornose").set('checked', dict.ORN);
+  dijit.byId("orose").set('checked', dict.OR);
+  dijit.byId("andnose").set('checked', dict.ANDN);
+  dijit.byId("norose").set('checked', dict.NOR);
+  dijit.byId("xorose").set('checked', dict.XOR);
+  dijit.byId("equose").set('checked', dict.EQU);
+}
+//----------------------------- section to put data from avida.cfg into setup form of population page ------------------
+//makes a dictionary entry out of line if the key and value are the first two items.
+var avidaCFGlineParse = function(instr){
+  'use strict';
+  var cfgary = flexsplit(instr).split(',');  //replaces white space with a comma, then splits on comma
+  var rslt = {
+    name : cfgary[0],
+    value : cfgary[1]
+  };
+  return rslt;
+};
+
+// makes a dictionary out of a avida.cfg file
+var avidaCFGparse = function (filestr) {
+  'use strict';
+  var rslt = {};
+  var lines = filestr.split("\n");
+  for (var ii = 0; ii < lines.length; ii++) {
+    var lineobj = avidaCFGlineParse(lines[ii]);
+    rslt[lineobj.name.toUpperCase()] = lineobj.value;
+  } // for
+  return rslt;
+};
+
+// puts data from the avida.cfg into the setup form for the population page
+function avidaCFG2form(fileStr){
+  'use strict';
+  var dict = avidaCFGparse(fileStr);
+  dijit.byId("sizeCols").set('value', dict.WORLD_X);
+  dijit.byId("sizeRows").set('value', dict.WORLD_Y);
+  document.getElementById("muteInput").value = dict.COPY_MUT_PROB;
+  var event = new Event('change');
+  document.getElementById("muteInput").dispatchEvent(event);
+  if (0==dict.BIRTH_METHOD) {
+    dijit.byId("childParentRadio").set('checked', true);
+    dijit.byId("childRandomRadio").set('checked', false);
+  }
+  else {
+    dijit.byId("childParentRadio").set('checked', false);
+    dijit.byId("childRandomRadio").set('checked', true);
+  }
+
+  if (-1 == dict.RANDOM_SEED) {
+    dijit.byId("experimentRadio").set('checked', true);
+    dijit.byId("demoRadio").set('checked', false);
+  }
+  else {
+    dijit.byId("experimentRadio").set('checked', false);
+    dijit.byId("demoRadio").set('checked', true);
+  }
+}
+
+//------------------------------------------------- rest may not be in use ---------------------------------------------
 //console.log("Start of FileIO.js");
 //console.log("declaring mnOpenWorkSpace()");
 function mnOpenWorkSpace() {
@@ -172,59 +271,7 @@ var _getAllFilesFromFolder = function(dir) {
     } else results.push(file);
 
   });
-
   return results;
-
-};
-
-//usage is clear:
-//  _getAllFilesFromFolder(__dirname + "folder");
-
-
-
-
-
-// var keywordString = " ford    tempo, with,,, sunroof,, ";
-
- //remove all commas; remove preceeding and trailing spaces; replace spaces with comma
-
-// str1 = keywordString.replace(/,/g , '').replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(/[\s,]+/g, ',');
-
-
-//add a comma at t
-
-//console.log("declaring flexsplit()");
-var flexsplit;
-flexsplit = function (instr) {
-  var str1 = instr.replace(/,/g, '').replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(/[\s,]+/g, ',');
-
-  return str1;
-};
-
-//console.log("declaring cfglineparse()");
-var cfglineparse;
-cfglineparse = function(instr){
-  var cfgary = flexsplit(instr).split(',');
-
-  var rslt = {
-    name : cfgary[0],
-    value : cfgary[1]
-  };
-  return rslt;
-};
-
-//console.log("declaring avidacfgparse()");
-var avidacfgparse;
-avidacfgparse = function (filestr) {
-  var rslt = {};
-  var lines = filestr.split("\n");
-
-  for (var ii = 0; ii < lines.length; ii++) {
-    var lineobj = cfglineparse(lines[ii]);
-    rslt[lineobj.name.toUpperCase()] = lineobj.value;
-  } // for
-
-  return rslt;
 };
 
 //console.log("declaring download()");
