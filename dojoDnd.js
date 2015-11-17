@@ -94,6 +94,15 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
 
       //Now find which node has the new content so it can get a context menu.
       var domID = getDomID(configName, target);
+      var newConfig = {
+        domID: domID,
+        name: configName,
+        _id: 'ws/c'+ fzr.cNum,
+        fileNum: fzr.cNum
+      };
+      fzr.config.push(newConfig);
+      fzr.cNum++;
+
       //create a right mouse-click context menu for the item just created.
       contextMenu(fzr, target, domID);
     }
@@ -311,14 +320,14 @@ function landOrganCanvas(dnd, fzr, source, nodes, target) {
 //------------------------------------- Populated Dishes DND ---------------------
 //This should never happen as fzPopDish is the only source for populated dishes. Here in case that changes.
 function landFzPopDish(dnd, pkg) {
-  //var items = getAllItems(dnd.fzPopDish);  not used
+  //var items = getAllItems(dnd.fzWorld);  not used
   var populatedDish = prompt("Please name your populated dish", pkg.nodes[0].textContent + "_1");
   if (populatedDish) {
     var popDish = getUniqueName(populatedDishcon, pkg.target);
     if (null != popDish) {
       pkg.nodes[0].textContent = popDish;
       //to change data value not fully tested, but keep as it was hard to figure out
-      //dnd.fzPopDish.setItem(pkg.target.node.id, {data: popDish, type: ["popDish"]});
+      //dnd.fzWorld.setItem(pkg.target.node.id, {data: popDish, type: ["popDish"]});
     }
     //ways to get information about the Dnd containers
     //console.log("pkg.nodes[0].id, pkg.target.node.id = ", pkg.nodes[0].id, pkg.target.node.id);
@@ -348,7 +357,7 @@ function landTrashCan(dnd, fzr, parents, source, nodes, target) {
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
   }
   //if the item is from the freezer, delete from freezer unless it is original stock (@)
-  else if ('fzConfig' == source.node.id || 'fzPopDish' == source.node.id) {
+  else if ('fzConfig' == source.node.id || 'fzWorld' == source.node.id) {
     // find name of item in node; don't remove starter (@) items
     if (!('@default' == nodes[0].textContent || '@example' == nodes[0].textContent)) {
       source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
@@ -386,7 +395,7 @@ function landGraphPop1(dnd, source, nodes, target, plt) {
     dnd.graphPop1.sync();   //should be done after insertion or deletion
 
     //get the data for the new organism
-    dnd.fzPopDish.forInSelectedItems(function (item, id) {
+    dnd.fzWorld.forInSelectedItems(function (item, id) {
       dnd.graphPop1.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
     });
     dnd.graphPop1.sync();
@@ -417,7 +426,7 @@ function landGraphPop2(dnd, source, nodes, target, plt) {
     dnd.graphPop2.sync();   //should be done after insertion or deletion
 
     //get the data for the new organism
-    dnd.fzPopDish.forInSelectedItems(function (item, id) {
+    dnd.fzWorld.forInSelectedItems(function (item, id) {
       dnd.graphPop2.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
     });
     dnd.graphPop2.sync();
@@ -441,7 +450,7 @@ function landGraphPop3(dnd, source, nodes, target, plt) {
     dnd.graphPop3.sync();   //should be done after insertion or deletion
 
     //get the data for the new organism
-    dnd.fzPopDish.forInSelectedItems(function (item, id) {
+    dnd.fzWorld.forInSelectedItems(function (item, id) {
       dnd.graphPop3.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
     });
     dnd.graphPop3.sync();
@@ -479,7 +488,14 @@ function contextMenu(fzr, target, fzItemID) {
           if ('fzOrgan' == fzSection) {
             var Ndx = fndGenomeNdx(fzItemID, fzr.organism);
             fzr.organism[Ndx].name = fzName;
+          } else if ('fzConfig' == fzSection){
+            var Ndx = fndGenomeNdx(fzItemID, fzr.config);
+            fzr.config[Ndx].name = fzName;
+          } else if ('fzWorld' == fzSection){
+            var Ndx = fndGenomeNdx(fzItemID, fzr.world);
+            fzr.world[Ndx].name = fzName;
           }
+          //update PouchDB
         }
       }
     }
@@ -500,6 +516,7 @@ function contextMenu(fzr, target, fzItemID) {
     }
   }))
 };
+/* ********************************************************************** */
 
 var fndGenomeNdx = function (domId, fzrOrganism) {
   for (var ii = 0; ii < fzrOrganism.length; ii++) {

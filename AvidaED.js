@@ -1,5 +1,8 @@
 //python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 //Then visit http://127.0.0.1:8000/avidaED.html
+//
+// to have chrome run from file
+///Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --allow-file-access-from-files
 
 define.amd.jQuery = true;
 require([
@@ -69,11 +72,9 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             PouchDB,
-             JSZip,
-             FileSaver,
+             PouchDB, JSZip, FileSaver,
              ready, $, jqueryui) {
-
+  "use strict";
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
     // console.log($.fn.jquery);
@@ -93,26 +94,41 @@ require([
    *
    *******************************************************************************************/
 
-  //process message from web worker
-  uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
-
   //********************************************************************************************************************
   //  pouchdb instance
   //********************************************************************************************************************
 
-  var dbName = 'wsdb';  //for workspace database
-  var wsdb = null;
-  var oldDb = new PouchDB(dbName);
-  //clear any old database and create new one for this session
-  oldDb.destroy(dbName).then(function (response) {//success
-    oldDb = null;
-    wsdb = new PouchDB(dbName); //for workspace database
-  }).catch(function(err) {
-    wsdb = new PouchDB(dbName); //for workspace database
-    console.log('destroy db err', err)
-  });
+  fio.PouchDB = PouchDB;
+  fio.JSZip = JSZip;
+  fio.uiWorker=null;
 
-  console.log("defining test_jszip()");
+  function initializeDB(fio, fzr) {
+    "use strict";
+    var oldDb = new fio.PouchDB(fio.dbName);
+    //clear any old database and create new one for this session
+    oldDb.destroy(fio.dbName).then(function (response) {//success
+      oldDb = null;
+      fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
+      if (debug.fio) console.log('after new PouchDB - send msg to Avida');
+      doDbReady();
+      readDefaultWS(dnd, fio, fzr);
+    }).catch(function (err) {
+      fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
+      console.log('after fnew PouchDB destroy db err', err);
+      doDbReady();
+      readDefaultWS(dnd, fio, fzr);
+    });
+  }
+  /* PouchDB websites
+   http://pouchdb.com/api.html#database_information
+   https://github.com/webinista/PouchNotes
+   http://pouchdb.com/guides/databases.html
+   */
+  console.log('before initialze DB', fio.uiWorker);
+  initializeDB(fio, fzr);
+
+  //********************************************************************************************************************/
+  //console.log("defining test_jszip()");
   var test_jszip;
   test_jszip = function() {
     console.log("JSZip testing");
@@ -123,15 +139,6 @@ require([
     console.log("zip done");
     var content = null;
     var blob = null;
-/*
-     if (JSZip.support.uint8array) {
-     console.log("uint8array type");
-     content = zip.generate({type : "uint8array"});
-     } else {
-     console.log("string type");
-     content = zip.generate({type : "string"});
-     }
-*/
     console.log("content", content);
     blob = zip.generate({type: "blob"});
     saveAs(blob, "example102.zip");
@@ -142,75 +149,11 @@ require([
 
   //test_jszip();
 
-  function readMsg(ee, dft, dnd, parents) {
-    var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
-    if ('data' == msg.type) {
-      switch (msg.name) {
-        case 'runPause':
-          if (true != msg["Success"]) {
-            console.log("Error: ", msg);  // msg failed
-            runStopFn();  //flip state back since the message failed to get to Avida
-          }
-          break;
-        case 'reset':
-          if (true != msg["Success"]) {
-            console.log("Reset failed: ", msg)
-          }
-          break;
-        case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
-          traceObj = msg.snapshots;
-          gen.cycle = 0;
-          dijit.byId("orgCycle").set("value", 0);
-          cycleSlider.set("maximum", traceObj.length - 1);
-          cycleSlider.set("discreteValues", traceObj.length);
-          updateOrgTrace(traceObj, gen);
-          break;
-        case 'webPopulationStats':
-          updatePopStats(grd, msg);
-          popChartFn();
-          if (debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
-          break;
-        case 'webGridData':
-          //mObj=JSON.parse(JSON.stringify(jsonObject));
-          grd.msg = msg;
-          DrawGridSetup();
-          if (debug.msgOrder) console.log('webGridData length', grd.ave_fitness.length);
-          //if (debug.msgOrder) console.log('ges',grd.msg.gestation.data);
-          //if (debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
-          if (debug.msgOrder) console.log('nan',grd.msg.nand.data);
-          if (debug.msgOrder) console.log('out',grd.out);
-          break;
-        case 'webOrgDataByCellID':
-          //if ('undefined' != typeof grd.msg.ancestor) {console.log('webOrgDataByCellID anc',grd.msg.ancestor.data);}
-          updateSelectedOrganismType(grd, msg, parents);  //in messageing
-          break;
-        default:
-          console.log('____________UnknownRequest: ', msg);
-          break;
-      }
-    }
-    else if ('userFeedback' == msg.type) {
-      switch (msg.level) {
-        case 'notification':
-          console.log('avida:notify: ',msg.message);
-          break;
-        case 'warning':
-          console.log('avida:warn: ',msg.message);
-          break;
-        case 'fatal':
-          console.log('avida:fatal: ',msg.message);
-          break;
-        default:
-          console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
-          break;
-      }
-    }
-  }
-
   //********************************************************************************************************************
   // Menu file handling
   //********************************************************************************************************************
- // dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace() });  //in fileIO.js
+  dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace() });  //in fileIO.js
+  dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault() });  //in fileIO.js
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
@@ -233,19 +176,19 @@ require([
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
       console.log('rightDetail', height, rd);
-      updateOrgTrace(traceObj, gen)
+      updateOrgTrace(traceObj, gen);
     }
   }
 
   ready(function () {
     aspect.after(registry.byId("gridHolder"), "resize", function () {
-      BrowserResizeEventHandler()
+      BrowserResizeEventHandler();
     });
     aspect.after(registry.byId("popChartHolder"), "resize", function () {
-      BrowserResizeEventHandler()
+      BrowserResizeEventHandler();
     });
     aspect.after(registry.byId("organismCanvasHolder"), "resize", function () {
-      BrowserResizeEventHandler()
+      BrowserResizeEventHandler();
     });
   });
 
@@ -262,7 +205,7 @@ require([
   if (debug.root) console.log('before drop down menu');
   // Drop down menu buttons ------------------------------------------
 
-  HardwareDialog = new Dialog({
+  var HardwareDialog = new Dialog({
     title: "Avida : A Guided Tour of an Ancestor and its Hardware",
     id: "HardwareDialog",
     href: "cpu_tour.html"
@@ -300,7 +243,7 @@ require([
   if (document.getElementById('orgTop').scrollHeight > document.getElementById('orgTop').clientHeight){
     document.getElementById('orgTop').style.height = document.getElementById('orgTop').scrollHeight + 'px';
   }
-  console.log('orgBot', document.getElementById('organismBottom').scrollHeight, document.getElementById('organismBottom').clientHeight);
+  //console.log('orgBot', document.getElementById('organismBottom').scrollHeight, document.getElementById('organismBottom').clientHeight);
   if (document.getElementById('organismBottom').scrollHeight > document.getElementById('organismBottom').clientHeight){
     var num = document.getElementById('organismBottom').scrollHeight+9;
     document.getElementById('organismBottom').style.height = num + 'px';
@@ -383,33 +326,40 @@ require([
   /* Dojo Drag N Drop Initialization ****************************************/
   /* ********************************************************************** */
 
-  var dnd = {};
+  if (debug.root) console.log('before frz structure');
 
   dnd.fzConfig = new dndSource('fzConfig', {
-    accept: ["conDish"],
+    accept: ['c'],
     copyOnly: true,
     singular: true,
     selfAccept: false
   });
-  dnd.fzConfig.insertNodes(false, [
-    {data: "@default", type: ["conDish"]},
-    {data: "s20m.2Nand", type: ["conDish"]},
-    {data: "s30m.2Not", type: ["conDish"]}
-  ]);
+  dnd.fzConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
+  var  newConfig = {
+      'name': '@default',
+      'domId': '',
+      '_id': 'ws/c0',
+      'fileNum': 0,
+  }
+  fzr.config.push(newConfig);
+  fzr.cNum ++;
+  //console.log('wsdb',wsdb); //tiba fix this
+  //pdbConfig(fzr, wsdb);
+
   dnd.fzOrgan = new dndSource('fzOrgan', {
-    accept: ["organism"],
+    accept: ['g'],
     copyOnly: true,
     singular: true,
     selfAccept: false
   });
   dnd.fzOrgan.insertNodes(false, [
-    {data: "@ancestor", type: ["organism"]}
-    , {data: "bravo_not", type: ["organism"]}
-    ,{ data: "charlie-nan",     type: ["organism"]}
-    ,{ data: "oro",       type: ["organism"]}
-    ,{ data: "Oro_orn",        type: ["organism"]}
-    ,{ data: "allFunctions",     type: ["organism"]}
-    ,{ data: "AllBut2logic",        type: ["organism"]}
+    {data: "@ancestor", type: ['g']}
+    , {data: "bravo_not", type: ['g']}
+    ,{ data: "charlie-nan",     type: ['g']}
+    ,{ data: "oro",       type: ['g']}
+    ,{ data: "Oro_orn",        type: ['g']}
+    ,{ data: "allFunctions",     type: ['g']}
+    ,{ data: "AllBut2logic",        type: ['g']}
   ]);
   //Temporary - I think this will be removed once we have a files system.
   dnd.genes = [
@@ -420,10 +370,8 @@ require([
     ,'0,heads_default,wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro-orn
     ,'0,heads_default,whjagchmivznzbxbvmbzpfvfpwubypsmyuuobyufycvovrxguw'  //all functions
     ,'0,heads_default,wsjagcvtvazystorcauoyucuyquufydpbusmyfqoocvvopxgxu'  //allbut2logic
-  ]
+  ];
 
-  if (debug.root) console.log('before frz structure');
-  var fzr = {};
   //hold genome for active organism in Organism View
   fzr.actOrgan = {
     'name': "",
@@ -432,65 +380,62 @@ require([
   }
 
   //structure to keep track of genomes for organisms in freezer and the active organism in organism.view
-  fzr.organism = [];
+
   var domList = Object.keys(dnd.fzOrgan.map);
   var neworg = {};
   for (var ii=0; ii<domList.length; ii++) {
     neworg = {
       'name': dnd.fzOrgan.map[domList[ii]].data,
       'domId': domList[ii],
-      '_id': domList[ii],
+      '_id': 'ws/g' + ii,
+      'fileNum': ii,
       'genome': dnd.genes[ii]
-    }
+    };
     fzr.organism.push(neworg);
-/*    wsdb.put(neworg).then(function(result) {
-      console.log('wsdb put result', result);
-    }).catch(function (err){
-      console.log('wsdb put error', err);
-    })
-    */
+    fzr.gNum++;
+    //pdbOrganism(fzr, wsdb);  //tiba make this function
   }
   //if (debug.root) console.log('after fzr.orgnaism', fzr.organism);
 
-  dnd.fzPopDish = new dndSource('fzPopDish', {
-    accept: ["popDish"],
+  dnd.fzWorld = new dndSource('fzWorld', {
+    accept: ['w'],
     singular: true,
     copyOnly: true,
     selfAccept: false
   });
-  dnd.fzPopDish.insertNodes(false, [
-    {data: "@example", type: ["popDish"]},
-    {data: "m2w30u1000nand", type: ["popDish"]},
-    {data: "m2w30u1000not", type: ["popDish"]}
+  dnd.fzWorld.insertNodes(false, [
+    {data: "@example", type: ['w']},
+    {data: "m2w30u1000nand", type: ['w']},
+    {data: "m2w30u1000not", type: ['w']}
   ]);
-  dnd.organIcon = new dndTarget('organIcon', {accept: ["organism"], selfAccept: false});
-  dnd.ancestorBox = new dndSource('ancestorBox', {accept: ["organism"], copyOnly: false, selfAccept: false});
+  dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
+  dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
 
-  dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ["organism"]});
+  dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
 
-  dnd.trashCan = new dndSource('trashCan', {accept: ['conDish', 'organism', 'popDish'], singular: true});
+  dnd.trashCan = new dndSource('trashCan', {accept: ['conDish', 'g', 'popDish'], singular: true});
   if (debug.root) console.log('after trashCan');
 
   dnd.activeConfig = new dndSource('activeConfig', {
-    accept: ["conDish"],
+    accept: ['c'],
     singular: true,
     copyOnly: true,
     selfAccept: false
   });
-  dnd.activeConfig.insertNodes(false, [{data: "@default", type: ["conDish"]}]);
+  dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
 
   //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   dnd.activeOrgan = new dndSource('activeOrgan', {
-    accept: ["organism"],
+    accept: ['g'],
     singular: true,
     copyOnly: true,
     selfAccept: false
   });
-  dnd.organCanvas = new dndSource('organCanvas', {accept: ["organism"], singular: true, selfAccept: false});
+  dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
   //Targets only accept object, source can do both
-  dnd.graphPop1 = new dndTarget('graphPop1', {accept: ["popDish"], singular: true});
-  dnd.graphPop2 = new dndTarget('graphPop2', {accept: ["popDish"], singular: true});
-  dnd.graphPop3 = new dndTarget('graphPop3', {accept: ["popDish"], singular: true});
+  dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
+  dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
+  dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
 
   //structure to hole list of ancestor organisms
   var parents = {};
@@ -526,7 +471,9 @@ require([
 
   dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' == target.node.id) {
+      var num = fzr.config[fzr.config.length-1].fileNum;
       landFzConfig(dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
+      if (num != fzr.config[fzr.config.length-1].fileNum) pdbConfig(fzr, fio.wsdb);
     }
   });
 
@@ -619,7 +566,7 @@ require([
     switch (target.node.id) {
       case 'activeConfig':
         landActiveConfig(dnd, pkg); break;
-      case 'fzPopDish':
+      case 'fzWorld':
         landFzPopDish(dnd, pkg); break;   //will never be called as fzPopDish is the only source for the popDish type.
     }
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
@@ -660,7 +607,7 @@ require([
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
   document.getElementById("PopStatsButton").onclick = function () {
     popStatView(grd);
-  }
+  };
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
 
   /* *************************************************************** */
@@ -702,16 +649,16 @@ require([
     }
     else { // setup for a new run by sending config data to avida
       if (grd.newrun) {
-        requestPopStats();  //uiWorker
-        requestGridData();  //uiWorker
+        requestPopStats();  //fio.uiWorker
+        requestGridData();  //fio.uiWorker
 
         //change ui parameters for the correct state when the avida population has started running
         popRunningState_ui(dnd, grd);
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        sendConfig(wsdb);          //pouchDB_IO.js
-        injectAncestors(parents); //uiWorker
+        sendConfig(fio);          //pouchDB_IO.js
+        injectAncestors(parents); //fio.uiWorker
       }
       doRunPause();
     }
@@ -811,9 +758,9 @@ require([
 
   //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
-    wsdb.allDocs({include_docs:true}).then(function(docInc){
+    fio.wsdb.allDocs({include_docs:true}).then(function(docInc){
       console.log('Include doc', docInc);
-      wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
+      fio.wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
         console.log('wsdb get doc0', doc);
       }).catch(function(err){
         console.log('wsdb get error',err);
@@ -822,9 +769,9 @@ require([
       console.log('allDocs get error',err);
     })
 
-    wsdb.allDocs().then(function(docObj){
+    fio.wsdb.allDocs().then(function(docObj){
       console.log('wsdb doc', docObj);
-      wsdb.get(docObj.rows[1].key).then(function(doc) {
+      fio.wsdb.get(docObj.rows[1].key).then(function(doc) {
         console.log('wsdb get doc1', doc);
       }).catch(function(err){
         console.log('wsdb get error',err);
@@ -848,11 +795,19 @@ require([
       var namelist = dojo.query('> .dojoDndItem', 'fzConfig');
       fzName = getUniqueName(fzName, dnd.fzConfig);
       if (null != fzName) {
-        dnd.fzConfig.insertNodes(false, [{data: fzName, type: ["conDish"]}]);
+        dnd.fzConfig.insertNodes(false, [{data: fzName, type: ['c']}]);
         dnd.fzConfig.sync();
         //Create context menu for right-click on this item
         var domID = getDomID(fzName, dnd.fzConfig);
-        writeConfig(fzName, domID);
+        var newConfig = {
+          domID: domID,
+          name: fzName,
+          _id: 'ws/c'+ fzr.cNum,
+          fileNum: fzr.cNum
+        };
+        fzr.config.push(newConfig);
+        fzr.cNum++;
+        pdbConfig(fzr, wsdb);
         contextMenu(fzr, dnd.fzConfig, domID);
       }
     }
@@ -872,14 +827,14 @@ require([
   function FrPopulationFn() {
     var fzName = prompt("Please name the new population", "newPopulation");
     if (fzName) {
-      fzName = getUniqueName(fzName, dnd.fzPopDish);
+      fzName = getUniqueName(fzName, dnd.fzWorld);
       if (null != fzName) {
-        dnd.fzPopDish.insertNodes(false, [{data: fzName, type: ["popDish"]}]);
-        dnd.fzPopDish.sync();
+        dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
+        dnd.fzWorld.sync();
         //Create context menu for right-click on this item
         //Find out the dom ID the node element just inserted.
-        var domID = getDomID(fzName, dnd.fzPopDish);
-        contextMenu(dnd.fzPopDish, domID);
+        var domID = getDomID(fzName, dnd.fzWorld);
+        contextMenu(dnd.fzWorld, domID);
       }
     }
   }
@@ -924,7 +879,7 @@ require([
     fzName = getUniqueName(fzName, dnd.fzOrgan);
     if (null != fzName) {
       //insert new item into the freezer.
-      dnd.fzOrgan.insertNodes(false, [{data: fzName, type: ["organism"]}]);
+      dnd.fzOrgan.insertNodes(false, [{data: fzName, type: ['g']}]);
       dnd.fzOrgan.sync();
 
       //Find out the dom ID the node element just inserted.
@@ -943,6 +898,21 @@ require([
 //********************************************************************
 //    Mouse DND functions
 //********************************************************************
+/* mouse websites
+mouse clicks
+ http://stackoverflow.com/questions/706655/bind-event-to-right-mouse-click
+ http://stackoverflow.com/questions/7343117/cant-use-jquerys-click-event-handler-to-detect-right-click
+ http://stackoverflow.com/questions/1206203/how-to-distinguish-between-left-and-right-mouse-click-with-jquery
+ http://www.w3schools.com/jsref/dom_obj_event.asp
+
+ overide mouse shape
+ http://stackoverflow.com/questions/10750582/global-override-of-mouse-cursor-with-javascript
+ https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
+ http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
+ http://www.w3schools.com/cssref/playit.asp?filename=playcss_cursor&preval=row-resize
+ http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
+ */
+
 
   //http://maffelu.net/jquery-handle-left-click-right-click-and-double-click-at-the-same-time/
   // I just had to handle a left-click, right-click and a dbl-click at the same time which turned
@@ -1240,6 +1210,7 @@ require([
       findLogicOutline(grd);
     }
     /*
+    //http://stackoverflow.com/questions/10118172/setting-div-width-and-height-in-javascript
     //the console.log is to look at why scroll bars show up when they should not
     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
@@ -1306,9 +1277,9 @@ require([
     //console.log('mid gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
     //console.log('mid Canvas Ht Grid, Scale, popBot total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height,document.getElementById('popBot').clientHeight, grd.CanvasGrid.height+grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
 
-    if (document.getElementById('gridHolder').scrollHeight=document.getElementById('gridHolder').clientHeight+17){
-      var num = document.getElementById('gridHolder').clientHeight;
-      grd.CanvasGrid.height = gridHolderHt - 6-17;
+    if (document.getElementById('gridHolder').scrollHeight==document.getElementById('gridHolder').clientHeight+17){
+      var numGH = document.getElementById('gridHolder').clientHeight;
+      grd.CanvasGrid.height = numGH - 6-17;
       findGridSize(grd, parents);     //in PopulationGrid.js
     }
     DrawGridUpdate(grd, parents);   //in PopulationGrid.js
@@ -1448,8 +1419,8 @@ require([
   // *************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // *************************************************************** */
-  gridWasCols = Number(document.getElementById("sizeCols").value);
-  gridWasRows = Number(document.getElementById("sizeRows").value);
+  grd.gridWasCols = Number(document.getElementById("sizeCols").value);
+  grd.gridWasRows = Number(document.getElementById("sizeRows").value);
   function popSizeFn() {
     var NewCols = Number(document.getElementById("sizeCols").value);
     var NewRows = Number(document.getElementById("sizeRows").value);
@@ -1462,8 +1433,8 @@ require([
       parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
       //console.log('New cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
     }
-    gridWasCols = Number(document.getElementById("sizeCols").value);
-    gridWasRows = Number(document.getElementById("sizeRows").value);
+    grd.gridWasCols = Number(document.getElementById("sizeCols").value);
+    grd.gridWasRows = Number(document.getElementById("sizeRows").value);
     //reset zoom power to 1
     grd.ZoomSlide.set("value", 1);
     PlaceAncestors(parents);
@@ -1511,6 +1482,7 @@ require([
   //need to get the next two values from real data.
   //var popY = [1, 1, 1, 2, 2, 2, 4, 4, 4, 8,8,8,14,15,16,16,16,24,24,25,26,36,36,36,48,48]; /
   var popY = [];
+  var popY2 = [];
   var ytitle = dijit.byId("yaxis").value;
   var popChart = new Chart("popChart");
 
@@ -1920,7 +1892,7 @@ require([
     document.getElementById(htChangeDiv).style.height = NewHt + 'px';
 
     //redraw the screen
-    mainBoxSwap(page);
+    //mainBoxSwap(page);
     if (debug.root) console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
       document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
       document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
@@ -1930,10 +1902,10 @@ require([
   removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
   removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
   removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
+  mainBoxSwap('populationBlock');
 
   popChartFn();
   DrawGridSetup(); //Draw initial background
-
   //************************************************************************
   //Useful Generic functions
   //************************************************************************
@@ -1986,6 +1958,86 @@ require([
   //  return dnd.fzConfig.getItem(node.id).data;
   //});
   //console.log("orderedDataItems", orderedDataItems);
+
+  //**************************************************************************************************
+  //                web worker to talk to avida
+  //**************************************************************************************************/
+
+  //trying fio.uiWorker to start Avida inside the initiation of PouchDB
+
+  function readMsg(ee, dft, dnd, parents) {
+    var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
+    if ('data' == msg.type) {
+      switch (msg.name) {
+        case 'runPause':
+          if (true != msg["Success"]) {
+            console.log("Error: ", msg);  // msg failed
+            runStopFn();  //flip state back since the message failed to get to Avida
+          }
+          break;
+        case 'reset':
+          if (true !== msg.Success) {
+            console.log("Reset failed: ", msg);
+          }
+          break;
+        case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
+          traceObj = msg.snapshots;
+          gen.cycle = 0;
+          dijit.byId("orgCycle").set("value", 0);
+          cycleSlider.set("maximum", traceObj.length - 1);
+          cycleSlider.set("discreteValues", traceObj.length);
+          updateOrgTrace(traceObj, gen);
+          break;
+        case 'webPopulationStats':
+          updatePopStats(grd, msg);
+          popChartFn();
+          if (debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
+          break;
+        case 'webGridData':
+          //mObj=JSON.parse(JSON.stringify(jsonObject));
+          grd.msg = msg;
+          DrawGridSetup();
+          if (debug.msgOrder) console.log('webGridData length', grd.ave_fitness.length);
+          //if (debug.msgOrder) console.log('ges',grd.msg.gestation.data);
+          //if (debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
+          if (debug.msgOrder) console.log('nan',grd.msg.nand.data);
+          if (debug.msgOrder) console.log('out',grd.out);
+          break;
+        case 'webOrgDataByCellID':
+          //if ('undefined' != typeof grd.msg.ancestor) {console.log('webOrgDataByCellID anc',grd.msg.ancestor.data);}
+          updateSelectedOrganismType(grd, msg, parents);  //in messageing
+          break;
+        default:
+          console.log('____________UnknownRequest: ', msg);
+          break;
+      }
+    }
+    else if ('userFeedback' == msg.type) {
+      switch (msg.level) {
+        case 'notification':
+          console.log('avida:notify: ',msg.message);
+          LoadLabel.textContent = msg.message;
+          break;
+        case 'warning':
+          console.log('avida:warn: ',msg.message);
+          break;
+        case 'fatal':
+          console.log('avida:fatal: ',msg.message);
+          break;
+        default:
+          console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
+          break;
+      }
+    }
+  }
+
+  //fio.uiWorker used when communicating with the web worker and avida
+  console.log('before call avida');
+  fio.uiWorker = new Worker('avida.js');
+
+  //process message from web worker
+  console.log('before fio.uiWorker on message');
+  fio.uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
 
 //********************************************************
 //   Color Test Section - Temp this will all be removed later

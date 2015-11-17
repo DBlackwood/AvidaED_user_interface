@@ -1,11 +1,9 @@
-//uiWorker used when communicating with the web worker and avida
-var uiWorker = new Worker('avida.js');
-//var uiWorker = new Worker('ui-test.js');
 
-//uiWorker function
+//fio.uiWorker function
 function doOrgTrace(fzr) {
+  "use strict";
   var seed = 100*Math.random();
-  if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0 }
+  if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
   else {seed = -1}
   var request = {
     'type': 'addEvent',
@@ -19,11 +17,12 @@ function doOrgTrace(fzr) {
     ]
   };
   if (debug.msg) console.log('trace', request);
-  uiWorker.postMessage(request);
+  fio.uiWorker.postMessage(request);
 }
 
 //request data from Avida to update SelectedOrganismType
 function doSelectedOrganismType(grd) {
+  "use strict";
   var request = {
     'type': 'addEvent',
     'name': 'WebOrgDataByCellID',
@@ -31,33 +30,35 @@ function doSelectedOrganismType(grd) {
     'args': grd.selectedNdx
   }
   if (debug.msg) console.log('doSelectedOrganismType; selectedNdx', grd.selectedNdx)
-  uiWorker.postMessage(request);
+  fio.uiWorker.postMessage(request);
 }
 
-//uiWorker function
+//fio.uiWorker function
 function requestPopStats() {
+  "use strict";
   var request = {
     'type': 'addEvent',
     'name': 'webPopulationStats',
     'start': 'now',
     'interval': 'always'
   }
-  uiWorker.postMessage(request);
+  fio.uiWorker.postMessage(request);
 }
 
-//uiWorker function
+//fio.uiWorker function
 function requestGridData() {
+  "use strict";
   var request = {
     'type': 'addEvent',
     'name': 'webGridData',
     'start': 'now',
     'interval': 'always'
   }
-  uiWorker.postMessage(request);
+  fio.uiWorker.postMessage(request);
 }
 
 //sends message to worker to tell Avida to run/pause as a toggle.
-//uiWorker function
+//fio.uiWorker function
 function doRunPause() {
   if (dijit.byId("manRadio").get('checked')) {
     request = {
@@ -75,18 +76,27 @@ function doRunPause() {
       'interval': 'once'
     }
   }
-  uiWorker.postMessage(request);
+  fio.uiWorker.postMessage(request);
 }
 
-//uiWorker function
+//fio.uiWorker function
 function doReset() {
   var request = {
     'Key': 'Reset'
   };
-  uiWorker.postMessage(request);
+  fio.uiWorker.postMessage(request);
+}
+
+//fio.uiWorker function
+function doDbReady() {
+  var request = {
+    'type': 'dbReady'
+  };
+  fio.uiWorker.postMessage(request);
 }
 
 function injectAncestors(parents) {
+  "use strict";
   var request;
   for (ii = 0; ii < parents.name.length; ii++) {
     request = {
@@ -103,12 +113,13 @@ function injectAncestors(parents) {
         0 //neutral_metric
       ]
     }
-    uiWorker.postMessage(request);
+    fio.uiWorker.postMessage(request);
   }
 }
 
 //---------------------------------
 function updatePopStats(grd, msg) {
+  "use strict";
   var place = 2;
   document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0) + " updates";
   document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
@@ -139,6 +150,7 @@ function updatePopStats(grd, msg) {
 }
 
 function updateLogicAve(grd, msg){
+  "use strict";
   if (grd.allOff) {
     grd.log_fitness[msg.update] = null;
     grd.log_gestation_time[msg.update] = null;
@@ -173,6 +185,7 @@ function updateLogicAve(grd, msg){
 
 //writes out data for WebOrgDataByCellID
 function updateSelectedOrganismType(grd, msg, parents) {
+  "use strict";
   if (debug.msg) console.log('selected_msg', msg);
   if (debug.msg) console.log('selected_msg', msg.tasks);
   if (msg.isEstimate) prefix = "est. ";
@@ -262,6 +275,7 @@ function updateSelectedOrganismType(grd, msg, parents) {
 }
 
   function fillColorBlock(grd, msg, parents) {  //Draw the color block
+    "use strict";
     if (debug.msg) console.log('in fillColorBlock');
     if (debug.msg) console.log('ndx', grd.selectedNdx, '; msg.ancestor.data[ndx]',grd.msg.ancestor.data[grd.selectedNdx]);
     if (debug.msg) console.log('grd.fill[grd.selectedNdx]',grd.fill[grd.selectedNdx]);

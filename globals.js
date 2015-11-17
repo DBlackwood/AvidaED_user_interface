@@ -1,3 +1,6 @@
+//***************************************
+// Defaults and Constants
+
 //Debug flags
 var debug = {};
 debug.root = false;  //statemens that look for failiers when the code executes outside of functions
@@ -8,7 +11,8 @@ debug.msg = false;     //messages to and from avida
 debug.trace = false;   //organism page
 debug.grid = false;     //population grid
 debug.msgOrder = false; //message order
-debug.pdb = false; //pouchDB
+debug.pdb = true; //pouchDB
+debug.fio = true; // file io
 
 //default values - these may be overwritten by those in a file once we get the file system working.
 dft = {};
@@ -96,6 +100,7 @@ function clearGrd() {
   grd.leftpad = 10;     //padding to allow space between each column of text in the legend
 }
 
+//http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
 // please note,
 // that IE11 now returns undefined again for window.chrome
 // and new Opera 30 outputs true for window.chrome
@@ -108,12 +113,34 @@ bag.isChromium = window.chrome;
   bag.vendorName = window.navigator.vendor;
   bag.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
   bag.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
-if(bag.isChromium !== null && bag.isChromium !== undefined && bag.vendorName === "Google Inc." && bag.isOpera == false && bag.isIEedge == false) {
+if (bag.isChromium !== null && bag.isChromium !== undefined && bag.vendorName === "Google Inc." && bag.isOpera === false && bag.isIEedge === false) {
   bag.chrome = true;
 } else {
   bag.chrome = false; // not Google chrome
 }
 
-//***************************************
-// Defaults and Constants
+var fio = {};
+fio.dbName = 'wsdb';  //for workspace database
+fio.wsdb = null;
+fio.defaultFname = 'default1.avidaedworkspace.zip';
 
+
+var dnd = {};
+var fzr = {};
+fzr.cNum = 0;
+fzr.gNum = 0;
+fzr.wNum = 0;
+fzr.config = [];
+fzr.organism = [];
+fzr.world = []
+
+/* Fzr - Freezer.
+fzr.g.name
+fzr.g.fileNum
+fzr.g._id - PouchDB ID
+fzr.g.domId
+fzr.g.genome
+fzr.c - configued dish
+fzr.w - world (populated dish)
+
+*/

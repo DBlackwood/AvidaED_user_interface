@@ -101,6 +101,7 @@ function OffspringMouse(evt, dnd, fzr) {
 }
 
 function traceSelected(dnd, fzr, grd) {
+  "use strict";
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   dnd.activeOrgan.sync();   //should be done after insertion or deletion
   //Put name of offspring in OrganCurrentNode
@@ -113,6 +114,7 @@ function traceSelected(dnd, fzr, grd) {
 }
 
 function KidMouse(evt, dnd, fzr, grd){
+  "use strict";
   if (debug.mouse) console.log('in KidMouse', evt.target.id, evt);
   if (5 < grd.kidGenome.length) {
     if ('organIcon' == evt.target.id) {traceSelected(dnd, fzr, grd)}

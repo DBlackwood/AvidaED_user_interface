@@ -1,8 +1,128 @@
+
+
+// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+function readDefaultWS(dnd, fio, fzr) {
+  "use strict";
+  fio.zipName = fio.defaultFname;
+  var oReq = new XMLHttpRequest();
+//oReq.open("GET", "/ziptest.zip", true);
+  oReq.open("GET", fio.zipName, true);
+  oReq.responseType = "arraybuffer";
+  oReq.onload = function (oEvent) {
+    var arybuf = oReq.response;
+    console.log("have ziptest.zip", arybuf);
+    // do something to extract it
+    fio.zipfile = new fio.JSZip();
+    console.log("loading arybuf");
+    fio.zipfile.load(arybuf, {base64: false});
+    //console.log("arybuf loaded");
+    console.log('before call procesfiles');
+    fio.target = null;
+    for (var zFileName in fio.zipfile.files) {
+      //target will be assigned the beginning of the path name within the zip file.
+      if (null == fio.target) {
+        var leading = wsb('/', zFileName);
+        if ('__MACOSX' != leading) fio.target = leading;
+      }
+      fio.thisfile = fio.zipfile.files[zFileName];
+      fio.fName = zFileName;
+      processFiles(dnd, fio, fzr);
+    }
+  }
+  oReq.send();
+}
+
+function addFzItem(dndSection, fio, fzrSection, item, type) {
+  "use strict";
+  dndSection.insertNodes(false, [{data: item.name, type: [type]}]);
+  dndSection.sync();
+  var mapItems = Object.keys(dndSection.map);
+  item.domId = mapItems[mapItems.length - 1];
+  fzrSection.push(item);
+  //create a right mouse-click context menu for the item just created.
+  console.log('item', item);
+  if (0<item.fileNum) {contextMenu(fzr, dndSection, item.domId);}
+}
+
+function add2freezer(dnd,fio, fzr) {
+  "use strict";
+  var type = fio.anID.substr(0, 1);
+  var tmp = wsb('/', fio.anID);
+  var num = tmp.substr(1, tmp.length-1);
+  var name;
+  if (null == fio.thisfile.asText()) { name = fio.anID; }
+  else { name = fio.thisfile.asText(); }
+  var item = {
+    'name': name,
+    'fileNum': num,
+    '_id': fio.anID
+  };
+  if (debug.fio) console.log('type ', type, '; tmp', tmp, '; num', num);
+  switch (type) {
+    case 'c':
+      addFzItem(dnd.fzConfig, fio, fzr.config, item, type);
+      break;
+    case 'g':
+      var afileName = wsb('entryname.txt', fio.fName) + 'genome.seq';
+      item.genome = fio.zipfile.files[afileName].asText();
+      addFzItem(dnd.fzOrgan, fio, fzr.organism, item, type);
+      break;
+    case 'w':
+      addFzItem(dnd.fzWorld, fio, fzr.world, item, type);
+      break;
+  }
+}
+
+function processFiles(dnd, fio, fzr){
+  "use strict";
+  fio.anID = wsa(fio.target+'/', fio.fName);
+  var fileType = wsa('/', fio.anID);
+  //console.log("  within zip: full, ", fio.fName, '; id ',anID, '; type ', fileType);
+  switch (fileType) {
+    case 'entryname.txt':
+      add2freezer(dnd, fio, fzr);
+    case 'ancestors':
+    case 'ancestors_manual':
+    case 'avida.cfg':
+    case 'clade.ssg':
+    case 'detail.spop':
+    case 'environment.cfg':
+    case 'events.cfg':
+    case 'genome.seq':
+    case 'instset.cfg':
+    case 'tr0':
+    case 'tr1':
+    case 'tr2':
+    case 'tr3':
+    case 'update':
+      var ifile = {
+        _id: fio.anID,
+        text: fio.thisfile.asText()
+      };
+      fio.wsdb.get(fio.anID).then(function (doc) {
+        ifile._rev = doc._rev;
+        if (debug.pdb) console.log('get entryName doc already exists, ok update', doc);
+        fio.wsdb.put(ifile).then(function (response) {//if (debug.fio) console.log('ok correct', response); // handle response to put
+        }).catch(function (err) {console.log('put err', err);
+        });
+      }).catch(function (err) {
+        fio.wsdb.put(ifile).then(function (response) {//if (debug.fio) console.log('ok correct', response); // handle response to put
+        }).catch(function (err) {console.log('put err', err);
+        });
+      });
+      break;
+    default:
+      //if (debug.fio) console.log('undefined file type in zip: full ', fio.fName, '; id ', fio.anID, '; type ', fileType);
+      break;
+  }
+  if (debug.fio) console.log('file type in zip: fname ', fio.fName, '; id ', fio.anID, '; type ', fileType);
+}
+
 //console.log("Start of FileIO.js");
 //console.log("declaring mnOpenWorkSpace()");
 function mnOpenWorkSpace() {
   console.log('test message');
-  OpenWsDialog.show();
+  openWsDialog.show();
   // Check for the various File API support.  http://www.html5rocks.com/en/tutorials/file/dndfiles/
   if (window.File && window.FileReader && window.FileList && window.Blob) { // Great success! All the File APIs are supported.
     console.log('file stuff should work')
@@ -25,6 +145,10 @@ function mnOpenWorkSpace() {
   }
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
+}
+
+function mnOpenDefault(){
+
 }
 
 /*

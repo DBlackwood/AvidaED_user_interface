@@ -52,7 +52,7 @@
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
-            <span data-dojo-type="dijit/MenuItem" label="Open Default Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnOpenDefault' label="Open Default Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnOpenWS' label="Open Workspace"></span>
           </span>
         </span>
@@ -149,7 +149,7 @@
         <span data-dojo-type="dijit/TitlePane" title="Populated Dishes" extractContent="false" preventCache="false"
               preload="false" refreshOnShow="false" duration="200" open="true"
               style="min-width: 1px; width: 100%; height: auto; overflow: auto">
-          <div id="fzPopDish" class="container" jsId="freezePopDish"></div>
+          <div id="fzWorld" class="container" jsId="freezePopDish"></div>
         </span>
       </div>
     </div>
@@ -175,6 +175,7 @@
                 <div class="lftmargin"><img src="avida-ed-dish-icon.png"></img></div>
                 <div id="activeConfig" class="popContainer"></div>
               </td>
+              <td><label id="LoadLabel">Loading . . .</label></td>
               <td style="text-align: right;">
                 <button id="PopSetupButton">Setup</button>
                 <button id="PopStatsButton">Stats</button>
@@ -914,7 +915,7 @@
 </div>
 
 <!-- Open file Dialog -->
-<div data-dojo-type="dijit/Dialog" data-dojo-id="OpenWsDialog"
+<div data-dojo-type="dijit/Dialog" data-dojo-id="openWsDialog"
      title="Open Dialog.">
   <div class="dijitDialogPaneContentArea">
     <p>Select Workspace</p>

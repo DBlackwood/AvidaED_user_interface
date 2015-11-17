@@ -92,7 +92,7 @@ function wsb(target, strng){
     sb = strng.substr(0, tndx);
     return sb;
   }
-};
+}
 
 /*
  wsa(target, thestring)

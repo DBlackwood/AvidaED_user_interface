@@ -188,7 +188,7 @@ function DrawLogicSelected(grd) {
   //console.log('DrawLogic', grd.out);
   var cc, rr, xx, yy;
   var inner = 0.08 * grd.cellWd; //how far inside the square to put the outline.
-  var thick = 0.1 * grd.cellWd;; //thickness of line to draw
+  var thick = 0.1 * grd.cellWd; //thickness of line to draw
   if (1 > inner) inner = 1;
   if (1 > thick) thick = 1;
   //console.log('=========================')
