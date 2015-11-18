@@ -1,46 +1,13 @@
 
-
-// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-function readDefaultWS(dnd, fio, fzr) {
-  "use strict";
-  fio.zipName = fio.defaultFname;
-  var oReq = new XMLHttpRequest();
-//oReq.open("GET", "/ziptest.zip", true);
-  oReq.open("GET", fio.zipName, true);
-  oReq.responseType = "arraybuffer";
-  oReq.onload = function (oEvent) {
-    var arybuf = oReq.response;
-    console.log("have ziptest.zip", arybuf);
-    // do something to extract it
-    fio.zipfile = new fio.JSZip();
-    console.log("loading arybuf");
-    fio.zipfile.load(arybuf, {base64: false});
-    //console.log("arybuf loaded");
-    console.log('before call procesfiles');
-    fio.target = null;
-    for (var zFileName in fio.zipfile.files) {
-      //target will be assigned the beginning of the path name within the zip file.
-      if (null == fio.target) {
-        var leading = wsb('/', zFileName);
-        if ('__MACOSX' != leading) fio.target = leading;
-      }
-      fio.thisfile = fio.zipfile.files[zFileName];
-      fio.fName = zFileName;
-      processFiles(dnd, fio, fzr);
-    }
-  }
-  oReq.send();
-}
-
 function addFzItem(dndSection, fio, fzrSection, item, type) {
-  "use strict";
+  'use strict';
   dndSection.insertNodes(false, [{data: item.name, type: [type]}]);
   dndSection.sync();
   var mapItems = Object.keys(dndSection.map);
   item.domId = mapItems[mapItems.length - 1];
   fzrSection.push(item);
   //create a right mouse-click context menu for the item just created.
-  console.log('item', item);
+  if (debug.fio) console.log('item', item);
   if (0<item.fileNum) {contextMenu(fzr, dndSection, item.domId);}
 }
 
@@ -96,7 +63,7 @@ function processFiles(dnd, fio, fzr){
     case 'update':
       var ifile = {
         _id: fio.anID,
-        text: fio.thisfile.asText()
+        text: fio.thisfile.asText().trim()
       };
       if ('c0/avida.cfg'==fio.anID) {avidaCFG2form(fio.thisfile.asText()); }
       if ('c0/environment.cfg'==fio.anID) {environmentCFG2form(ifile.text); }
@@ -194,8 +161,9 @@ function avidaCFG2form(fileStr){
   var dict = avidaCFGparse(fileStr);
   dijit.byId("sizeCols").set('value', dict.WORLD_X);
   dijit.byId("sizeRows").set('value', dict.WORLD_Y);
-  document.getElementById("muteInput").value = dict.COPY_MUT_PROB;
-  var event = new Event('change');
+  document.getElementById("muteInput").value = dict.COPY_MUT_PROB*100;
+  //var event = new Event('change');
+  var event = new window.CustomEvent('change');
   document.getElementById("muteInput").dispatchEvent(event);
   if (0==dict.BIRTH_METHOD) {
     dijit.byId("childParentRadio").set('checked', true);

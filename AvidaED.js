@@ -102,6 +102,40 @@ require([
   fio.JSZip = JSZip;
   fio.uiWorker=null;
 
+  // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+  function readDefaultWS(dnd, fio, fzr) {
+    'use strict';
+    fio.zipName = fio.defaultFname;
+    var oReq = new XMLHttpRequest();
+//oReq.open("GET", "/ziptest.zip", true);
+    oReq.open("GET", fio.zipName, true);
+    oReq.responseType = "arraybuffer";
+    oReq.onload = function (oEvent) {
+      var arybuf = oReq.response;
+      console.log("have ziptest.zip", arybuf);
+      // do something to extract it
+      fio.zipfile = new fio.JSZip();
+      console.log("loading arybuf");
+      fio.zipfile.load(arybuf, {base64: false});
+      //console.log("arybuf loaded");
+      console.log('before call procesfiles');
+      fio.target = null;
+      for (var zFileName in fio.zipfile.files) {
+        //target will be assigned the beginning of the path name within the zip file.
+        if (null == fio.target) {
+          var leading = wsb('/', zFileName);
+          if ('__MACOSX' != leading) fio.target = leading;
+        }
+        fio.thisfile = fio.zipfile.files[zFileName];
+        fio.fName = zFileName;
+        processFiles(dnd, fio, fzr);
+      }
+      console.log('before DrawGridSetup')
+      DrawGridSetup();
+    };
+    oReq.send();
+  }
+
   function initializeDB(fio, fzr) {
     "use strict";
     var oldDb = new fio.PouchDB(fio.dbName);
@@ -109,12 +143,12 @@ require([
     oldDb.destroy(fio.dbName).then(function (response) {//success
       oldDb = null;
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
-      if (debug.fio) console.log('after new PouchDB - send msg to Avida');
+      console.log('after new PouchDB - send msg to Avida');
       doDbReady();
       readDefaultWS(dnd, fio, fzr);
     }).catch(function (err) {
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
-      console.log('after fnew PouchDB destroy db err', err);
+      console.log('after new PouchDB destroy db err', err);
       doDbReady();
       readDefaultWS(dnd, fio, fzr);
     });
@@ -725,8 +759,9 @@ require([
       })
     }).catch(function(err){
       console.log('allDocs get error',err);
-    })
-
+    });
+    console.log('fzr', fzr);
+/*
     fio.wsdb.allDocs().then(function(docObj){
       console.log('wsdb doc', docObj);
       fio.wsdb.get(docObj.rows[1].key).then(function(doc) {
@@ -737,6 +772,7 @@ require([
     }).catch(function(err){
       console.log('wsdb get error',err);
     })
+    */
   };
 
   //******* Freeze Button ********************************************
@@ -956,7 +992,7 @@ mouse clicks
         //draw number;
         gen.ctx.fillStyle = dictColor["Black"];
         gen.ctx.font = gen.fontsize + "px Arial";
-        txtW = gen.ctx.measureText(instructionNum).width;  //use if gen.dna is a string
+        var txtW = gen.ctx.measureText(instructionNum).width;  //use if gen.dna is a string
         //txtW = gen.ctx.measureText(gen.dna[gg][ith]).width;     //use if gen.dna is an array
         gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + gen.smallR / 2);  //use if gen.dna is a string
       }
@@ -1001,7 +1037,7 @@ mouse clicks
         if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
           grd.kidStatus = 'getgenome';
           doSelectedOrganismType(grd);
-          console.log('kid', grd.kidName, grd.kidGenome);
+          if (debug.mouse) console.log('kid', grd.kidName, grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnOrganismTrace").attr("disabled", false);
         }
@@ -1863,7 +1899,7 @@ mouse clicks
   mainBoxSwap('populationBlock');
 
   popChartFn();
-  DrawGridSetup(); //Draw initial background
+  //DrawGridSetup(); //Draw initial background
   //************************************************************************
   //Useful Generic functions
   //************************************************************************

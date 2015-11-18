@@ -1,5 +1,20 @@
 // Place Parent on grid and other useful functions
-// all instances of Math.floorr were Math.floor
+// all instances of Math.floor were Math.trunc
+
+//because IE does not understand var event = new Event('change'); in the file fileIO.js
+(function () {
+  function CustomEvent ( event, params ) {
+    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    var evt = document.createEvent( 'CustomEvent' );
+    evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+    return evt;
+  }
+
+  CustomEvent.prototype = window.Event.prototype;
+
+  window.CustomEvent = CustomEvent;
+})();
+
 /* ----------------------------------------
 linmap
 Function by Wesley R. Elsberry, based on 

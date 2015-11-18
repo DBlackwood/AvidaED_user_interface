@@ -1,7 +1,7 @@
 
 //fio.uiWorker function
 function doOrgTrace(fzr) {
-  "use strict";
+  'use strict';
   var seed = 100*Math.random();
   if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
   else {seed = -1}
@@ -22,7 +22,7 @@ function doOrgTrace(fzr) {
 
 //request data from Avida to update SelectedOrganismType
 function doSelectedOrganismType(grd) {
-  "use strict";
+  'use strict';
   var request = {
     'type': 'addEvent',
     'name': 'WebOrgDataByCellID',
@@ -35,7 +35,7 @@ function doSelectedOrganismType(grd) {
 
 //fio.uiWorker function
 function requestPopStats() {
-  "use strict";
+  'use strict';
   var request = {
     'type': 'addEvent',
     'name': 'webPopulationStats',
@@ -47,7 +47,7 @@ function requestPopStats() {
 
 //fio.uiWorker function
 function requestGridData() {
-  "use strict";
+  'use strict';
   var request = {
     'type': 'addEvent',
     'name': 'webGridData',
@@ -60,6 +60,8 @@ function requestGridData() {
 //sends message to worker to tell Avida to run/pause as a toggle.
 //fio.uiWorker function
 function doRunPause() {
+  'use strict';
+  var request;
   if (dijit.byId("manRadio").get('checked')) {
     request = {
       'type': 'addEvent',
@@ -81,6 +83,7 @@ function doRunPause() {
 
 //fio.uiWorker function
 function doReset() {
+  'use strict';
   var request = {
     'Key': 'Reset'
   };
@@ -89,6 +92,7 @@ function doReset() {
 
 //fio.uiWorker function
 function doDbReady() {
+  'use strict';
   var request = {
     'type': 'dbReady'
   };
@@ -96,7 +100,7 @@ function doDbReady() {
 }
 
 function injectAncestors(parents) {
-  "use strict";
+  'use strict';
   var request;
   for (ii = 0; ii < parents.name.length; ii++) {
     request = {
@@ -119,7 +123,7 @@ function injectAncestors(parents) {
 
 //---------------------------------
 function updatePopStats(grd, msg) {
-  "use strict";
+  'use strict';
   var place = 2;
   document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0) + " updates";
   document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
@@ -150,7 +154,7 @@ function updatePopStats(grd, msg) {
 }
 
 function updateLogicAve(grd, msg){
-  "use strict";
+  'use strict';
   if (grd.allOff) {
     grd.log_fitness[msg.update] = null;
     grd.log_gestation_time[msg.update] = null;
@@ -185,17 +189,19 @@ function updateLogicAve(grd, msg){
 
 //writes out data for WebOrgDataByCellID
 function updateSelectedOrganismType(grd, msg, parents) {
-  "use strict";
+  'use strict';
+  var prefix = '';
   if (debug.msg) console.log('selected_msg', msg);
   if (debug.msg) console.log('selected_msg', msg.tasks);
   if (msg.isEstimate) prefix = "est. ";
+  else prefix = '';
   document.getElementById("nameLabel").textContent = msg.genotypeName;
   if (null === msg.fitness) document.getElementById("fitLabel").innerHTML = '-';
-  else document.getElementById("fitLabel").innerHTML = msg.fitness.formatNum(2);
+  else document.getElementById("fitLabel").innerHTML = prefix + msg.fitness.formatNum(2);
   if (null === msg.metabolism) document.getElementById("metabolicLabel").textContent = '-';
-  else document.getElementById("metabolicLabel").textContent = msg.metabolism.formatNum(2);
+  else document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism.formatNum(2);
   if (null === msg.gestation) document.getElementById("generateLabel").textContent = '-';
-  else  document.getElementById("generateLabel").textContent = msg.gestation.formatNum(2);
+  else  document.getElementById("generateLabel").textContent = prefix + msg.gestation.formatNum(2);
   if (null == msg.age) document.getElementById("ageLabel").textContent = '-';
     else document.getElementById("ageLabel").textContent = msg.age;
   if (null === msg.ancestor) {
@@ -275,7 +281,7 @@ function updateSelectedOrganismType(grd, msg, parents) {
 }
 
   function fillColorBlock(grd, msg, parents) {  //Draw the color block
-    "use strict";
+    'use strict';
     if (debug.msg) console.log('in fillColorBlock');
     if (debug.msg) console.log('ndx', grd.selectedNdx, '; msg.ancestor.data[ndx]',grd.msg.ancestor.data[grd.selectedNdx]);
     if (debug.msg) console.log('grd.fill[grd.selectedNdx]',grd.fill[grd.selectedNdx]);

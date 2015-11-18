@@ -18,7 +18,7 @@ debug.fio = false; // file io
 dft = {};
 dft.sizeCols = 60;
 dft.sizeRows = 60;
-dft.muteInput = 2;
+dft.muteInput = 2;   //percent
 dft.child = 'childParentRadio';  //alternate = childRandomRadio
 dft.nearParent = true;
 dft.notose = true;
