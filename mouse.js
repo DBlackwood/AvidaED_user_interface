@@ -33,7 +33,7 @@ function SelectedKidMouseStyle(dnd, fzr, grd) {
   document.getElementById('fzOrgan').style.cursor = 'copy';
   document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
-  for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'copy';
+  for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'copy';
   grd.kidName = 'temporary';
   grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab'  //ancestor
 }
@@ -63,8 +63,8 @@ function OffspringMouse(evt, dnd, fzr) {
   if ('organIcon' == evt.target.id) { offspringTrace(dnd, fzr) }
   else { // look for target in the freezer
     var found = false;
-    for (var ii=1; ii<fzr.organism.length; ii++) {
-      if (fzr.organism[ii].domId == evt.target.id) {found=true; break;}
+    for (var ii=1; ii<fzr.genome.length; ii++) {
+      if (fzr.genome[ii].domId == evt.target.id) {found=true; break;}
     }
     if (found || 'freezerDiv' == evt.target.id) {
       //create a new freezer item
@@ -89,8 +89,8 @@ function OffspringMouse(evt, dnd, fzr) {
             'domId': mapItems[mapItems.length - 1],
             'genome': '0,heads_default,' + gen.dna[1]
           }
-          fzr.organism.push(neworg);
-          if (debug.mouse) console.log('Offspring-->freezer, fzr.organism', fzr.organism);
+          fzr.genome.push(neworg);
+          if (debug.mouse) console.log('Offspring-->freezer, fzr.genome', fzr.genome);
           //create a right mouse-click context menu for the item just created.
           if (debug.mouse) console.log('Offspring-->freezer; neworg', neworg);
           contextMenu(fzr, dnd.fzOrgan, neworg.domId);
@@ -120,8 +120,8 @@ function KidMouse(evt, dnd, fzr, grd){
     if ('organIcon' == evt.target.id) {traceSelected(dnd, fzr, grd)}
     else { // look for target in the freezer
       var found = false;
-      for (var ii = 1; ii < fzr.organism.length; ii++) {
-        if (fzr.organism[ii].domId == evt.target.id) {
+      for (var ii = 1; ii < fzr.genome.length; ii++) {
+        if (fzr.genome[ii].domId == evt.target.id) {
           found = true;
           break;
         }
@@ -142,8 +142,8 @@ function KidMouse(evt, dnd, fzr, grd){
               'domId': mapItems[mapItems.length - 1],
               'genome': grd.kidGenome
             }
-            fzr.organism.push(neworg);
-            if (debug.mouse) console.log('Kid-->Snow', fzr.organism);
+            fzr.genome.push(neworg);
+            if (debug.mouse) console.log('Kid-->Snow', fzr.genome);
             //create a right mouse-click context menu for the item just created.
             if (debug.mouse) console.log('kid to freezerDiv', neworg);
             contextMenu(fzr, dnd.fzOrgan, neworg.domId);

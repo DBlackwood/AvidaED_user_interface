@@ -16,6 +16,7 @@
 //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
 //Puts the contents of the source in a object (list) called items.
 function getAllItems(source) {
+  'use strict';
   var items = source.getAllNodes().map(function (node) {
     return source.getItem(node.id);
   });
@@ -23,6 +24,7 @@ function getAllItems(source) {
 }
 
 var getUniqueName = function(name, target) {
+  'use strict';
   var namelist = dojo.query('> .dojoDndItem', target.node.id);
   var unique = true;
   while (unique) {
@@ -39,6 +41,7 @@ var getUniqueName = function(name, target) {
 }
 
 var getDomID = function (name, target){
+  'use strict';
   //Now find which node has the new content so it can get a context menu.
   var domItems = Object.keys(target.map);
   var nodeIndex = -1;
@@ -49,6 +52,19 @@ var getDomID = function (name, target){
     }
   }
   return domItems[nodeIndex];
+};
+
+//pass in fzr.config, fzr.world or fzr.organ
+var getFzrNdx = function (array, domId) {
+  'use strict';
+  var ndx = -1;
+  for (var ii = 0; ii < array.length; ii++){
+    if (domId === array[ii].domId) {
+      ndx = ii;
+      break;
+    }
+  }
+  return ndx;
 }
 
 //-------- Configuration DnD ---------------------------------------
@@ -56,14 +72,37 @@ var getDomID = function (name, target){
 //and reinserting the most resent one after a drop event.
 
 function landActiveConfig(dnd, pkg) {
+  'use strict';
+  var ndx = -1;
   //there is always a node here, so it must always be cleared when adding a new one.
-
   dnd.activeConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   //get the data for the new configuration
-  dnd.fzConfig.forInSelectedItems(function (item, id) {
-    dnd.activeConfig.insertNodes(false, [item]);  //assign the node that is selected from the only valid source.
+  pkg.source.forInSelectedItems(function (item, id) { //assign the node that is selected from the source.
+    dnd.activeConfig.insertNodes(false, [item]);
   });
   dnd.activeConfig.sync();
+  var domId = Object.keys(dnd.activeConfig.map)[0];
+  fzr.actConfig.domID = domId;
+  fzr.actConfig.name = document.getElementById(domId).textContent;
+  domId = Object.keys(pkg.source.selection)[0];
+  switch (pkg.source.node.id) {
+    case 'fzConfig':
+      fzr.actConfig.type = 'c';
+      ndx = getFzrNdx(fzr.config, domId);
+      if (-1 < ndx) {
+        fzr.actConfig._id = fzr.config[ndx]._id;
+      }
+      else {console.log('index not found for updating active configuration');}
+      break;
+    case 'fzWorld':
+      fzr.actConfig.type = 'w';
+      ndx = getFzrNdx(fzr.world, domId);
+      if (-1 < ndx) {
+        fzr.actConfig._id = fzr.world[ndx]._id;
+      }
+      else {console.log('index not found for updating active configuration');}
+      break;
+  }
 
   //I tried to see if I could just remove the one node rather than all of them and re-instering. Seems to work.
   //source.parent.removeChild(nodes[0]);    this statement works in trash to remove node from fzOrgan
@@ -79,11 +118,11 @@ function landActiveConfig(dnd, pkg) {
   //if (debug.dnd) console.log("currentI", currentItem, " freezeI", freezeItem);
   //document.getElementById(currentItem).textContent = document.getElementById(freezeItem).textContent;
 
-  //Update the configuration based on the Avida data  ***needs work****
 }
 
 //Process when an Configuration is added to the Freezer
 function landFzConfig(dnd, fzr, source, nodes, target) {
+  'use strict';
   var strItem = Object.keys(target.selection)[0];
   var dishCon = prompt("Please name your dish configuration", nodes[0].textContent + "_1");
   if (dishCon) {
@@ -97,7 +136,7 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
       var newConfig = {
         domID: domID,
         name: configName,
-        _id: 'ws/c'+ fzr.cNum,
+        _id: 'c'+ fzr.cNum,
         fileNum: fzr.cNum
       };
       fzr.config.push(newConfig);
@@ -119,8 +158,8 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
   if ('ancestorBox' != source.node.id) {
     //find genome by finding source
     var domId = Object.keys(source.selection)[0];
-    var ndx = fndGenomeNdx(domId, fzr.organism);
-    parents.genome.push(fzr.organism[ndx].genome);
+    var ndx = fndGenomeNdx(domId, fzr.genome);
+    parents.genome.push(fzr.genome[ndx].genome);
     nn = parents.name.length;
     parents.autoNdx.push(nn);
     parents.name.push(nodes[0].textContent);
@@ -163,9 +202,9 @@ function landGridCanvas(dnd, fzr, parents, source, nodes, target) {
     parents.howPlaced[nn] = 'hand';
     parents.name[nn] = nodes[0].textContent;
     var domId = Object.keys(source.selection)[0];
-    if (debug.dnd) console.log('LandGridCanvas; domId', domId, '; fzr.organism', fzr.organism);
-    var ndx = fndGenomeNdx(domId, fzr.organism);
-    parents.genome.push(fzr.organism[ndx].genome);
+    if (debug.dnd) console.log('LandGridCanvas; domId', domId, '; fzr.genome', fzr.genome);
+    var ndx = fndGenomeNdx(domId, fzr.genome);
+    parents.genome.push(fzr.genome[ndx].genome);
     //find domId of parent as listed in dnd.ancestorBox
     var mapItems = Object.keys(dnd.ancestorBox.map);
     parents.domId.push(mapItems[mapItems.length - 1]);
@@ -205,7 +244,7 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
           'domId': strItem,
           'genome': parents.genome[Ndx]
         };
-        fzr.organism.push(neworg);
+        fzr.genome.push(neworg);
 
         // need to remove organism from parents list.
         removeParent(Ndx, parents);
@@ -224,7 +263,7 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
           'domId': strItem,
           'genome': fzr.actOrgan.genome
         }
-        fzr.organism.push(neworg);
+        fzr.genome.push(neworg);
       }
       if (debug.dnd) console.log('fzOrgan', dnd.fzOrgan);
       //create a right mouse-click context menu for the item just created.
@@ -288,10 +327,10 @@ function landActiveOrgan(dnd, fzr, source, nodes, target) {
 function updateFromFzrOrganism(dnd, fzr) {
   var domId = Object.keys(dnd.fzOrgan.selection)[0];
   if (debug.dnd) console.log('domId', domId);
-  var ndx = fndGenomeNdx(domId, fzr.organism)
-  fzr.actOrgan.name = fzr.organism[ndx].name;
+  var ndx = fndGenomeNdx(domId, fzr.genome)
+  fzr.actOrgan.name = fzr.genome[ndx].name;
   fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
-  fzr.actOrgan.genome = fzr.organism[ndx].genome;
+  fzr.actOrgan.genome = fzr.genome[ndx].genome;
   if (debug.dnd) console.log('fzr.actOrgan', fzr.actOrgan);
 }
 
@@ -347,11 +386,11 @@ function landFzPopDish(dnd, pkg) {
 function landTrashCan(dnd, fzr, parents, source, nodes, target) {
   if (debug.dnd) console.log('in LandTrashCan');
   if ('fzOrgan' == source.node.id && '@ancestor' != nodes[0].textContent) {
-    if (debug.dnd) console.log('fzOrgan->trash', fzr.organism)
+    if (debug.dnd) console.log('fzOrgan->trash', fzr.genome)
     var domId = Object.keys(dnd.fzOrgan.selection)[0];
     if (debug.dnd) console.log('domId', domId);
-    var ndx = fndGenomeNdx(domId, fzr.organism);
-    fzr.organism.splice(ndx,1);
+    var ndx = fndGenomeNdx(domId, fzr.genome);
+    fzr.genome.splice(ndx,1);
     if (debug.dnd) console.log('fzOrgan->trash; nodes[0]',nodes[0]);
     if (debug.dnd) console.log('fzOrgan->trash; source.parent',source.parent);
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
@@ -472,7 +511,7 @@ function contextMenu(fzr, target, fzItemID) {
   var fzSection = target.node.id;
   if (debug.dnd) console.log("contextMenu; target.node.id=",target.node.id);
   if (debug.dnd) console.log("contextMenu; fzItemID=",fzItemID, " fzSection=", fzSection);
-  if (debug.dnd) console.log('contextMenu', fzItemID, fzr.organism);
+  if (debug.dnd) console.log('contextMenu', fzItemID, fzr.genome);
   var aMenu = new dijit.Menu({targetNodeIds: [fzItemID]});
   aMenu.addChild(new dijit.MenuItem({
     label: "Rename",
@@ -486,8 +525,8 @@ function contextMenu(fzr, target, fzItemID) {
           //if (debug.dnd) console.log(".data=", target.map[fzItemID].data);
           //update freezer structure
           if ('fzOrgan' == fzSection) {
-            var Ndx = fndGenomeNdx(fzItemID, fzr.organism);
-            fzr.organism[Ndx].name = fzName;
+            var Ndx = fndGenomeNdx(fzItemID, fzr.genome);
+            fzr.genome[Ndx].name = fzName;
           } else if ('fzConfig' == fzSection){
             var Ndx = fndGenomeNdx(fzItemID, fzr.config);
             fzr.config[Ndx].name = fzName;
@@ -506,8 +545,8 @@ function contextMenu(fzr, target, fzItemID) {
       var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
       if (sure) {
         if ('fzOrgan' == fzSection) {
-          var Ndx = fndGenomeNdx(fzItemID, fzr.organism);
-          fzr.organism.splice(Ndx, 1);
+          var Ndx = fndGenomeNdx(fzItemID, fzr.genome);
+          fzr.genome.splice(Ndx, 1);
         }
         target.selectNone();
         dojo.destroy(fzItemID);

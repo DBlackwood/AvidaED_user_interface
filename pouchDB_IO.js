@@ -1,67 +1,67 @@
 //need to write string to be the data 'file' to put in pouchDB
 
-function sendConfig(fio) {
-  var idStr = 'cT';
-  pdbAvida_cfg(fio.wsdb, idStr, '');
-  pdbEnvironment_cfg(fio.wsdb, idStr, '');
-  pdbEvents(fio.wsdb, idStr, '')
-
-  if (debug.pdb) {  //may run before the PouchDB function complete, this is not an error
-    fio.wsdb.allDocs({
-      include_docs: true,
-      attachments: true
-    }).then(function (result) {
-      console.log('alldoc', result);
-    }).catch(function (err) {
-      console.log(err);
-    });
-  }
-}
-
-function pdbEntryname_txt(wsdb, idStr, name) {
-  "use strict";
+function makePdbEntrynameTxt(fio, idStr, name) {
+  'use strict';
   var ifile = {
     _id: idStr + '/entryname.txt',
     text: name
   };
-  wsdb.get(idStr + '/entryname.txt').then(function (doc) {
+  fio.wsdb.get(idStr + '/entryname.txt').then(function (doc) {
     ifile._rev = doc._rev;
     if (debug.pdb) console.log('get entryName doc already exists, ok update', doc);
-    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
     }).catch(function (err) {console.log('put err', err);
     });
   }).catch(function (err) {
-    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
     }).catch(function (err) {console.log('put err', err);
     });
   });
 }
 
-function pdbConfig(fzr, wsdb) {
-  ndx = fzr.config.length-1;  //write the last one created
-  if (debug.pdb) console.log('wsdb', wsdb);
-  pdbAvida_cfg(wsdb, fzr.config[ndx]._id, fzr.config[ndx].domID);
-  pdbEnvironment_cfg(wsdb, fzr.config[ndx]._id, fzr.config[ndx].domID);
-  pdbEvents(wsdb, fzr.config[ndx]._id, fzr.config[ndx].domID);
-  pdbEntryname_txt(wsdb, fzr.config[ndx]._id, fzr.config[ndx].name)
+// copy instruction set from default config.
+function makePdbInstsetCfg(fio, idStr) {
+  'use strict';
+  var ifile = {_id: idStr + '/instset.cfg'};
+  fio.wsdb.get('c0/instset.cfg').then(function (instsetDoc) {
+    //console.log('instset doc.text', instsetDoc.text);
+    ifile.text = instsetDoc.text;
+    return fio.wsdb.get(ifile._id).then(function (doc) {
+      ifile._rev = doc._rev;
+      if (debug.pdb) console.log('get avida doc already exists, ok update', doc);
+      fio.wsdb.put(ifile).then(function (response) {
+        if (debug.pdb) console.log('ok correct', response); // handle response to put
+      }).catch(function (err) {
+        console.log('put err', err);
+      });
+    }).catch(function (err) {
+      if (debug.pdb) console.log('get avida err', err);  //not really an error, just not already there.
+      fio.wsdb.put(ifile).then(function (response) {
+        if (debug.pdb) console.log('ok correct', response); // handle response to put
+      }).catch(function (err) {
+        console.log('put err', err);
+      });
+    });
+  });
 }
 
-function pdbEvents(wsdb, idStr, domID){
-  wsdb.get(idStr + '/events.cfg').then(function (doc) {
+function makePdbEventsCfg(fio, idStr){
+  'use strict';
+  fio.wsdb.get(idStr + '/events.cfg').then(function (doc) {
     if (debug.pdb) console.log('get events doc, ok no reason to update', doc);  //always empty so no reason to update
   }).catch(function (err) {
     if (debug.pdb) console.log('get events.cfg not really an err, just not already there', err);  //does not exist, so create.
-    wsdb.put({
+    fio.wsdb.put({
       _id: idStr + '/events.cfg',
-      domID: domID,
       text: ''
     }).then(function (response) {// handle response to put
     }).catch(function (err) {console.log('put err', err);
-    })
+    });
   });
 }
 
-function pdbAvida_cfg(wsdb, idStr, domID) {
+function makePdbAvidaCfg(fio, idStr) {
+  'use strict';
   var txt = 'WORLD_X ' + dijit.byId("sizeCols").get('value') + '\n';
   txt += 'WORLD_Y ' + dijit.byId("sizeRows").get('value') + '\n';
   txt += 'WORLD_GEOMETRY 1 \n';
@@ -79,18 +79,17 @@ function pdbAvida_cfg(wsdb, idStr, domID) {
 
   var ifile = {
     _id: idStr + '/avida.cfg',
-    domID: domID,
     text: txt
   };
-  wsdb.get(idStr + '/avida.cfg').then(function (doc) {
+  fio.wsdb.get(idStr + '/avida.cfg').then(function (doc) {
     ifile._rev = doc._rev;
     if (debug.pdb) console.log('get avida doc already exists, ok update', doc);
-    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
     }).catch(function (err) {console.log('put err', err);
     })
   }).catch(function (err) {
     if (debug.pdb) console.log('get avida err', err);  //not really an error, just not already there.
-    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
     }).catch(function (err) {console.log('put err', err);
     })
   });
@@ -98,7 +97,8 @@ function pdbAvida_cfg(wsdb, idStr, domID) {
   if (debug.pdb) console.log('txt \n',txt);
 }
 
-function pdbEnvironment_cfg(wsdb, idStr, domID) {
+function makePdbEnvironmentCfg(fio, idStr) {
+  'use strict';
   var txt = '';
   if(dijit.byId("notose").get('checked'))  txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("nanose").get('checked')) txt += 'REACTION  NAND nand  process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NAND nand  process:value=0:type=pow  requisite:max_count=1\n';
@@ -111,18 +111,17 @@ function pdbEnvironment_cfg(wsdb, idStr, domID) {
   if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1\n';
   var ifile = {
     _id: idStr + '/environment.cfg',
-    domID : domID,
     text: txt
   }
-  wsdb.get(idStr + '/environment.cfg').then(function (doc) {
+  fio.wsdb.get(idStr + '/environment.cfg').then(function (doc) {
     ifile._rev = doc._rev;
     if (debug.pdb) console.log('get environment doc already exists, ok update', doc);
-    wsdb.put(ifile).then(function (response) { if (debug.pdb) console.log('ok correct', response);// handle response to put
+    fio.wsdb.put(ifile).then(function (response) { if (debug.pdb) console.log('ok correct', response);// handle response to put
     }).catch(function (err) {console.log('put err', err);
     })
   }).catch(function (err) {
     if (debug.pdb) console.log('get environment not really an err, just not already there', err);  //not really an error, just not already there.
-    wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response);// handle response to put
+    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response);// handle response to put
     }).catch(function (err) {console.log('put err', err);
     })
   });
@@ -130,4 +129,23 @@ function pdbEnvironment_cfg(wsdb, idStr, domID) {
   if (debug.pdb) console.log('Environment txt \n', txt);
 }
 
+function sendConfig(fio) {
+  'use strict';
+  var idStr = 'cT';
+  makePdbAvidaCfg(fio, idStr);
+  makePdbEnvironmentCfg(fio, idStr);
+  makePdbEventsCfg(fio, idStr);
+  makePdbInstsetCfg(fio, idStr);
+}
+
+function makePdbConfig(fzr, fio) {
+  'use strict';
+  var ndx = fzr.config.length-1;  //write the last one created
+  if (debug.pdb) console.log('wsdb', fio.wsdb);
+  makePdbAvidaCfg(fio, fzr.config[ndx]._id);
+  makePdbEnvironmentCfg(fio, fzr.config[ndx]._id);
+  makePdbEventsCfg(fio, fzr.config[ndx]._id, fzr.config[ndx].domID);
+  makePdbEntrynameTxt(fio, fzr.config[ndx]._id, fzr.config[ndx].name);
+  makePdbInstsetCfg(fio, fzr.config[ndx]._id);
+}
 

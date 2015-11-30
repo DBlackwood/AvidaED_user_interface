@@ -123,16 +123,23 @@ var fio = {};
 fio.dbName = 'wsdb';  //for workspace database
 fio.wsdb = null;
 fio.defaultFname = 'default1.avidaedworkspace.zip';
-
+fio.uiWorker = null;
 
 var dnd = {};
 var fzr = {};
-fzr.cNum = 0;
-fzr.gNum = 0;
-fzr.wNum = 0;
+fzr.cNum = 0;  //value of the next configured dish (config) number
+fzr.gNum = 0;  //value of the next organism (genome) number
+fzr.wNum = 0;  //value of the next world (populated dish) number
 fzr.config = [];
-fzr.organism = [];
-fzr.world = []
+fzr.genome = [];
+fzr.world = [];
+
+//hold genome for active organism in Organism View
+fzr.actOrgan = {'name': "", 'domId': "", '_id': '', 'genome': "" };
+//hold genome for active organism in Organism View
+fzr.actConfig = {'name': "", 'domId': "", '_id': '', 'type': '' };
+
+
 
 /* Fzr - Freezer.
 fzr.g.name

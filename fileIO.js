@@ -8,7 +8,7 @@ function addFzItem(dndSection, fio, fzrSection, item, type) {
   fzrSection.push(item);
   //create a right mouse-click context menu for the item just created.
   if (debug.fio) console.log('item', item);
-  if (0<item.fileNum) {contextMenu(fzr, dndSection, item.domId);}
+  //if (0<item.fileNum) {contextMenu(fzr, dndSection, item.domId);}
 }
 
 function add2freezer(dnd,fio, fzr) {
@@ -22,20 +22,23 @@ function add2freezer(dnd,fio, fzr) {
   var item = {
     'name': name,
     'fileNum': num,
-    '_id': fio.anID
+    '_id': tmp
   };
   if (debug.fio) console.log('type ', type, '; tmp', tmp, '; num', num);
   switch (type) {
     case 'c':
       addFzItem(dnd.fzConfig, fio, fzr.config, item, type);
+      if (fzr.cNum < Number(item.fileNum)) {fzr.cNum = Number(item.fileNum); }
       break;
     case 'g':
       var afileName = wsb('entryname.txt', fio.fName) + 'genome.seq';
       item.genome = fio.zipfile.files[afileName].asText();
-      addFzItem(dnd.fzOrgan, fio, fzr.organism, item, type);
+      addFzItem(dnd.fzOrgan, fio, fzr.genome, item, type);
+      if (fzr.gNum < Number(item.fileNum)) {fzr.gNum = Number(item.fileNum); }
       break;
     case 'w':
       addFzItem(dnd.fzWorld, fio, fzr.world, item, type);
+      if (fzr.wNum < Number(item.fileNum)) {fzr.wNum = Number(item.fileNum); }
       break;
   }
 }
@@ -86,6 +89,22 @@ function processFiles(dnd, fio, fzr){
   //if (debug.fio) console.log('file type in zip: fname ', fio.fName, '; id ', fio.anID, '; type ', fileType);
 }
 
+
+//---------------------------------------- update config data from pouchDB data ----------------------------------------
+function updateSetup(fio, fzr) {
+  'use strict';
+  fio.wsdb.get(fzr.actConfig._id + '/avida.cfg').then(function (doc) {
+    avidaCFG2form(doc.text);
+  }).catch(function (err) {
+    console.log('error getting active avida.cfg data', err);
+  });
+  fio.wsdb.get(fzr.actConfig._id + '/environment.cfg').then(function (doc) {
+    environmentCFG2form(doc.text);
+  }).catch(function (err) {
+    console.log('error getting active environment.cfg data', err);
+  });
+}
+
 //----------------------- section to put data from environment.cfg into setup form of population page ------------------
 
 var environmentCFGlineParse = function(instr){
@@ -94,7 +113,8 @@ var environmentCFGlineParse = function(instr){
   var flag = true;
   var cfgary = flexsplit(instr).split(',');
   if (0 < cfgary[3].length) {num = wsb(':',wsa('=',cfgary[3]));}
-  if (0 === num) {flag = false;}
+  if (0 == num) {flag = false;} //use == in this case as they are of different type
+  //console.log('flag', flag, '; num', num, '; cfgary', cfgary[3], '; instr', instr);
   var rslt = {
     name : cfgary[1],
     value : flag

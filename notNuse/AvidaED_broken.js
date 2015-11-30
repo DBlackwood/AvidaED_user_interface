@@ -272,7 +272,7 @@ require([
 
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
-    if (debug.dnd || debug.mouse) console.log('PopulationButton, fzr.organism', fzr.organism);
+    if (debug.dnd || debug.mouse) console.log('PopulationButton, fzr.genome', fzr.genome);
     mainBoxSwap("populationBlock");
   }
 
@@ -364,7 +364,7 @@ require([
   }
 
   //structure to keep track of genomes for organisms in freezer and the active organism in organism.view
-  fzr.organism = [];
+  fzr.genome = [];
   var domList = Object.keys(dnd.fzOrgan.map);
   var neworg = {};
   for (var ii=0; ii<domList.length; ii++) {
@@ -373,9 +373,9 @@ require([
       'domId': domList[ii],
       'genome': dnd.genes[ii]
     }
-    fzr.organism.push(neworg);
+    fzr.genome.push(neworg);
   }
-  if (debug.root) console.log('after fzr.orgnaism', fzr.organism);
+  if (debug.root) console.log('after fzr.orgnaism', fzr.genome);
 
   dnd.fzPopDish = new dndSource('fzPopDish', {
     accept: ["popDish"],
@@ -837,7 +837,7 @@ require([
         'domId': mapItems[mapItems.length - 1],
         'genome': gene
       }
-      fzr.organism.push(neworg);
+      fzr.genome.push(neworg);
       contextMenu(fzr, dnd.fzOrgan, neworg.domId);
     }
   }
@@ -867,7 +867,7 @@ require([
     if (gen.didDivide) {  //offpsring exists
       distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
       if (25 > distance) {
-        for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'copy';
+        for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'copy';
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
@@ -1048,7 +1048,7 @@ require([
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
-    for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'default';
+    for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'default';
     mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = false;
 

@@ -3,6 +3,9 @@
 //
 // to have chrome run from file
 ///Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --allow-file-access-from-files
+//
+// to get to mac files on parallels
+// net use z: \\Mac\Home
 
 define.amd.jQuery = true;
 require([
@@ -97,10 +100,8 @@ require([
   //********************************************************************************************************************
   //  pouchdb instance
   //********************************************************************************************************************
-
   fio.PouchDB = PouchDB;
   fio.JSZip = JSZip;
-  fio.uiWorker=null;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
   function readDefaultWS(dnd, fio, fzr) {
@@ -130,8 +131,11 @@ require([
         fio.fName = zFileName;
         processFiles(dnd, fio, fzr);
       }
-      console.log('before DrawGridSetup')
+      //console.log('before DrawGridSetup')
       DrawGridSetup();
+      fzr.cNum++;
+      fzr.gNum++;
+      fzr.wNum++;
     };
     oReq.send();
   }
@@ -209,7 +213,7 @@ require([
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
-      console.log('rightDetail', height, rd);
+      //console.log('rightDetail', height, rd);
       updateOrgTrace(traceObj, gen);
     }
   }
@@ -317,7 +321,7 @@ require([
 
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
-    if (debug.dnd || debug.mouse) console.log('PopulationButton, fzr.organism', fzr.organism);
+    if (debug.dnd || debug.mouse) console.log('PopulationButton, fzr.genome', fzr.genome);
     mainBoxSwap("populationBlock");
   }
 
@@ -395,13 +399,6 @@ require([
     {data: "m2w30u1000not", type: ['w']}
   ]);
 
-  //hold genome for active organism in Organism View
-  fzr.actOrgan = {
-    'name': "",
-    'domId': "",
-    'genome': ""
-  };
-
   dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
   dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
   dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
@@ -409,7 +406,7 @@ require([
   if (debug.root) console.log('after trashCan');
 
   dnd.activeConfig = new dndSource('activeConfig', {
-    accept: ['c'],
+    accept: ['c', 'w'],
     singular: true,
     copyOnly: true,
     selfAccept: false
@@ -461,11 +458,25 @@ require([
   // I don't think I would have written it this way had I known the single event handler would not work, but I had
   // created the dojoDnd.js file before I realized that I needed separate event handelers with the conditional.
 
+  dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+    var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
+    //console.log('pkg.target', pkg.target);
+    //console.log('pkg.target.s', pkg.target.selection);
+    if ('activeConfig' === target.node.id) {
+      landActiveConfig(dnd, pkg);  //dojoDnd
+      updateSetup(fio, fzr);
+      if ('w' === fzr.actConfig.type) {
+        console.log('world config so there more to do');
+
+      }
+    }
+  });
+
   dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
-    if ('fzConfig' == target.node.id) {
+    if ('fzConfig' === target.node.id) {
       var num = fzr.config[fzr.config.length-1].fileNum;
       landFzConfig(dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
-      if (num != fzr.config[fzr.config.length-1].fileNum) pdbConfig(fzr, fio.wsdb);
+      if (num != fzr.config[fzr.config.length-1].fileNum) makePdbConfig(fzr, fio);
     }
   });
 
@@ -551,15 +562,11 @@ require([
     }
   });
 
-  dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+  //this should never be executed
+  dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
-    //console.log('pkg.target', pkg.target);
-    //console.log('pkg.target.s', pkg.target.selection);
-    switch (target.node.id) {
-      case 'activeConfig':
-        landActiveConfig(dnd, pkg); break;
-      case 'fzWorld':
-        landFzPopDish(dnd, pkg); break;   //will never be called as fzPopDish is the only source for the popDish type.
+    if ('fzWorld' == target.node.id) {
+      landFzPopDish(dnd, pkg);   //will never be called as fzPopDish is the only source for the popDish type.
     }
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
     // The code is here in case the dnd type is changed to 'source'
@@ -753,7 +760,7 @@ require([
     fio.wsdb.allDocs({include_docs:true}).then(function(docInc){
       console.log('Include doc', docInc);
       fio.wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
-        console.log('wsdb get doc0', doc);
+        //console.log('wsdb get doc0', doc);
       }).catch(function(err){
         console.log('wsdb get error',err);
       })
@@ -796,12 +803,12 @@ require([
         var newConfig = {
           domID: domID,
           name: fzName,
-          _id: 'ws/c'+ fzr.cNum,
+          _id: 'c'+ fzr.cNum,
           fileNum: fzr.cNum
         };
         fzr.config.push(newConfig);
         fzr.cNum++;
-        pdbConfig(fzr, wsdb);
+        makePdbConfig(fzr, fio);
         contextMenu(fzr, dnd.fzConfig, domID);
       }
     }
@@ -883,7 +890,7 @@ require([
         'domId': mapItems[mapItems.length - 1],
         'genome': gene
       }
-      fzr.organism.push(neworg);
+      fzr.genome.push(neworg);
       contextMenu(fzr, dnd.fzOrgan, neworg.domId);
     }
   }
@@ -952,7 +959,7 @@ mouse clicks
     if (gen.didDivide) {  //offpsring exists
       distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
       if (25 > distance) {
-        for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'copy';
+        for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'copy';
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
@@ -1133,7 +1140,7 @@ mouse clicks
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
-    for (var ii=1; ii<fzr.organism.length; ii++) document.getElementById(fzr.organism[ii].domId).style.cursor = 'default';
+    for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'default';
     mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     mouse.Dn = false;
 
