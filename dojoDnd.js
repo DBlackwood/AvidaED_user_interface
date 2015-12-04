@@ -1,3 +1,5 @@
+//global definitions based dom that involve DND
+
 //functions used to process events that happen when a dojo drag and drop lands on the particular dnd 'target'.
 //Note that all dnd 'source' elements can also be 'targets'.
 
@@ -175,7 +177,7 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
 
 // Process Drop on gridCanvas
 //This triggers for every dnd drop, not just those of gridCanvas
-function landGridCanvas(av, dnd, fzr, parents, source, nodes, target) {
+function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
   if (av.debug.dnd) console.log('inside gridCanvas dnd');
   //was it dropped on the grid of cells?
   //if (av.debug.dnd) console.log('xOff, yOff, xUP, y', grd.xOffset, grd.yOffset, av.mouse.UpGridPos[0];, av.mouse.UpGridPos[1];);

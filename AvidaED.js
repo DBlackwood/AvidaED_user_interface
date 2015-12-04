@@ -65,7 +65,7 @@ require([
   "colorTest.js",
   "PopulationGrid.js",
   "organismView.js",
-  'dojoDnd.js',
+  'dojodnd.js',
   'popControls.js',
   'mouse.js',
   "dojo/domReady!"
@@ -81,8 +81,7 @@ require([
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
     // console.log($.fn.jquery);
-  }
-  else {console.log("Jquery ($) is not defined.");}
+  } else {console.log("Jquery ($) is not defined."); }
 
   parser.parse();
 
@@ -140,7 +139,7 @@ require([
     oReq.send();
   }
 
-  function initializeDB(fio, fzr) {
+  function initializeDB(av, fio, fzr) {
     var oldDb = new fio.PouchDB(fio.dbName);
     //clear any old database and create new one for this session
     oldDb.destroy(fio.dbName).then(function (response) {//success
@@ -148,12 +147,12 @@ require([
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB - send msg to Avida');
       doDbReady();
-      readDefaultWS(dnd, fio, fzr);
+      readDefaultWS(av.dnd, fio, fzr);
     }).catch(function (err) {
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB destroy db err', err);
       doDbReady();
-      readDefaultWS(dnd, fio, fzr);
+      readDefaultWS(av.dnd, fio, fzr);
     });
   }
   /* PouchDB websites
@@ -162,7 +161,7 @@ require([
    http://pouchdb.com/guides/databases.html
    */
   console.log('before initialze DB', fio.uiWorker);
-  initializeDB(fio, fzr);
+  initializeDB(av, fio, fzr);
 
   //********************************************************************************************************************/
   //console.log("defining test_jszip()");
@@ -365,68 +364,58 @@ require([
   /* ********************************************************************** */
   /* Dojo Drag N Drop Initialization ****************************************/
   /* ********************************************************************** */
-  /*Temporary - I think this will be removed once we have a files system.
-  dnd.genes = [
-    '0,heads_default,wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab'  //ancestor
-    ,'0,heads_default,wzcagcekzueqckcccncwlccycukcjyusccbcyoouczvacaxgab'  //not
-    ,'0,heads_default,wzcagckchsdctcbqkwicclsdycygcubemcccqyjcizvfcaxgab'  //nan
-    ,'0,heads_default,wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro
-    ,'0,heads_default,wzjagczycavutrdddwsayyjduucyycbbrpysktltizvftoxgja'  //oro-orn
-    ,'0,heads_default,whjagchmivznzbxbvmbzpfvfpwubypsmyuuobyufycvovrxguw'  //all functions
-    ,'0,heads_default,wsjagcvtvazystorcauoyucuyquufydpbusmyfqoocvvopxgxu'  //allbut2logic
-  ];
-*/
-  if (av.debug.root) console.log('before frz structure');
+  /* Yes they are globals, but they are defined based on the dom and
+    when I've tried putting them in another file it does not work */
 
-  dnd.fzConfig = new dndSource('fzConfig', {
+  av.dnd.fzConfig = new dndSource('fzConfig', {
     accept: ['c'],
     copyOnly: true,
     singular: true,
     selfAccept: false
   });
-  dnd.fzOrgan = new dndSource('fzOrgan', {
+  av.dnd.fzOrgan = new dndSource('fzOrgan', {
     accept: ['g'],
     copyOnly: true,
     singular: true,
     selfAccept: false
   });
-  dnd.fzWorld = new dndSource('fzWorld', {
+  av.dnd.fzWorld = new dndSource('fzWorld', {
     accept: ['w'],
     singular: true,
     copyOnly: true,
     selfAccept: false
   });
-  dnd.fzWorld.insertNodes(false, [
+  av.dnd.fzWorld.insertNodes(false, [
     {data: "m2w30u1000nand", type: ['w']},
     {data: "m2w30u1000not", type: ['w']}
   ]);
 
-  dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
-  dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
-  dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
-  dnd.trashCan = new dndSource('trashCan', {accept: ['c', 'g', 'w'], singular: true});
+  av.dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
+  av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
+  av.dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
+  av.dnd.trashCan = new dndSource('trashCan', {accept: ['c', 'g', 'w'], singular: true});
   if (av.debug.root) console.log('after trashCan');
 
-  dnd.activeConfig = new dndSource('activeConfig', {
+  av.dnd.activeConfig = new dndSource('activeConfig', {
     accept: ['c', 'w'],
     singular: true,
     copyOnly: true,
     selfAccept: false
   });
-  dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
+  av.dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
 
   //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-  dnd.activeOrgan = new dndSource('activeOrgan', {
+  av.dnd.activeOrgan = new dndSource('activeOrgan', {
     accept: ['g'],
     singular: true,
     copyOnly: true,
     selfAccept: false
   });
-  dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
+  av.dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
   //Targets only accept object, source can do both
-  dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
-  dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
-  dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
+  av.dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
+  av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
+  av.dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
 
   //structure to hole list of ancestor organisms
   var parents = {};
@@ -458,14 +447,14 @@ require([
   // different functions based on the target.node.id, but that did not work, for not all the information was available.
   // It looks like it is there based on console.logging just the taret, but trying to access subdata results in a null.
   // I don't think I would have written it this way had I known the single event handler would not work, but I had
-  // created the dojoDnd.js file before I realized that I needed separate event handelers with the conditional.
+  // created the dojodnd.js file before I realized that I needed separate event handelers with the conditional.
 
-  dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+  av.dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
     //console.log('pkg.target', pkg.target);
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
-      landActiveConfig(dnd, pkg);  //dojoDnd
+      landActiveConfig(av.dnd, pkg);  //dojoDnd
       updateSetup(fio, fzr);  //fileIO
       if ('w' === fzr.actConfig.type) {
         console.log('world config so there more to do');
@@ -474,113 +463,108 @@ require([
   });
 
   //currently this should not trigger as activeConfig is only a target
-  dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
+  av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
       var num = fzr.config[fzr.config.length-1].fileNum;
-      landFzConfig(dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
+      landFzConfig(av.dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
       if (num != fzr.config[fzr.config.length-1].fileNum) {makePdbConfig(fzr, fio);}
     }
   });
 
-  dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
+  av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
-      landFzOrgan(dnd, fzr, parents, source, nodes, target);
+      landFzOrgan(av.dnd, fzr, parents, source, nodes, target);
       makePdbOrgan(fio, fzr);
     }
   });
 
-  dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
+  av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
-      landAncestorBox(dnd, fzr, parents, source, nodes, target);
+      landAncestorBox(av.dnd, fzr, parents, source, nodes, target);
     }
   });
 
-  dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
+  av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
-      landGridCanvas(av, dnd, fzr, parents, source, nodes, target);
+      landGridCanvas(av, av.dnd, fzr, av.grd, parents, source, nodes, target);
       DrawGridSetup();
     }
   });
 
-  dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
+  av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
-      landOrganCanvas(dnd, fzr, source, nodes, target);
+      landOrganCanvas(av.dnd, fzr, source, nodes, target);
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
-  dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
+  av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     if ('organIcon' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
-      landOrganIcon(dnd, fzr, source, nodes, target);
+      landOrganIcon(av.dnd, fzr, source, nodes, target);
       //Change to Organism Page
-      console.log('in dnd.organIcon; before mainBoxSwap');
       mainBoxSwap("organismBlock");
-      console.log('before organismCanvasHolderSize');
       organismCanvasHolderSize();
-      console.log('in dnd.organIcon: after organismCanvasHolderSize');
       var height = ($("#rightDetail").innerHeight() - 375) / 2;
       document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
-      console.log('in dnd.organIcon: before doOrgTrace');
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
-      console.log('in dnd.organIcon:after doOrganTrace');
     }
   });
 
-  dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
+  av.dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
-      landActiveOrgan(dnd, fzr, source, nodes, target);
+      landActiveOrgan(av.dnd, fzr, source, nodes, target);
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
-  dnd.trashCan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
+  av.dnd.trashCan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
     if ('trashCan' == target.node.id) {
       var remove = {};
       remove.type = '';
       remove.id = '';
       if (av.debug.dnd) console.log('trashCan: s, t', source, target);
-      remove = landTrashCan(dnd, fzr, parents, source, nodes, target);
+      remove = landTrashCan(av.dnd, fzr, parents, source, nodes, target);
       if ('' != remove.type) {
         removePdbItem(fio, remove.id, remove.type);
       }
     }
   });
 
-  dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
+  av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
-      landGraphPop1(dnd, source, nodes, target, plt);
+      landGraphPop1(av.dnd, source, nodes, target, plt);
       AnaChartFn();
     }
   });
 
-  dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
+  av.dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
-      landGraphPop2(dnd, source, nodes, target, plt);
+      landGraphPop2(av.dnd, source, nodes, target, plt);
       AnaChartFn();
     }
   });
 
-  dnd.graphPop3.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop3
+  av.dnd.graphPop3.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop3
     if ('graphPop3' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop3: s, t', source, target);
-      landGraphPop3(dnd, source, nodes, target, plt);
+      landGraphPop3(av.dnd, source, nodes, target, plt);
       AnaChartFn();
     }
   });
 
   //this should never be executed
-  dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+  av.dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
     if ('fzWorld' == target.node.id) {
-      landFzPopDish(dnd, pkg);   //will never be called as fzPopDish is the only source for the popDish type.
+      landFzPopDish(av.dnd, pkg);   //will never be called as fzPopDish is the only source for the popDish type.
     }
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
     // The code is here in case the dnd type is changed to 'source'
@@ -612,14 +596,14 @@ require([
   document.getElementById("PopSetupButton").onclick = function () {
     popBoxSwap();   //in popControls.js
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
-      cellConflict(grd.cols, grd.rows, grd, parents);
+      cellConflict(av.grd.cols, av.grd.rows, av.grd, parents);
       DrawGridSetup();
     }
   };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
   document.getElementById("PopStatsButton").onclick = function () {
-    popStatView(grd);
+    popStatView(av.grd);
   };
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
 
@@ -661,12 +645,12 @@ require([
       NeedAncestorDialog.show();
     }
     else { // setup for a new run by sending config data to avida
-      if (grd.newrun) {
+      if (av.grd.newrun) {
         requestPopStats();  //fio.uiWorker
         requestGridData();  //fio.uiWorker
 
         //change ui parameters for the correct state when the avida population has started running
-        popRunningState_ui(dnd, grd);
+        popRunningState_ui(av.dnd, av.grd);
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
@@ -693,7 +677,7 @@ require([
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);
       doRunPause()
-      //console.log("pop size ", grd.population_size);
+      //console.log("pop size ", av.grd.population_size);
     }
   };
 
@@ -726,7 +710,7 @@ require([
   });
 
   function newButtonBoth() {
-    if (grd.newrun) {// reset petri dish
+    if (av.grd.newrun) {// reset petri dish
       resetDishFn();
     }
     else {// check to see about saving current population
@@ -743,14 +727,14 @@ require([
 
   //reset values
   function resetDishFn() { //Need to reset all settings to @default
-    grd.newrun = true;
+    av.grd.newrun = true;
     dijit.byId("mnOrganismTrace").attr("disabled", true);
     dijit.byId("mnFzOrganism").attr("disabled", true);
 
     // send reset to Avida adaptor
     doReset();
     //Enable the options on the Setup page
-    popNewExState(dnd, fzr, grd, parents);
+    popNewExState(av.dnd, fzr, av.grd, parents);
     //Clear grid settings
     clearParents();
     //reset values in population settings based on a 'file' @default
@@ -795,7 +779,7 @@ require([
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.
   document.getElementById("freezeButton").onclick = function () {
-    if (grd.newrun) FrConfigFn();
+    if (av.grd.newrun) FrConfigFn();
     else fzDialog.show();
   };
 
@@ -803,12 +787,12 @@ require([
     var fzName = prompt("Please name the new configuration", "newConfig");
     if (fzName) {
       var namelist = dojo.query('> .dojoDndItem', 'fzConfig');
-      fzName = getUniqueName(fzName, dnd.fzConfig);
+      fzName = getUniqueName(fzName, av.dnd.fzConfig);
       if (null != fzName) {
-        dnd.fzConfig.insertNodes(false, [{data: fzName, type: ['c']}]);
-        dnd.fzConfig.sync();
+        av.dnd.fzConfig.insertNodes(false, [{data: fzName, type: ['c']}]);
+        av.dnd.fzConfig.sync();
         //Create context menu for right-click on this item
-        var domId = getDomId(fzName, dnd.fzConfig);
+        var domId = getDomId(fzName, av.dnd.fzConfig);
         var newConfig = {
           domId: domId,
           name: fzName,
@@ -818,7 +802,7 @@ require([
         fzr.config.push(newConfig);
         fzr.cNum++;
         makePdbConfig(fzr, fio);
-        contextMenu(fzr, dnd.fzConfig, domId);
+        contextMenu(fzr, av.dnd.fzConfig, domId);
       }
     }
   }
@@ -827,12 +811,12 @@ require([
   function FrPopulationFn() {
     var fzName = prompt("Please name the new population", "newPopulation");
     if (fzName) {
-      fzName = getUniqueName(fzName, dnd.fzWorld);
+      fzName = getUniqueName(fzName, av.dnd.fzWorld);
       if (null != fzName) {
-        dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
-        dnd.fzWorld.sync();
+        av.dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
+        av.dnd.fzWorld.sync();
         //Find out the dom ID the node element just inserted.
-        var domId = getDomId(fzName, dnd.fzWorld);
+        var domId = getDomId(fzName, av.dnd.fzWorld);
         var newWorld = {
           domId: domId,
           name: fzName,
@@ -841,10 +825,10 @@ require([
         };
         fzr.world.push(newWorld);
         fzr.wNum++;
-        makePdbWorld(fzr, fio, grd);
+        makePdbWorld(fzr, fio, av.grd);
         //need to get data from Avida for this tiba
         //Create context menu for right-click on this item
-        contextMenu(fzr, dnd.fzWorld, domId);
+        contextMenu(fzr, av.dnd.fzWorld, domId);
       }
     }
   }
@@ -882,11 +866,11 @@ require([
     var gene;
     if ('selected' == trigger) {
       fzName = prompt("Please name the selected organism", "newOrganism");
-      gene = grd.kidGenome;
+      gene = av.grd.kidGenome;
     }
     else if ('offspring' == trigger) {
       //get name from parent
-      parentName = document.getElementById(Object.keys(dnd.activeOrgan.map)[0]).textContent;
+      parentName = document.getElementById(Object.keys(av.dnd.activeOrgan.map)[0]).textContent;
       fzName = prompt("Please name the offspring", parentName + '_Offspring');
       gene = '0,heads_default,' + gen.dna[1];
     }
@@ -894,21 +878,21 @@ require([
       fzName = prompt("Please name the organism", "newOrganism");
       console.log('source unknwon', trigger);
     }
-    fzName = getUniqueName(fzName, dnd.fzOrgan);
+    fzName = getUniqueName(fzName, av.dnd.fzOrgan);
     if (null != fzName) {
       //insert new item into the freezer.
-      dnd.fzOrgan.insertNodes(false, [{data: fzName, type: ['g']}]);
-      dnd.fzOrgan.sync();
+      av.dnd.fzOrgan.insertNodes(false, [{data: fzName, type: ['g']}]);
+      av.dnd.fzOrgan.sync();
 
       //Find out the dom ID the node element just inserted.
-      var mapItems = Object.keys(dnd.fzOrgan.map);
+      var mapItems = Object.keys(av.dnd.fzOrgan.map);
       var neworg = {
         'name': fzName,
         'domId': mapItems[mapItems.length - 1],
         'genome': gene
       }
       fzr.genome.push(neworg);
-      contextMenu(fzr, dnd.fzOrgan, neworg.domId);
+      contextMenu(fzr, av.dnd.fzOrgan, neworg.domId);
     }
   }
 
@@ -1023,43 +1007,43 @@ mouse clicks
 
   //if a cell is selected, arrow keys can move the selection
   $(document).keydown(function(e) {
-    if (grd.flagSelected) {
+    if (av.grd.flagSelected) {
       var moved = false;
       switch (e.which) {
         case 37: // left
-          if (0 < grd.selectedCol) {
-            grd.selectedCol = grd.selectedCol - 1;
+          if (0 < av.grd.selectedCol) {
+            av.grd.selectedCol = av.grd.selectedCol - 1;
             moved = true;
           }
           break;
         case 38: // up
-          if (0 < grd.selectedRow) {
-            grd.selectedRow = grd.selectedRow - 1;
+          if (0 < av.grd.selectedRow) {
+            av.grd.selectedRow = av.grd.selectedRow - 1;
             moved = true;
           }
           break;
         case 39: // right
-          if (grd.selectedCol < grd.cols - 1) {
-            grd.selectedCol++;
+          if (av.grd.selectedCol < av.grd.cols - 1) {
+            av.grd.selectedCol++;
             moved = true;
           }
           break;
         case 40: // down
-          if (grd.selectedRow < grd.rows - 1) {
-            grd.selectedRow = grd.selectedRow + 1;
+          if (av.grd.selectedRow < av.grd.rows - 1) {
+            av.grd.selectedRow = av.grd.selectedRow + 1;
             moved = true;
           }
           break;
       }
       e.preventDefault(); // prevent the default action (scroll / move caret)
-      grd.selectedNdx = grd.selectedRow*grd.cols + grd.selectedCol;
-      if (moved && !grd.newrun) {  //look for decendents (kids)
+      av.grd.selectedNdx = av.grd.selectedRow*av.grd.cols + av.grd.selectedCol;
+      if (moved && !av.grd.newrun) {  //look for decendents (kids)
         //find out if there is a kid in that cell
         //if which ancestor is not null then there is a 'kid' there.
-        if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
-          grd.kidStatus = 'getgenome';
-          doSelectedOrganismType(grd);
-          if (av.debug.mouse) console.log('kid', grd.kidName, grd.kidGenome);
+        if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+          av.grd.kidStatus = 'getgenome';
+          doSelectedOrganismType(av.grd);
+          if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnOrganismTrace").attr("disabled", false);
         }
@@ -1073,19 +1057,19 @@ mouse clicks
     av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
     av.mouse.Dn = true;
     // Select if it is in the grid
-    findSelected(evt, grd);
+    findSelected(evt, av.grd);
     //check to see if in the grid part of the canvas
-    if (av.debug.mouse) console.log('av.mousedown', grd.selectedNdx);
-    //if (av.debug.mouse) console.log('grid Canvas; selectedNdx', grd.selectedNdx,'________________________________');
-    //if (av.debug.mouse) console.log('grid Canvas; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
-    if (grd.selectedCol >= 0 && grd.selectedCol < grd.cols && grd.selectedRow >= 0 && grd.selectedRow < grd.rows) {
-      grd.flagSelected = true;
-      if (av.debug.mouse) console.log('ongrid', grd.selectedNdx);
+    if (av.debug.mouse) console.log('av.mousedown', av.grd.selectedNdx);
+    //if (av.debug.mouse) console.log('grid Canvas; selectedNdx', av.grd.selectedNdx,'________________________________');
+    //if (av.debug.mouse) console.log('grid Canvas; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
+    if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
+      av.grd.flagSelected = true;
+      if (av.debug.mouse) console.log('ongrid', av.grd.selectedNdx);
       DrawGridSetup();
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
-      if (grd.newrun) {  //run has not started so look to see if cell contains ancestor
+      if (av.grd.newrun) {  //run has not started so look to see if cell contains ancestor
         av.mouse.ParentNdx = findParentNdx(parents);
         if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
         if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
@@ -1098,16 +1082,16 @@ mouse clicks
         }
       }
       else {  //look for decendents (kids)
-        if (av.debug.mouse) console.log('kidSelected; selectedNdx', grd.selectedNdx,'________________________________');
-        if (av.debug.mouse) console.log('kidSelected; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
+        if (av.debug.mouse) console.log('kidSelected; selectedNdx', av.grd.selectedNdx,'________________________________');
+        if (av.debug.mouse) console.log('kidSelected; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
         //find out if there is a kid in that cell
         //if ancestor not null then there is a 'kid' there.
-        if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
-          grd.kidStatus = 'getgenome';
-          doSelectedOrganismType(grd);
-          SelectedKidMouseStyle(dnd, fzr, grd);
+        if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+          av.grd.kidStatus = 'getgenome';
+          doSelectedOrganismType(av.grd);
+          SelectedKidMouseStyle(av.dnd, fzr, av.grd);
           av.mouse.Picked = 'kid';
-          console.log('kid', grd.kidName, grd.kidGenome);
+          console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnOrganismTrace").attr("disabled", false);
         }
@@ -1118,12 +1102,12 @@ mouse clicks
       }
     }
     else {
-      grd.flagSelected = false;
-      grd.selectedNdx = -1;
+      av.grd.flagSelected = false;
+      av.grd.selectedNdx = -1;
       dijit.byId("mnOrganismTrace").attr("disabled", true);
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
-    doSelectedOrganismType(grd);
+    doSelectedOrganismType(av.grd);
     DrawGridSetup();
   });
 
@@ -1165,7 +1149,7 @@ mouse clicks
     // --------- process if something picked to dnd ------------------
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      ParentMouse(evt, dnd, fzr, parents);
+      ParentMouse(evt, av.dnd, fzr, parents);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) DrawGridSetup();
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
@@ -1181,12 +1165,12 @@ mouse clicks
     }
     else if ('offspring' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      target = OffspringMouse(evt, dnd, fzr);
+      target = OffspringMouse(evt, av.dnd, fzr);
       if ('fzOrgan' == target) { makePdbOrgan(fio, fzr)}
     }
     else if ('kid' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      target = KidMouse(evt, dnd, fzr, grd);
+      target = KidMouse(evt, av.dnd, fzr, av.grd);
       if ('fzOrgan' == target) { makePdbOrgan(fio, fzr);}
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
@@ -1208,26 +1192,26 @@ mouse clicks
   /* *************************************************************** */
 
   //Set up canvas objects
-  grd.CanvasScale = document.getElementById("scaleCanvas");
-  grd.sCtx = grd.CanvasScale.getContext("2d");
-  grd.CanvasGrid = document.getElementById('gridCanvas');
-  grd.cntx = grd.CanvasGrid.getContext("2d");
-  grd.CanvasSelected = document.getElementById('SelectedColor');
-  grd.selCtx = grd.CanvasSelected.getContext('2d');
-  grd.SelectedWd = $('#SelectedColor').innerWidth();
-  grd.SelectedHt = $('#SelectedColor').innerHeight();
+  av.grd.CanvasScale = document.getElementById("scaleCanvas");
+  av.grd.sCtx = av.grd.CanvasScale.getContext("2d");
+  av.grd.CanvasGrid = document.getElementById('gridCanvas');
+  av.grd.cntx = av.grd.CanvasGrid.getContext("2d");
+  av.grd.CanvasSelected = document.getElementById('SelectedColor');
+  av.grd.selCtx = av.grd.CanvasSelected.getContext('2d');
+  av.grd.SelectedWd = $('#SelectedColor').innerWidth();
+  av.grd.SelectedHt = $('#SelectedColor').innerHeight();
 
-  grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-  grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
-  grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - grd.CanvasScale.height;
+  av.grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
+  av.grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
+  av.grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - av.grd.CanvasScale.height;
 
   //--------------------------------------------------------------------------------------------------------------------
   function DrawGridSetup() {
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
 
-    if(!grd.newrun && undefined != grd.msg.fitness) {
-      setMapData(grd);  //update color information for offpsring once run has started
-      findLogicOutline(grd);
+    if(!av.grd.newrun && undefined != av.grd.msg.fitness) {
+      setMapData(av.grd);  //update color information for offpsring once run has started
+      findLogicOutline(av.grd);
     }
     /*
     //http://stackoverflow.com/questions/10118172/setting-div-width-and-height-in-javascript
@@ -1237,14 +1221,14 @@ mouse clicks
     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-    console.log('Canvas Ht Grid, Scale total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height, grd.CanvasGrid.height+grd.CanvasScale.height)
+    console.log('Canvas Ht Grid, Scale total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height, av.grd.CanvasGrid.height+av.grd.CanvasScale.height)
 
     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-    console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.width, grd.CanvasScale.width, grd.CanvasGrid.width+grd.CanvasScale.width)
+    console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
   */  //find width
 
     var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth-2;
@@ -1258,8 +1242,8 @@ mouse clicks
     var mapBlockWd = mapBlockHoldWd-8;
     var num = mapBlockHoldWd-22;
     //console.log('mapBlockHoldWd, mapBlockWd, num',mapBlockHoldWd, mapBlockWd,num)
-    grd.CanvasScale.width = num;
-    grd.CanvasGrid.width = grd.CanvasScale.width;
+    av.grd.CanvasScale.width = num;
+    av.grd.CanvasGrid.width = av.grd.CanvasScale.width;
     document.getElementById('gridTable').style.width = num + 'px';
     num += 2;
     document.getElementById('gridHolder').style.width = num + 'px';
@@ -1271,10 +1255,10 @@ mouse clicks
     document.getElementById('mapBlockHold').style.width = mapBlockHoldWd + 'px';
 
     //Determine if a color gradient or legend will be displayed
-//    if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(grd, parents); drawLegend(grd, parents) }
+//    if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(av.grd, parents); drawLegend(av.grd, parents) }
     document.getElementById('popBot').style.height = '5px';
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(grd, parents) }
-    else { GradientScale(grd) }
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, parents) }
+    else { GradientScale(av.grd) }
     document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
 
     num = document.getElementById('mapBlockHold').clientHeight-6;
@@ -1285,28 +1269,28 @@ mouse clicks
     //console.log('gridHolderHt', gridHolderHt);
     document.getElementById('gridHolder').style.height = gridHolderHt + 'px';
 
-    grd.CanvasGrid.height = gridHolderHt - 6;
+    av.grd.CanvasGrid.height = gridHolderHt - 6;
 
     //find the space available to display the grid in pixels
-    grd.spaceX = grd.CanvasGrid.width;
-    grd.spaceY = grd.CanvasGrid.height;
-    //console.log('spaceY', grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', grd.CanvasScale.height);
+    av.grd.spaceX = av.grd.CanvasGrid.width;
+    av.grd.spaceY = av.grd.CanvasGrid.height;
+    //console.log('spaceY', av.grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', av.grd.CanvasScale.height);
 
-    //DrawGridBackground(grd);        //use to test scroll bars instead of the two calls below; in PopulationGrid.js
-    findGridSize(grd, parents);     //in PopulationGrid.js
+    //DrawGridBackground(av.grd);        //use to test scroll bars instead of the two calls below; in PopulationGrid.js
+    findGridSize(av.grd, parents);     //in PopulationGrid.js
     //console.log('mid gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-    //console.log('mid Canvas Ht Grid, Scale, popBot total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height,document.getElementById('popBot').clientHeight, grd.CanvasGrid.height+grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
+    //console.log('mid Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
 
     if (document.getElementById('gridHolder').scrollHeight==document.getElementById('gridHolder').clientHeight+17){
       var numGH = document.getElementById('gridHolder').clientHeight;
-      grd.CanvasGrid.height = numGH - 6-17;
-      findGridSize(grd, parents);     //in PopulationGrid.js
+      av.grd.CanvasGrid.height = numGH - 6-17;
+      findGridSize(av.grd, parents);     //in PopulationGrid.js
     }
-    DrawGridUpdate(grd, parents);   //in PopulationGrid.js
+    DrawGridUpdate(av.grd, parents);   //in PopulationGrid.js
 
     //console.log('after');
  /*   console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-    console.log('Canvas Ht Grid, Scale, popBot total, client Total', grd.CanvasGrid.height, grd.CanvasScale.height,document.getElementById('popBot').clientHeight, grd.CanvasGrid.height+grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
+    console.log('Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
@@ -1317,7 +1301,7 @@ mouse clicks
     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-    console.log('Canvas Wd Grid, Scale total, client Total', grd.CanvasGrid.width, grd.CanvasScale.width, grd.CanvasGrid.width+grd.CanvasScale.width)
+    console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
     console.log('-----------------------------------------')
 */
   }
@@ -1361,7 +1345,7 @@ mouse clicks
 
   //Only effect display, not Avida
   // Zoom slide
-  grd.ZoomSlide = new HorizontalSlider({
+  av.grd.ZoomSlide = new HorizontalSlider({
     name: "ZoomSlide",
     value: 1,
     minimum: 1,
@@ -1370,20 +1354,20 @@ mouse clicks
     discreteValues: 19,
     style: "height: auto; width: 120px;float:right",
     onChange: function (value) {
-      grd.zoom = value;
-      //console.log('ZoomSlide', grd.zoom);
+      av.grd.zoom = value;
+      //console.log('ZoomSlide', av.grd.zoom);
       DrawGridSetup();
     }
   }, "ZoomSlide");
 
-  grd.colorMap = 'Gnuplot2';
+  av.grd.colorMap = 'Gnuplot2';
   dijit.byId("mnGnuplot2").attr("disabled", true);
 
   dijit.byId("mnViridis").on("Click", function () {
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", true);
-    grd.colorMap = 'Viridis';
+    av.grd.colorMap = 'Viridis';
     DrawGridSetup();
   });
 
@@ -1391,7 +1375,7 @@ mouse clicks
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", true);
     dijit.byId("mnViridis").attr("disabled", false);
-    grd.colorMap = 'Gnuplot2';
+    av.grd.colorMap = 'Gnuplot2';
     DrawGridSetup();
   });
 
@@ -1399,7 +1383,7 @@ mouse clicks
     dijit.byId("mnCubehelix").attr("disabled", true);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", false);
-    grd.colorMap = 'Cubehelix';
+    av.grd.colorMap = 'Cubehelix';
     DrawGridSetup();
   });
 
@@ -1417,11 +1401,11 @@ mouse clicks
       document.getElementById(button).value = 'on';
       document.getElementById(button).className = 'bitButtonOn';
     }
-    for (ii=0; ii<grd.ave_fitness.length; ii++){
-      grd.log_fitness[ii] = null;
-      grd.log_gestation_time[ii] = null;
-      grd.log_metabolic_rate[ii] = null;
-      grd.log_pop_size[ii] = null;
+    for (ii=0; ii<av.grd.ave_fitness.length; ii++){
+      av.grd.log_fitness[ii] = null;
+      av.grd.log_gestation_time[ii] = null;
+      av.grd.log_metabolic_rate[ii] = null;
+      av.grd.log_pop_size[ii] = null;
     }
     DrawGridSetup();
   }
@@ -1439,8 +1423,8 @@ mouse clicks
   // *************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // *************************************************************** */
-  grd.gridWasCols = Number(document.getElementById("sizeCols").value);
-  grd.gridWasRows = Number(document.getElementById("sizeRows").value);
+  av.grd.gridWasCols = Number(document.getElementById("sizeCols").value);
+  av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
   function popSizeFn() {
     var NewCols = Number(document.getElementById("sizeCols").value);
     var NewRows = Number(document.getElementById("sizeRows").value);
@@ -1453,13 +1437,13 @@ mouse clicks
       parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
       //console.log('New cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
     }
-    grd.gridWasCols = Number(document.getElementById("sizeCols").value);
-    grd.gridWasRows = Number(document.getElementById("sizeRows").value);
+    av.grd.gridWasCols = Number(document.getElementById("sizeCols").value);
+    av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
     //reset zoom power to 1
-    grd.ZoomSlide.set("value", 1);
+    av.grd.ZoomSlide.set("value", 1);
     PlaceAncestors(parents);
     //are any parents on the same cell?
-    cellConflict(NewCols, NewRows, grd, parents);
+    cellConflict(NewCols, NewRows, av.grd, parents);
   }
 
   dijit.byId("sizeCols").on("Change", popSizeFn);
@@ -1514,20 +1498,20 @@ mouse clicks
 
   function popChartFn() {
     if ("Average Fitness" == dijit.byId("yaxis").value) {
-      popY = grd.ave_fitness;
-      popY2 = grd.log_fitness;
+      popY = av.grd.ave_fitness;
+      popY2 = av.grd.log_fitness;
     }
     else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
-      popY = grd.ave_gestation_time;
-      popY2 = grd.log_gestation_time;
+      popY = av.grd.ave_gestation_time;
+      popY2 = av.grd.log_gestation_time;
     }
     else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
-      popY = grd.ave_metabolic_rate;
-      popY2 = grd.log_metabolic_rate;
+      popY = av.grd.ave_metabolic_rate;
+      popY2 = av.grd.log_metabolic_rate;
     }
     else if ("Number of Organisms" == dijit.byId("yaxis").value) {
-      popY = grd.population_size;
-      popY2 = grd.log_pop_size;
+      popY = av.grd.population_size;
+      popY2 = av.grd.log_pop_size;
     }
     //console.log('popY',popY);
     //console.log('pop2', popY2);
@@ -1644,7 +1628,7 @@ mouse clicks
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
   dijit.byId("mnOrganismTrace").on("Click", function () {
-    traceSelected(dnd, fzr, grd);
+    traceSelected(av.dnd, fzr, av.grd);
     mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
@@ -1665,7 +1649,7 @@ mouse clicks
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    offspringTrace(dnd, fzr);
+    offspringTrace(av.dnd, fzr);
   });
 
   /* ****************************************************************/
@@ -1853,19 +1837,19 @@ mouse clicks
     plt.pop1a = [];
     plt.pop1b = [];
     AnaChartFn();
-    dnd.graphPop1.selectAll().deleteSelectedNodes();
+    av.dnd.graphPop1.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop2delete").onclick = function () {
     plt.pop2a = [];
     plt.pop2b = [];
     AnaChartFn();
-    dnd.graphPop2.selectAll().deleteSelectedNodes();
+    av.dnd.graphPop2.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop3delete").onclick = function () {
     plt.pop3a = [];
     plt.pop3b = [];
     AnaChartFn();
-    dnd.graphPop3.selectAll().deleteSelectedNodes();
+    av.dnd.graphPop3.selectAll().deleteSelectedNodes();
   }
   dijit.byId("pop1color").on("Change", function () {
     color1 = dictColor[dijit.byId("pop1color").value];
@@ -1976,10 +1960,10 @@ mouse clicks
   //http://stackoverflow.com/questions/6042202/how-to-distinguish-av.mouse-click-and-drag
 
   //A method to get the data items in a dojo DND container in order
-  //dnd.fzConfig.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
+  //av.dnd.fzConfig.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
   //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
-  //var orderedDataItems = dnd.fzConfig.getAllNodes().map(function(node){
-  //  return dnd.fzConfig.getItem(node.id).data;
+  //var orderedDataItems = av.dnd.fzConfig.getAllNodes().map(function(node){
+  //  return av.dnd.fzConfig.getItem(node.id).data;
   //});
   //console.log("orderedDataItems", orderedDataItems);
 
@@ -1989,7 +1973,7 @@ mouse clicks
 
   //trying fio.uiWorker to start Avida inside the initiation of PouchDB
 
-  function readMsg(ee, av, dnd, parents) {
+  function readMsg(ee, av, parents) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -2013,23 +1997,23 @@ mouse clicks
           updateOrgTrace(traceObj, gen);
           break;
         case 'webPopulationStats':
-          updatePopStats(grd, msg);
+          updatePopStats(av.grd, msg);
           popChartFn();
-          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
+          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
           break;
         case 'webGridData':
           //mObj=JSON.parse(JSON.stringify(jsonObject));
-          grd.msg = msg;
+          av.grd.msg = msg;
           DrawGridSetup();
-          if (av.debug.msgOrder) console.log('webGridData length', grd.ave_fitness.length);
-          //if (av.debug.msgOrder) console.log('ges',grd.msg.gestation.data);
-          //if (av.debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
-          if (av.debug.msgOrder) console.log('nan',grd.msg.nand.data);
-          if (av.debug.msgOrder) console.log('out',grd.out);
+          if (av.debug.msgOrder) console.log('webGridData length', av.grd.ave_fitness.length);
+          //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
+          //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
+          if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
+          if (av.debug.msgOrder) console.log('out',av.grd.out);
           break;
         case 'webOrgDataByCellID':
-          //if ('undefined' != typeof grd.msg.ancestor) {console.log('webOrgDataByCellID anc',grd.msg.ancestor.data);}
-          updateSelectedOrganismType(grd, msg, parents);  //in messageing
+          //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
+          updateSelectedOrganismType(av.grd, msg, parents);  //in messageing
           break;
         default:
           console.log('____________UnknownRequest: ', msg);
@@ -2061,7 +2045,7 @@ mouse clicks
 
   //process message from web worker
   console.log('before fio.uiWorker on message');
-  fio.uiWorker.onmessage = function (ee) {readMsg(ee, av, dnd, parents)};  // in file messaging.js
+  fio.uiWorker.onmessage = function (ee) {readMsg(ee, av, parents)};  // in file messaging.js
 
 //********************************************************
 //   Color Test Section - Temp this will all be removed later
@@ -2137,7 +2121,7 @@ mouse clicks
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       shrew.chipNdx = -1; //index into chips array if chip selected else -1;
-      if (grd.newrun) {  //run has not started so look to see if cell contains ancestor
+      if (av.grd.newrun) {  //run has not started so look to see if cell contains ancestor
         shrew.chipNdx = findchipNdx(chck, chips);
         if (-1 < shrew.chipNdx) { //selected a chip, check for dragging
           document.getElementById('colorDemo').style.cursor = 'copy';

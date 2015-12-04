@@ -59,10 +59,10 @@ var traceObj = {}; //global that holds the traceObject that was sent from Avida
 //initialize gen (genome) object.
 var gen = {};
 
-var grd = {};         //data about the grid canvas
-grd.popStatFlag = true;  //flag that determines if the stats panel is visible.
+av.grd = {};         //data about the grid canvas
+av.grd.popStatFlag = true;  //flag that determines if the stats panel is visible.
 
-function clearGrd() {
+function clearGrd(grd) {
   grd.newrun = true;
   grd.updateNum = 0;
   grd.cols = 0;    //Number of columns in the grid
@@ -103,7 +103,7 @@ function clearGrd() {
   grd.RowHt = 20;       //height of each row of text
   grd.leftpad = 10;     //padding to allow space between each column of text in the legend
 }
-clearGrd();
+clearGrd(av.grd);
 
 //http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
 // please note,
@@ -130,7 +130,7 @@ fio.wsdb = null;
 fio.defaultFname = 'default_1.avidaedworkspace.zip';
 fio.uiWorker = null;
 
-var dnd = {};
+av.dnd = {};
 var fzr = {};
 fzr.cNum = 0;  //value of the next configured dish (config) number
 fzr.gNum = 0;  //value of the next organism (genome) number
