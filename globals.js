@@ -1,66 +1,70 @@
 //***************************************
 // Defaults and Constants
+// one global to hold them all.
 
-//Debug flags
-var debug = {};
-debug.root = false;  //statemens that look for failiers when the code executes outside of functions
-debug.logic = false;  //debug statements that look for errors outlining logic functions
-debug.mouse = false;   //debug statements about non-dojo drag and drop
-debug.dnd = false;     //debu statements about dojo dnd
-debug.msg = false;     //messages to and from avida
-debug.trace = false;   //organism page
-debug.grid = false;     //population grid
-debug.msgOrder = false; //message order
-debug.pdb = false; //pouchDB
-debug.fio = false; // file io
+var av = {};
+//av.debug flags
+av.debug = {};
+av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
+av.debug.logic = false;  //av.debug statements that look for errors outlining logic functions
+av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
+av.debug.dnd = false;     //debu statements about dojo dnd
+av.debug.msg = false;     //messages to and from avida
+av.debug.trace = false;   //organism page
+av.debug.grid = false;     //population grid
+av.debug.msgOrder = false; //message order
+av.debug.pdb = false; //pouchDB
+av.debug.fio = false; // file io
+av.debug.gen = false; //oranism page
 
-//default values - these may be overwritten by those in a file once we get the file system working.
-dft = {};
-dft.sizeCols = 60;
-dft.sizeRows = 60;
-dft.muteInput = 2;   //percent
-dft.child = 'childParentRadio';  //alternate = childRandomRadio
-dft.nearParent = true;
-dft.notose = true;
-dft.nanose = true;
-dft.andose = true;
-dft.ornose = true;
-dft.orose = true;
-dft.andnose = true;
-dft.norose = true;
-dft.xorose = true;
-dft.equose = true;
-dft.repeat = 'experimentRadio';   //alternate = 'demoRadio'
-dft.pauseType = 'manRadio';     //alternate = 'updateRadio'
-dft.updateSpinner = 1000;
+//default values - these are not in use; the values now come from the file system
+av.dft = {};
+av.dft.sizeCols = 60;
+av.dft.sizeRows = 60;
+av.dft.muteInput = 2;   //percent
+av.dft.child = 'childParentRadio';  //alternate = childRandomRadio
+av.dft.nearParent = true;
+av.dft.notose = true;
+av.dft.nanose = true;
+av.dft.andose = true;
+av.dft.ornose = true;
+av.dft.orose = true;
+av.dft.andnose = true;
+av.dft.norose = true;
+av.dft.xorose = true;
+av.dft.equose = true;
+av.dft.repeat = 'experimentRadio';   //alternate = 'demoRadio'
+av.dft.pauseType = 'manRadio';     //alternate = 'updateRadio'
+av.dft.updateSpinner = 1000;
 
-var mouse = {};
-clearMouse();
+av.mouse = {};
 
-function clearMouse() {
-  mouse.Dn = false;
-  mouse.DnGridPos = [];
-  mouse.UpGridPos = [];
-  mouse.DnOrganPos = [];
-  mouse.Move = false;
-  mouse.Drag = false;
-  mouse.ParentNdx = -1;
-  mouse.ParentSelected = false;
-  mouse.Picked = "";
+function clearmouse(av) {
+  'use strict';
+  av.mouse.Dn = false;
+  av.mouse.DnGridPos = [];
+  av.mouse.UpGridPos = [];
+  av.mouse.DnOrganPos = [];
+  av.mouse.Move = false;
+  av.mouse.Drag = false;
+  av.mouse.ParentNdx = -1;
+  av.mouse.ParentSelected = false;
+  av.mouse.Picked = "";
 }
+clearmouse(av);
 
 //initialize globals needed to hold Organism Trace Data
-var traceObj; //global that holds the traceObject that was sent from Avida
+var traceObj = {}; //global that holds the traceObject that was sent from Avida
 
 //initialize gen (genome) object.
 var gen = {};
 
 var grd = {};         //data about the grid canvas
-clearGrd();
-grd.popStatFlag = true;
+grd.popStatFlag = true;  //flag that determines if the stats panel is visible.
 
 function clearGrd() {
   grd.newrun = true;
+  grd.updateNum = 0;
   grd.cols = 0;    //Number of columns in the grid
   grd.rows = 0;    //Number of rows in the grid
   grd.sizeX = 0;  //size of canvas in pixels
@@ -82,8 +86,8 @@ function clearGrd() {
   grd.SelectedColor = '#ffffff';
   grd.LogicColor = '#00ff00';
   grd.kidStatus = '';
-  grd.ave_fitness = [];
-  grd.log_fitness = [];
+  grd.ave_fitness = [];  //ave is for all avidians.
+  grd.log_fitness = [];  //log is for avidians that performm logic functions
   grd.ave_gestation_time = [];
   grd.log_gestation_time = [];
   grd.ave_metabolic_rate = [];
@@ -99,6 +103,7 @@ function clearGrd() {
   grd.RowHt = 20;       //height of each row of text
   grd.leftpad = 10;     //padding to allow space between each column of text in the legend
 }
+clearGrd();
 
 //http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
 // please note,
@@ -107,22 +112,22 @@ function clearGrd() {
 // and new IE Edge outputs to true now for window.chrome
 // so use the below updated condition
 
-var bag = {};
+var brs = {};  //browser and operating system data
 
-bag.isChromium = window.chrome;
-  bag.vendorName = window.navigator.vendor;
-  bag.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
-  bag.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
-if (bag.isChromium !== null && bag.isChromium !== undefined && bag.vendorName === "Google Inc." && bag.isOpera === false && bag.isIEedge === false) {
-  bag.chrome = true;
+brs.isChromium = window.chrome;
+  brs.vendorName = window.navigator.vendor;
+  brs.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
+  brs.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
+if (brs.isChromium !== null && brs.isChromium !== undefined && brs.vendorName === "Google Inc." && brs.isOpera === false && brs.isIEedge === false) {
+  brs.chrome = true;
 } else {
-  bag.chrome = false; // not Google chrome
+  brs.chrome = false; // not Google chrome
 }
 
-var fio = {};
+var fio = {}; //file input output data
 fio.dbName = 'wsdb';  //for workspace database
 fio.wsdb = null;
-fio.defaultFname = 'default1.avidaedworkspace.zip';
+fio.defaultFname = 'default_1.avidaedworkspace.zip';
 fio.uiWorker = null;
 
 var dnd = {};

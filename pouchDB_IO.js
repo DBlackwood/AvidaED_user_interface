@@ -1,19 +1,45 @@
 //need to write string to be the data 'file' to put in pouchDB
 
-function makePdbEntrynameTxt(fio, idStr, name) {
+function deletePdbFile(fio, fileId) {
+  'use strict';
+  fio.wsdb.get(fileId).then(function (doc) {
+    return fio.wsdb.remove(doc);
+  }).then(function (result) {
+    if (av.debug.pdb) console.log('correct pdb: ', doc);
+  }).catch(function (err) {
+    console.log('delete file err: ', err);
+  });
+}
+
+function makePdbFile(fio, fileId, text) {
   'use strict';
   var ifile = {
-    _id: idStr + '/entryname.txt',
-    text: name
+    _id: fileId,
+    contents: text
   };
-  fio.wsdb.get(idStr + '/entryname.txt').then(function (doc) {
+  fio.wsdb.get(fileId).then(function (doc) {
     ifile._rev = doc._rev;
-    if (debug.pdb) console.log('get entryName doc already exists, ok update', doc);
-    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    if (av.debug.pdb) console.log('get entryName doc already exists, ok update', doc);
+    fio.wsdb.put(ifile).then(function (response) {if (av.debug.pdb) console.log('ok correct', response); // handle response to put
     }).catch(function (err) {console.log('put err', err);
     });
   }).catch(function (err) {
-    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
+    fio.wsdb.put(ifile).then(function (response) {if (av.debug.pdb) console.log('ok correct', response); // handle response to put
+    }).catch(function (err) {console.log('put err', err);
+    });
+  });
+}
+
+function makePdbNullFile(fio, idStr){
+  'use strict';
+  fio.wsdb.get(idStr).then(function (doc) {
+    if (av.debug.pdb) console.log('get events doc, ok no reason to update', doc);  //always empty so no reason to update
+  }).catch(function (err) {
+    if (av.debug.pdb) console.log('get events.cfg not really an err, just not already there', err);  //does not exist, so create.
+    fio.wsdb.put({
+      _id: idStr,
+      text: ''
+    }).then(function (response) {// handle response to put
     }).catch(function (err) {console.log('put err', err);
     });
   });
@@ -25,19 +51,19 @@ function makePdbInstsetCfg(fio, idStr) {
   var ifile = {_id: idStr + '/instset.cfg'};
   fio.wsdb.get('c0/instset.cfg').then(function (instsetDoc) {
     //console.log('instset doc.text', instsetDoc.text);
-    ifile.text = instsetDoc.text;
+    ifile.contents = instsetDoc.contents;
     return fio.wsdb.get(ifile._id).then(function (doc) {
       ifile._rev = doc._rev;
-      if (debug.pdb) console.log('get avida doc already exists, ok update', doc);
+      if (av.debug.pdb) console.log('get avida doc already exists, ok update', doc);
       fio.wsdb.put(ifile).then(function (response) {
-        if (debug.pdb) console.log('ok correct', response); // handle response to put
+        if (av.debug.pdb) console.log('ok correct', response); // handle response to put
       }).catch(function (err) {
         console.log('put err', err);
       });
     }).catch(function (err) {
-      if (debug.pdb) console.log('get avida err', err);  //not really an error, just not already there.
+      if (av.debug.pdb) console.log('get avida err', err);  //not really an error, just not already there.
       fio.wsdb.put(ifile).then(function (response) {
-        if (debug.pdb) console.log('ok correct', response); // handle response to put
+        if (av.debug.pdb) console.log('ok correct', response); // handle response to put
       }).catch(function (err) {
         console.log('put err', err);
       });
@@ -45,19 +71,11 @@ function makePdbInstsetCfg(fio, idStr) {
   });
 }
 
-function makePdbEventsCfg(fio, idStr){
+function makePdbWorldEventsCfg(fio, idStr) {
   'use strict';
-  fio.wsdb.get(idStr + '/events.cfg').then(function (doc) {
-    if (debug.pdb) console.log('get events doc, ok no reason to update', doc);  //always empty so no reason to update
-  }).catch(function (err) {
-    if (debug.pdb) console.log('get events.cfg not really an err, just not already there', err);  //does not exist, so create.
-    fio.wsdb.put({
-      _id: idStr + '/events.cfg',
-      text: ''
-    }).then(function (response) {// handle response to put
-    }).catch(function (err) {console.log('put err', err);
-    });
-  });
+  var txt = 'u begin LoadPopulation detail.spop' + '\n';
+  txt += 'u begin LoadStructuredSystematicsGroup role=clade:filename=clade.ssg';
+  makePdbFile(fio, idStr+'/events.cfg', txt);
 }
 
 function makePdbAvidaCfg(fio, idStr) {
@@ -76,31 +94,13 @@ function makePdbAvidaCfg(fio, idStr) {
   else txt += 'RANDOM_SEED 100\n';
   txt += '#include instset.cfg\n';
   txt += 'I\n';
-
-  var ifile = {
-    _id: idStr + '/avida.cfg',
-    text: txt
-  };
-  fio.wsdb.get(idStr + '/avida.cfg').then(function (doc) {
-    ifile._rev = doc._rev;
-    if (debug.pdb) console.log('get avida doc already exists, ok update', doc);
-    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
-    }).catch(function (err) {console.log('put err', err);
-    })
-  }).catch(function (err) {
-    if (debug.pdb) console.log('get avida err', err);  //not really an error, just not already there.
-    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response); // handle response to put
-    }).catch(function (err) {console.log('put err', err);
-    })
-  });
-
-  if (debug.pdb) console.log('txt \n',txt);
+  makePdbFile(fio, idStr+'/avida.cfg', txt);
 }
 
 function makePdbEnvironmentCfg(fio, idStr) {
   'use strict';
   var txt = '';
-  if(dijit.byId("notose").get('checked'))  txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("notose").get('checked')) txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("nanose").get('checked')) txt += 'REACTION  NAND nand  process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NAND nand  process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("andose").get('checked')) txt += 'REACTION  AND  and   process:value=2:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  AND  and   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("ornose").get('checked')) txt += 'REACTION  ORN  orn   process:value=2:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  ORN  orn   process:value=0:type=pow  requisite:max_count=1\n';
@@ -109,24 +109,11 @@ function makePdbEnvironmentCfg(fio, idStr) {
   if (dijit.byId("norose").get('checked')) txt += 'REACTION  NOR  nor   process:value=4:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOR  nor   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("xorose").get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1\n';
-  var ifile = {
-    _id: idStr + '/environment.cfg',
-    text: txt
-  }
-  fio.wsdb.get(idStr + '/environment.cfg').then(function (doc) {
-    ifile._rev = doc._rev;
-    if (debug.pdb) console.log('get environment doc already exists, ok update', doc);
-    fio.wsdb.put(ifile).then(function (response) { if (debug.pdb) console.log('ok correct', response);// handle response to put
-    }).catch(function (err) {console.log('put err', err);
-    })
-  }).catch(function (err) {
-    if (debug.pdb) console.log('get environment not really an err, just not already there', err);  //not really an error, just not already there.
-    fio.wsdb.put(ifile).then(function (response) {if (debug.pdb) console.log('ok correct', response);// handle response to put
-    }).catch(function (err) {console.log('put err', err);
-    })
-  });
+  makePdbFile(fio, idStr+'/environment.cfg', txt);
+}
 
-  if (debug.pdb) console.log('Environment txt \n', txt);
+function makePdbAncestor(fio, idStr) {
+  'use strict';
 }
 
 function sendConfig(fio) {
@@ -134,18 +121,84 @@ function sendConfig(fio) {
   var idStr = 'cT';
   makePdbAvidaCfg(fio, idStr);
   makePdbEnvironmentCfg(fio, idStr);
-  makePdbEventsCfg(fio, idStr);
+  makePdbNullFile(fio, idStr+'/events.cfg');
   makePdbInstsetCfg(fio, idStr);
 }
 
-function makePdbConfig(fzr, fio) {
+function makePdbConfig(fzr, fio, parents) {
   'use strict';
   var ndx = fzr.config.length-1;  //write the last one created
-  if (debug.pdb) console.log('wsdb', fio.wsdb);
+  if (av.debug.pdb) console.log('wsdb', fio.wsdb);
   makePdbAvidaCfg(fio, fzr.config[ndx]._id);
   makePdbEnvironmentCfg(fio, fzr.config[ndx]._id);
-  makePdbEventsCfg(fio, fzr.config[ndx]._id, fzr.config[ndx].domID);
-  makePdbEntrynameTxt(fio, fzr.config[ndx]._id, fzr.config[ndx].name);
+  makePdbNullFile(fio, fzr.config[ndx]._id+'/events.cfg');
+  makePdbFile(fio, fzr.config[ndx]._id+'/entryname.txt', fzr.config[ndx].name);
   makePdbInstsetCfg(fio, fzr.config[ndx]._id);
+  //need ancestor files still tiba
 }
 
+function makePdbWorld(fzr, fio, grd, parents) {
+  'use strict';
+  var ndx = fzr.config.length-1;  //write the last one created
+  makePdbAvidaCfg(fio, fzr.world[ndx]._id);
+  makePdbEnvironmentCfg(fio, fzr.world[ndx]._id);
+  makePdbWorldEventsCfg(fio, fzr.world[ndx]._id);
+  makePdbFile(fio, fzr.world[ndx]._id+'/entryname.txt', fzr.world[ndx].name);
+  makePdbInstsetCfg(fio, fzr.world[ndx]._id);
+
+  makePdbFile(fio, fzr.world[ndx]._id+'/update', grd.updateNum);
+  //there are more files need to talk to Matt, tiba
+}
+
+function makePdbOrgan(fio, fzr) {
+  'use strict';
+  var ndx = fzr.genome.length-1;  //write the last one created
+  makePdbFile(fio, fzr.genome[ndx]._id+'/entryname.txt', fzr.genome[ndx].name);
+  makePdbFile(fio, fzr.genome[ndx]._id+'/genome.seq', fzr.genome[ndx].genome);
+}
+
+function removePdbConfig(fio, strId) {
+  'use strict';
+  deletePdbFile(fio, strId+'/ancestors');
+  deletePdbFile(fio, strId+'/ancestors_manual');
+  deletePdbFile(fio, strId+'/avida.cfg');
+  deletePdbFile(fio, strId+'/environment.cfg');
+  deletePdbFile(fio, strId+'/events.cfg');
+  deletePdbFile(fio, strId+'/entryname.txt');
+  deletePdbFile(fio, strId+'/instset.cfg');
+}
+
+function removePdbGenome(fio, strId) {
+  'use strict';
+  deletePdbFile(fio, strId+'/entryname.txt');
+  deletePdbFile(fio, strId+'/genome.seq');
+}
+
+function removePdbWorld(fio, strId) {
+  'use strict';
+  deletePdbFile(fio, strId+'/ancestors');
+  deletePdbFile(fio, strId+'/ancestors_manual');
+  deletePdbFile(fio, strId+'/avida.cfg');
+  deletePdbFile(fio, strId+'/environment.cfg');
+  deletePdbFile(fio, strId+'/events.cfg');
+  deletePdbFile(fio, strId+'/entryname.txt');
+  deletePdbFile(fio, strId+'/instset.cfg');
+  deletePdbFile(fio, strId+'/update');
+  //deletePdbFile(fio, strId+'/');
+  //deletePdbFile(fio, strId+'/');
+}
+
+function removePdbItem(fio, strId, type){
+  'use strict';
+  switch (type){
+    case 'c':
+      removePdbConfig(fio, strId);
+      break;
+    case 'g':
+      removePdbGenome(fio, strId);
+      break;
+    case 'w':
+      removePdbWorld(fio, strId);
+      break;
+  }
+}

@@ -141,7 +141,6 @@ require([
   }
 
   function initializeDB(fio, fzr) {
-    "use strict";
     var oldDb = new fio.PouchDB(fio.dbName);
     //clear any old database and create new one for this session
     oldDb.destroy(fio.dbName).then(function (response) {//success
@@ -190,13 +189,13 @@ require([
   //********************************************************************************************************************
   // Menu file handling
   //********************************************************************************************************************
-  dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace() });  //in fileIO.js
-  dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault() });  //in fileIO.js
+  dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
+  dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault(); });  //in fileIO.js
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
-  if (debug.root) console.log('before Resize helpers');
+  if (av.debug.root) console.log('before Resize helpers');
   // called from script in html file as well as below
   BrowserResizeEventHandler = function () {
     if ("block" == domStyle.get("analysisBlock", "display")) {
@@ -216,7 +215,7 @@ require([
       //console.log('rightDetail', height, rd);
       updateOrgTrace(traceObj, gen);
     }
-  }
+  };
 
   ready(function () {
     aspect.after(registry.byId("gridHolder"), "resize", function () {
@@ -240,7 +239,7 @@ require([
     }
   });
 
-  if (debug.root) console.log('before drop down menu');
+  if (av.debug.root) console.log('before drop down menu');
   // Drop down menu buttons ------------------------------------------
 
   var HardwareDialog = new Dialog({
@@ -306,22 +305,25 @@ require([
    dijit.byId("mapBC").set("style", "height: "+ mapNewHt +"px;");
    */
   function mainBoxSwap(showBlock) {
-    //console.log("in mainBoxSwap");
+    console.log("in mainBoxSwap");
     dijit.byId("populationBlock").set("style", "display: none;");
     dijit.byId("organismBlock").set("style", "display: none;");
     dijit.byId("analysisBlock").set("style", "display: none;");
     dijit.byId("testBlock").set("style", "display: none;");       //take testBlock out completely later
+    console.log('after testblock');
     dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
     dijit.byId(showBlock).resize();
+    console.log('after showblock resize');
 
     //disable menu options. they will be enabled when relevant canvas is drawn
     dijit.byId("mnFzOffspring").attr("disabled", true);
     dijit.byId("mnOffspringTrace").attr("disabled", true);
+    console.log('end of mainBoxSwap');
   };
 
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
-    if (debug.dnd || debug.mouse) console.log('PopulationButton, fzr.genome', fzr.genome);
+    if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, fzr.genome', fzr.genome);
     mainBoxSwap("populationBlock");
   }
 
@@ -337,29 +339,29 @@ require([
     if (undefined != traceObj) {
       updateOrgTrace(traceObj, gen);
     }
-  }
+  };
 
   document.getElementById("analysisButton").onclick = function () {
     mainBoxSwap("analysisBlock");
-  }
+  };
   //Take testBlock out completely later
 
   document.getElementById("testButton").onclick = function () {
     mainBoxSwap("testBlock");
     if ('#00FF00' == chck.outlineColor) {
-      chck.outlineColor = '#00FFFF'
+      chck.outlineColor = '#00FFFF';
     }
     else if ('#00FFFF' == chck.outlineColor) {
-      chck.outlineColor = '#FFFFFF'
+      chck.outlineColor = '#FFFFFF';
     }
     else {
-      chck.outlineColor = '#00FF00'
+      chck.outlineColor = '#00FF00';
     }
     placeChips(chips, chck);
     drawCheckerSetup(chck, chips);
-  }
+  };
 
-  if (debug.root) console.log('before dnd definitions');
+  if (av.debug.root) console.log('before dnd definitions');
   /* ********************************************************************** */
   /* Dojo Drag N Drop Initialization ****************************************/
   /* ********************************************************************** */
@@ -374,7 +376,7 @@ require([
     ,'0,heads_default,wsjagcvtvazystorcauoyucuyquufydpbusmyfqoocvvopxgxu'  //allbut2logic
   ];
 */
-  if (debug.root) console.log('before frz structure');
+  if (av.debug.root) console.log('before frz structure');
 
   dnd.fzConfig = new dndSource('fzConfig', {
     accept: ['c'],
@@ -403,7 +405,7 @@ require([
   dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
   dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
   dnd.trashCan = new dndSource('trashCan', {accept: ['c', 'g', 'w'], singular: true});
-  if (debug.root) console.log('after trashCan');
+  if (av.debug.root) console.log('after trashCan');
 
   dnd.activeConfig = new dndSource('activeConfig', {
     accept: ['c', 'w'],
@@ -447,7 +449,7 @@ require([
     parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
   }
 
-  if (debug.root) console.log('before dnd triggers');
+  if (av.debug.root) console.log('before dnd triggers');
   //*******************************************************************************************************************
   //       Dojo Dnd drop function - triggers for all dojo dnd drop events
   //*******************************************************************************************************************
@@ -464,25 +466,26 @@ require([
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
       landActiveConfig(dnd, pkg);  //dojoDnd
-      updateSetup(fio, fzr);
+      updateSetup(fio, fzr);  //fileIO
       if ('w' === fzr.actConfig.type) {
         console.log('world config so there more to do');
-
       }
     }
   });
 
+  //currently this should not trigger as activeConfig is only a target
   dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
       var num = fzr.config[fzr.config.length-1].fileNum;
       landFzConfig(dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
-      if (num != fzr.config[fzr.config.length-1].fileNum) makePdbConfig(fzr, fio);
+      if (num != fzr.config[fzr.config.length-1].fileNum) {makePdbConfig(fzr, fio);}
     }
   });
 
   dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
-    if ('fzOrgan' == target.node.id) {
+    if ('fzOrgan' === target.node.id) {
       landFzOrgan(dnd, fzr, parents, source, nodes, target);
+      makePdbOrgan(fio, fzr);
     }
   });
 
@@ -494,14 +497,14 @@ require([
 
   dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
-      landGridCanvas(dnd, fzr, parents, source, nodes, target);
+      landGridCanvas(av, dnd, fzr, parents, source, nodes, target);
       DrawGridSetup();
     }
   });
 
   dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
-      if (debug.dnd) console.log('landOrganCanvas: s, t', source, target);
+      if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
       landOrganCanvas(dnd, fzr, source, nodes, target);
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
@@ -509,23 +512,28 @@ require([
 
   dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     if ('organIcon' == target.node.id) {
-      if (debug.dnd) console.log('landOrganIcon: s, t', source, target);
+      if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
       landOrganIcon(dnd, fzr, source, nodes, target);
       //Change to Organism Page
+      console.log('in dnd.organIcon; before mainBoxSwap');
       mainBoxSwap("organismBlock");
+      console.log('before organismCanvasHolderSize');
       organismCanvasHolderSize();
+      console.log('in dnd.organIcon: after organismCanvasHolderSize');
       var height = ($("#rightDetail").innerHeight() - 375) / 2;
       document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
+      console.log('in dnd.organIcon: before doOrgTrace');
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+      console.log('in dnd.organIcon:after doOrganTrace');
     }
   });
 
   dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
-      if (debug.dnd) console.log('activeOrgan: s, t', source, target);
+      if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
       landActiveOrgan(dnd, fzr, source, nodes, target);
       doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
     }
@@ -533,14 +541,20 @@ require([
 
   dnd.trashCan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
     if ('trashCan' == target.node.id) {
-      if (debug.dnd) console.log('trashCan: s, t', source, target);
-      landTrashCan(dnd, fzr, parents, source, nodes, target);
+      var remove = {};
+      remove.type = '';
+      remove.id = '';
+      if (av.debug.dnd) console.log('trashCan: s, t', source, target);
+      remove = landTrashCan(dnd, fzr, parents, source, nodes, target);
+      if ('' != remove.type) {
+        removePdbItem(fio, remove.id, remove.type);
+      }
     }
   });
 
   dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
-      if (debug.dnd) console.log('graphPop1: s, t', source, target);
+      if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
       landGraphPop1(dnd, source, nodes, target, plt);
       AnaChartFn();
     }
@@ -548,7 +562,7 @@ require([
 
   dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
-      if (debug.dnd) console.log('graphPop2: s, t', source, target);
+      if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
       landGraphPop2(dnd, source, nodes, target, plt);
       AnaChartFn();
     }
@@ -556,7 +570,7 @@ require([
 
   dnd.graphPop3.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop3
     if ('graphPop3' == target.node.id) {
-      if (debug.dnd) console.log('graphPop3: s, t', source, target);
+      if (av.debug.dnd) console.log('graphPop3: s, t', source, target);
       landGraphPop3(dnd, source, nodes, target, plt);
       AnaChartFn();
     }
@@ -589,7 +603,7 @@ require([
     }
   });
 
-  if (debug.root) console.log('before Population Page');
+  if (av.debug.root) console.log('before Population Page');
   /* *************************************************************** */
   /* Population page script ******************************************/
   /* *************************************************************** */
@@ -727,31 +741,26 @@ require([
     newButtonBoth()
   });
 
-  //reset values with hard coded defaults needs to be updated when Avida works
+  //reset values
   function resetDishFn() { //Need to reset all settings to @default
     grd.newrun = true;
     dijit.byId("mnOrganismTrace").attr("disabled", true);
     dijit.byId("mnFzOrganism").attr("disabled", true);
 
-    // send rest to Avida adaptor
+    // send reset to Avida adaptor
     doReset();
     //Enable the options on the Setup page
-    popNewExState(dnd, grd, parents);
-    //clear the time series graphs
-    grd.ave_fitness = [];
-    grd.log_fitness = [];
-    grd.ave_gestation_time = [];
-    grd.log_gestation_time = [];
-    grd.ave_metabolic_rate = [];
-    grd.log_metabolic_rate = [];
-    grd.population_size = [];
-    grd.log_pop_size = [];
-    popChartFn();
+    popNewExState(dnd, fzr, grd, parents);
     //Clear grid settings
     clearParents();
-    //reset values in population settings either based on a 'file' @default or a @default string
-    writeSettings(dft, dnd, grd);
+    //reset values in population settings based on a 'file' @default
+    updateSetup(fio, fzr);
+
+    //write if @default not found - need to figure out a test for this
+    //writeHardDefault(av.dft);
+
     //re-write grid if that page is visible
+    popChartFn();
     DrawGridSetup();
   }
 
@@ -788,7 +797,7 @@ require([
   document.getElementById("freezeButton").onclick = function () {
     if (grd.newrun) FrConfigFn();
     else fzDialog.show();
-  }
+  };
 
   function FrConfigFn() {
     var fzName = prompt("Please name the new configuration", "newConfig");
@@ -799,9 +808,9 @@ require([
         dnd.fzConfig.insertNodes(false, [{data: fzName, type: ['c']}]);
         dnd.fzConfig.sync();
         //Create context menu for right-click on this item
-        var domID = getDomID(fzName, dnd.fzConfig);
+        var domId = getDomId(fzName, dnd.fzConfig);
         var newConfig = {
-          domID: domID,
+          domId: domId,
           name: fzName,
           _id: 'c'+ fzr.cNum,
           fileNum: fzr.cNum
@@ -809,7 +818,33 @@ require([
         fzr.config.push(newConfig);
         fzr.cNum++;
         makePdbConfig(fzr, fio);
-        contextMenu(fzr, dnd.fzConfig, domID);
+        contextMenu(fzr, dnd.fzConfig, domId);
+      }
+    }
+  }
+
+  //Save a populated dish
+  function FrPopulationFn() {
+    var fzName = prompt("Please name the new population", "newPopulation");
+    if (fzName) {
+      fzName = getUniqueName(fzName, dnd.fzWorld);
+      if (null != fzName) {
+        dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
+        dnd.fzWorld.sync();
+        //Find out the dom ID the node element just inserted.
+        var domId = getDomId(fzName, dnd.fzWorld);
+        var newWorld = {
+          domId: domId,
+          name: fzName,
+          _id: 'w'+ fzr.wNum,
+          fileNum: fzr.wNum
+        };
+        fzr.world.push(newWorld);
+        fzr.wNum++;
+        makePdbWorld(fzr, fio, grd);
+        //need to get data from Avida for this tiba
+        //Create context menu for right-click on this item
+        contextMenu(fzr, dnd.fzWorld, domId);
       }
     }
   }
@@ -824,29 +859,11 @@ require([
     FrConfigFn()
   });
 
-  //Save a populated dish
-  function FrPopulationFn() {
-    var fzName = prompt("Please name the new population", "newPopulation");
-    if (fzName) {
-      fzName = getUniqueName(fzName, dnd.fzWorld);
-      if (null != fzName) {
-        dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
-        dnd.fzWorld.sync();
-        //Create context menu for right-click on this item
-        //Find out the dom ID the node element just inserted.
-        var domID = getDomID(fzName, dnd.fzWorld);
-        contextMenu(dnd.fzWorld, domID);
-      }
-    }
-  }
-
   //button to freeze a population
   dijit.byId("FzPopulation").on("Click", function () {
     fzDialog.hide();
     FrPopulationFn();
   });
-
-  //Buttons on drop down menu to save configured dish
 
   //Buttons on drop down menu to save an organism
   dijit.byId("mnFzOrganism").on("Click", function () {
@@ -897,7 +914,7 @@ require([
 
   // End of Freezer functions
 //********************************************************************
-//    Mouse DND functions
+//    mouse DND functions
 //********************************************************************
 /* mouse websites
 mouse clicks
@@ -936,18 +953,16 @@ mouse clicks
  });
    */
 
-
-
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
-    mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
-    mouse.Dn = true;
-    mouse.Picked = '';
+    av.mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
+    av.mouse.Dn = true;
+    av.mouse.Picked = '';
     var distance, jj, hh;
     var ith = -10;
     var isRightMB;
     //http://stackoverflow.com/questions/6926963/understanding-the-window-event-property-and-its-usage
-    evt = evt || window.event;  //for IE since IE does not returnn an event
+    evt = evt || window.event;  //for IE since IE does not return an event
     // also there is no e.target property in IE.
     // instead IE uses window.event.srcElement
     //var target = e.target || e.srcElement;  //for IE since IE does not have a target.  //not using target here
@@ -963,11 +978,11 @@ mouse clicks
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
-        mouse.Picked = "offspring";
-        if (gen.debug) console.log('gen.dna', gen.dna);
+        av.mouse.Picked = "offspring";
+        if (av.debug.gen) console.log('gen.dna', gen.dna);
       }
     }
-    if ('offspring' != mouse.Picked) {
+    if ('offspring' != av.mouse.Picked) {
       for (var gg = 0; gg < traceObj[gen.cycle].memSpace.length; gg++) { //gg is generation
         for (var ii = 0; ii < gen.dna[gg].length; ii++) {  //ii is the isntruction number
           distance = Math.sqrt(Math.pow(evt.offsetX - gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - gen.smCenY[gg][ii], 2));
@@ -975,14 +990,14 @@ mouse clicks
             //console.log('found, gg, ii', gg, ii, '; xy',gen.smCenX[gg][ii],gen.smCenY[gg][ii] );
             ith = ii;
             hh = gg;
-            mouse.Picked = 'instruction';
+            av.mouse.Picked = 'instruction';
             break;
           }
         }
       }
     }
     var instructionNum = ith + 1;
-    if ('instruction' == mouse.Picked) {
+    if ('instruction' == av.mouse.Picked) {
       if (isRightMB) {  //right click on instruction. allow replacement letter.
         console.log('right click');
         evt.preventDefault();  //supposed to prevent default right click menu - does not work
@@ -1007,7 +1022,7 @@ mouse clicks
   });
 
   //if a cell is selected, arrow keys can move the selection
-  $(document).keydown(function(e) { //tibatiba
+  $(document).keydown(function(e) {
     if (grd.flagSelected) {
       var moved = false;
       switch (e.which) {
@@ -1040,11 +1055,11 @@ mouse clicks
       grd.selectedNdx = grd.selectedRow*grd.cols + grd.selectedCol;
       if (moved && !grd.newrun) {  //look for decendents (kids)
         //find out if there is a kid in that cell
-        //if ancestor not null then there is a 'kid' there.
+        //if which ancestor is not null then there is a 'kid' there.
         if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
           grd.kidStatus = 'getgenome';
           doSelectedOrganismType(grd);
-          if (debug.mouse) console.log('kid', grd.kidName, grd.kidGenome);
+          if (av.debug.mouse) console.log('kid', grd.kidName, grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnOrganismTrace").attr("disabled", false);
         }
@@ -1053,45 +1068,45 @@ mouse clicks
     }
   });
 
-  //mouse down on the grid
+  //av.mouse down on the grid
   $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
-    mouse.DnGridPos = [evt.offsetX, evt.offsetY];
-    mouse.Dn = true;
+    av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
+    av.mouse.Dn = true;
     // Select if it is in the grid
     findSelected(evt, grd);
     //check to see if in the grid part of the canvas
-    if (debug.mouse) console.log('mousedown', grd.selectedNdx);
-    //if (debug.mouse) console.log('grid Canvas; selectedNdx', grd.selectedNdx,'________________________________');
-    //if (debug.mouse) console.log('grid Canvas; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
+    if (av.debug.mouse) console.log('av.mousedown', grd.selectedNdx);
+    //if (av.debug.mouse) console.log('grid Canvas; selectedNdx', grd.selectedNdx,'________________________________');
+    //if (av.debug.mouse) console.log('grid Canvas; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
     if (grd.selectedCol >= 0 && grd.selectedCol < grd.cols && grd.selectedRow >= 0 && grd.selectedRow < grd.rows) {
       grd.flagSelected = true;
-      if (debug.mouse) console.log('ongrid', grd.selectedNdx);
+      if (av.debug.mouse) console.log('ongrid', grd.selectedNdx);
       DrawGridSetup();
 
       //In the grid and selected. Now look to see contents of cell are dragable.
-      mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
+      av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
       if (grd.newrun) {  //run has not started so look to see if cell contains ancestor
-        mouse.ParentNdx = findParentNdx(parents);
-        if (debug.mouse) console.log('parent', mouse.ParentNdx);
-        if (-1 < mouse.ParentNdx) { //selected a parent, check for dragging
+        av.mouse.ParentNdx = findParentNdx(parents);
+        if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
+        if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
           document.getElementById('organIcon').style.cursor = 'copy';
           document.getElementById('gridCanvas').style.cursor = 'copy';
           document.getElementById('TrashCanImage').style.cursor = 'copy';
           document.getElementById('mainBC').style.cursor = 'move';
-          mouse.Picked = 'parent';
+          av.mouse.Picked = 'parent';
           //console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCanImage').style.cursor);
         }
       }
       else {  //look for decendents (kids)
-        if (debug.mouse) console.log('kidSelected; selectedNdx', grd.selectedNdx,'________________________________');
-        if (debug.mouse) console.log('kidSelected; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
+        if (av.debug.mouse) console.log('kidSelected; selectedNdx', grd.selectedNdx,'________________________________');
+        if (av.debug.mouse) console.log('kidSelected; grd.msg.ancestor[grd.selectedNdx]', grd.msg.ancestor.data[grd.selectedNdx]);
         //find out if there is a kid in that cell
         //if ancestor not null then there is a 'kid' there.
         if (null != grd.msg.ancestor.data[grd.selectedNdx]) {
           grd.kidStatus = 'getgenome';
           doSelectedOrganismType(grd);
           SelectedKidMouseStyle(dnd, fzr, grd);
-          mouse.Picked = 'kid';
+          av.mouse.Picked = 'kid';
           console.log('kid', grd.kidName, grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnOrganismTrace").attr("disabled", false);
@@ -1118,20 +1133,22 @@ mouse clicks
    //console.log('gd move');
    //document.getElementById('gridCanvas').style.cursor = 'copy';
    //document.getElementById('trashCan').style.cursor = 'copy';
-   //console.log('mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('trashCan').style.cursor);
-   //if (debug.mouse) console.log('________________________________mousemove');
-   if (!nearly([evt.offsetX, evt.offsetY], mouse.DnGridPos)) {
-   //if (debug.mouse) console.log('________________________________');
-   //if (debug.mouse) console.log("gd draging");
-   if (mouse.Dn) mouse.Drag = true;
+   //console.log('av.mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('trashCan').style.cursor);
+   //if (av.debug.mouse) console.log('________________________________av.mousemove');
+   if (!nearly([evt.offsetX, evt.offsetY], av.mouse.DnGridPos)) {
+   //if (av.debug.mouse) console.log('________________________________');
+   //if (av.debug.mouse) console.log("gd draging");
+   if (av.mouse.Dn) av.mouse.Drag = true;
    }
-   $(document).off('mousemove', handler);
+   $(document).off('av.mousemove', handler);
    });
    */
 
   //When mouse button is released, return cursor to default values
   $(document).on('mouseup', function (evt) {
-    if (debug.mouse) console.log('mouseup; evt', evt.target.id, evt);
+    'use strict';
+    var target = '';
+    if (av.debug.mouse) console.log('av.mouseup; evt', evt.target.id, evt);
     document.getElementById('organCanvas').style.cursor = 'default';
     document.getElementById('gridCanvas').style.cursor = 'default';
     document.getElementById('freezerDiv').style.cursor = 'default';
@@ -1141,12 +1158,13 @@ mouse clicks
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
     for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'default';
-    mouse.UpGridPos = [evt.offsetX, evt.offsetY];
-    mouse.Dn = false;
+    av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
+    console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
+    av.mouse.Dn = false;
 
     // --------- process if something picked to dnd ------------------
-    if ('parent' == mouse.Picked) {
-      mouse.Picked = "";
+    if ('parent' == av.mouse.Picked) {
+      av.mouse.Picked = "";
       ParentMouse(evt, dnd, fzr, parents);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) DrawGridSetup();
       else if ('organIcon' == evt.target.id) {
@@ -1160,16 +1178,17 @@ mouse clicks
         document.getElementById("ExecuteAbout").style.width = "100%";
         doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
       }
-
     }
-    else if ('offspring' == mouse.Picked) {
-      mouse.Picked = "";
-      OffspringMouse(evt, dnd, fzr)
+    else if ('offspring' == av.mouse.Picked) {
+      av.mouse.Picked = "";
+      target = OffspringMouse(evt, dnd, fzr);
+      if ('fzOrgan' == target) { makePdbOrgan(fio, fzr)}
     }
-    else if ('kid' == mouse.Picked) {
-      mouse.Picked = "";
-      KidMouse(evt, dnd, fzr, grd);
-      if ('organIcon' == evt.target.id) {
+    else if ('kid' == av.mouse.Picked) {
+      av.mouse.Picked = "";
+      target = KidMouse(evt, dnd, fzr, grd);
+      if ('fzOrgan' == target) { makePdbOrgan(fio, fzr);}
+      else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         mainBoxSwap("organismBlock");
         organismCanvasHolderSize();
@@ -1181,7 +1200,7 @@ mouse clicks
         doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
       }
     }
-    mouse.Picked = "";
+    av.mouse.Picked = "";
   });
 
   /* *************************************************************** */
@@ -1233,7 +1252,7 @@ mouse clicks
       //document.getElementById('mapBlock').style.height = '96%'; //96
     } else {
       //document.getElementById('mapBlock').style.height = '94%';  //94
-      if (bag.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
+      if (brs.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
     }
 
     var mapBlockWd = mapBlockHoldWd-8;
@@ -1308,7 +1327,7 @@ mouse clicks
     //if the two heights are different then there is a scroll bar
     var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
     var hasScrollbar = 0 < ScrollDif;
-    if (debug.root) console.log('scroll',scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
+    if (av.debug.root) console.log('scroll',scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
       document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
       document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
 
@@ -1387,7 +1406,7 @@ mouse clicks
   // *************************************************************** */
   //    Buttons that select organisms that perform a logic function
   // *************************************************************** */
-  if (debug.root) console.log('before logic buttons');
+  if (av.debug.root) console.log('before logic buttons');
 
   function toggle(button) {
     if ('on' == document.getElementById(button).value) {
@@ -1599,7 +1618,7 @@ mouse clicks
         $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3) + "%");
         /*put the value in the text box */
         gen.settingsChanged = true;
-        if (debug.trace) console.log('orSlide changed', gen.settingsChanged)
+        if (av.debug.trace) console.log('orSlide changed', gen.settingsChanged)
       }
     });
     /* initialize */
@@ -1610,7 +1629,7 @@ mouse clicks
     $("#orMuteInput").change(function () {
       slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
       gen.settingsChanged = true;
-      if (debug.trace) console.log('orMute changed', gen.settingsChanged)
+      if (av.debug.trace) console.log('orMute changed', gen.settingsChanged)
       //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log("in mute change");
     });
@@ -1646,7 +1665,7 @@ mouse clicks
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    offspringTrace(dnd, fzr)
+    offspringTrace(dnd, fzr);
   });
 
   /* ****************************************************************/
@@ -1662,11 +1681,15 @@ mouse clicks
 
   function updateOrgTrace(obj, gen) {
     //set canvas size
+    //console.log('gen', gen);
+    //console.log('obj', obj);
     organismCanvasHolderSize();
-    if (undefined != obj) {
+    //if (undefined == obj[gen.cycle]) console.log('its undefined');
+    if (!(undefined == obj || {} == obj || undefined == obj[gen.cycle])) {
       gen.didDivide = obj[gen.cycle].didDivide; //update global version of didDivide
       updateOrganTrace(obj, gen);
     }
+    else gen.didDivide = false;
   }
   /* ****************************************************************/
   /*             End of Canvas to draw genome and update details
@@ -1882,7 +1905,7 @@ mouse clicks
     //if the two heights are different then there is a scroll bar
     var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
     var hasScrollbar = 0 < ScrollDif;
-    if (debug.root) console.log('scroll',scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
+    if (av.debug.root) console.log('scroll',scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
       document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
       document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
 
@@ -1894,7 +1917,7 @@ mouse clicks
 
     //redraw the screen
     //mainBoxSwap(page);
-    if (debug.root) console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
+    if (av.debug.root) console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
       document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
       document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
   }
@@ -1949,8 +1972,8 @@ mouse clicks
   //http://dojo-toolkit.33424.n3.nabble.com/dojo-dnd-problems-selection-object-from-nodes-etc-td3753366.html
   //This is supposed to select a node; lists as selected programatically, but does not show up on screen.
 
-  //A method to distinguish a mouse click from a mouse drag
-  //http://stackoverflow.com/questions/6042202/how-to-distinguish-mouse-click-and-drag
+  //A method to distinguish a av.mouse click from a av.mouse drag
+  //http://stackoverflow.com/questions/6042202/how-to-distinguish-av.mouse-click-and-drag
 
   //A method to get the data items in a dojo DND container in order
   //dnd.fzConfig.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
@@ -1966,7 +1989,7 @@ mouse clicks
 
   //trying fio.uiWorker to start Avida inside the initiation of PouchDB
 
-  function readMsg(ee, dft, dnd, parents) {
+  function readMsg(ee, av, dnd, parents) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -1992,17 +2015,17 @@ mouse clicks
         case 'webPopulationStats':
           updatePopStats(grd, msg);
           popChartFn();
-          if (debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
+          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), grd.ave_fitness.length);
           break;
         case 'webGridData':
           //mObj=JSON.parse(JSON.stringify(jsonObject));
           grd.msg = msg;
           DrawGridSetup();
-          if (debug.msgOrder) console.log('webGridData length', grd.ave_fitness.length);
-          //if (debug.msgOrder) console.log('ges',grd.msg.gestation.data);
-          //if (debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
-          if (debug.msgOrder) console.log('nan',grd.msg.nand.data);
-          if (debug.msgOrder) console.log('out',grd.out);
+          if (av.debug.msgOrder) console.log('webGridData length', grd.ave_fitness.length);
+          //if (av.debug.msgOrder) console.log('ges',grd.msg.gestation.data);
+          //if (av.debug.msgOrder) console.log('anc',grd.msg.ancestor.data);
+          if (av.debug.msgOrder) console.log('nan',grd.msg.nand.data);
+          if (av.debug.msgOrder) console.log('out',grd.out);
           break;
         case 'webOrgDataByCellID':
           //if ('undefined' != typeof grd.msg.ancestor) {console.log('webOrgDataByCellID anc',grd.msg.ancestor.data);}
@@ -2038,7 +2061,7 @@ mouse clicks
 
   //process message from web worker
   console.log('before fio.uiWorker on message');
-  fio.uiWorker.onmessage = function (ee) {readMsg(ee, dft, dnd, parents)};  // in file messaging.js
+  fio.uiWorker.onmessage = function (ee) {readMsg(ee, av, dnd, parents)};  // in file messaging.js
 
 //********************************************************
 //   Color Test Section - Temp this will all be removed later
@@ -2079,13 +2102,13 @@ mouse clicks
 
 // Test of colors to see if a color blind person can tell the colors apart.
 
-//***************************** mouse functions for Color Test
+//***************************** av.mouse functions for Color Test
 
   function findShrew(evt) {
     var mouseX = evt.offsetX - chck.marginX - chck.xOffset;
     var mouseY = evt.offsetY - chck.marginY - chck.yOffset;
-    chck.selectedCol = Math.floor(mouseX / chck.cellWd);
-    chck.selectedRow = Math.floor(mouseY / chck.cellHt);
+    chck.selectedCol = Math.floor(av.mouseX / chck.cellWd);
+    chck.selectedRow = Math.floor(av.mouseY / chck.cellHt);
     console.log('Shrew col,row', chck.selectedCol, chck.selectedRow);
   }
 
@@ -2125,13 +2148,13 @@ mouse clicks
     else chck.flagSelected = false;
   });
 
-//When mouse button is released, return cursor to default values
+//When av.mouse button is released, return cursor to default values
   $(document).on('mouseup', function (evt) {
-    //console.log('mouseup anywhere in document -------------');
+    //console.log('av.mouseup anywhere in document -------------');
     document.getElementById('colorDemo').style.cursor = 'default';
     shrew.UpGridPos = [evt.offsetX, evt.offsetY];
     shrew.Dn = false;
-    //console.log('mouseup, picked', shrew.Picked);
+    //console.log('av.mouseup, picked', shrew.Picked);
     // --------- process if something picked to dnd ------------------
     if ('chip' == shrew.Picked) {
       shrew.Picked = "";

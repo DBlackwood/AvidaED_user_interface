@@ -16,7 +16,7 @@ function doOrgTrace(fzr) {
       seed                                            //seed where 0 = random; >0 to replay that number
     ]
   };
-  if (debug.msg) console.log('trace', request);
+  if (av.debug.msg) console.log('trace', request);
   fio.uiWorker.postMessage(request);
 }
 
@@ -29,7 +29,7 @@ function doSelectedOrganismType(grd) {
     //'singleton': true,
     'args': grd.selectedNdx
   }
-  if (debug.msg) console.log('doSelectedOrganismType; selectedNdx', grd.selectedNdx)
+  if (av.debug.msg) console.log('doSelectedOrganismType; selectedNdx', grd.selectedNdx)
   fio.uiWorker.postMessage(request);
 }
 
@@ -125,29 +125,30 @@ function injectAncestors(parents) {
 function updatePopStats(grd, msg) {
   'use strict';
   var place = 2;
-  document.getElementById("TimeLabel").textContent = msg["update"].formatNum(0) + " updates";
-  document.getElementById("popSizeLabel").textContent = msg["organisms"].formatNum(0);
-  document.getElementById("aFitLabel").textContent = msg["ave_fitness"].formatNum(2);
+  document.getElementById("TimeLabel").textContent = msg.update.formatNum(0) + " updates";
+  grd.updateNum = msg.update;
+  document.getElementById("popSizeLabel").textContent = msg.organisms.formatNum(0);
+  document.getElementById("aFitLabel").textContent = msg.ave_fitness.formatNum(2);
   if (msg.ave_metabolic_rate > 1000) place = 0;
   else if (msg.ave_metabolic_rate > 100) place = 1;
   document.getElementById("aMetabolicLabel").textContent = msg.ave_metabolic_rate.formatNum(place);
-  document.getElementById("aGestateLabel").textContent = msg["ave_gestation_time"].formatNum(1);
-  document.getElementById("aAgeLabel").textContent = msg["ave_age"].formatNum(2);
-  document.getElementById("notPop").textContent = msg["not"];
-  document.getElementById("nanPop").textContent = msg["nand"];  //these do not match
-  document.getElementById("andPop").textContent = msg["and"];
-  document.getElementById("ornPop").textContent = msg["orn"];
-  document.getElementById("oroPop").textContent = msg["or"];
-  document.getElementById("antPop").textContent = msg["andn"];
-  document.getElementById("norPop").textContent = msg["nor"];
-  document.getElementById("xorPop").textContent = msg["xor"];
-  document.getElementById("equPop").textContent = msg["equ"];
+  document.getElementById("aGestateLabel").textContent = msg.ave_gestation_time.formatNum(1);
+  document.getElementById("aAgeLabel").textContent = msg.ave_age.formatNum(2);
+  document.getElementById("notPop").textContent = msg.not;
+  document.getElementById("nanPop").textContent = msg.nand;  //these do not match
+  document.getElementById("andPop").textContent = msg.and;
+  document.getElementById("ornPop").textContent = msg.orn;
+  document.getElementById("oroPop").textContent = msg.or;
+  document.getElementById("antPop").textContent = msg.andn;
+  document.getElementById("norPop").textContent = msg.nor;
+  document.getElementById("xorPop").textContent = msg.xor;
+  document.getElementById("equPop").textContent = msg.equ;
   //update graph arrays
   if (0 <= msg.update) {
-    grd.ave_fitness[msg.update] = msg["ave_fitness"];
-    grd.ave_gestation_time[msg.update] = msg["ave_gestation_time"];
-    grd.ave_metabolic_rate[msg.update] = msg["ave_metabolic_rate"];
-    grd.population_size[msg.update] = msg["organisms"];
+    grd.ave_fitness[msg.update] = msg.ave_fitness;
+    grd.ave_gestation_time[msg.update] = msg.ave_gestation_time;
+    grd.ave_metabolic_rate[msg.update] = msg.ave_metabolic_rate;
+    grd.population_size[msg.update] = msg.organisms;
     updateLogicAve(grd, msg);  //for graph data
   }
   //console.log('update length', msg.update.formatNum(0), grd.ave_fitness.length);
@@ -191,8 +192,8 @@ function updateLogicAve(grd, msg){
 function updateSelectedOrganismType(grd, msg, parents) {
   'use strict';
   var prefix = '';
-  if (debug.msg) console.log('selected_msg', msg);
-  if (debug.msg) console.log('selected_msg', msg.tasks);
+  if (av.debug.msg) console.log('selected_msg', msg);
+  if (av.debug.msg) console.log('selected_msg', msg.tasks);
   if (msg.isEstimate) prefix = "est. ";
   else prefix = '';
   document.getElementById("nameLabel").textContent = msg.genotypeName;
@@ -206,7 +207,7 @@ function updateSelectedOrganismType(grd, msg, parents) {
     else document.getElementById("ageLabel").textContent = msg.age;
   if (null === msg.ancestor) {
     //console.log('grd.msg', grd.msg);
-    if (debug.msg) console.log('msg.ancestor === null_______________________________________________________');
+    if (av.debug.msg) console.log('msg.ancestor === null_______________________________________________________');
     if ('undefined' != typeof grd.msg.ancestor) {
       if (null === grd.msg.ancestor.data[grd.selectedNdx])
         document.getElementById("ancestorLabel").textContent = '-';
@@ -267,12 +268,12 @@ function updateSelectedOrganismType(grd, msg, parents) {
     document.getElementById("xorTime").textContent = '-';
     document.getElementById("equTime").textContent = '-';
   }
-  if (debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
+  if (av.debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
 
   fillColorBlock(grd, msg, parents);
-  if (debug.msg) console.log('Kidstatus', grd.kidStatus);
+  if (av.debug.msg) console.log('Kidstatus', grd.kidStatus);
   if ('getgenome' == grd.kidStatus) {
-    if (debug.msg) console.log('in kidStatus');
+    if (av.debug.msg) console.log('in kidStatus');
     grd.kidStatus = "havegenome";
     grd.kidName = msg.genotypeName;
     grd.kidGenome = msg.genome;
@@ -282,9 +283,9 @@ function updateSelectedOrganismType(grd, msg, parents) {
 
   function fillColorBlock(grd, msg, parents) {  //Draw the color block
     'use strict';
-    if (debug.msg) console.log('in fillColorBlock');
-    if (debug.msg) console.log('ndx', grd.selectedNdx, '; msg.ancestor.data[ndx]',grd.msg.ancestor.data[grd.selectedNdx]);
-    if (debug.msg) console.log('grd.fill[grd.selectedNdx]',grd.fill[grd.selectedNdx]);
+    if (av.debug.msg) console.log('in fillColorBlock');
+    if (av.debug.msg) console.log('ndx', grd.selectedNdx, '; msg.ancestor.data[ndx]',grd.msg.ancestor.data[grd.selectedNdx]);
+    if (av.debug.msg) console.log('grd.fill[grd.selectedNdx]',grd.fill[grd.selectedNdx]);
     if ("Ancestor Organism" == dijit.byId("colorMode").value) {
       if (null === grd.fill[grd.selectedNdx]) {
         grd.selCtx.fillStyle = '#000'
@@ -304,7 +305,7 @@ function updateSelectedOrganismType(grd, msg, parents) {
         //console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));
       }
     }
-    if (debug.msg) console.log('color', grd.selCtx.fillStyle);
+    if (av.debug.msg) console.log('color', grd.selCtx.fillStyle);
     grd.selCtx.fillRect(0, 0, grd.SelectedWd, grd.SelectedHt);
 
   }

@@ -15,7 +15,6 @@ function clearGen() {
   gen.TimeLineHeight = 44;  //was 50;
   gen.imageXY = {x: 5, y: 5};
   gen.didDivide = false;
-  gen.debug = true;
   gen.mom = 0;
   gen.son = 1;
   gen.smCenX = [[], []];
@@ -188,7 +187,7 @@ function genomeCircle(gen, gg, obj) { //gg is generation
   //var tickR;        //mutation tick mark: radius used to find position for tick Mark
   //var tickX, tickY  //mutation tick mark: position of inner tick mark
   //var tanX, tanY    //mutation tick mark: position of end of tick mark tangent to instruction circle.
-  //if (debug.trace) console.log('gg, size', gg, gen.size[gg]);
+  //if (av.debug.trace) console.log('gg, size', gg, gen.size[gg]);
   for (var ii = 0; ii < gen.dna[gg].length; ii++) {
     gen.smCenX[gg][ii] = gen.cx[gg] + gen.bigR[gg] * Math.cos(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     gen.smCenY[gg][ii] = gen.cy[gg] + gen.bigR[gg] * Math.sin(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);

@@ -49,7 +49,17 @@ function popRunningState_ui(dnd, grd) {
   dijit.byId("mnFzPopulation").attr("disabled", false);
 }
 
-function popNewExState(dnd, grd, parents){
+function popNewExState(dnd, fzr, grd, parents){
+  //set configuation to default
+  dnd.activeConfig.selectAll().deleteSelectedNodes();
+  dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
+  dnd.activeConfig.sync();
+  var domId = Object.keys(dnd.activeConfig.map)[0];
+  fzr.actConfig.domID = domId;
+  fzr.actConfig.name = document.getElementById(domId).textContent;
+  fzr.actConfig.type = 'c';
+  fzr.actConfig._id = 'c0';
+  // clear parents
   dnd.ancestorBox.accept["organism"] = 1;
   dnd.activeConfig.accept["conDish"] = 1;
   dnd.ancestorBox.isSource = true;
@@ -79,16 +89,17 @@ function popNewExState(dnd, grd, parents){
   dijit.byId("mnPause").attr("disabled", true);
   dijit.byId("mnRun").attr("disabled", false);
   document.getElementById("runStopButton").innerHTML = "Run";
-  //set configuation to default
-  dnd.activeConfig.selectAll().deleteSelectedNodes();
-  dnd.activeConfig.insertNodes(false, [{data: "@default", type: ["conDish"]}]);
-  dnd.activeConfig.sync();
-}
 
-//writes data to Environmental Settings page based on the content of dnd.activeConfig
-//for now this is hard coded to what would be in @default. will need a way to request data from PouchDB
-//and read the returned JSON string.
-function writeSettings(dft, dnd, grd) {
+  //clear the time series graphs
+  grd.ave_fitness = [];
+  grd.log_fitness = [];
+  grd.ave_gestation_time = [];
+  grd.log_gestation_time = [];
+  grd.ave_metabolic_rate = [];
+  grd.log_metabolic_rate = [];
+  grd.population_size = [];
+  grd.log_pop_size = [];
+
   TimeLabel.textContent = 0;
   //avidaCFG2form(fileStr);
   dnd.ancestorBox.selectAll().deleteSelectedNodes();
@@ -97,48 +108,7 @@ function writeSettings(dft, dnd, grd) {
   dnd.gridCanvas.sync();
   AncestorList = [];
 
-
-  dijit.byId("sizeCols").set('value', dft.sizeCols);
-  dijit.byId("sizeRows").set('value', dft.sizeRows);
-  dijit.byId("sizeCols").set('value', '20');    //delete later; debug only taba
-  dijit.byId("sizeRows").set('value', '5');     //delete lager; debug only tiba
-  if ('childParentRadio'==dft.child) {
-    dijit.byId("childParentRadio").set('checked', true);
-    dijit.byId("childRandomRadio").set('checked', false);
-  }
-  else {
-    dijit.byId("childParentRadio").set('checked', false);
-    dijit.byId("childRandomRadio").set('checked', true);
-  }
-  dijit.byId("notose").set('checked', dft.notose);
-  dijit.byId("nanose").set('checked', dft.nanose);
-  dijit.byId("andose").set('checked', dft.andose);
-  dijit.byId("ornose").set('checked', dft.ornose);
-  dijit.byId("orose").set('checked', dft.orose);
-  dijit.byId("andnose").set('checked', dft.andnose);
-  dijit.byId("norose").set('checked', dft.norose);
-  dijit.byId("xorose").set('checked', dft.xorose);
-  dijit.byId("equose").set('checked', dft.equose);
-  dijit.byId("experimentRadio").set('checked', true);
-  dijit.byId("manRadio").set('checked', true);
-  if ('experimentRadio'==dft.repeat) {
-    dijit.byId("experimentRadio").set('checked', true);
-    dijit.byId("demoRadio").set('checked', false);
-  }
-  else {
-    dijit.byId("experimentRadio").set('checked', false);
-    dijit.byId("demoRadio").set('checked', true);
-  }
-  if ('manRadio'==dft.pauseType) {
-    dijit.byId("manRadio").set('checked', true);
-    dijit.byId("updateRadio").set('checked', false);
-  }
-  else {
-    dijit.byId("manRadio").set('checked', false);
-    dijit.byId("updateRadio").set('checked', true);
-  }
-
-  //Selected Organism Type
+  //Update data for Selected Organism Type
   document.getElementById("nameLabel").textContent = "-";
   document.getElementById("fitLabel").innerHTML = "-";
   document.getElementById("metabolicLabel").textContent = "-";
@@ -149,6 +119,7 @@ function writeSettings(dft, dnd, grd) {
   document.getElementById("nanLabel").textContent = "nan-";
   document.getElementById("andLabel").textContent = "and-";
   document.getElementById("ornLabel").textContent = "orn-";
+  document.getElementById("oroLabel").textContent = "oro-";
   document.getElementById("antLabel").textContent = "ant-";
   document.getElementById("norLabel").textContent = "nor-";
   document.getElementById("xorLabel").textContent = "xor-";
@@ -157,6 +128,7 @@ function writeSettings(dft, dnd, grd) {
   document.getElementById("nanTime").textContent = "0";
   document.getElementById("andTime").textContent = "0";
   document.getElementById("ornTime").textContent = "0";
+  document.getElementById("oroTime").textContent = "0";
   document.getElementById("antTime").textContent = "0";
   document.getElementById("norTime").textContent = "0";
   document.getElementById("xorTime").textContent = "0";
@@ -179,4 +151,49 @@ function writeSettings(dft, dnd, grd) {
   grd.flagSelected = false;
   dijit.byId("mnFzOrganism").attr("disabled", true);
   dijit.byId("mnOrganismTrace").attr("disabled", true);
+}
+
+//writes data to Environmental Settings page based on the content of dnd.activeConfig
+//for now this is hard coded to what would be in @default. will need a way to request data from PouchDB
+//and read the returned JSON string.
+function writeHardDefault(av) {
+  dijit.byId("sizeCols").set('value', av.dft.sizeCols);
+  dijit.byId("sizeRows").set('value', av.dft.sizeRows);
+  dijit.byId("sizeCols").set('value', '20');    //delete later; av.debug only taba
+  dijit.byId("sizeRows").set('value', '5');     //delete lager; av.debug only tiba
+  if ('childParentRadio'==av.dft.child) {
+    dijit.byId("childParentRadio").set('checked', true);
+    dijit.byId("childRandomRadio").set('checked', false);
+  }
+  else {
+    dijit.byId("childParentRadio").set('checked', false);
+    dijit.byId("childRandomRadio").set('checked', true);
+  }
+  dijit.byId("notose").set('checked', av.dft.notose);
+  dijit.byId("nanose").set('checked', av.dft.nanose);
+  dijit.byId("andose").set('checked', av.dft.andose);
+  dijit.byId("ornose").set('checked', av.dft.ornose);
+  dijit.byId("orose").set('checked', av.dft.orose);
+  dijit.byId("andnose").set('checked', av.dft.andnose);
+  dijit.byId("norose").set('checked', av.dft.norose);
+  dijit.byId("xorose").set('checked', av.dft.xorose);
+  dijit.byId("equose").set('checked', av.dft.equose);
+  dijit.byId("experimentRadio").set('checked', true);
+  dijit.byId("manRadio").set('checked', true);
+  if ('experimentRadio'==av.dft.repeat) {
+    dijit.byId("experimentRadio").set('checked', true);
+    dijit.byId("demoRadio").set('checked', false);
+  }
+  else {
+    dijit.byId("experimentRadio").set('checked', false);
+    dijit.byId("demoRadio").set('checked', true);
+  }
+  if ('manRadio'==av.dft.pauseType) {
+    dijit.byId("manRadio").set('checked', true);
+    dijit.byId("updateRadio").set('checked', false);
+  }
+  else {
+    dijit.byId("manRadio").set('checked', false);
+    dijit.byId("updateRadio").set('checked', true);
+  };
 }

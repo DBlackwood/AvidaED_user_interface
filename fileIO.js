@@ -6,12 +6,12 @@ function addFzItem(dndSection, fio, fzrSection, item, type) {
   var mapItems = Object.keys(dndSection.map);
   item.domId = mapItems[mapItems.length - 1];
   fzrSection.push(item);
-  //create a right mouse-click context menu for the item just created.
-  if (debug.fio) console.log('item', item);
+  //create a right av.mouse-click context menu for the item just created.
+  if (av.debug.fio) console.log('item', item);
   //if (0<item.fileNum) {contextMenu(fzr, dndSection, item.domId);}
 }
 
-function add2freezer(dnd,fio, fzr) {
+function add2freezerFromFile(dnd, fio, fzr) {
   "use strict";
   var type = fio.anID.substr(0, 1);
   var tmp = wsb('/', fio.anID);
@@ -24,7 +24,7 @@ function add2freezer(dnd,fio, fzr) {
     'fileNum': num,
     '_id': tmp
   };
-  if (debug.fio) console.log('type ', type, '; tmp', tmp, '; num', num);
+  if (av.debug.fio) console.log('type ', type, '; tmp', tmp, '; num', num);
   switch (type) {
     case 'c':
       addFzItem(dnd.fzConfig, fio, fzr.config, item, type);
@@ -49,7 +49,7 @@ function processFiles(dnd, fio, fzr){
   var fileType = wsa('/', fio.anID);
   switch (fileType) {
     case 'entryname.txt':
-      add2freezer(dnd, fio, fzr);
+      add2freezerFromFile(dnd, fio, fzr);
     case 'ancestors':
     case 'ancestors_manual':
     case 'avida.cfg':
@@ -72,21 +72,21 @@ function processFiles(dnd, fio, fzr){
       if ('c0/environment.cfg'==fio.anID) {environmentCFG2form(ifile.text); }
       fio.wsdb.get(fio.anID).then(function (doc) {
         ifile._rev = doc._rev;
-        if (debug.pdb) console.log('get entryName doc already exists, ok update', doc);
-        fio.wsdb.put(ifile).then(function (response) {//if (debug.fio) console.log('ok correct', response); // handle response to put
+        if (av.debug.pdb) console.log('get entryName doc already exists, ok update', doc);
+        fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
         }).catch(function (err) {console.log('put err', err);
         });
       }).catch(function (err) {
-        fio.wsdb.put(ifile).then(function (response) {//if (debug.fio) console.log('ok correct', response); // handle response to put
+        fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
         }).catch(function (err) {console.log('put err', err);
         });
       });
       break;
     default:
-      //if (debug.fio) console.log('undefined file type in zip: full ', fio.fName, '; id ', fio.anID, '; type ', fileType);
+      //if (av.debug.fio) console.log('undefined file type in zip: full ', fio.fName, '; id ', fio.anID, '; type ', fileType);
       break;
   }
-  //if (debug.fio) console.log('file type in zip: fname ', fio.fName, '; id ', fio.anID, '; type ', fileType);
+  //if (av.debug.fio) console.log('file type in zip: fname ', fio.fName, '; id ', fio.anID, '; type ', fileType);
 }
 
 
@@ -270,7 +270,7 @@ function download(filename, text) {
   pom.setAttribute('download', filename);
 
   if (document.createEvent) {
-    var event = document.createEvent('MouseEvents');
+    var event = document.createEvent('av.mouseEvents');
     event.initEvent('click', true, true);
     pom.dispatchEvent(event);
   }
@@ -297,7 +297,7 @@ window.downloadFile = function(sUrl) {
 
     //Dispatching click event.
     if (document.createEvent) {
-      var e = document.createEvent('MouseEvents');
+      var e = document.createEvent('av.mouseEvents');
       e.initEvent('click' ,true ,true);
       link.dispatchEvent(e);
       return true;

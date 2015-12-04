@@ -127,12 +127,12 @@ function findLogicOutline(grd) {
   if ('on' == document.getElementById('ornButton').value) {
     for (ii = 0; ii < grd.msg.orn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.orn.data[ii];}
     grd.allOff = false;
-    if (debug.logic) console.log('or', grd.msg.orn.data);
+    if (av.debug.logic) console.log('or', grd.msg.orn.data);
   }
   if ('on' == document.getElementById('oroButton').value) {
     for (ii = 0; ii < grd.msg.or.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.or.data[ii];}
     grd.allOff = false;
-    if (debug.logic) console.log('or', grd.msg.or.data);
+    if (av.debug.logic) console.log('or', grd.msg.or.data);
   }
   if ('on' == document.getElementById('antButton').value) {
     for (ii = 0; ii < grd.msg.andn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.andn.data[ii];}
@@ -153,7 +153,7 @@ function findLogicOutline(grd) {
   if (grd.allOff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
 
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
-  if (debug.logic) console.log('setLogic', grd.out);
+  if (av.debug.logic) console.log('setLogic', grd.out);
 }
 
 function cellConflict(NewCols, NewRows, grd, parents) {
