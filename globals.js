@@ -124,11 +124,11 @@ if (brs.isChromium !== null && brs.isChromium !== undefined && brs.vendorName ==
   brs.chrome = false; // not Google chrome
 }
 
-var fio = {}; //file input output data
-fio.dbName = 'wsdb';  //for workspace database
-fio.wsdb = null;
-fio.defaultFname = 'default_1.avidaedworkspace.zip';
-fio.uiWorker = null;
+av.fio = {}; //file input output data
+av.fio.dbName = 'wsdb';  //for workspace database
+av.fio.wsdb = null;
+av.fio.defaultFname = 'default_1.avidaedworkspace.zip';
+av.fio.uiWorker = null;
 
 av.dnd = {};
 var fzr = {};

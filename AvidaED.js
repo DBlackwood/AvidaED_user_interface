@@ -1,3 +1,4 @@
+// need a server to run this. The one below works.
 //python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 //Then visit http://127.0.0.1:8000/avidaED.html
 //
@@ -99,11 +100,11 @@ require([
   //********************************************************************************************************************
   //  pouchdb instance
   //********************************************************************************************************************
-  fio.PouchDB = PouchDB;
-  fio.JSZip = JSZip;
+  av.fio.PouchDB = PouchDB;
+  av.fio.JSZip = JSZip;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-  function readDefaultWS(dnd, fio, fzr) {
+  function readDefaultWS(dnd, av.fio, fzr) {
     'use strict';
     fio.zipName = fio.defaultFname;
     var oReq = new XMLHttpRequest();
@@ -139,7 +140,7 @@ require([
     oReq.send();
   }
 
-  function initializeDB(av, fio, fzr) {
+  function initializeDB(av, av.fio, fzr) {
     var oldDb = new fio.PouchDB(fio.dbName);
     //clear any old database and create new one for this session
     oldDb.destroy(fio.dbName).then(function (response) {//success
@@ -161,7 +162,7 @@ require([
    http://pouchdb.com/guides/databases.html
    */
   console.log('before initialze DB', fio.uiWorker);
-  initializeDB(av, fio, fzr);
+  initializeDB(av, av.fio, fzr);
 
   //********************************************************************************************************************/
   //console.log("defining test_jszip()");
@@ -455,7 +456,7 @@ require([
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
       landActiveConfig(av.dnd, pkg);  //dojoDnd
-      updateSetup(fio, fzr);  //fileIO
+      updateSetup(av.fio, fzr);  //fileIO
       if ('w' === fzr.actConfig.type) {
         console.log('world config so there more to do');
       }
@@ -467,14 +468,14 @@ require([
     if ('fzConfig' === target.node.id) {
       var num = fzr.config[fzr.config.length-1].fileNum;
       landFzConfig(av.dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
-      if (num != fzr.config[fzr.config.length-1].fileNum) {makePdbConfig(fzr, fio);}
+      if (num != fzr.config[fzr.config.length-1].fileNum) {makePdbConfig(fzr, av.fio);}
     }
   });
 
   av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
       landFzOrgan(av.dnd, fzr, parents, source, nodes, target);
-      makePdbOrgan(fio, fzr);
+      makePdbOrgan(av.fio, fzr);
     }
   });
 
@@ -531,7 +532,7 @@ require([
       if (av.debug.dnd) console.log('trashCan: s, t', source, target);
       remove = landTrashCan(av.dnd, fzr, parents, source, nodes, target);
       if ('' != remove.type) {
-        removePdbItem(fio, remove.id, remove.type);
+        removePdbItem(av.fio, remove.id, remove.type);
       }
     }
   });
@@ -654,7 +655,7 @@ require([
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        sendConfig(fio);          //pouchDB_IO.js
+        sendConfig(av.fio);          //pouchDB_IO.js
         injectAncestors(parents); //fio.uiWorker
       }
       doRunPause();
@@ -738,7 +739,7 @@ require([
     //Clear grid settings
     clearParents();
     //reset values in population settings based on a 'file' @default
-    updateSetup(fio, fzr);
+    updateSetup(av.fio, fzr);
 
     //write if @default not found - need to figure out a test for this
     //writeHardDefault(av.dft);
@@ -750,9 +751,9 @@ require([
 
   //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
-    fio.wsdb.allDocs({include_docs:true}).then(function(docInc){
+    av.fio.wsdb.allDocs({include_docs:true}).then(function(docInc){
       console.log('Include doc', docInc);
-      fio.wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
+      av.fio.wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
         //console.log('wsdb get doc0', doc);
       }).catch(function(err){
         console.log('wsdb get error',err);
@@ -762,9 +763,9 @@ require([
     });
     console.log('fzr', fzr);
 /*
-    fio.wsdb.allDocs().then(function(docObj){
+    av.fio.wsdb.allDocs().then(function(docObj){
       console.log('wsdb doc', docObj);
-      fio.wsdb.get(docObj.rows[1].key).then(function(doc) {
+      av.fio.wsdb.get(docObj.rows[1].key).then(function(doc) {
         console.log('wsdb get doc1', doc);
       }).catch(function(err){
         console.log('wsdb get error',err);
@@ -801,7 +802,7 @@ require([
         };
         fzr.config.push(newConfig);
         fzr.cNum++;
-        makePdbConfig(fzr, fio);
+        makePdbConfig(fzr, av.fio);
         contextMenu(fzr, av.dnd.fzConfig, domId);
       }
     }
@@ -825,7 +826,7 @@ require([
         };
         fzr.world.push(newWorld);
         fzr.wNum++;
-        makePdbWorld(fzr, fio, av.grd);
+        makePdbWorld(fzr, av.fio, av.grd);
         //need to get data from Avida for this tiba
         //Create context menu for right-click on this item
         contextMenu(fzr, av.dnd.fzWorld, domId);
@@ -1166,12 +1167,12 @@ mouse clicks
     else if ('offspring' == av.mouse.Picked) {
       av.mouse.Picked = "";
       target = OffspringMouse(evt, av.dnd, fzr);
-      if ('fzOrgan' == target) { makePdbOrgan(fio, fzr)}
+      if ('fzOrgan' == target) { makePdbOrgan(av.fio, fzr)}
     }
     else if ('kid' == av.mouse.Picked) {
       av.mouse.Picked = "";
       target = KidMouse(evt, av.dnd, fzr, av.grd);
-      if ('fzOrgan' == target) { makePdbOrgan(fio, fzr);}
+      if ('fzOrgan' == target) { makePdbOrgan(av.fio, fzr);}
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         mainBoxSwap("organismBlock");
@@ -2041,11 +2042,11 @@ mouse clicks
 
   //fio.uiWorker used when communicating with the web worker and avida
   console.log('before call avida');
-  fio.uiWorker = new Worker('avida.js');
+  av.fio.uiWorker = new Worker('avida.js');
 
   //process message from web worker
   console.log('before fio.uiWorker on message');
-  fio.uiWorker.onmessage = function (ee) {readMsg(ee, av, parents)};  // in file messaging.js
+  av.fio.uiWorker.onmessage = function (ee) {readMsg(ee, av, parents)};  // in file messaging.js
 
 //********************************************************
 //   Color Test Section - Temp this will all be removed later
