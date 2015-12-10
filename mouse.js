@@ -38,7 +38,7 @@ function SelectedKidMouseStyle(dnd, fzr, grd) {
   grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab'  //ancestor
 }
 
-function offspringTrace(dnd, fzr) {
+function offspringTrace(dnd, fio, fzr) {
   //Get name of parent that is in OrganCurrentNode
   var parent;
   var parentID = Object.keys(dnd.activeOrgan.map)[0];
@@ -56,13 +56,13 @@ function offspringTrace(dnd, fzr) {
   fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
   console.log('fzr.actOrgan', fzr.actOrgan.genome);
   //get genome from offspring data //needs work!!
-  doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+  doOrgTrace(fio, fzr);  //request new Organism Trace from Avida and draw that.
 }
 
-var OffspringMouse = function(evt, dnd, fzr) {
+var OffspringMouse = function(evt, dnd, fio, fzr) {
   var target = '';
   if ('organIcon' == evt.target.id) {
-    offspringTrace(dnd, fzr);
+    offspringTrace(dnd, fio, fzr);
   target = 'organIcon';}
   else { // look for target in the freezer
     var found = false;

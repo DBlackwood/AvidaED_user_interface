@@ -1,6 +1,6 @@
 
 //fio.uiWorker function
-function doOrgTrace(fzr) {
+function doOrgTrace(fio, fzr) {
   'use strict';
   var seed = 100*Math.random();
   if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
@@ -21,7 +21,7 @@ function doOrgTrace(fzr) {
 }
 
 //request data from Avida to update SelectedOrganismType
-function doSelectedOrganismType(grd) {
+function doSelectedOrganismType(fio, grd) {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -34,7 +34,7 @@ function doSelectedOrganismType(grd) {
 }
 
 //fio.uiWorker function
-function requestPopStats() {
+function requestPopStats(fio) {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -46,7 +46,7 @@ function requestPopStats() {
 }
 
 //fio.uiWorker function
-function requestGridData() {
+function requestGridData(fio) {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -59,7 +59,7 @@ function requestGridData() {
 
 //sends message to worker to tell Avida to run/pause as a toggle.
 //fio.uiWorker function
-function doRunPause() {
+function doRunPause(fio) {
   'use strict';
   var request;
   if (dijit.byId("manRadio").get('checked')) {
@@ -82,7 +82,7 @@ function doRunPause() {
 }
 
 //fio.uiWorker function
-function doReset() {
+function doReset(fio) {
   'use strict';
   var request = {
     'Key': 'Reset'
@@ -91,7 +91,7 @@ function doReset() {
 }
 
 //fio.uiWorker function
-function doDbReady() {
+function doDbReady(fio) {
   'use strict';
   var request = {
     'type': 'dbReady'
@@ -99,7 +99,7 @@ function doDbReady() {
   fio.uiWorker.postMessage(request);
 }
 
-function injectAncestors(parents) {
+function injectAncestors(fio, parents) {
   'use strict';
   var request;
   for (ii = 0; ii < parents.name.length; ii++) {

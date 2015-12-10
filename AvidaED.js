@@ -104,7 +104,7 @@ require([
   av.fio.JSZip = JSZip;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-  function readDefaultWS(dnd, av.fio, fzr) {
+  function readDefaultWS(dnd, fio, fzr) {
     'use strict';
     fio.zipName = fio.defaultFname;
     var oReq = new XMLHttpRequest();
@@ -140,19 +140,19 @@ require([
     oReq.send();
   }
 
-  function initializeDB(av, av.fio, fzr) {
+  function initializeDB(av, fio, fzr) {
     var oldDb = new fio.PouchDB(fio.dbName);
     //clear any old database and create new one for this session
     oldDb.destroy(fio.dbName).then(function (response) {//success
       oldDb = null;
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB - send msg to Avida');
-      doDbReady();
+      doDbReady(av.fio);
       readDefaultWS(av.dnd, fio, fzr);
     }).catch(function (err) {
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB destroy db err', err);
-      doDbReady();
+      doDbReady(av.fio);
       readDefaultWS(av.dnd, fio, fzr);
     });
   }
@@ -161,7 +161,7 @@ require([
    https://github.com/webinista/PouchNotes
    http://pouchdb.com/guides/databases.html
    */
-  console.log('before initialze DB', fio.uiWorker);
+  console.log('before initialze DB', av.fio.uiWorker);
   initializeDB(av, av.fio, fzr);
 
   //********************************************************************************************************************/
@@ -496,7 +496,7 @@ require([
     if ('organCanvas' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
       landOrganCanvas(av.dnd, fzr, source, nodes, target);
-      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -512,7 +512,7 @@ require([
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
-      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -520,7 +520,7 @@ require([
     if ('activeOrgan' == target.node.id) {
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
       landActiveOrgan(av.dnd, fzr, source, nodes, target);
-      doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -647,8 +647,8 @@ require([
     }
     else { // setup for a new run by sending config data to avida
       if (av.grd.newrun) {
-        requestPopStats();  //fio.uiWorker
-        requestGridData();  //fio.uiWorker
+        requestPopStats(av.fio);  //fio.uiWorker
+        requestGridData(av.fio);  //fio.uiWorker
 
         //change ui parameters for the correct state when the avida population has started running
         popRunningState_ui(av.dnd, av.grd);
@@ -656,9 +656,9 @@ require([
 
         //collect setup data to send to avida
         sendConfig(av.fio);          //pouchDB_IO.js
-        injectAncestors(parents); //fio.uiWorker
+        injectAncestors(av.fio, parents); //fio.uiWorker
       }
-      doRunPause();
+      doRunPause(av.fio);
     }
     //update screen based on data from C++
   }
@@ -666,7 +666,8 @@ require([
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById("runStopButton").onclick = function () {
     runStopFn()
-  }
+  };
+
   function runStopFn() {
     if ("Run" == document.getElementById("runStopButton").innerHTML) {
       document.getElementById("runStopButton").innerHTML = "Pause";
@@ -677,7 +678,7 @@ require([
       document.getElementById("runStopButton").innerHTML = "Run";
       dijit.byId("mnPause").attr("disabled", true);
       dijit.byId("mnRun").attr("disabled", false);
-      doRunPause()
+      doRunPause(av.fio);
       //console.log("pop size ", av.grd.population_size);
     }
   };
@@ -693,7 +694,7 @@ require([
     dijit.byId("mnPause").attr("disabled", true);
     dijit.byId("mnRun").attr("disabled", false);
     document.getElementById("runStopButton").innerHTML = "Run";
-    doRunPause()
+    doRunPause(av.fio);
   });
 
   /* ************** New Button and new Dialog ***********************/
@@ -733,7 +734,7 @@ require([
     dijit.byId("mnFzOrganism").attr("disabled", true);
 
     // send reset to Avida adaptor
-    doReset();
+    doReset(av.fio);
     //Enable the options on the Setup page
     popNewExState(av.dnd, fzr, av.grd, parents);
     //Clear grid settings
@@ -1043,7 +1044,7 @@ mouse clicks
         //if which ancestor is not null then there is a 'kid' there.
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
           av.grd.kidStatus = 'getgenome';
-          doSelectedOrganismType(av.grd);
+          doSelectedOrganismType(av.fio, av.grd);
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnOrganismTrace").attr("disabled", false);
@@ -1089,7 +1090,7 @@ mouse clicks
         //if ancestor not null then there is a 'kid' there.
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
           av.grd.kidStatus = 'getgenome';
-          doSelectedOrganismType(av.grd);
+          doSelectedOrganismType(av.fio, av.grd);
           SelectedKidMouseStyle(av.dnd, fzr, av.grd);
           av.mouse.Picked = 'kid';
           console.log('kid', av.grd.kidName, av.grd.kidGenome);
@@ -1108,7 +1109,7 @@ mouse clicks
       dijit.byId("mnOrganismTrace").attr("disabled", true);
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
-    doSelectedOrganismType(av.grd);
+    doSelectedOrganismType(av.fio, av.grd);
     DrawGridSetup();
   });
 
@@ -1161,12 +1162,12 @@ mouse clicks
         document.getElementById("ExecuteAbout").style.height = height + "px";
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
-        doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+        doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
       }
     }
     else if ('offspring' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      target = OffspringMouse(evt, av.dnd, fzr);
+      target = OffspringMouse(evt, av.dnd, av.fio, fzr);
       if ('fzOrgan' == target) { makePdbOrgan(av.fio, fzr)}
     }
     else if ('kid' == av.mouse.Picked) {
@@ -1182,7 +1183,7 @@ mouse clicks
         document.getElementById("ExecuteAbout").style.height = height + "px";
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
-        doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+        doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
       }
     }
     av.mouse.Picked = "";
@@ -1582,7 +1583,7 @@ mouse clicks
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
     console.log('settings dialog closed', gen.settingsChanged);
-    if (gen.settingsChanged) doOrgTrace(fzr);
+    if (gen.settingsChanged) doOrgTrace(av.fio, fzr);
   });
 
   $(function slideOrganism() {
@@ -1637,7 +1638,7 @@ mouse clicks
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    doOrgTrace(fzr);  //request new Organism Trace from Avida and draw that.
+    doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
   });
 
   //Put the offspring in the parent position on Organism Trace
@@ -1650,7 +1651,7 @@ mouse clicks
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    offspringTrace(av.dnd, fzr);
+    offspringTrace(av.dnd, av.fio, fzr);
   });
 
   /* ****************************************************************/
