@@ -2,9 +2,9 @@
 //fio.uiWorker function
 function doOrgTrace(fio, fzr) {
   'use strict';
-  var seed = 100*Math.random();
+  var seed = 100 * Math.random();
   if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
-  else {seed = -1}
+  else {seed = -1};
   var request = {
     'type': 'addEvent',
     'name': 'webOrgTraceBySequence',
@@ -102,7 +102,7 @@ function doDbReady(fio) {
 function injectAncestors(fio, parents) {
   'use strict';
   var request;
-  for (ii = 0; ii < parents.name.length; ii++) {
+  for (var ii = 0; ii < parents.name.length; ii++) {
     request = {
       'type': 'addEvent',
       'name': 'injectSequence',

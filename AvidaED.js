@@ -418,12 +418,11 @@ require([
   av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
   av.dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
 
-  //structure to hole list of ancestor organisms
-  var parents = {};
-  clearParents();
+  //structure to hold list of ancestor organisms
+  av.parents = {};
 
 //Clear parents/Ancestors
-  function clearParents() {
+var clearParents = function(parents) {
     parents = {};
     parents.name = [];
     parents.genome = [];
@@ -437,7 +436,11 @@ require([
     parents.domId = [];
     parents.Colors = ColorBlind.slice();
     parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
-  }
+    return parents;
+  };
+
+  av.parents = clearParents(av.parents);
+  console.log('clearParents', av.parents);
 
   if (av.debug.root) console.log('before dnd triggers');
   //*******************************************************************************************************************
@@ -474,20 +477,20 @@ require([
 
   av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
-      landFzOrgan(av.dnd, fzr, parents, source, nodes, target);
+      landFzOrgan(av.dnd, fzr, av.parents,source, nodes, target);
       makePdbOrgan(av.fio, fzr);
     }
   });
 
   av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
-      landAncestorBox(av.dnd, fzr, parents, source, nodes, target);
+      landAncestorBox(av.dnd, fzr, av.parents,source, nodes, target);
     }
   });
 
   av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
-      landGridCanvas(av, av.dnd, fzr, av.grd, parents, source, nodes, target);
+      landGridCanvas(av, av.dnd, fzr, av.grd, av.parents, source, nodes, target);
       DrawGridSetup();
     }
   });
@@ -530,7 +533,7 @@ require([
       remove.type = '';
       remove.id = '';
       if (av.debug.dnd) console.log('trashCan: s, t', source, target);
-      remove = landTrashCan(av.dnd, fzr, parents, source, nodes, target);
+      remove = landTrashCan(av.dnd, fzr, av.parents, source, nodes, target);
       if ('' != remove.type) {
         removePdbItem(av.fio, remove.id, remove.type);
       }
@@ -597,7 +600,7 @@ require([
   document.getElementById("PopSetupButton").onclick = function () {
     popBoxSwap();   //in popControls.js
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
-      cellConflict(av.grd.cols, av.grd.rows, av.grd, parents);
+      cellConflict(av.grd.cols, av.grd.rows, av.grd, av.parents);
       DrawGridSetup();
     }
   };
@@ -656,7 +659,7 @@ require([
 
         //collect setup data to send to avida
         sendConfig(av.fio);          //pouchDB_IO.js
-        injectAncestors(av.fio, parents); //fio.uiWorker
+        injectAncestors(av.fio, av.parents); //fio.uiWorker
       }
       doRunPause(av.fio);
     }
@@ -736,9 +739,9 @@ require([
     // send reset to Avida adaptor
     doReset(av.fio);
     //Enable the options on the Setup page
-    popNewExState(av.dnd, fzr, av.grd, parents);
+    popNewExState(av.dnd, fzr, av.grd, av.parents);
     //Clear grid settings
-    clearParents();
+    clearParents(av.parents);
     //reset values in population settings based on a 'file' @default
     updateSetup(av.fio, fzr);
 
@@ -1072,7 +1075,7 @@ mouse clicks
       //In the grid and selected. Now look to see contents of cell are dragable.
       av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
       if (av.grd.newrun) {  //run has not started so look to see if cell contains ancestor
-        av.mouse.ParentNdx = findParentNdx(parents);
+        av.mouse.ParentNdx = findParentNdx(av.parents);
         if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
         if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
           document.getElementById('organIcon').style.cursor = 'copy';
@@ -1151,7 +1154,7 @@ mouse clicks
     // --------- process if something picked to dnd ------------------
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      ParentMouse(evt, av.dnd, fzr, parents);
+      ParentMouse(evt, av.dnd, fzr, av.parents);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) DrawGridSetup();
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
@@ -1257,9 +1260,9 @@ mouse clicks
     document.getElementById('mapBlockHold').style.width = mapBlockHoldWd + 'px';
 
     //Determine if a color gradient or legend will be displayed
-//    if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(av.grd, parents); drawLegend(av.grd, parents) }
+//    if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(av.grd, av.parents); drawLegend(av.grd, av.parents) }
     document.getElementById('popBot').style.height = '5px';
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, parents) }
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents) }
     else { GradientScale(av.grd) }
     document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
 
@@ -1279,16 +1282,16 @@ mouse clicks
     //console.log('spaceY', av.grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', av.grd.CanvasScale.height);
 
     //DrawGridBackground(av.grd);        //use to test scroll bars instead of the two calls below; in PopulationGrid.js
-    findGridSize(av.grd, parents);     //in PopulationGrid.js
+    findGridSize(av.grd, av.parents);     //in PopulationGrid.js
     //console.log('mid gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
     //console.log('mid Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
 
     if (document.getElementById('gridHolder').scrollHeight==document.getElementById('gridHolder').clientHeight+17){
       var numGH = document.getElementById('gridHolder').clientHeight;
       av.grd.CanvasGrid.height = numGH - 6-17;
-      findGridSize(av.grd, parents);     //in PopulationGrid.js
+      findGridSize(av.grd, av.parents);     //in PopulationGrid.js
     }
-    DrawGridUpdate(av.grd, parents);   //in PopulationGrid.js
+    DrawGridUpdate(av.grd, av.parents);   //in PopulationGrid.js
 
     //console.log('after');
  /*   console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
@@ -1427,25 +1430,28 @@ mouse clicks
   // *************************************************************** */
   av.grd.gridWasCols = Number(document.getElementById("sizeCols").value);
   av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
+
   function popSizeFn() {
     var NewCols = Number(document.getElementById("sizeCols").value);
     var NewRows = Number(document.getElementById("sizeRows").value);
     document.getElementById("sizeCells").innerHTML = "is a total of " + NewCols * NewRows + " cells";
     //Linear scale the position for Ancestors added by hand;
-    for (var ii = 0; ii < parents.handNdx.length; ii++) {
-      //console.log('old cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
-      parents.col[parents.handNdx[ii]] = Math.floor(NewCols * parents.col[parents.handNdx[ii]] / gridWasCols);  //was trunc
-      parents.row[parents.handNdx[ii]] = Math.floor(NewRows * parents.row[parents.handNdx[ii]] / gridWasRows);  //was trunc
-      parents.AvidaNdx[parents.handNdx[ii]] = parents.col[parents.handNdx[ii]] + NewCols * parents.row[parents.handNdx[ii]];
-      //console.log('New cr', parents.col[parents.handNdx[ii]], parents.row[parents.handNdx[ii]]);
+    if (undefined != av.parents.handNdx) {
+      for (var ii = 0; ii < av.parents.handNdx.length; ii++) {
+        //console.log('old cr', av.av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
+        av.parents.col[av.parents.handNdx[ii]] = Math.floor(NewCols * av.parents.col[av.parents.handNdx[ii]] / gridWasCols);  //was trunc
+        av.parents.row[av.parents.handNdx[ii]] = Math.floor(NewRows * av.parents.row[av.parents.handNdx[ii]] / gridWasRows);  //was trunc
+        av.parents.AvidaNdx[av.parents.handNdx[ii]] = av.parents.col[av.parents.handNdx[ii]] + NewCols * av.parents.row[av.parents.handNdx[ii]];
+        //console.log('New cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
+      }
     }
     av.grd.gridWasCols = Number(document.getElementById("sizeCols").value);
     av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
     //reset zoom power to 1
     av.grd.ZoomSlide.set("value", 1);
-    PlaceAncestors(parents);
+    PlaceAncestors(av.parents);
     //are any parents on the same cell?
-    cellConflict(NewCols, NewRows, av.grd, parents);
+    cellConflict(NewCols, NewRows, av.grd, av.parents);
   }
 
   dijit.byId("sizeCols").on("Change", popSizeFn);
@@ -1975,7 +1981,7 @@ mouse clicks
 
   //trying fio.uiWorker to start Avida inside the initiation of PouchDB
 
-  function readMsg(ee, av, parents) {
+  function readMsg(ee, av) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -2015,7 +2021,7 @@ mouse clicks
           break;
         case 'webOrgDataByCellID':
           //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
-          updateSelectedOrganismType(av.grd, msg, parents);  //in messageing
+          updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
           break;
         default:
           console.log('____________UnknownRequest: ', msg);
@@ -2047,7 +2053,7 @@ mouse clicks
 
   //process message from web worker
   console.log('before fio.uiWorker on message');
-  av.fio.uiWorker.onmessage = function (ee) {readMsg(ee, av, parents)};  // in file messaging.js
+  av.fio.uiWorker.onmessage = function (ee) {readMsg(ee, av)};  // in file messaging.js
 
 //********************************************************
 //   Color Test Section - Temp this will all be removed later

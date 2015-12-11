@@ -1,9 +1,10 @@
 function backgroundSquares(grd) {
+  'use strict';
   var boxColor = '#111';
-  for (ii = 0; ii < grd.cols; ii++) {
-    xx = grd.marginX + grd.xOffset + ii * grd.cellWd;
-    for (jj = 0; jj < grd.rows; jj++) {
-      yy = grd.marginY + grd.yOffset + jj * grd.cellHt;
+  for (var ii = 0; ii < grd.cols; ii++) {
+    var xx = grd.marginX + grd.xOffset + ii * grd.cellWd;
+    for (var jj = 0; jj < grd.rows; jj++) {
+      var yy = grd.marginY + grd.yOffset + jj * grd.cellHt;
       //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
       //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
       //console.log('color=', boxColor);
@@ -14,6 +15,7 @@ function backgroundSquares(grd) {
 }
 
 function setMapData(grd) {
+  'use strict';
   if (undefined != grd.msg.fitness) {
     if (grd.mxFit < grd.msg.fitness.maxVal || (1 - grd.rescaleTolerance) * grd.mxFit > grd.msg.fitness.maxVal) {
       grd.mxFit = grd.mxFit + ((1 + grd.rescaleTolerance) * grd.msg.fitness.maxVal - grd.mxFit) / grd.rescaleTimeConstant;
@@ -50,28 +52,32 @@ function setMapData(grd) {
 }
 
 function DrawParent(grd, parents) {
+  'use strict';
   //console.log('parents.col.length, marginX, xOffset', parents.col.length, grd.marginX, grd.xOffset);
-  for (ii = 0; ii < parents.col.length; ii++) {
-    xx = grd.marginX + grd.xOffset + parents.col[ii] * grd.cellWd;
-    yy = grd.marginY + grd.yOffset + parents.row[ii] * grd.cellHt;
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-      grd.cntx.fillStyle = parents.color[ii];
+  if (undefined != parents.col) {
+    for (var ii = 0; ii < parents.col.length; ii++) {
+      var xx = grd.marginX + grd.xOffset + parents.col[ii] * grd.cellWd;
+      var yy = grd.marginY + grd.yOffset + parents.row[ii] * grd.cellHt;
+      if ("Ancestor Organism" == dijit.byId("colorMode").value) {
+        grd.cntx.fillStyle = parents.color[ii];
+      }
+      else {
+        grd.cntx.fillStyle = defaultParentColor;
+      }
+      grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
+      //console.log('x, y, wd, Ht', xx, yy, grd.cellWd, grd.cellHt);
     }
-    else {
-      grd.cntx.fillStyle = defaultParentColor;
-    }
-    grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
-    //console.log('x, y, wd, Ht', xx, yy, grd.cellWd, grd.cellHt);
   }
 }
 
 //only one line changes between the two loops. Thought it would be faster to do the if outside the loop rather than
 //inside the loop. Need to time things to see if it makes a difference
 function DrawKids(grd, parents) {  //Draw the children of parents
+  'use strict';
   var cc, rr, xx, yy;
   //console.log('fill', grd.fill);
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-    for (ii = 0; ii < grd.fill.length; ii++) {
+    for (var ii = 0; ii < grd.fill.length; ii++) {
       cc = ii % grd.cols;
       rr = Math.floor(ii / grd.cols);       //was trunc
       xx = grd.marginX + grd.xOffset + cc * grd.cellWd;
@@ -107,6 +113,8 @@ function DrawKids(grd, parents) {  //Draw the children of parents
 }
 
 function findLogicOutline(grd) {
+  'use strict';
+  var ii;
   grd.allOff = true;
   //console.log('not',grd.msg.not.data);
   for (ii = 0; ii < grd.msg.not.data.length; ii++) {
@@ -157,27 +165,30 @@ function findLogicOutline(grd) {
 }
 
 function cellConflict(NewCols, NewRows, grd, parents) {
+  'use strict';
   var places = [[1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]];
   var flg = false;
   var tryCol, tryRow, avNdx;
-  for (var ii = 0; ii < parents.handNdx.length; ii++) {
-    flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]], ii, parents);
-    if (flg) {
-      for (var jj = 0; jj < places.length; jj++) {
-        tryCol = parents.col[parents.handNdx[ii]] + places[jj][0];
-        tryRow = parents.row[parents.handNdx[ii]] + places[jj][1];
-        avNdx = tryCol + tryRow * NewCols;
-        if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {
-          flg = cellFilled(avNdx, ii, parents)
-        }
-        else {
-          flg = true
-        }
-        if (!flg) {
-          parents.col[parents.handNdx[ii]] = tryCol;
-          parents.row[parents.handNdx[ii]] = tryRow;
-          parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
-          break;
+  if (undefined != parents.handNdx) {
+    for (var ii = 0; ii < parents.handNdx.length; ii++) {
+      flg = cellFilled(parents.AvidaNdx[parents.handNdx[ii]], ii, parents);
+      if (flg) {
+        for (var jj = 0; jj < places.length; jj++) {
+          tryCol = parents.col[parents.handNdx[ii]] + places[jj][0];
+          tryRow = parents.row[parents.handNdx[ii]] + places[jj][1];
+          avNdx = tryCol + tryRow * NewCols;
+          if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {
+            flg = cellFilled(avNdx, ii, parents)
+          }
+          else {
+            flg = true
+          }
+          if (!flg) {
+            parents.col[parents.handNdx[ii]] = tryCol;
+            parents.row[parents.handNdx[ii]] = tryRow;
+            parents.AvidaNdx[parents.handNdx[ii]] = avNdx;
+            break;
+          }
         }
       }
     }
@@ -185,6 +196,7 @@ function cellConflict(NewCols, NewRows, grd, parents) {
 }
 
 function DrawLogicSelected(grd) {
+  'use strict';
   //console.log('DrawLogic', grd.out);
   var cc, rr, xx, yy;
   var inner = 0.08 * grd.cellWd; //how far inside the square to put the outline.
@@ -193,7 +205,7 @@ function DrawLogicSelected(grd) {
   if (1 > thick) thick = 1;
   //console.log('=========================')
   //console.log('logic', grd.out);
-  for (ii = 0; ii < grd.out.length; ii++) {
+  for (var ii = 0; ii < grd.out.length; ii++) {
     if (0 != grd.out[ii]) {
       cc = ii % grd.cols;
       rr = Math.floor(ii / grd.cols);  //was trunc
@@ -207,6 +219,7 @@ function DrawLogicSelected(grd) {
 
 //Draw Cell outline or including special case for Selected
 function DrawSelected(grd) {
+  'use strict';
   var thick = 0.1 * grd.cellWd;
   if (1 > thick) thick = 1;
   grd.selectX = grd.marginX + grd.xOffset + grd.selectedCol * grd.cellWd;
@@ -215,6 +228,7 @@ function DrawSelected(grd) {
 }
 
 function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {
+  'use strict';
   grd.cntx.beginPath();
   grd.cntx.rect(xx, yy, wide, tall);
   grd.cntx.strokeStyle = color;
@@ -223,6 +237,7 @@ function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {
 }
 
 function findGridSize(grd, parents){
+  'use strict';
   // When zoom = 1x, set canvas size based on space available and cell size
   // based on rows and columns requested by the user. Zoom acts as a factor
   // to multiply the size of each cell. When the size of the grid become larger
@@ -272,15 +287,16 @@ function findGridSize(grd, parents){
 
 }
 function DrawGridUpdate(grd, parents) {
+  'use strict';
   //get cell size based on grid size and number of columns and rows
   grd.cellWd = ((grd.sizeX - grd.marginX) / grd.cols);
   grd.cellHt = ((grd.sizeY - grd.marginY) / grd.rows);
 
   //Find a reasonable maximum zoom for this grid and screen space
-  zMaxCells = Math.floor(grd.spaceCells / 25);  // at least 10 cells   was trunc
-  zMaxWide = Math.floor(10 / grd.spaceCellWd);  // at least 10 pixels  was trunc
-  zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
-  zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
+  var zMaxCells = Math.floor(grd.spaceCells / 25);  // at least 10 cells   was trunc
+  var zMaxWide = Math.floor(10 / grd.spaceCellWd);  // at least 10 pixels  was trunc
+  var zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
+  var zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
 
   grd.ZoomSlide.set("maximum", zMax);
   grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
@@ -300,6 +316,7 @@ function DrawGridUpdate(grd, parents) {
 }
 
 function DrawGridBackground(grd) {
+  'use strict';
   // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
   grd.cntx.setTransform(1, 0, 0, 1, 0, 0);
   grd.cntx.clearRect(0, 0, grd.CanvasGrid.width, grd.CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
@@ -321,6 +338,7 @@ function DrawGridBackground(grd) {
 //the width of grd.CanvasScale. We will need to increase the size of the
 //legend box by the height of a line for each additional line.
 function drawLegend(grd, parents) {
+  'use strict';
   var legendPad = 10;   //padding on left so it is not right at edge of canvas
   var colorWide = 13;   //width and heigth of color square
   var RowHt = 20;       //height of each row of text
@@ -332,7 +350,7 @@ function drawLegend(grd, parents) {
   //console.log('in drawLedgend')
   grd.sCtx.font = "14px Arial";
   //find out how much space is needed
-  for (ii = 0; ii < parents.name.length; ii++) {
+  for (var ii = 0; ii < parents.name.length; ii++) {
     txtWide = grd.sCtx.measureText(parents.name[ii]).width;
     if (txtWide > maxWide) {
       maxWide = txtWide
@@ -340,7 +358,7 @@ function drawLegend(grd, parents) {
   }
   legendCols = Math.floor((grd.CanvasScale.width - leftPad) / (maxWide + colorWide + legendPad));  //was trunc
   if (Math.floor(parents.name.length / legendCols) == parents.name.length / legendCols) {          //was trunc
-    legendRows = Math.floor(parents.name.length / legendCols);
+    var legendRows = Math.floor(parents.name.length / legendCols);
   }
   else {
     legendRows = Math.floor(parents.name.length / legendCols) + 1;    //was trunc
@@ -356,11 +374,11 @@ function drawLegend(grd, parents) {
     col = ii % legendCols;
     row = Math.floor(ii / legendCols);    //was trunc
     //xx = leftPad + col*(maxWide+colorWide+legendPad);
-    xx = leftPad + col * (colWide);
-    yy = 2 + row * RowHt;
+    var xx = leftPad + col * (colWide);
+    var yy = 2 + row * RowHt;
     grd.sCtx.fillStyle = parents.color[ii];
     grd.sCtx.fillRect(xx, yy, colorWide, colorWide);
-    yy = textOffset + row * RowHt;
+    var yy = textOffset + row * RowHt;
     grd.sCtx.font = "14px Arial";
     grd.sCtx.fillStyle = 'black';
     grd.sCtx.fillText(parents.name[ii], xx + colorWide + legendPad / 2, yy);
@@ -368,6 +386,7 @@ function drawLegend(grd, parents) {
 }
 
 function GradientScale(grd) {
+  'use strict';
   grd.CanvasScale.height = 30;
   grd.sCtx.fillStyle = dictColor["ltGrey"];
   grd.sCtx.fillRect(0, 0, grd.CanvasScale.width, grd.CanvasScale.height);
@@ -410,7 +429,7 @@ function GradientScale(grd) {
     for (var ii = 0; ii <= marks; ii++) {
       xx = ii * grd.fillmax / marks;
       txt = xx.formatNum(place);  //2 in this case is number of decimal places
-      txtW = grd.sCtx.measureText(txt).width;
+      var txtW = grd.sCtx.measureText(txt).width;
       xx = xStart + ii * gradWidth / marks - txtW / 2;
       grd.sCtx.fillText(txt, xx, legendHt - 2, maxTxtWd);
     }

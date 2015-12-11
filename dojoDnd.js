@@ -179,6 +179,7 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
 //This triggers for every dnd drop, not just those of gridCanvas
 function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
   if (av.debug.dnd) console.log('inside gridCanvas dnd');
+  console.log(parents);
   //was it dropped on the grid of cells?
   //if (av.debug.dnd) console.log('xOff, yOff, xUP, y', grd.xOffset, grd.yOffset, av.mouse.UpGridPos[0];, av.mouse.UpGridPos[1];);
   //calculated grid cell to see if it was a valid grid position.
