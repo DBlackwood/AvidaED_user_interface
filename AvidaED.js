@@ -418,29 +418,7 @@ require([
   av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
   av.dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
 
-  //structure to hold list of ancestor organisms
-  av.parents = {};
-
-//Clear parents/Ancestors
-var clearParents = function(parents) {
-    parents = {};
-    parents.name = [];
-    parents.genome = [];
-    parents.color = [];
-    parents.col = [];
-    parents.row = [];
-    parents.AvidaNdx = [];
-    parents.autoNdx = [];
-    parents.handNdx = [];
-    parents.howPlaced = [];
-    parents.domId = [];
-    parents.Colors = ColorBlind.slice();
-    parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
-    return parents;
-  };
-
   av.parents = clearParents(av.parents);
-  console.log('clearParents', av.parents);
 
   if (av.debug.root) console.log('before dnd triggers');
   //*******************************************************************************************************************

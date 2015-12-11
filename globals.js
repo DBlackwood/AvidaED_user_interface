@@ -17,6 +17,27 @@ av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
 av.debug.gen = false; //oranism page
 
+//structure to hold list of ancestor organisms
+av.parents = {};
+
+//Clear parents/Ancestors
+var clearParents = function(parents) {
+  parents = {};
+  parents.name = [];
+  parents.genome = [];
+  parents.color = [];
+  parents.col = [];
+  parents.row = [];
+  parents.AvidaNdx = [];
+  parents.autoNdx = [];
+  parents.handNdx = [];
+  parents.howPlaced = [];
+  parents.domId = [];
+  parents.Colors = ColorBlind.slice();
+  parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
+  return parents;
+};
+
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
 av.dft.sizeCols = 60;
