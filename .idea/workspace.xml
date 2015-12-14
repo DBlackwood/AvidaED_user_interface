@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileIO.js" afterPath="$PROJECT_DIR$/fileIO.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idbfs.js" afterPath="$PROJECT_DIR$/idbfs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ndxDB.js" afterPath="$PROJECT_DIR$/ndxDB.js" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,10 +28,24 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8888889">
-              <caret line="177" column="6" selection-start-line="177" selection-start-column="6" selection-end-line="177" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.41737893">
+              <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
+                <element signature="e#6271#6575#0" expanded="false" />
+                <element signature="e#7147#7226#0" expanded="false" />
+                <element signature="e#7232#7308#0" expanded="false" />
+                <element signature="e#7367#7456#0" expanded="false" />
+                <element signature="e#7654#7721#0" expanded="false" />
+                <element signature="e#7774#8551#0" expanded="false" />
+                <element signature="e#7855#8543#0" expanded="false" />
+                <element signature="e#8016#8089#0" expanded="false" />
+                <element signature="e#8263#8534#0" expanded="false" />
+                <element signature="e#8333#8427#0" expanded="false" />
+                <element signature="e#8606#8827#0" expanded="false" />
+                <element signature="e#8753#8820#0" expanded="false" />
+                <element signature="e#9018#9085#0" expanded="false" />
+                <element signature="e#9149#9347#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -46,22 +61,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ndxDB.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ndxDB.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="idbfs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/idbfs.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="13" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
-              <folding />
+              <caret line="110" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+              <folding>
+                <element signature="e#133#437#0" expanded="false" />
+                <element signature="e#677#748#0" expanded="false" />
+                <element signature="e#759#796#0" expanded="false" />
+                <element signature="e#837#1326#0" expanded="false" />
+                <element signature="e#1009#1088#0" expanded="false" />
+                <element signature="e#1094#1170#0" expanded="false" />
+                <element signature="e#1229#1318#0" expanded="false" />
+                <element signature="e#1361#1482#0" expanded="false" />
+                <element signature="e#1516#1583#0" expanded="false" />
+                <element signature="e#1636#2413#0" expanded="false" />
+                <element signature="e#1717#2405#0" expanded="false" />
+                <element signature="e#1878#1951#0" expanded="false" />
+                <element signature="e#2125#2396#0" expanded="false" />
+                <element signature="e#2195#2289#0" expanded="false" />
+                <element signature="e#2468#2689#0" expanded="false" />
+                <element signature="e#2615#2682#0" expanded="false" />
+                <element signature="e#2752#2954#0" expanded="false" />
+                <element signature="e#2880#2947#0" expanded="false" />
+                <element signature="e#3011#3209#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -98,6 +123,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="ndxDB.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ndxDB.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -123,9 +158,9 @@
         <option value="$PROJECT_DIR$/dojoDnd.js" />
         <option value="$PROJECT_DIR$/mouse.js" />
         <option value="$PROJECT_DIR$/globals.js" />
-        <option value="$PROJECT_DIR$/ndxDB.js" />
-        <option value="$PROJECT_DIR$/idbfs.js" />
         <option value="$PROJECT_DIR$/fileIO.js" />
+        <option value="$PROJECT_DIR$/idbfs.js" />
+        <option value="$PROJECT_DIR$/ndxDB.js" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
       </list>
     </option>
@@ -277,7 +312,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3237705" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32328767" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -408,6 +443,20 @@
           <caret line="1909" column="15" selection-start-line="1909" selection-start-column="13" selection-end-line="1909" selection-end-column="15" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <element signature="e#6271#6575#0" expanded="false" />
+            <element signature="e#7147#7226#0" expanded="false" />
+            <element signature="e#7232#7308#0" expanded="false" />
+            <element signature="e#7367#7456#0" expanded="false" />
+            <element signature="e#7654#7721#0" expanded="false" />
+            <element signature="e#7774#8551#0" expanded="false" />
+            <element signature="e#7855#8543#0" expanded="false" />
+            <element signature="e#8016#8089#0" expanded="false" />
+            <element signature="e#8263#8534#0" expanded="false" />
+            <element signature="e#8333#8427#0" expanded="false" />
+            <element signature="e#8606#8827#0" expanded="false" />
+            <element signature="e#8753#8820#0" expanded="false" />
+            <element signature="e#9018#9085#0" expanded="false" />
+            <element signature="e#9149#9347#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -453,6 +502,20 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <element signature="e#6271#6575#0" expanded="false" />
+            <element signature="e#7147#7226#0" expanded="false" />
+            <element signature="e#7232#7308#0" expanded="false" />
+            <element signature="e#7367#7456#0" expanded="false" />
+            <element signature="e#7654#7721#0" expanded="false" />
+            <element signature="e#7774#8551#0" expanded="false" />
+            <element signature="e#7855#8543#0" expanded="false" />
+            <element signature="e#8016#8089#0" expanded="false" />
+            <element signature="e#8263#8534#0" expanded="false" />
+            <element signature="e#8333#8427#0" expanded="false" />
+            <element signature="e#8606#8827#0" expanded="false" />
+            <element signature="e#8753#8820#0" expanded="false" />
+            <element signature="e#9018#9085#0" expanded="false" />
+            <element signature="e#9149#9347#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -484,6 +547,20 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <element signature="e#6271#6575#0" expanded="false" />
+            <element signature="e#7147#7226#0" expanded="false" />
+            <element signature="e#7232#7308#0" expanded="false" />
+            <element signature="e#7367#7456#0" expanded="false" />
+            <element signature="e#7654#7721#0" expanded="false" />
+            <element signature="e#7774#8551#0" expanded="false" />
+            <element signature="e#7855#8543#0" expanded="false" />
+            <element signature="e#8016#8089#0" expanded="false" />
+            <element signature="e#8263#8534#0" expanded="false" />
+            <element signature="e#8333#8427#0" expanded="false" />
+            <element signature="e#8606#8827#0" expanded="false" />
+            <element signature="e#8753#8820#0" expanded="false" />
+            <element signature="e#9018#9085#0" expanded="false" />
+            <element signature="e#9149#9347#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -508,6 +585,20 @@
           <caret line="2969" column="7" selection-start-line="2969" selection-start-column="7" selection-end-line="2969" selection-end-column="7" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <element signature="e#6271#6575#0" expanded="false" />
+            <element signature="e#7147#7226#0" expanded="false" />
+            <element signature="e#7232#7308#0" expanded="false" />
+            <element signature="e#7367#7456#0" expanded="false" />
+            <element signature="e#7654#7721#0" expanded="false" />
+            <element signature="e#7774#8551#0" expanded="false" />
+            <element signature="e#7855#8543#0" expanded="false" />
+            <element signature="e#8016#8089#0" expanded="false" />
+            <element signature="e#8263#8534#0" expanded="false" />
+            <element signature="e#8333#8427#0" expanded="false" />
+            <element signature="e#8606#8827#0" expanded="false" />
+            <element signature="e#8753#8820#0" expanded="false" />
+            <element signature="e#9018#9085#0" expanded="false" />
+            <element signature="e#9149#9347#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -685,26 +776,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/idbfs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="13" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pouchDB_IO.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-55.666668">
           <caret line="102" column="43" selection-start-line="102" selection-start-column="43" selection-end-line="102" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ndxDB.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -717,12 +792,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ndxDB.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idbfs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="110" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+          <folding>
+            <element signature="e#133#437#0" expanded="false" />
+            <element signature="e#677#748#0" expanded="false" />
+            <element signature="e#759#796#0" expanded="false" />
+            <element signature="e#837#1326#0" expanded="false" />
+            <element signature="e#1009#1088#0" expanded="false" />
+            <element signature="e#1094#1170#0" expanded="false" />
+            <element signature="e#1229#1318#0" expanded="false" />
+            <element signature="e#1361#1482#0" expanded="false" />
+            <element signature="e#1516#1583#0" expanded="false" />
+            <element signature="e#1636#2413#0" expanded="false" />
+            <element signature="e#1717#2405#0" expanded="false" />
+            <element signature="e#1878#1951#0" expanded="false" />
+            <element signature="e#2125#2396#0" expanded="false" />
+            <element signature="e#2195#2289#0" expanded="false" />
+            <element signature="e#2468#2689#0" expanded="false" />
+            <element signature="e#2615#2682#0" expanded="false" />
+            <element signature="e#2752#2954#0" expanded="false" />
+            <element signature="e#2880#2947#0" expanded="false" />
+            <element signature="e#3011#3209#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8888889">
-          <caret line="177" column="6" selection-start-line="177" selection-start-column="6" selection-end-line="177" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.41737893">
+          <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <element signature="e#6271#6575#0" expanded="false" />
+            <element signature="e#7147#7226#0" expanded="false" />
+            <element signature="e#7232#7308#0" expanded="false" />
+            <element signature="e#7367#7456#0" expanded="false" />
+            <element signature="e#7654#7721#0" expanded="false" />
+            <element signature="e#7774#8551#0" expanded="false" />
+            <element signature="e#7855#8543#0" expanded="false" />
+            <element signature="e#8016#8089#0" expanded="false" />
+            <element signature="e#8263#8534#0" expanded="false" />
+            <element signature="e#8333#8427#0" expanded="false" />
+            <element signature="e#8606#8827#0" expanded="false" />
+            <element signature="e#8753#8820#0" expanded="false" />
+            <element signature="e#9018#9085#0" expanded="false" />
+            <element signature="e#9149#9347#0" expanded="false" />
           </folding>
         </state>
       </provider>
