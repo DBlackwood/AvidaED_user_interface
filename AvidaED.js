@@ -129,13 +129,13 @@ require([
         }
         fio.thisfile = fio.zipfile.files[zFileName];
         fio.fName = zFileName;
-        processFiles(dnd, fio, fzr);
+        processFiles(dnd, fio, av.fzr);
       }
       //console.log('before DrawGridSetup')
       DrawGridSetup();
-      fzr.cNum++;
-      fzr.gNum++;
-      fzr.wNum++;
+      av.fzr.cNum++;
+      av.fzr.gNum++;
+      av.fzr.wNum++;
     };
     oReq.send();
   }
@@ -148,12 +148,12 @@ require([
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB - send msg to Avida');
       doDbReady(av.fio);
-      readDefaultWS(av.dnd, fio, fzr);
+      readDefaultWS(av.dnd, fio, av.fzr);
     }).catch(function (err) {
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB destroy db err', err);
       doDbReady(av.fio);
-      readDefaultWS(av.dnd, fio, fzr);
+      readDefaultWS(av.dnd, fio, av.fzr);
     });
   }
   /* PouchDB websites
@@ -162,7 +162,7 @@ require([
    http://pouchdb.com/guides/databases.html
    */
   console.log('before initialze DB', av.fio.uiWorker);
-  initializeDB(av, av.fio, fzr);
+  initializeDB(av, av.fio, av.fzr);
 
   //********************************************************************************************************************/
   //console.log("defining test_jszip()");
@@ -323,7 +323,7 @@ require([
 
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
-    if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, fzr.genome', fzr.genome);
+    if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
     mainBoxSwap("populationBlock");
   }
 
@@ -437,8 +437,8 @@ require([
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
       landActiveConfig(av.dnd, pkg);  //dojoDnd
-      updateSetup(av.fio, fzr);  //fileIO
-      if ('w' === fzr.actConfig.type) {
+      updateSetup(av.fio, av.fzr);  //fileIO
+      if ('w' === av.fzr.actConfig.type) {
         console.log('world config so there more to do');
       }
     }
@@ -447,28 +447,28 @@ require([
   //currently this should not trigger as activeConfig is only a target
   av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
-      var num = fzr.config[fzr.config.length-1].fileNum;
-      landFzConfig(av.dnd, fzr, source, nodes, target);  //needed as part of call to contextMenu
-      if (num != fzr.config[fzr.config.length-1].fileNum) {makePdbConfig(fzr, av.fio);}
+      var num = av.fzr.config[av.fzr.config.length-1].fileNum;
+      landFzConfig(av.dnd, av.fzr, source, nodes, target);  //needed as part of call to contextMenu
+      if (num != av.fzr.config[av.fzr.config.length-1].fileNum) {makePdbConfig(av.fzr, av.fio);}
     }
   });
 
   av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
-      landFzOrgan(av.dnd, fzr, av.parents,source, nodes, target);
-      makePdbOrgan(av.fio, fzr);
+      landFzOrgan(av.dnd, av.fzr, av.parents,source, nodes, target);
+      makePdbOrgan(av.fio, av.fzr);
     }
   });
 
   av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
-      landAncestorBox(av.dnd, fzr, av.parents,source, nodes, target);
+      landAncestorBox(av.dnd, av.fzr, av.parents,source, nodes, target);
     }
   });
 
   av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
-      landGridCanvas(av, av.dnd, fzr, av.grd, av.parents, source, nodes, target);
+      landGridCanvas(av, av.dnd, av.fzr, av.grd, av.parents, source, nodes, target);
       DrawGridSetup();
     }
   });
@@ -476,15 +476,15 @@ require([
   av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
-      landOrganCanvas(av.dnd, fzr, source, nodes, target);
-      doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
+      landOrganCanvas(av.dnd, av.fzr, source, nodes, target);
+      doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
   av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     if ('organIcon' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
-      landOrganIcon(av.dnd, fzr, source, nodes, target);
+      landOrganIcon(av.dnd, av.fzr, source, nodes, target);
       //Change to Organism Page
       mainBoxSwap("organismBlock");
       organismCanvasHolderSize();
@@ -493,15 +493,15 @@ require([
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
-      doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
+      doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
   av.dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
-      landActiveOrgan(av.dnd, fzr, source, nodes, target);
-      doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
+      landActiveOrgan(av.dnd, av.fzr, source, nodes, target);
+      doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -511,7 +511,7 @@ require([
       remove.type = '';
       remove.id = '';
       if (av.debug.dnd) console.log('trashCan: s, t', source, target);
-      remove = landTrashCan(av.dnd, fzr, av.parents, source, nodes, target);
+      remove = landTrashCan(av.dnd, av.fzr, av.parents, source, nodes, target);
       if ('' != remove.type) {
         removePdbItem(av.fio, remove.id, remove.type);
       }
@@ -717,11 +717,11 @@ require([
     // send reset to Avida adaptor
     doReset(av.fio);
     //Enable the options on the Setup page
-    popNewExState(av.dnd, fzr, av.grd, av.parents);
+    popNewExState(av.dnd, av.fzr, av.grd, av.parents);
     //Clear grid settings
     clearParents(av.parents);
     //reset values in population settings based on a 'file' @default
-    updateSetup(av.fio, fzr);
+    updateSetup(av.fio, av.fzr);
 
     //write if @default not found - need to figure out a test for this
     //writeHardDefault(av.dft);
@@ -743,7 +743,7 @@ require([
     }).catch(function(err){
       console.log('allDocs get error',err);
     });
-    console.log('fzr', fzr);
+    console.log('fzr', av.fzr);
 /*
     av.fio.wsdb.allDocs().then(function(docObj){
       console.log('wsdb doc', docObj);
@@ -779,13 +779,13 @@ require([
         var newConfig = {
           domId: domId,
           name: fzName,
-          _id: 'c'+ fzr.cNum,
-          fileNum: fzr.cNum
+          _id: 'c'+ av.fzr.cNum,
+          fileNum: av.fzr.cNum
         };
-        fzr.config.push(newConfig);
-        fzr.cNum++;
-        makePdbConfig(fzr, av.fio);
-        contextMenu(fzr, av.dnd.fzConfig, domId);
+        av.fzr.config.push(newConfig);
+        av.fzr.cNum++;
+        makePdbConfig(av.fzr, av.fio);
+        contextMenu(av.fzr, av.dnd.fzConfig, domId);
       }
     }
   }
@@ -803,15 +803,15 @@ require([
         var newWorld = {
           domId: domId,
           name: fzName,
-          _id: 'w'+ fzr.wNum,
-          fileNum: fzr.wNum
+          _id: 'w'+ av.fzr.wNum,
+          fileNum: av.fzr.wNum
         };
-        fzr.world.push(newWorld);
-        fzr.wNum++;
-        makePdbWorld(fzr, av.fio, av.grd);
+        av.fzr.world.push(newWorld);
+        av.fzr.wNum++;
+        makePdbWorld(av.fzr, av.fio, av.grd);
         //need to get data from Avida for this tiba
         //Create context menu for right-click on this item
-        contextMenu(fzr, av.dnd.fzWorld, domId);
+        contextMenu(av.fzr, av.dnd.fzWorld, domId);
       }
     }
   }
@@ -874,8 +874,8 @@ require([
         'domId': mapItems[mapItems.length - 1],
         'genome': gene
       }
-      fzr.genome.push(neworg);
-      contextMenu(fzr, av.dnd.fzOrgan, neworg.domId);
+      av.fzr.genome.push(neworg);
+      contextMenu(av.fzr, av.dnd.fzOrgan, neworg.domId);
     }
   }
 
@@ -941,7 +941,7 @@ mouse clicks
     if (av.gen.didDivide) {  //offpsring exists
       distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
       if (25 > distance) {
-        for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'copy';
+        for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
@@ -1072,7 +1072,7 @@ mouse clicks
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
           av.grd.kidStatus = 'getgenome';
           doSelectedOrganismType(av.fio, av.grd);
-          SelectedKidMouseStyle(av.dnd, fzr, av.grd);
+          SelectedKidMouseStyle(av.dnd, av.fzr, av.grd);
           av.mouse.Picked = 'kid';
           console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
@@ -1124,7 +1124,7 @@ mouse clicks
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
-    for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'default';
+    for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'default';
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
     av.mouse.Dn = false;
@@ -1132,7 +1132,7 @@ mouse clicks
     // --------- process if something picked to dnd ------------------
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      ParentMouse(evt, av.dnd, fzr, av.parents);
+      ParentMouse(evt, av.dnd, av.fzr, av.parents);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) DrawGridSetup();
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
@@ -1143,18 +1143,18 @@ mouse clicks
         document.getElementById("ExecuteAbout").style.height = height + "px";
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
-        doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
+        doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
       }
     }
     else if ('offspring' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      target = OffspringMouse(evt, av.dnd, av.fio, fzr, av.gen);
-      if ('fzOrgan' == target) { makePdbOrgan(av.fio, fzr)}
+      target = OffspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
+      if ('fzOrgan' == target) { makePdbOrgan(av.fio, av.fzr)}
     }
     else if ('kid' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      target = KidMouse(evt, av.dnd, fzr, av.grd);
-      if ('fzOrgan' == target) { makePdbOrgan(av.fio, fzr);}
+      target = KidMouse(evt, av.dnd, av.fzr, av.grd);
+      if ('fzOrgan' == target) { makePdbOrgan(av.fio, av.fzr);}
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         mainBoxSwap("organismBlock");
@@ -1164,7 +1164,7 @@ mouse clicks
         document.getElementById("ExecuteAbout").style.height = height + "px";
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
-        doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
+        doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
       }
     }
     av.mouse.Picked = "";
@@ -1567,7 +1567,7 @@ mouse clicks
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
     console.log('settings dialog closed', av.gen.settingsChanged);
-    if (av.gen.settingsChanged) doOrgTrace(av.fio, fzr);
+    if (av.gen.settingsChanged) doOrgTrace(av.fio, av.fzr);
   });
 
   $(function slideOrganism() {
@@ -1614,7 +1614,7 @@ mouse clicks
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
   dijit.byId("mnOrganismTrace").on("Click", function () {
-    traceSelected(av.dnd, fzr, av.grd);
+    traceSelected(av.dnd, av.fzr, av.grd);
     mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
@@ -1622,7 +1622,7 @@ mouse clicks
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    doOrgTrace(av.fio, fzr);  //request new Organism Trace from Avida and draw that.
+    doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
   });
 
   //Put the offspring in the parent position on Organism Trace
@@ -1635,7 +1635,7 @@ mouse clicks
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    offspringTrace(av.dnd, av.fio, fzr, av.gen);
+    offspringTrace(av.dnd, av.fio, av.fzr, av.gen);
   });
 
   /* ****************************************************************/

@@ -152,28 +152,29 @@ av.fio.defaultFname = 'default_1.avidaedworkspace.zip';
 av.fio.uiWorker = null;
 
 av.dnd = {};
-var fzr = {};
-fzr.cNum = 0;  //value of the next configured dish (config) number
-fzr.gNum = 0;  //value of the next organism (genome) number
-fzr.wNum = 0;  //value of the next world (populated dish) number
-fzr.config = [];
-fzr.genome = [];
-fzr.world = [];
+av.fzr = {};
+
+av.fzr.cNum = 0;  //value of the next configured dish (config) number
+av.fzr.gNum = 0;  //value of the next organism (genome) number
+av.fzr.wNum = 0;  //value of the next world (populated dish) number
+av.fzr.config = [];
+av.fzr.genome = [];
+av.fzr.world = [];
 
 //hold genome for active organism in Organism View
-fzr.actOrgan = {'name': "", 'domId': "", '_id': '', 'genome': "" };
+av.fzr.actOrgan = {'name': "", 'domId': "", '_id': '', 'genome': "" };
 //hold genome for active organism in Organism View
-fzr.actConfig = {'name': "", 'domId': "", '_id': '', 'type': '' };
+av.fzr.actConfig = {'name': "", 'domId': "", '_id': '', 'type': '' };
 
 
 
 /* Fzr - Freezer.
-fzr.g.name
-fzr.g.fileNum
-fzr.g._id - PouchDB ID
-fzr.g.domId
-fzr.g.genome
-fzr.c - configued dish
-fzr.w - world (populated dish)
+av.fzr.g.name
+av.fzr.g.fileNum
+av.fzr.g._id - PouchDB ID
+av.fzr.g.domId
+av.fzr.g.genome
+av.fzr.c - configued dish
+av.fzr.w - world (populated dish)
 
 */
