@@ -57,6 +57,7 @@ require([
   "lib/pouchdb-5.0.0.js",
   "lib/jszip.js",
   "lib/FileSaver.js",
+  "idbfs.js",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -76,7 +77,7 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             PouchDB, JSZip, FileSaver,
+             PouchDB, JSZip, FileSaver, IDBFS,
              ready, $, jqueryui) {
   "use strict";
   if (typeof $ != 'undefined') {
@@ -104,32 +105,32 @@ require([
   av.fio.JSZip = JSZip;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-  function readDefaultWS(dnd, fio, fzr) {
+  function readDefaultWS(av) {
     'use strict';
-    fio.zipName = fio.defaultFname;
+    av.fio.zipName = av.fio.defaultFname;
     var oReq = new XMLHttpRequest();
 //oReq.open("GET", "/ziptest.zip", true);
-    oReq.open("GET", fio.zipName, true);
+    oReq.open("GET", av.fio.zipName, true);
     oReq.responseType = "arraybuffer";
     oReq.onload = function (oEvent) {
       var arybuf = oReq.response;
       console.log("have ziptest.zip", arybuf);
       // do something to extract it
-      fio.zipfile = new fio.JSZip();
+      av.fio.zipfile = new av.fio.JSZip();
       console.log("loading arybuf");
-      fio.zipfile.load(arybuf, {base64: false});
+      av.fio.zipfile.load(arybuf, {base64: false});
       //console.log("arybuf loaded");
       console.log('before call procesfiles');
-      fio.target = null;
-      for (var zFileName in fio.zipfile.files) {
+      av.fio.target = null;
+      for (var zFileName in av.fio.zipfile.files) {
         //target will be assigned the beginning of the path name within the zip file.
-        if (null == fio.target) {
+        if (null == av.fio.target) {
           var leading = wsb('/', zFileName);
-          if ('__MACOSX' != leading) fio.target = leading;
+          if ('__MACOSX' != leading) av.fio.target = leading;
         }
-        fio.thisfile = fio.zipfile.files[zFileName];
-        fio.fName = zFileName;
-        processFiles(dnd, fio, av.fzr);
+        av.fio.thisfile = av.fio.zipfile.files[zFileName];
+        av.fio.fName = zFileName;
+        processFiles(av);
       }
       //console.log('before DrawGridSetup')
       DrawGridSetup();
@@ -148,12 +149,12 @@ require([
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB - send msg to Avida');
       doDbReady(av.fio);
-      readDefaultWS(av.dnd, fio, av.fzr);
+      readDefaultWS(av);
     }).catch(function (err) {
       fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB destroy db err', err);
       doDbReady(av.fio);
-      readDefaultWS(av.dnd, fio, av.fzr);
+      readDefaultWS(av);
     });
   }
   /* PouchDB websites
@@ -162,9 +163,24 @@ require([
    http://pouchdb.com/guides/databases.html
    */
   console.log('before initialze DB', av.fio.uiWorker);
-  initializeDB(av, av.fio, av.fzr);
+  //initializeDB(av, av.fio, av.fzr);
 
   //********************************************************************************************************************/
+  //IndexedDB
+  //********************************************************************************************************************/
+  var db;
+  var request = indexedDB.open("wsidb");
+  request.onerror = function(event) {
+    alert("Why didn't you allow my web app to use IndexedDB?!");
+  };
+  request.onsuccess = function(event) {
+    db = event.target.result;
+    readDefaultWS(av);
+    console.log('ndxDB success: db', db);
+  };
+
+  //********************************************************************************************************************/
+  //delete this section later
   //console.log("defining test_jszip()");
   var test_jszip;
   test_jszip = function() {
