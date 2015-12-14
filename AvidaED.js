@@ -163,7 +163,7 @@ require([
    http://pouchdb.com/guides/databases.html
    */
   console.log('before initialze DB', av.fio.uiWorker);
-  //initializeDB(av, av.fio, av.fzr);
+  initializeDB(av, av.fio, av.fzr);
 
   //********************************************************************************************************************/
   //IndexedDB
@@ -175,7 +175,7 @@ require([
   };
   request.onsuccess = function(event) {
     db = event.target.result;
-    readDefaultWS(av);
+    //readDefaultWS(av);
     console.log('ndxDB success: db', db);
   };
 
@@ -453,7 +453,7 @@ require([
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
       landActiveConfig(av.dnd, pkg);  //dojoDnd
-      updateSetup(av.fio, av.fzr);  //fileIO
+      updateSetup(av);  //fileIO
       if ('w' === av.fzr.actConfig.type) {
         console.log('world config so there more to do');
       }

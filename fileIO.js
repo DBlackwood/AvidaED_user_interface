@@ -1,5 +1,5 @@
 
-function addFzItem(dndSection, fio, fzrSection, item, type) {
+function addFzItem(dndSection, fzrSection, item, type) {
   'use strict';
   dndSection.insertNodes(false, [{data: item.name, type: [type]}]);
   dndSection.sync();
@@ -8,17 +8,17 @@ function addFzItem(dndSection, fio, fzrSection, item, type) {
   fzrSection.push(item);
   //create a right av.mouse-click context menu for the item just created.
   if (av.debug.fio) console.log('item', item);
-  //if (0<item.fileNum) {contextMenu(fzr, dndSection, item.domId);}
+  //if (0<item.fileNum) {contextMenu(av.fzr, dndSection, item.domId);}
 }
 
-function add2freezerFromFile(dnd, fio, fzr) {
+function add2freezerFromFile(av) {
   "use strict";
-  var type = fio.anID.substr(0, 1);
-  var tmp = wsb('/', fio.anID);
+  var type = av.fio.anID.substr(0, 1);
+  var tmp = wsb('/', av.fio.anID);
   var num = tmp.substr(1, tmp.length-1);
   var name;
-  if (null == fio.thisfile.asText()) { name = fio.anID; }
-  else { name = wsb("\n", fio.thisfile.asText()); }
+  if (null == av.fio.thisfile.asText()) { name = av.fio.anID; }
+  else { name = wsb("\n", av.fio.thisfile.asText()); }
   var item = {
     'name': name,
     'fileNum': num,
@@ -27,29 +27,29 @@ function add2freezerFromFile(dnd, fio, fzr) {
   if (av.debug.fio) console.log('type ', type, '; tmp', tmp, '; num', num);
   switch (type) {
     case 'c':
-      addFzItem(dnd.fzConfig, fio, fzr.config, item, type);
-      if (fzr.cNum < Number(item.fileNum)) {fzr.cNum = Number(item.fileNum); }
+      addFzItem(av.dnd.fzConfig, av.fzr.config, item, type);
+      if (av.fzr.cNum < Number(item.fileNum)) {av.fzr.cNum = Number(item.fileNum); }
       break;
     case 'g':
-      var afileName = wsb('entryname.txt', fio.fName) + 'genome.seq';
-      item.genome = fio.zipfile.files[afileName].asText();
-      addFzItem(dnd.fzOrgan, fio, fzr.genome, item, type);
-      if (fzr.gNum < Number(item.fileNum)) {fzr.gNum = Number(item.fileNum); }
+      var afileName = wsb('entryname.txt', av.fio.fName) + 'genome.seq';
+      item.genome = av.fio.zipfile.files[afileName].asText();
+      addFzItem(av.dnd.fzOrgan, av.fzr.genome, item, type);
+      if (av.fzr.gNum < Number(item.fileNum)) {av.fzr.gNum = Number(item.fileNum); }
       break;
     case 'w':
-      addFzItem(dnd.fzWorld, fio, fzr.world, item, type);
-      if (fzr.wNum < Number(item.fileNum)) {fzr.wNum = Number(item.fileNum); }
+      addFzItem(av.dnd.fzWorld, av.fzr.world, item, type);
+      if (av.fzr.wNum < Number(item.fileNum)) {av.fzr.wNum = Number(item.fileNum); }
       break;
   }
 }
 
-function processFiles(dnd, fio, fzr){
+function processFiles(av){
   "use strict";
-  fio.anID = wsa(fio.target+'/', fio.fName);
-  var fileType = wsa('/', fio.anID);
+  av.fio.anID = wsa(av.fio.target+'/', av.fio.fName);
+  var fileType = wsa('/', av.fio.anID);
   switch (fileType) {
     case 'entryname.txt':
-      add2freezerFromFile(dnd, fio, fzr);
+      add2freezerFromFile(av);
     case 'ancestors':
     case 'ancestors_manual':
     case 'avida.cfg':
@@ -65,40 +65,42 @@ function processFiles(dnd, fio, fzr){
     case 'tr3':
     case 'update':
       var ifile = {
-        _id: fio.anID,
-        text: fio.thisfile.asText().trim()
+        _id: av.fio.anID,
+        text: av.fio.thisfile.asText().trim()
       };
-      if ('c0/avida.cfg'==fio.anID) {avidaCFG2form(fio.thisfile.asText()); }
-      if ('c0/environment.cfg'==fio.anID) {environmentCFG2form(ifile.text); }
-      fio.wsdb.get(fio.anID).then(function (doc) {
+      if ('c0/avida.cfg'==av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText()); }
+      if ('c0/environment.cfg'==av.fio.anID) {environmentCFG2form(ifile.text); }
+
+      av.fio.wsdb.get(av.fio.anID).then(function (doc) {
         ifile._rev = doc._rev;
         if (av.debug.pdb) console.log('get entryName doc already exists, ok update', doc);
-        fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
+        av.fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
         }).catch(function (err) {console.log('put err', err);
         });
       }).catch(function (err) {
-        fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
+        av.fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
         }).catch(function (err) {console.log('put err', err);
         });
       });
+      
       break;
     default:
-      //if (av.debug.fio) console.log('undefined file type in zip: full ', fio.fName, '; id ', fio.anID, '; type ', fileType);
+      //if (av.debug.fio) console.log('undefined file type in zip: full ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
       break;
   }
-  //if (av.debug.fio) console.log('file type in zip: fname ', fio.fName, '; id ', fio.anID, '; type ', fileType);
+  //if (av.debug.fio) console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
 }
 
 
 //---------------------------------------- update config data from pouchDB data ----------------------------------------
-function updateSetup(fio, fzr) {
+function updateSetup(av) {
   'use strict';
-  fio.wsdb.get(fzr.actConfig._id + '/avida.cfg').then(function (doc) {
+  av.fio.wsdb.get(av.fzr.actConfig._id + '/avida.cfg').then(function (doc) {
     avidaCFG2form(doc.text);
   }).catch(function (err) {
     console.log('error getting active avida.cfg data', err);
   });
-  fio.wsdb.get(fzr.actConfig._id + '/environment.cfg').then(function (doc) {
+  av.fio.wsdb.get(av.fzr.actConfig._id + '/environment.cfg').then(function (doc) {
     environmentCFG2form(doc.text);
   }).catch(function (err) {
     console.log('error getting active environment.cfg data', err);
