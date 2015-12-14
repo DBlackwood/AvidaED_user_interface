@@ -78,7 +78,7 @@ clearmouse(av);
 var traceObj = {}; //global that holds the traceObject that was sent from Avida
 
 //initialize gen (genome) object.
-var gen = {};
+av.gen = {};
 
 av.grd = {};         //data about the grid canvas
 av.grd.popStatFlag = true;  //flag that determines if the stats panel is visible.

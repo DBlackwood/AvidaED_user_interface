@@ -1,11 +1,13 @@
 var nearly = function (aa, bb) {
+  'use strict';
   var epsilon = 3;
-  var distance = Math.sqrt(Math.pow(aa[0] - bb[0], 2) + Math.pow(aa[1] - bb[1], 2))
+  var distance = Math.sqrt(Math.pow(aa[0] - bb[0], 2) + Math.pow(aa[1] - bb[1], 2));
   if (distance > epsilon) return false;
   else return true;
-}
+};
 
 var findParentNdx = function (parents) {
+  'use strict';
   var MomNdx = -1;
   for (var ii = 0; ii < parents.name.length; ii++) {
     //if (matches([grd.selectedCol, grd.selectedRow], [parents.col[ii], parents.row[ii]])) {
@@ -16,11 +18,12 @@ var findParentNdx = function (parents) {
     }
   }
   return MomNdx;
-}
+};
 
 function findSelected(evt, grd) {
-  mouseX = evt.offsetX - grd.marginX - grd.xOffset;
-  mouseY = evt.offsetY - grd.marginY - grd.yOffset;
+  'use strict';
+  var mouseX = evt.offsetX - grd.marginX - grd.xOffset;
+  var mouseY = evt.offsetY - grd.marginY - grd.yOffset;
   grd.selectedCol = Math.floor(mouseX / grd.cellWd);
   grd.selectedRow = Math.floor(mouseY / grd.cellHt);
   grd.selectedNdx = grd.selectedRow*grd.cols + grd.selectedCol;
@@ -29,16 +32,18 @@ function findSelected(evt, grd) {
 
 //update data about a kid in the selecred organism to move = primarily genome and name
 function SelectedKidMouseStyle(dnd, fzr, grd) {
+  'use strict';
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('fzOrgan').style.cursor = 'copy';
   document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
   for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'copy';
   grd.kidName = 'temporary';
-  grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab'  //ancestor
+  grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
 }
 
-function offspringTrace(dnd, fio, fzr) {
+function offspringTrace(dnd, fio, fzr, gen) {
+  'use strict';
   //Get name of parent that is in OrganCurrentNode
   var parent;
   var parentID = Object.keys(dnd.activeOrgan.map)[0];
@@ -52,17 +57,18 @@ function offspringTrace(dnd, fio, fzr) {
   dnd.activeOrgan.sync();
 
   fzr.actOrgan.name = parent + "_offspring";
-  fzr.actOrgan.genome = '0,heads_default,' + gen.dna[gen.son];  //this should be the full genome when the offspring is complete.
+  fzr.actOrgan.genome = '0,heads_default,' + av.gen.dna[av.gen.son];  //this should be the full genome when the offspring is complete.
   fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
-  console.log('fzr.actOrgan', fzr.actOrgan.genome);
+  console.log('fzr.actOrgan', fzr.actOrgan);
   //get genome from offspring data //needs work!!
   doOrgTrace(fio, fzr);  //request new Organism Trace from Avida and draw that.
-}
+};
 
-var OffspringMouse = function(evt, dnd, fio, fzr) {
+var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
+  'use strict';
   var target = '';
   if ('organIcon' == evt.target.id) {
-    offspringTrace(dnd, fio, fzr);
+    offspringTrace(dnd, fio, fzr, gen);
   target = 'organIcon';}
   else { // look for target in the freezer
     var found = false;
@@ -93,7 +99,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr) {
             'domId': mapItems[mapItems.length - 1],
             'fileNum': fzr.gNum,
             '_id': 'g' + fzr.gNum,
-            'genome': '0,heads_default,' + gen.dna[1]
+            'genome': '0,heads_default,' + av.gen.dna[av.gen.son]
           }
           fzr.genome.push(neworg);
           fzr.gNum++;
@@ -106,7 +112,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr) {
     }
   }
   return target;
-}
+};
 
 function traceSelected(dnd, fzr, grd) {
   "use strict";
@@ -122,7 +128,7 @@ function traceSelected(dnd, fzr, grd) {
 }
 
 var KidMouse = function (evt, dnd, fzr, grd){
-  "use strict";
+  'use strict';
   var target = '';
   if (av.debug.mouse) console.log('in KidMouse', evt.target.id, evt);
   if (5 < grd.kidGenome.length) {
@@ -155,7 +161,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
               'fileNum': fzr.gNum,
               '_id': 'g' + fzr.gNum,
               'genome': grd.kidGenome
-            }
+            };
             fzr.genome.push(neworg);
             fzr.gNum++;
             console.log('fzOrgan', dnd.fzOrgan);
@@ -173,6 +179,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
 }
 
 function ParentMouse(evt, dnd, fzr, parents) {
+  'use strict';
   if (av.debug.mouse) console.log('ParentMouse', evt.target.id, evt);
   if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
@@ -222,6 +229,7 @@ function ParentMouse(evt, dnd, fzr, parents) {
 }
 
 function fromAncestorBoxRemove(removeName) {
+  'use strict';
   var domItems = Object.keys(dnd.ancestorBox.map);
   //console.log("domItems=", domItems);
   var nodeIndex = -1;

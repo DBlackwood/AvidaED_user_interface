@@ -1,4 +1,6 @@
-function clearGen() {
+
+var clearGen = function(gen) {
+  'use strict';
   gen.settingsChanged = false;
   gen.cycle = 0;
   gen.bigR = [120, 120]; //radius of full circle
@@ -40,9 +42,11 @@ function clearGen() {
   gen.ctx.translate(0.5, 0.5);  //makes a crisper image  http://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
   //gen.timeLineCanvas = document.getElementById("timeLine");
   //gen.tLctx = gen.timeLineCanvas.getContext("2d");
-}
+  return gen;
+};
 
 function DrawTimeline(obj, gen) {
+  'use strict';
   var startX, lineY, endX, length, numCycles, upLabelY, dnLabelY, txtWide, dnTickX, dnNum;
   var tickLength = 6;
   var upLabelYoffset = 8;  //was 12
@@ -183,6 +187,7 @@ function drawBitStr(context, row, bitStr) {
 }
 
 function genomeCircle(gen, gg, obj) { //gg is generation
+  'use strict';
   var txtW;      // width of txt
   //var tickR;        //mutation tick mark: radius used to find position for tick Mark
   //var tickX, tickY  //mutation tick mark: position of inner tick mark
@@ -192,6 +197,7 @@ function genomeCircle(gen, gg, obj) { //gg is generation
     gen.smCenX[gg][ii] = gen.cx[gg] + gen.bigR[gg] * Math.cos(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     gen.smCenY[gg][ii] = gen.cy[gg] + gen.bigR[gg] * Math.sin(ii * 2 * Math.PI / gen.size[gg] + gen.rotate[gg]);
     gen.ctx.beginPath();
+    //console.log('gg', gg, '; ii', ii, '; gen', gen);
     gen.ctx.arc(gen.smCenX[gg][ii], gen.smCenY[gg][ii], gen.smallR, 0, 2 * Math.PI);
     //Assign color based on letter code of instruction
     gen.ctx.fillStyle = letterColor[gen.dna[gg].substr(ii, 1)];  //use if gen.dna is a string
@@ -231,6 +237,7 @@ function genomeCircle(gen, gg, obj) { //gg is generation
 }
 
 function drawHead(gen, spot, gg, head) {
+  'use strict';
   var hx, hy; //center of head and used as center of ring
   var txtW;  // width of txt
   //draw circumference around instruction that the head points to.
@@ -256,6 +263,7 @@ function drawHead(gen, spot, gg, head) {
 
 //Draw arc using Bézier curve and two control points http://www.w3schools.com/tags/canvas_beziercurveto.asp
 function drawArc2(gen, spot1, spot2, rep) { //draw an arc
+  'use strict';
   var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2;
   gen.ctx.lineWidth = 1;
   if (spot2 >= spot1) {
@@ -283,6 +291,7 @@ function drawArc2(gen, spot1, spot2, rep) { //draw an arc
 
 //Draw offspring Icon once cell divides  from http://stackoverflow.com/questions/8977369/drawing-png-to-a-canvas-element-not-showing-transparency
 function drawIcon(gen) {
+  'use strict';
   var txt = "Offspring Genome";
   var drw = new Image();
   drw.src = "avida-ed-ancestor-icon.png";
@@ -298,6 +307,7 @@ function drawIcon(gen) {
 //*****************************************************************/
 //main function to update the Organism Trace on the Organism Page
 function updateOrganTrace(obj, gen) {
+  'use strict';
   //Find size and content of each genome.
   for (var ii = 0; ii < obj[gen.cycle].memSpace.length; ii++) {
     gen.dna[ii] = obj[gen.cycle].memSpace[ii].memory.join('');
@@ -391,6 +401,7 @@ function updateOrganTrace(obj, gen) {
 }
 
 function updateTimesPerformed(obj, gen) {
+  'use strict';
   document.getElementById("notPerf").textContent = obj[gen.cycle].functions.not;
   document.getElementById("nanPerf").textContent = obj[gen.cycle].functions.nand;
   document.getElementById("andPerf").textContent = obj[gen.cycle].functions.and;
@@ -457,6 +468,7 @@ function updateTimesPerformed(obj, gen) {
 }
 
 function writeInstructDetails(obj, gen) {
+  'use strict';
   var letter;
   var IPspot = obj[gen.cycle].memSpace[gen.mom].heads.ip
   if (undefined == obj[gen.cycle - 1]) {

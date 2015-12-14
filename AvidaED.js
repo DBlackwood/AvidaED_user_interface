@@ -213,7 +213,7 @@ require([
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
       //console.log('rightDetail', height, rd);
-      updateOrgTrace(traceObj, gen);
+      updateOrgTrace();
     }
   };
 
@@ -337,7 +337,7 @@ require([
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
     if (undefined != traceObj) {
-      updateOrgTrace(traceObj, gen);
+      updateOrgTrace();
     }
   };
 
@@ -855,7 +855,7 @@ require([
       //get name from parent
       parentName = document.getElementById(Object.keys(av.dnd.activeOrgan.map)[0]).textContent;
       fzName = prompt("Please name the offspring", parentName + '_Offspring');
-      gene = '0,heads_default,' + gen.dna[1];
+      gene = '0,heads_default,' + av.gen.dna[1];
     }
     else {
       fzName = prompt("Please name the organism", "newOrganism");
@@ -938,23 +938,23 @@ mouse clicks
       isRightMB = evt.which == 3;
     else if ("button" in e)  // IE, Opera
       isRightMB = evt.button == 2;
-    if (gen.didDivide) {  //offpsring exists
-      distance = Math.sqrt(Math.pow(evt.offsetX - gen.cx[1], 2) + Math.pow(evt.offsetY - gen.cy[1], 2));
+    if (av.gen.didDivide) {  //offpsring exists
+      distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
       if (25 > distance) {
         for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'copy';
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
         av.mouse.Picked = "offspring";
-        if (av.debug.gen) console.log('gen.dna', gen.dna);
+        if (av.debug.gen) console.log('av.gen.dna', av.gen.dna);
       }
     }
     if ('offspring' != av.mouse.Picked) {
-      for (var gg = 0; gg < traceObj[gen.cycle].memSpace.length; gg++) { //gg is generation
-        for (var ii = 0; ii < gen.dna[gg].length; ii++) {  //ii is the isntruction number
-          distance = Math.sqrt(Math.pow(evt.offsetX - gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - gen.smCenY[gg][ii], 2));
-          if ( gen.smallR >= distance ){
-            //console.log('found, gg, ii', gg, ii, '; xy',gen.smCenX[gg][ii],gen.smCenY[gg][ii] );
+      for (var gg = 0; gg < traceObj[av.gen.cycle].memSpace.length; gg++) { //gg is generation
+        for (var ii = 0; ii < av.gen.dna[gg].length; ii++) {  //ii is the isntruction number
+          distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.gen.smCenY[gg][ii], 2));
+          if ( av.gen.smallR >= distance ){
+            //console.log('found, gg, ii', gg, ii, '; xy',av.gen.smCenX[gg][ii],av.gen.smCenY[gg][ii] );
             ith = ii;
             hh = gg;
             av.mouse.Picked = 'instruction';
@@ -971,19 +971,19 @@ mouse clicks
         return false;         //supposed to prevent default right click menu - does not work
       }
       else {//hh is generation, ith is the instruction
-        var labX = gen.cx[hh] + (gen.bigR[hh] + 2.1 * gen.smallR) * Math.cos(ith * 2 * Math.PI / gen.size[hh] + gen.rotate[hh]);
-        var labY = gen.cy[hh] + (gen.bigR[hh] + 2.1 * gen.smallR) * Math.sin(ith * 2 * Math.PI / gen.size[hh] + gen.rotate[hh]);
-        console.log('ith, gn', ith, hh, '; rotate', gen.rotate[hh], '; xy', labX, labY);
-        gen.ctx.beginPath();
-        gen.ctx.arc(labX, labY, 1.1 * gen.smallR, 0, 2 * Math.PI);
-        gen.ctx.fillStyle = dictColor['White'];  //use if gen.dna is a string
-        gen.ctx.fill();   //required to render fill
+        var labX = av.gen.cx[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.cos(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
+        var labY = av.gen.cy[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.sin(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
+        console.log('ith, gn', ith, hh, '; rotate', av.gen.rotate[hh], '; xy', labX, labY);
+        av.gen.ctx.beginPath();
+        av.gen.ctx.arc(labX, labY, 1.1 * av.gen.smallR, 0, 2 * Math.PI);
+        av.gen.ctx.fillStyle = dictColor['White'];  //use if av.gen.dna is a string
+        av.gen.ctx.fill();   //required to render fill
         //draw number;
-        gen.ctx.fillStyle = dictColor["Black"];
-        gen.ctx.font = gen.fontsize + "px Arial";
-        var txtW = gen.ctx.measureText(instructionNum).width;  //use if gen.dna is a string
-        //txtW = gen.ctx.measureText(gen.dna[gg][ith]).width;     //use if gen.dna is an array
-        gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + gen.smallR / 2);  //use if gen.dna is a string
+        av.gen.ctx.fillStyle = dictColor["Black"];
+        av.gen.ctx.font = av.gen.fontsize + "px Arial";
+        var txtW = av.gen.ctx.measureText(instructionNum).width;  //use if av.gen.dna is a string
+        //txtW = av.gen.ctx.measureText(av.gen.dna[gg][ith]).width;     //use if av.gen.dna is an array
+        av.gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.gen.smallR / 2);  //use if av.gen.dna is a string
       }
     }
   });
@@ -1148,7 +1148,7 @@ mouse clicks
     }
     else if ('offspring' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      target = OffspringMouse(evt, av.dnd, av.fio, fzr);
+      target = OffspringMouse(evt, av.dnd, av.fio, fzr, av.gen);
       if ('fzOrgan' == target) { makePdbOrgan(av.fio, fzr)}
     }
     else if ('kid' == av.mouse.Picked) {
@@ -1416,7 +1416,7 @@ mouse clicks
     //Linear scale the position for Ancestors added by hand;
     if (undefined != av.parents.handNdx) {
       for (var ii = 0; ii < av.parents.handNdx.length; ii++) {
-        //console.log('old cr', av.av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
+        //console.log('old cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
         av.parents.col[av.parents.handNdx[ii]] = Math.floor(NewCols * av.parents.col[av.parents.handNdx[ii]] / gridWasCols);  //was trunc
         av.parents.row[av.parents.handNdx[ii]] = Math.floor(NewRows * av.parents.row[av.parents.handNdx[ii]] / gridWasRows);  //was trunc
         av.parents.AvidaNdx[av.parents.handNdx[ii]] = av.parents.col[av.parents.handNdx[ii]] + NewCols * av.parents.row[av.parents.handNdx[ii]];
@@ -1560,14 +1560,14 @@ mouse clicks
 
   //Opens Settings dialog box
   document.getElementById("OrgSetting").onclick = function () {
-    gen.settingsChanged = false;
+    av.gen.settingsChanged = false;
     OrganSetupDialog.show();
   }
 
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
-    console.log('settings dialog closed', gen.settingsChanged);
-    if (gen.settingsChanged) doOrgTrace(av.fio, fzr);
+    console.log('settings dialog closed', av.gen.settingsChanged);
+    if (av.gen.settingsChanged) doOrgTrace(av.fio, fzr);
   });
 
   $(function slideOrganism() {
@@ -1587,8 +1587,8 @@ mouse clicks
         //$( "#orMRate" ).val( ui.value);  /*put slider value in the text near slider */
         $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3) + "%");
         /*put the value in the text box */
-        gen.settingsChanged = true;
-        if (av.debug.trace) console.log('orSlide changed', gen.settingsChanged)
+        av.gen.settingsChanged = true;
+        if (av.debug.trace) console.log('orSlide changed', av.gen.settingsChanged)
       }
     });
     /* initialize */
@@ -1598,8 +1598,8 @@ mouse clicks
     /*update slide based on textbox */
     $("#orMuteInput").change(function () {
       slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
-      gen.settingsChanged = true;
-      if (av.debug.trace) console.log('orMute changed', gen.settingsChanged)
+      av.gen.settingsChanged = true;
+      if (av.debug.trace) console.log('orMute changed', av.gen.settingsChanged)
       //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log("in mute change");
     });
@@ -1607,8 +1607,8 @@ mouse clicks
 
   //triggers flag that requests more data when the settings dialog is closed.
   //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
-  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {gen.settingsChanged=true;});
-  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {gen.settingsChanged=true;});
+  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {av.gen.settingsChanged=true;});
+  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {av.gen.settingsChanged=true;});
 
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
@@ -1635,31 +1635,31 @@ mouse clicks
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    offspringTrace(av.dnd, av.fio, fzr);
+    offspringTrace(av.dnd, av.fio, fzr, av.gen);
   });
 
   /* ****************************************************************/
   /*                  Canvas for Organsim View (genome)
    /* ************************************************************** */
 
-  clearGen();
+  av.gen = clearGen(av.gen);
   //set canvas size; called from many places
   function organismCanvasHolderSize() {
-    gen.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
-    gen.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
+    av.gen.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
+    av.gen.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
   }
 
-  function updateOrgTrace(obj, gen) {
+  function updateOrgTrace() {
     //set canvas size
-    //console.log('gen', gen);
-    //console.log('obj', obj);
+    //console.log('gen', av.gen);
+    //console.log('av.traceObj', av.traceObj);
     organismCanvasHolderSize();
-    //if (undefined == obj[gen.cycle]) console.log('its undefined');
-    if (!(undefined == obj || {} == obj || undefined == obj[gen.cycle])) {
-      gen.didDivide = obj[gen.cycle].didDivide; //update global version of didDivide
-      updateOrganTrace(obj, gen);
+    //if (undefined == av.traceObj[av.gen.cycle]) console.log('its undefined');
+    if (!(undefined == av.traceObj || {} == av.traceObj || undefined == av.traceObj[av.gen.cycle])) {
+      av.gen.didDivide = av.traceObj[av.gen.cycle].didDivide; //update global version of didDivide
+      updateOrganTrace(av.traceObj, av.gen);
     }
-    else gen.didDivide = false;
+    else av.gen.didDivide = false;
   }
   /* ****************************************************************/
   /*             End of Canvas to draw genome and update details
@@ -1677,8 +1677,8 @@ mouse clicks
     if (cycleSlider.get("minimum") < cycleSlider.get("value")) {
       ii--;
       dijit.byId("orgCycle").set("value", ii);
-      gen.cycle = ii;
-      updateOrgTrace(traceObj, gen)
+      av.gen.cycle = ii;
+      updateOrgTrace()
     }
   });
 
@@ -1687,15 +1687,15 @@ mouse clicks
     if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
       ii++;
       dijit.byId("orgCycle").set("value", ii);
-      gen.cycle = ii;
-      updateOrgTrace(traceObj, gen)
+      av.gen.cycle = ii;
+      updateOrgTrace()
     }
   });
 
   dijit.byId("orgReset").on("Click", function () {
     dijit.byId("orgCycle").set("value", 0);
-    gen.cycle = 0;
-    updateOrgTrace(traceObj, gen);
+    av.gen.cycle = 0;
+    updateOrgTrace();
     orgStopFn()
   });
 
@@ -1708,9 +1708,9 @@ mouse clicks
 
   function orgRunFn() {
     if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
-      gen.cycle++;
-      dijit.byId("orgCycle").set("value", gen.cycle);
-      updateOrgTrace(traceObj, gen);
+      av.gen.cycle++;
+      dijit.byId("orgCycle").set("value", av.gen.cycle);
+      updateOrgTrace();
     }
     else {
       orgStopFn();
@@ -1729,16 +1729,16 @@ mouse clicks
 
   dijit.byId("orgEnd").on("Click", function () {
     dijit.byId("orgCycle").set("value", cycleSlider.get("maximum"));
-    gen.cycle = cycleSlider.get("maximum");
-    updateOrgTrace(traceObj, gen);
+    av.gen.cycle = cycleSlider.get("maximum");
+    updateOrgTrace();
     orgStopFn()
   });
 
   dijit.byId("orgCycle").on("Change", function (value) {
     cycleSlider.set("value", value);
-    gen.cycle = value;
+    av.gen.cycle = value;
     //console.log('orgCycle.change');
-    updateOrgTrace(traceObj, gen);
+    updateOrgTrace();
   });
 
   /* Organism Gestation Length Slider */
@@ -1752,9 +1752,9 @@ mouse clicks
     style: "width:100%;",
     onChange: function (value) {
       document.getElementById("orgCycle").value = value;
-      gen.cycle = value;
+      av.gen.cycle = value;
       //console.log('cycleSlider');
-      updateOrgTrace(traceObj, gen);
+      updateOrgTrace();
     }
   }, "cycleSlider");
 
@@ -1975,12 +1975,12 @@ mouse clicks
           }
           break;
         case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
-          traceObj = msg.snapshots;
-          gen.cycle = 0;
+          av.traceObj = msg.snapshots;
+          av.gen.cycle = 0;
           dijit.byId("orgCycle").set("value", 0);
-          cycleSlider.set("maximum", traceObj.length - 1);
-          cycleSlider.set("discreteValues", traceObj.length);
-          updateOrgTrace(traceObj, gen);
+          cycleSlider.set("maximum", av.traceObj.length - 1);
+          cycleSlider.set("discreteValues", av.traceObj.length);
+          updateOrgTrace();
           break;
         case 'webPopulationStats':
           updatePopStats(av.grd, msg);

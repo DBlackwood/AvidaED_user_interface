@@ -156,13 +156,14 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
 
 //Organsim dnd------------------------------------------------------
 function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
+  'use strict';
   //Do not copy parents if one is moved within Ancestor Box
   if ('ancestorBox' != source.node.id) {
     //find genome by finding source
     var domId = Object.keys(source.selection)[0];
     var ndx = fndFzrNdx(domId, fzr.genome);
     parents.genome.push(fzr.genome[ndx].genome);
-    nn = parents.name.length;
+    var nn = parents.name.length;
     parents.autoNdx.push(nn);
     parents.name.push(nodes[0].textContent);
     parents.howPlaced.push('auto');
@@ -178,6 +179,7 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
 // Process Drop on gridCanvas
 //This triggers for every dnd drop, not just those of gridCanvas
 function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
+  'use strict';
   if (av.debug.dnd) console.log('inside gridCanvas dnd');
   console.log(parents);
   //was it dropped on the grid of cells?
@@ -201,7 +203,7 @@ function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
       if (av.debug.dnd) console.log('dnd.ancestorBox.map', dnd.ancestorBox.map);
     });
     //update parents structure
-    var nn = parents.name.length;
+    nn = parents.name.length;
     parents.handNdx.push(nn);
     parents.howPlaced[nn] = 'hand';
     parents.name[nn] = nodes[0].textContent;
@@ -332,6 +334,7 @@ function landActiveOrgan(dnd, fzr, source, nodes, target) {
 }
 
 function updateFromFzrOrganism(dnd, fzr) {
+  'use strict';
   var domId = Object.keys(dnd.fzOrgan.selection)[0];
   if (av.debug.dnd) console.log('domId', domId);
   var ndx = fndFzrNdx(domId, fzr.genome)
@@ -344,6 +347,7 @@ function updateFromFzrOrganism(dnd, fzr) {
 //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
 //will be put in dnd.activeOrgan.
 function landOrganCanvas(dnd, fzr, source, nodes, target) {
+  'use strict';
   //Clear current to put the new organism in there.
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   dnd.activeOrgan.sync();   //should be done after insertion or deletion
@@ -366,6 +370,7 @@ function landOrganCanvas(dnd, fzr, source, nodes, target) {
 //------------------------------------- Populated Dishes DND ---------------------
 //This should never happen as fzPopDish is the only source for populated dishes. Here in case that changes.
 function landFzPopDish(dnd, pkg) {
+  'use strict';
   //var items = getAllItems(dnd.fzWorld);  not used
   var populatedDish = prompt("Please name your populated dish", pkg.nodes[0].textContent + "_1");
   if (populatedDish) {
@@ -442,7 +447,7 @@ var landTrashCan = function (dnd, fzr, parents, source, nodes, target) {
   }
   dnd.trashCan.selectAll().deleteSelectedNodes();  //in all cases, empty the dnd.trashCan
   return remove;
-}
+};
 
 //-----------------------------------------------------------------//
 //          DND Analysis page
@@ -451,6 +456,7 @@ var domItm; //used in population graph slots
 var currentItem;
 
 function landGraphPop1(dnd, source, nodes, target, plt) {
+  'use strict';
   var items = getAllItems(dnd.graphPop1);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
   if (1 < items.length) {
@@ -482,6 +488,7 @@ function landGraphPop1(dnd, source, nodes, target, plt) {
 }
 
 function landGraphPop2(dnd, source, nodes, target, plt) {
+  'use strict';
   var items = getAllItems(dnd.graphPop2);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
   if (1 < items.length) {
@@ -506,6 +513,7 @@ function landGraphPop2(dnd, source, nodes, target, plt) {
 }
 
 function landGraphPop3(dnd, source, nodes, target, plt) {
+  'use strict';
   var items = getAllItems(dnd.graphPop3);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
   if (1 < items.length) {
@@ -533,6 +541,7 @@ function landGraphPop3(dnd, source, nodes, target, plt) {
 //used to re-name freezer items after they are created--------------
 //http://jsfiddle.net/bEurr/10/
 function contextMenu(fzr, target, fzItemID) {
+  'use strict';
   var fzSection = target.node.id;
   if (av.debug.dnd) console.log("contextMenu; target.node.id=",target.node.id);
   if (av.debug.dnd) console.log("contextMenu; fzItemID=",fzItemID, " fzSection=", fzSection);
@@ -591,6 +600,7 @@ function contextMenu(fzr, target, fzItemID) {
 /* ********************************************************************** */
 
 var fndFzrNdx = function (domId, fzrSection) {
+  'use strict';
   for (var ii = 0; ii < fzrSection.length; ii++) {
     if (domId == fzrSection[ii].domId) {
       return ii;
@@ -602,11 +612,12 @@ var fndFzrNdx = function (domId, fzrSection) {
 }
 
 function makeHandAutoNdx(parents) {
+  'use strict';
   var hh = 0;  //index into hand placed
   var aa = 0;  //index into auto placed
   parents.handNdx = [];
   parents.autoNdx = [];
-  for (ii = 0; ii < parents.name.length; ii++) {
+  for (var ii = 0; ii < parents.name.length; ii++) {
     if ('hand' == parents.howPlaced[ii]) {
       parents.handNdx[hh] = ii;
       hh++;
@@ -620,6 +631,7 @@ function makeHandAutoNdx(parents) {
 
 //removes the parent at index ParentNdx
 function removeParent(ParentNdx, parents) {
+  'use strict';
   //if (av.debug.dnd) console.log('rP', parents.Colors)
   if (av.debug.dnd) console.log('rp ndx, domId, parents',ParentNdx, parents.domId, parents);
   parents.Colors.push(parents.color[ParentNdx]);
