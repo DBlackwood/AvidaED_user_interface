@@ -70,6 +70,7 @@ require([
   'dojodnd.js',
   'popControls.js',
   'mouse.js',
+ // 'ndxDB.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
