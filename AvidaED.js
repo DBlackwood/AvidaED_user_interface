@@ -207,6 +207,7 @@ require([
   console.log('emTxt', emTxt, '; jsTxt', jsTxt);
 
   var EmFile = {
+    name: '/ws/g4/entryname.txt',
     timestamp: Date.now(),
     mode: 33206,
     contents: emContents
@@ -228,30 +229,25 @@ require([
 
 
   // Define your database
-  var db = new Dexie("/WS");
-  db.version(1).stores({
-    friends: 'name,shoeSize',
+  var dxdb = new Dexie("/ws");
+  dxdb.version(1).stores({
+    FILE_DATA: 'name, timestamp, mode, contents',
     // ...add more stores (tables) here...
   });
-
-  //
   // Open it
-  //
-  db.open();
-
-  //
+  dxdb.open();
+  
   // Put some data into it
-  //
-  db.friends.put({name: "Nicolas", shoeSize: 8}).then (function(){
+  dxdb.FILE_DATA.put(EmFile).then (function(){
     //
     // Then when data is stored, read from it
     //
-    return db.friends.get('Nicolas');
-  }).then(function (friend) {
+    return dxdb.FILE_DATA.get('/ws/g4/entryname.txt');
+  }).then(function (name) {
     //
     // Display the result
     //
-    alert ("Nicolas has shoe size " + friend.shoeSize);
+    console.log("Nicolas has shoe size " ,name);
   }).catch(function(error) {
     //
     // Finally don't forget to catch any error
