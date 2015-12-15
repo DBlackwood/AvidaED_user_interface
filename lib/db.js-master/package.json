@@ -1,0 +1,46 @@
+{
+  "name": "db.js",
+  "description": "db.js is a wrapper for IndexedDB to make it easier to work against, making it look more like a queryable API.",
+  "version": "0.11.0",
+  "author": "Aaron Powell <me@aaron-powell.com>",
+  "contributors": ["Brett Zamir <brettz9@yahoo.com>"],
+  "homepage": "http://aaronpowell.github.com/db.js/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aaronpowell/db.js"
+  },
+  "bugs": {
+    "url": "https://github.com/aaronpowell/db.js/issues"
+  },
+  "license": "MIT",
+  "main": "dist/db.min.js",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "npm install -g grunt-cli && npm install -g bower && bower install"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "body-parser": "1.x",
+    "errorhandler": "1.x",
+    "babel-preset-es2015": "^6.0.15",
+    "eslint-config-standard": "^4.4.0",
+    "eslint-plugin-standard": "^1.3.1",
+    "express": "*",
+    "grunt": "~0.4.1",
+    "grunt-babel": "^6.0.0",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-connect": "^0.9.0",
+    "grunt-contrib-jade": "~0.5.1",
+    "grunt-contrib-uglify": "^0.10.0",
+    "grunt-eslint": "^17.3.1",
+    "grunt-saucelabs": "^8.6.0",
+    "jade": "*",
+    "matchdep": "~0.1.2"
+  },
+  "keywords": [
+    "indexeddb"
+  ]
+}

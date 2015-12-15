@@ -1,3 +1,5 @@
+// command shift R to reset browser forcing it to go to disk
+//
 // need a server to run this. The one below works.
 //python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 //Then visit http://127.0.0.1:8000/avidaED.html
@@ -57,7 +59,6 @@ require([
   "lib/pouchdb-5.0.0.js",
   "lib/jszip.js",
   "lib/FileSaver.js",
-  "Dexie",
   //"idbfs.js",
   "dojo/ready",
   "jquery",
@@ -71,7 +72,7 @@ require([
   'dojodnd.js',
   'popControls.js',
   'mouse.js',
-  // 'ndxDB.js',
+//  'ndxDB.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
@@ -79,7 +80,7 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             PouchDB, JSZip, FileSaver, Dexie, //IDBFS,
+             PouchDB, JSZip, FileSaver, //IDBFS,
              ready, $, jqueryui) {
   "use strict";
   if (typeof $ != 'undefined') {
@@ -100,9 +101,9 @@ require([
    *
    *******************************************************************************************/
 
-    //********************************************************************************************************************
-    //  pouchdb instance
-    //********************************************************************************************************************
+  //********************************************************************************************************************
+  //  pouchdb instance
+  //********************************************************************************************************************
   av.fio.PouchDB = PouchDB;
   av.fio.JSZip = JSZip;
 
@@ -168,7 +169,140 @@ require([
   initializeDB(av, av.fio, av.fzr);
 
   //********************************************************************************************************************/
+  //IndexedDB
+  //********************************************************************************************************************/
+//this is from installs/emdsk_portable/emscripten/1.30.0/src/library_idbfs.js
+  var IDBFS = {
+    dbs: {},
+    indexedDB: function() {
+      if (typeof indexedDB !== 'undefined') return indexedDB;
+      var ret = null;
+      if (typeof window === 'object') ret = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+      assert(ret, 'IDBFS used, but indexedDB not supported');
+      return ret;
+    },
+    DB_VERSION: 21,
+    DB_STORE_NAME: 'FILE_DATA',
+    getDB: function(name, callback) {
+      // check the cache first
+      var db = IDBFS.dbs[name];
+      if (db) {
+        return callback(null, db);
+      }
 
+      var req;
+      try {
+        req = IDBFS.indexedDB().open(name, IDBFS.DB_VERSION);
+      } catch (e) {
+        return callback(e);
+      }
+      req.onupgradeneeded = function(e) {
+        var db = e.target.result;
+        var transaction = e.target.transaction;
+
+        var fileStore;
+
+        if (db.objectStoreNames.contains(IDBFS.DB_STORE_NAME)) {
+          fileStore = transaction.objectStore(IDBFS.DB_STORE_NAME);
+        } else {
+          fileStore = db.createObjectStore(IDBFS.DB_STORE_NAME);
+        }
+
+        if (!fileStore.indexNames.contains('timestamp')) {
+          fileStore.createIndex('timestamp', 'timestamp', { unique: false });
+        }
+      };
+      req.onsuccess = function() {
+        db = req.result;
+
+        // add to the cache
+        IDBFS.dbs[name] = db;
+        callback(null, db);
+      };
+      req.onerror = function(e) {
+        callback(this.error);
+        e.preventDefault();
+      };
+    },
+    getRemoteSet: function(mount, callback) {
+      var entries = {};
+
+      IDBFS.getDB(mount.mountpoint, function(err, db) {
+        if (err) return callback(err);
+
+        var transaction = db.transaction([IDBFS.DB_STORE_NAME], 'readonly');
+        transaction.onerror = function(e) {
+          callback(this.error);
+          e.preventDefault();
+        };
+
+        var store = transaction.objectStore(IDBFS.DB_STORE_NAME);
+        var index = store.index('timestamp');
+
+        index.openKeyCursor().onsuccess = function(event) {
+          var cursor = event.target.result;
+
+          if (!cursor) {
+            return callback(null, { type: 'remote', db: db, entries: entries });
+          }
+
+          entries[cursor.primaryKey] = { timestamp: cursor.key };
+
+          cursor.continue();
+        };
+      });
+    },
+    loadRemoteEntry: function(store, path, callback) {
+      var req = store.get(path);
+      req.onsuccess = function(event) { callback(null, event.target.result); };
+      req.onerror = function(e) {
+        callback(this.error);
+        e.preventDefault();
+      };
+    },
+    storeRemoteEntry: function(store, path, entry, callback) {
+      var req = store.put(entry, path);
+      req.onsuccess = function() { callback(null); };
+      req.onerror = function(e) {
+        callback(this.error);
+        e.preventDefault();
+      };
+    },
+    removeRemoteEntry: function(store, path, callback) {
+      var req = store.delete(path);
+      req.onsuccess = function() { callback(null); };
+      req.onerror = function(e) {
+        callback(this.error);
+        e.preventDefault();
+      };
+    }
+  };
+
+// store as a parameter below becomes IDBFS.getDB('/WS')
+
+  /*  Example call
+   var emTxt = encodeUtf8('George');
+   var emContents = UTF8.getBytes(emTxt);
+   // to go back
+   var emTxt2 = UTF8.getString(emContents);
+   var jsTxt = decodeUtf8(emTxt2);
+   console.log('emTxt', emTxT, '; jsTxt', jsTxt);
+
+   var EmFile = {
+   timestamp: Date.now(),
+   mode: 33206,
+   contents: emContents
+   };
+   IDBFS.storeRemoteEntry(
+   IDBFS.getDB('/WS'),
+   '/WS/G4/entryname.txt',
+   EmFile,
+   function(err, result){ console.log('err',err, '; result', result);};
+   );
+   */
+
+  //********************************************************************************************************************/
+  //********************************************************************************************************************/
   function encodeUtf8(s) {
     return unescape(encodeURIComponent(s));
   }
@@ -199,6 +333,20 @@ require([
     return UTF8;
   })();
 
+
+
+  var db;
+  var request = indexedDB.open("foo");
+  request.onerror = function(event) {
+    alert("Why didn't you allow my web app to use IndexedDB?!");
+  };
+  request.onsuccess = function(event) {
+    db = event.target.result;
+    //readDefaultWS(av);
+    console.log('ndxDB success: db', db);
+  };
+
+
   var emTxt = encodeUtf8('George');
   var emContents = UTF8.getBytes(emTxt);
   // to go back
@@ -212,59 +360,25 @@ require([
     contents: emContents
   };
 
-  var testCallback = function(err, result) {
-    console.log("I'm here");
-  };
+  console.log('IDBFS', typeof(IDBFS.storeRemoteEntry));
 
-/*
- IDBFS.storeRemoteEntry(
- IDBFS.getDB('/WS', function(err, result) { console.log('err', err, '; result', result)} ),
- '/WS/G4/entryname.txt',
- EmFile,
- function(err, result){ console.log('err',err, '; result', result);}
- );
+  IDBFS.getDB('/WS', function(err, result) { console.log('err', err, '; result', result);});
+  console.log('after first getDB');
 
- //********************************************************************************************************************/
+  IDBFS.storeRemoteEntry(
+    IDBFS.getDB('/WS', function(err, result) { console.log('err', err, '; result', result)} ),
+    '/WS/G4/entryname.txt',
+    EmFile,
+    function(err, result){ console.log('err',err, '; result', result);}
+  );
 
-
-  // Define your database
-  var db = new Dexie("/WS");
-  db.version(1).stores({
-    friends: 'name,shoeSize',
-    // ...add more stores (tables) here...
-  });
-
-  //
-  // Open it
-  //
-  db.open();
-
-  //
-  // Put some data into it
-  //
-  db.friends.put({name: "Nicolas", shoeSize: 8}).then (function(){
-    //
-    // Then when data is stored, read from it
-    //
-    return db.friends.get('Nicolas');
-  }).then(function (friend) {
-    //
-    // Display the result
-    //
-    alert ("Nicolas has shoe size " + friend.shoeSize);
-  }).catch(function(error) {
-    //
-    // Finally don't forget to catch any error
-    // that could have happened anywhere in the
-    // code blocks above.
-    //
-    alert ("Ooops: " + error);
-  });
-
-
-  //********************************************************************************************************************/
-
-
+/*  storeRemoteEntry(
+    getDB('/WS', function(err, result) { console.log('err', err, '; result', result)} ),
+    '/WS/G4/entryname.txt',
+    EmFile,
+    function(err, result){ console.log('err',err, '; result', result);}
+  );
+*/
   //********************************************************************************************************************/
   //delete this section later
   //console.log("defining test_jszip()");
@@ -468,7 +582,7 @@ require([
   /* Dojo Drag N Drop Initialization ****************************************/
   /* ********************************************************************** */
   /* Yes they are globals, but they are defined based on the dom and
-   when I've tried putting them in another file it does not work */
+    when I've tried putting them in another file it does not work */
 
   av.dnd.fzConfig = new dndSource('fzConfig', {
     accept: ['c'],
@@ -846,18 +960,18 @@ require([
       console.log('allDocs get error',err);
     });
     console.log('fzr', av.fzr);
-    /*
-     av.fio.wsdb.allDocs().then(function(docObj){
-     console.log('wsdb doc', docObj);
-     av.fio.wsdb.get(docObj.rows[1].key).then(function(doc) {
-     console.log('wsdb get doc1', doc);
-     }).catch(function(err){
-     console.log('wsdb get error',err);
-     })
-     }).catch(function(err){
-     console.log('wsdb get error',err);
-     })
-     */
+/*
+    av.fio.wsdb.allDocs().then(function(docObj){
+      console.log('wsdb doc', docObj);
+      av.fio.wsdb.get(docObj.rows[1].key).then(function(doc) {
+        console.log('wsdb get doc1', doc);
+      }).catch(function(err){
+        console.log('wsdb get error',err);
+      })
+    }).catch(function(err){
+      console.log('wsdb get error',err);
+    })
+    */
   };
 
   //******* Freeze Button ********************************************
@@ -985,41 +1099,41 @@ require([
 //********************************************************************
 //    mouse DND functions
 //********************************************************************
-  /* mouse websites
-   mouse clicks
-   http://stackoverflow.com/questions/706655/bind-event-to-right-mouse-click
-   http://stackoverflow.com/questions/7343117/cant-use-jquerys-click-event-handler-to-detect-right-click
-   http://stackoverflow.com/questions/1206203/how-to-distinguish-between-left-and-right-mouse-click-with-jquery
-   http://www.w3schools.com/jsref/dom_obj_event.asp
+/* mouse websites
+mouse clicks
+ http://stackoverflow.com/questions/706655/bind-event-to-right-mouse-click
+ http://stackoverflow.com/questions/7343117/cant-use-jquerys-click-event-handler-to-detect-right-click
+ http://stackoverflow.com/questions/1206203/how-to-distinguish-between-left-and-right-mouse-click-with-jquery
+ http://www.w3schools.com/jsref/dom_obj_event.asp
 
-   overide mouse shape
-   http://stackoverflow.com/questions/10750582/global-override-of-mouse-cursor-with-javascript
-   https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
-   http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
-   http://www.w3schools.com/cssref/playit.asp?filename=playcss_cursor&preval=row-resize
-   http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
-   */
+ overide mouse shape
+ http://stackoverflow.com/questions/10750582/global-override-of-mouse-cursor-with-javascript
+ https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
+ http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
+ http://www.w3schools.com/cssref/playit.asp?filename=playcss_cursor&preval=row-resize
+ http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
+ */
 
 
   //http://maffelu.net/jquery-handle-left-click-right-click-and-double-click-at-the-same-time/
   // I just had to handle a left-click, right-click and a dbl-click at the same time which turned
   // out to be a bit tricky at first using just the mousedown function, but the solution was simple:
-  /*$("#Foo")
-   .click(function() //Left click
-   {
-   //Do something
-   })
-   .mousedown(function(e) //Right click
-   {
-   if(e.which == 3) //1: left, 2: middle, 3: right
-   {
-   //Do something
-   }
-   })
-   .dblclick(function() //Double click
-   {
-   //Do something
-   });
+/*$("#Foo")
+ .click(function() //Left click
+ {
+ //Do something
+ })
+ .mousedown(function(e) //Right click
+ {
+ if(e.which == 3) //1: left, 2: middle, 3: right
+ {
+ //Do something
+ }
+ })
+ .dblclick(function() //Double click
+ {
+ //Do something
+ });
    */
 
   //mouse click started on Organism Canvas - only offspring can be selected if present
@@ -1299,22 +1413,22 @@ require([
       findLogicOutline(av.grd);
     }
     /*
-     //http://stackoverflow.com/questions/10118172/setting-div-width-and-height-in-javascript
-     //the console.log is to look at why scroll bars show up when they should not
-     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     console.log('Canvas Ht Grid, Scale total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height, av.grd.CanvasGrid.height+av.grd.CanvasScale.height)
+    //http://stackoverflow.com/questions/10118172/setting-div-width-and-height-in-javascript
+    //the console.log is to look at why scroll bars show up when they should not
+    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+    console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('Canvas Ht Grid, Scale total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height, av.grd.CanvasGrid.height+av.grd.CanvasScale.height)
 
-     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
-     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
-     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
-     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
-     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-     console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
-     */  //find width
+    console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
+    console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
+    console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
+    console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
+    console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
+    console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
+  */  //find width
 
     var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth-2;
     if (navigator.userAgent.indexOf('Mac OS X') != -1) {
@@ -1374,21 +1488,21 @@ require([
     DrawGridUpdate(av.grd, av.parents);   //in PopulationGrid.js
 
     //console.log('after');
-    /*   console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     console.log('Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
-     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-     /*
-     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
-     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
-     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
-     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
-     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-     console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
-     console.log('-----------------------------------------')
-     */
+ /*   console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
+    console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
+    console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
+    console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+    console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
+    /*
+    console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
+    console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
+    console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
+    console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
+    console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
+    console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
+    console.log('-----------------------------------------')
+*/
   }
 
   function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {

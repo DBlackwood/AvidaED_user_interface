@@ -2,8 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test2Dexie.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testEmNdx.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testEmNdx.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_dexie.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_idbfs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ndxDB.js" afterPath="$PROJECT_DIR$/ndxDB.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,25 +36,95 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3105413">
-              <caret line="72" column="3" selection-start-line="72" selection-start-column="3" selection-end-line="72" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.3466872">
+              <caret line="235" column="0" selection-start-line="235" selection-start-column="0" selection-end-line="235" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#6287#6591#0" expanded="false" />
-                <element signature="e#7163#7242#0" expanded="false" />
-                <element signature="e#7248#7324#0" expanded="false" />
-                <element signature="e#7383#7472#0" expanded="false" />
-                <element signature="e#7670#7737#0" expanded="false" />
-                <element signature="e#7790#8567#0" expanded="false" />
-                <element signature="e#7871#8559#0" expanded="false" />
-                <element signature="e#8032#8105#0" expanded="false" />
-                <element signature="e#8279#8550#0" expanded="false" />
-                <element signature="e#8349#8443#0" expanded="false" />
-                <element signature="e#8622#8843#0" expanded="false" />
-                <element signature="e#8769#8836#0" expanded="false" />
-                <element signature="e#9034#9101#0" expanded="false" />
-                <element signature="e#9165#9363#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AvidaED.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.25">
+              <caret line="18" column="56" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testEmNdx.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testEmNdx.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="12" column="2" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testEmNdx.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testEmNdx.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-24.5">
+              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_idbfs.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_idbfs.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
+              <folding>
+                <element signature="e#127#419#0" expanded="false" />
+                <element signature="e#1729#2466#0" expanded="false" />
+                <element signature="e#1806#2460#0" expanded="false" />
+                <element signature="e#1961#2028#0" expanded="false" />
+                <element signature="e#2196#2453#0" expanded="false" />
+                <element signature="e#2262#2352#0" expanded="false" />
+                <element signature="e#2519#2726#0" expanded="false" />
+                <element signature="e#2660#2721#0" expanded="false" />
+                <element signature="e#2787#2975#0" expanded="false" />
+                <element signature="e#2909#2970#0" expanded="false" />
+                <element signature="e#3030#3214#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_dexie.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_dexie.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-17.625">
+              <caret line="31" column="6" selection-start-line="31" selection-start-column="6" selection-end-line="31" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_dexie.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_dexie.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="103" column="4" selection-start-line="103" selection-start-column="4" selection-end-line="103" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test2Dexie.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test2Dexie.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.25">
+              <caret line="10" column="44" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -63,12 +142,11 @@
       <file leaf-file-name="idbfs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/idbfs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="110" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.111111">
+              <caret line="105" column="4" selection-start-line="0" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
               <folding>
                 <element signature="e#133#437#0" expanded="false" />
-                <element signature="e#677#748#0" expanded="false" />
-                <element signature="e#759#796#0" expanded="false" />
+                <element signature="e#527#1590#0" expanded="false" />
                 <element signature="e#837#1326#0" expanded="false" />
                 <element signature="e#1009#1088#0" expanded="false" />
                 <element signature="e#1094#1170#0" expanded="false" />
@@ -90,48 +168,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pouchDB_IO.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pouchDB_IO.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-55.666668">
-              <caret line="102" column="43" selection-start-line="102" selection-start-column="43" selection-end-line="102" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/messaging.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="39.444443">
-              <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/globals.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-23.454546">
-              <caret line="177" column="7" selection-start-line="177" selection-start-column="7" selection-end-line="177" selection-end-column="7" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ndxDB.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ndxDB.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.3636364">
-              <caret line="5" column="2" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -148,7 +184,6 @@
         <option value="$PROJECT_DIR$/AvidaED.css" />
         <option value="$PROJECT_DIR$/ColorTest.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
-        <option value="$PROJECT_DIR$/AvidaED.html" />
         <option value="$PROJECT_DIR$/pouchDB_IO.js" />
         <option value="$PROJECT_DIR$/placeParent.js" />
         <option value="$PROJECT_DIR$/PopulationGrid.js" />
@@ -160,6 +195,17 @@
         <option value="$PROJECT_DIR$/fileIO.js" />
         <option value="$PROJECT_DIR$/idbfs.js" />
         <option value="$PROJECT_DIR$/ndxDB.js" />
+        <option value="$PROJECT_DIR$/test.html" />
+        <option value="$PROJECT_DIR$/test.js" />
+        <option value="$PROJECT_DIR$/db.js" />
+        <option value="$PROJECT_DIR$/dexieTest.html" />
+        <option value="$PROJECT_DIR$/test2Dexie.html" />
+        <option value="$PROJECT_DIR$/test_dexie.js" />
+        <option value="$PROJECT_DIR$/test_idbfs.js" />
+        <option value="$PROJECT_DIR$/testEmNdx.html" />
+        <option value="$PROJECT_DIR$/testEmNdx.js" />
+        <option value="$PROJECT_DIR$/AvidaED.html" />
+        <option value="$PROJECT_DIR$/test_dexie.html" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
       </list>
     </option>
@@ -172,9 +218,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="4" />
     <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="822" />
+    <option name="width" value="1435" />
+    <option name="height" value="824" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -240,7 +287,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/pouchDB_IO.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/test_dexie.html" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="FullScreen" value="false" />
@@ -304,10 +351,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="822" extended-state="6" />
+    <frame x="4" y="23" width="1435" height="824" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20958512" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2103374" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -363,99 +410,12 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/popControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="57" selection-start-line="8" selection-start-column="57" selection-end-line="8" selection-end-column="57" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AvidaED.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="503" column="67" selection-start-line="503" selection-start-column="67" selection-end-line="503" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/placeParent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="43" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/colormap.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2117" column="4" selection-start-line="2117" selection-start-column="4" selection-end-line="2117" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PopulationGrid.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ColorTest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="53" column="24" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1909" column="15" selection-start-line="1909" selection-start-column="13" selection-end-line="1909" selection-end-column="15" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#6287#6591#0" expanded="false" />
-            <element signature="e#7163#7242#0" expanded="false" />
-            <element signature="e#7248#7324#0" expanded="false" />
-            <element signature="e#7383#7472#0" expanded="false" />
-            <element signature="e#7670#7737#0" expanded="false" />
-            <element signature="e#7790#8567#0" expanded="false" />
-            <element signature="e#7871#8559#0" expanded="false" />
-            <element signature="e#8032#8105#0" expanded="false" />
-            <element signature="e#8279#8550#0" expanded="false" />
-            <element signature="e#8349#8443#0" expanded="false" />
-            <element signature="e#8622#8843#0" expanded="false" />
-            <element signature="e#8769#8836#0" expanded="false" />
-            <element signature="e#9034#9101#0" expanded="false" />
-            <element signature="e#9165#9363#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -501,20 +461,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#6287#6591#0" expanded="false" />
-            <element signature="e#7163#7242#0" expanded="false" />
-            <element signature="e#7248#7324#0" expanded="false" />
-            <element signature="e#7383#7472#0" expanded="false" />
-            <element signature="e#7670#7737#0" expanded="false" />
-            <element signature="e#7790#8567#0" expanded="false" />
-            <element signature="e#7871#8559#0" expanded="false" />
-            <element signature="e#8032#8105#0" expanded="false" />
-            <element signature="e#8279#8550#0" expanded="false" />
-            <element signature="e#8349#8443#0" expanded="false" />
-            <element signature="e#8622#8843#0" expanded="false" />
-            <element signature="e#8769#8836#0" expanded="false" />
-            <element signature="e#9034#9101#0" expanded="false" />
-            <element signature="e#9165#9363#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -546,20 +492,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#6287#6591#0" expanded="false" />
-            <element signature="e#7163#7242#0" expanded="false" />
-            <element signature="e#7248#7324#0" expanded="false" />
-            <element signature="e#7383#7472#0" expanded="false" />
-            <element signature="e#7670#7737#0" expanded="false" />
-            <element signature="e#7790#8567#0" expanded="false" />
-            <element signature="e#7871#8559#0" expanded="false" />
-            <element signature="e#8032#8105#0" expanded="false" />
-            <element signature="e#8279#8550#0" expanded="false" />
-            <element signature="e#8349#8443#0" expanded="false" />
-            <element signature="e#8622#8843#0" expanded="false" />
-            <element signature="e#8769#8836#0" expanded="false" />
-            <element signature="e#9034#9101#0" expanded="false" />
-            <element signature="e#9165#9363#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -584,20 +516,6 @@
           <caret line="2969" column="7" selection-start-line="2969" selection-start-column="7" selection-end-line="2969" selection-end-column="7" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#6287#6591#0" expanded="false" />
-            <element signature="e#7163#7242#0" expanded="false" />
-            <element signature="e#7248#7324#0" expanded="false" />
-            <element signature="e#7383#7472#0" expanded="false" />
-            <element signature="e#7670#7737#0" expanded="false" />
-            <element signature="e#7790#8567#0" expanded="false" />
-            <element signature="e#7871#8559#0" expanded="false" />
-            <element signature="e#8032#8105#0" expanded="false" />
-            <element signature="e#8279#8550#0" expanded="false" />
-            <element signature="e#8349#8443#0" expanded="false" />
-            <element signature="e#8622#8843#0" expanded="false" />
-            <element signature="e#8769#8836#0" expanded="false" />
-            <element signature="e#9034#9101#0" expanded="false" />
-            <element signature="e#9165#9363#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -676,6 +594,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="107" column="14" selection-start-line="107" selection-start-column="14" selection-end-line="107" selection-end-column="14" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -705,15 +624,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="158" column="9" selection-start-line="158" selection-start-column="9" selection-end-line="158" selection-end-column="25" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AvidaED.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="145" column="28" selection-start-line="145" selection-start-column="21" selection-end-line="145" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -775,9 +687,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ndxDB.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-28.636364">
+          <caret line="105" column="4" selection-start-line="105" selection-start-column="4" selection-end-line="105" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pouchDB_IO.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-55.666668">
+        <state vertical-scroll-proportion="-56.666668">
           <caret line="102" column="43" selection-start-line="102" selection-start-column="43" selection-end-line="102" selection-end-column="43" />
           <folding />
         </state>
@@ -791,14 +711,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/db.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7222222">
+          <caret line="591" column="31" selection-start-line="591" selection-start-column="31" selection-end-line="591" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.508547">
+          <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/idbfs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="110" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+        <state vertical-scroll-proportion="-6.111111">
+          <caret line="105" column="4" selection-start-line="0" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
           <folding>
             <element signature="e#133#437#0" expanded="false" />
-            <element signature="e#677#748#0" expanded="false" />
-            <element signature="e#759#796#0" expanded="false" />
+            <element signature="e#527#1590#0" expanded="false" />
             <element signature="e#837#1326#0" expanded="false" />
             <element signature="e#1009#1088#0" expanded="false" />
             <element signature="e#1094#1170#0" expanded="false" />
@@ -819,34 +762,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ndxDB.js">
+    <entry file="file://$PROJECT_DIR$/test_idbfs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3636364">
-          <caret line="5" column="2" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
+          <folding>
+            <element signature="e#127#419#0" expanded="false" />
+            <element signature="e#1729#2466#0" expanded="false" />
+            <element signature="e#1806#2460#0" expanded="false" />
+            <element signature="e#1961#2028#0" expanded="false" />
+            <element signature="e#2196#2453#0" expanded="false" />
+            <element signature="e#2262#2352#0" expanded="false" />
+            <element signature="e#2519#2726#0" expanded="false" />
+            <element signature="e#2660#2721#0" expanded="false" />
+            <element signature="e#2787#2975#0" expanded="false" />
+            <element signature="e#2909#2970#0" expanded="false" />
+            <element signature="e#3030#3214#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testEmNdx.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-24.5">
+          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testEmNdx.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="2" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_dexie.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="103" column="4" selection-start-line="103" selection-start-column="4" selection-end-line="103" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AvidaED.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.25">
+          <caret line="18" column="56" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_dexie.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.625">
+          <caret line="31" column="6" selection-start-line="31" selection-start-column="6" selection-end-line="31" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test2Dexie.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.25">
+          <caret line="10" column="44" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3105413">
-          <caret line="72" column="3" selection-start-line="72" selection-start-column="3" selection-end-line="72" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.3466872">
+          <caret line="235" column="0" selection-start-line="235" selection-start-column="0" selection-end-line="235" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#6287#6591#0" expanded="false" />
-            <element signature="e#7163#7242#0" expanded="false" />
-            <element signature="e#7248#7324#0" expanded="false" />
-            <element signature="e#7383#7472#0" expanded="false" />
-            <element signature="e#7670#7737#0" expanded="false" />
-            <element signature="e#7790#8567#0" expanded="false" />
-            <element signature="e#7871#8559#0" expanded="false" />
-            <element signature="e#8032#8105#0" expanded="false" />
-            <element signature="e#8279#8550#0" expanded="false" />
-            <element signature="e#8349#8443#0" expanded="false" />
-            <element signature="e#8622#8843#0" expanded="false" />
-            <element signature="e#8769#8836#0" expanded="false" />
-            <element signature="e#9034#9101#0" expanded="false" />
-            <element signature="e#9165#9363#0" expanded="false" />
           </folding>
         </state>
       </provider>
