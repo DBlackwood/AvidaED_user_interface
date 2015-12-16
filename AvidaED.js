@@ -152,7 +152,7 @@ require([
       doDbReady(av.fio);
       readZipWS(zipFileName);
     }).catch(function (err) {
-      av.fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
+      av.fio.wsdb = new av.fio.PouchDB(av.fio.dbName); //for workspace database
       console.log('after new PouchDB destroy db err', err);
       doDbReady(av.fio);
       readZipWS(zipFileName);
