@@ -207,8 +207,6 @@ function avidaCFG2form(fileStr){
 }
 
 //------------------------------------------------- rest may not be in use ---------------------------------------------
-//console.log("Start of FileIO.js");
-//console.log("declaring mnOpenWorkSpace()");
 function mnOpenWorkSpace() {
   console.log('test message');
   openWsDialog.show();

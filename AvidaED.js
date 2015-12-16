@@ -107,11 +107,10 @@ require([
   av.fio.JSZip = JSZip;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-  function readDefaultWS(av) {
+  function readZipWS(zipFileName) {
     'use strict';
-    av.fio.zipName = av.fio.defaultFname;
+    av.fio.zipName = zipFileName;
     var oReq = new XMLHttpRequest();
-//oReq.open("GET", "/ziptest.zip", true);
     oReq.open("GET", av.fio.zipName, true);
     oReq.responseType = "arraybuffer";
     oReq.onload = function (oEvent) {
@@ -143,20 +142,20 @@ require([
     oReq.send();
   }
 
-  function initializeDB(av, fio, fzr) {
-    var oldDb = new fio.PouchDB(fio.dbName);
+  function initializeDB(zipFileName) {
+    var oldDb = new av.fio.PouchDB(av.fio.dbName);
     //clear any old database and create new one for this session
-    oldDb.destroy(fio.dbName).then(function (response) {//success
+    oldDb.destroy(av.fio.dbName).then(function (response) {//success
       oldDb = null;
-      fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
+      fio.wsdb = new fio.PouchDB(av.fio.dbName); //for workspace database
       console.log('after new PouchDB - send msg to Avida');
       doDbReady(av.fio);
-      readDefaultWS(av);
+      readZipWS(zipFileName);
     }).catch(function (err) {
-      fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
+      av.fio.wsdb = new fio.PouchDB(fio.dbName); //for workspace database
       console.log('after new PouchDB destroy db err', err);
       doDbReady(av.fio);
-      readDefaultWS(av);
+      readZipWS(zipFileName);
     });
   }
   /* PouchDB websites
@@ -165,7 +164,7 @@ require([
    http://pouchdb.com/guides/databases.html
    */
   console.log('before initialze DB', av.fio.uiWorker);
-  initializeDB(av, av.fio, av.fzr);
+  initializeDB(av.fio.defaultFname);
 
   //********************************************************************************************************************/
 
@@ -227,9 +226,17 @@ require([
 
  //********************************************************************************************************************/
 
-
   // Define your database
   var dxdb = new Dexie("/ws");
+  dxdb.delete().then(function() {
+    console.log("Database successfully deleted");
+  }).catch(function (err) {
+    console.error("Could not delete database");
+  }).finally(function() {
+    // Do what should be done next...
+  });
+
+  console.log('db', dxdb);
   dxdb.version(1).stores({
     FILE_DATA: 'name, timestamp, mode, contents',
     // ...add more stores (tables) here...
@@ -248,6 +255,7 @@ require([
     // Display the result
     //
     console.log("Nicolas has shoe size " ,name);
+    console.log('db',dxdb);
   }).catch(function(error) {
     //
     // Finally don't forget to catch any error
@@ -287,7 +295,27 @@ require([
   //********************************************************************************************************************
   // Menu file handling
   //********************************************************************************************************************
-  dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
+  /*
+  dijit.byId("mnOpenWS").on("Click", function () { //mnOpenWorkSpace();
+
+  });  //in fileIO.js
+  */
+
+  function readSingleFile(e) {
+    var file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var contents = e.target.result;
+      console.log('contents', contents);
+      console.log('e',e);
+    };
+    reader.readAsText(file);
+  }
+
+  dijit.byId("mnOpenWS").on('Click', readSingleFile, false);
   dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault(); });  //in fileIO.js
 
   //********************************************************************************************************************
