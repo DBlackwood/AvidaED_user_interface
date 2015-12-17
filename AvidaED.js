@@ -58,7 +58,6 @@ require([
   "lib/jszip.js",
   "lib/FileSaver.js",
   "Dexie",
-  //"idbfs.js",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -79,7 +78,7 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             PouchDB, JSZip, FileSaver, Dexie, //IDBFS,
+             PouchDB, JSZip, FileSaver, Dexie,
              ready, $, jqueryui) {
   "use strict";
   if (typeof $ != 'undefined') {
@@ -104,6 +103,7 @@ require([
     //  pouchdb instance
     //********************************************************************************************************************
   av.fio.PouchDB = PouchDB;
+  av.fio.Dexie = Dexie;
   av.fio.JSZip = JSZip;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
@@ -142,6 +142,47 @@ require([
     oReq.send();
   }
 
+ //********************************************************************************************************************/
+ //********************************************************************************************************************/
+  /*
+   Setup the database '/ws' with indexable timestamp,
+   contents, and mode properties.
+   The key, the file path, is hidden (not stored as
+   a property indexable or otherwise).
+   */
+  function setupDexieStore() {
+    'use strict';
+    var db = new av.fio.Dexie('/ws');
+    db.version(1).stores({
+      //The missing first argument means we're going to not bind the key to an indexable property
+      //We can insert any additional properties into the documents at any time; but we can only
+      //use the Dexie index features with the properties listed.  Note that we cannot use
+      //the key (the file path) as it is *not* listed as an indexable property (and is not stored
+      //as a document property at all. This is a requirement on the Emscripten side for using this
+      //as a virtual file system.
+      FILE_DATA: ',timestamp,contents,mode',
+      work:  'name,timestamp,contents,mode'
+    });
+    db.open();
+    console.log('in stores');
+    return db;
+  }
+
+  // Define your database
+  function startDB(zipFileName) {
+    av.fio.dxdb = new Dexie("/ws");
+    av.fio.dxdb.delete().then(function () {
+      console.log("Database successfully deleted");
+    }).catch(function (err) {
+      console.error("Could not delete database");
+    }).finally(function () {
+      // Do what should be done next...
+    });
+    av.fio.dxdb = setupDexieStore();
+    //doDbReady(av.fio);
+    readZipWS(zipFileName);
+  }
+
   function initializeDB(zipFileName) {
     var oldDb = new av.fio.PouchDB(av.fio.dbName);
     //clear any old database and create new one for this session
@@ -158,113 +199,32 @@ require([
       readZipWS(zipFileName);
     });
   }
-  /* PouchDB websites
-   http://pouchdb.com/api.html#database_information
-   https://github.com/webinista/PouchNotes
-   http://pouchdb.com/guides/databases.html
-   */
   console.log('before initialze DB', av.fio.uiWorker);
-  initializeDB(av.fio.defaultFname);
+  //initializeDB(av.fio.defaultFname);
+  startDB(av.fio.defaultFname);
 
-  //********************************************************************************************************************/
-
-  function encodeUtf8(s) {
-    return unescape(encodeURIComponent(s));
-  }
-
-  function decodeUtf8(s) {
-    return decodeURIComponent(escape(s));
-  }
-
-  var UTF8 = (function () {
-    function UTF8() {
-    }
-    UTF8.getBytes = function (stringValue) {
-      var bytes = [];
-      for (var i = 0; i < stringValue.length; ++i) {
-        bytes.push(stringValue.charCodeAt(i));
-      }
-      return bytes;
-    };
-
-    UTF8.getString = function (utftext) {
-      var result = "";
-      for (var i = 0; i < utftext.length; i++) {
-        result += String.fromCharCode(parseInt(utftext[i], 10));
-      }
-      return result;
-    };
-
-    return UTF8;
-  })();
-
-  var emTxt = encodeUtf8('George');
-  var emContents = UTF8.getBytes(emTxt);
-  // to go back
-  var emTxt2 = UTF8.getString(emContents);
-  var jsTxt = decodeUtf8(emTxt2);
-  console.log('emTxt', emTxt, '; jsTxt', jsTxt);
-
-  var EmFile = {
-    name: '/ws/g4/entryname.txt',
-    timestamp: Date.now(),
-    mode: 33206,
-    contents: emContents
-  };
-
-  var testCallback = function(err, result) {
-    console.log("I'm here");
-  };
-
-/*
- IDBFS.storeRemoteEntry(
- IDBFS.getDB('/WS', function(err, result) { console.log('err', err, '; result', result)} ),
- '/WS/G4/entryname.txt',
- EmFile,
- function(err, result){ console.log('err',err, '; result', result);}
- );
-
- //********************************************************************************************************************/
-
-  // Define your database
-  var dxdb = new Dexie("/ws");
-  dxdb.delete().then(function() {
-    console.log("Database successfully deleted");
-  }).catch(function (err) {
-    console.error("Could not delete database");
-  }).finally(function() {
-    // Do what should be done next...
-  });
-
-  console.log('db', dxdb);
-  dxdb.version(1).stores({
-    FILE_DATA: 'name, timestamp, mode, contents',
-    // ...add more stores (tables) here...
-  });
-  // Open it
-  dxdb.open();
-  
-  // Put some data into it
-  dxdb.FILE_DATA.put(EmFile).then (function(){
-    //
-    // Then when data is stored, read from it
-    //
-    return dxdb.FILE_DATA.get('/ws/g4/entryname.txt');
-  }).then(function (name) {
-    //
-    // Display the result
-    //
-    console.log("Nicolas has shoe size " ,name);
-    console.log('db',dxdb);
-  }).catch(function(error) {
-    //
-    // Finally don't forget to catch any error
-    // that could have happened anywhere in the
-    // code blocks above.
-    //
-    alert ("Ooops: " + error);
-  });
-
+  /*
+    // Put some data into it
+    dxdb.FILE_DATA.put(EmFile).then (function(){
+      //
+      // Then when data is stored, read from it
+      //
+      return dxdb.FILE_DATA.get('/ws/g4/entryname.txt');
+    }).then(function (name) {
+      //
+      // Display the result
+      //
+      console.log("Nicolas has shoe size " ,name);
+      console.log('db',dxdb);
+    }).catch(function(error) {
+      //
+      // Finally don't forget to catch any error
+      // that could have happened anywhere in the
+      // code blocks above.
+      //
+      alert ("Ooops: " + error);
+    });
+  */
 
   //********************************************************************************************************************/
 
@@ -295,11 +255,7 @@ require([
   //********************************************************************************************************************
   // Menu file handling
   //********************************************************************************************************************
-  /*
-  dijit.byId("mnOpenWS").on("Click", function () { //mnOpenWorkSpace();
 
-  });  //in fileIO.js
-  */
 
   function readSingleFile(e) {
     var file = e.target.files[0];
@@ -315,8 +271,28 @@ require([
     reader.readAsText(file);
   }
 
-  dijit.byId("mnOpenWS").on('Click', readSingleFile, false);
-  dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault(); });  //in fileIO.js
+  function mnOpenWS() {
+    //$('input[type=file]').click();
+    document.getElementById('fileGet')
+      .addEventListener('change', readSingleFile, false);
+  }
+
+
+  //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
+  //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWS(); });
+  //dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault(); });  //in fileIO.js
+  dijit.byId("mnOpenDefault").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
+
+  dijit.byId("mnOpenWS").on("Click", function () {  //does not work
+    $('input[type=file]').click();
+    console.log('files', this.files);
+  })
+
+  //http://p2p.wrox.com/javascript-how/14546-how-show-file-dialog-using-javascript.html
+  function openFileOption() {
+    document.getElementById("fileGet").click();
+    console.log('after fileGet');
+  }
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
@@ -772,7 +748,7 @@ require([
 
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById("runStopButton").onclick = function () {
-    runStopFn()
+    runStopFn();
   };
 
   function runStopFn() {
@@ -857,8 +833,31 @@ require([
     DrawGridSetup();
   }
 
+  /*
+  function display(text)
+  {   var para = document.createElement("p");
+    var child = document.createTextNode(text);
+    para.appendChild(child);
+    document.getElementById('').appendChild(para);
+  }
+*/
+
+  //On unload
+
+
   //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
+    var blob = av.fio.dxdb.work;
+    console.log('blob', blob);
+/*
+    av.fio.dxdb.FILE_DATA.get(path).then(function(doc){
+      var utf16 = utf8bytes_decode(doc.contents);
+      display('Read from file ' + path + ' the contents: ' + utf16);
+    }).catch(function(e){
+      display ('Unable to read from file ' + path)
+    })
+*/
+
     av.fio.wsdb.allDocs({include_docs:true}).then(function(docInc){
       console.log('Include doc', docInc);
       av.fio.wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
@@ -870,6 +869,7 @@ require([
       console.log('allDocs get error',err);
     });
     console.log('fzr', av.fzr);
+
     /*
      av.fio.wsdb.allDocs().then(function(docObj){
      console.log('wsdb doc', docObj);

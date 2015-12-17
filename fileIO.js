@@ -1,4 +1,35 @@
+// folders will be:
+// cwd = current working directory
+// saved = where files are put to save to user workspace
+function writeEmDxFile(db, path, contents) {
+  'use strict';
+  db.FILE_DATA.add( {
+      timestamp: Date.now(),  //We may need to do more work with this property
+      contents: utf8bytes_encode(contents),
+      mode: 33206
+    },
+    path
+  ).then(function () {
+      console.log('Able to add file ', path);
+  }).catch(function (err) {
+    console.log('Unable to add file, path',path, '; error', err);
+  })
+}
 
+function writeDxFile(db, path, contents) {
+  'use strict';
+  db.work.add( {
+      name: path,
+      timestamp: Date.now(),  //We may need to do more work with this property
+      contents: contents,
+      mode: 33206
+    }
+  ).then(function () {
+      //console.log('Able to add file ' + path);
+    }).catch(function () {
+      console.log('Unable to add file ' + path);
+    });
+}
 function addFzItem(dndSection, fzrSection, item, type) {
   'use strict';
   dndSection.insertNodes(false, [{data: item.name, type: [type]}]);
@@ -64,13 +95,15 @@ function processFiles(av){
     case 'tr2':
     case 'tr3':
     case 'update':
-      var ifile = {
-        _id: av.fio.anID,
-        text: av.fio.thisfile.asText().trim()
-      };
       if ('c0/avida.cfg'==av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText()); }
-      if ('c0/environment.cfg'==av.fio.anID) {environmentCFG2form(ifile.text); }
+      if ('c0/environment.cfg'==av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim()); }
 
+      writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
+      /* no longer use PouchDB
+       var ifile = {
+       _id: av.fio.anID,
+       text: av.fio.thisfile.asText().trim()
+       };
       av.fio.wsdb.get(av.fio.anID).then(function (doc) {
         ifile._rev = doc._rev;
         if (av.debug.pdb) console.log('get entryName doc already exists, ok update', doc);
@@ -82,7 +115,7 @@ function processFiles(av){
         }).catch(function (err) {console.log('put err', err);
         });
       });
-      
+      */
       break;
     default:
       //if (av.debug.fio) console.log('undefined file type in zip: full ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
@@ -207,6 +240,7 @@ function avidaCFG2form(fileStr){
 }
 
 //------------------------------------------------- rest may not be in use ---------------------------------------------
+//http://www.html5rocks.com/en/tutorials/file/dndfiles/
 function mnOpenWorkSpace() {
   console.log('test message');
   openWsDialog.show();
@@ -218,8 +252,9 @@ function mnOpenWorkSpace() {
   }
   console.log("declaring handleFileSelect()");
   function handleFileSelect(evt) {
+    var theFile = evt.target.files[0]; // FileList object
     var files = evt.target.files; // FileList object
-
+    console.log('file', theFile);
     // files is a FileList of File objects. List some properties.
     var output = [];
     for (var i = 0, f; f = files[i]; i++) {
@@ -329,4 +364,5 @@ window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari
 // Pure JS
 // http://jsfiddle.net/uselesscode/qm5ag/
 
-//console.log("end of FileIO.js");
+// usefule Dexie.db websites
+//https://github.com/dfahlander/Dexie.js/wiki/Best%20Practices

@@ -11,7 +11,22 @@ function deletePdbFile(fio, fileId) {
   });
 }
 
-function makePdbFile(fio, fileId, text) {
+function makeEmDxFile(fio, path, contents) {
+  'use strict';
+  fio.dxdb.FILE_DATA.add( {
+      timestamp: Date.now(),  //We may need to do more work with this property
+      contents: utf8bytesEncode(contents),
+      mode: 33206
+    },
+    path
+  ).then(function () {
+      console.log('Able to add file ', path);
+    }).catch(function (err) {
+      console.log('Unable to add file, path',path, '; error', err);
+    });
+}
+
+function makePdbFileOld(fio, fileId, text) {
   'use strict';
   var ifile = {
     _id: fileId,
@@ -71,14 +86,15 @@ function makePdbInstsetCfg(fio, idStr) {
   });
 }
 
-function makePdbWorldEventsCfg(fio, idStr) {
+function makePdbWorldEventsCfg(fio, idStr, em) {
   'use strict';
   var txt = 'u begin LoadPopulation detail.spop' + '\n';
   txt += 'u begin LoadStructuredSystematicsGroup role=clade:filename=clade.ssg';
-  makePdbFile(fio, idStr+'/events.cfg', txt);
+  if (em) {makeEmDxFile(fio, idStr+'/events.cfg', txt);}
+  else {makePdbFile(fio, idStr+'/events.cfg', txt);}
 }
 
-function makePdbAvidaCfg(fio, idStr) {
+function makePdbAvidaCfg(fio, idStr, em) {
   'use strict';
   var txt = 'WORLD_X ' + dijit.byId("sizeCols").get('value') + '\n';
   txt += 'WORLD_Y ' + dijit.byId("sizeRows").get('value') + '\n';
@@ -94,10 +110,11 @@ function makePdbAvidaCfg(fio, idStr) {
   else txt += 'RANDOM_SEED 100\n';
   txt += '#include instset.cfg\n';
   txt += 'I\n';
-  makePdbFile(fio, idStr+'/avida.cfg', txt);
+  if (em) {makeEmDxFile(fio, idStr+'/avida.cfg', txt);}
+  else {makePdbFile(fio, idStr+'/avida.cfg', txt);}
 }
 
-function makePdbEnvironmentCfg(fio, idStr) {
+function makePdbEnvironmentCfg(fio, idStr, em) {
   'use strict';
   var txt = '';
   if (dijit.byId("notose").get('checked')) txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
@@ -109,7 +126,9 @@ function makePdbEnvironmentCfg(fio, idStr) {
   if (dijit.byId("norose").get('checked')) txt += 'REACTION  NOR  nor   process:value=4:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOR  nor   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("xorose").get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1\n';
-  makePdbFile(fio, idStr+'/environment.cfg', txt);
+  if (em) {makeEmDxFile(fio, idStr+'/environment.cfg', txt);}
+  else  { makePdbFile(fio, idStr+'/environment.cfg', txt);}
+
 }
 
 function makePdbAncestor(fio, idStr) {
@@ -118,11 +137,13 @@ function makePdbAncestor(fio, idStr) {
 
 function sendConfig(fio) {
   'use strict';
-  var idStr = 'cT';
-  makePdbAvidaCfg(fio, idStr);
-  makePdbEnvironmentCfg(fio, idStr);
-  makePdbNullFile(fio, idStr+'/events.cfg');
-  makePdbInstsetCfg(fio, idStr);
+  var idStr = 'ws/cwd';
+  var em = true;
+  makePdbAvidaCfg(fio, idStr, em);
+  makePdbEnvironmentCfg(fio, idStr, em);
+  makeEmDxFile(fio, idStr+'/events.cfg', '');
+  //makePdbNullFile(fio, idStr+'/events.cfg', em);
+  //makePdbInstsetCfg(fio, idStr, em);
 }
 
 function makePdbConfig(fzr, fio, parents) {
@@ -202,3 +223,8 @@ function removePdbItem(fio, strId, type){
       break;
   }
 }
+/* PouchDB websites
+ http://pouchdb.com/api.html#database_information
+ https://github.com/webinista/PouchNotes
+ http://pouchdb.com/guides/databases.html
+ */
