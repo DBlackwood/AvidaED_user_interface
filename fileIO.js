@@ -13,7 +13,6 @@ function writeEmDxFile(db, path, contents) {
       console.log('Able to add file ', path);
   }).catch(function (err) {
     console.log('Unable to add file, path',path, '; error', err);
-    throw error;
   })
 }
 
@@ -29,7 +28,6 @@ function writeDxFile(db, path, contents) {
       //console.log('Able to add file ' + path);
     }).catch(function () {
       console.log('Unable to add file ' + path);
-      throw error;
     });
 }
 function addFzItem(dndSection, fzrSection, item, type) {
@@ -134,13 +132,11 @@ function updateSetup(av) {
     avidaCFG2form(doc.text);
   }).catch(function (err) {
     console.log('error getting active avida.cfg data', err);
-    throw error;
   });
   av.fio.wsdb.get(av.fzr.actConfig._id + '/environment.cfg').then(function (doc) {
     environmentCFG2form(doc.text);
   }).catch(function (err) {
     console.log('error getting active environment.cfg data', err);
-    throw error;
   });
 }
 

@@ -852,58 +852,31 @@ require([
 
   //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
-    var blob = av.fio.dxdb.work;
-    console.log('blob', blob);
-/*
-    av.fio.dxdb.FILE_DATA.get(path).then(function(doc){
-      var utf16 = utf8bytes_decode(doc.contents);
-      display('Read from file ' + path + ' the contents: ' + utf16);
-    }).catch(function(e){
-      display ('Unable to read from file ' + path)
-    })
-
- db.friends.where('name').startsWithIgnoreCase('arnold').toArray(function(a) {
- console.log(a.length);
- }).catch(function(err) {
- console.error(err);
- });
-*/
-    av.fio.dxdb.work.where('name').startsWithIgnoreCase('c').toArray(function(config){
-      console.log(config);
-      var len = config.length;
-      for (var ii = 0; ii< len; ii++) {
-        console.log(ii, config[ii]);
-      }
-    }).catch(function(err) {
-      console.log('read err', err);
-      throw error;
-    });
-
-    /*
-    av.fio.wsdb.allDocs({include_docs:true}).then(function(docInc){
-      console.log('Include doc', docInc);
-      av.fio.wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
-        //console.log('wsdb get doc0', doc);
-      }).catch(function(err){
-        console.log('wsdb get error',err);
-      })
+    'use strict';
+    var len;
+    av.fio.dxdb.transaction('r', av.fio.dxdb.work, function(){
+      av.fio.dxdb.work.where('name').startsWithIgnoreCase('c').toArray(function(stuff){
+        len = stuff.length;
+        for (var ii = 0; ii< len; ii++) {
+          console.log(ii, stuff[ii]);
+        }
+      });
+      av.fio.dxdb.work.where('name').startsWithIgnoreCase('g').toArray(function(stuff){
+        len = stuff.length;
+        for (var ii = 0; ii< len; ii++) {
+          console.log(ii, stuff[ii]);
+        }
+      });
+      av.fio.dxdb.work.where('name').startsWithIgnoreCase('w').toArray(function(stuff){
+        len = stuff.length;
+        for (var ii = 0; ii< len; ii++) {
+          console.log(ii, stuff[ii]);
+        }
+      });
     }).catch(function(err){
-      console.log('allDocs get error',err);
-    });
-    console.log('fzr', av.fzr);
-*/
-    /*
-     av.fio.wsdb.allDocs().then(function(docObj){
-     console.log('wsdb doc', docObj);
-     av.fio.wsdb.get(docObj.rows[1].key).then(function(doc) {
-     console.log('wsdb get doc1', doc);
-     }).catch(function(err){
-     console.log('wsdb get error',err);
-     })
-     }).catch(function(err){
-     console.log('wsdb get error',err);
-     })
-     */
+      console.log('read error', err);
+      throw error;
+    })
   };
 
   //******* Freeze Button ********************************************
