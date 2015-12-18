@@ -181,6 +181,11 @@ require([
     av.fio.dxdb = setupDexieStore();
     //doDbReady(av.fio);
     readZipWS(zipFileName);
+    Dexie.Promise.on('error', function(err) {
+      // Log to console or show en error indicator somewhere in your GUI...
+      console.log("Uncaught error: " + err);
+    });
+    av.fio.dxdb.close();
   }
 
   function initializeDB(zipFileName) {
@@ -738,7 +743,7 @@ require([
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        sendConfig(av.fio);          //pouchDB_IO.js
+        av.fio.sendConfig(av);          //pouchDB_IO.js
         injectAncestors(av.fio, av.parents); //fio.uiWorker
       }
       doRunPause(av.fio);
@@ -856,8 +861,25 @@ require([
     }).catch(function(e){
       display ('Unable to read from file ' + path)
     })
-*/
 
+ db.friends.where('name').startsWithIgnoreCase('arnold').toArray(function(a) {
+ console.log(a.length);
+ }).catch(function(err) {
+ console.error(err);
+ });
+*/
+    av.fio.dxdb.work.where('name').startsWithIgnoreCase('c').toArray(function(config){
+      console.log(config);
+      var len = config.length;
+      for (var ii = 0; ii< len; ii++) {
+        console.log(ii, config[ii]);
+      }
+    }).catch(function(err) {
+      console.log('read err', err);
+      throw error;
+    });
+
+    /*
     av.fio.wsdb.allDocs({include_docs:true}).then(function(docInc){
       console.log('Include doc', docInc);
       av.fio.wsdb.get(docInc.rows[0].doc._id).then(function(doc) {
@@ -869,7 +891,7 @@ require([
       console.log('allDocs get error',err);
     });
     console.log('fzr', av.fzr);
-
+*/
     /*
      av.fio.wsdb.allDocs().then(function(docObj){
      console.log('wsdb doc', docObj);

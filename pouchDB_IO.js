@@ -26,7 +26,7 @@ function makeEmDxFile(fio, path, contents) {
     });
 }
 
-function makePdbFileOld(fio, fileId, text) {
+function makePdbFile(fio, fileId, text) {
   'use strict';
   var ifile = {
     _id: fileId,
@@ -135,15 +135,17 @@ function makePdbAncestor(fio, idStr) {
   'use strict';
 }
 
-function sendConfig(fio) {
+av.fio.sendConfig = function(av) {
   'use strict';
+  av.fio.dxdb.open();
   var idStr = 'ws/cwd';
   var em = true;
-  makePdbAvidaCfg(fio, idStr, em);
-  makePdbEnvironmentCfg(fio, idStr, em);
-  makeEmDxFile(fio, idStr+'/events.cfg', '');
-  //makePdbNullFile(fio, idStr+'/events.cfg', em);
-  //makePdbInstsetCfg(fio, idStr, em);
+  makePdbAvidaCfg(av.fio, idStr, em);
+  makePdbEnvironmentCfg(av.fio, idStr, em);
+  makeEmDxFile(av.fio, idStr+'/events.cfg', '');
+  //makePdbNullFile(av.fio, idStr+'/events.cfg', em);
+  //makePdbInstsetCfg(av.fio, idStr, em);
+  av.fio.dxdb.close();
 }
 
 function makePdbConfig(fzr, fio, parents) {
