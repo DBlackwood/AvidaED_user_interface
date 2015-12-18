@@ -40,10 +40,11 @@
     function BrowserResizeEventHandler() {
       console.log("initial handler");
     }
-    function openFileOption()
+    function getWStrigger()
     {
-      document.getElementById("fileGet").click();
-      console.log('after fileGet in html');
+      document.getElementById("getWS").click();
+      console.log('after getWS in html');
+      av.test();
     }
 
   </script>
@@ -61,8 +62,9 @@
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id='mnOpenDefault' label="Open Default Workspace"></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnOpenWS' label="Open Workspace"
-                  onclick="openFileOption();return;"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnOpenWS' label="Open Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnOpenTest' label="Open Test"
+                  onclick="getWStrigger();return;"></span>
           </span>
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
@@ -139,7 +141,7 @@
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
            style="height:35px;overflow: auto" id="trashCP">
         <span id="trashCan" class="container"><img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img></span>
-        <input id='fileGet' type="file" style = 'display:none'>
+        <input id='getWS' type="file" style = 'display:none'>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="freezerDiv">

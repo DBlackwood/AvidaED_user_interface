@@ -282,6 +282,7 @@ require([
       .addEventListener('change', readSingleFile, false);
   }
 
+  av.test = function(){console.log('this is a test');}
 
   //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
   //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWS(); });
@@ -298,6 +299,25 @@ require([
     document.getElementById("fileGet").click();
     console.log('after fileGet');
   }
+
+  function readWSFile(e) {
+    'use strict';
+    var file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    console.log('file=', file);
+    /*
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var contents = e.target.result;
+      displayContents(contents);
+    };
+    reader.readAsText(file);
+    */
+  }
+  document.getElementById('getWS')
+    .addEventListener('change', readWSFile, false);
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
