@@ -888,6 +888,7 @@ require([
   document.getElementById("grdTestButton").onclick = function () {
     'use strict';
     console.log('fzr', av.fzr);
+    console.log('parents', av.parents);
     var len;
     av.fio.dxdb.transaction('r', av.fio.dxdb.work, function(){
       av.fio.dxdb.work.where('name').startsWithIgnoreCase('c').toArray(function(stuff){
@@ -1281,7 +1282,8 @@ require([
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
-    for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'default';
+    //for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'default'; delete later
+    for (var dir in av.fzr.domid) document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
     av.mouse.Dn = false;
@@ -1305,6 +1307,8 @@ require([
       }
     }
     else if ('offspring' == av.mouse.Picked) {
+      target = OffspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
+      //if ('fzOrgan' == target) { makePdbOrgan(av.fio, av.fzr)}  left over from putting workspace in database
       av.mouse.Picked = "";
     }
     else if ('kid' == av.mouse.Picked) {

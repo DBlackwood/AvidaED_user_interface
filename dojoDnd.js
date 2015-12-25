@@ -316,8 +316,8 @@ function landOrganIcon(av, source, nodes, target) {
   else if ('ancestorBox' === source.node.id) {
     var domid = Object.keys(av.dnd.fzOrgan.selection)[0];
     var Ndx = av.parents.domid.indexOf(domid);  //Find index into parent structure
-    av.fzr.actOrgan.name = parents.name[Ndx];
-    av.fzr.actOrgan.genome = parents.genome[Ndx];
+    av.fzr.actOrgan.name = av.parents.name[Ndx];
+    av.fzr.actOrgan.genome = av.parents.genome[Ndx];
   }
 
   //clear out av.dnd.organIcon as nothing is stored there - just moved on to OrganismCurrent

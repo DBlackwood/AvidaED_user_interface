@@ -103,7 +103,7 @@ function processFiles(av){
       if ('c0/avida.cfg'==av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText()); }
       if ('c0/environment.cfg'==av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim()); }
 
-      writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
+      //writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
       av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
       break;
     default:

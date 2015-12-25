@@ -204,13 +204,13 @@ function ParentMouse(evt, av) {
     if (av.debug.mouse) console.log('parent->trashCan', evt);
     console.log('parent->trashCan', evt);
     console.log('av.mouse.ParentNdx', av.mouse.ParentNdx, '; domid', av.parents.domid[av.mouse.ParentNdx]);
-    console.log('ancestorBox', av.av.dnd.ancestorBox);
+    console.log('ancestorBox', av.dnd.ancestorBox);
     var node = dojo.byId(av.parents.domid[av.mouse.ParentNdx]);
     av.dnd.ancestorBox.parent.removeChild(node);
     av.dnd.ancestorBox.sync();
 
     //remove from main list.
-    removeParent(av.mouse.ParentNdx, parents);
+    removeParent(av.mouse.ParentNdx, av.parents);
   }
   //-------------------------------------------- organism view
   else if ('organIcon' == evt.target.id) {
