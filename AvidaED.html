@@ -25,10 +25,10 @@
           ['iPhone','',['../themes/iphone/iphone.css']],
           ['.*','',['../themes/iphone/iphone.css']
         ]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
+  <script type="text/javascript" src="globals.js"></script>
   <script type="text/javascript" src="placeParent.js"></script>
   <script type="text/javascript" src="utilities.js"></script>
   <script type="text/javascript" src="colormap.js"></script>
-  <script type="text/javascript" src="globals.js"></script>
   <script type="text/javascript" src="AvidaED.js"></script>
 
   <link rel="stylesheet" href="lib/jquery-ui/themes/smoothness/jquery-ui.css">
@@ -42,7 +42,6 @@
     }
     function getWStrigger()
     {
-      document.getElementById("getWS").click();
       console.log('after getWS in html');
       av.test();
     }
@@ -69,6 +68,7 @@
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
+            <span data-dojo-type="dijit/MenuItem" id="mnFzSaveCurrentWorkspace" label="Save Current Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzConfig" label="Save Experiment Configuration"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzOrganism" label="Save Selected Organism"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzOffspring" label="Save Offspring Organism"></span>

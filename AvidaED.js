@@ -63,7 +63,7 @@ require([
   "jquery-ui",
   "messaging.js",
   "fileIO.js",
-  "pouchDB_IO.js",
+  //"pouchDB_IO.js",
   "colorTest.js",
   "PopulationGrid.js",
   "organismView.js",
@@ -71,6 +71,7 @@ require([
   'popControls.js',
   'mouse.js',
   // 'ndxDB.js',
+  'fzrIO.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
@@ -107,6 +108,7 @@ require([
   av.fio.JSZip = JSZip;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+  //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   function readZipWS(zipFileName) {
     'use strict';
     av.fio.zipName = zipFileName;
@@ -127,12 +129,15 @@ require([
         //target will be assigned the beginning of the path name within the zip file.
         if (null == av.fio.target) {
           var leading = wsb('/', zFileName);
-          if ('__MACOSX' != leading) av.fio.target = leading;
+          if ('__MACOSX' != leading) av.fio.target = leading; //this gets the root name which we remove from path in the fzr file
         }
         av.fio.thisfile = av.fio.zipfile.files[zFileName];
         av.fio.fName = zFileName;
         processFiles(av);
       }
+      //note setup form is updated when the files are read.
+      console.log('after read loop: fzr', av.fzr);
+      av.fio.fileReadingDone = true;
       //console.log('before DrawGridSetup')
       DrawGridSetup();
       av.fzr.cNum++;
@@ -208,29 +213,6 @@ require([
   //initializeDB(av.fio.defaultFname);
   startDB(av.fio.defaultFname);
 
-  /*
-    // Put some data into it
-    dxdb.FILE_DATA.put(EmFile).then (function(){
-      //
-      // Then when data is stored, read from it
-      //
-      return dxdb.FILE_DATA.get('/ws/g4/entryname.txt');
-    }).then(function (name) {
-      //
-      // Display the result
-      //
-      console.log("Nicolas has shoe size " ,name);
-      console.log('db',dxdb);
-    }).catch(function(error) {
-      //
-      // Finally don't forget to catch any error
-      // that could have happened anywhere in the
-      // code blocks above.
-      //
-      alert ("Ooops: " + error);
-    });
-  */
-
   //********************************************************************************************************************/
 
 
@@ -282,8 +264,6 @@ require([
       .addEventListener('change', readSingleFile, false);
   }
 
-  av.test = function(){console.log('this is a test');}
-
   //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
   //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWS(); });
   //dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault(); });  //in fileIO.js
@@ -318,6 +298,11 @@ require([
   }
   document.getElementById('getWS')
     .addEventListener('change', readWSFile, false);
+
+  av.test = function(){
+    console.log('this is a test');
+    document.getElementById("getWS").click();
+  }
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
@@ -445,7 +430,7 @@ require([
     //disable menu options. they will be enabled when relevant canvas is drawn
     dijit.byId("mnFzOffspring").attr("disabled", true);
     dijit.byId("mnOffspringTrace").attr("disabled", true);
-    console.log('end of mainBoxSwap');
+    //console.log('end of mainBoxSwap');
   };
 
   // Buttons that call MainBoxSwap
@@ -487,6 +472,36 @@ require([
     placeChips(chips, chck);
     drawCheckerSetup(chck, chips);
   };
+
+  // Save a file  --------------------------------------------------------
+  var SaveFileDialog = new Dialog({
+    title: "Avida : A Guided Tour of an Ancestor and its Hardware",
+    id: "SaveFileDialog",
+    href: "savefile.html"
+    //hide: function() {HardwareDialog.destroy()}
+    //style: "width: 600px; height: 400px"
+  });
+
+  domStyle.set(SaveFileDialog.containerNode, {
+    position: 'relative'
+  });
+
+  dijit.byId("mnFzSaveCurrentWorkspace").on("Click", function () { // ???
+    if (!SaveFileDialog) {
+      SaveFileDialog = new Dialog({
+        title: "Save Workspace",
+        id: "SaveFileDialog",
+        href: "savefile.html"
+        //hide: function() {HardwareDialog.destroy()}
+        //style: "width: 600px; height: 400px"
+      });
+    }
+    console.log(SaveFileDialog);
+    SaveFileDialog.show();
+  });
+
+
+  /* ---------------------------------------------------------------------- */
 
   if (av.debug.root) console.log('before dnd definitions');
   /* ********************************************************************** */
@@ -530,7 +545,7 @@ require([
     copyOnly: true,
     selfAccept: false
   });
-  av.dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
+  //av.dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);  //tiba delete later
 
   //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.activeOrgan = new dndSource('activeOrgan', {
@@ -574,16 +589,15 @@ require([
   //currently this should not trigger as activeConfig is only a target
   av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
-      var num = av.fzr.config[av.fzr.config.length-1].fileNum;
+      var num = fzr.cNum;
       landFzConfig(av.dnd, av.fzr, source, nodes, target);  //needed as part of call to contextMenu
-      if (num != av.fzr.config[av.fzr.config.length-1].fileNum) {makePdbConfig(av.fzr, av.fio);}
+      //if (num !== fzr.cNum) {makeFzrConfig(av.fzr, num, parents);}
     }
   });
 
   av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
       landFzOrgan(av.dnd, av.fzr, av.parents,source, nodes, target);
-      makePdbOrgan(av.fio, av.fzr);
     }
   });
 
@@ -611,7 +625,7 @@ require([
   av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     if ('organIcon' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
-      landOrganIcon(av.dnd, av.fzr, source, nodes, target);
+      landOrganIcon(av, source, nodes, target);
       //Change to Organism Page
       mainBoxSwap("organismBlock");
       organismCanvasHolderSize();
@@ -636,11 +650,11 @@ require([
     if ('trashCan' == target.node.id) {
       var remove = {};
       remove.type = '';
-      remove.id = '';
+      remove.dir = '';
       if (av.debug.dnd) console.log('trashCan: s, t', source, target);
       remove = landTrashCan(av.dnd, av.fzr, av.parents, source, nodes, target);
       if ('' != remove.type) {
-        removePdbItem(av.fio, remove.id, remove.type);
+        removeFzrItem(av.fio, remove.dir, remove.type);
       }
     }
   });
@@ -848,7 +862,7 @@ require([
     //Clear grid settings
     clearParents(av.parents);
     //reset values in population settings based on a 'file' @default
-    updateSetup(av.fio, av.fzr);
+    updateSetup(av);
 
     //write if @default not found - need to figure out a test for this
     //writeHardDefault(av.dft);
@@ -873,6 +887,7 @@ require([
   //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
     'use strict';
+    console.log('fzr', av.fzr);
     var len;
     av.fio.dxdb.transaction('r', av.fio.dxdb.work, function(){
       av.fio.dxdb.work.where('name').startsWithIgnoreCase('c').toArray(function(stuff){
@@ -925,7 +940,7 @@ require([
         };
         av.fzr.config.push(newConfig);
         av.fzr.cNum++;
-        makePdbConfig(av.fzr, av.fio);
+        makeFzrConfig(av.fzr, av.fio);
         contextMenu(av.fzr, av.dnd.fzConfig, domId);
       }
     }
@@ -949,7 +964,7 @@ require([
         };
         av.fzr.world.push(newWorld);
         av.fzr.wNum++;
-        makePdbWorld(av.fzr, av.fio, av.grd);
+        makeFzrWorld(av.fzr, av.fio, av.grd);
         //need to get data from Avida for this tiba
         //Create context menu for right-click on this item
         contextMenu(av.fzr, av.dnd.fzWorld, domId);
@@ -1083,6 +1098,7 @@ require([
       distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
       if (25 > distance) {
         for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';
+        for (var ndx in av.fzr.domid) document.getElementById(av.fzr.domid[ndx]).style.cursor = 'copy';
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
@@ -1215,7 +1231,7 @@ require([
           doSelectedOrganismType(av.fio, av.grd);
           SelectedKidMouseStyle(av.dnd, av.fzr, av.grd);
           av.mouse.Picked = 'kid';
-          console.log('kid', av.grd.kidName, av.grd.kidGenome);
+          if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnOrganismTrace").attr("disabled", false);
         }
@@ -1267,13 +1283,13 @@ require([
     document.getElementById('fzOrgan').style.cursor = 'default';
     for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'default';
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
-    console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
+    if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
     av.mouse.Dn = false;
 
     // --------- process if something picked to dnd ------------------
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      ParentMouse(evt, av.dnd, av.fzr, av.parents);
+      ParentMouse(evt, av);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) DrawGridSetup();
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
@@ -1284,18 +1300,17 @@ require([
         document.getElementById("ExecuteAbout").style.height = height + "px";
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
+        console.log('from parent', av.parent, '; fzr', av.fzr);
         doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
       }
     }
     else if ('offspring' == av.mouse.Picked) {
       av.mouse.Picked = "";
-      target = OffspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
-      if ('fzOrgan' == target) { makePdbOrgan(av.fio, av.fzr)}
     }
     else if ('kid' == av.mouse.Picked) {
       av.mouse.Picked = "";
       target = KidMouse(evt, av.dnd, av.fzr, av.grd);
-      if ('fzOrgan' == target) { makePdbOrgan(av.fio, av.fzr);}
+      if ('fzOrgan' == target) { makeFzrOrgan(av.fio, av.fzr);}
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         mainBoxSwap("organismBlock");
@@ -2061,18 +2076,10 @@ require([
     return new_obj;
   };
 
-  //------- not in use
-  var hexColor = invertHash(dictColor);
-  var theColor = hexColor["#000000"];  //This should get 'Black'
+  //------- not in use = example
+  //var hexColor = invertHash(dictColor);
+  //var theColor = hexColor["#000000"];  //This should get 'Black'
   //console.log("theColor=", theColor);
-
-  // does not work
-  on(dom.byId("gridCanvas"), "drop", function (event) {
-    domGeometry.normalizeEvent(event);
-    console.log("Not work xx ", event.pageX);
-    console.log("NOt work yy ", event.pageY);
-  })
-
 
   //Notes on things I learned writing this code, that is not directly used in the code
   //use FileMerge to compare to versions of the same file on a Mac

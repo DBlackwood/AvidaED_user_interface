@@ -125,23 +125,18 @@ function landActiveConfig(dnd, pkg) {
 //Process when an Configuration is added to the Freezer
 function landFzConfig(dnd, fzr, source, nodes, target) {
   'use strict';
-  var strItem = Object.keys(target.selection)[0];
+  var domid = Object.keys(target.selection)[0];
   var dishCon = prompt("Please name your dish configuration", nodes[0].textContent + "_1");
   if (dishCon) {
     var configName = getUniqueName(dishCon, target);
     if (null != configName) {
-      document.getElementById(strItem).textContent = configName;
-      target.map[strItem].data = configName;
+      document.getElementById(domid).textContent = configName;
+      target.map[domid].data = configName;
 
       //Now find which node has the new content so it can get a context menu.
       var domID = getDomId(configName, target);
-      var newConfig = {
-        domID: domID,
-        name: configName,
-        _id: 'c'+ fzr.cNum,
-        fileNum: fzr.cNum
-      };
-      fzr.config.push(newConfig);
+      fzr.dir[domID] = 'c'+ fzr.cNum;
+      fzr.domid['c'+ fzr.cNum] = domID;
       fzr.cNum++;
 
       //create a right av.mouse-click context menu for the item just created.
@@ -161,18 +156,18 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
   if ('ancestorBox' != source.node.id) {
     //find genome by finding source
     var domId = Object.keys(source.selection)[0];
-    var ndx = fndFzrNdx(domId, fzr.genome);
-    parents.genome.push(fzr.genome[ndx].genome);
+    var dir = fzr.dir[domId];
+    parents.genome.push(av.fzr.file[dir+'/genome.seq']);
     var nn = parents.name.length;
     parents.autoNdx.push(nn);
     parents.name.push(nodes[0].textContent);
     parents.howPlaced.push('auto');
-    parents.domId.push(Object.keys(target.selection)[0]);
+    parents.domid.push(Object.keys(target.selection)[0]); //domid in ancestorBox used to remove if square in grid moved to trashcan
     //Find color of ancestor
     if (0 < parents.Colors.length) { parents.color.push(parents.Colors.pop()) }
     else { parents.color.push(defaultParentColor) }
     PlaceAncestors(parents);
-    if (av.debug.dnd) console.log('parents', parents.name[nn], parents.domId[nn], parents.genome[nn]);
+    if (av.debug.dnd) console.log('parents', parents.name[nn], parents.domid[nn], parents.genome[nn]);
   }
 }
 
@@ -181,7 +176,7 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
 function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
   'use strict';
   if (av.debug.dnd) console.log('inside gridCanvas dnd');
-  console.log(parents);
+  console.log('parents', parents);
   //was it dropped on the grid of cells?
   //if (av.debug.dnd) console.log('xOff, yOff, xUP, y', grd.xOffset, grd.yOffset, av.mouse.UpGridPos[0];, av.mouse.UpGridPos[1];);
   //calculated grid cell to see if it was a valid grid position.
@@ -202,6 +197,10 @@ function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
       if (av.debug.dnd) console.log('dnd.gridCanvas.map', dnd.gridCanvas.map);
       if (av.debug.dnd) console.log('dnd.ancestorBox.map', dnd.ancestorBox.map);
     });
+    // need to find the domid of the ancetor in ancestorBox. The line below is not correct. ???? !!!!! tiba
+    var domIDs = Object.keys(dnd.ancestorBox.map);
+    parents.domid.push(domIDs[domIDs.length-1]);
+
     //update parents structure
     nn = parents.name.length;
     parents.handNdx.push(nn);
@@ -209,19 +208,17 @@ function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
     parents.name[nn] = nodes[0].textContent;
     var domId = Object.keys(source.selection)[0];
     if (av.debug.dnd) console.log('LandGridCanvas; domId', domId, '; fzr.genome', fzr.genome);
-    var ndx = fndFzrNdx(domId, fzr.genome);
-    parents.genome.push(fzr.genome[ndx].genome);
+    var dir = fzr.dir[domId];
+    parents.genome.push(av.fzr.file[dir+'/genome.seq']);
     //find domId of parent as listed in dnd.ancestorBox
-    var mapItems = Object.keys(dnd.ancestorBox.map);
-    parents.domId.push(mapItems[mapItems.length - 1]);
+
+    //Don't think I need domID withing ancestorBox
+    //var mapItems = Object.keys(dnd.ancestorBox.map);
+    //parents.domid.push(mapItems[mapItems.length - 1]);
 
     //Find color of ancestor
-    if (0 < parents.Colors.length) {
-      parents.color.push(parents.Colors.pop())
-    }
-    else {
-      parents.color.push(defaultParentColor)
-    }
+    if (0 < parents.Colors.length) {parents.color.push(parents.Colors.pop());}
+    else {parents.color.push(defaultParentColor);}
     //if (av.debug.dnd) console.log('after', parents)
     //Re-Draw Grid - done in routine that calls this one.
   }
@@ -236,18 +233,18 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
   'use strict';
   var neworg = {};
   var gen;
-  var strItem = Object.keys(target.selection)[0];
-  if (av.debug.dnd) console.log('strItem', strItem);
-  var avidian = prompt("Please name your avidian", document.getElementById(strItem).textContent + "_1");
+  var domid = Object.keys(target.selection)[0];
+  if (av.debug.dnd) console.log('domid', domid);
+  var avidian = prompt("Please name your avidian", document.getElementById(domid).textContent + "_1");
   if (avidian) {
     var avName = getUniqueName(avidian, target);
     if (null != avName) {  //give dom item new avName name
-      document.getElementById(strItem).textContent = avName;
-      target.map[strItem].data = avName;
+      document.getElementById(domid).textContent = avName;
+      target.map[domid].data = avName;
 
       if ('ancestorBox' == source.node.id) {
         //update structure to hold freezer data for Organisms.
-        var Ndx = parents.domId.indexOf(nodes[0].id);  //Find index into parent structure
+        var Ndx = parents.domid.indexOf(nodes[0].id);  //Find index into parent structure
         gen = parents.genome[Ndx];
 
         // need to remove organism from parents list.
@@ -262,14 +259,10 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
         if (av.debug.dnd) console.log('neworg', neworg);
       }
       else if ('activeOrgan' == source.node.id) { gen = fzr.actOrgan.genome; }
-      neworg = {
-        'name': dnd.fzOrgan.map[strItem].data,
-        'domId': strItem,
-        'genome': gen,
-        'fileNum': fzr.gNum,
-        '_id': 'g' + fzr.gNum
-      };
-      fzr.genome.push(neworg);
+      fzr.dir[domid] = 'g' + fzr.gNum;
+      fzr.domid['g' + fzr.gNum] = domid;
+      fzr.file['g' + fzr.gNum + '/genmome.seq'] = gen;
+      fzr.file['g' + fzr.gNum + 'entryname.txt'] = dnd.fzOrgan.map[domid].data;
       fzr.gNum++;
 
       if (av.debug.dnd) console.log('fzOrgan', dnd.fzOrgan);
@@ -293,23 +286,43 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
   if (av.debug.dnd) console.log('End of landFzOrgan');
 }
 
-function landOrganIcon(dnd, fzr, source, nodes, target) {
+function updateFromFzrOrganism(dnd, fzr) {
+  'use strict';
+  var domId = Object.keys(dnd.fzOrgan.selection)[0];
+  var dir = fzr.dir[domId];
+  if (av.debug.dnd) console.log('domId', domId, '; dir', dir);
+  fzr.actOrgan.name = fzr.file[dir+'/entryname.txt'];
+  fzr.actOrgan.genome = fzr.file[dir+'/genome.seq'];
+  if (av.debug.dnd) console.log('domId', domId);
+
+  //fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];  //don't think this is used; delete later
+  if (av.debug.dnd) console.log('fzr.actOrgan', fzr.actOrgan);
+}
+
+function landOrganIcon(av, source, nodes, target) {
   //clear out the old data if an organism is already there
   'use strict';
-  var items = getAllItems(dnd.activeOrgan);    //gets some data about the items in the container
+  var items = getAllItems(av.dnd.activeOrgan);    //gets some data about the items in the container
   if (1 < items.length) {
-    dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-    dnd.activeOrgan.sync();   //should be done after insertion or deletion
+    av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
+    av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
   }
   //get the data for the new organism
     source.forInSelectedItems(function (item, id) {
-    dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
-    dnd.activeOrgan.sync();
+    av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+    av.dnd.activeOrgan.sync();
   });
-  if ('fzOrgan' == source.node.id) updateFromFzrOrganism(dnd, fzr); //should only be from freezer as other are av.mouse based dnd.
-  //clear out dnd.organIcon as nothing is stored there - just moved on to OrganismCurrent
-  dnd.organIcon.selectAll().deleteSelectedNodes();  //clear items
-  dnd.organIcon.sync();   //should be done after insertion or deletion
+  if ('fzOrgan' === source.node.id) { updateFromFzrOrganism(dnd, fzr); }
+  else if ('ancestorBox' === source.node.id) {
+    var domid = Object.keys(av.dnd.fzOrgan.selection)[0];
+    var Ndx = av.parents.domid.indexOf(domid);  //Find index into parent structure
+    av.fzr.actOrgan.name = parents.name[Ndx];
+    av.fzr.actOrgan.genome = parents.genome[Ndx];
+  }
+
+  //clear out av.dnd.organIcon as nothing is stored there - just moved on to OrganismCurrent
+  av.dnd.organIcon.selectAll().deleteSelectedNodes();  //clear items
+  av.dnd.organIcon.sync();   //should be done after insertion or deletion
 }
 
 //Need to have only the most recent dropped organism in dnd.activeOrgan. Do this by deleting everything in activeOrgan
@@ -331,17 +344,6 @@ function landActiveOrgan(dnd, fzr, source, nodes, target) {
     //if (av.debug.dnd) console.log("dnd.activeOrgan.map=", dnd.activeOrgan.map);
   }
   updateFromFzrOrganism(dnd, fzr);
-}
-
-function updateFromFzrOrganism(dnd, fzr) {
-  'use strict';
-  var domId = Object.keys(dnd.fzOrgan.selection)[0];
-  if (av.debug.dnd) console.log('domId', domId);
-  var ndx = fndFzrNdx(domId, fzr.genome)
-  fzr.actOrgan.name = fzr.genome[ndx].name;
-  fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
-  fzr.actOrgan.genome = fzr.genome[ndx].genome;
-  if (av.debug.dnd) console.log('fzr.actOrgan', fzr.actOrgan);
 }
 
 //The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
@@ -397,38 +399,27 @@ function landFzPopDish(dnd, pkg) {
 // Process dnd.trashCan ---------------------------------------------------
 var landTrashCan = function (dnd, fzr, parents, source, nodes, target) {
   'use strict';
-  var domId;
   var remove = {};
   remove.type = '';
-  remove.id = '';
+  remove.domid = '';
   if (av.debug.dnd) console.log('in LandTrashCan');
   //if the item is from the freezer, delete from freezer unless it is original stock (@)
   if ('fzOrgan' == source.node.id && '@ancestor' != nodes[0].textContent) {
     if (av.debug.dnd) {console.log('fzOrgan->trash', fzr.genome);}
-    domId = Object.keys(dnd.fzOrgan.selection)[0];
-    if (av.debug.dnd) console.log('domId', domId);
-    var ndx = fndFzrNdx(domId, fzr.genome);
+    remove.domid = Object.keys(dnd.fzOrgan.selection)[0];
     remove.type = 'g';
-    remove.id = fzr.genome[ndx]._id;
-    fzr.genome.splice(ndx,1);
     if (av.debug.dnd) console.log('fzOrgan->trash; nodes[0]',nodes[0]);
     if (av.debug.dnd) console.log('fzOrgan->trash; source.parent',source.parent);
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
   }
   else if ('fzConfig' == source.node.id && '@default' != nodes[0].textContent) {
-    domId = Object.keys(dnd.fzConfig.selection)[0];
-    var ndx = fndFzrNdx(domId, fzr.config);
+    remove.domid = Object.keys(dnd.fzConfig.selection)[0];
     remove.type = 'c';
-    remove.id = fzr.config[ndx]._id;
-    fzr.config.splice(ndx,1);
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
   }
   else if ('fzWorld' == source.node.id && '@example' != nodes[0].textContent) {
-    domId = Object.keys(dnd.fzWorld.selection)[0];
-    var ndx = fndFzrNdx(domId, fzr.world);
+    remove.domid = Object.keys(dnd.fzWorld.selection)[0];
     remove.type = 'w';
-    remove.id = fzr.world[ndx]._id;
-    fzr.world.splice(ndx,1);
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
   }
   // items from ancestor box require ancestor (parent) handling.
@@ -436,11 +427,11 @@ var landTrashCan = function (dnd, fzr, parents, source, nodes, target) {
     //find index into parents
     if (av.debug.dnd) console.log('ancestorBox->trash; source', source.map);
     //Find index into parent structure
-    var Ndx = parents.domId.indexOf(nodes[0].id);
+    var Ndx = parents.domid.indexOf(nodes[0].id);
     if (av.debug.dnd) console.log('ancestorBox->trash, nodes[0].id', nodes[0].id);
-    if (av.debug.dnd) console.log('ancestorBox->trash, parents', parents.domId[0]);
+    if (av.debug.dnd) console.log('ancestorBox->trash, parents', parents.domid[0]);
 
-    if (av.debug.dnd) console.log('ancestorBox->trash; nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domId', parents.domId);
+    if (av.debug.dnd) console.log('ancestorBox->trash; nodeId', nodes[0].id, '; Ndx', Ndx, '; parents.domid', parents.domid);
     removeParent(Ndx, parents);
     PlaceAncestors(parents);
     if (av.debug.dnd) console.log('ancestorBox->trash, parents', parents);
@@ -633,7 +624,7 @@ function makeHandAutoNdx(parents) {
 function removeParent(ParentNdx, parents) {
   'use strict';
   //if (av.debug.dnd) console.log('rP', parents.Colors)
-  if (av.debug.dnd) console.log('rp ndx, domId, parents',ParentNdx, parents.domId, parents);
+  if (av.debug.dnd) console.log('rp ndx, domId, parents',ParentNdx, parents.domid, parents);
   parents.Colors.push(parents.color[ParentNdx]);
   parents.color.splice(ParentNdx, 1);
   parents.name.splice(ParentNdx, 1);
@@ -642,7 +633,7 @@ function removeParent(ParentNdx, parents) {
   parents.row.splice(ParentNdx, 1);
   parents.AvidaNdx.splice(ParentNdx, 1);
   parents.howPlaced.splice(ParentNdx, 1);
-  parents.domId.splice(ParentNdx, 1);
+  parents.domid.splice(ParentNdx, 1);
   makeHandAutoNdx(parents);
 }
 

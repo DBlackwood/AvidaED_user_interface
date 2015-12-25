@@ -11,7 +11,7 @@ var findParentNdx = function (parents) {
   var MomNdx = -1;
   for (var ii = 0; ii < parents.name.length; ii++) {
     //if (matches([grd.selectedCol, grd.selectedRow], [parents.col[ii], parents.row[ii]])) {
-    if (grd.selectedNdx == parents.AvidaNdx[ii]) {
+    if (av.grd.selectedNdx == parents.AvidaNdx[ii]) {
       MomNdx = ii;
       //console.log('parent found in function', MomNdx);
       break;  //found a parent no need to keep looking
@@ -37,7 +37,10 @@ function SelectedKidMouseStyle(dnd, fzr, grd) {
   document.getElementById('fzOrgan').style.cursor = 'copy';
   document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
-  for (var ii=1; ii<fzr.genome.length; ii++) document.getElementById(fzr.genome[ii].domId).style.cursor = 'copy';
+  for (var ndx in fzr.domid) {
+
+  }
+  for (var dir in fzr.domid[dir]) {document.getElementById(fzr.domid[dir]).style.cursor = 'copy';}
   grd.kidName = 'temporary';
   grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
 }
@@ -72,9 +75,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
   target = 'organIcon';}
   else { // look for target in the freezer
     var found = false;
-    for (var ii=1; ii<fzr.genome.length; ii++) {
-      if (fzr.genome[ii].domId == evt.target.id) {found=true; break;}
-    }
+    for (var dir in fzr.domid) {if (fzr.domid[dir] == evt.target.id) {found=true; break;}}
     if (found || 'freezerDiv' == evt.target.id) {
       target  = 'fzOrgan';
       //create a new freezer item
@@ -89,24 +90,20 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
       if (avidian) {
         avidian = getUniqueName(avidian, dnd.fzOrgan);
         if (null != avidian) {  //add to Freezer
-          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ["organism"]}]);
+          dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
           dnd.fzOrgan.sync();
           //find domId of parent as listed in dnd.fzOrgan
           var mapItems = Object.keys(dnd.fzOrgan.map);
-          var domStr = "";
-          var neworg = {
-            'name': avidian,
-            'domId': mapItems[mapItems.length - 1],
-            'fileNum': fzr.gNum,
-            '_id': 'g' + fzr.gNum,
-            'genome': '0,heads_default,' + av.gen.dna[av.gen.son]
-          }
-          fzr.genome.push(neworg);
+          var gdir =  'g' + fzr.gNum;
+          fzr.dir[mapItems[mapItems.length - 1]] = gdir;
+          fzr.domid[gdir] = mapItems[mapItems.length - 1];
+          fzr.file[gdir + '/entryname.txt'] = avidian;
+          fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.gen.dna[av.gen.son];
           fzr.gNum++;
-          if (av.debug.mouse) console.log('Offspring-->freezer, fzr.genome', fzr.genome);
+          if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);
           //create a right mouse-click context menu for the item just created.
           if (av.debug.mouse) console.log('Offspring-->freezer; neworg', neworg);
-          contextMenu(fzr, dnd.fzOrgan, neworg.domId);
+          contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
         }
       }
     }
@@ -119,7 +116,7 @@ function traceSelected(dnd, fzr, grd) {
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   dnd.activeOrgan.sync();   //should be done after insertion or deletion
   //Put name of offspring in OrganCurrentNode
-  dnd.activeOrgan.insertNodes(false, [{data: grd.kidName, type: ["organism"]}]);
+  dnd.activeOrgan.insertNodes(false, [{data: grd.kidName, type: ['g']}]);
   dnd.activeOrgan.sync();
   //genome data should be in parents.genome[av.mouse.ParentNdx];
   fzr.actOrgan.genome = grd.kidGenome;
@@ -137,8 +134,10 @@ var KidMouse = function (evt, dnd, fzr, grd){
       traceSelected(dnd, fzr, grd);}
     else { // look for target in the freezer
       var found = false;
-      for (var ii = 1; ii < fzr.genome.length; ii++) {
-        if (fzr.genome[ii].domId == evt.target.id) {
+      console.log('target.id',evt.target.id, '; fzr.domid', fzr.domid);
+      for (var dir in fzr.domid) {
+        console.log('dir', dir);
+        if (fzr.domid[dir] == evt.target.id) {
           found = true;
           break;
         }
@@ -153,19 +152,15 @@ var KidMouse = function (evt, dnd, fzr, grd){
           if (null != avidian) {  //add to Freezer
             dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
             dnd.fzOrgan.sync();
-            //find domId of parent as listed in dnd.ancestorBox
             var mapItems = Object.keys(dnd.fzOrgan.map);
-            var neworg = {
-              'name': avidian,
-              'domId': mapItems[mapItems.length - 1],
-              'fileNum': fzr.gNum,
-              '_id': 'g' + fzr.gNum,
-              'genome': grd.kidGenome
-            };
-            fzr.genome.push(neworg);
+            var gdir =  'g' + fzr.gNum;
+            fzr.file[gdir + '/entryname.txt'] = avidian;
+            fzr.dir[mapItems[mapItems.length - 1]] = gdir;
+            fzr.domid[gdir] = mapItems[mapItems.length - 1];
+            fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.gen.dna[av.gen.son];
             fzr.gNum++;
-            console.log('fzOrgan', dnd.fzOrgan);
-            if (av.debug.mouse) console.log('Kid-->Snow', fzr.genome);
+            if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
+            if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
             //create a right mouse-click context menu for the item just created.
             if (av.debug.mouse) console.log('kid to freezerDiv', neworg);
             contextMenu(fzr, dnd.fzOrgan, neworg.domId);
@@ -178,53 +173,58 @@ var KidMouse = function (evt, dnd, fzr, grd){
   return target;
 }
 
-function ParentMouse(evt, dnd, fzr, parents) {
+function ParentMouse(evt, av) {
   'use strict';
   if (av.debug.mouse) console.log('ParentMouse', evt.target.id, evt);
   if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
     //Move the ancestor on the canvas
-    findSelected(evt, grd);
+    findSelected(evt, av.grd);
     // look to see if this is a valid grid cell
-    if (grd.selectedCol >= 0 && grd.selectedCol < grd.cols && grd.selectedRow >= 0 && grd.selectedRow < grd.rows) {
-      if (av.debug.mouse) console.log('parentMouse, selected,',grd.selectedCol, grd.selectedRow, grd.selectedNdx);
-      parents.col[mouse.ParentNdx] = grd.selectedCol;
-      parents.row[mouse.ParentNdx] = grd.selectedRow;
-      parents.AvidaNdx[av.mouse.ParentNdx] = parents.col[av.mouse.ParentNdx] + grd.cols * parents.row[av.mouse.ParentNdx];
-      console.log('mvparent', av.mouse.ParentNdx, parents.col[av.mouse.ParentNdx], parents.row[av.mouse.ParentNdx]);
-      console.log('b auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-      console.log('b hand', parents.handNdx.length, parents.handNdx);
+    if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
+      if (av.debug.mouse) console.log('parentMouse, selected,',av.grd.selectedCol, av.grd.selectedRow, av.grd.selectedNdx);
+      av.parents.col[av.mouse.ParentNdx] = av.grd.selectedCol;
+      av.parents.row[av.mouse.ParentNdx] = av.grd.selectedRow;
+      av.parents.AvidaNdx[av.mouse.ParentNdx] = av.parents.col[av.mouse.ParentNdx] + av.grd.cols * av.parents.row[av.mouse.ParentNdx];
+      console.log('mvparent', av.mouse.ParentNdx, av.parents.col[av.mouse.ParentNdx], av.parents.row[av.mouse.ParentNdx]);
+      console.log('b auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
+      console.log('b hand', av.parents.handNdx.length, av.parents.handNdx);
       //change from auto placed to hand placed if needed
-      if ('auto' == parents.howPlaced[av.mouse.ParentNdx]) {
-        parents.howPlaced[av.mouse.ParentNdx] = 'hand';
+      if ('auto' == av.parents.howPlaced[av.mouse.ParentNdx]) {
+        av.parents.howPlaced[av.mouse.ParentNdx] = 'hand';
         makeHandAutoNdx(parents);
         //PlaceAncestors(parents);
       }
-      console.log('auto', parents.autoNdx.length, parents.autoNdx, parents.name);
-      console.log('hand', parents.handNdx.length, parents.handNdx);
+      console.log('auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
+      console.log('hand', av.parents.handNdx.length, av.parents.handNdx);
     }
   }  // close on canvas
-  //-------------------------------------------- dnd.trashCan
+  //-------------------------------------------- av.dnd.trashCan
   else if ('TrashCanImage' == evt.target.id) {
     if (av.debug.mouse) console.log('parent->trashCan', evt);
-    var node = dojo.byId(parents.domId[av.mouse.ParentNdx]);
-    dnd.ancestorBox.parent.removeChild(node);
-    dnd.ancestorBox.sync();
+    console.log('parent->trashCan', evt);
+    console.log('av.mouse.ParentNdx', av.mouse.ParentNdx, '; domid', av.parents.domid[av.mouse.ParentNdx]);
+    console.log('ancestorBox', av.av.dnd.ancestorBox);
+    var node = dojo.byId(av.parents.domid[av.mouse.ParentNdx]);
+    av.dnd.ancestorBox.parent.removeChild(node);
+    av.dnd.ancestorBox.sync();
 
     //remove from main list.
     removeParent(av.mouse.ParentNdx, parents);
   }
   //-------------------------------------------- organism view
   else if ('organIcon' == evt.target.id) {
-    dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-    dnd.activeOrgan.sync();   //should be done after insertion or deletion
-    //Put name of offspring in dnd.activeOrganism
-    dnd.activeOrgan.insertNodes(false, [{data: parents.name[av.mouse.ParentNdx], type: ["organism"]}]);
-    dnd.activeOrgan.sync();
-    //genome data should be in parents.genome[av.mouse.ParentNdx];
-    fzr.actOrgan.genome = parents.genome[av.mouse.ParentNdx];
-    fzr.actOrgan.name = parents.name[av.mouse.ParentNdx];
-    fzr.actOrgan.domId = parents.domId[av.mouse.ParentNdx];
+    av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
+    av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
+    //Put name of offspring in av.dnd.activeOrganism
+    av.dnd.activeOrgan.insertNodes(false, [{data: av.parents.name[av.mouse.ParentNdx], type: ['g']}]);
+    av.dnd.activeOrgan.sync();
+    //genome data should be in av.parents.genome[av.mouse.ParentNdx];
+    av.fzr.actOrgan.genome = av.parents.genome[av.mouse.ParentNdx];
+    av.fzr.actOrgan.name = av.parents.name[av.mouse.ParentNdx];
+    av.fzr.actOrgan.domId = av.parents.domid[av.mouse.ParentNdx];
+
+
   }
 }
 

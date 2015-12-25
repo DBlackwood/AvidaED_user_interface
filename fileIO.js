@@ -30,13 +30,15 @@ function writeDxFile(db, path, contents) {
       console.log('Unable to add file ' + path);
     });
 }
+
 function addFzItem(dndSection, fzrSection, item, type) {
   'use strict';
   dndSection.insertNodes(false, [{data: item.name, type: [type]}]);
   dndSection.sync();
   var mapItems = Object.keys(dndSection.map);
   item.domId = mapItems[mapItems.length - 1];
-  fzrSection.push(item);
+  //fzrSection.push(item);  //tiba delte later, delete passing fzrSection
+
   //create a right av.mouse-click context menu for the item just created.
   if (av.debug.fio) console.log('item', item);
   //if (0<item.fileNum) {contextMenu(av.fzr, dndSection, item.domId);}
@@ -45,25 +47,24 @@ function addFzItem(dndSection, fzrSection, item, type) {
 function add2freezerFromFile(av) {
   "use strict";
   var type = av.fio.anID.substr(0, 1);
-  var tmp = wsb('/', av.fio.anID);
-  var num = tmp.substr(1, tmp.length-1);
+  var dir = wsb('/', av.fio.anID);
+  var num = dir.substr(1, dir.length-1);
   var name;
   if (null == av.fio.thisfile.asText()) { name = av.fio.anID; }
   else { name = wsb("\n", av.fio.thisfile.asText()); }
   var item = {
     'name': name,
     'fileNum': num,
-    '_id': tmp
+    '_id': dir
   };
-  if (av.debug.fio) console.log('type ', type, '; tmp', tmp, '; num', num);
+
+  if (av.debug.fio) console.log('type ', type, '; dir', dir, '; num', num);
   switch (type) {
     case 'c':
       addFzItem(av.dnd.fzConfig, av.fzr.config, item, type);
       if (av.fzr.cNum < Number(item.fileNum)) {av.fzr.cNum = Number(item.fileNum); }
       break;
     case 'g':
-      var afileName = wsb('entryname.txt', av.fio.fName) + 'genome.seq';
-      item.genome = av.fio.zipfile.files[afileName].asText();
       addFzItem(av.dnd.fzOrgan, av.fzr.genome, item, type);
       if (av.fzr.gNum < Number(item.fileNum)) {av.fzr.gNum = Number(item.fileNum); }
       break;
@@ -72,6 +73,10 @@ function add2freezerFromFile(av) {
       if (av.fzr.wNum < Number(item.fileNum)) {av.fzr.wNum = Number(item.fileNum); }
       break;
   }
+  av.fzr.file[av.fio.anID] = item.name;
+  av.fzr.domid[dir] = item.domId;
+  av.fzr.dir[item.domId] = dir;
+
 }
 
 function processFiles(av){
@@ -99,45 +104,29 @@ function processFiles(av){
       if ('c0/environment.cfg'==av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim()); }
 
       writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
-      /* no longer use PouchDB
-       var ifile = {
-       _id: av.fio.anID,
-       text: av.fio.thisfile.asText().trim()
-       };
-      av.fio.wsdb.get(av.fio.anID).then(function (doc) {
-        ifile._rev = doc._rev;
-        if (av.debug.pdb) console.log('get entryName doc already exists, ok update', doc);
-        av.fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
-        }).catch(function (err) {console.log('put err', err);
-        });
-      }).catch(function (err) {
-        av.fio.wsdb.put(ifile).then(function (response) {//if (av.debug.fio) console.log('ok correct', response); // handle response to put
-        }).catch(function (err) {console.log('put err', err);
-        });
-      });
-      */
+      av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
       break;
     default:
       //if (av.debug.fio) console.log('undefined file type in zip: full ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
       break;
   }
   //if (av.debug.fio) console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
+  //console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
 }
 
 
 //---------------------------------------- update config data from pouchDB data ----------------------------------------
 function updateSetup(av) {
   'use strict';
-  av.fio.wsdb.get(av.fzr.actConfig._id + '/avida.cfg').then(function (doc) {
-    avidaCFG2form(doc.text);
-  }).catch(function (err) {
-    console.log('error getting active avida.cfg data', err);
-  });
-  av.fio.wsdb.get(av.fzr.actConfig._id + '/environment.cfg').then(function (doc) {
-    environmentCFG2form(doc.text);
-  }).catch(function (err) {
-    console.log('error getting active environment.cfg data', err);
-  });
+  var path = av.fzr.actConfig._id + '/avida.cfg';
+  var doctext = av.fzr.file[path];
+  console.log('fzr.file', av.fzr.file);
+  console.log('doctxt', av.fzr.file['c0/avida.cfg'])
+  console.log('updateSetup = path', path, '; doc', doctext);
+  avidaCFG2form(doctext);
+  doctext = av.fzr.file[av.fzr.actConfig._id + '/environment.cfg'];
+  console.log('updateSetup = dir', av.fzr.actConfig._id, '; doc', doctext);
+  environmentCFG2form(doctext);
 }
 
 //----------------------- section to put data from environment.cfg into setup form of population page ------------------

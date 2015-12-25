@@ -32,7 +32,7 @@ var clearParents = function(parents) {
   parents.autoNdx = [];
   parents.handNdx = [];
   parents.howPlaced = [];
-  parents.domId = [];
+  parents.domid = [];  //need domID of entry in ancestorBox so that it can be removed from ancestor box when square on grid is dragged from box
   parents.Colors = ColorBlind.slice();
   parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
   return parents;
@@ -150,9 +150,13 @@ av.fio.dbName = 'wsdb';  //for workspace database
 av.fio.wsdb = null;
 av.fio.defaultFname = 'default_1.avidaedworkspace.zip';
 av.fio.uiWorker = null;
+av.fio.fileReadingDone = false;
 
 av.dnd = {};
 av.fzr = {};
+av.fzr.dir = {};
+av.fzr.domid = {};
+av.fzr.file = {};
 
 av.fzr.cNum = 0;  //value of the next configured dish (config) number
 av.fzr.gNum = 0;  //value of the next organism (genome) number
@@ -160,15 +164,32 @@ av.fzr.wNum = 0;  //value of the next world (populated dish) number
 av.fzr.config = [];
 av.fzr.genome = [];
 av.fzr.world = [];
-
 //hold genome for active organism in Organism View
-av.fzr.actOrgan = {'name': "", 'domId': "", '_id': '', 'genome': "" };
+av.fzr.actOrgan =  {'name': "", 'domId': "", 'genome': "" };
 //hold genome for active organism in Organism View
-av.fzr.actConfig = {'name': "", 'domId': "", '_id': '', 'type': '' };
-
-
+av.fzr.actConfig = {'name': "", 'domId': "", 'type': '' };
 
 /* Fzr - Freezer.
+
+ av.fzr.dir.dojoUnique14 = 'g0';
+ av.fzr.dir.dojoUnique15 = 'g1';
+ av.fzr.dir.dojoUnique16 = 'g4';
+ av.fzr.domid.c0 = 'dojoUnique4';
+ av.fzr.domid.c1 = 'dojoUnique5';
+ av.fzr.domid.c2 = 'dojoUnique6';
+ av.fzr.file['c0/avida.cfg'] = 'text1';
+ av.fzr.file['c0/environment.cfg'] = 'text2';
+ av.fzr.file['c0/entryname.txt'] = 'text3';
+
+
+ var gennomelist = invertHash(av.fzr.dir);
+ console.log('genomelist', gennomelist);
+
+ var dirlist = invertHash(av.fzr.domid);
+ console.log('dirlist', dirlist)
+
+
+ older version below:
 av.fzr.g.name
 av.fzr.g.fileNum
 av.fzr.g._id - PouchDB ID
@@ -176,5 +197,19 @@ av.fzr.g.domId
 av.fzr.g.genome
 av.fzr.c - configued dish
 av.fzr.w - world (populated dish)
+
+domID <--> c6
+
+av.fzr.c.c0.domID
+
+av.fzr.c['c0/avida.cfg']
+
+var ex = {};
+var inv = {};
+ex['c0'] = 'dojoUnique4';
+ex.c0 = 'dojoUnique4';
+inv['dojoUnique4'] = 'c0';
+
+ av.fzr.c0['avida.cfg'] = text;
 
 */

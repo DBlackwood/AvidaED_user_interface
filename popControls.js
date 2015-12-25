@@ -25,8 +25,8 @@ function popRunningState_ui(dnd, grd) {
   //Disable some of the options on the Setup page
   dnd.ancestorBox.isSource = false;
   dnd.activeConfig.isSource = false;
-  delete dnd.ancestorBox.accept["organism"];
-  delete dnd.activeConfig.accept["conDish"];
+  delete dnd.ancestorBox.accept['g'];
+  delete dnd.activeConfig.accept['c'];
   $("#muteSlide").slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
   dijit.byId("sizeCols").attr("disabled", true);
   dijit.byId("sizeRows").attr("disabled", true);
@@ -49,19 +49,21 @@ function popRunningState_ui(dnd, grd) {
   dijit.byId("mnFzPopulation").attr("disabled", false);
 }
 
-function popNewExState(dnd, fzr, grd, parents){
+function popNewExState(dnd, fzr, grd, parents) {
+  'use strict';
   //set configuation to default
+  var fname = "@default";
   dnd.activeConfig.selectAll().deleteSelectedNodes();
-  dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);
+  dnd.activeConfig.insertNodes(false, [{data: fname, type: ['c']}]);
   dnd.activeConfig.sync();
   var domId = Object.keys(dnd.activeConfig.map)[0];
   fzr.actConfig.domID = domId;
-  fzr.actConfig.name = document.getElementById(domId).textContent;
+  fzr.actConfig.name = fname;
   fzr.actConfig.type = 'c';
   fzr.actConfig._id = 'c0';
   // clear parents
-  dnd.ancestorBox.accept["organism"] = 1;
-  dnd.activeConfig.accept["conDish"] = 1;
+  dnd.ancestorBox.accept['g'] = 1;
+  dnd.activeConfig.accept['c'] = 1;
   dnd.ancestorBox.isSource = true;
   dnd.activeConfig.isSource = true;
   $("#muteSlide").slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
@@ -106,7 +108,6 @@ function popNewExState(dnd, fzr, grd, parents){
   dnd.ancestorBox.sync();
   dnd.gridCanvas.selectAll().deleteSelectedNodes();
   dnd.gridCanvas.sync();
-  AncestorList = [];
 
   //Update data for Selected Organism Type
   document.getElementById("nameLabel").textContent = "-";
