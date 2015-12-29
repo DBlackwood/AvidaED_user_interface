@@ -2,13 +2,8 @@
 
 function deleteFzrFile(fzr, fileId) {
   'use strict';
-  fio.wsdb.get(fileId).then(function (doc) {
-    return fio.wsdb.remove(doc);
-  }).then(function (result) {
-    if (av.debug.pdb) console.log('correct pdb: ', doc);
-  }).catch(function (err) {
-    console.log('delete file err: ', err);
-  });
+  try { delete av.fzr.file[fileId];}
+  catch(e) {av.fzr.file[fileId] = undefined; }
 }
 
 function makeEmDxFile(fio, path, contents) {
@@ -129,48 +124,59 @@ function makeFzrOrgan(fzr) {
   makeEmDxFile(fzr, fzr.genome[ndx]._id+'/genome.seq', fzr.genome[ndx].genome);
 }
 
-function removeFzrConfig(fzr, strId) {
+function removeFzrConfig(fzr, dir) {
   'use strict';
-  deleteFzrFile(fzr, strId+'/ancestors');
-  deleteFzrFile(fzr, strId+'/ancestors_manual');
-  deleteFzrFile(fzr, strId+'/avida.cfg');
-  deleteFzrFile(fzr, strId+'/environment.cfg');
-  deleteFzrFile(fzr, strId+'/events.cfg');
-  deleteFzrFile(fzr, strId+'/entryname.txt');
-  deleteFzrFile(fzr, strId+'/instset.cfg');
+  deleteFzrFile(fzr, dir+'/ancestors');
+  deleteFzrFile(fzr, dir+'/ancestors_manual');
+  deleteFzrFile(fzr, dir+'/avida.cfg');
+  deleteFzrFile(fzr, dir+'/environment.cfg');
+  deleteFzrFile(fzr, dir+'/events.cfg');
+  deleteFzrFile(fzr, dir+'/entryname.txt');
+  deleteFzrFile(fzr, dir+'/instset.cfg');
+  var domid = fzr.domid[dir];
+  delete fzr.domid[dir];
+  delete fzr.dir[domid];
 }
 
-function removeFzrGenome(fzr, strId) {
+function removeFzrGenome(fzr, dir) {
   'use strict';
-  deleteFzrFile(fzr, strId+'/entryname.txt');
-  deleteFzrFile(fzr, strId+'/genome.seq');
+  deleteFzrFile(fzr, dir+'/entryname.txt');
+  deleteFzrFile(fzr, dir+'/genome.seq');
+  var domid = fzr.domid[dir];
+  delete av.fzr.domid[dir];
+  delete av.fzr.dir[domid];
+  console.log('after remove genome: dir', dir, '; av.fzr', av.fzr);
 }
 
-function removeFzrWorld(fzr, strId) {
+function removeFzrWorld(fzr, dir) {
   'use strict';
-  deleteFzrFile(fzr, strId+'/ancestors');
-  deleteFzrFile(fzr, strId+'/ancestors_manual');
-  deleteFzrFile(fzr, strId+'/avida.cfg');
-  deleteFzrFile(fzr, strId+'/environment.cfg');
-  deleteFzrFile(fzr, strId+'/events.cfg');
-  deleteFzrFile(fzr, strId+'/entryname.txt');
-  deleteFzrFile(fzr, strId+'/instset.cfg');
-  deleteFzrFile(fzr, strId+'/update');
-  //deleteFzrFile(fzr, strId+'/');
-  //deleteFzrFile(fzr, strId+'/');
+  deleteFzrFile(fzr, dir+'/ancestors');
+  deleteFzrFile(fzr, dir+'/ancestors_manual');
+  deleteFzrFile(fzr, dir+'/avida.cfg');
+  deleteFzrFile(fzr, dir+'/environment.cfg');
+  deleteFzrFile(fzr, dir+'/events.cfg');
+  deleteFzrFile(fzr, dir+'/entryname.txt');
+  deleteFzrFile(fzr, dir+'/instset.cfg');
+  deleteFzrFile(fzr, dir+'/update');
+  var domid = fzr.domid[dir];
+  delete fzr.domid[dir];
+  delete fzr.dir[domid];
+  //deleteFzrFile(fzr, dir+'/');
+  //deleteFzrFile(fzr, dir+'/');
 }
 
-function removeFzrItem(fzr, strId, type){
+av.fzr.removeFzrItem = function(fzr, dir, type){
   'use strict';
+  console.log('dir', dir);
   switch (type){
     case 'c':
-      removeFzrConfig(fzr, strId);
+      removeFzrConfig(fzr, dir);
       break;
     case 'g':
-      removeFzrGenome(fzr, strId);
+      removeFzrGenome(fzr, dir);
       break;
     case 'w':
-      removeFzrWorld(fzr, strId);
+      removeFzrWorld(fzr, dir);
       break;
   }
 }

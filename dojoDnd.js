@@ -164,7 +164,7 @@ function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
     parents.howPlaced.push('auto');
     parents.domid.push(Object.keys(target.selection)[0]); //domid in ancestorBox used to remove if square in grid moved to trashcan
     //Find color of ancestor
-    if (0 < parents.Colors.length) { parents.color.push(parents.Colors.pop()) }
+    if (0 < parents.Colors.length) { parents.color.push(parents.Colors.pop());}
     else { parents.color.push(defaultParentColor) }
     PlaceAncestors(parents);
     if (av.debug.dnd) console.log('parents', parents.name[nn], parents.domid[nn], parents.genome[nn]);
@@ -231,7 +231,6 @@ function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
 //When something is added to the Organism Freezer ------------------
 function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
   'use strict';
-  var neworg = {};
   var gen;
   var domid = Object.keys(target.selection)[0];
   if (av.debug.dnd) console.log('domid', domid);
@@ -256,7 +255,6 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
         // see the cancel as cancelling the dnd rather than canceling the rename.
         dnd.ancestorBox.deleteSelectedNodes();  //clear items
         dnd.ancestorBox.sync();   //should be done after insertion or deletion
-        if (av.debug.dnd) console.log('neworg', neworg);
       }
       else if ('activeOrgan' == source.node.id) { gen = fzr.actOrgan.genome; }
       fzr.dir[domid] = 'g' + fzr.gNum;
@@ -264,11 +262,12 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
       fzr.file['g' + fzr.gNum + '/genmome.seq'] = gen;
       fzr.file['g' + fzr.gNum + 'entryname.txt'] = dnd.fzOrgan.map[domid].data;
       fzr.gNum++;
+      if (av.debug.dnd) console.log('fzr', fzr);
 
       if (av.debug.dnd) console.log('fzOrgan', dnd.fzOrgan);
       //create a right av.mouse-click context menu for the item just created.
-      if (av.debug.dnd) console.log('target',target, '; neworg.domId', neworg.domId );
-      contextMenu(fzr, target, neworg.domId);
+      if (av.debug.dnd) console.log('before context menu: target',target, '; domId', domid );
+      contextMenu(fzr, target, domid);
     }
     else { //Not given a name, so it should NOT be added to the freezer.
       dnd.fzOrgan.deleteSelectedNodes();  //clear items
@@ -302,6 +301,7 @@ function updateFromFzrOrganism(dnd, fzr) {
 function landOrganIcon(av, source, nodes, target) {
   //clear out the old data if an organism is already there
   'use strict';
+  console.log('source', source.node.id);
   var items = getAllItems(av.dnd.activeOrgan);    //gets some data about the items in the container
   if (1 < items.length) {
     av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
@@ -312,12 +312,13 @@ function landOrganIcon(av, source, nodes, target) {
     av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
     av.dnd.activeOrgan.sync();
   });
-  if ('fzOrgan' === source.node.id) { updateFromFzrOrganism(dnd, fzr); }
+  if ('fzOrgan' === source.node.id) { updateFromFzrOrganism(av.dnd, av.fzr); }
   else if ('ancestorBox' === source.node.id) {
-    var domid = Object.keys(av.dnd.fzOrgan.selection)[0];
+    var domid = Object.keys(av.dnd.ancestorBox.selection)[0];
     var Ndx = av.parents.domid.indexOf(domid);  //Find index into parent structure
     av.fzr.actOrgan.name = av.parents.name[Ndx];
     av.fzr.actOrgan.genome = av.parents.genome[Ndx];
+    console.log('fzr', av.fzr, '; parents', av.parents, '; ndx', Ndx);
   }
 
   //clear out av.dnd.organIcon as nothing is stored there - just moved on to OrganismCurrent
@@ -534,9 +535,10 @@ function landGraphPop3(dnd, source, nodes, target, plt) {
 function contextMenu(fzr, target, fzItemID) {
   'use strict';
   var fzSection = target.node.id;
+  var dir;
   if (av.debug.dnd) console.log("contextMenu; target.node.id=",target.node.id);
   if (av.debug.dnd) console.log("contextMenu; fzItemID=",fzItemID, " fzSection=", fzSection);
-  if (av.debug.dnd) console.log('contextMenu', fzItemID, fzr.genome);
+  if (av.debug.dnd) console.log('contextMenu: fzr', fzr);
   var aMenu = new dijit.Menu({targetNodeIds: [fzItemID]});
   aMenu.addChild(new dijit.MenuItem({
     label: "Rename",
@@ -549,17 +551,8 @@ function contextMenu(fzr, target, fzItemID) {
           document.getElementById(fzItemID).textContent = fzName;
           //if (av.debug.dnd) console.log(".data=", target.map[fzItemID].data);
           //update freezer structure
-          if ('fzOrgan' == fzSection) {
-            var Ndx = fndFzrNdx(fzItemID, fzr.genome);
-            fzr.genome[Ndx].name = fzName;
-          } else if ('fzConfig' == fzSection){
-            var Ndx = fndFzrNdx(fzItemID, fzr.config);
-            fzr.config[Ndx].name = fzName;
-          } else if ('fzWorld' == fzSection){
-            var Ndx = fndFzrNdx(fzItemID, fzr.world);
-            fzr.world[Ndx].name = fzName;
-          }
-          //update PouchDB
+          dir = fzr.dir[fzItemID];
+          fzr.file[dir+'/entryname.txt']=fzName;
         }
       }
     }
@@ -569,17 +562,15 @@ function contextMenu(fzr, target, fzItemID) {
     onClick: function () {
       var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
       if (sure) {
+        dir = fzr.dir[fzItemID];
+        fzr.file[dir+'/entryname.txt'];
         if ('fzOrgan' == fzSection) {
-          var Ndx = fndFzrNdx(fzItemID, fzr.genome);
-          fzr.genome.splice(Ndx, 1);
-        } else if ('fzConfig' == fzSection) {
-          var Ndx = fndFzrNdx(fzItemID, fzr.config);
-          fzr.config.splice(Ndx, 1);
-        }else if ('fzWorld' == fzSection) {
-          var Ndx = fndFzrNdx(fzItemID, fzr.config);
-          fzr.config.splice(Ndx, 1);
+          av.fzr.removeFzrItem(av.fzr, dir, 'g')
+        } else if ('fzConfig' == fzSection){
+          av.fzr.removeFzrItem(av.fzr, dir, 'c')
+        } else if ('fzWorld' == fzSection){
+          av.fzr.removeFzrItem(av.fzr, dir, 'w')
         }
-        //update PouchDB
         target.selectNone();
         dojo.destroy(fzItemID);
         target.delItem(fzItemID);
@@ -588,8 +579,39 @@ function contextMenu(fzr, target, fzItemID) {
     }
   }))
 };
-/* ********************************************************************** */
+/* ****************************************************************************************************************** */
+var removeFzrConfig = function(fzr, dir) {
+  'use strict';
+  deleteFzrFile(fzr, dir+'/ancestors');
+  deleteFzrFile(fzr, dir+'/ancestors_manual');
+  deleteFzrFile(fzr, dir+'/avida.cfg');
+  deleteFzrFile(fzr, dir+'/environment.cfg');
+  deleteFzrFile(fzr, dir+'/events.cfg');
+  deleteFzrFile(fzr, dir+'/entryname.txt');
+  deleteFzrFile(fzr, dir+'/instset.cfg');
+};
 
+var removeFzrGenome = function(fzr, dir) {
+  'use strict';
+  deleteFzrFile(fzr, dir+'/entryname.txt');
+  deleteFzrFile(fzr, dir+'/genome.seq');
+};
+
+var removeFzrWorld = function(fzr, dir) {
+  'use strict';
+  deleteFzrFile(fzr, dir + '/ancestors');
+  deleteFzrFile(fzr, dir + '/ancestors_manual');
+  deleteFzrFile(fzr, dir + '/avida.cfg');
+  deleteFzrFile(fzr, dir + '/environment.cfg');
+  deleteFzrFile(fzr, dir + '/events.cfg');
+  deleteFzrFile(fzr, dir + '/entryname.txt');
+  deleteFzrFile(fzr, dir + '/instset.cfg');
+  deleteFzrFile(fzr, dir + '/update');
+  //deleteFzrFile(fzr, dir+'/');
+  //deleteFzrFile(fzr, dir+'/');
+};
+/* ****************************************************************************************************************** */
+//delete eventually
 var fndFzrNdx = function (domId, fzrSection) {
   'use strict';
   for (var ii = 0; ii < fzrSection.length; ii++) {
@@ -600,7 +622,7 @@ var fndFzrNdx = function (domId, fzrSection) {
   }
   if (av.debug.dnd) console.log('GenomeNdx not found');
   return -1;
-}
+};
 
 function makeHandAutoNdx(parents) {
   'use strict';

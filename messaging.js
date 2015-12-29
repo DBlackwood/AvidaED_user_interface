@@ -2,6 +2,7 @@
 //fio.uiWorker function
 function doOrgTrace(fio, fzr) {
   'use strict';
+  console.log('doOrgTrace: fzr', fzr);
   var seed = 100 * Math.random();
   if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
   else {seed = -1};

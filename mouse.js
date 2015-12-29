@@ -102,7 +102,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
           fzr.gNum++;
           if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);
           //create a right mouse-click context menu for the item just created.
-          if (av.debug.mouse) console.log('Offspring-->freezer; neworg', neworg);
+          if (av.debug.mouse) console.log('Offspring-->freezer; fzf', fzr);
           contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
         }
       }
@@ -131,13 +131,14 @@ var KidMouse = function (evt, dnd, fzr, grd){
   if (5 < grd.kidGenome.length) {
     if ('organIcon' == evt.target.id) {
       target = 'organIcon';
-      traceSelected(dnd, fzr, grd);}
+      //traceSelected(dnd, fzr, grd);
+    }
     else { // look for target in the freezer
       var found = false;
       console.log('target.id',evt.target.id, '; fzr.domid', fzr.domid);
       for (var dir in fzr.domid) {
         console.log('dir', dir);
-        if (fzr.domid[dir] == evt.target.id) {
+        if ((fzr.domid[dir] == evt.target.id) && ('g'==dir.substring(0,1)) ) {
           found = true;
           break;
         }
@@ -157,13 +158,13 @@ var KidMouse = function (evt, dnd, fzr, grd){
             fzr.file[gdir + '/entryname.txt'] = avidian;
             fzr.dir[mapItems[mapItems.length - 1]] = gdir;
             fzr.domid[gdir] = mapItems[mapItems.length - 1];
-            fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.gen.dna[av.gen.son];
+            //fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + grd.kidGenome;
+            fzr.file[gdir + '/genome.seq'] = grd.kidGenome;
             fzr.gNum++;
             if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
             if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
             //create a right mouse-click context menu for the item just created.
-            if (av.debug.mouse) console.log('kid to freezerDiv', neworg);
-            contextMenu(fzr, dnd.fzOrgan, neworg.domId);
+            contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
           }
         }
       }

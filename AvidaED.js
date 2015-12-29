@@ -604,6 +604,7 @@ require([
   av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
       landAncestorBox(av.dnd, av.fzr, av.parents,source, nodes, target);
+      console.log('ancestorBox', av.dnd.ancestorBox);
     }
   });
 
@@ -623,6 +624,8 @@ require([
   });
 
   av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
+    console.log('target', target.node.id, '; source',source.node.id, '-------------------------------------------------------------------');
+    //setTimeout(null,1000);
     if ('organIcon' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
       landOrganIcon(av, source, nodes, target);
@@ -654,7 +657,9 @@ require([
       if (av.debug.dnd) console.log('trashCan: s, t', source, target);
       remove = landTrashCan(av.dnd, av.fzr, av.parents, source, nodes, target);
       if ('' != remove.type) {
-        removeFzrItem(av.fio, remove.dir, remove.type);
+        //removeFzrItem(av.fzr, remove.dir, remove.type);
+        remove.dir = av.fzr.dir[remove.domid];
+        av.fzr.removeFzrItem(av.fzr, remove.dir, remove.type);
       }
     }
   });
@@ -1099,7 +1104,9 @@ require([
       distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
       if (25 > distance) {
         for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';
-        for (var ndx in av.fzr.domid) document.getElementById(av.fzr.domid[ndx]).style.cursor = 'copy';
+        for (var ndx in av.fzr.domid) {
+          if ('g'==dir.substring(0,1)) document.getElementById(av.fzr.domid[ndx]).style.cursor = 'copy';
+        }
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
         document.getElementById('mainBC').style.cursor = 'move';
@@ -1282,7 +1289,7 @@ require([
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
-    //for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'default'; delete later
+    console.log('fzr', av.fzr);
     for (var dir in av.fzr.domid) document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
@@ -1314,8 +1321,7 @@ require([
     else if ('kid' == av.mouse.Picked) {
       av.mouse.Picked = "";
       target = KidMouse(evt, av.dnd, av.fzr, av.grd);
-      if ('fzOrgan' == target) { makeFzrOrgan(av.fio, av.fzr);}
-      else if ('organIcon' == evt.target.id) {
+      if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         mainBoxSwap("organismBlock");
         organismCanvasHolderSize();
@@ -1326,6 +1332,10 @@ require([
         document.getElementById("ExecuteAbout").style.width = "100%";
         doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
       }
+/*      else if ('fzOrgan' == target) {
+        //make_database_entry if using a database (av.fio, av.fzr);
+      }
+*/
     }
     av.mouse.Picked = "";
   });
