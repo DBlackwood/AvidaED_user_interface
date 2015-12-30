@@ -56,7 +56,8 @@ var getDomId = function (name, target){
   return domItems[nodeIndex];
 };
 
-//pass in fzr.config, fzr.world or fzr.organ
+
+//pass in av.fzr.config, av.fzr.world or av.fzr.organ  tiba delete
 var getFzrNdx = function (array, domId) {
   'use strict';
   var ndx = -1;
@@ -83,26 +84,18 @@ function landActiveConfig(dnd, pkg) {
     dnd.activeConfig.insertNodes(false, [item]);
   });
   dnd.activeConfig.sync();
-  var domId = Object.keys(dnd.activeConfig.map)[0];
-  fzr.actConfig.domID = domId;
-  fzr.actConfig.name = document.getElementById(domId).textContent;
-  domId = Object.keys(pkg.source.selection)[0];
+  var domid = Object.keys(dnd.activeConfig.map)[0];
+  av.fzr.actConfig.actDomid = domid;
+  av.fzr.actConfig.name = document.getElementById(domid).textContent;
+  av.fzr.actConfig.fzDomid = Object.keys(pkg.source.selection)[0];
+  av.fzr.actConfig.dir = av.fzr.dir[av.fzr.actConfig.fzDomid];
+
   switch (pkg.source.node.id) {
     case 'fzConfig':
-      fzr.actConfig.type = 'c';
-      ndx = getFzrNdx(fzr.config, domId);
-      if (-1 < ndx) {
-        fzr.actConfig._id = fzr.config[ndx]._id;
-      }
-      else {console.log('index not found for updating active configuration');}
+      av.fzr.actConfig.type = 'c';
       break;
     case 'fzWorld':
-      fzr.actConfig.type = 'w';
-      ndx = getFzrNdx(fzr.world, domId);
-      if (-1 < ndx) {
-        fzr.actConfig._id = fzr.world[ndx]._id;
-      }
-      else {console.log('index not found for updating active configuration');}
+      av.fzr.actConfig.type = 'w';
       break;
   }
 
@@ -125,6 +118,7 @@ function landActiveConfig(dnd, pkg) {
 //Process when an Configuration is added to the Freezer
 function landFzConfig(dnd, fzr, source, nodes, target) {
   'use strict';
+  console.log('landFzConfig: fzr', av.fzr);
   var domid = Object.keys(target.selection)[0];
   var dishCon = prompt("Please name your dish configuration", nodes[0].textContent + "_1");
   if (dishCon) {
@@ -135,9 +129,9 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
 
       //Now find which node has the new content so it can get a context menu.
       var domID = getDomId(configName, target);
-      fzr.dir[domID] = 'c'+ fzr.cNum;
-      fzr.domid['c'+ fzr.cNum] = domID;
-      fzr.cNum++;
+      av.fzr.dir[domID] = 'c'+ av.fzr.cNum;
+      av.fzr.domid['c'+ av.fzr.cNum] = domID;
+      av.fzr.cNum++;
 
       //create a right av.mouse-click context menu for the item just created.
       contextMenu(fzr, target, domID);
@@ -150,13 +144,70 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
 }
 
 //Organsim dnd------------------------------------------------------
+//When something is added to the Organism Freezer ------------------
+function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
+  'use strict';
+  var gen;
+  var domid = Object.keys(target.selection)[0];
+  if (av.debug.dnd) console.log('domid', domid);
+  var avidian = prompt("Please name your avidian", document.getElementById(domid).textContent + "_1");
+  if (avidian) {
+    var avName = getUniqueName(avidian, target);
+    if (null != avName) {  //give dom item new avName name
+      document.getElementById(domid).textContent = avName;
+      target.map[domid].data = avName;
+
+      if ('ancestorBox' == source.node.id) {
+        //update structure to hold freezer data for Organisms.
+        var Ndx = parents.domid.indexOf(nodes[0].id);  //Find index into parent structure
+        gen = parents.genome[Ndx];
+
+        // need to remove organism from parents list.
+        removeParent(Ndx, parents);
+        PlaceAncestors(parents);
+
+        // need to remove organism from the Ancestor Box.
+        // dnd.ancestorBox is dojo dnd copyonly to prevent loss of that organsim when the user clicks cancel. The user will
+        // see the cancel as cancelling the dnd rather than canceling the rename.
+        dnd.ancestorBox.deleteSelectedNodes();  //clear items
+        dnd.ancestorBox.sync();   //should be done after insertion or deletion
+      }
+      else if ('activeOrgan' == source.node.id) { gen = av.fzr.actOrgan.genome; }
+      av.fzr.dir[domid] = 'g' + av.fzr.gNum;
+      av.fzr.domid['g' + av.fzr.gNum] = domid;
+      av.fzr.file['g' + av.fzr.gNum + '/genmome.seq'] = gen;
+      av.fzr.file['g' + av.fzr.gNum + 'entryname.txt'] = dnd.fzOrgan.map[domid].data;
+      av.fzr.gNum++;
+      if (av.debug.dnd) console.log('fzr', fzr);
+
+      if (av.debug.dnd) console.log('fzOrgan', dnd.fzOrgan);
+      //create a right av.mouse-click context menu for the item just created.
+      if (av.debug.dnd) console.log('before context menu: target',target, '; domId', domid );
+      contextMenu(fzr, target, domid);
+    }
+    else { //Not given a name, so it should NOT be added to the freezer.
+      dnd.fzOrgan.deleteSelectedNodes();  //clear items
+      dnd.fzOrgan.sync();   //should be done after insertion or deletion
+    }
+  }
+  else {  //cancelled so the item should NOT be added to the freezer.
+    dnd.fzOrgan.deleteSelectedNodes();  //clear items
+    dnd.fzOrgan.sync();   //should be done after insertion or deletion
+  }
+  if (av.debug.dnd) console.log('near end of landFzOrgan');
+  if ('ancestorBox' != source.node.id) {
+    console.log('dojo dnd to Organ Freezer, not from Ancestor Box');
+  }
+  if (av.debug.dnd) console.log('End of landFzOrgan');
+}
+
 function landAncestorBox(dnd, fzr, parents, source, nodes, target) {
   'use strict';
   //Do not copy parents if one is moved within Ancestor Box
   if ('ancestorBox' != source.node.id) {
     //find genome by finding source
     var domId = Object.keys(source.selection)[0];
-    var dir = fzr.dir[domId];
+    var dir = av.fzr.dir[domId];
     parents.genome.push(av.fzr.file[dir+'/genome.seq']);
     var nn = parents.name.length;
     parents.autoNdx.push(nn);
@@ -197,7 +248,7 @@ function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
       if (av.debug.dnd) console.log('dnd.gridCanvas.map', dnd.gridCanvas.map);
       if (av.debug.dnd) console.log('dnd.ancestorBox.map', dnd.ancestorBox.map);
     });
-    // need to find the domid of the ancetor in ancestorBox. The line below is not correct. ???? !!!!! tiba
+    // need to find the domid of the ancestor in ancestorBox. The line below is not correct. ???? !!!!! tiba
     var domIDs = Object.keys(dnd.ancestorBox.map);
     parents.domid.push(domIDs[domIDs.length-1]);
 
@@ -207,8 +258,8 @@ function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
     parents.howPlaced[nn] = 'hand';
     parents.name[nn] = nodes[0].textContent;
     var domId = Object.keys(source.selection)[0];
-    if (av.debug.dnd) console.log('LandGridCanvas; domId', domId, '; fzr.genome', fzr.genome);
-    var dir = fzr.dir[domId];
+    if (av.debug.dnd) console.log('LandGridCanvas; domId', domId, '; av.fzr.genome', av.fzr.genome);
+    var dir = av.fzr.dir[domId];
     parents.genome.push(av.fzr.file[dir+'/genome.seq']);
     //find domId of parent as listed in dnd.ancestorBox
 
@@ -228,74 +279,17 @@ function landGridCanvas(av, dnd, fzr, grd, parents, source, nodes, target) {
   if (av.debug.dnd) console.log("parents", parents);
 }
 
-//When something is added to the Organism Freezer ------------------
-function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
-  'use strict';
-  var gen;
-  var domid = Object.keys(target.selection)[0];
-  if (av.debug.dnd) console.log('domid', domid);
-  var avidian = prompt("Please name your avidian", document.getElementById(domid).textContent + "_1");
-  if (avidian) {
-    var avName = getUniqueName(avidian, target);
-    if (null != avName) {  //give dom item new avName name
-      document.getElementById(domid).textContent = avName;
-      target.map[domid].data = avName;
-
-      if ('ancestorBox' == source.node.id) {
-        //update structure to hold freezer data for Organisms.
-        var Ndx = parents.domid.indexOf(nodes[0].id);  //Find index into parent structure
-        gen = parents.genome[Ndx];
-
-        // need to remove organism from parents list.
-        removeParent(Ndx, parents);
-        PlaceAncestors(parents);
-
-        // need to remove organism from the Ancestor Box.
-        // dnd.ancestorBox is dojo dnd copyonly to prevent loss of that organsim when the user clicks cancel. The user will
-        // see the cancel as cancelling the dnd rather than canceling the rename.
-        dnd.ancestorBox.deleteSelectedNodes();  //clear items
-        dnd.ancestorBox.sync();   //should be done after insertion or deletion
-      }
-      else if ('activeOrgan' == source.node.id) { gen = fzr.actOrgan.genome; }
-      fzr.dir[domid] = 'g' + fzr.gNum;
-      fzr.domid['g' + fzr.gNum] = domid;
-      fzr.file['g' + fzr.gNum + '/genmome.seq'] = gen;
-      fzr.file['g' + fzr.gNum + 'entryname.txt'] = dnd.fzOrgan.map[domid].data;
-      fzr.gNum++;
-      if (av.debug.dnd) console.log('fzr', fzr);
-
-      if (av.debug.dnd) console.log('fzOrgan', dnd.fzOrgan);
-      //create a right av.mouse-click context menu for the item just created.
-      if (av.debug.dnd) console.log('before context menu: target',target, '; domId', domid );
-      contextMenu(fzr, target, domid);
-    }
-    else { //Not given a name, so it should NOT be added to the freezer.
-      dnd.fzOrgan.deleteSelectedNodes();  //clear items
-      dnd.fzOrgan.sync();   //should be done after insertion or deletion
-    }
-  }
-  else {  //cancelled so the item should NOT be added to the freezer.
-    dnd.fzOrgan.deleteSelectedNodes();  //clear items
-    dnd.fzOrgan.sync();   //should be done after insertion or deletion
-  }
-  if (av.debug.dnd) console.log('near end of landFzOrgan');
-  if ('ancestorBox' != source.node.id) {
-    console.log('dojo dnd to Organ Freezer, not from Ancestor Box');
-  }
-  if (av.debug.dnd) console.log('End of landFzOrgan');
-}
-
 function updateFromFzrOrganism(dnd, fzr) {
   'use strict';
   var domId = Object.keys(dnd.fzOrgan.selection)[0];
-  var dir = fzr.dir[domId];
+  var dir = av.fzr.dir[domId];
   if (av.debug.dnd) console.log('domId', domId, '; dir', dir);
-  fzr.actOrgan.name = fzr.file[dir+'/entryname.txt'];
-  fzr.actOrgan.genome = fzr.file[dir+'/genome.seq'];
+  av.fzr.actOrgan.name = av.fzr.file[dir+'/entryname.txt'];
+  av.fzr.actOrgan.genome = av.fzr.file[dir+'/genome.seq'];
   if (av.debug.dnd) console.log('domId', domId);
 
-  //fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];  //don't think this is used; delete later
-  if (av.debug.dnd) console.log('fzr.actOrgan', fzr.actOrgan);
+  //av.fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];  //don't think this is used; delete later
+  if (av.debug.dnd) console.log('av.fzr.actOrgan', av.fzr.actOrgan);
 }
 
 function landOrganIcon(av, source, nodes, target) {
@@ -406,7 +400,7 @@ var landTrashCan = function (dnd, fzr, parents, source, nodes, target) {
   if (av.debug.dnd) console.log('in LandTrashCan');
   //if the item is from the freezer, delete from freezer unless it is original stock (@)
   if ('fzOrgan' == source.node.id && '@ancestor' != nodes[0].textContent) {
-    if (av.debug.dnd) {console.log('fzOrgan->trash', fzr.genome);}
+    if (av.debug.dnd) {console.log('fzOrgan->trash', av.fzr.genome);}
     remove.domid = Object.keys(dnd.fzOrgan.selection)[0];
     remove.type = 'g';
     if (av.debug.dnd) console.log('fzOrgan->trash; nodes[0]',nodes[0]);
@@ -551,8 +545,8 @@ function contextMenu(fzr, target, fzItemID) {
           document.getElementById(fzItemID).textContent = fzName;
           //if (av.debug.dnd) console.log(".data=", target.map[fzItemID].data);
           //update freezer structure
-          dir = fzr.dir[fzItemID];
-          fzr.file[dir+'/entryname.txt']=fzName;
+          dir = av.fzr.dir[fzItemID];
+          av.fzr.file[dir+'/entryname.txt']=fzName;
         }
       }
     }
@@ -562,8 +556,8 @@ function contextMenu(fzr, target, fzItemID) {
     onClick: function () {
       var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
       if (sure) {
-        dir = fzr.dir[fzItemID];
-        fzr.file[dir+'/entryname.txt'];
+        dir = av.fzr.dir[fzItemID];
+        av.fzr.file[dir+'/entryname.txt'];
         if ('fzOrgan' == fzSection) {
           av.fzr.removeFzrItem(av.fzr, dir, 'g')
         } else if ('fzConfig' == fzSection){

@@ -38,14 +38,18 @@
   @import "AvidaED.css";</style>
   <script>
     function BrowserResizeEventHandler() {
-      console.log("initial handler");
+      console.log("initial handler in html only");
     }
     function getWStrigger()
     {
-      console.log('after getWS in html');
+      console.log('in getWS in html');
       av.test();
     }
-
+    function putWStrigger()
+    {
+      console.log('in putWS in html');
+      av.fio.SaveWSas;
+    }
   </script>
 </head>
 
@@ -60,6 +64,8 @@
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
+            <span data-dojo-type="dijit/MenuItem" id="mnFzSaveWorkspaceAs" label="Save Workspace As"
+                  onclick="putWStrigger();return;"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnOpenDefault' label="Open Default Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnOpenWS' label="Open Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnOpenTest' label="Open Test"
@@ -68,7 +74,6 @@
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
-            <span data-dojo-type="dijit/MenuItem" id="mnFzSaveCurrentWorkspace" label="Save Current Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzConfig" label="Save Experiment Configuration"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzOrganism" label="Save Selected Organism"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzOffspring" label="Save Offspring Organism"></span>
@@ -142,6 +147,7 @@
            style="height:35px;overflow: auto" id="trashCP">
         <span id="trashCan" class="container"><img id="TrashCanImage" src="avida-ed-trash-icon.png" style="width: 32px;"></img></span>
         <input id='getWS' type="file" style = 'display:none'>
+        <input id='putWS' type="file" style = 'display:none'>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="freezerDiv">

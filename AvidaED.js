@@ -304,6 +304,43 @@ require([
     document.getElementById("getWS").click();
   }
 
+  // Save a file  --------------------------------------------------------
+
+  av.fio.SaveWSas = function(){
+    console.log('in avidaED');
+    document.getElementById("putWS").click();
+  }
+
+/*  WRE wrote
+  var SaveFileDialog = new Dialog({
+    title: "Avida : A Guided Tour of an Ancestor and its Hardware",
+    id: "SaveFileDialog",
+    href: "savefile.html"
+    //hide: function() {HardwareDialog.destroy()}
+    //style: "width: 600px; height: 400px"
+  });
+
+  domStyle.set(SaveFileDialog.containerNode, {
+    position: 'relative'
+  });
+
+  dijit.byId("mnFzSaveWorkspaceAs").on("Click", function () { // ???
+    if (!SaveFileDialog) {
+      SaveFileDialog = new Dialog({
+        title: "Save Workspace",
+        id: "SaveFileDialog",
+        href: "savefile.html"
+        //hide: function() {HardwareDialog.destroy()}
+        //style: "width: 600px; height: 400px"
+      });
+    }
+    console.log(SaveFileDialog);
+    SaveFileDialog.show();
+  });
+*/
+
+  /* ---------------------------------------------------------------------- */
+
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
@@ -436,6 +473,7 @@ require([
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
     if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
+    brs.page = 'population';
     mainBoxSwap("populationBlock");
   }
 
@@ -451,10 +489,12 @@ require([
     if (undefined != traceObj) {
       updateOrgTrace();
     }
+    brs.page = 'organism';
   };
 
   document.getElementById("analysisButton").onclick = function () {
     mainBoxSwap("analysisBlock");
+    brs.page = 'population';
   };
   //Take testBlock out completely later
 
@@ -472,36 +512,6 @@ require([
     placeChips(chips, chck);
     drawCheckerSetup(chck, chips);
   };
-
-  // Save a file  --------------------------------------------------------
-  var SaveFileDialog = new Dialog({
-    title: "Avida : A Guided Tour of an Ancestor and its Hardware",
-    id: "SaveFileDialog",
-    href: "savefile.html"
-    //hide: function() {HardwareDialog.destroy()}
-    //style: "width: 600px; height: 400px"
-  });
-
-  domStyle.set(SaveFileDialog.containerNode, {
-    position: 'relative'
-  });
-
-  dijit.byId("mnFzSaveCurrentWorkspace").on("Click", function () { // ???
-    if (!SaveFileDialog) {
-      SaveFileDialog = new Dialog({
-        title: "Save Workspace",
-        id: "SaveFileDialog",
-        href: "savefile.html"
-        //hide: function() {HardwareDialog.destroy()}
-        //style: "width: 600px; height: 400px"
-      });
-    }
-    console.log(SaveFileDialog);
-    SaveFileDialog.show();
-  });
-
-
-  /* ---------------------------------------------------------------------- */
 
   if (av.debug.root) console.log('before dnd definitions');
   /* ********************************************************************** */
@@ -580,16 +590,22 @@ require([
     if ('activeConfig' === target.node.id) {
       landActiveConfig(av.dnd, pkg);  //dojoDnd
       updateSetup(av);  //fileIO
+      if (av.fzr.file[av.fzr.actConfig.dir+'/ancestors']) {
+        var str = av.fzr.file[av.fzr.actConfig.dir+'/ancestors']
+        console.log('ancestors', str)
+        av.fio.autoPlaceParent(str);
+        if ('map'==brs.subpage) {DrawGridSetup();} //draw grid
+      }
       if ('w' === av.fzr.actConfig.type) {
         console.log('world config so there more to do');
       }
     }
   });
 
-  //currently this should not trigger as activeConfig is only a target
+  //in the past this whould not trigger as activeConfig is only a target
   av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
-      var num = fzr.cNum;
+      //var num = av.fzr.cNum;
       landFzConfig(av.dnd, av.fzr, source, nodes, target);  //needed as part of call to contextMenu
       //if (num !== fzr.cNum) {makeFzrConfig(av.fzr, num, parents);}
     }
@@ -726,7 +742,9 @@ require([
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
       cellConflict(av.grd.cols, av.grd.rows, av.grd, av.parents);
       DrawGridSetup();
+      brs.subpage = 'map';
     }
+    else {brs.subpage = 'setup';}
   };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats" button

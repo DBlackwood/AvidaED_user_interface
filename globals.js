@@ -14,7 +14,7 @@ av.debug.trace = false;   //organism page
 av.debug.grid = false;     //population grid
 av.debug.msgOrder = false; //message order
 av.debug.pdb = false; //pouchDB
-av.debug.fio = false; // file io
+av.debug.fio = true; // file io
 av.debug.gen = false; //oranism page
 
 //structure to hold list of ancestor organisms
@@ -144,6 +144,8 @@ if (brs.isChromium !== null && brs.isChromium !== undefined && brs.vendorName ==
 } else {
   brs.chrome = false; // not Google chrome
 }
+brs.page = 'population';
+brs.subpage = 'map';
 
 av.fio = {}; //file input output data
 av.fio.dbName = 'wsdb';  //for workspace database
@@ -161,13 +163,13 @@ av.fzr.file = {};
 av.fzr.cNum = 0;  //value of the next configured dish (config) number
 av.fzr.gNum = 0;  //value of the next organism (genome) number
 av.fzr.wNum = 0;  //value of the next world (populated dish) number
-av.fzr.config = [];
-av.fzr.genome = [];
-av.fzr.world = [];
+//av.fzr.config = [];
+//av.fzr.genome = [];
+//av.fzr.world = [];
 //hold genome for active organism in Organism View
-av.fzr.actOrgan =  {'name': "", 'domId': "", 'genome': "" };
+av.fzr.actOrgan =  {'name': '', 'actDomid': '', 'fzDomid': '', 'genome': '' };
 //hold genome for active organism in Organism View
-av.fzr.actConfig = {'name': "", 'domId': "", 'type': '' };
+av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': '' };
 
 /* Fzr - Freezer.
 

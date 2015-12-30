@@ -31,17 +31,27 @@ function writeDxFile(db, path, contents) {
     });
 }
 
-function addFzItem(dndSection, fzrSection, item, type) {
+av.fio.addFzItem = function(dndSection, name, type) {
   'use strict';
-  dndSection.insertNodes(false, [{data: item.name, type: [type]}]);
+  dndSection.insertNodes(false, [{data: name, type: [type]}]);
   dndSection.sync();
   var mapItems = Object.keys(dndSection.map);
-  item.domId = mapItems[mapItems.length - 1];
-  //fzrSection.push(item);  //tiba delte later, delete passing fzrSection
+  var domid  =  mapItems[mapItems.length - 1];
 
   //create a right av.mouse-click context menu for the item just created.
-  if (av.debug.fio) console.log('item', item);
-  //if (0<item.fileNum) {contextMenu(av.fzr, dndSection, item.domId);}
+  //if (0<item.fileNum) {contextMenu(av.fzr, dndSection, domid);}
+  return domid;
+}
+
+av.fio.setActiveConfig = function(dndSection, name, type){
+  //av.dnd.activeConfig.insertNodes(false, [{data: name, type: [type]}]);
+  dndSection.insertNodes(false, [{data: name, type: [type]}]);
+  dndSection.sync();
+  var mapItems = Object.keys(dndSection.map);
+  av.fzr.actConfig.domId = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
+  av.fzr.actConfig.name = name;
+  av.fzr.actConfig.type = type;
+  return av.fzr.actConfig.domId;
 }
 
 function add2freezerFromFile(av) {
@@ -49,34 +59,30 @@ function add2freezerFromFile(av) {
   var type = av.fio.anID.substr(0, 1);
   var dir = wsb('/', av.fio.anID);
   var num = dir.substr(1, dir.length-1);
-  var name;
+  var name, domid;
   if (null == av.fio.thisfile.asText()) { name = av.fio.anID; }
   else { name = wsb("\n", av.fio.thisfile.asText()); }
-  var item = {
-    'name': name,
-    'fileNum': num,
-    '_id': dir
-  };
 
   if (av.debug.fio) console.log('type ', type, '; dir', dir, '; num', num);
   switch (type) {
     case 'c':
-      addFzItem(av.dnd.fzConfig, av.fzr.config, item, type);
-      if (av.fzr.cNum < Number(item.fileNum)) {av.fzr.cNum = Number(item.fileNum); }
+      domid = av.fio.addFzItem(av.dnd.fzConfig, name, type);
+      if (av.fzr.cNum < Number(num)) {av.fzr.cNum = Number(num); }
+      console.log('c: num', num, '; name', name);
+      if (0 == num) {var ConfigActieDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
       break;
     case 'g':
-      addFzItem(av.dnd.fzOrgan, av.fzr.genome, item, type);
-      if (av.fzr.gNum < Number(item.fileNum)) {av.fzr.gNum = Number(item.fileNum); }
+      domid = av.fio.addFzItem(av.dnd.fzOrgan, name, type);
+      if (av.fzr.gNum < Number(num)) {av.fzr.gNum = Number(num); }
       break;
     case 'w':
-      addFzItem(av.dnd.fzWorld, av.fzr.world, item, type);
-      if (av.fzr.wNum < Number(item.fileNum)) {av.fzr.wNum = Number(item.fileNum); }
+      domid = av.fio.addFzItem(av.dnd.fzWorld, name, type);
+      if (av.fzr.wNum < Number(num)) {av.fzr.wNum = Number(num); }
       break;
   }
-  av.fzr.file[av.fio.anID] = item.name;
-  av.fzr.domid[dir] = item.domId;
-  av.fzr.dir[item.domId] = dir;
-
+  av.fzr.file[av.fio.anID] = name;
+  av.fzr.domid[dir] = domid;
+  av.fzr.dir[domid] = dir;
 }
 
 function processFiles(av){
@@ -115,17 +121,19 @@ function processFiles(av){
 }
 
 
-//---------------------------------------- update config data from pouchDB data ----------------------------------------
+//---------------------------------- update config data from file data stored in freezer -------------------------------
 function updateSetup(av) {
   'use strict';
-  var path = av.fzr.actConfig._id + '/avida.cfg';
+
+  var dir = av.fzr.actConfig.dir;
+  var path = dir + '/avida.cfg';
   var doctext = av.fzr.file[path];
   console.log('fzr.file', av.fzr.file);
   console.log('doctxt', av.fzr.file['c0/avida.cfg'])
   console.log('updateSetup = path', path, '; doc', doctext);
   avidaCFG2form(doctext);
-  doctext = av.fzr.file[av.fzr.actConfig._id + '/environment.cfg'];
-  console.log('updateSetup = dir', av.fzr.actConfig._id, '; doc', doctext);
+  doctext = av.fzr.file[dir + '/environment.cfg'];
+  console.log('updateSetup = dir', dir, '; doc', doctext);
   environmentCFG2form(doctext);
 }
 
@@ -228,6 +236,52 @@ function avidaCFG2form(fileStr){
   }
 }
 
+//----------------------- section to put data from ancestors into ancestorBox and placeparents -------------------------
+
+// makes a dictionary out of a environment.cfg file
+av.fio.ancestorParse = function (filestr) {
+  'use strict';
+  var rslt = {};
+  var lineobj, gen, name;
+  var lines = filestr.split("\n");
+  for (var ii = 0; ii < lines.length; ii++) {
+    if (1 < lines[ii].length) {
+      if (ii % 2 < 1) {//even
+        name = lines[ii];  //tiba need to get rid of whitespace in string
+      }
+      else { //odd
+        gen =  // leave white space alone
+        rslt[name] = lines[ii]; //content will be genome line; leave white space alone
+      }
+    }
+  } // for
+  return rslt;
+};
+
+// puts data from the ancestor into parents file
+av.fio.autoPlaceParent = function(fileStr) {
+  'use strict';
+  console.log('in av.fio.autoPlaceParent: fileStr', fileStr);
+  var dict = av.fio.ancestorParse(fileStr);
+  //Now put in ancestors and place parents
+  for (var name in dict) {
+    av.dnd.ancestorBox.insertNodes(false, [{data: name, type: ['g']}]);
+    av.dnd.ancestorBox.sync();
+    av.parents.genome.push(dict[name]);
+    var nn = av.parents.name.length;
+    av.parents.autoNdx.push(nn);
+    av.parents.name.push(name);
+    av.parents.howPlaced.push('auto');
+    var domIds = Object.keys(av.dnd.ancestorBox.map);
+    if (av.debug.fio) console.log('autoPlaceParent: domIds', domIds, '; length', domIds.length);
+    av.parents.domid.push(domIds[domIds.length-1]); //domid in ancestorBox used to remove if square in grid moved to trashcan
+    //Find color of ancestor
+    if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}
+    else { av.parents.color.push(defaultParentColor); }
+    PlaceAncestors(av.parents);
+    if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], av.parents.domid[nn], av.parents.genome[nn]);
+  }
+}
 //------------------------------------------------- rest may not be in use ---------------------------------------------
 //http://www.html5rocks.com/en/tutorials/file/dndfiles/
 function mnOpenWorkSpace() {
