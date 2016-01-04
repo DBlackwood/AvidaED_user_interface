@@ -584,6 +584,8 @@ require([
   // created the dojodnd.js file before I realized that I needed separate event handelers with the conditional.
 
   av.dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+    'use strict';
+    var str;
     var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
     //console.log('pkg.target', pkg.target);
     //console.log('pkg.target.s', pkg.target.selection);
@@ -591,19 +593,20 @@ require([
       landActiveConfig(av.dnd, pkg);  //dojoDnd
       updateSetup(av);  //fileIO
       if (av.fzr.file[av.fzr.actConfig.dir+'/ancestors']) {
-        var str = av.fzr.file[av.fzr.actConfig.dir+'/ancestors'];
-        console.log('ancestors', str)
-        av.fio.autoPlaceParent(str);      //should I separate placeparent from place in ancestorBox
+        str = av.fzr.file[av.fzr.actConfig.dir+'/ancestors'];
+        console.log('ancestors', str);
+        av.fio.autoAncestorLoad(str);      //should I separate placeparent from place in ancestorBox
                                           // because of option to put populationDish in active config
-        if ('map'==brs.subpage) {DrawGridSetup();} //draw grid
       }
       if (av.fzr.file[av.fzr.actConfig.dir+'/ancestors_manual']) {
-        var str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
+        str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
+        av.fio.handAncestorLoad(str);
       }
 
       if ('w' === av.fzr.actConfig.type) {
         console.log('world config so there more to do');
       }
+      if ('map'==brs.subpage) {DrawGridSetup();} //draw grid
     }
   });
 
@@ -747,6 +750,7 @@ require([
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
       cellConflict(av.grd.cols, av.grd.rows, av.grd, av.parents);
       DrawGridSetup();
+      console.log('parents', av.parents);
       brs.subpage = 'map';
     }
     else {brs.subpage = 'setup';}

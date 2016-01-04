@@ -63,7 +63,7 @@ function add2freezerFromFile(av) {
   if (null == av.fio.thisfile.asText()) { name = av.fio.anID; }
   else { name = wsb("\n", av.fio.thisfile.asText()); }
 
-  if (av.debug.fio) console.log('type ', type, '; dir', dir, '; num', num);
+  //if (av.debug.fio) console.log('type ', type, '; dir', dir, '; num', num);
   switch (type) {
     case 'c':
       domid = av.fio.addFzItem(av.dnd.fzConfig, name, type);
@@ -128,12 +128,12 @@ function updateSetup(av) {
   var dir = av.fzr.actConfig.dir;
   var path = dir + '/avida.cfg';
   var doctext = av.fzr.file[path];
-  console.log('fzr.file', av.fzr.file);
-  console.log('doctxt', av.fzr.file['c0/avida.cfg'])
-  console.log('updateSetup = path', path, '; doc', doctext);
+  //if (av.debug.fio) console.log('fzr.file', av.fzr.file);
+  //if (av.debug.fio) console.log('doctxt', av.fzr.file['c0/avida.cfg'])
+  //if (av.debug.fio) console.log('updateSetup = path', path, '; doc', doctext);
   avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
-  console.log('updateSetup = dir', dir, '; doc', doctext);
+  //if (av.debug.fio) console.log('updateSetup = dir', dir, '; doc', doctext);
   environmentCFG2form(doctext);
 }
 
@@ -146,7 +146,7 @@ var environmentCFGlineParse = function(instr){
   var cfgary = flexsplit(instr).split(',');
   if (0 < cfgary[3].length) {num = wsb(':',wsa('=',cfgary[3]));}
   if (0 == num) {flag = false;} //use == in this case as they are of different type
-  //console.log('flag', flag, '; num', num, '; cfgary', cfgary[3], '; instr', instr);
+  //if (av.debug.fio) console.log('flag', flag, '; num', num, '; cfgary', cfgary[3], '; instr', instr);
   var rslt = {
     name : cfgary[1],
     value : flag
@@ -236,10 +236,10 @@ function avidaCFG2form(fileStr){
   }
 }
 
-//----------------------- section to put data from ancestors into ancestorBox and placeparents -------------------------
+//----------------------- section to put data from ancestors file into ancestorBox and placeparents auto ---------------
 
 // makes a dictionary out of a environment.cfg file
-av.fio.ancestorParse = function (filestr) {
+av.fio.autoAncestorParse = function (filestr) {
   'use strict';
   var rslt = {};
   var lineobj, gen, name;
@@ -250,7 +250,6 @@ av.fio.ancestorParse = function (filestr) {
         name = lines[ii];  //tiba need to get rid of whitespace in string
       }
       else { //odd
-        gen =  // leave white space alone
         rslt[name] = lines[ii]; //content will be genome line; leave white space alone
       }
     }
@@ -258,18 +257,17 @@ av.fio.ancestorParse = function (filestr) {
   return rslt;
 };
 
-// puts data from the ancestor into parents file
-av.fio.autoPlaceParent = function(fileStr) {
+// puts data from the ancestor into parents file using autoplace
+av.fio.autoAncestorLoad = function(fileStr) {
   'use strict';
-  console.log('in av.fio.autoPlaceParent: fileStr', fileStr);
-  var dict = av.fio.ancestorParse(fileStr);
+  console.log('in av.autoAncestorLoad: fileStr', fileStr);
+  var dict = av.fio.autoAncestorParse(fileStr);
   //Now put in ancestors and place parents
   for (var name in dict) {
     av.dnd.ancestorBox.insertNodes(false, [{data: name, type: ['g']}]);
     av.dnd.ancestorBox.sync();
     av.parents.genome.push(dict[name]);
     var nn = av.parents.name.length;
-    av.parents.autoNdx.push(nn);
     av.parents.name.push(name);
     av.parents.howPlaced.push('auto');
     var domIds = Object.keys(av.dnd.ancestorBox.map);
@@ -278,10 +276,72 @@ av.fio.autoPlaceParent = function(fileStr) {
     //Find color of ancestor
     if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}
     else { av.parents.color.push(defaultParentColor); }
+    av.parents.autoNdx.push(nn);
     PlaceAncestors(av.parents);
     if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], av.parents.domid[nn], av.parents.genome[nn]);
   }
-}
+};
+
+//---------------- section to put data from ancestors_manual file into ancestorBox and placeparents hand ---------------
+
+// makes a dictionary out of a environment.cfg file
+av.fio.handAncestorParse = function (filestr) {
+  'use strict';
+  var rslt = {};
+  rslt.gen = {};
+  rslt.col = {};
+  rslt.row = {};
+  var lineobj, gen, name, xx, yy;
+  var pair = [];
+  var lines = filestr.split("\n");
+  for (var ii = 0; ii < lines.length; ii++) {
+    if (1 < lines[ii].length) {
+      if (0 === ii % 3) {// divide by 3 evenly => first line
+        name = lines[ii];  //tiba need to get rid of whitespace in string
+      }
+      else if (1 === ii % 3){ //second line
+        rslt.gen[name] = lines[ii]; //content will be genome line; leave white space alone
+      }
+      else {  //third line
+        pair = lines[ii].split(',');
+        rslt.col[name] = Number(pair[0]);
+        rslt.row[name] = Number(pair[1]);
+      }
+    }
+  } // for
+  return rslt;
+};
+
+// puts data from the ancestor into parents file by hand
+av.fio.handAncestorLoad = function(fileStr) {
+  'use strict';
+  if (av.debug.fio) console.log('in av.fio.handAncestorLoad: fileStr', fileStr);
+  var dict = av.fio.handAncestorParse(fileStr);
+  if (av.debug.fio) console.log('in av.fio.handAncestorLoad: dict', dict);
+  //Now put in ancestors and place parents
+  for (var name in dict.gen) {
+    av.dnd.ancestorBox.insertNodes(false, [{data: name, type: ['g']}]);
+    av.dnd.ancestorBox.sync();
+    //av.parents.genome.push(dict.gen[name]);
+    var nn = av.parents.name.length;
+    av.parents.name.push(name);
+    var domIds = Object.keys(av.dnd.ancestorBox.map);
+    if (av.debug.fio) console.log('handAncestorLoad: domIds', domIds, '; length', domIds.length);
+    av.parents.domid.push(domIds[domIds.length-1]); //domid in ancestorBox used to remove if square in grid moved to trashcan
+    //Find color of ancestor
+    if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}
+    else { av.parents.color.push(defaultParentColor); }
+    av.parents.handNdx.push(nn);
+    av.parents.howPlaced.push('hand');
+    av.parents.genome[nn] = dict.gen[name];
+    av.parents.col[nn] = dict.col[name];
+    av.parents.row[nn] = dict.row[name];
+    av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(dijit.byId("sizeCols").get('value'));
+      //parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
+    if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], '; domid', av.parents.domid[nn], '; gen', av.parents.genome[nn]);
+  }
+  if (av.debug.fio) console.log('parents', av.parents);
+};
 //------------------------------------------------- rest may not be in use ---------------------------------------------
 //http://www.html5rocks.com/en/tutorials/file/dndfiles/
 function mnOpenWorkSpace() {
