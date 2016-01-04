@@ -486,7 +486,7 @@ require([
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    if (undefined != traceObj) {
+    if (undefined != av.traceObj) {
       updateOrgTrace();
     }
     brs.page = 'organism';
@@ -591,11 +591,16 @@ require([
       landActiveConfig(av.dnd, pkg);  //dojoDnd
       updateSetup(av);  //fileIO
       if (av.fzr.file[av.fzr.actConfig.dir+'/ancestors']) {
-        var str = av.fzr.file[av.fzr.actConfig.dir+'/ancestors']
+        var str = av.fzr.file[av.fzr.actConfig.dir+'/ancestors'];
         console.log('ancestors', str)
-        av.fio.autoPlaceParent(str);
+        av.fio.autoPlaceParent(str);      //should I separate placeparent from place in ancestorBox
+                                          // because of option to put populationDish in active config
         if ('map'==brs.subpage) {DrawGridSetup();} //draw grid
       }
+      if (av.fzr.file[av.fzr.actConfig.dir+'/ancestors_manual']) {
+        var str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
+      }
+
       if ('w' === av.fzr.actConfig.type) {
         console.log('world config so there more to do');
       }
@@ -970,6 +975,34 @@ require([
     }
   }
 
+  // Save current workspace (mnFzSaveWorkspace)
+  document.getElementById("mnFzSaveWorkspace").onclick = function () {
+    console.log("setting up onClick event for mnFzSaveWorkspace");
+    fzSaveCurrentWorkspaceFn();
+  };
+
+  function fzSaveCurrentWorkspaceFn(){
+    console.log("in fzSaveCurrentWorkspaceFn()");
+    // Testing... set up example zip file, save it to local file.
+    var zip = new JSZip();
+    zip.file("Hello.txt", "Hello World\n");
+    //var img = zip.folder("images");
+    //img.file("smile.gif", imgData, {base64: true});
+    var content = zip.generate({type:"blob"});
+    // see FileSaver.js
+    saveAs(content, "example_fzSaveCurrentWorkspaceFn.zip");
+    // Test works; zip is saved to user's Downloads directory
+
+    // Next steps:
+    // Make a zip out of current freezer
+    // Apply current workspace name
+    // Save to current workspace name
+    var wszip = new JSZip();
+    // Traverse the freezer, adding files and folders as needed
+
+
+  }
+
   //Save a populated dish
   function FrPopulationFn() {
     var fzName = prompt("Please name the new population", "newPopulation");
@@ -1121,9 +1154,9 @@ require([
     if (av.gen.didDivide) {  //offpsring exists
       distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
       if (25 > distance) {
-        for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';
-        for (var ndx in av.fzr.domid) {
-          if ('g'==dir.substring(0,1)) document.getElementById(av.fzr.domid[ndx]).style.cursor = 'copy';
+        //for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';  //tiba delete later
+        for (var dir in av.fzr.domid) {
+          if ('g'==dir.substring(0,1)) document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';
         }
         document.getElementById('organIcon').style.cursor = 'copy';
         document.getElementById('organCanvas').style.cursor = 'copy';
@@ -1133,7 +1166,8 @@ require([
       }
     }
     if ('offspring' != av.mouse.Picked) {
-      for (var gg = 0; gg < traceObj[av.gen.cycle].memSpace.length; gg++) { //gg is generation
+      if (av.debug.gen) {console.log('gen', av.gen);}
+      for (var gg = 0; gg < av.traceObj[av.gen.cycle].memSpace.length; gg++) { //gg is generation
         for (var ii = 0; ii < av.gen.dna[gg].length; ii++) {  //ii is the isntruction number
           distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.gen.smCenY[gg][ii], 2));
           if ( av.gen.smallR >= distance ){
@@ -1149,14 +1183,14 @@ require([
     var instructionNum = ith + 1;
     if ('instruction' == av.mouse.Picked) {
       if (isRightMB) {  //right click on instruction. allow replacement letter.
-        console.log('right click');
+        if (av.debug.mouse) console.log('right click');
         evt.preventDefault();  //supposed to prevent default right click menu - does not work
         return false;         //supposed to prevent default right click menu - does not work
       }
       else {//hh is generation, ith is the instruction
         var labX = av.gen.cx[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.cos(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
         var labY = av.gen.cy[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.sin(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
-        console.log('ith, gn', ith, hh, '; rotate', av.gen.rotate[hh], '; xy', labX, labY);
+        if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.gen.rotate[hh], '; xy', labX, labY);
         av.gen.ctx.beginPath();
         av.gen.ctx.arc(labX, labY, 1.1 * av.gen.smallR, 0, 2 * Math.PI);
         av.gen.ctx.fillStyle = dictColor['White'];  //use if av.gen.dna is a string
@@ -1876,6 +1910,7 @@ require([
       ii++;
       dijit.byId("orgCycle").set("value", ii);
       av.gen.cycle = ii;
+      console.log('ii', ii,'; gen', av.gen);
       updateOrgTrace()
     }
   });
