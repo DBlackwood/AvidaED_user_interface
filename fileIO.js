@@ -374,10 +374,6 @@ function mnOpenWorkSpace() {
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }
 
-function mnOpenDefault(){
-
-}
-
 /*
  http://stackoverflow.com/questions/20822273/best-way-to-get-folder-and-file-list-in-javascript
 */

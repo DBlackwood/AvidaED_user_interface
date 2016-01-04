@@ -278,7 +278,7 @@ function updateSelectedOrganismType(grd, msg, parents) {
     grd.kidStatus = "havegenome";
     grd.kidName = msg.genotypeName;
     grd.kidGenome = msg.genome;
-    dijit.byId("mnOrganismTrace").attr("disabled", false);
+    dijit.byId("mnCnOrganismTrace").attr("disabled", false);
   }
 }
 

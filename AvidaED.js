@@ -258,18 +258,18 @@ require([
     reader.readAsText(file);
   }
 
-  function mnOpenWS() {
+  function mnFlOpenWS() {
     //$('input[type=file]').click();
     document.getElementById('fileGet')
       .addEventListener('change', readSingleFile, false);
   }
 
-  //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
-  //dijit.byId("mnOpenWS").on("Click", function () { mnOpenWS(); });
-  //dijit.byId("mnOpenDefault").on("Click", function () { mnOpenDefault(); });  //in fileIO.js
-  dijit.byId("mnOpenDefault").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
+  //dijit.byId("mnFlOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
+  //dijit.byId("mnFlOpenWS").on("Click", function () { mnFlOpenWS(); });
+  //dijit.byId("mnFlOpenDefault").on("Click", function () { mnFlOpenDefault(); });  //in fileIO.js
+  dijit.byId("mnFlOpenDefault").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
 
-  dijit.byId("mnOpenWS").on("Click", function () {  //does not work
+  dijit.byId("mnFlOpenWS").on("Click", function () {  //does not work
     $('input[type=file]').click();
     console.log('files', this.files);
   })
@@ -324,7 +324,7 @@ require([
     position: 'relative'
   });
 
-  dijit.byId("mnFzSaveWorkspaceAs").on("Click", function () { // ???
+  dijit.byId("mnFlSaveWorkspaceAs").on("Click", function () { // ???
     if (!SaveFileDialog) {
       SaveFileDialog = new Dialog({
         title: "Save Workspace",
@@ -340,6 +340,32 @@ require([
 */
 
   /* ---------------------------------------------------------------------- */
+  // Save current workspace (mnFzSaveWorkspace)
+  document.getElementById("mnFlSaveWorkspace").onclick = function () {
+    console.log("setting up onClick event for mnFzSaveWorkspace");
+    fzSaveCurrentWorkspaceFn();
+  };
+
+  function fzSaveCurrentWorkspaceFn(){
+    console.log("in fzSaveCurrentWorkspaceFn()");
+    // Testing... set up example zip file, save it to local file.
+    var zip = new JSZip();
+    zip.file("Hello.txt", "Hello World\n");
+    //var img = zip.folder("images");
+    //img.file("smile.gif", imgData, {base64: true});
+    var content = zip.generate({type:"blob"});
+    // see FileSaver.js
+    saveAs(content, "example_fzSaveCurrentWorkspaceFn.zip");
+    // Test works; zip is saved to user's Downloads directory
+
+    // Next steps:
+    // Make a zip out of current freezer
+    // Apply current workspace name
+    // Save to current workspace name
+    var wszip = new JSZip();
+    // Traverse the freezer, adding files and folders as needed
+  }
+
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
@@ -466,7 +492,7 @@ require([
 
     //disable menu options. they will be enabled when relevant canvas is drawn
     dijit.byId("mnFzOffspring").attr("disabled", true);
-    dijit.byId("mnOffspringTrace").attr("disabled", true);
+    dijit.byId("mnCnOffspringTrace").attr("disabled", true);
     //console.log('end of mainBoxSwap');
   };
 
@@ -765,11 +791,11 @@ require([
   /* *************************************************************** */
   /* ******* Map Grid buttons - New  Run/Pause Freeze ************** */
   /* *************************************************************** */
-  dijit.byId("mnPause").attr("disabled", true);
+  dijit.byId("mnCnPause").attr("disabled", true);
   dijit.byId("mnFzOrganism").attr("disabled", true);
   dijit.byId("mnFzOffspring").attr("disabled", true);
   dijit.byId("mnFzPopulation").attr("disabled", true);
-  dijit.byId("mnOrganismTrace").attr("disabled", true);
+  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
 
   function popStatView(grd) {
     if (grd.popStatFlag) {
@@ -795,8 +821,8 @@ require([
     //console.log("namelist", namelist);
     if (1 > namelist.length) {
       document.getElementById("runStopButton").innerHTML = "Run";
-      dijit.byId("mnPause").attr("disabled", true);
-      dijit.byId("mnRun").attr("disabled", false);
+      dijit.byId("mnCnPause").attr("disabled", true);
+      dijit.byId("mnCnRun").attr("disabled", false);
       NeedAncestorDialog.show();
     }
     else { // setup for a new run by sending config data to avida
@@ -825,28 +851,28 @@ require([
   function runStopFn() {
     if ("Run" == document.getElementById("runStopButton").innerHTML) {
       document.getElementById("runStopButton").innerHTML = "Pause";
-      dijit.byId("mnPause").attr("disabled", false);
-      dijit.byId("mnRun").attr("disabled", true);
+      dijit.byId("mnCnPause").attr("disabled", false);
+      dijit.byId("mnCnRun").attr("disabled", true);
       runPopFn();
     } else {
       document.getElementById("runStopButton").innerHTML = "Run";
-      dijit.byId("mnPause").attr("disabled", true);
-      dijit.byId("mnRun").attr("disabled", false);
+      dijit.byId("mnCnPause").attr("disabled", true);
+      dijit.byId("mnCnRun").attr("disabled", false);
       doRunPause(av.fio);
       //console.log("pop size ", av.grd.population_size);
     }
   };
 
   //process run/Stop buttons as above but for drop down menu
-  dijit.byId("mnRun").on("Click", function () {
-    dijit.byId("mnPause").attr("disabled", false);
-    dijit.byId("mnRun").attr("disabled", true);
+  dijit.byId("mnCnRun").on("Click", function () {
+    dijit.byId("mnCnPause").attr("disabled", false);
+    dijit.byId("mnCnRun").attr("disabled", true);
     document.getElementById("runStopButton").innerHTML = "Pause";
     runPopFn();
   });
-  dijit.byId("mnPause").on("Click", function () {
-    dijit.byId("mnPause").attr("disabled", true);
-    dijit.byId("mnRun").attr("disabled", false);
+  dijit.byId("mnCnPause").on("Click", function () {
+    dijit.byId("mnCnPause").attr("disabled", true);
+    dijit.byId("mnCnRun").attr("disabled", false);
     document.getElementById("runStopButton").innerHTML = "Run";
     doRunPause(av.fio);
   });
@@ -884,7 +910,7 @@ require([
   //reset values
   function resetDishFn() { //Need to reset all settings to @default
     av.grd.newrun = true;
-    dijit.byId("mnOrganismTrace").attr("disabled", true);
+    dijit.byId("mnCnOrganismTrace").attr("disabled", true);
     dijit.byId("mnFzOrganism").attr("disabled", true);
 
     // send reset to Avida adaptor
@@ -977,34 +1003,6 @@ require([
         av.dnd.contextMenu(av.fzr, av.dnd.fzConfig, domId);
       }
     }
-  }
-
-  // Save current workspace (mnFzSaveWorkspace)
-  document.getElementById("mnFzSaveWorkspace").onclick = function () {
-    console.log("setting up onClick event for mnFzSaveWorkspace");
-    fzSaveCurrentWorkspaceFn();
-  };
-
-  function fzSaveCurrentWorkspaceFn(){
-    console.log("in fzSaveCurrentWorkspaceFn()");
-    // Testing... set up example zip file, save it to local file.
-    var zip = new JSZip();
-    zip.file("Hello.txt", "Hello World\n");
-    //var img = zip.folder("images");
-    //img.file("smile.gif", imgData, {base64: true});
-    var content = zip.generate({type:"blob"});
-    // see FileSaver.js
-    saveAs(content, "example_fzSaveCurrentWorkspaceFn.zip");
-    // Test works; zip is saved to user's Downloads directory
-
-    // Next steps:
-    // Make a zip out of current freezer
-    // Apply current workspace name
-    // Save to current workspace name
-    var wszip = new JSZip();
-    // Traverse the freezer, adding files and folders as needed
-
-
   }
 
   //Save a populated dish
@@ -1249,7 +1247,7 @@ require([
           doSelectedOrganismType(av.fio, av.grd);
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
-          dijit.byId("mnOrganismTrace").attr("disabled", false);
+          dijit.byId("mnCnOrganismTrace").attr("disabled", false);
         }
       }
       DrawGridSetup();
@@ -1297,10 +1295,10 @@ require([
           av.mouse.Picked = 'kid';
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
-          dijit.byId("mnOrganismTrace").attr("disabled", false);
+          dijit.byId("mnCnOrganismTrace").attr("disabled", false);
         }
         else {
-          dijit.byId("mnOrganismTrace").attr("disabled", true);
+          dijit.byId("mnCnOrganismTrace").attr("disabled", true);
           dijit.byId("mnFzOrganism").attr("disabled", true);  //kid not selected, then it cannot be save via the menu
         }
       }
@@ -1308,7 +1306,7 @@ require([
     else {
       av.grd.flagSelected = false;
       av.grd.selectedNdx = -1;
-      dijit.byId("mnOrganismTrace").attr("disabled", true);
+      dijit.byId("mnCnOrganismTrace").attr("disabled", true);
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
     doSelectedOrganismType(av.fio, av.grd);
@@ -1839,7 +1837,7 @@ require([
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
-  dijit.byId("mnOrganismTrace").on("Click", function () {
+  dijit.byId("mnCnOrganismTrace").on("Click", function () {
     traceSelected(av.dnd, av.fzr, av.grd);
     mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
@@ -1852,7 +1850,7 @@ require([
   });
 
   //Put the offspring in the parent position on Organism Trace
-  dijit.byId("mnOffspringTrace").on("Click", function () {
+  dijit.byId("mnCnOffspringTrace").on("Click", function () {
     //Open Oranism view
     mainBoxSwap("organismBlock");
     organismCanvasHolderSize();

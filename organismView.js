@@ -345,14 +345,14 @@ function updateOrganTrace(obj, gen) {
       drawIcon(gen);
       //there is an offspring, so it can be saved in the freezer or fed back into Organism viewer
       dijit.byId("mnFzOffspring").attr("disabled", false);
-      dijit.byId("mnOffspringTrace").attr("disabled", false);
+      dijit.byId("mnCnOffspringTrace").attr("disabled", false);
     }
     else {
       gen.cx[gen.son] = gen.cx[gen.mom] + gen.bigR[gen.mom] + 2 * gen.smallR + gen.bigR[gen.son];
       gen.rotate[gen.son] = Math.PI;            //offspring rotated 180 degrees when still growing.
       //no organism, so menu item is disabled
       dijit.byId("mnFzOffspring").attr("disabled", true);
-      dijit.byId("mnOffspringTrace").attr("disabled", true);
+      dijit.byId("mnCnOffspringTrace").attr("disabled", true);
       //console.log("xy", gen.cx[gen.son], gen.cy[gen.son], " size", gen.size[gen.mom]);
     }
     genomeCircle(gen, 1, obj);

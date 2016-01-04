@@ -88,8 +88,8 @@ function popNewExState(dnd, fzr, grd, parents) {
   parents.Colors = ColorBlind;
   parents.Colors.reverse();
   //set run/stop and drop down menu to the 'stopped' state
-  dijit.byId("mnPause").attr("disabled", true);
-  dijit.byId("mnRun").attr("disabled", false);
+  dijit.byId("mnCnPause").attr("disabled", true);
+  dijit.byId("mnCnRun").attr("disabled", false);
   document.getElementById("runStopButton").innerHTML = "Run";
 
   //clear the time series graphs
@@ -151,7 +151,7 @@ function popNewExState(dnd, fzr, grd, parents) {
   document.getElementById("equPop").textContent = "-";
   grd.flagSelected = false;
   dijit.byId("mnFzOrganism").attr("disabled", true);
-  dijit.byId("mnOrganismTrace").attr("disabled", true);
+  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
 }
 
 //writes data to Environmental Settings page based on the content of dnd.activeConfig

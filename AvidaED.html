@@ -64,11 +64,12 @@
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
-            <span data-dojo-type="dijit/MenuItem" id="mnFzSaveWorkspaceAs" label="Save Workspace As"
+            <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspace" label="Save Current Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspaceAs" label="Save Workspace As"
                   onclick="putWStrigger();return;"></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnOpenDefault' label="Open Default Workspace"></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnOpenWS' label="Open Workspace"></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnOpenTest' label="Open Test"
+            <span data-dojo-type="dijit/MenuItem" id='mnFlOpenDefault' label="Open Default Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnFlOpenWS' label="Open Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnFlOpenTest' label="Open Test"
                   onclick="getWStrigger();return;"></span>
           </span>
         </span>
@@ -78,18 +79,15 @@
             <span data-dojo-type="dijit/MenuItem" id="mnFzOrganism" label="Save Selected Organism"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzOffspring" label="Save Offspring Organism"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzPopulation" label="Save Current Population"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnFzSaveWorkspace" label="Save Current Workspace"></span>
           </span>
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Control">
           <span data-dojo-type="dijit/Menu">
-            <span data-dojo-type="dijit/MenuItem" id="mnRun" label="Run"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnPause" label="Pause"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnCnRun" label="Run"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnCnPause" label="Pause"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnNewpop" label="Start New Experiment"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnOrganismTrace"
-                  label="Put Selected Organism in Organism View"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnOffspringTrace"
-                  label="Put Offspring in Organism View"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnCnOrganismTrace" label="Put Selected Organism in Organism View"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnCnOffspringTrace" label="Put Offspring in Organism View"></span>
           </span>
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Help">
