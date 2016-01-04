@@ -103,7 +103,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
           if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);
           //create a right mouse-click context menu for the item just created.
           if (av.debug.mouse) console.log('Offspring-->freezer; fzf', fzr);
-          contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
+          av.dnd.contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
         }
       }
     }
@@ -164,7 +164,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
             if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
             if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
             //create a right mouse-click context menu for the item just created.
-            contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
+            av.dnd.contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
           }
         }
       }

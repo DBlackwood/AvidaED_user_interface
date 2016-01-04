@@ -31,7 +31,7 @@ function writeDxFile(db, path, contents) {
     });
 }
 
-av.fio.addFzItem = function(dndSection, name, type) {
+av.fio.addFzItem = function(dndSection, name, type, fileNum) {
   'use strict';
   dndSection.insertNodes(false, [{data: name, type: [type]}]);
   dndSection.sync();
@@ -39,7 +39,9 @@ av.fio.addFzItem = function(dndSection, name, type) {
   var domid  =  mapItems[mapItems.length - 1];
 
   //create a right av.mouse-click context menu for the item just created.
-  //if (0<item.fileNum) {contextMenu(av.fzr, dndSection, domid);}
+  //console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id);
+  if (0 < fileNum) { av.dnd.contextMenu(av.fzr, dndSection, domid); }
+  //av.dnd.contextMenu(av.fzr, dndSection, domid);
   return domid;
 }
 
@@ -66,17 +68,17 @@ function add2freezerFromFile(av) {
   //if (av.debug.fio) console.log('type ', type, '; dir', dir, '; num', num);
   switch (type) {
     case 'c':
-      domid = av.fio.addFzItem(av.dnd.fzConfig, name, type);
+      domid = av.fio.addFzItem(av.dnd.fzConfig, name, type, num);
       if (av.fzr.cNum < Number(num)) {av.fzr.cNum = Number(num); }
-      console.log('c: num', num, '; name', name);
-      if (0 == num) {var ConfigActieDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
+      //console.log('c: num', num, '; name', name);
+      if (0 == num) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
       break;
     case 'g':
-      domid = av.fio.addFzItem(av.dnd.fzOrgan, name, type);
+      domid = av.fio.addFzItem(av.dnd.fzOrgan, name, type, num);
       if (av.fzr.gNum < Number(num)) {av.fzr.gNum = Number(num); }
       break;
     case 'w':
-      domid = av.fio.addFzItem(av.dnd.fzWorld, name, type);
+      domid = av.fio.addFzItem(av.dnd.fzWorld, name, type, num);
       if (av.fzr.wNum < Number(num)) {av.fzr.wNum = Number(num); }
       break;
   }

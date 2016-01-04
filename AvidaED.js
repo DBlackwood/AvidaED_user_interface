@@ -974,7 +974,7 @@ require([
         av.fzr.config.push(newConfig);
         av.fzr.cNum++;
         makeFzrConfig(av.fzr, av.fio);
-        contextMenu(av.fzr, av.dnd.fzConfig, domId);
+        av.dnd.contextMenu(av.fzr, av.dnd.fzConfig, domId);
       }
     }
   }
@@ -1028,7 +1028,7 @@ require([
         makeFzrWorld(av.fzr, av.fio, av.grd);
         //need to get data from Avida for this tiba
         //Create context menu for right-click on this item
-        contextMenu(av.fzr, av.dnd.fzWorld, domId);
+        av.dnd.contextMenu(av.fzr, av.dnd.fzWorld, domId);
       }
     }
   }
@@ -1092,7 +1092,7 @@ require([
         'genome': gene
       }
       av.fzr.genome.push(neworg);
-      contextMenu(av.fzr, av.dnd.fzOrgan, neworg.domId);
+      av.dnd.contextMenu(av.fzr, av.dnd.fzOrgan, neworg.domId);
     }
   }
 

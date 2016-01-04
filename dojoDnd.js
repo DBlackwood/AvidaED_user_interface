@@ -134,7 +134,7 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
       av.fzr.cNum++;
 
       //create a right av.mouse-click context menu for the item just created.
-      contextMenu(fzr, target, domID);
+      av.dnd.contextMenu(fzr, target, domID);
     }
   }
   else {  //user cancelled so the item should NOT be added to the freezer.
@@ -183,7 +183,7 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
       if (av.debug.dnd) console.log('fzOrgan', dnd.fzOrgan);
       //create a right av.mouse-click context menu for the item just created.
       if (av.debug.dnd) console.log('before context menu: target',target, '; domId', domid );
-      contextMenu(fzr, target, domid);
+      av.dnd.contextMenu(fzr, target, domid);
     }
     else { //Not given a name, so it should NOT be added to the freezer.
       dnd.fzOrgan.deleteSelectedNodes();  //clear items
@@ -526,7 +526,7 @@ function landGraphPop3(dnd, source, nodes, target, plt) {
 /* ********************************************************************** */
 //used to re-name freezer items after they are created--------------
 //http://jsfiddle.net/bEurr/10/
-function contextMenu(fzr, target, fzItemID) {
+av.dnd.contextMenu = function(fzr, target, fzItemID) {
   'use strict';
   var fzSection = target.node.id;
   var dir;
