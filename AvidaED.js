@@ -299,9 +299,10 @@ require([
   document.getElementById('getWS')
     .addEventListener('change', readWSFile, false);
 
-  av.test = function(){
+  av.fio.test = function(){
     console.log('this is a test');
     document.getElementById("getWS").click();
+
   }
 
   // Save a file  --------------------------------------------------------
@@ -311,61 +312,34 @@ require([
     document.getElementById("putWS").click();
   }
 
-/*  WRE wrote
-  var SaveFileDialog = new Dialog({
-    title: "Avida : A Guided Tour of an Ancestor and its Hardware",
-    id: "SaveFileDialog",
-    href: "savefile.html"
-    //hide: function() {HardwareDialog.destroy()}
-    //style: "width: 600px; height: 400px"
-  });
-
-  domStyle.set(SaveFileDialog.containerNode, {
-    position: 'relative'
-  });
-
-  dijit.byId("mnFlSaveWorkspaceAs").on("Click", function () { // ???
-    if (!SaveFileDialog) {
-      SaveFileDialog = new Dialog({
-        title: "Save Workspace",
-        id: "SaveFileDialog",
-        href: "savefile.html"
-        //hide: function() {HardwareDialog.destroy()}
-        //style: "width: 600px; height: 400px"
-      });
+  /* ---------------------------------------------------------------------------------------------------------------- */
+  function fzSaveCurrentWorkspaceFn(){
+    console.log("in fzSaveCurrentWorkspaceFn()");
+    if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', 'AvidaWS');
+    if (0 === av.fio.userFname.length) av.fio.userFname = 'AvidaWS';
+    var WSzip = new JSZip();
+    for (var fname in av.fzr.file) {
+      WSzip.file(fname, av.fzr.file[fname]);
     }
-    console.log(SaveFileDialog);
-    SaveFileDialog.show();
-  });
-*/
+    var content = WSzip.generate({type:"blob"});
+    saveAs(content, av.fio.userFname);
+    // Test works; zip is saved to user's Downloads directory
+  }
 
-  /* ---------------------------------------------------------------------- */
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
     console.log("setting up onClick event for mnFzSaveWorkspace");
     fzSaveCurrentWorkspaceFn();
   };
 
-  function fzSaveCurrentWorkspaceFn(){
-    console.log("in fzSaveCurrentWorkspaceFn()");
-    // Testing... set up example zip file, save it to local file.
-    var zip = new JSZip();
-    zip.file("Hello.txt", "Hello World\n");
-    //var img = zip.folder("images");
-    //img.file("smile.gif", imgData, {base64: true});
-    var content = zip.generate({type:"blob"});
-    // see FileSaver.js
-    saveAs(content, "example_fzSaveCurrentWorkspaceFn.zip");
-    // Test works; zip is saved to user's Downloads directory
-
-    // Next steps:
-    // Make a zip out of current freezer
-    // Apply current workspace name
-    // Save to current workspace name
-    var wszip = new JSZip();
-    // Traverse the freezer, adding files and folders as needed
-  }
-
+  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
+  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
+    console.log("setting up onClick event for mnFzSaveWorkspace");
+    var suggest = 'AvidaWorkSpace';
+    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
+    av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
+    fzSaveCurrentWorkspaceFn();
+  };
 
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------

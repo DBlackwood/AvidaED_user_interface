@@ -43,7 +43,7 @@
     function getWStrigger()
     {
       console.log('in getWS in html');
-      av.test();
+      av.fio.test();
     }
     function putWStrigger()
     {
@@ -927,24 +927,6 @@
     <button data-dojo-type="dijit/form/Button" type="button"
             data-dojo-props="onClick:function(){NeedAncestorDialog.hide();}"
             id="NeedAncestorCancel">OK
-    </button>
-  </div>
-</div>
-
-<!-- Open file Dialog -->
-<div data-dojo-type="dijit/Dialog" data-dojo-id="openWsDialog"
-     title="Open Dialog.">
-  <div class="dijitDialogPaneContentArea">
-    <p>Select Workspace</p>
-  </div>
-  <div class="dijitDialogPaneActionBar">
-    <input type="file" id="files" name="files[]" multiple />
-    <output id="list"></output>
-    directory version next
-    <input type="file" id="ctrl" webkitdirectory directory multiple/>
-    <button data-dojo-type="dijit/form/Button" type="button"
-            data-dojo-props="onClick:function(){NeedAncestorDialog.hide();}"
-            id="SWokButton">OK
     </button>
   </div>
 </div>

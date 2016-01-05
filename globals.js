@@ -153,6 +153,7 @@ av.fio.wsdb = null;
 av.fio.defaultFname = 'default_1.avidaedworkspace.zip';
 av.fio.uiWorker = null;
 av.fio.fileReadingDone = false;
+av.fio.userFname = '';
 
 av.dnd = {};
 av.fzr = {};
