@@ -54,10 +54,8 @@ require([
   "dojox/charting/action2d/MouseZoomAndPan",
 //  "dojox/charting/Theme",
   "dojox/charting/themes/Wetland",
-  "lib/pouchdb-5.0.0.js",
   "lib/jszip.js",
   "lib/FileSaver.js",
-  "Dexie",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -79,7 +77,7 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             PouchDB, JSZip, FileSaver, Dexie,
+             JSZip, FileSaver,
              ready, $, jqueryui) {
   "use strict";
   if (typeof $ != 'undefined') {
@@ -99,13 +97,10 @@ require([
    * variables and functions that are independent of the dom
    *
    *******************************************************************************************/
-
-    //********************************************************************************************************************
-    //  pouchdb instance
-    //********************************************************************************************************************
-  av.fio.PouchDB = PouchDB;
-  av.fio.Dexie = Dexie;
-  av.fio.JSZip = JSZip;
+   //********************************************************************************************************************
+   //  Read Default Workspace
+   // ********************************************************************************************************************
+  av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
 
   // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
@@ -140,7 +135,7 @@ require([
       av.fio.fileReadingDone = true;
       //console.log('before DrawGridSetup')
       DrawGridSetup();
-      av.fzr.cNum++;
+      av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
       av.fzr.gNum++;
       av.fzr.wNum++;
     };
@@ -155,6 +150,7 @@ require([
    The key, the file path, is hidden (not stored as
    a property indexable or otherwise).
    */
+  /*
   function setupDexieStore() {
     'use strict';
     var db = new av.fio.Dexie('/ws');
@@ -193,25 +189,10 @@ require([
     av.fio.dxdb.close();
   }
 
-  function initializeDB(zipFileName) {
-    var oldDb = new av.fio.PouchDB(av.fio.dbName);
-    //clear any old database and create new one for this session
-    oldDb.destroy(av.fio.dbName).then(function (response) {//success
-      oldDb = null;
-      fio.wsdb = new fio.PouchDB(av.fio.dbName); //for workspace database
-      console.log('after new PouchDB - send msg to Avida');
-      doDbReady(av.fio);
-      readZipWS(zipFileName);
-    }).catch(function (err) {
-      av.fio.wsdb = new av.fio.PouchDB(av.fio.dbName); //for workspace database
-      console.log('after new PouchDB destroy db err', err);
-      doDbReady(av.fio);
-      readZipWS(zipFileName);
-    });
-  }
-  console.log('before initialze DB', av.fio.uiWorker);
-  //initializeDB(av.fio.defaultFname);
-  startDB(av.fio.defaultFname);
+  console.log('before start DB', av.fio.uiWorker);
+  //startDB(av.fio.defaultFname);
+  */
+   readZipWS(av.fio.defaultFname);
 
   //********************************************************************************************************************/
 
@@ -312,11 +293,13 @@ require([
     document.getElementById("putWS").click();
   }
 
-  /* ---------------------------------------------------------------------------------------------------------------- */
+  /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
   function fzSaveCurrentWorkspaceFn(){
-    console.log("in fzSaveCurrentWorkspaceFn()");
-    if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', 'AvidaWS');
-    if (0 === av.fio.userFname.length) av.fio.userFname = 'AvidaWS';
+    if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', 'avidaWS.avidaedworkspace.zip');
+    if (0 === av.fio.userFname.length) av.fio.userFname = 'avidaWS.avidaedworkspace.zip';
+    var end = av.fio.userFname.substring(av.fio.userFname.length-4);
+    if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
+    console.log('end', end, '; userFname', av.fio.userFname);
     var WSzip = new JSZip();
     for (var fname in av.fzr.file) {
       WSzip.file(fname, av.fzr.file[fname]);
@@ -328,14 +311,12 @@ require([
 
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
-    console.log("setting up onClick event for mnFzSaveWorkspace");
     fzSaveCurrentWorkspaceFn();
   };
 
   // Save current workspace with a new name(mnFzSaveWorkspaceAs)
   document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
-    console.log("setting up onClick event for mnFzSaveWorkspace");
-    var suggest = 'AvidaWorkSpace';
+    var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
     av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
     fzSaveCurrentWorkspaceFn();
@@ -922,6 +903,8 @@ require([
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
     var len;
+
+    /*
     av.fio.dxdb.transaction('r', av.fio.dxdb.work, function(){
       av.fio.dxdb.work.where('name').startsWithIgnoreCase('c').toArray(function(stuff){
         len = stuff.length;
@@ -945,11 +928,12 @@ require([
       console.log('read error', err);
       throw error;
     })
+    */
   };
 
   //******* Freeze Button ********************************************
   //Saves either configuration or populated dish
-  //Also creates context menu for all new freezer items.
+  //Also creates context menu for all new freezer items.*/
   document.getElementById("freezeButton").onclick = function () {
     if (av.grd.newrun) FrConfigFn();
     else fzDialog.show();
