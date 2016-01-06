@@ -1,0 +1,244 @@
+/*
+ * This file is provided for application-specific style rules.
+ *
+ * By default, Maqetta includes this CSS file within HTML pages
+ * authored in Maqetta.
+ *
+ * This file is typically used to override style rules found in
+ * theme CSS files. For example, suppose the theme CSS file has:
+ *
+ * .claro .dijitButton .dijitButtonNode {
+ *		padding:2px 4px 4px 4px;
+ * }
+ *
+ * But for your application suppose you want to tighten the padding
+ * for buttons. Then, you might include the following style rule
+ * in this file (assuming that you accept Maqetta's default where
+ * id "myapp" is present on the BODY element, and assuming
+ * that you are using the "claro" theme):
+ *
+ * #myapp.claro .dijitButton .dijitButtonNode {
+ *		padding:1px 3px 3px 3px;
+ * }
+ *
+ * Because of CSS precedence rules (see [1]), the above style rule
+ * (which begins with #myapp.claro) will "win the cascade" versus 
+ * the style rule from the theme CSS file due to the use of the
+ * ID select (#myapp), which has higher specificity than the class
+ * selectors used throughout the Claro theme.
+ *
+ * [1] http://www.w3.org/TR/CSS21/cascade.html#cascade
+ */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding:0;
+}
+
+.bit32 {
+  font-family: Courier New;
+  font-size: .8em;
+  text-height: .2em;
+}
+
+p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+li {
+  margin: 0px 0px 0px 0px;
+}
+
+ul {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+div {
+  margin: 0
+}
+
+#analyzeChart {
+  width: 100%;
+  height: 100%;
+}
+
+div.odd {
+  background-color: #CCCCCC;
+  padding: 0.5em 0.3em 1em 0.3em;
+  clear: left;
+}
+
+.even {
+  background-color: #EEEEEE;
+  padding: 0.5em 0.3em 1em 0.3em;
+  clear: left;
+}
+
+.fltLeft {
+  float: left;
+}
+
+.lftmargin {
+  float: left;
+  clear: left;
+}
+
+#muteSlide {
+  float: left;
+  background-color: yellow;
+}
+
+#muteInput {
+  float: left;
+}
+
+#mRate {
+  float: left;
+}
+
+#muteSlidedojo {
+  float: left;
+}
+
+button {display:inline;}
+
+button, input,
+.dijitToggleButton {
+  height: 21px;
+}
+
+.bitButton {
+  width: 75px;
+  height: 10px;
+}
+
+.bitButtonOnWas {
+  width: 75px;
+  height: 10px;
+  background-color: #99f;
+}
+
+.bitButtonOff {
+  background-color: #fff;
+  color: #000;
+  font: 11px sans-serif;
+  text-decoration: none;
+  border: 1px solid #000;
+  border-color: #aaa;
+  border-radius: 5px;
+  padding: 0px 00px 2px 0px;
+  height: 15px;
+  width: 75px;
+  display: block;
+}
+
+.bitButtonOn {
+  background-color: #fff;
+  color: #00f;
+  font: 11px sans-serif;
+  text-decoration: none;
+  color: #00bb00;
+  border: 1px solid #000;
+  border-color: #00dd00;
+  border-radius: 5px;
+  padding: 0px 00px 2px 0px;
+  height: 15px;
+  width: 75px;
+  display: block;
+}
+
+.resourceButton {
+  width: 100px
+}
+
+.dojoDndItem {
+  padding: 3px;
+}
+
+.dojoDndItemOver {
+  background-color: #EDEDED;
+  cursor: pointer;
+}
+
+.dojoDndItemSelected {
+  background-color: #5BBDEA;
+  color: #444444;
+}
+
+.dojoDndItemAnchor {
+  background-color: #5BBDEA;
+  color: black;
+}
+
+.dojoDndItemOver .dojoDndItemSelected {
+  background-color: #EDEDED;
+}
+
+.dojoDndItemOver .dojoDndItemAnchor {
+  background-color: #EDEDED;
+}
+
+.dojoDndItemBefore {
+  border-top: 2px solid #336699;
+}
+
+.dojoDndItemAfter {
+  border-bottom: 2px solid #336699;
+}
+
+.dojoDndAvatar {
+  border: 2px solid #CCCCCC;
+}
+
+.dojoDndAvatarHeader {
+  background-color: #AAAAAA;
+}
+
+.dojoDndAvatarItem {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #666666;
+}
+
+.dojoDndAvatarItem .itemText {
+  font-size: 120%;
+}
+
+.container {
+  min-height: 10px;
+  width: 100%;
+}
+
+.ancestorContainer {
+  min-height: 30px;
+  width: 200px;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.popContainer {
+  float: left;
+  min-height: 1.6em;
+  width: 15em;
+  border: 1px solid black;
+  background-color: white;
+  display: block;
+}
+
+/* dojo css */
+
+.dijitBorderContainer {
+  padding: 1px;
+}
+
+.claro
+.dijitBorderContainer-dijitContentPane {
+  background-color: #ffffff;
+  padding: 1px 1px 6px 1px;
+  margin: 1px
+}
+
+.claro
+

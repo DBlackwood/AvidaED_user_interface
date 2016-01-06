@@ -158,26 +158,23 @@ av.fio.userFname = '';
 
 av.dnd = {};
 av.fzr = {};
+av.fzr.dir = {};
+av.fzr.domid = {};
+av.fzr.file = {};
 
-av.fzr.clearFzrFn = function () {
-  'use strict';
-  av.fzr.dir = {};
-  av.fzr.domid = {};
-  av.fzr.file = {};
-
-  av.fzr.cNum = 0;  //value of the next configured dish (config) number
-  av.fzr.gNum = 0;  //value of the next organism (genome) number
-  av.fzr.wNum = 0;  //value of the next world (populated dish) number
-  //hold genome for active organism in Organism View
-  av.fzr.actOrgan = {'name': '', 'actDomid': '', 'fzDomid': '', 'genome': ''};
-  //hold genome for active organism in Organism View
-  av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': ''};
-  av.fzr.saved = true;
-};
-
-av.fzr.clearFzrFn();
+av.fzr.cNum = 0;  //value of the next configured dish (config) number
+av.fzr.gNum = 0;  //value of the next organism (genome) number
+av.fzr.wNum = 0;  //value of the next world (populated dish) number
+//av.fzr.config = [];
+//av.fzr.genome = [];
+//av.fzr.world = [];
+//hold genome for active organism in Organism View
+av.fzr.actOrgan =  {'name': '', 'actDomid': '', 'fzDomid': '', 'genome': '' };
+//hold genome for active organism in Organism View
+av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': '' };
 
 /* Fzr - Freezer.
+
  av.fzr.dir.dojoUnique14 = 'g0';
  av.fzr.dir.dojoUnique15 = 'g1';
  av.fzr.dir.dojoUnique16 = 'g4';
@@ -188,9 +185,35 @@ av.fzr.clearFzrFn();
  av.fzr.file['c0/environment.cfg'] = 'text2';
  av.fzr.file['c0/entryname.txt'] = 'text3';
 
+
  var gennomelist = invertHash(av.fzr.dir);
  console.log('genomelist', gennomelist);
 
  var dirlist = invertHash(av.fzr.domid);
  console.log('dirlist', dirlist)
+
+
+ older version below:
+av.fzr.g.name
+av.fzr.g.fileNum
+av.fzr.g._id - PouchDB ID
+av.fzr.g.domId
+av.fzr.g.genome
+av.fzr.c - configued dish
+av.fzr.w - world (populated dish)
+
+domID <--> c6
+
+av.fzr.c.c0.domID
+
+av.fzr.c['c0/avida.cfg']
+
+var ex = {};
+var inv = {};
+ex['c0'] = 'dojoUnique4';
+ex.c0 = 'dojoUnique4';
+inv['dojoUnique4'] = 'c0';
+
+ av.fzr.c0['avida.cfg'] = text;
+
 */

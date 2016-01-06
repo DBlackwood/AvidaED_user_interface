@@ -60,8 +60,8 @@ require([
   "jquery",
   "jquery-ui",
   "messaging.js",
-  "fileDataRead.js",
-  "fileDataWrite.js",
+  "fileIO.js",
+  //"pouchDB_IO.js",
   "colorTest.js",
   "PopulationGrid.js",
   "organismView.js",
@@ -69,6 +69,7 @@ require([
   'popControls.js',
   'mouse.js',
   // 'ndxDB.js',
+  'fzrIO.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
@@ -147,8 +148,6 @@ require([
   // Menu file handling
   //********************************************************************************************************************
 
-  dijit.byId("mnFlOpenDefaultWS").on("Click", function () { av.fio.mnOpenDefaultWSfn(); });  //in fileDataRead
-
   function readSingleFile(e) {
     var file = e.target.files[0];
     if (!file) {
@@ -169,6 +168,10 @@ require([
       .addEventListener('change', readSingleFile, false);
   }
 
+  //dijit.byId("mnFlOpenWS").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
+  //dijit.byId("mnFlOpenWS").on("Click", function () { mnFlOpenWS(); });
+  //dijit.byId("mnFlOpenDefault").on("Click", function () { mnFlOpenDefault(); });  //in fileIO.js
+  dijit.byId("mnFlOpenDefault").on("Click", function () { mnOpenWorkSpace(); });  //in fileIO.js
 
   /*
   dijit.byId("mnFlOpenWS").on("Click", function () {  //does not work
@@ -176,24 +179,12 @@ require([
     console.log('files', this.files);
   })
 */
-  //Not impressed with the website below; can be deleted
   //http://p2p.wrox.com/javascript-how/14546-how-show-file-dialog-using-javascript.html
   function openFileOption() {
     document.getElementById("fileGet").click();
     console.log('after fileGet');
   }
-  //--------------------------------------------------------------------------------------------------------------------
-  //http://www.html5rocks.com/en/tutorials/file/dndfiles/
-  function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    for (var i = 0, f; f = files[i]; i++) {
-      console.log('name', f.name, '; type', f.type, '; ');
-    }
-  }
 
-  document.getElementById('getFileRock').addEventListener('change', handleFileSelect, false);
-
-  //--------------------------------------------------------------------------------------------------------------------
   function readWSFile(e) {
     'use strict';
     var file = e.target.files[0];
@@ -217,6 +208,18 @@ require([
     console.log('this is a test');
     document.getElementById("getWS").click();
   };
+
+  /*
+  av.fio.mnFlOpenWSfn = function() {
+    console.log('in mnFlOpenWSfn');
+  };
+  */
+
+  // Save a file  --------------------------------------------------------
+  av.fio.SaveWSas = function(){
+    console.log('in avidaED');
+    document.getElementById("putWS").click();
+  }
 
   /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
   function fzSaveCurrentWorkspaceFn(){
@@ -622,7 +625,7 @@ require([
   av.dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
     if ('fzWorld' == target.node.id) {
-      av.dnd.landFzWorldFn(av.dnd, av.fzr, pkg);   //will never be called as fzPopDish is the only source for the popDish type.
+      landFzPopDish(av.dnd, pkg);   //will never be called as fzPopDish is the only source for the popDish type.
     }
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
     // The code is here in case the dnd type is changed to 'source'

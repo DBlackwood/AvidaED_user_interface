@@ -58,7 +58,7 @@ var getDomId = function (name, target){
 
 
 //pass in av.fzr.config, av.fzr.world or av.fzr.organ  tiba delete
-/*var getFzrNdx = function (array, domId) {
+var getFzrNdx = function (array, domId) {
   'use strict';
   var ndx = -1;
   for (var ii = 0; ii < array.length; ii++){
@@ -69,9 +69,8 @@ var getDomId = function (name, target){
   }
   return ndx;
 }
-*/
 
-//----------------------------------------------- Configuration DnD ----------------------------------------------------
+//-------- Configuration DnD ---------------------------------------
 //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
 //and reinserting the most resent one after a drop event.
 
@@ -136,11 +135,6 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(fzr, target, domID);
-      av.fzr.saved = false;
-    }
-    else {  //user cancelled so the item should NOT be added to the freezer.
-      dnd.fzConfig.deleteSelectedNodes();  //clear items
-      dnd.fzConfig.sync();   //should be done after insertion or deletion
     }
   }
   else {  //user cancelled so the item should NOT be added to the freezer.
@@ -149,7 +143,7 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
   }
 }
 
-//----------------------------------------------------Organsim dnd------------------------------------------------------
+//Organsim dnd------------------------------------------------------
 //When something is added to the Organism Freezer ------------------
 function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
   'use strict';
@@ -190,7 +184,6 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
       //create a right av.mouse-click context menu for the item just created.
       if (av.debug.dnd) console.log('before context menu: target',target, '; domId', domid );
       av.dnd.contextMenu(fzr, target, domid);
-      av.fzr.saved = false;
     }
     else { //Not given a name, so it should NOT be added to the freezer.
       dnd.fzOrgan.deleteSelectedNodes();  //clear items
@@ -371,40 +364,19 @@ function landOrganCanvas(dnd, fzr, source, nodes, target) {
   if ('fzOrgan' == source.node.id) updateFromFzrOrganism(dnd, fzr);
 }
 
-//------------------------------------------------- Populated Dishes DND -----------------------------------------------
-//Process when an Worlduration is added to the Freezer
-av.dnd.landFzWorldFn = function (dnd, fzr, pkg) {//source, pkg.nodes, pkg.target) {
+//------------------------------------- Populated Dishes DND ---------------------
+//This should never happen as fzPopDish is the only source for populated dishes. Here in case that changes.
+function landFzPopDish(dnd, pkg) {
   'use strict';
-  console.log('landFzPopDish: fzr', av.fzr);
-  var domid = Object.keys(pkg.target.selection)[0];
-  var worldName = prompt("Please name your dish Worlduration", pkg.nodes[0].textContent + "_1");
-  if (worldName) {
-    var WorldName = getUniqueName(worldName, pkg.target);
-    if (null != WorldName) {
-      document.getElementById(domid).textContent = WorldName;
-      pkg.target.map[domid].data = WorldName;
-
-      //Now find which node has the new content so it can get a context menu.
-      var domID = getDomId(WorldName, pkg.target);
-      av.fzr.dir[domID] = 'w'+ av.fzr.cNum;
-      av.fzr.domid['w'+ av.fzr.cNum] = domID;
-      av.fzr.cNum++;
-
-      //create a right av.mouse-click context menu for the item just created.
-      av.dnd.contextMenu(fzr, pkg.target, domID);
-      av.fzr.saved = false;
+  //var items = getAllItems(dnd.fzWorld);  not used
+  var populatedDish = prompt("Please name your populated dish", pkg.nodes[0].textContent + "_1");
+  if (populatedDish) {
+    var popDish = getUniqueName(populatedDishcon, pkg.target);
+    if (null != popDish) {
+      pkg.nodes[0].textContent = popDish;
+      //to change data value not fully tested, but keep as it was hard to figure out
+      //dnd.fzWorld.setItem(pkg.target.node.id, {data: popDish, type: ["popDish"]});
     }
-    else {  //user cancelled so the item should NOT be added to the freezer.
-      dnd.fzWorld.deleteSelectedpkg.nodes();  //clear items
-      dnd.fzWorld.sync();   //should be done after insertion or deletion
-    }
-  }
-  else {  //user cancelled so the item should NOT be added to the freezer.
-    dnd.fzWorld.deleteSelectedpkg.nodes();  //clear items
-    dnd.fzWorld.sync();   //should be done after insertion or deletion
-  }
-};
-
     //ways to get information about the Dnd containers
     //console.log("pkg.nodes[0].id, pkg.target.node.id = ", pkg.nodes[0].id, pkg.target.node.id);
     //console.log(Object.keys(pkg.target.selection)[0]);
@@ -416,6 +388,8 @@ av.dnd.landFzWorldFn = function (dnd, fzr, pkg) {//source, pkg.nodes, pkg.target
     //console.log("pkg.target.selection: ",Object.keys(pkg.target.selection)[0]);
     //console.log(document.getElementById(Object.keys(pkg.target.selection)[0]).innerHTML)
     //console.log("allnodes: ",pkg.target.getAllNodes());
+  }
+}
 
 // Process dnd.trashCan ---------------------------------------------------
 var landTrashCan = function (dnd, fzr, parents, source, nodes, target) {
