@@ -3,20 +3,6 @@
 // folders will be:
 // cwd = current working directory
 // saved = where files are put to save to user workspace
-function writeEmDxFile(db, path, contents) {
-  'use strict';
-  db.FILE_DATA.add( {
-      timestamp: Date.now(),  //We may need to do more work with this property
-      contents: utf8bytes_encode(contents),
-      mode: 33206
-    },
-    path
-  ).then(function () {
-      console.log('Able to add file ', path);
-    }).catch(function (err) {
-      console.log('Unable to add file, path',path, '; error', err);
-    })
-}
 
 function writeDxFile(db, path, contents) {
   'use strict';
@@ -48,9 +34,9 @@ av.fio.addFzItem = function(dndSection, name, type, fileNum) {
 }
 
 av.fio.setActiveConfig = function(dndSection, name, type){
-  //av.dnd.activeConfig.insertNodes(false, [{data: name, type: [type]}]);
-  dndSection.insertNodes(false, [{data: name, type: [type]}]);
-  dndSection.sync();
+  av.dnd.activeConfig.selectAll().deleteSelectedNodes();
+  av.dnd.activeConfig.insertNodes(false, [{data: name, type: [type]}]);
+  av.dnd.activeConfig.sync();
   var mapItems = Object.keys(dndSection.map);
   av.fzr.actConfig.domId = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
   av.fzr.actConfig.name = name;
@@ -72,7 +58,7 @@ function add2freezerFromFile(av) {
     case 'c':
       domid = av.fio.addFzItem(av.dnd.fzConfig, name, type, num);
       if (av.fzr.cNum < Number(num)) {av.fzr.cNum = Number(num); }
-      //console.log('c: num', num, '; name', name);
+      console.log('c: num', num, '; name', name);
       if (0 == num) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
       break;
     case 'g':
@@ -347,10 +333,6 @@ av.fio.handAncestorLoad = function(fileStr) {
   if (av.debug.fio) console.log('parents', av.parents);
 };
 //------------------------------------------------- rest may not be in use ---------------------------------------------
-//http://www.html5rocks.com/en/tutorials/file/dndfiles/
-av.fio.mnOpenDefaultWSfn = function() {
-
-}
 
 //console.log("declaring _getAllFilesFromFolder()");
 var _getAllFilesFromFolder = function(dir) {
@@ -419,24 +401,3 @@ window.downloadFile = function(sUrl) {
   window.open(sUrl + query);
 }
 
-//console.log("tests for different browsers for download");
-window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
-
-
-// Dojo file uploads and downloads
-// https://infrequently.org/2005/12/file-uploading-with-dojo/
-// http://www.mikejuniper.com/fun-with-dojoioiframesend/
-
-// Iframe file download
-// http://encosia.com/ajax-file-downloads-and-iframes/
-
-// JQuery
-// http://jsfiddle.net/a856P/51/
-// http://jsfiddle.net/cowboy/hHZa9/
-
-// Pure JS
-// http://jsfiddle.net/uselesscode/qm5ag/
-
-// usefule Dexie.db websites
-//https://github.com/dfahlander/Dexie.js/wiki/Best%20Practices

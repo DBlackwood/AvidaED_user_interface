@@ -62,6 +62,7 @@ require([
   "messaging.js",
   "fileDataRead.js",
   "fileDataWrite.js",
+  "fileIO.js",
   "colorTest.js",
   "PopulationGrid.js",
   "organismView.js",
@@ -95,51 +96,80 @@ require([
   // * The files included in script tags in AvidaED.html cannot access the dom. They contain global
   // * variables and functions that are independent of the dom
   // *
-  // *******************************************************************************************************************
   //********************************************************************************************************************
-  //  Read Default Workspace
+  // Error logging
+  //********************************************************************************************************************
+
+  window.onerror = function(error, url, line) {
+    av.debug.log += 'L:' + line + ', URL:' + url + ', ERR:' + error + '\n';
+    //console.log('in on error, log contents starting on next line \n', av.debug.log);
+    //var sure = confirm('An error has occured.');
+    //Tiba need to write a custom pop up that sends e-mail to an Avida-ED account with the debug.log contents.
+  }
+
+  if (av.debug.root) console.log('before dnd definitions');
+  /********************************************************************************************************************/
+  /******************************************* Dojo Drag N Drop Initialization ****************************************/
+  /********************************************************************************************************************/
+  /* Yes they are globals, but they are defined based on the dom and
+   when I've tried putting them in another file it does not work */
+
+  av.dnd.fzConfig = new dndSource('fzConfig', {
+    accept: ['c'],
+    copyOnly: true,
+    singular: true,
+    selfAccept: false
+  });
+  av.dnd.fzOrgan = new dndSource('fzOrgan', {
+    accept: ['g'],
+    copyOnly: true,
+    singular: true,
+    selfAccept: false
+  });
+  av.dnd.fzWorld = new dndSource('fzWorld', {
+    accept: ['w'],
+    singular: true,
+    copyOnly: true,
+    selfAccept: false
+  });
+  av.dnd.fzWorld.insertNodes(false, [
+    {data: "m2w30u1000nand", type: ['w']},
+    {data: "m2w30u1000not", type: ['w']}
+  ]);
+
+  av.dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
+  av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
+  av.dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
+  av.dnd.trashCan = new dndSource('trashCan', {accept: ['c', 'g', 'w'], singular: true});
+  if (av.debug.root) console.log('after trashCan');
+
+  av.dnd.activeConfig = new dndSource('activeConfig', {
+    accept: ['c', 'w'],
+    singular: true,
+    copyOnly: true,
+    selfAccept: false
+  });
+  //av.dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);  //tiba delete later
+
+  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+  av.dnd.activeOrgan = new dndSource('activeOrgan', {
+    accept: ['g'],
+    singular: true,
+    copyOnly: true,
+    selfAccept: false
+  });
+  av.dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
+  //Targets only accept object, source can do both
+  av.dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
+  av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
+  av.dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
+
+  av.parents.clearParentsFn();
+
+  //********************************************************************************************************************
+  //  Read Default Workspace as part of initialization
   // ********************************************************************************************************************
   av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
-
-  // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-  //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
-  av.fio.readZipWS = function(zipFileName) {
-    'use strict';
-    av.fio.zipName = zipFileName;
-    var oReq = new XMLHttpRequest();
-    oReq.open("GET", av.fio.zipName, true);
-    oReq.responseType = "arraybuffer";
-    oReq.onload = function (oEvent) {
-      var arybuf = oReq.response;
-      console.log("have ziptest.zip", arybuf);
-      // do something to extract it
-      av.fio.zipfile = new av.fio.JSZip();
-      console.log("loading arybuf");
-      av.fio.zipfile.load(arybuf, {base64: false});
-      //console.log("arybuf loaded");
-      console.log('before call procesfiles');
-      av.fio.target = null;
-      for (var zFileName in av.fio.zipfile.files) {
-        //target will be assigned the beginning of the path name within the zip file.
-        if (null == av.fio.target) {
-          var leading = wsb('/', zFileName);
-          if ('__MACOSX' != leading) av.fio.target = leading; //this gets the root name which we remove from path in the fzr file
-        }
-        av.fio.thisfile = av.fio.zipfile.files[zFileName];
-        av.fio.fName = zFileName;
-        processFiles(av);
-      };
-      //note setup form is updated when the files are read.
-      console.log('after read loop: fzr', av.fzr);
-      av.fio.fileReadingDone = true;
-      //console.log('before DrawGridSetup')
-      DrawGridSetup();
-      av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
-      av.fzr.gNum++;
-      av.fzr.wNum++;
-    };
-    oReq.send();
-  }
 
   av.fio.readZipWS(av.fio.defaultFname);
 
@@ -147,7 +177,12 @@ require([
   // Menu file handling
   //********************************************************************************************************************
 
-  dijit.byId("mnFlOpenDefaultWS").on("Click", function () { av.fio.mnOpenDefaultWSfn(); });  //in fileDataRead
+  dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
+    av.fio.mnOpenDefaultWSfn(); //in fileDataRead
+  });
+
+  // above this in use; below this line is test till the next line
+  //--------------------------------------------------------------------------------------------------------------------
 
   function readSingleFile(e) {
     var file = e.target.files[0];
@@ -168,7 +203,6 @@ require([
     document.getElementById('fileGet')
       .addEventListener('change', readSingleFile, false);
   }
-
 
   /*
   dijit.byId("mnFlOpenWS").on("Click", function () {  //does not work
@@ -219,24 +253,9 @@ require([
   };
 
   /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
-  function fzSaveCurrentWorkspaceFn(){
-    if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', 'avidaWS.avidaedworkspace.zip');
-    if (0 === av.fio.userFname.length) av.fio.userFname = 'avidaWS.avidaedworkspace.zip';
-    var end = av.fio.userFname.substring(av.fio.userFname.length-4);
-    if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
-    console.log('end', end, '; userFname', av.fio.userFname);
-    var WSzip = new JSZip();
-    for (var fname in av.fzr.file) {
-      WSzip.file(fname, av.fzr.file[fname]);
-    }
-    var content = WSzip.generate({type:"blob"});
-    saveAs(content, av.fio.userFname);
-    // Test works; zip is saved to user's Downloads directory
-  }
-
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
-    fzSaveCurrentWorkspaceFn();
+    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
   // Save current workspace with a new name(mnFzSaveWorkspaceAs)
@@ -244,7 +263,7 @@ require([
     var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
     av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
-    fzSaveCurrentWorkspaceFn();
+    av.fio.fzSaveCurrentWorkspaceFn();
   };
 
   //********************************************************************************************************************
@@ -258,7 +277,7 @@ require([
     }
     if ("block" == domStyle.get("populationBlock", "display")) {
       popChartFn();
-      DrawGridSetup();
+      av.grd.drawGridSetupFn();
     }
     if ("block" == domStyle.get("organismBlock", "display")) {
       var rd = $("#rightDetail").innerHeight();
@@ -419,65 +438,6 @@ require([
     drawCheckerSetup(chck, chips);
   };
 
-  if (av.debug.root) console.log('before dnd definitions');
-  /* ********************************************************************** */
-  /* Dojo Drag N Drop Initialization ****************************************/
-  /* ********************************************************************** */
-  /* Yes they are globals, but they are defined based on the dom and
-   when I've tried putting them in another file it does not work */
-
-  av.dnd.fzConfig = new dndSource('fzConfig', {
-    accept: ['c'],
-    copyOnly: true,
-    singular: true,
-    selfAccept: false
-  });
-  av.dnd.fzOrgan = new dndSource('fzOrgan', {
-    accept: ['g'],
-    copyOnly: true,
-    singular: true,
-    selfAccept: false
-  });
-  av.dnd.fzWorld = new dndSource('fzWorld', {
-    accept: ['w'],
-    singular: true,
-    copyOnly: true,
-    selfAccept: false
-  });
-  av.dnd.fzWorld.insertNodes(false, [
-    {data: "m2w30u1000nand", type: ['w']},
-    {data: "m2w30u1000not", type: ['w']}
-  ]);
-
-  av.dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
-  av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
-  av.dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
-  av.dnd.trashCan = new dndSource('trashCan', {accept: ['c', 'g', 'w'], singular: true});
-  if (av.debug.root) console.log('after trashCan');
-
-  av.dnd.activeConfig = new dndSource('activeConfig', {
-    accept: ['c', 'w'],
-    singular: true,
-    copyOnly: true,
-    selfAccept: false
-  });
-  //av.dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);  //tiba delete later
-
-  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-  av.dnd.activeOrgan = new dndSource('activeOrgan', {
-    accept: ['g'],
-    singular: true,
-    copyOnly: true,
-    selfAccept: false
-  });
-  av.dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
-  //Targets only accept object, source can do both
-  av.dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
-  av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
-  av.dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
-
-  av.parents = clearParents(av.parents);
-
   if (av.debug.root) console.log('before dnd triggers');
   //*******************************************************************************************************************
   //       Dojo Dnd drop function - triggers for all dojo dnd drop events
@@ -512,16 +472,16 @@ require([
       if ('w' === av.fzr.actConfig.type) {
         console.log('world config so there more to do');
       }
-      if ('map'==brs.subpage) {DrawGridSetup();} //draw grid
+      if ('map'==brs.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
   });
 
-  //in the past this whould not trigger as activeConfig is only a target
+  //This triggers now
   av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
       //var num = av.fzr.cNum;
       landFzConfig(av.dnd, av.fzr, source, nodes, target);  //needed as part of call to contextMenu
-      //if (num !== fzr.cNum) {makeFzrConfig(av.fzr, num, parents);}
+      //if (num !== fzr.cNum) {makeFzrConfig(av.fzr, num, parents);} //need to implement this to get data in files
     }
   });
 
@@ -541,7 +501,7 @@ require([
   av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
       landGridCanvas(av, av.dnd, av.fzr, av.grd, av.parents, source, nodes, target);
-      DrawGridSetup();
+      av.grd.drawGridSetupFn();
     }
   });
 
@@ -618,12 +578,20 @@ require([
     }
   });
 
-  //this should never be executed
+  //need to figure out active configuration and active world
   av.dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
-    var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
     if ('fzWorld' == target.node.id) {
+      var pkg = {};
+      pkg.source = source;
+      pkg.nodes = nodes;
+      pkg.copy = copy;
+      pkg.target = target;
       av.dnd.landFzWorldFn(av.dnd, av.fzr, pkg);   //will never be called as fzPopDish is the only source for the popDish type.
+      //if (num !== fzr.cNum) {makeFzrWorld(av.fzr, num, parents);} //need to implement this to get data in files
     }
+  });
+
+  av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
     // The code is here in case the dnd type is changed to 'source'
     switch (source.node.id) {
@@ -655,7 +623,7 @@ require([
     popBoxSwap();   //in popControls.js
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
       cellConflict(av.grd.cols, av.grd.rows, av.grd, av.parents);
-      DrawGridSetup();
+      av.grd.drawGridSetupFn();
       console.log('parents', av.parents);
       brs.subpage = 'map';
     }
@@ -781,10 +749,10 @@ require([
   }
 
   document.getElementById("newDishButton").onclick = function () {
-    newButtonBoth()
+    newButtonBoth();
   };
   dijit.byId("mnNewpop").on("Click", function () {
-    newButtonBoth()
+    newButtonBoth();
   });
 
   //reset values
@@ -798,7 +766,7 @@ require([
     //Enable the options on the Setup page
     popNewExState(av.dnd, av.fzr, av.grd, av.parents);
     //Clear grid settings
-    clearParents(av.parents);
+    av.parents.clearParentsFn();
     //reset values in population settings based on a 'file' @default
     updateSetup(av);
 
@@ -807,7 +775,7 @@ require([
 
     //re-write grid if that page is visible
     popChartFn();
-    DrawGridSetup();
+    av.grd.drawGridSetupFn();
   }
 
   /*
@@ -827,7 +795,8 @@ require([
     'use strict';
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
-    var len;
+    console.log(log);
+    console.log('av', av);
   };
 
   //******* Freeze Button ********************************************
@@ -1107,7 +1076,7 @@ require([
           dijit.byId("mnCnOrganismTrace").attr("disabled", false);
         }
       }
-      DrawGridSetup();
+      av.grd.drawGridSetupFn();
     }
   });
 
@@ -1124,7 +1093,7 @@ require([
     if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
       av.grd.flagSelected = true;
       if (av.debug.mouse) console.log('ongrid', av.grd.selectedNdx);
-      DrawGridSetup();
+      av.grd.drawGridSetupFn();
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
@@ -1167,7 +1136,7 @@ require([
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
     doSelectedOrganismType(av.fio, av.grd);
-    DrawGridSetup();
+    av.grd.drawGridSetupFn();
   });
 
   //mouse move anywhere on screen - not currently in use.
@@ -1210,7 +1179,7 @@ require([
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = "";
       ParentMouse(evt, av);
-      if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) DrawGridSetup();
+      if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) av.grd.drawGridSetupFn();
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         mainBoxSwap("organismBlock");
@@ -1270,7 +1239,7 @@ require([
   av.grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - av.grd.CanvasScale.height;
 
   //--------------------------------------------------------------------------------------------------------------------
-  function DrawGridSetup() {
+  av.grd.drawGridSetupFn = function () {
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
 
     if(!av.grd.newrun && undefined != av.grd.msg.fitness) {
@@ -1404,7 +1373,7 @@ require([
     //need to request data to update the color map from Avida
     // code for that
     //Redraw Grid;
-    DrawGridSetup();
+    av.grd.drawGridSetupFn();
   });
 
   //Only effect display, not Avida
@@ -1420,7 +1389,7 @@ require([
     onChange: function (value) {
       av.grd.zoom = value;
       //console.log('ZoomSlide', av.grd.zoom);
-      DrawGridSetup();
+      av.grd.drawGridSetupFn();
     }
   }, "ZoomSlide");
 
@@ -1432,7 +1401,7 @@ require([
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", true);
     av.grd.colorMap = 'Viridis';
-    DrawGridSetup();
+    av.grd.drawGridSetupFn();
   });
 
   dijit.byId("mnGnuplot2").on("Click", function () {
@@ -1440,7 +1409,7 @@ require([
     dijit.byId("mnGnuplot2").attr("disabled", true);
     dijit.byId("mnViridis").attr("disabled", false);
     av.grd.colorMap = 'Gnuplot2';
-    DrawGridSetup();
+    av.grd.drawGridSetupFn();
   });
 
   dijit.byId("mnCubehelix").on("Click", function () {
@@ -1448,7 +1417,7 @@ require([
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", false);
     av.grd.colorMap = 'Cubehelix';
-    DrawGridSetup();
+    av.grd.drawGridSetupFn();
   });
 
   // *************************************************************** */
@@ -1471,7 +1440,7 @@ require([
       av.grd.log_metabolic_rate[ii] = null;
       av.grd.log_pop_size[ii] = null;
     }
-    DrawGridSetup();
+    av.grd.drawGridSetupFn();
   }
 
   document.getElementById("notButton").onclick = function () {toggle('notButton');}
@@ -1981,7 +1950,7 @@ require([
   mainBoxSwap('populationBlock');
 
   popChartFn();
-  //DrawGridSetup(); //Draw initial background
+  //av.grd.drawGridSetupFn(); //Draw initial background
   //************************************************************************
   //Useful Generic functions
   //************************************************************************
@@ -2064,7 +2033,7 @@ require([
         case 'webGridData':
           //mObj=JSON.parse(JSON.stringify(jsonObject));
           av.grd.msg = msg;
-          DrawGridSetup();
+          av.grd.drawGridSetupFn();
           if (av.debug.msgOrder) console.log('webGridData length', av.grd.ave_fitness.length);
           //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
           //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);

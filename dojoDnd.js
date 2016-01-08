@@ -40,7 +40,7 @@ var getUniqueName = function(name, target) {
     }
   }
   return name;
-}
+};
 
 var getDomId = function (name, target){
   'use strict';
@@ -80,6 +80,7 @@ function landActiveConfig(dnd, pkg) {
   var ndx = -1;
   //there is always a node here, so it must always be cleared when adding a new one.
   dnd.activeConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+  dnd.activeConfig.sync();   //should be done after insertion or deletion
   //get the data for the new configuration
   pkg.source.forInSelectedItems(function (item, id) { //assign the node that is selected from the source.
     dnd.activeConfig.insertNodes(false, [item]);
@@ -130,9 +131,9 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
 
       //Now find which node has the new content so it can get a context menu.
       var domID = getDomId(configName, target);
-      av.fzr.dir[domID] = 'c'+ av.fzr.cNum;
-      av.fzr.domid['c'+ av.fzr.cNum] = domID;
-      av.fzr.cNum++;
+      av.fzr.dir[domID] = 'c'+ av.fzr.wNum;
+      av.fzr.domid['c'+ av.fzr.wNum] = domID;
+      av.fzr.wNum++;
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(fzr, target, domID);
@@ -181,8 +182,8 @@ function landFzOrgan(dnd, fzr, parents, source, nodes, target) {
       else if ('activeOrgan' == source.node.id) { gen = av.fzr.actOrgan.genome; }
       av.fzr.dir[domid] = 'g' + av.fzr.gNum;
       av.fzr.domid['g' + av.fzr.gNum] = domid;
-      av.fzr.file['g' + av.fzr.gNum + '/genmome.seq'] = gen;
-      av.fzr.file['g' + av.fzr.gNum + 'entryname.txt'] = dnd.fzOrgan.map[domid].data;
+      av.fzr.file['g' + av.fzr.gNum + '/genome.seq'] = gen;
+      av.fzr.file['g' + av.fzr.gNum + '/entryname.txt'] = dnd.fzOrgan.map[domid].data;
       av.fzr.gNum++;
       if (av.debug.dnd) console.log('fzr', fzr);
 
@@ -294,6 +295,8 @@ function updateFromFzrOrganism(dnd, fzr) {
   av.fzr.actOrgan.name = av.fzr.file[dir+'/entryname.txt'];
   av.fzr.actOrgan.genome = av.fzr.file[dir+'/genome.seq'];
   if (av.debug.dnd) console.log('domId', domId);
+  console.log('domId', domId, '; dir', dir, '; name', av.fzr.actOrgan.name, '; genome', av.fzr.actOrgan.genome);
+  console.log('fzr', fzr);
 
   //av.fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];  //don't think this is used; delete later
   if (av.debug.dnd) console.log('av.fzr.actOrgan', av.fzr.actOrgan);
@@ -304,7 +307,7 @@ function landOrganIcon(av, source, nodes, target) {
   'use strict';
   console.log('source', source.node.id);
   var items = getAllItems(av.dnd.activeOrgan);    //gets some data about the items in the container
-  if (1 < items.length) {
+  if (0 < items.length) {
     av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
     av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
   }
@@ -334,7 +337,7 @@ function landActiveOrgan(dnd, fzr, source, nodes, target) {
   //clear out the old data if an organism is already there
   var items = getAllItems(dnd.activeOrgan);    //used to see if there is more than one item in Organ Current
   //if (av.debug.dnd) console.log('items', items, items.length);
-  if (1 < items.length) {
+  if (0 < items.length) {
     dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
     dnd.activeOrgan.sync();   //should be done after insertion or deletion
 
@@ -372,7 +375,7 @@ function landOrganCanvas(dnd, fzr, source, nodes, target) {
 }
 
 //------------------------------------------------- Populated Dishes DND -----------------------------------------------
-//Process when an Worlduration is added to the Freezer
+//Process when an World is added to the Freezer
 av.dnd.landFzWorldFn = function (dnd, fzr, pkg) {//source, pkg.nodes, pkg.target) {
   'use strict';
   console.log('landFzPopDish: fzr', av.fzr);
@@ -386,9 +389,9 @@ av.dnd.landFzWorldFn = function (dnd, fzr, pkg) {//source, pkg.nodes, pkg.target
 
       //Now find which node has the new content so it can get a context menu.
       var domID = getDomId(WorldName, pkg.target);
-      av.fzr.dir[domID] = 'w'+ av.fzr.cNum;
-      av.fzr.domid['w'+ av.fzr.cNum] = domID;
-      av.fzr.cNum++;
+      av.fzr.dir[domID] = 'w'+ av.fzr.wNum;
+      av.fzr.domid['w'+ av.fzr.wNum] = domID;
+      av.fzr.wNum++;
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(fzr, pkg.target, domID);
@@ -471,7 +474,7 @@ function landGraphPop1(dnd, source, nodes, target, plt) {
   'use strict';
   var items = getAllItems(dnd.graphPop1);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
-  if (1 < items.length) {
+  if (0 < items.length) {
     //clear out the old data
     dnd.graphPop1.selectAll().deleteSelectedNodes();  //clear items
     dnd.graphPop1.sync();   //should be done after insertion or deletion
@@ -503,7 +506,7 @@ function landGraphPop2(dnd, source, nodes, target, plt) {
   'use strict';
   var items = getAllItems(dnd.graphPop2);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
-  if (1 < items.length) {
+  if (0 < items.length) {
     //clear out the old data
     dnd.graphPop2.selectAll().deleteSelectedNodes();  //clear items
     dnd.graphPop2.sync();   //should be done after insertion or deletion
@@ -528,7 +531,7 @@ function landGraphPop3(dnd, source, nodes, target, plt) {
   'use strict';
   var items = getAllItems(dnd.graphPop3);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
-  if (1 < items.length) {
+  if (0 < items.length) {
     //clear out the old data
     dnd.graphPop3.selectAll().deleteSelectedNodes();  //clear items
     dnd.graphPop3.sync();   //should be done after insertion or deletion

@@ -147,7 +147,12 @@ var flexsplit = function (instr) {
 };
 
 //**********************************************************************************************************************
-/*** Created by ruppmatt on 12/16/15. */
+
+
+//**********************************************************************************************************************
+//                        Utilities to convert text to and from format needed by emscripten database
+//                                      Created by ruppmatt on 12/16/15.
+//**********************************************************************************************************************
 
 function utf16to8(str) {
   'use strict';
@@ -224,7 +229,7 @@ function utf8bytesEecode(bytes8){
   return utf8to16(chars.join(''));
 }
 
-// displays text on screen instead of using consoe log
+// displays text on screen instead of using console log
 function display(text)
 {   var para = document.createElement("p");
   var child = document.createTextNode(text);

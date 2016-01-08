@@ -100,6 +100,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
           fzr.file[gdir + '/entryname.txt'] = avidian;
           fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.gen.dna[av.gen.son];
           fzr.gNum++;
+          fzr.saved = false;
           if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);
           //create a right mouse-click context menu for the item just created.
           if (av.debug.mouse) console.log('Offspring-->freezer; fzf', fzr);
@@ -161,6 +162,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
             //fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + grd.kidGenome;
             fzr.file[gdir + '/genome.seq'] = grd.kidGenome;
             fzr.gNum++;
+            fzr.saved = false;
             if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
             if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
             //create a right mouse-click context menu for the item just created.
@@ -193,7 +195,7 @@ function ParentMouse(evt, av) {
       //change from auto placed to hand placed if needed
       if ('auto' == av.parents.howPlaced[av.mouse.ParentNdx]) {
         av.parents.howPlaced[av.mouse.ParentNdx] = 'hand';
-        makeHandAutoNdx(parents);
+        makeHandAutoNdx(av.parents);
         //PlaceAncestors(parents);
       }
       console.log('auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);

@@ -1,3 +1,13 @@
+// JSon to string
+av.utl.json2stringFn = function (jStr) {
+  'use strict';
+  var rstr = '';
+  for (var ndx in jStr) {
+    rstr = rstr + ndx + ':' + jStr[ndx] + '\n';
+  }
+  return rstr;
+}
+
 
 //fio.uiWorker function
 function doOrgTrace(fio, fzr) {
@@ -18,6 +28,8 @@ function doOrgTrace(fio, fzr) {
     ]
   };
   if (av.debug.msg) console.log('trace', request);
+  console.log('doOrgTrace', request);
+  console.log('doOrgTrace string', av.utl.json2stringFn(request));
   fio.uiWorker.postMessage(request);
 }
 

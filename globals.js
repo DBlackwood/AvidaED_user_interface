@@ -18,26 +18,7 @@ av.debug.pdb = false; //pouchDB
 av.debug.fio = true; // file io
 av.debug.gen = false; //oranism page
 
-//structure to hold list of ancestor organisms
-av.parents = {};
-
-//Clear parents/Ancestors
-var clearParents = function(parents) {
-  parents = {};
-  parents.name = [];
-  parents.genome = [];
-  parents.color = [];
-  parents.col = [];
-  parents.row = [];
-  parents.AvidaNdx = [];
-  parents.autoNdx = [];
-  parents.handNdx = [];
-  parents.howPlaced = [];
-  parents.domid = [];  //need domID of entry in ancestorBox so that it can be removed from ancestor box when square on grid is dragged from box
-  parents.Colors = ColorBlind.slice();
-  parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
-  return parents;
-};
+av.debug.log = 'test line delete later \n';
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
@@ -148,6 +129,8 @@ if (brs.isChromium !== null && brs.isChromium !== undefined && brs.vendorName ==
 brs.page = 'population';
 brs.subpage = 'map';
 
+av.utl = {};  // holds utility functions
+
 av.fio = {}; //file input output data
 av.fio.dbName = 'wsdb';  //for workspace database
 av.fio.wsdb = null;
@@ -156,7 +139,28 @@ av.fio.uiWorker = null;
 av.fio.fileReadingDone = false;
 av.fio.userFname = '';
 
-av.dnd = {};
+av.dnd = {};  //details in AvidiaEd.js as it access the DOM
+
+//structure to hold list of ancestor organisms
+av.parents = {};
+//Clear parents/Ancestors
+av.parents.clearParentsFn = function () {
+  av.parents.name = [];
+  av.parents.genome = [];
+  av.parents.color = [];
+  av.parents.col = [];
+  av.parents.row = [];
+  av.parents.AvidaNdx = [];
+  av.parents.autoNdx = [];
+  av.parents.handNdx = [];
+  av.parents.howPlaced = [];
+  av.parents.domid = [];  //need domID of entry in ancestorBox so that it can be removed from ancestor box when square on grid is dragged from box
+  av.parents.Colors = ColorBlind.slice();
+  av.parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
+  return av.parents;
+};
+//console.log('after clearParents', av.parents.clearParentsFn);
+
 av.fzr = {};
 
 av.fzr.clearFzrFn = function () {
@@ -173,10 +177,9 @@ av.fzr.clearFzrFn = function () {
   //hold genome for active organism in Organism View
   av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': ''};
   av.fzr.saved = true;
+  console.log('ClearFzrFn', av.fzr);
 };
-
-av.fzr.clearFzrFn();
-
+console.log('end of globals');
 /* Fzr - Freezer.
  av.fzr.dir.dojoUnique14 = 'g0';
  av.fzr.dir.dojoUnique15 = 'g1';
