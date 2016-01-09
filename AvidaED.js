@@ -66,7 +66,7 @@ require([
   "colorTest.js",
   "PopulationGrid.js",
   "organismView.js",
-  'dojodnd.js',
+  'dojoDnd.js',
   'popControls.js',
   'mouse.js',
   // 'ndxDB.js',

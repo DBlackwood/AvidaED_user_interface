@@ -81,6 +81,7 @@ function makeFzrAncestor(fzr, idStr) {
 }
 
 av.fio.sendConfig = function(av) {
+  /*
   'use strict';
   av.fio.dxdb.open();
   var idStr = 'ws/cwd';
@@ -90,6 +91,7 @@ av.fio.sendConfig = function(av) {
   makeEmDxFile(av.fio, idStr+'/events.cfg', '');
   //makeFzrInstsetCfg(av.fio, idStr, em);
   av.fio.dxdb.close();
+  */
 }
 
 function makeFzrConfig(fzr, num, parents) {
