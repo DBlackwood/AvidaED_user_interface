@@ -63,6 +63,7 @@ require([
   "fileDataRead.js",
   "fileDataWrite.js",
   "fileIO.js",
+  //"indexDB.js", //put in to look at again. Looks confusing. tiba need to delete this file when this line is removed
   "colorTest.js",
   "PopulationGrid.js",
   "organismView.js",
@@ -177,11 +178,37 @@ require([
   // Menu file handling
   //********************************************************************************************************************
 
+
+  av.fio.mnOpenDefaultWSfn = function() {
+    'use strict';
+    if (!av.fzr.saved) {
+      console.log('open dialog');
+      //SaveWSbeforeOpenWSialog.show();
+      sWSfDialog.show();
+      console.log('when does this show?')
+    }
+    else {
+      av.fio.readZipWS(av.fio.defaultFname);
+    }
+    console.log('mnOpenDefaultWSfn, av.fzr.saved', av.fzr.saved);
+    //need to fix this so the existing data is saved before the default file is read. tiba do later
+  };
+
   dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
     av.fio.mnOpenDefaultWSfn(); //in fileDataRead
   });
 
-  // above this in use; below this line is test till the next line
+
+  dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
+    SaveWSbeforeOpenWSialog.hide();
+  });
+
+    /*    if (sure) {
+     av.fio.fzSaveCurrentWorkspaceFn();
+     }
+  */
+
+   // above this in use; below this line is test till the next line
   //--------------------------------------------------------------------------------------------------------------------
 
   function readSingleFile(e) {

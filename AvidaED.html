@@ -880,6 +880,22 @@
 </div>
 
 <!-- Dialog boxes --------------------------------------- -->
+<!----- Save WSfile Dialog box -------->
+<div data-dojo-type="dijit/Dialog" data-dojo-id="sWSfDialog" title="What would you like to save to the freezer?">
+  <div class="dijitDialogPaneContentArea">
+    <p>Configuration saves the experiment settings only.</p>
+
+    <p>Population saves organisms and experiment history.</p>
+  </div>
+  <div class="dijitDialogPaneActionBar">
+    <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){fzDialog.hide();}"
+            id="sWSfCancel">Cancel Save
+    </button>
+    <button data-dojo-type="dijit/form/Button" type="button" id="sWSfSave">Save</button>
+    <button data-dojo-type="dijit/form/Button" type="button" id="sWSfDiscard">Discard</button>
+  </div>
+</div>
+
 <!-- Freezer Dialog -->
 <div data-dojo-type="dijit/Dialog" data-dojo-id="fzDialog" title="What would you like to save to the freezer?">
   <div class="dijitDialogPaneContentArea">

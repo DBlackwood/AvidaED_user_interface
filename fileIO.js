@@ -7,7 +7,6 @@
 av.fio.readZipWS = function(zipFileName) {
   'use strict';
   av.fzr.clearFzrFn();  // clear freezer (globals.js)
-  av.parents.clearParentsFn();  //globals.js
   //Clear each section of the freezer and active organism and ancestorBox
   av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.fzConfig.sync();   //should be done after insertion or deletion
@@ -15,11 +14,13 @@ av.fio.readZipWS = function(zipFileName) {
   av.dnd.fzOrgan.sync();
   av.dnd.fzWorld.selectAll().deleteSelectedNodes();
   av.dnd.fzWorld.sync();
+  //Change loading a workspace will change the freezer, but not parents or configuration
+/*  av.parents.clearParentsFn();  //globals.js
   av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
   av.dnd.ancestorBox.sync();
   av.dnd.activeOrgan.selectAll().deleteSelectedNodes();
   av.dnd.activeOrgan.sync();
-  //Either need to clear the active config and active organism here or when the file is read.
+*/
   av.fio.zipName = zipFileName;
   var oReq = new XMLHttpRequest();
   oReq.open("GET", av.fio.zipName, true);
@@ -71,23 +72,13 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   // Test works; zip is saved to user's Downloads directory
 };
 
-//http://www.html5rocks.com/en/tutorials/file/dndfiles/
-av.fio.mnOpenDefaultWSfn = function() {
-  'use strict';
-  if (!av.fzr.saved) {
-    var sure = confirm('Current workspace as been changed since the last save. Save workspace first?');
-    if (sure) {
-      av.fio.fzSaveCurrentWorkspaceFn();
-    }
-  }
-  av.fio.readZipWS(av.fio.defaultFname);
-  console.log('mnOpenDefaultWSfn else', av.fzr);
-  //need to fix this so the existing data is saved before the default file is read. tiba do later
-};
 
 //console.log("tests for different browsers for download"); //wish I knew where the stuff below came from
 //window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 //window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
+
+//reading files
+//http://www.html5rocks.com/en/tutorials/file/dndfiles/
 
 // Dojo file uploads and downloads
 // https://infrequently.org/2005/12/file-uploading-with-dojo/
