@@ -172,13 +172,14 @@ require([
   // ********************************************************************************************************************
   av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
 
-  av.fio.readZipWS(av.fio.defaultFname);
+  av.fio.readZipWS(av.fio.defaultFname, true);
+  //av.fio.loadDefaultConfig();
 
   //********************************************************************************************************************
   // Menu file handling
-  //********************************************************************************************************************
+  //********************************************************************************************s************************
 
-
+  //not currently in use; tiba delete mnOpenDefaultWSfn function below later.
   av.fio.mnOpenDefaultWSfn = function() {
     'use strict';
     if (!av.fzr.saved) {
@@ -195,32 +196,140 @@ require([
   };
 
   dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
-    av.fio.mnOpenDefaultWSfn(); //in fileDataRead
+    'use strict';
+    av.fio.useDefault = true;
+    if (!av.fzr.saved) sWSfDialog.show();
+    else {
+      av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
+    }
   });
 
-
-  dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
-    SaveWSbeforeOpenWSialog.hide();
+  dijit.byId("sWSfSave").on("Click", function () {
+    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
+    sWSfDialog.hide();
+    if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
+    else {
+      document.getElementById("fileGet").click();
+    }
   });
 
-    /*    if (sure) {
-     av.fio.fzSaveCurrentWorkspaceFn();
-     }
-  */
+  dijit.byId("sWSfDiscard").on("Click", function () {
+    sWSfDialog.hide();
+    if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
+    else {
+      document.getElementById("fileGet").click();
+    }
+  });
 
-   // above this in use; below this line is test till the next line
-  //--------------------------------------------------------------------------------------------------------------------
-
-  function readSingleFile(e) {
-    var file = e.target.files[0];
+  function readSingleFile(evt) {
+    var file = evt.target.files[0];
     if (!file) {
       return;
     }
+    else {
+      av.fio.readZipWS(file, false);
+    }
+    /*
     var reader = new FileReader();
-    reader.onload = function(e) {
-      var contents = e.target.result;
+    reader.onload = function(evt) {
+      var contents = evt.target.result;
       console.log('contents', contents);
-      console.log('e',e);
+      console.log('e',evt);
+    };
+    reader.readAsText(file);
+    */
+  }
+
+  //http://www.html5rocks.com/en/tutorials/file/dndfiles/
+  document.getElementById('fileGet').addEventListener('change', readSingleFile, false);
+  
+  /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
+  // Save current workspace (mnFzSaveWorkspace)
+  document.getElementById("mnFlSaveWorkspace").onclick = function () {
+    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
+  };
+
+  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
+  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
+    var suggest = 'avidaWS.avidaedworkspace.zip';
+    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
+    av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
+    av.fio.fzSaveCurrentWorkspaceFn();
+  };
+
+  // above this in use; below this line is test till the next line
+  //--------------------------------------------------------------------------------------------------------------------
+
+  dijit.byId("mnFlOpenWS").on("Click", function () {
+    'use strict';
+    av.fio.useDefault = false;
+    if (!av.fzr.saved) sWSfDialog.show();
+    else { av.fio.userPickZipRead();}
+  });
+
+  https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
+  av.fio.userPickZipRead = function () {
+    "use strict";
+    av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
+    //Clear each section of the freezer and active organism and ancestorBox
+    av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+    av.dnd.fzConfig.sync();   //should be done after insertion or deletion
+    av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
+    av.dnd.fzOrgan.sync();
+    av.dnd.fzWorld.selectAll().deleteSelectedNodes();
+    av.dnd.fzWorld.sync();
+
+    var inputFile = document.getElementById("inputFile");
+    var zipFileToLoad = inputFile.files[0];
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent)
+    {
+      var zipFileLoaded = new JSZip(fileLoadedEvent.target.result);
+      //var ulFilesContained = document.getElementById("ulFilesContained");
+
+      av.fio.zipPathRoot = null;
+      for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
+      {
+        var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
+        //av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
+        console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+        if (null == av.fio.zipPathRoot) {
+          var leading = wsb('/', nameOfFileContainedInZipFile);
+          console.log('leading', leading);
+          if ('__MACOSX' != leading) av.fio.zipPathRoot = leading; //this gets the root name which we remove from path in the fzr file
+        }
+        av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
+        av.fio.fName = nameOfFileContainedInZipFile;
+        av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
+        console.log('av.fio.fName=',av.fio.fName, '; av.fio.zipPathRoot=', av.fio.zipPathRoot, '; av.fio.anID=',av.fio.anID);
+        if (3 < av.fio.fName.length) processFiles(false);  //do not load configfile
+      }
+
+    };
+    fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
+  }
+
+  /*
+  function displayFileAsText(event)
+  {
+    var textAreaFileSelectedAsText = document.getElementById("textAreaFileSelectedAsText");
+    textAreaFileSelectedAsText.innerHTML = event.target.file.asText();
+  }
+  */
+
+  //below this line is test till the next line
+  //--------------------------------------------------------------------------------------------------------------------
+  function readSingleFile_(evt) {
+    var file = evt.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(evt) {
+      var contents = evt.target.result;
+      console.log('contents', contents);
+      console.log('evt',evt);
     };
     reader.readAsText(file);
   }
@@ -231,6 +340,11 @@ require([
       .addEventListener('change', readSingleFile, false);
   }
 
+  function openFileOption() {
+    document.getElementById("fileGet").click();
+    console.log('after fileGet click');
+  }
+
   /*
   dijit.byId("mnFlOpenWS").on("Click", function () {  //does not work
     $('input[type=file]').click();
@@ -239,10 +353,6 @@ require([
 */
   //Not impressed with the website below; can be deleted
   //http://p2p.wrox.com/javascript-how/14546-how-show-file-dialog-using-javascript.html
-  function openFileOption() {
-    document.getElementById("fileGet").click();
-    console.log('after fileGet');
-  }
   //--------------------------------------------------------------------------------------------------------------------
   //http://www.html5rocks.com/en/tutorials/file/dndfiles/
   function handleFileSelect(evt) {
@@ -252,7 +362,7 @@ require([
     }
   }
 
-  document.getElementById('getFileRock').addEventListener('change', handleFileSelect, false);
+  //document.getElementById('getFileRock').addEventListener('change', handleFileSelect, false);
 
   //--------------------------------------------------------------------------------------------------------------------
   function readWSFile(e) {
@@ -277,20 +387,6 @@ require([
   av.fio.test = function(){
     console.log('this is a test');
     document.getElementById("getWS").click();
-  };
-
-  /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
-  // Save current workspace (mnFzSaveWorkspace)
-  document.getElementById("mnFlSaveWorkspace").onclick = function () {
-    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
-  };
-
-  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
-  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
-    var suggest = 'avidaWS.avidaedworkspace.zip';
-    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
-    av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
-    av.fio.fzSaveCurrentWorkspaceFn();
   };
 
   //********************************************************************************************************************
@@ -508,7 +604,7 @@ require([
     if ('fzConfig' === target.node.id) {
       //var num = av.fzr.cNum;
       landFzConfig(av.dnd, av.fzr, source, nodes, target);  //needed as part of call to contextMenu
-      //if (num !== fzr.cNum) {makeFzrConfig(av.fzr, num, parents);} //need to implement this to get data in files
+      //if (num !== fzr.cNum) {makeFzrConfig(av.fzr, num, parents);} //need to implement this to get data in files; tiba Do soon
     }
   });
 
@@ -822,7 +918,7 @@ require([
     'use strict';
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
-    console.log(log);
+    console.log('log', av.debug.log);
     console.log('av', av);
   };
 
@@ -1196,7 +1292,7 @@ require([
     document.getElementById('mainBC').style.cursor = 'default';
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
-    console.log('fzr', av.fzr);
+    //console.log('fzr', av.fzr);
     for (var dir in av.fzr.domid) document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);

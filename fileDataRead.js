@@ -33,23 +33,42 @@ av.fio.addFzItem = function(dndSection, name, type, fileNum) {
   return domid;
 }
 
+//need to make sure freezer loaded first so not currently in use. Delete later if not used tiba
+av.fio.loadDefaultConfig = function() {
+  'use strict';
+  av.fzr.actConfig.name = av.fzr.file['c0/entryname.txt'];
+  console.log()
+  av.fzr.actConfig.type = 'c';
+  av.dnd.activeConfig.selectAll().deleteSelectedNodes();
+  av.dnd.activeConfig.insertNodes(false, [{data: av.fzr.actConfig.name, type: [av.fzr.actConfig.type]}]);
+  av.dnd.activeConfig.sync();
+  var mapItems = Object.keys(av.dnd.activeConfig.map);
+  av.fzr.actConfig.actDomid = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
+  av.fzr.actConfig.fzDomid = av.fzr.domid['c0'];
+  avidaCFG2form(av.fzr.file['c0/avida.cfg']);
+  environmentCFG2form(av.fzr.file['c0/environment.cfg']);
+}
+
 av.fio.setActiveConfig = function(dndSection, name, type){
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();
   av.dnd.activeConfig.insertNodes(false, [{data: name, type: [type]}]);
   av.dnd.activeConfig.sync();
   var mapItems = Object.keys(dndSection.map);
-  av.fzr.actConfig.domId = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
+  av.fzr.actConfig.fzDomid = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
   av.fzr.actConfig.name = name;
   av.fzr.actConfig.type = type;
   return av.fzr.actConfig.domId;
 }
 
-function add2freezerFromFile(av) {
+function add2freezerFromFile(loadConfigFlag) {
   "use strict";
   var type = av.fio.anID.substr(0, 1);
+  console.log('av.fio.anID', av.fio.anID);
   var dir = wsb('/', av.fio.anID);
   var num = dir.substr(1, dir.length-1);
   var name, domid;
+  console.log('av.fio.thisfile.asText()', av.fio.thisfile.asText());
+  console.log('av.fio.thisfile', av.fio.thisfile);
   if (null == av.fio.thisfile.asText()) { name = av.fio.anID; }
   else { name = wsb("\n", av.fio.thisfile.asText()); }
 
@@ -58,8 +77,8 @@ function add2freezerFromFile(av) {
     case 'c':
       domid = av.fio.addFzItem(av.dnd.fzConfig, name, type, num);
       if (av.fzr.cNum < Number(num)) {av.fzr.cNum = Number(num); }
-      console.log('c: num', num, '; name', name);
-      if (0 == num) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
+      console.log('c: num', num, '; name', name, 'flag', loadConfigFlag);
+      if (0 == num && loadConfigFlag) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
       break;
     case 'g':
       domid = av.fio.addFzItem(av.dnd.fzOrgan, name, type, num);
@@ -75,13 +94,12 @@ function add2freezerFromFile(av) {
   av.fzr.dir[domid] = dir;
 }
 
-function processFiles(av){
+function processFiles(loadConfigFlag){
   "use strict";
-  av.fio.anID = wsa(av.fio.target+'/', av.fio.fName);
   var fileType = wsa('/', av.fio.anID);
   switch (fileType) {
     case 'entryname.txt':
-      add2freezerFromFile(av);
+      add2freezerFromFile(loadConfigFlag);
     case 'ancestors':
     case 'ancestors_manual':
     case 'avida.cfg':
@@ -96,9 +114,10 @@ function processFiles(av){
     case 'tr2':
     case 'tr3':
     case 'update':
-      if ('c0/avida.cfg'==av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText()); }
-      if ('c0/environment.cfg'==av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim()); }
-
+      if (loadConfigFlag) {
+        if ('c0/avida.cfg' == av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText());}
+        if ('c0/environment.cfg' == av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim());}
+      }
       //writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
       av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
       break;
@@ -107,7 +126,7 @@ function processFiles(av){
       break;
   }
   //if (av.debug.fio) console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
-  //console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
+  console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
 }
 
 

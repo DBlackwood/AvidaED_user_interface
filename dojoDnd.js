@@ -133,11 +133,13 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
       var domID = getDomId(configName, target);
       av.fzr.dir[domID] = 'c'+ av.fzr.wNum;
       av.fzr.domid['c'+ av.fzr.wNum] = domID;
+      av.fzr.file[av.fzr.dir[domID]] = configName;
       av.fzr.wNum++;
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(fzr, target, domID);
       av.fzr.saved = false;
+      console.log('dir', av.fzr.dir[domID], '; configName', configName );
     }
     else {  //user cancelled so the item should NOT be added to the freezer.
       dnd.fzConfig.deleteSelectedNodes();  //clear items

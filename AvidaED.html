@@ -62,7 +62,7 @@
       console.log('get_filename',file, '; obj', obj);
     }
 
-    function mnFlTrfn() {
+    function mnFltcbfn() {
       document.getElementById("getFileTry").click();
     }
 
@@ -82,19 +82,21 @@
   <!-- contentPane for top that contains main menu -->
   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
        refreshOnShow="false" region="top" splitter="false" maxSize="Infinity" doLayout="false" style="height:26px;">
-      <input id='getFileRock' type="file" style = 'display:none' >
+    <input id='fileGet' type="file" style = 'display:none' ></input>
+    <input id='getWS' type="file" style = 'display:none'></input>
+    <input id='putWS' type="file" style = 'display:none'></input>
+    <input id='getFileTry' type="file" style = 'display:none' onchange="av.fio.userPickZipRead();"></input>
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspace" label="Save Current Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspaceAs" label="Save Workspace As"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlOpenDefaultWS' label="Open Default Workspace"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnFlOpenWS' label="Open Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlRock' label="Open Rock"
                   onclick='mnFlRockFn();'></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnFlTry' label="Open Try"
-                  onclick='mnFlTrfn();'></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnFlOpenWS' label="Open Workspace"
-                  onclick="mnFlOpenWSfn();"></span>
+            <span data-dojo-type="dijit/MenuItem" id='mnFltcb' label="Open tcb"
+                  onclick='mnFltcbfn();'></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlOpenTest' label="Open Test"
                   onclick="mnFlOpenTestFn();return;"></span>
           </span>
@@ -171,9 +173,6 @@
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
            style="height:35px;overflow: auto" id="trashCP">
         <span id="trashCan" class="container"><img id="TrashCanImage" src="images/avida-ed-trash-icon.png" style="width: 32px;"></img></span>
-        <input id='getWS' type="file" style = 'display:none'>
-        <input id='putWS' type="file" style = 'display:none'>
-        <input id='getFileTry' type="file" style = 'display:none' onchange="get_filename(this);">
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="freezerDiv">
@@ -815,6 +814,16 @@
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                  refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
+
+              <label for="inputFile">Select a ZIP File:</label>
+              <input id="inputFile" type="file" onchange="av.fio.userPickZipRead()"></input><br />
+
+              <label for="ulFilesContained">Files contained in ZIP file:</label><br />
+              <ul id="ulFilesContained"></ul><br />
+
+              <label for="textAreaFileSelectedAsText">File Selected as Text:</label><br />
+              <textarea id="textAreaFileSelectedAsText" rows="8"></textarea><br />
+
               <select data-dojo-type="dijit/form/Select" id="y1select" data-dojo-props="name: 'yyaxis'">
                 <option value="None">None</option>
                 <option value="Average Fitness" selected="selected">Average Fitness</option>
@@ -881,18 +890,16 @@
 
 <!-- Dialog boxes --------------------------------------- -->
 <!----- Save WSfile Dialog box -------->
-<div data-dojo-type="dijit/Dialog" data-dojo-id="sWSfDialog" title="What would you like to save to the freezer?">
+<div data-dojo-type="dijit/Dialog" data-dojo-id="sWSfDialog" title="The freezer has changed since last saved in a workspace">
   <div class="dijitDialogPaneContentArea">
-    <p>Configuration saves the experiment settings only.</p>
-
-    <p>Population saves organisms and experiment history.</p>
+    <p>Would you like to save before loading another workspace?</p>
   </div>
   <div class="dijitDialogPaneActionBar">
-    <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){fzDialog.hide();}"
-            id="sWSfCancel">Cancel Save
+    <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){sWSfDialog.hide();}"
+            id="sWSfCancel">Cancel loading workspace
     </button>
-    <button data-dojo-type="dijit/form/Button" type="button" id="sWSfSave">Save</button>
-    <button data-dojo-type="dijit/form/Button" type="button" id="sWSfDiscard">Discard</button>
+    <button data-dojo-type="dijit/form/Button" type="button" id="sWSfSave">Save then load workspace</button>
+    <button data-dojo-type="dijit/form/Button" type="button" id="sWSfDiscard">Discard receent changes</button>
   </div>
 </div>
 

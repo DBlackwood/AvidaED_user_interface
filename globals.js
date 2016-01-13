@@ -137,7 +137,9 @@ av.fio.wsdb = null;
 av.fio.defaultFname = 'default_1.avidaedworkspace.zip';
 av.fio.uiWorker = null;
 av.fio.fileReadingDone = false;
-av.fio.userFname = '';
+av.fio.defaultUserFname = 'avidaWS.avidaedworkspace.zip';
+av.fio.userFname = av.fio.defaultUserFname;
+av.fio.useDefault = true;
 
 av.dnd = {};  //details in AvidiaEd.js as it access the DOM
 
@@ -179,6 +181,20 @@ av.fzr.clearFzrFn = function () {
   av.fzr.saved = true;
   console.log('ClearFzrFn', av.fzr);
 };
+
+av.fzr.clearMainFzrFn = function () {
+  'use strict';
+  av.fzr.dir = {};
+  av.fzr.domid = {};
+  av.fzr.file = {};
+
+  av.fzr.cNum = 0;  //value of the next configured dish (config) number
+  av.fzr.gNum = 0;  //value of the next organism (genome) number
+  av.fzr.wNum = 0;  //value of the next world (populated dish) number
+  av.fzr.saved = true;
+  console.log('ClearMainFzrFn', av.fzr);
+};
+
 console.log('end of globals');
 /* Fzr - Freezer.
  av.fzr.dir.dojoUnique14 = 'g0';
