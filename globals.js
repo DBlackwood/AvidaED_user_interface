@@ -179,7 +179,6 @@ av.fzr.clearFzrFn = function () {
   //hold genome for active organism in Organism View
   av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': ''};
   av.fzr.saved = true;
-  console.log('ClearFzrFn', av.fzr);
 };
 
 av.fzr.clearMainFzrFn = function () {
@@ -192,7 +191,6 @@ av.fzr.clearMainFzrFn = function () {
   av.fzr.gNum = 0;  //value of the next organism (genome) number
   av.fzr.wNum = 0;  //value of the next world (populated dish) number
   av.fzr.saved = true;
-  console.log('ClearMainFzrFn', av.fzr);
 };
 
 console.log('end of globals');

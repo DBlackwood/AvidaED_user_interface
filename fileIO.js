@@ -112,7 +112,7 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   console.log('end', end, '; userFname', av.fio.userFname);
   var WSzip = new av.fio.JSZip();
   for (var fname in av.fzr.file) {
-    WSzip.file(fname, av.fzr.file[fname]);
+    WSzip.file('av.avidaedworkspace/'+fname, av.fzr.file[fname]);
   }
   var content = WSzip.generate({type:"blob"});
   console.log('before saveAs');

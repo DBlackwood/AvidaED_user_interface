@@ -180,6 +180,7 @@ require([
   //********************************************************************************************s************************
 
   //not currently in use; tiba delete mnOpenDefaultWSfn function below later.
+  /*
   av.fio.mnOpenDefaultWSfn = function() {
     'use strict';
     if (!av.fzr.saved) {
@@ -194,6 +195,7 @@ require([
     console.log('mnOpenDefaultWSfn, av.fzr.saved', av.fzr.saved);
     //need to fix this so the existing data is saved before the default file is read. tiba do later
   };
+  */
 
   dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
     'use strict';
@@ -209,7 +211,7 @@ require([
     sWSfDialog.hide();
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
-      document.getElementById("fileGet").click();
+      document.getElementById("inputFile").click();  //to get user picked file
     }
   });
 
@@ -217,45 +219,9 @@ require([
     sWSfDialog.hide();
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
-      document.getElementById("fileGet").click();
+      document.getElementById("inputFile").click();  //to get user picked file
     }
   });
-
-  function readSingleFile(evt) {
-    var file = evt.target.files[0];
-    if (!file) {
-      return;
-    }
-    else {
-      av.fio.readZipWS(file, false);
-    }
-    /*
-    var reader = new FileReader();
-    reader.onload = function(evt) {
-      var contents = evt.target.result;
-      console.log('contents', contents);
-      console.log('e',evt);
-    };
-    reader.readAsText(file);
-    */
-  }
-
-  //http://www.html5rocks.com/en/tutorials/file/dndfiles/
-  document.getElementById('fileGet').addEventListener('change', readSingleFile, false);
-  
-  /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
-  // Save current workspace (mnFzSaveWorkspace)
-  document.getElementById("mnFlSaveWorkspace").onclick = function () {
-    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
-  };
-
-  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
-  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
-    var suggest = 'avidaWS.avidaedworkspace.zip';
-    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
-    av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
-    av.fio.fzSaveCurrentWorkspaceFn();
-  };
 
   // above this in use; below this line is test till the next line
   //--------------------------------------------------------------------------------------------------------------------
@@ -264,7 +230,7 @@ require([
     'use strict';
     av.fio.useDefault = false;
     if (!av.fzr.saved) sWSfDialog.show();
-    else { av.fio.userPickZipRead();}
+    else document.getElementById("inputFile").click();
   });
 
   https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
@@ -291,17 +257,24 @@ require([
       for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
       {
         var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
-        //av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
-        console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
-        if (null == av.fio.zipPathRoot) {
-          var leading = wsb('/', nameOfFileContainedInZipFile);
-          console.log('leading', leading);
-          if ('__MACOSX' != leading) av.fio.zipPathRoot = leading; //this gets the root name which we remove from path in the fzr file
+        /*Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
+        This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
+         */
+        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+        if (null === av.fio.zipPathRoot) {
+          if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
+            av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
+          }
+          else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {av.fio.zipPathRoot='';}
+          console.log('Path=', av.fio.zipPathRoot, '; __a=', nameOfFileContainedInZipFile.indexOf('.avidaedworkspace/'),
+            '; __b=',nameOfFileContainedInZipFile.indexOf('MACOSX'));
         }
         av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
         av.fio.fName = nameOfFileContainedInZipFile;
-        av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
-        console.log('av.fio.fName=',av.fio.fName, '; av.fio.zipPathRoot=', av.fio.zipPathRoot, '; av.fio.anID=',av.fio.anID);
+        if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
+        else av.fio.anID = av.fio.fName;
+        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+        console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
         if (3 < av.fio.fName.length) processFiles(false);  //do not load configfile
       }
 
@@ -316,6 +289,20 @@ require([
     textAreaFileSelectedAsText.innerHTML = event.target.file.asText();
   }
   */
+
+  /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
+  // Save current workspace (mnFzSaveWorkspace)
+  document.getElementById("mnFlSaveWorkspace").onclick = function () {
+    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
+  };
+
+  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
+  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
+    var suggest = 'avidaWS.avidaedworkspace.zip';
+    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
+    av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
+    av.fio.fzSaveCurrentWorkspaceFn();
+  };
 
   //below this line is test till the next line
   //--------------------------------------------------------------------------------------------------------------------

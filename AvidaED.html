@@ -40,31 +40,6 @@
     function BrowserResizeEventHandler() {
       console.log("initial handler in html only");
     }
-    function mnFlOpenTestFn()
-    {
-      console.log('in getWS in html');
-      av.fio.test();
-    }
-
-    function mnFlOpenWSfn(){
-      console.log('in html in mnFlOpenWS');
-    }
-
-    function putWStrigger()
-    {
-      console.log('in putWS in html');
-      av.fio.SaveWSas;
-    }
-
-    //http://stackoverflow.com/questions/12747913/how-to-get-filename-of-file-control-on-file-selection-event-using-javascript
-    function get_filename(obj) {
-      var file = obj.value;
-      console.log('get_filename',file, '; obj', obj);
-    }
-
-    function mnFltcbfn() {
-      document.getElementById("getFileTry").click();
-    }
 
     //--------------------------------------------------------------------------------------------------------------------
 
@@ -83,9 +58,9 @@
   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
        refreshOnShow="false" region="top" splitter="false" maxSize="Infinity" doLayout="false" style="height:26px;">
     <input id='fileGet' type="file" style = 'display:none' ></input>
+    <input id="inputFile" type="file" style = 'display:none' onchange="av.fio.userPickZipRead()"></input>
     <input id='getWS' type="file" style = 'display:none'></input>
     <input id='putWS' type="file" style = 'display:none'></input>
-    <input id='getFileTry' type="file" style = 'display:none' onchange="av.fio.userPickZipRead();"></input>
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
@@ -93,12 +68,6 @@
             <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspaceAs" label="Save Workspace As"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlOpenDefaultWS' label="Open Default Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlOpenWS' label="Open Workspace"></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnFlRock' label="Open Rock"
-                  onclick='mnFlRockFn();'></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnFltcb' label="Open tcb"
-                  onclick='mnFltcbfn();'></span>
-            <span data-dojo-type="dijit/MenuItem" id='mnFlOpenTest' label="Open Test"
-                  onclick="mnFlOpenTestFn();return;"></span>
           </span>
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
@@ -814,16 +783,6 @@
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                  refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
-
-              <label for="inputFile">Select a ZIP File:</label>
-              <input id="inputFile" type="file" onchange="av.fio.userPickZipRead()"></input><br />
-
-              <label for="ulFilesContained">Files contained in ZIP file:</label><br />
-              <ul id="ulFilesContained"></ul><br />
-
-              <label for="textAreaFileSelectedAsText">File Selected as Text:</label><br />
-              <textarea id="textAreaFileSelectedAsText" rows="8"></textarea><br />
-
               <select data-dojo-type="dijit/form/Select" id="y1select" data-dojo-props="name: 'yyaxis'">
                 <option value="None">None</option>
                 <option value="Average Fitness" selected="selected">Average Fitness</option>
