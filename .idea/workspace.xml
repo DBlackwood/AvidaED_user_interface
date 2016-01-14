@@ -2,92 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c0/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c0/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c0/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c0/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c0/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c1/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c1/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c1/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c1/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c1/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c1/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c1/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c2/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c2/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c2/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c2/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c2/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c2/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/c2/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/g0/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/g0/genome.seq" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/g1/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/g1/genome.seq" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/clade.ssg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/detail.spop" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/tr0" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/tr1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/tr2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/tr3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w0/update" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/clade.ssg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/detail.spop" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/tr0" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/tr1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/tr2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/tr3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w4/update" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/clade.ssg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/detail.spop" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/tr0" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/tr1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/tr2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/tr3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w5/update" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/clade.ssg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/detail.spop" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/tr0" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/tr1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/tr2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/tr3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/example.avidaedworkspace/w6/update" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/avidaWS.avidaedworkspace.zip" afterPath="$PROJECT_DIR$/testFiles_not4git_orServer/avidaWS.avidaedworkspace.zip" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/default_1.avidaedworkspace.zip" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileDataRead.js" afterPath="$PROJECT_DIR$/fileDataRead.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileIO.js" afterPath="$PROJECT_DIR$/fileIO.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -111,8 +30,8 @@
       <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.666666">
-              <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+            <state vertical-scroll-proportion="-20.555555">
+              <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -123,8 +42,8 @@
       <file leaf-file-name="fileDataRead.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileDataRead.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-24.444445">
-              <caret line="128" column="4" selection-start-line="128" selection-start-column="4" selection-end-line="128" selection-end-column="4" />
+            <state vertical-scroll-proportion="-16.11111">
+              <caret line="79" column="8" selection-start-line="79" selection-start-column="8" selection-end-line="79" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -140,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fileIO.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="fileIO.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fileIO.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.444445">
-              <caret line="114" column="18" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.8145286">
+              <caret line="56" column="62" selection-start-line="56" selection-start-column="62" selection-end-line="56" selection-end-column="62" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -183,11 +102,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.61777776">
-              <caret line="265" column="38" selection-start-line="265" selection-start-column="38" selection-end-line="265" selection-end-column="38" />
+            <state vertical-scroll-proportion="-15.555555">
+              <caret line="1581" column="118" selection-start-line="1581" selection-start-column="118" selection-end-line="1581" selection-end-column="118" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -276,10 +195,10 @@
         <option value="$PROJECT_DIR$/dojoDnd.js" />
         <option value="$PROJECT_DIR$/fileDataWrite.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
-        <option value="$PROJECT_DIR$/fileDataRead.js" />
         <option value="$PROJECT_DIR$/globals.js" />
-        <option value="$PROJECT_DIR$/fileIO.js" />
+        <option value="$PROJECT_DIR$/fileDataRead.js" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
+        <option value="$PROJECT_DIR$/fileIO.js" />
       </list>
     </option>
   </component>
@@ -827,6 +746,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/utilities.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="108" column="34" selection-start-line="108" selection-start-column="13" selection-end-line="108" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.882353">
@@ -856,54 +791,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-24.444445">
-          <caret line="128" column="4" selection-start-line="128" selection-start-column="4" selection-end-line="128" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/globals.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.666666">
-          <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+        <state vertical-scroll-proportion="-20.555555">
+          <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileIO.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.444445">
-          <caret line="114" column="18" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utilities.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="108" column="34" selection-start-line="108" selection-start-column="13" selection-end-line="108" selection-end-column="34" />
+        <state vertical-scroll-proportion="-16.11111">
+          <caret line="79" column="8" selection-start-line="79" selection-start-column="8" selection-end-line="79" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61777776">
-          <caret line="265" column="38" selection-start-line="265" selection-start-column="38" selection-end-line="265" selection-end-column="38" />
+        <state vertical-scroll-proportion="-15.555555">
+          <caret line="1581" column="118" selection-start-line="1581" selection-start-column="118" selection-end-line="1581" selection-end-column="118" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileIO.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8145286">
+          <caret line="56" column="62" selection-start-line="56" selection-start-column="62" selection-end-line="56" selection-end-column="62" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

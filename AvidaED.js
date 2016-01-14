@@ -266,18 +266,19 @@ require([
             av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
           }
           else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {av.fio.zipPathRoot='';}
-          console.log('Path=', av.fio.zipPathRoot, '; __a=', nameOfFileContainedInZipFile.indexOf('.avidaedworkspace/'),
-            '; __b=',nameOfFileContainedInZipFile.indexOf('MACOSX'));
         }
         av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
         av.fio.fName = nameOfFileContainedInZipFile;
         if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
         else av.fio.anID = av.fio.fName;
         //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
-        console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+        //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
         if (3 < av.fio.fName.length) processFiles(false);  //do not load configfile
       }
-
+      av.grd.drawGridSetupFn();
+      av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
+      av.fzr.gNum++;
+      av.fzr.wNum++;
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
@@ -1577,8 +1578,8 @@ require([
     if (undefined != av.parents.handNdx) {
       for (var ii = 0; ii < av.parents.handNdx.length; ii++) {
         //console.log('old cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
-        av.parents.col[av.parents.handNdx[ii]] = Math.floor(NewCols * av.parents.col[av.parents.handNdx[ii]] / gridWasCols);  //was trunc
-        av.parents.row[av.parents.handNdx[ii]] = Math.floor(NewRows * av.parents.row[av.parents.handNdx[ii]] / gridWasRows);  //was trunc
+        av.parents.col[av.parents.handNdx[ii]] = Math.floor(NewCols * av.parents.col[av.parents.handNdx[ii]] / av.grd.gridWasCols);  //was trunc
+        av.parents.row[av.parents.handNdx[ii]] = Math.floor(NewRows * av.parents.row[av.parents.handNdx[ii]] / av.grd.gridWasRows);  //was trunc
         av.parents.AvidaNdx[av.parents.handNdx[ii]] = av.parents.col[av.parents.handNdx[ii]] + NewCols * av.parents.row[av.parents.handNdx[ii]];
         //console.log('New cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
       }

@@ -63,12 +63,12 @@ av.fio.setActiveConfig = function(dndSection, name, type){
 function add2freezerFromFile(loadConfigFlag) {
   "use strict";
   var type = av.fio.anID.substr(0, 1);
-  console.log('av.fio.anID', av.fio.anID);
+  //console.log('av.fio.anID', av.fio.anID);
   var dir = wsb('/', av.fio.anID);
   var num = dir.substr(1, dir.length-1);
   var name, domid;
-  console.log('av.fio.thisfile.asText()', av.fio.thisfile.asText());
-  console.log('av.fio.thisfile', av.fio.thisfile);
+  //console.log('av.fio.thisfile.asText()', av.fio.thisfile.asText());
+  //console.log('av.fio.thisfile', av.fio.thisfile);
   if (null == av.fio.thisfile.asText()) { name = av.fio.anID; }
   else { name = wsb("\n", av.fio.thisfile.asText()); }
 
@@ -77,7 +77,7 @@ function add2freezerFromFile(loadConfigFlag) {
     case 'c':
       domid = av.fio.addFzItem(av.dnd.fzConfig, name, type, num);
       if (av.fzr.cNum < Number(num)) {av.fzr.cNum = Number(num); }
-      console.log('c: num', num, '; name', name, 'flag', loadConfigFlag);
+      //console.log('c: num', num, '; name', name, 'flag', loadConfigFlag);
       if (0 == num && loadConfigFlag) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
       break;
     case 'g':

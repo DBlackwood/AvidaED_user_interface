@@ -4,7 +4,7 @@
 
 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
 //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
-av.fio.readZipWS = function(zipFileName,loadConfigFlag) {
+av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
   'use strict';
   if (loadConfigFlag) av.fzr.clearFzrFn();
   else av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
@@ -27,73 +27,37 @@ av.fio.readZipWS = function(zipFileName,loadConfigFlag) {
   oReq.responseType = "arraybuffer";
   oReq.onload = function (oEvent) {
     var arybuf = oReq.response;
-    console.log("have ziptest.zip", arybuf);
+    //console.log("have ziptest.zip", arybuf);
     // do something to extract it
     av.fio.zipfile = new av.fio.JSZip();
-    console.log("loading arybuf");
+    //console.log("loading arybuf");
     av.fio.zipfile.load(arybuf, {base64: false});
     //console.log("arybuf loaded");
-    console.log('before call procesfiles');
+    //console.log('before call procesfiles');
     av.fio.zipPathRoot = null;
-    for (var zFileName in av.fio.zipfile.files) {
-      //target will be assigned the beginning of the path name within the zip file.
-      if (null == av.fio.zipPathRoot) {
-        var leading = wsb('/', zFileName);
-        if ('__MACOSX' != leading) av.fio.zipPathRoot = leading; //this gets the root name which we remove from path in the fzr file
+    for (var nameOfFileContainedInZipFile in av.fio.zipfile.files) {
+      /*Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
+       This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
+       */
+      //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+      if (null === av.fio.zipPathRoot) {
+        if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
+          av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
+        }
+        else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {av.fio.zipPathRoot='';}
+        console.log('Path=', av.fio.zipPathRoot, '; __a=', nameOfFileContainedInZipFile.indexOf('.avidaedworkspace/'),
+          '; __b=',nameOfFileContainedInZipFile.indexOf('MACOSX'));
       }
-      av.fio.thisfile = av.fio.zipfile.files[zFileName];
-      av.fio.fName = zFileName;
-      av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
-      if (3 < av.fio.fName.length) processFiles(loadConfigFlag);
+      av.fio.thisfile = av.fio.zipfile.files[nameOfFileContainedInZipFile];
+      av.fio.fName = nameOfFileContainedInZipFile;
+      if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
+      else av.fio.anID = av.fio.fName;
+      //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+      //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+      if (3 < av.fio.fName.length) processFiles(loadConfigFlag);  //do not load configfile
     };
     //note setup form is updated when the files are read.
-    console.log('after read loop: fzr', av.fzr);
-    av.fio.fileReadingDone = true;
-    //console.log('before DrawGridSetup')
-    av.grd.drawGridSetupFn();
-    av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
-    av.fzr.gNum++;
-    av.fzr.wNum++;
-  };
-  oReq.send();
-}
-
-av.fio.readWS = function(zipFileName,loadConfigFlag) {
-  'use strict';
-  av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
-  //Clear each section of the freezer and active organism and ancestorBox
-  av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-  av.dnd.fzConfig.sync();   //should be done after insertion or deletion
-  av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
-  av.dnd.fzOrgan.sync();
-  av.dnd.fzWorld.selectAll().deleteSelectedNodes();
-  av.dnd.fzWorld.sync();
-
-  var oReq = new XMLHttpRequest();
-  oReq.open("GET", zipFileName, true);
-  oReq.responseType = "arraybuffer";
-  oReq.onload = function (oEvent) {
-    var arybuf = oReq.response;
-    console.log("have ziptest.zip", arybuf);
-    // do something to extract it
-    av.fio.zipfile = new av.fio.JSZip();
-    console.log("loading arybuf");
-    av.fio.zipfile.load(arybuf, {base64: false});
-    //console.log("arybuf loaded");
-    console.log('before call procesfiles');
-    av.fio.zipPathRoot = null;
-    for (var zFileName in av.fio.zipfile.files) {
-      //av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
-      if (null == av.fio.zipPathRoot) {
-        var leading = wsb('/', zFileName);
-        if ('__MACOSX' != leading) av.fio.zipPathRoot = leading; //this gets the root name which we remove from path in the fzr file
-      }
-      av.fio.thisfile = av.fio.zipfile.files[zFileName];
-      av.fio.fName = zFileName;
-      processFiles(loadConfigFlag);
-    };
-    //note setup form is updated when the files are read.
-    console.log('after read loop: fzr', av.fzr);
+    //console.log('after read loop: fzr', av.fzr);
     av.fio.fileReadingDone = true;
     //console.log('before DrawGridSetup')
     av.grd.drawGridSetupFn();
