@@ -18,7 +18,7 @@ av.debug.pdb = false; //pouchDB
 av.debug.fio = true; // file io
 av.debug.gen = false; //oranism page
 
-av.debug.log = 'test line delete later \n';
+av.debug.log = 'message and error log';
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};

@@ -101,12 +101,32 @@ require([
   // Error logging
   //********************************************************************************************************************
 
-  window.onerror = function(error, url, line) {
-    av.debug.log += 'L:' + line + ', URL:' + url + ', ERR:' + error + '\n';
-    //console.log('in on error, log contents starting on next line \n', av.debug.log);
-    //var sure = confirm('An error has occured.');
-    //Tiba need to write a custom pop up that sends e-mail to an Avida-ED account with the debug.log contents.
+  //https://bugsnag.com/blog/js-stacktracess
+  window.onerror = function (message, file, line, col, error) {
+    console.log(message, "from", error.stack);
+    av.debug.log += '\n'+ 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
+    console.log('in on error, log contents starting on next line \n', av.debug.log);
+    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed?');
+    if (sure) {
+      var mailData = 'mailto:diane.blackwood@gmail.com'
+                   + '?subject=Avida-ED error message'
+                   + '&body=' + av.debug.log;
+      //window.open(mailData);
+      //window.open('mailto:test@example.com?subject=subject&body=av.debug.log');
+
+      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
+      var link = "mailto:me@example.com" +
+        //"?cc=CCaddress@example.com" +
+        "?subject=" + escape("Avida-ED error message") +
+        "&body=" + escape(av.debug.log);
+      window.location.href = link;
+
+    }
   }
+  //More usefull websites to catch errors
+  //https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
+  //to send e-mail
+  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
 
   if (av.debug.root) console.log('before dnd definitions');
   /********************************************************************************************************************/
@@ -906,8 +926,9 @@ require([
     'use strict';
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
+    var george = fred;
     console.log('log', av.debug.log);
-    console.log('av', av);
+    //console.log('av', av);
   };
 
   //******* Freeze Button ********************************************
@@ -2113,7 +2134,7 @@ require([
 
   //trying fio.uiWorker to start Avida inside the initiation of PouchDB
 
-  function readMsg(ee, av) {
+  function readMsg(ee) {
     var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
     if ('data' == msg.type) {
       switch (msg.name) {
@@ -2122,11 +2143,13 @@ require([
             console.log("Error: ", msg);  // msg failed
             runStopFn();  //flip state back since the message failed to get to Avida
           }
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
           break;
         case 'reset':
           if (true !== msg.Success) {
             console.log("Reset failed: ", msg);
           }
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
           break;
         case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
           av.traceObj = msg.snapshots;
@@ -2135,11 +2158,15 @@ require([
           cycleSlider.set("maximum", av.traceObj.length - 1);
           cycleSlider.set("discreteValues", av.traceObj.length);
           updateOrgTrace();
+          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
           break;
         case 'webPopulationStats':
           updatePopStats(av.grd, msg);
           popChartFn();
           if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
+          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
           break;
         case 'webGridData':
           //mObj=JSON.parse(JSON.stringify(jsonObject));
@@ -2150,23 +2177,29 @@ require([
           //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
           if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
           if (av.debug.msgOrder) console.log('out',av.grd.out);
+          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
           break;
         case 'webOrgDataByCellID':
           //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
           updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
+          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
           break;
         default:
           console.log('____________UnknownRequest: ', msg);
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
           break;
       }
     }
     else if ('userFeedback' == msg.type) {
+      av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
       switch (msg.level) {
         case 'notification':
           console.log('avida:notify: ',msg.message);
           LoadLabel.textContent = msg.message;
           break;
-        case 'warning':
+        case 'warning':s
           console.log('avida:warn: ',msg.message);
           break;
         case 'fatal':
@@ -2177,6 +2210,7 @@ require([
           break;
       }
     }
+    else av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
   }
 
   //fio.uiWorker used when communicating with the web worker and avida
@@ -2185,7 +2219,7 @@ require([
 
   //process message from web worker
   console.log('before fio.uiWorker on message');
-  av.fio.uiWorker.onmessage = function (ee) {readMsg(ee, av)};  // in file messaging.js
+  av.fio.uiWorker.onmessage = function (ee) {readMsg(ee)};  // in file messaging.js
 
 //********************************************************
 //   Color Test Section - Temp this will all be removed later

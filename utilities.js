@@ -147,7 +147,15 @@ var flexsplit = function (instr) {
 };
 
 //**********************************************************************************************************************
-
+// JSon to string
+av.utl.json2stringFn = function (jStr) {
+  'use strict';
+  var rstr = '';
+  for (var ndx in jStr) {
+    rstr = rstr + ndx + ':' + jStr[ndx] + '\n';
+  }
+  return rstr;
+}
 
 //**********************************************************************************************************************
 //                        Utilities to convert text to and from format needed by emscripten database

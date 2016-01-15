@@ -1,13 +1,3 @@
-// JSon to string
-av.utl.json2stringFn = function (jStr) {
-  'use strict';
-  var rstr = '';
-  for (var ndx in jStr) {
-    rstr = rstr + ndx + ':' + jStr[ndx] + '\n';
-  }
-  return rstr;
-}
-
 
 //fio.uiWorker function
 function doOrgTrace(fio, fzr) {
@@ -31,6 +21,7 @@ function doOrgTrace(fio, fzr) {
   console.log('doOrgTrace', request);
   console.log('doOrgTrace string', av.utl.json2stringFn(request));
   fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 //request data from Avida to update SelectedOrganismType
@@ -44,6 +35,7 @@ function doSelectedOrganismType(fio, grd) {
   }
   if (av.debug.msg) console.log('doSelectedOrganismType; selectedNdx', grd.selectedNdx)
   fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 //fio.uiWorker function
@@ -56,6 +48,7 @@ function requestPopStats(fio) {
     'interval': 'always'
   }
   fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 //fio.uiWorker function
@@ -68,6 +61,7 @@ function requestGridData(fio) {
     'interval': 'always'
   }
   fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 //sends message to worker to tell Avida to run/pause as a toggle.
@@ -92,6 +86,7 @@ function doRunPause(fio) {
     }
   }
   fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 //fio.uiWorker function
@@ -101,6 +96,7 @@ function doReset(fio) {
     'Key': 'Reset'
   };
   fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 //fio.uiWorker function
@@ -110,6 +106,7 @@ function doDbReady(fio) {
     'type': 'dbReady'
   };
   fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 function injectAncestors(fio, parents) {
@@ -131,6 +128,7 @@ function injectAncestors(fio, parents) {
       ]
     }
     fio.uiWorker.postMessage(request);
+    av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   }
 }
 
