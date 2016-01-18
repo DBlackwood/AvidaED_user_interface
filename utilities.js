@@ -152,7 +152,16 @@ av.utl.json2stringFn = function (jStr) {
   'use strict';
   var rstr = '';
   for (var ndx in jStr) {
-    rstr = rstr + ndx + ':' + jStr[ndx] + '\n';
+    if ('object' === typeof jStr[ndx]) {
+      rstr += ndx + ': \n';
+      if ('snapshots' != ndx) {
+        var tmp = jStr[ndx];
+        for (var ii in tmp) {
+          rstr += '  ' + ii + ': ' + tmp[ii] + '\n';
+        }
+      }
+    }
+    else rstr += ndx + ':' + jStr[ndx] + '\n';
   }
   return rstr;
 }

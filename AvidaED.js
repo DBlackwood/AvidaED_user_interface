@@ -115,7 +115,7 @@ require([
       //window.open('mailto:test@example.com?subject=subject&body=av.debug.log');
 
       //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-      var link = "mailto:me@example.com" +
+      var link = 'mailto:diane.blackwood@gmail.com' +
         //"?cc=CCaddress@example.com" +
         "?subject=" + escape("Avida-ED error message") +
         "&body=" + escape(av.debug.log);
@@ -125,8 +125,7 @@ require([
   }
   //More usefull websites to catch errors
   //https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
-  //to send e-mail
-  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
+  //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
 
   if (av.debug.root) console.log('before dnd definitions');
   /********************************************************************************************************************/
@@ -199,24 +198,6 @@ require([
   // Menu file handling
   //********************************************************************************************s************************
 
-  //not currently in use; tiba delete mnOpenDefaultWSfn function below later.
-  /*
-  av.fio.mnOpenDefaultWSfn = function() {
-    'use strict';
-    if (!av.fzr.saved) {
-      console.log('open dialog');
-      //SaveWSbeforeOpenWSialog.show();
-      sWSfDialog.show();
-      console.log('when does this show?')
-    }
-    else {
-      av.fio.readZipWS(av.fio.defaultFname);
-    }
-    console.log('mnOpenDefaultWSfn, av.fzr.saved', av.fzr.saved);
-    //need to fix this so the existing data is saved before the default file is read. tiba do later
-  };
-  */
-
   dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
     'use strict';
     av.fio.useDefault = true;
@@ -243,7 +224,7 @@ require([
     }
   });
 
-  // above this in use; below this line is test till the next line
+  // open and read user picked file
   //--------------------------------------------------------------------------------------------------------------------
 
   dijit.byId("mnFlOpenWS").on("Click", function () {
@@ -302,14 +283,6 @@ require([
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
-
-  /*
-  function displayFileAsText(event)
-  {
-    var textAreaFileSelectedAsText = document.getElementById("textAreaFileSelectedAsText");
-    textAreaFileSelectedAsText.innerHTML = event.target.file.asText();
-  }
-  */
 
   /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
   // Save current workspace (mnFzSaveWorkspace)
@@ -2158,15 +2131,20 @@ require([
           cycleSlider.set("maximum", av.traceObj.length - 1);
           cycleSlider.set("discreteValues", av.traceObj.length);
           updateOrgTrace();
-          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
+          //var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;  //need to fix
+          //av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
+          //console.log('webOrgTraceBySequence', msg);
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
           break;
         case 'webPopulationStats':
           updatePopStats(av.grd, msg);
           popChartFn();
           if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
-          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
+          //var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
+          //av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);   //may not dispay anyway
+          //console.log('stub', stub);
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+          //console.log('webPopulationStats', msg);
           break;
         case 'webGridData':
           //mObj=JSON.parse(JSON.stringify(jsonObject));
@@ -2177,14 +2155,16 @@ require([
           //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
           if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
           if (av.debug.msgOrder) console.log('out',av.grd.out);
-          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
+          var stub = 'name: ' + msg.name.toString() + '\ntype: ' + msg.type.toString() + '\n';  //may not display anyway
+          av.debug.log += '\nAvida --> ui \n' + stub;
+          console.log('webGridData', msg);
           break;
         case 'webOrgDataByCellID':
           //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
           updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
-          var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+          //var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
+          //av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
           break;
         default:
           console.log('____________UnknownRequest: ', msg);
@@ -2199,7 +2179,7 @@ require([
           console.log('avida:notify: ',msg.message);
           LoadLabel.textContent = msg.message;
           break;
-        case 'warning':s
+        case 'warning':
           console.log('avida:warn: ',msg.message);
           break;
         case 'fatal':
