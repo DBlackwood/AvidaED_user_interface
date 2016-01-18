@@ -284,7 +284,7 @@ require([
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
 
-  /* ----------------------- Save Workspace ------------------------------------------------------------------------- */
+  // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
@@ -297,7 +297,7 @@ require([
     av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
     av.fio.fzSaveCurrentWorkspaceFn();
   };
-
+/*
   //below this line is test till the next line
   //--------------------------------------------------------------------------------------------------------------------
   function readSingleFile_(evt) {
@@ -331,7 +331,7 @@ require([
     $('input[type=file]').click();
     console.log('files', this.files);
   })
-*/
+
   //Not impressed with the website below; can be deleted
   //http://p2p.wrox.com/javascript-how/14546-how-show-file-dialog-using-javascript.html
   //--------------------------------------------------------------------------------------------------------------------
@@ -360,7 +360,7 @@ require([
       displayContents(contents);
     };
     reader.readAsText(file);
-    */
+    
   }
   document.getElementById('getWS')
     .addEventListener('change', readWSFile, false);
@@ -369,7 +369,7 @@ require([
     console.log('this is a test');
     document.getElementById("getWS").click();
   };
-
+*/
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
