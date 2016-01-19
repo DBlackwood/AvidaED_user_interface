@@ -103,8 +103,9 @@ require([
 
   //https://bugsnag.com/blog/js-stacktracess
   window.onerror = function (message, file, line, col, error) {
-    console.log(message, "from", error.stack);
-    av.debug.log += '\n'+ 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
+    console.log(message, ' from ', error.stack, '------------------');
+    av.debug.log += '\n' + message + 'from' + file + ':' + line + ', :' + col;
+    //av.debug.log += '\n' + 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
     console.log('in on error, log contents starting on next line \n', av.debug.log);
     var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed?');
     if (sure) {
@@ -124,7 +125,8 @@ require([
     }
   }
   //More usefull websites to catch errors
-  //https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
+  // https://davidwalsh.name/javascript-stack-trace
+  // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
   //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
 
   if (av.debug.root) console.log('before dnd definitions');
@@ -135,7 +137,7 @@ require([
    when I've tried putting them in another file it does not work */
 
   av.dnd.fzConfig = new dndSource('fzConfig', {
-    accept: ['c'],
+    accept: ['b', 'c'],
     copyOnly: true,
     singular: true,
     selfAccept: false
@@ -147,7 +149,7 @@ require([
     selfAccept: false
   });
   av.dnd.fzWorld = new dndSource('fzWorld', {
-    accept: ['w'],
+    accept: ['b', 'w'],
     singular: true,
     copyOnly: true,
     selfAccept: false
@@ -164,7 +166,7 @@ require([
   if (av.debug.root) console.log('after trashCan');
 
   av.dnd.activeConfig = new dndSource('activeConfig', {
-    accept: ['c', 'w'],
+    accept: ['b', 'c', 'w'],  //b-both; c-configuration; w-world (populated dish
     singular: true,
     copyOnly: true,
     selfAccept: false
@@ -190,6 +192,7 @@ require([
   //  Read Default Workspace as part of initialization
   // ********************************************************************************************************************
   av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
+  av.fio.FileSaver = FileSaver;
 
   av.fio.readZipWS(av.fio.defaultFname, true);
   //av.fio.loadDefaultConfig();
@@ -208,12 +211,18 @@ require([
   });
 
   dijit.byId("sWSfSave").on("Click", function () {
+    console.log('before call save workspace');
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
+    console.log('after call to save workspace');
+    setTimeout(null, 8000);
+    console.log('after setTimeout');
     sWSfDialog.hide();
+    console.log('after hide dialog');
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
       document.getElementById("inputFile").click();  //to get user picked file
     }
+    console.log('after open file');
   });
 
   dijit.byId("sWSfDiscard").on("Click", function () {
@@ -234,56 +243,6 @@ require([
     else document.getElementById("inputFile").click();
   });
 
-  https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
-  av.fio.userPickZipRead = function () {
-    "use strict";
-    av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
-    //Clear each section of the freezer and active organism and ancestorBox
-    av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-    av.dnd.fzConfig.sync();   //should be done after insertion or deletion
-    av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
-    av.dnd.fzOrgan.sync();
-    av.dnd.fzWorld.selectAll().deleteSelectedNodes();
-    av.dnd.fzWorld.sync();
-
-    var inputFile = document.getElementById("inputFile");
-    var zipFileToLoad = inputFile.files[0];
-    var fileReader = new FileReader();
-    fileReader.onload = function(fileLoadedEvent)
-    {
-      var zipFileLoaded = new JSZip(fileLoadedEvent.target.result);
-      //var ulFilesContained = document.getElementById("ulFilesContained");
-
-      av.fio.zipPathRoot = null;
-      for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
-      {
-        var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
-        /*Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
-        This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
-         */
-        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
-        if (null === av.fio.zipPathRoot) {
-          if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
-            av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
-          }
-          else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {av.fio.zipPathRoot='';}
-        }
-        av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
-        av.fio.fName = nameOfFileContainedInZipFile;
-        if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
-        else av.fio.anID = av.fio.fName;
-        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
-        //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
-        if (3 < av.fio.fName.length) processFiles(false);  //do not load configfile
-      }
-      av.grd.drawGridSetupFn();
-      av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
-      av.fzr.gNum++;
-      av.fzr.wNum++;
-    };
-    fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
-  }
-
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
@@ -297,79 +256,7 @@ require([
     av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
     av.fio.fzSaveCurrentWorkspaceFn();
   };
-/*
-  //below this line is test till the next line
-  //--------------------------------------------------------------------------------------------------------------------
-  function readSingleFile_(evt) {
-    var file = evt.target.files[0];
-    if (!file) {
-      return;
-    }
 
-    var reader = new FileReader();
-    reader.onload = function(evt) {
-      var contents = evt.target.result;
-      console.log('contents', contents);
-      console.log('evt',evt);
-    };
-    reader.readAsText(file);
-  }
-
-  function whyTwice() {
-    //$('input[type=file]').click();
-    document.getElementById('fileGet')
-      .addEventListener('change', readSingleFile, false);
-  }
-
-  function openFileOption() {
-    document.getElementById("fileGet").click();
-    console.log('after fileGet click');
-  }
-
-  /*
-  dijit.byId("mnFlOpenWS").on("Click", function () {  //does not work
-    $('input[type=file]').click();
-    console.log('files', this.files);
-  })
-
-  //Not impressed with the website below; can be deleted
-  //http://p2p.wrox.com/javascript-how/14546-how-show-file-dialog-using-javascript.html
-  //--------------------------------------------------------------------------------------------------------------------
-  //http://www.html5rocks.com/en/tutorials/file/dndfiles/
-  function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    for (var i = 0, f; f = files[i]; i++) {
-      console.log('name', f.name, '; type', f.type, '; ');
-    }
-  }
-
-  //document.getElementById('getFileRock').addEventListener('change', handleFileSelect, false);
-
-  //--------------------------------------------------------------------------------------------------------------------
-  function readWSFile(e) {
-    'use strict';
-    var file = e.target.files[0];
-    if (!file) {
-      return;
-    }
-    console.log('file=', file);
-    /*
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var contents = e.target.result;
-      displayContents(contents);
-    };
-    reader.readAsText(file);
-    
-  }
-  document.getElementById('getWS')
-    .addEventListener('change', readWSFile, false);
-
-  av.fio.test = function(){
-    console.log('this is a test');
-    document.getElementById("getWS").click();
-  };
-*/
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
@@ -583,9 +470,10 @@ require([
   //This triggers now
   av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
-      //var num = av.fzr.cNum;
+      var num = av.fzr.cNum;
       landFzConfig(av.dnd, av.fzr, source, nodes, target);  //needed as part of call to contextMenu
-      //if (num !== fzr.cNum) {makeFzrConfig(av.fzr, num, parents);} //need to implement this to get data in files; tiba Do soon
+      if (num !== av.fzr.cNum) { makeFzrConfig(av.fzr, num, av.parents); }
+      console.log('fzr', av.fzr);
     }
   });
 
@@ -618,9 +506,9 @@ require([
   });
 
   av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
-    console.log('target', target.node.id, '; source',source.node.id, '-------------------------------------------------------------------');
     //setTimeout(null,1000);
     if ('organIcon' == target.node.id) {
+      console.log('target', target.node.id, '; source',source.node.id, '-------------------------------------------------------------------');
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
       landOrganIcon(av, source, nodes, target);
       //Change to Organism Page

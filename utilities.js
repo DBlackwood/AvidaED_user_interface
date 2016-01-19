@@ -166,6 +166,23 @@ av.utl.json2stringFn = function (jStr) {
   return rstr;
 }
 
+//number of items in an object
+//http://stackoverflow.com/questions/16976904/javascript-counting-number-of-objects-in-object
+av.utl.objectLength = function(object){
+  if (object.keys) {
+    return Object.keys(object).length;
+  }
+  else {
+    var length = 0;
+    for( var key in object ) {
+      if( object.hasOwnProperty(key) ) {
+        ++length;
+      }
+    }
+    return length;
+  }
+}
+
 //**********************************************************************************************************************
 //                        Utilities to convert text to and from format needed by emscripten database
 //                                      Created by ruppmatt on 12/16/15.

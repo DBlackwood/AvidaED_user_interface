@@ -21,6 +21,7 @@ function makeEmDxFile(fio, path, contents) {
     });
 }
 
+//kept this one line function in case we need to go to storing the workspace in a database instead of freezer memory
 function makeFzrFile(fzr, fileId, text) {
   'use strict';
   fzr.file[fileId] = text;
@@ -55,7 +56,7 @@ function makeFzrAvidaCfg(fzr, idStr, em) {
   if (dijit.byId("experimentRadio").get('checked')) txt += 'RANDOM_SEED -1 \n';
   else txt += 'RANDOM_SEED 100\n';
   txt += '#include instset.cfg\n';
-  txt += 'I\n';
+  txt += 'I';
   if (em) {makeEmDxFile(fzr, idStr+'/avida.cfg', txt);}
   else {makeFzrFile(fzr, idStr+'/avida.cfg', txt);}
 }
@@ -76,8 +77,25 @@ function makeFzrEnvironmentCfg(fzr, idStr, em) {
   else  { makeFzrFile(fzr, idStr+'/environment.cfg', txt);}
 }
 
-function makeFzrAncestor(fzr, idStr) {
+function makeFzrAncestor(idStr, fzr, parents) {
   'use strict';
+  var txt = '';
+  for (var ii = 0; ii < parents.autoNdx.length; ii++) {
+    txt += parents.name[parents.autoNdx[ii]] + '\n';
+    txt += parents.genome[parents.autoNdx[ii]] + '\n';
+  }
+  makeFzrFile(fzr, idStr+'/ancestors', txt);
+}
+
+function makeFzrAncestorHand(idStr, fzr, parents) {
+  'use strict';
+  var txt = '';
+  for (var ii = 0; ii < parents.handNdx.length; ii++) {
+    txt += parents.name[parents.handNdx[ii]] + '\n';
+    txt += parents.genome[parents.handNdx[ii]] + '\n';
+    txt += parents.col[parents.handNdx[ii]] + ',' + parents.row[parents.handNdx[ii]] + '\n';
+  }
+  makeFzrFile(fzr, idStr+'/ancestors_manual', txt);
 }
 
 av.fio.sendConfig = function(av) {
@@ -100,8 +118,10 @@ function makeFzrConfig(fzr, num, parents) {
   makeFzrAvidaCfg(fzr, 'c'+num, em);
   makeFzrEnvironmentCfg(fzr, 'c'+num, em);
   makeFzrFile(fzr, 'c'+num+'/events.cfg', '');
-  makeFzrFile(fzr, 'c'+num+'/entryname.txt', fzr.config[ndx].name);
+  //makeFzrFile(fzr, 'c'+num+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
   makeFzrInstsetCfg(fzr, 'c'+num);
+  makeFzrAncestor('c'+num, fzr, parents)
+  makeFzrAncestorHand('c'+num, fzr, parents)
   //need ancestor files still tiba
 }
 

@@ -85,12 +85,14 @@ function landActiveConfig(dnd, pkg) {
   pkg.source.forInSelectedItems(function (item, id) { //assign the node that is selected from the source.
     dnd.activeConfig.insertNodes(false, [item]);
   });
-  dnd.activeConfig.sync();
   var domid = Object.keys(dnd.activeConfig.map)[0];
+  pkg.target.map[domid].type[0] = 'b';
+  dnd.activeConfig.sync();
   av.fzr.actConfig.actDomid = domid;
   av.fzr.actConfig.name = document.getElementById(domid).textContent;
   av.fzr.actConfig.fzDomid = Object.keys(pkg.source.selection)[0];
   av.fzr.actConfig.dir = av.fzr.dir[av.fzr.actConfig.fzDomid];
+  av.fzr.actConfig.type = 'b';  //type becomes 'b' for both
 
   switch (pkg.source.node.id) {
     case 'fzConfig':
@@ -128,13 +130,16 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
     if (null != configName) {
       document.getElementById(domid).textContent = configName;
       target.map[domid].data = configName;
+      console.log('data', target.map[domid].data, target.map[domid]);
+      console.log('type', target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
       var domID = getDomId(configName, target);
-      av.fzr.dir[domID] = 'c'+ av.fzr.wNum;
-      av.fzr.domid['c'+ av.fzr.wNum] = domID;
-      av.fzr.file[av.fzr.dir[domID]] = configName;
-      av.fzr.wNum++;
+      target.map[domid].type[0] = 'c';
+      av.fzr.dir[domID] = 'c'+ av.fzr.cNum;
+      av.fzr.domid['c'+ av.fzr.cNum] = domID;
+      av.fzr.file[av.fzr.dir[domID]+'/entryname.txt'] = configName;
+      av.fzr.cNum++;
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(fzr, target, domID);
