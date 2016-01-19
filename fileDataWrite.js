@@ -64,15 +64,15 @@ function makeFzrAvidaCfg(fzr, idStr, em) {
 function makeFzrEnvironmentCfg(fzr, idStr, em) {
   'use strict';
   var txt = '';
-  if (dijit.byId("notose").get('checked')) txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("nanose").get('checked')) txt += 'REACTION  NAND nand  process:value=1:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NAND nand  process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("andose").get('checked')) txt += 'REACTION  AND  and   process:value=2:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  AND  and   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("ornose").get('checked')) txt += 'REACTION  ORN  orn   process:value=2:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  ORN  orn   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("orose").get('checked'))  txt += 'REACTION  OR   or    process:value=3:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  OR   or    process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("notose").get('checked')) txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("nanose").get('checked')) txt += 'REACTION  NAND nand  process:value=1:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NAND nand  process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("andose").get('checked')) txt += 'REACTION  AND  and   process:value=2:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  AND  and   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("ornose").get('checked')) txt += 'REACTION  ORN  orn   process:value=2:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  ORN  orn   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("orose").get('checked'))  txt += 'REACTION  OR   or    process:value=3:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  OR   or    process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("andnose").get('checked')) txt += 'REACTION  ANDN andn  process:value=3:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  ANDN andn  process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("norose").get('checked')) txt += 'REACTION  NOR  nor   process:value=4:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  NOR  nor   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("xorose").get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("norose").get('checked')) txt += 'REACTION  NOR  nor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOR  nor   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("xorose").get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1';    else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1';
   if (em) {makeEmDxFile(fzr, idStr+'/environment.cfg', txt);}
   else  { makeFzrFile(fzr, idStr+'/environment.cfg', txt);}
 }
@@ -122,20 +122,21 @@ function makeFzrConfig(fzr, num, parents) {
   makeFzrInstsetCfg(fzr, 'c'+num);
   makeFzrAncestor('c'+num, fzr, parents)
   makeFzrAncestorHand('c'+num, fzr, parents)
-  //need ancestor files still tiba
 }
 
-function makeFzrWorld(fzr, fio, grd, parents) {
+function makeFzrWorld(fzr, num, parents) {
   'use strict';
-  var ndx = fzr.config.length-1;  //write the last one created
-  makeFzrAvidaCfg(fzr, fzr.world[ndx]._id);
-  makeFzrEnvironmentCfg(fzr, fzr.world[ndx]._id);
-  makeFzrWorldEventsCfg(fzr, fzr.world[ndx]._id);
-  makeFzrFile(fzr, fzr.world[ndx]._id+'/entryname.txt', fzr.world[ndx].name);
-  makeFzrInstsetCfg(fzr, fzr.world[ndx]._id);
+  var em = false;
+  makeFzrAvidaCfg(fzr, 'w'+num, em);
+  makeFzrEnvironmentCfg(fzr, 'w'+num, em);
+  makeFzrFile(fzr, 'w'+num+'/events.cfg', '');
+  //makeFzrFile(fzr, 'c'+num+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
+  makeFzrInstsetCfg(fzr, 'w'+num);
+  makeFzrAncestor('w'+num, fzr, parents)
+  makeFzrAncestorHand('w'+num, fzr, parents)
 
-  makeFzrFile(fzr, fzr.world[ndx]._id+'/update', grd.updateNum);
-  //there are more files need to talk to Matt, tiba
+  makeFzrFile(fzr, 'w'+num + '/update', av.grd.updateNum);
+  //there are more files needed to talk to Matt, tiba
 }
 
 function makeFzrOrgan(fzr) {

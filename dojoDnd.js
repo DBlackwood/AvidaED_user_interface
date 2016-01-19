@@ -42,7 +42,7 @@ var getUniqueName = function(name, target) {
   return name;
 };
 
-var getDomId = function (name, target){
+av.dnd.getDomId = function (name, target){
   'use strict';
   //Now find which node has the new content so it can get a context menu.
   var domItems = Object.keys(target.map);
@@ -134,7 +134,7 @@ function landFzConfig(dnd, fzr, source, nodes, target) {
       console.log('type', target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
-      var domID = getDomId(configName, target);
+      var domID = av.dnd.getDomId(configName, target);
       target.map[domid].type[0] = 'c';
       av.fzr.dir[domID] = 'c'+ av.fzr.cNum;
       av.fzr.domid['c'+ av.fzr.cNum] = domID;
@@ -395,7 +395,7 @@ av.dnd.landFzWorldFn = function (dnd, fzr, pkg) {//source, pkg.nodes, pkg.target
       pkg.target.map[domid].data = WorldName;
 
       //Now find which node has the new content so it can get a context menu.
-      var domID = getDomId(WorldName, pkg.target);
+      var domID = av.dnd.getDomId(WorldName, pkg.target);
       av.fzr.dir[domID] = 'w'+ av.fzr.wNum;
       av.fzr.domid['w'+ av.fzr.wNum] = domID;
       av.fzr.wNum++;

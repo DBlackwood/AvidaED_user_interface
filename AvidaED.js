@@ -103,10 +103,10 @@ require([
 
   //https://bugsnag.com/blog/js-stacktracess
   window.onerror = function (message, file, line, col, error) {
-    console.log(message, ' from ', error.stack, '------------------');
-    av.debug.log += '\n' + message + 'from' + file + ':' + line + ', :' + col;
+    //console.log(message, ' from ', error.stack, '------------------');
+    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
     //av.debug.log += '\n' + 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
-    console.log('in on error, log contents starting on next line \n', av.debug.log);
+    //console.log('in on error, log contents starting on next line \n', av.debug.log);
     var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed?');
     if (sure) {
       var mailData = 'mailto:diane.blackwood@gmail.com'
@@ -606,9 +606,9 @@ require([
   });
 
   if (av.debug.root) console.log('before Population Page');
-  /* *************************************************************** */
-  /* Population page script ******************************************/
-  /* *************************************************************** */
+//----------------------------------------------------------------------------------------------------------------------
+// Population page Buttons
+//----------------------------------------------------------------------------------------------------------------------
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById("PopSetupButton").onclick = function () {
@@ -628,9 +628,9 @@ require([
   };
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
 
-  /* *************************************************************** */
-  /* ******* Map Grid buttons - New  Run/Pause Freeze ************** */
-  /* *************************************************************** */
+  //--------------------------------------------------------------------------------------------------------------------
+  ///   Map Grid buttons - New  Run/Pause Freeze
+  //--------------------------------------------------------------------------------------------------------------------
   dijit.byId("mnCnPause").attr("disabled", true);
   dijit.byId("mnFzOrganism").attr("disabled", true);
   dijit.byId("mnFzOffspring").attr("disabled", true);
@@ -770,18 +770,6 @@ require([
     av.grd.drawGridSetupFn();
   }
 
-  /*
-  function display(text)
-  {   var para = document.createElement("p");
-    var child = document.createTextNode(text);
-    para.appendChild(child);
-    document.getElementById('').appendChild(para);
-  }
-*/
-
-  //On unload
-
-
   //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
     'use strict';
@@ -799,56 +787,6 @@ require([
     if (av.grd.newrun) FrConfigFn();
     else fzDialog.show();
   };
-
-  function FrConfigFn() {
-    var fzName = prompt("Please name the new configuration", "newConfig");
-    if (fzName) {
-      var namelist = dojo.query('> .dojoDndItem', 'fzConfig');
-      fzName = getUniqueName(fzName, av.dnd.fzConfig);
-      if (null != fzName) {
-        av.dnd.fzConfig.insertNodes(false, [{data: fzName, type: ['c']}]);
-        av.dnd.fzConfig.sync();
-        //Create context menu for right-click on this item
-        var domId = getDomId(fzName, av.dnd.fzConfig);
-        var newConfig = {
-          domId: domId,
-          name: fzName,
-          _id: 'c'+ av.fzr.cNum,
-          fileNum: av.fzr.cNum
-        };
-        av.fzr.config.push(newConfig);
-        av.fzr.cNum++;
-        makeFzrConfig(av.fzr, av.fio);
-        av.dnd.contextMenu(av.fzr, av.dnd.fzConfig, domId);
-      }
-    }
-  }
-
-  //Save a populated dish
-  function FrPopulationFn() {
-    var fzName = prompt("Please name the new population", "newPopulation");
-    if (fzName) {
-      fzName = getUniqueName(fzName, av.dnd.fzWorld);
-      if (null != fzName) {
-        av.dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
-        av.dnd.fzWorld.sync();
-        //Find out the dom ID the node element just inserted.
-        var domId = getDomId(fzName, av.dnd.fzWorld);
-        var newWorld = {
-          domId: domId,
-          name: fzName,
-          _id: 'w'+ av.fzr.wNum,
-          fileNum: av.fzr.wNum
-        };
-        av.fzr.world.push(newWorld);
-        av.fzr.wNum++;
-        makeFzrWorld(av.fzr, av.fio, av.grd);
-        //need to get data from Avida for this tiba
-        //Create context menu for right-click on this item
-        av.dnd.contextMenu(av.fzr, av.dnd.fzWorld, domId);
-      }
-    }
-  }
 
   dijit.byId("FzConfiguration").on("Click", function () {
     fzDialog.hide();
@@ -876,47 +814,10 @@ require([
     FrOrganismFn('offspring')
   });
 
-  //Freeze the selected organism
-  function FrOrganismFn(trigger) {
-    var fzName = 'new';
-    var parentName = "";
-    var gene;
-    if ('selected' == trigger) {
-      fzName = prompt("Please name the selected organism", "newOrganism");
-      gene = av.grd.kidGenome;
-    }
-    else if ('offspring' == trigger) {
-      //get name from parent
-      parentName = document.getElementById(Object.keys(av.dnd.activeOrgan.map)[0]).textContent;
-      fzName = prompt("Please name the offspring", parentName + '_Offspring');
-      gene = '0,heads_default,' + av.gen.dna[1];
-    }
-    else {
-      fzName = prompt("Please name the organism", "newOrganism");
-      console.log('source unknwon', trigger);
-    }
-    fzName = getUniqueName(fzName, av.dnd.fzOrgan);
-    if (null != fzName) {
-      //insert new item into the freezer.
-      av.dnd.fzOrgan.insertNodes(false, [{data: fzName, type: ['g']}]);
-      av.dnd.fzOrgan.sync();
-
-      //Find out the dom ID the node element just inserted.
-      var mapItems = Object.keys(av.dnd.fzOrgan.map);
-      var neworg = {
-        'name': fzName,
-        'domId': mapItems[mapItems.length - 1],
-        'genome': gene
-      }
-      av.fzr.genome.push(neworg);
-      av.dnd.contextMenu(av.fzr, av.dnd.fzOrgan, neworg.domId);
-    }
-  }
-
   // End of Freezer functions
-//********************************************************************
-//    mouse DND functions
-//********************************************************************
+  //--------------------------------------------------------------------------------------------------------------------
+  //    mouse DND functions
+  //--------------------------------------------------------------------------------------------------------------------
   /* mouse websites
    mouse clicks
    http://stackoverflow.com/questions/706655/bind-event-to-right-mouse-click
@@ -2045,7 +1946,7 @@ require([
           if (av.debug.msgOrder) console.log('out',av.grd.out);
           var stub = 'name: ' + msg.name.toString() + '\ntype: ' + msg.type.toString() + '\n';  //may not display anyway
           av.debug.log += '\nAvida --> ui \n' + stub;
-          console.log('webGridData', msg);
+          //console.log('webGridData', msg);
           break;
         case 'webOrgDataByCellID':
           //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}

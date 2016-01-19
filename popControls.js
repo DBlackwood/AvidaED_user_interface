@@ -154,6 +154,91 @@ function popNewExState(dnd, fzr, grd, parents) {
   dijit.byId("mnCnOrganismTrace").attr("disabled", true);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+// Freezer Button functions
+//----------------------------------------------------------------------------------------------------------------------
+
+//Freeze the selected organism
+function FrOrganismFn(trigger) {
+  var fzName = 'new';
+  var parentName = "";
+  var gene;
+  if ('selected' == trigger) {
+    fzName = prompt("Please name the selected organism", "newOrganism");
+    gene = av.grd.kidGenome;
+  }
+  else if ('offspring' == trigger) {
+    //get name from parent
+    parentName = document.getElementById(Object.keys(av.dnd.activeOrgan.map)[0]).textContent;
+    fzName = prompt("Please name the offspring", parentName + '_Offspring');
+    gene = '0,heads_default,' + av.gen.dna[1];
+  }
+  else {
+    fzName = prompt("Please name the organism", "newOrganism");
+    console.log('source unknwon', trigger);
+  }
+  fzName = getUniqueName(fzName, av.dnd.fzOrgan);
+  if (null != fzName) {
+    //insert new item into the freezer.
+    av.dnd.fzOrgan.insertNodes(false, [{data: fzName, type: ['g']}]);
+    av.dnd.fzOrgan.sync();
+
+    //Find out the dom ID the node element just inserted.
+    var mapItems = Object.keys(av.dnd.fzOrgan.map);
+    var neworg = {
+      'name': fzName,
+      'domId': mapItems[mapItems.length - 1],
+      'genome': gene
+    }
+    av.fzr.genome.push(neworg);
+    av.dnd.contextMenu(av.fzr, av.dnd.fzOrgan, neworg.domId);
+  }
+}
+
+function FrConfigFn() {
+  var fzName = prompt("Please name the new configuration", "newConfig");
+  if (fzName) {
+    //var namelist = dojo.query('> .dojoDndItem', 'fzConfig');  console.log('namelist', namelist); not in use, but does show another way to get data
+    fzName = getUniqueName(fzName, av.dnd.fzConfig);
+    if (null != fzName) {
+      av.dnd.fzConfig.insertNodes(false, [{data: fzName, type: ['c']}]);
+      av.dnd.fzConfig.sync();
+      var domid = av.dnd.getDomId(fzName, av.dnd.fzConfig);
+      av.fzr.dir[domid] = 'c'+ av.fzr.cNum;
+      av.fzr.domid['c'+ av.fzr.cNum] = domid;
+      av.fzr.file[av.fzr.dir[domid]+'/entryname.txt'] = fzName;
+      makeFzrConfig(av.fzr, av.fzr.cNum, av.parents);
+      av.fzr.cNum++;
+      //Create context menu for right-click on this item
+      av.dnd.contextMenu(av.fzr, av.dnd.fzConfig, domid);
+    }
+  }
+}
+
+//Save a populated dish
+function FrPopulationFn() {
+  var fzName = prompt("Please name the new population", "newPopulation");
+  if (fzName) {
+    fzName = getUniqueName(fzName, av.dnd.fzWorld);
+    if (null != fzName) {
+      av.dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
+      av.dnd.fzWorld.sync();
+      //Find out the dom ID the node element just inserted.
+      var domid = av.dnd.getDomId(fzName, av.dnd.fzWorld);
+      av.fzr.dir[domid] = 'w'+ av.fzr.wNum;
+      av.fzr.domid['w'+ av.fzr.wNum] = domid;
+      av.fzr.file[av.fzr.dir[domid]+'/entryname.txt'] = fzName;
+      makeFzrWorld(av.fzr, av.fzr.wNum, av.parents);
+      av.fzr.wNum++;
+      //Create context menu for right-click on this item
+      av.dnd.contextMenu(av.fzr, av.dnd.fzWorld, domid);
+    }
+  }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// code below this line is not in use tiba delete later
 //writes data to Environmental Settings page based on the content of dnd.activeConfig
 //for now this is hard coded to what would be in @default. will need a way to request data from PouchDB
 //and read the returned JSON string.
