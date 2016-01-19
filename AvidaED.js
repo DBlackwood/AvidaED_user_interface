@@ -804,6 +804,10 @@ require([
     FrPopulationFn();
   });
 
+  dijit.byId("mnFzPopulation").on("Click", function () {
+    FrPopulationFn();
+  });
+
   //Buttons on drop down menu to save an organism
   dijit.byId("mnFzOrganism").on("Click", function () {
     FrOrganismFn('selected')
