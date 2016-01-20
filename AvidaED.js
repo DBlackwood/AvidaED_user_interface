@@ -157,6 +157,102 @@ require([
 
   av.parents.clearParentsFn();
 
+  //**************************************************************************************************
+  //                web worker to talk to avida
+  //**************************************************************************************************/
+
+  //trying fio.uiWorker to start Avida inside the initiation of PouchDB
+
+  av.msg.readMsg = function (ee) {
+    var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
+    if ('data' == msg.type) {
+      switch (msg.name) {
+        case 'runPause':
+          if (true != msg["Success"]) {
+            console.log("Error: ", msg);  // msg failed
+            runStopFn();  //flip state back since the message failed to get to Avida
+          }
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+          break;
+        case 'reset':
+          if (true !== msg.Success) {
+            console.log("Reset failed: ", msg);
+          }
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+          break;
+        case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
+          av.traceObj = msg.snapshots;
+          av.gen.cycle = 0;
+          dijit.byId("orgCycle").set("value", 0);
+          cycleSlider.set("maximum", av.traceObj.length - 1);
+          cycleSlider.set("discreteValues", av.traceObj.length);
+          updateOrgTrace();
+          //console.log('webOrgTraceBySequence', msg);
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+          break;
+        case 'webPopulationStats':
+          updatePopStats(av.grd, msg);
+          popChartFn();
+          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
+          var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
+          av.debug.log += '\nAvida --> ui:  ' + stub;
+          //console.log('webPopulationStats', msg);
+          break;
+        case 'webGridData':
+          //mObj=JSON.parse(JSON.stringify(jsonObject));
+          av.grd.msg = msg;
+          av.grd.drawGridSetupFn();
+          if (av.debug.msgOrder) console.log('webGridData length', av.grd.ave_fitness.length);
+          //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
+          //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
+          if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
+          if (av.debug.msgOrder) console.log('out',av.grd.out);
+          var stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString();  //may not display anyway
+          av.debug.log += '\nAvida --> ui:  ' + stub;
+          //console.log('webGridData', msg);
+          break;
+        case 'webOrgDataByCellID':
+          //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
+          updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
+          var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
+          av.debug.log += '\nAvida --> ui:  ' + stub;
+          //console.log('webOrgDataByCellID', msg);
+          break;
+        default:
+          console.log('____________UnknownRequest: ', msg);
+          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+          break;
+      }
+    }
+    else if ('userFeedback' == msg.type) {
+      av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+      switch (msg.level) {
+        case 'notification':
+          console.log('avida:notify: ',msg.message);
+          LoadLabel.textContent = msg.message;
+          break;
+        case 'warning':
+          console.log('avida:warn: ',msg.message);
+          break;
+        case 'fatal':
+          console.log('avida:fatal: ',msg.message);
+          break;
+        default:
+          console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
+          break;
+      }
+    }
+    else av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+  }
+
+  //fio.uiWorker used when communicating with the web worker and avida
+  console.log('before call avida');
+  av.fio.uiWorker = new Worker('avida.js');
+
+  //process message from web worker
+  console.log('before fio.uiWorker on message');
+  av.fio.uiWorker.onmessage = function (ee) {av.msg.readMsg(ee)};  // in file messaging.js
+
   //********************************************************************************************************************
   //  Read Default Workspace as part of initialization
   // ********************************************************************************************************************
@@ -261,15 +357,15 @@ require([
   });
 
   dijit.byId('mnHpProblem').on("Click", function () {
-    av.debug.emailFn();
+    av.debug.msgEmailFn();
   });
 
   //********************************************************************************************************************
   // Error logging
   //********************************************************************************************************************
 
-  av.debug.emailFn = function () {
-    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed?');
+  av.debug.errorEmailFn = function () {
+    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed? If so, Please write any comments at the top of the email.');
     if (sure) {
       var mailData = 'mailto:diane.blackwood@gmail.com'
         + '?subject=Avida-ED error message'
@@ -280,7 +376,20 @@ require([
       //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
       var link = 'mailto:diane.blackwood@gmail.com' +
           //"?cc=CCaddress@example.com" +
-        "?subject=" + escape("Avida-ED error message") +
+        "?subject=" + escape("Avida-Ed error message") +
+        "&body=" + escape(av.debug.log);
+      window.location.href = link;
+
+    }
+  }
+
+  av.debug.msgEmailFn = function () {
+    var sure = confirm('Please describe the problem in detail in the top of the e-mail that should appear after you click "ok". Then send the e-mail. Thanks.');
+    if (sure) {
+      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
+      var link = 'mailto:diane.blackwood@gmail.com' +
+          //"?cc=CCaddress@example.com" +
+        "?subject=" + escape("Avida-Ed session log") +
         "&body=" + escape(av.debug.log);
       window.location.href = link;
 
@@ -293,7 +402,7 @@ require([
     av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
     //av.debug.log += '\n' + 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
     //console.log('in on error, log contents starting on next line \n', av.debug.log);
-    av.debug.emailFn();
+    av.debug.errorEmailFn();
   }
   //More usefull websites to catch errors
   // https://davidwalsh.name/javascript-stack-trace
@@ -1911,106 +2020,6 @@ require([
   //  return av.dnd.fzConfig.getItem(node.id).data;
   //});
   //console.log("orderedDataItems", orderedDataItems);
-
-  //**************************************************************************************************
-  //                web worker to talk to avida
-  //**************************************************************************************************/
-
-  //trying fio.uiWorker to start Avida inside the initiation of PouchDB
-
-  function readMsg(ee) {
-    var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
-    if ('data' == msg.type) {
-      switch (msg.name) {
-        case 'runPause':
-          if (true != msg["Success"]) {
-            console.log("Error: ", msg);  // msg failed
-            runStopFn();  //flip state back since the message failed to get to Avida
-          }
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-        case 'reset':
-          if (true !== msg.Success) {
-            console.log("Reset failed: ", msg);
-          }
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-        case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
-          av.traceObj = msg.snapshots;
-          av.gen.cycle = 0;
-          dijit.byId("orgCycle").set("value", 0);
-          cycleSlider.set("maximum", av.traceObj.length - 1);
-          cycleSlider.set("discreteValues", av.traceObj.length);
-          updateOrgTrace();
-          //var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;  //need to fix
-          //av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
-          //console.log('webOrgTraceBySequence', msg);
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-        case 'webPopulationStats':
-          updatePopStats(av.grd, msg);
-          popChartFn();
-          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
-          //var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
-          //av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);   //may not dispay anyway
-          //console.log('stub', stub);
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          //console.log('webPopulationStats', msg);
-          break;
-        case 'webGridData':
-          //mObj=JSON.parse(JSON.stringify(jsonObject));
-          av.grd.msg = msg;
-          av.grd.drawGridSetupFn();
-          if (av.debug.msgOrder) console.log('webGridData length', av.grd.ave_fitness.length);
-          //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
-          //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
-          if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
-          if (av.debug.msgOrder) console.log('out',av.grd.out);
-          var stub = 'name: ' + msg.name.toString() + '\ntype: ' + msg.type.toString() + '\n';  //may not display anyway
-          av.debug.log += '\nAvida --> ui \n' + stub;
-          //console.log('webGridData', msg);
-          break;
-        case 'webOrgDataByCellID':
-          //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
-          updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          //var stub = '\nname: ' + msg.name + '\ntype: ' + msg.type + '\nsuccess:' + msg.success;
-          //av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(stub);
-          break;
-        default:
-          console.log('____________UnknownRequest: ', msg);
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-      }
-    }
-    else if ('userFeedback' == msg.type) {
-      av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-      switch (msg.level) {
-        case 'notification':
-          console.log('avida:notify: ',msg.message);
-          LoadLabel.textContent = msg.message;
-          break;
-        case 'warning':
-          console.log('avida:warn: ',msg.message);
-          break;
-        case 'fatal':
-          console.log('avida:fatal: ',msg.message);
-          break;
-        default:
-          console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
-          break;
-      }
-    }
-    else av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-  }
-
-  //fio.uiWorker used when communicating with the web worker and avida
-  console.log('before call avida');
-  av.fio.uiWorker = new Worker('avida.js');
-
-  //process message from web worker
-  console.log('before fio.uiWorker on message');
-  av.fio.uiWorker.onmessage = function (ee) {readMsg(ee)};  // in file messaging.js
 
 //********************************************************
 //   Color Test Section - Temp this will all be removed later
