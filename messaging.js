@@ -1,4 +1,21 @@
 
+av.msg.importExpr = function () {
+  'use strict';
+  var request = {
+    'type': 'addEvent',
+    'name': 'importExpr',
+    'trigger': 'immediate',
+    'files': [
+      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
+      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
+    ]
+  };
+  if (av.debug.msg) console.log('importExpr', request);
+  console.log('importExpr', request);
+  av.fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+}
+
 //fio.uiWorker function
 function doOrgTrace(fio, fzr) {
   'use strict';
@@ -20,7 +37,7 @@ function doOrgTrace(fio, fzr) {
   if (av.debug.msg) console.log('trace', request);
   console.log('doOrgTrace', request);
   console.log('doOrgTrace string', av.utl.json2stringFn(request));
-  fio.uiWorker.postMessage(request);
+  av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -34,7 +51,7 @@ function doSelectedOrganismType(fio, grd) {
     'args': grd.selectedNdx
   }
   if (av.debug.msg) console.log('doSelectedOrganismType; selectedNdx', grd.selectedNdx)
-  fio.uiWorker.postMessage(request);
+  av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -47,7 +64,7 @@ function requestPopStats(fio) {
     'start': 'now',
     'interval': 'always'
   }
-  fio.uiWorker.postMessage(request);
+  av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -60,7 +77,7 @@ function requestGridData(fio) {
     'start': 'now',
     'interval': 'always'
   }
-  fio.uiWorker.postMessage(request);
+  av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -85,7 +102,7 @@ function doRunPause(fio) {
       'interval': 'once'
     }
   }
-  fio.uiWorker.postMessage(request);
+  av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -95,7 +112,7 @@ function doReset(fio) {
   var request = {
     'Key': 'Reset'
   };
-  fio.uiWorker.postMessage(request);
+  av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -105,7 +122,7 @@ function doDbReady(fio) {
   var request = {
     'type': 'dbReady'
   };
-  fio.uiWorker.postMessage(request);
+  av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -127,7 +144,7 @@ function injectAncestors(fio, parents) {
         0 //neutral_metric
       ]
     }
-    fio.uiWorker.postMessage(request);
+    av.fio.uiWorker.postMessage(request);
     av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   }
 }

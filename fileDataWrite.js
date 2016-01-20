@@ -98,18 +98,20 @@ function makeFzrAncestorHand(idStr, fzr, parents) {
   makeFzrFile(fzr, idStr+'/ancestors_manual', txt);
 }
 
-av.fio.sendConfig = function(av) {
-  /*
+av.fio.makeConfig2send = function(fzr, parents) {
   'use strict';
-  av.fio.dxdb.open();
-  var idStr = 'ws/cwd';
-  var em = true;
-  makeFzrAvidaCfg(av.fio, idStr, em);
-  makeFzrEnvironmentCfg(av.fio, idStr, em);
-  makeEmDxFile(av.fio, idStr+'/events.cfg', '');
-  //makeFzrInstsetCfg(av.fio, idStr, em);
-  av.fio.dxdb.close();
-  */
+  var em = false;
+  makeFzrAvidaCfg(fzr, 'cfg', em);
+  makeFzrEnvironmentCfg(fzr, 'cfg', em);
+  makeFzrFile(fzr, 'cfg'+'/events.cfg', '');
+  //makeFzrFile(fzr, 'cfg'+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
+  makeFzrInstsetCfg(fzr, 'cfg');
+  makeFzrAncestor('cfg', fzr, parents);
+  makeFzrAncestorHand('cfg', fzr, parents);
+  if ('c' === fzr.actConfig.type) {
+    if (fzr.file['cfg/clade.ssg']) delete fzr.file['cfg/clade.ssg'];
+    delete fzr.file['cfg/detail.spop'];
+  }
 }
 
 function makeFzrConfig(fzr, num, parents) {

@@ -131,6 +131,8 @@ brs.subpage = 'map';
 
 av.utl = {};  // holds utility functions
 
+av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
+
 av.fio = {}; //file input output data
 av.fio.dbName = 'wsdb';  //for workspace database
 av.fio.wsdb = null;

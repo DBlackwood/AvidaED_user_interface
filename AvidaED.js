@@ -97,37 +97,6 @@ require([
   // * The files included in script tags in AvidaED.html cannot access the dom. They contain global
   // * variables and functions that are independent of the dom
   // *
-  //********************************************************************************************************************
-  // Error logging
-  //********************************************************************************************************************
-
-  //https://bugsnag.com/blog/js-stacktracess
-  window.onerror = function (message, file, line, col, error) {
-    //console.log(message, ' from ', error.stack, '------------------');
-    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
-    //av.debug.log += '\n' + 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
-    //console.log('in on error, log contents starting on next line \n', av.debug.log);
-    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed?');
-    if (sure) {
-      var mailData = 'mailto:diane.blackwood@gmail.com'
-                   + '?subject=Avida-ED error message'
-                   + '&body=' + av.debug.log;
-      //window.open(mailData);
-      //window.open('mailto:test@example.com?subject=subject&body=av.debug.log');
-
-      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-      var link = 'mailto:diane.blackwood@gmail.com' +
-        //"?cc=CCaddress@example.com" +
-        "?subject=" + escape("Avida-ED error message") +
-        "&body=" + escape(av.debug.log);
-      window.location.href = link;
-
-    }
-  }
-  //More usefull websites to catch errors
-  // https://davidwalsh.name/javascript-stack-trace
-  // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
-  //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
 
   if (av.debug.root) console.log('before dnd definitions');
   /********************************************************************************************************************/
@@ -198,7 +167,7 @@ require([
   //av.fio.loadDefaultConfig();
 
   //********************************************************************************************************************
-  // Menu file handling
+  // Menu Buttons handling
   //********************************************************************************************s************************
 
   dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
@@ -257,55 +226,13 @@ require([
     av.fio.fzSaveCurrentWorkspaceFn();
   };
 
-  //********************************************************************************************************************
-  // Resize window helpers -------------------------------------------
-  //********************************************************************************************************************
-  if (av.debug.root) console.log('before Resize helpers');
-  // called from script in html file as well as below
-  BrowserResizeEventHandler = function () {
-    if ("block" == domStyle.get("analysisBlock", "display")) {
-      AnaChartFn();
-    }
-    if ("block" == domStyle.get("populationBlock", "display")) {
-      popChartFn();
-      av.grd.drawGridSetupFn();
-    }
-    if ("block" == domStyle.get("organismBlock", "display")) {
-      var rd = $("#rightDetail").innerHeight();
-      var height = ($("#rightDetail").innerHeight() - 395) / 2;  //was 375
-      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById("ExecuteAbout").style.height = height + "px";
-      document.getElementById("ExecuteJust").style.width = "100%";
-      document.getElementById("ExecuteAbout").style.width = "100%";
-      //console.log('rightDetail', height, rd);
-      updateOrgTrace();
-    }
-  };
-
-  ready(function () {
-    aspect.after(registry.byId("gridHolder"), "resize", function () {
-      BrowserResizeEventHandler();
-    });
-    aspect.after(registry.byId("popChartHolder"), "resize", function () {
-      BrowserResizeEventHandler();
-    });
-    aspect.after(registry.byId("organismCanvasHolder"), "resize", function () {
-      BrowserResizeEventHandler();
-    });
+  if (av.debug.root) console.log('before Help drop down menu');
+  //--------------------------------------------------------------------------------------------------------------------
+  // Drop Help down menu buttons
+  //--------------------------------------------------------------------------------------------------------------------
+  dijit.byId('mnHpAbout').on("Click", function () {
+    mnHpAboutDialog.show();
   });
-
-  var popRightOldwidth = 0;
-  aspect.after(registry.byId("popRight"), "resize", function () {
-    if (registry.byId("popRight").domNode.style.width != popRightOldwidth) {
-      popRightOldwidth = registry.byId("popRight").domNode.style.width;
-      var str = registry.byId("popRight").domNode.style.width;
-      registry.byId("selectOrganPane").domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + "px"
-      registry.byId("mainBC").layout();
-    }
-  });
-
-  if (av.debug.root) console.log('before drop down menu');
-  // Drop down menu buttons ------------------------------------------
 
   var HardwareDialog = new Dialog({
     title: "Avida : A Guided Tour of an Ancestor and its Hardware",
@@ -319,7 +246,7 @@ require([
     position: 'relative'
   });
 
-  dijit.byId("Hardware").on("Click", function () {
+  dijit.byId('mnHpHardware').on("Click", function () {
     if (!HardwareDialog) {
       HardwareDialog = new Dialog({
         title: "Avida : A Guided Tour of an Ancestor and its Hardware",
@@ -329,11 +256,53 @@ require([
         //style: "width: 600px; height: 400px"
       });
     }
-    console.log(HardwareDialog);
+    //console.log(HardwareDialog);
     HardwareDialog.show();
   });
 
-  // main button scripts-------------------------------------------
+  dijit.byId('mnHpProblem').on("Click", function () {
+    av.debug.emailFn();
+  });
+
+  //********************************************************************************************************************
+  // Error logging
+  //********************************************************************************************************************
+
+  av.debug.emailFn = function () {
+    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed?');
+    if (sure) {
+      var mailData = 'mailto:diane.blackwood@gmail.com'
+        + '?subject=Avida-ED error message'
+        + '&body=' + av.debug.log;
+      //window.open(mailData);
+      //window.open('mailto:test@example.com?subject=subject&body=av.debug.log');
+
+      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
+      var link = 'mailto:diane.blackwood@gmail.com' +
+          //"?cc=CCaddress@example.com" +
+        "?subject=" + escape("Avida-ED error message") +
+        "&body=" + escape(av.debug.log);
+      window.location.href = link;
+
+    }
+  }
+
+  //https://bugsnag.com/blog/js-stacktracess
+  window.onerror = function (message, file, line, col, error) {
+    //console.log(message, ' from ', error.stack, '------------------');
+    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
+    //av.debug.log += '\n' + 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
+    //console.log('in on error, log contents starting on next line \n', av.debug.log);
+    av.debug.emailFn();
+  }
+  //More usefull websites to catch errors
+  // https://davidwalsh.name/javascript-stack-trace
+  // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
+  //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
+
+  //--------------------------------------------------------------------------------------------------------------------
+  // main button scripts
+  //--------------------------------------------------------------------------------------------------------------------
 
   //initialize the ht for main buttons and trash can so there is no scroll bar
   if (document.getElementById('mainButtons').scrollHeight > document.getElementById('mainButtons').clientHeight){
@@ -428,6 +397,53 @@ require([
     placeChips(chips, chck);
     drawCheckerSetup(chck, chips);
   };
+
+  //********************************************************************************************************************
+  // Resize window helpers -------------------------------------------
+  //********************************************************************************************************************
+  if (av.debug.root) console.log('before Resize helpers');
+  // called from script in html file as well as below
+  BrowserResizeEventHandler = function () {
+    if ("block" == domStyle.get("analysisBlock", "display")) {
+      AnaChartFn();
+    }
+    if ("block" == domStyle.get("populationBlock", "display")) {
+      popChartFn();
+      av.grd.drawGridSetupFn();
+    }
+    if ("block" == domStyle.get("organismBlock", "display")) {
+      var rd = $("#rightDetail").innerHeight();
+      var height = ($("#rightDetail").innerHeight() - 395) / 2;  //was 375
+      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById("ExecuteAbout").style.height = height + "px";
+      document.getElementById("ExecuteJust").style.width = "100%";
+      document.getElementById("ExecuteAbout").style.width = "100%";
+      //console.log('rightDetail', height, rd);
+      updateOrgTrace();
+    }
+  };
+
+  ready(function () {
+    aspect.after(registry.byId("gridHolder"), "resize", function () {
+      BrowserResizeEventHandler();
+    });
+    aspect.after(registry.byId("popChartHolder"), "resize", function () {
+      BrowserResizeEventHandler();
+    });
+    aspect.after(registry.byId("organismCanvasHolder"), "resize", function () {
+      BrowserResizeEventHandler();
+    });
+  });
+
+  var popRightOldwidth = 0;
+  aspect.after(registry.byId("popRight"), "resize", function () {
+    if (registry.byId("popRight").domNode.style.width != popRightOldwidth) {
+      popRightOldwidth = registry.byId("popRight").domNode.style.width;
+      var str = registry.byId("popRight").domNode.style.width;
+      registry.byId("selectOrganPane").domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + "px"
+      registry.byId("mainBC").layout();
+    }
+  });
 
   if (av.debug.root) console.log('before dnd triggers');
   //*******************************************************************************************************************
@@ -675,8 +691,9 @@ require([
         dom.byId('ancestorBox').isSource = false;
 
         //collect setup data to send to avida
-        av.fio.sendConfig(av);          //pouchDB_IO.js
-        injectAncestors(av.fio, av.parents); //fio.uiWorker
+        av.fio.makeConfig2send(av.fzr, av.parents);          //fileDataWrite.js
+        av.msg.importExpr();
+        if ('c' === av.fzr.actConfig.type) injectAncestors(av.fio, av.parents); //fio.uiWorker
       }
       doRunPause(av.fio);
     }
@@ -773,6 +790,7 @@ require([
   //test - delete later ----------------------------------------------------------
   document.getElementById("grdTestButton").onclick = function () {
     'use strict';
+    console.log('av', av);
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
     var george = fred;

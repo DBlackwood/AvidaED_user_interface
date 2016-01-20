@@ -89,16 +89,17 @@
         </span>
         <span data-dojo-type="dijit/PopupMenuBarItem" label="Help">
           <span data-dojo-type="dijit/Menu">
-            <span data-dojo-type="dijit/MenuItem" id="About" label="About"></span>
-            <span data-dojo-type="dijit/MenuItem" id="Hardware" label="Ancestor and Hardware"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnHpAbout" label="About"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnHpHardware" label="Ancestor and Hardware"></span>
             <div data-dojo-type="dijit/MenuSeparator"></div>
             <div data-dojo-type="dijit/PopupMenuItem">
               <span>Color Gradient</span>
-              <span data-dojo-type="dijit/Menu" id="ColorGradient" label="Color">
+              <span data-dojo-type="dijit/Menu" id="mnHpColorGradient" label="Color">
               <span data-dojo-type="dijit/MenuItem" id="mnViridis" label="Viridis"></span>
               <span data-dojo-type="dijit/MenuItem" id="mnCubehelix" label="Cubehelix"></span>
               <span data-dojo-type="dijit/MenuItem" id="mnGnuplot2" label="Gnuplot2"></span>
             </div>
+            <span data-dojo-type="dijit/MenuItem" id="mnHpProblem" label="Report Problem"></span>
         </span>
       </span>
 
@@ -936,6 +937,20 @@
     <button data-dojo-type="dijit/form/Button" type="button"
             data-dojo-props="onClick:function(){NeedAncestorDialog.hide();}"
             id="NeedAncestorCancel">OK
+    </button>
+  </div>
+</div>
+
+<!-- Help About Dialog -->
+<div data-dojo-type="dijit/Dialog" data-dojo-id="mnHpAboutDialog"
+     title="Avida-Ed: Emscripten with javascript version: Alpha Test 2016 Jan 20">
+  <div class="dijitDialogPaneContentArea">
+    <p>for more information go to http://avida-ed.msu.edu</p>
+  </div>
+  <div class="dijitDialogPaneActionBar">
+    <button data-dojo-type="dijit/form/Button" type="button"
+            data-dojo-props="onClick:function(){mnHpAboutDialog.hide();}"
+            id="mnHpAboutCancel">OK
     </button>
   </div>
 </div>

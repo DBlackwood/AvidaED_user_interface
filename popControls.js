@@ -185,13 +185,13 @@ function FrOrganismFn(trigger) {
 
     //Find out the dom ID the node element just inserted.
     var mapItems = Object.keys(av.dnd.fzOrgan.map);
-    var neworg = {
-      'name': fzName,
-      'domId': mapItems[mapItems.length - 1],
-      'genome': gene
-    }
-    av.fzr.genome.push(neworg);
-    av.dnd.contextMenu(av.fzr, av.dnd.fzOrgan, neworg.domId);
+    var domid = mapItems[mapItems.length - 1];
+    av.fzr.dir[domid] = 'g' + av.fzr.gNum;
+    av.fzr.domid['g' + av.fzr.gNum] = domid;
+    av.fzr.file['g' + av.fzr.gNum + '/genome.seq'] = gene;
+    av.fzr.file['g' + av.fzr.gNum + '/entryname.txt'] = fzName;
+    av.fzr.gNum++;
+    av.dnd.contextMenu(av.fzr, av.dnd.fzOrgan, domid);
   }
 }
 

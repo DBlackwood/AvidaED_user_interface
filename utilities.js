@@ -155,9 +155,16 @@ av.utl.json2stringFn = function (jStr) {
     if ('object' === typeof jStr[ndx]) {
       rstr += ndx + ': \n';
       if ('snapshots' != ndx) {
-        var tmp = jStr[ndx];
-        for (var ii in tmp) {
-          rstr += '  ' + ii + ': ' + tmp[ii] + '\n';
+        var iiStuff = jStr[ndx];
+        for (var ii in iiStuff) {
+          if ('object' === typeof iiStuff[ii]) {
+            rstr += ii + ': \n';
+            var jjStuff = iiStuff[ii];
+            for (var jj in jjStuff) {
+              rstr += '    ' + jj + ': ' + jjStuff[jj] + '\n';
+            }
+          }
+          else rstr += '  ' + ii + ': ' + iiStuff[ii] + '\n';
         }
       }
     }
