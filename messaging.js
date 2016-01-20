@@ -1,3 +1,84 @@
+av.msg.readMsg = function (ee) {
+  var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
+  if ('data' == msg.type) {
+    switch (msg.name) {
+      case 'runPause':
+        if (true != msg["Success"]) {
+          console.log("Error: ", msg);  // msg failed
+          runStopFn();  //flip state back since the message failed to get to Avida
+        }
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        break;
+      case 'reset':
+        if (true !== msg.Success) {
+          console.log("Reset failed: ", msg);
+        }
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        break;
+      case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
+        av.traceObj = msg.snapshots;
+        av.gen.cycle = 0;
+        dijit.byId("orgCycle").set("value", 0);
+        av.gen.cycleSlider.set("maximum", av.traceObj.length - 1);
+        av.gen.cycleSlider.set("discreteValues", av.traceObj.length);
+        av.gen.updateOrgTrace();
+        //console.log('webOrgTraceBySequence', msg);
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        break;
+      case 'webPopulationStats':
+        updatePopStats(av.grd, msg);
+        popChartFn();
+        if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
+        var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
+        av.debug.log += '\nAvida --> ui:  ' + stub;
+        //console.log('webPopulationStats', msg);
+        break;
+      case 'webGridData':
+        //mObj=JSON.parse(JSON.stringify(jsonObject));
+        av.grd.msg = msg;
+        av.grd.drawGridSetupFn();
+        if (av.debug.msgOrder) console.log('webGridData length', av.grd.ave_fitness.length);
+        //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
+        //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
+        if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
+        if (av.debug.msgOrder) console.log('out',av.grd.out);
+        var stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString();  //may not display anyway
+        av.debug.log += '\nAvida --> ui:  ' + stub;
+        //console.log('webGridData', msg);
+        break;
+      case 'webOrgDataByCellID':
+        //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
+        updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
+        var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
+        av.debug.log += '\nAvida --> ui:  ' + stub;
+        //console.log('webOrgDataByCellID', msg);
+        break;
+      default:
+        console.log('____________UnknownRequest: ', msg);
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        break;
+    }
+  }
+  else if ('userFeedback' == msg.type) {
+    av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+    switch (msg.level) {
+      case 'notification':
+        console.log('avida:notify: ',msg.message);
+        LoadLabel.textContent = msg.message;
+        break;
+      case 'warning':
+        console.log('avida:warn: ',msg.message);
+        break;
+      case 'fatal':
+        console.log('avida:fatal: ',msg.message);
+        break;
+      default:
+        console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
+        break;
+    }
+  }
+  else av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+}
 
 av.msg.importExpr = function () {
   'use strict';
@@ -17,7 +98,7 @@ av.msg.importExpr = function () {
 }
 
 //fio.uiWorker function
-function doOrgTrace(fio, fzr) {
+av.msg.doOrgTrace = function (fio, fzr) {
   'use strict';
   console.log('doOrgTrace: fzr', fzr);
   var seed = 100 * Math.random();

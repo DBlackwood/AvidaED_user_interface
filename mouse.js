@@ -64,7 +64,7 @@ function offspringTrace(dnd, fio, fzr, gen) {
   fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
   console.log('fzr.actOrgan', fzr.actOrgan);
   //get genome from offspring data //needs work!!
-  doOrgTrace(fio, fzr);  //request new Organism Trace from Avida and draw that.
+  av.msg.doOrgTrace(fio, fzr);  //request new Organism Trace from Avida and draw that.
 };
 
 var OffspringMouse = function(evt, dnd, fio, fzr, gen) {

@@ -161,90 +161,6 @@ require([
   //                web worker to talk to avida
   //**************************************************************************************************/
 
-  //trying fio.uiWorker to start Avida inside the initiation of PouchDB
-
-  av.msg.readMsg = function (ee) {
-    var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
-    if ('data' == msg.type) {
-      switch (msg.name) {
-        case 'runPause':
-          if (true != msg["Success"]) {
-            console.log("Error: ", msg);  // msg failed
-            runStopFn();  //flip state back since the message failed to get to Avida
-          }
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-        case 'reset':
-          if (true !== msg.Success) {
-            console.log("Reset failed: ", msg);
-          }
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-        case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
-          av.traceObj = msg.snapshots;
-          av.gen.cycle = 0;
-          dijit.byId("orgCycle").set("value", 0);
-          cycleSlider.set("maximum", av.traceObj.length - 1);
-          cycleSlider.set("discreteValues", av.traceObj.length);
-          updateOrgTrace();
-          //console.log('webOrgTraceBySequence', msg);
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-        case 'webPopulationStats':
-          updatePopStats(av.grd, msg);
-          popChartFn();
-          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
-          var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
-          av.debug.log += '\nAvida --> ui:  ' + stub;
-          //console.log('webPopulationStats', msg);
-          break;
-        case 'webGridData':
-          //mObj=JSON.parse(JSON.stringify(jsonObject));
-          av.grd.msg = msg;
-          av.grd.drawGridSetupFn();
-          if (av.debug.msgOrder) console.log('webGridData length', av.grd.ave_fitness.length);
-          //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
-          //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
-          if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
-          if (av.debug.msgOrder) console.log('out',av.grd.out);
-          var stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString();  //may not display anyway
-          av.debug.log += '\nAvida --> ui:  ' + stub;
-          //console.log('webGridData', msg);
-          break;
-        case 'webOrgDataByCellID':
-          //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
-          updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
-          var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
-          av.debug.log += '\nAvida --> ui:  ' + stub;
-          //console.log('webOrgDataByCellID', msg);
-          break;
-        default:
-          console.log('____________UnknownRequest: ', msg);
-          av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-          break;
-      }
-    }
-    else if ('userFeedback' == msg.type) {
-      av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-      switch (msg.level) {
-        case 'notification':
-          console.log('avida:notify: ',msg.message);
-          LoadLabel.textContent = msg.message;
-          break;
-        case 'warning':
-          console.log('avida:warn: ',msg.message);
-          break;
-        case 'fatal':
-          console.log('avida:fatal: ',msg.message);
-          break;
-        default:
-          console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
-          break;
-      }
-    }
-    else av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-  }
-
   //fio.uiWorker used when communicating with the web worker and avida
   console.log('before call avida');
   av.fio.uiWorker = new Worker('avida.js');
@@ -433,8 +349,8 @@ require([
   //visibility:hidden can be used, but it leaves the white space and just does not display dijits.
   //So all areas are loaded, then the mainBoxSwap is called to set display to none after the load on all but
   //the default option.
-  //mainBoxSwap("organismBlock");
-  //mainBoxSwap("populationBlock");  //commented out here as it is called near the end of this file
+  //av.ui.mainBoxSwap("organismBlock");
+  //av.ui.mainBoxSwap("populationBlock");  //commented out here as it is called near the end of this file
   dijit.byId("setupBlock").set("style", "display: none;");
 
   //this section gets rid of scroll bars, but then page no longer resizes correctly
@@ -447,7 +363,7 @@ require([
    //mapNewHt = mapNewHt - 5;
    dijit.byId("mapBC").set("style", "height: "+ mapNewHt +"px;");
    */
-  function mainBoxSwap(showBlock) {
+  av.ui.mainBoxSwap = function (showBlock) {
     console.log("in mainBoxSwap");
     dijit.byId("populationBlock").set("style", "display: none;");
     dijit.byId("organismBlock").set("style", "display: none;");
@@ -467,12 +383,12 @@ require([
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
     if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
-    brs.page = 'population';
-    mainBoxSwap("populationBlock");
+    av.ui.page = 'population';
+    av.ui.mainBoxSwap("populationBlock");
   }
 
   document.getElementById("organismButton").onclick = function () {
-    mainBoxSwap("organismBlock");
+    av.ui.mainBoxSwap("organismBlock");
     console.log('after mainBoxSwap');
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 395) / 2;
@@ -481,19 +397,19 @@ require([
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
     if (undefined != av.traceObj) {
-      updateOrgTrace();
+      av.gen.updateOrgTrace();
     }
-    brs.page = 'organism';
+    av.ui.page = 'organism';
   };
 
   document.getElementById("analysisButton").onclick = function () {
-    mainBoxSwap("analysisBlock");
-    brs.page = 'population';
+    av.ui.mainBoxSwap("analysisBlock");
+    av.ui.page = 'population';
   };
   //Take testBlock out completely later
 
   document.getElementById("testButton").onclick = function () {
-    mainBoxSwap("testBlock");
+    av.ui.mainBoxSwap("testBlock");
     if ('#00FF00' == chck.outlineColor) {
       chck.outlineColor = '#00FFFF';
     }
@@ -512,7 +428,7 @@ require([
   //********************************************************************************************************************
   if (av.debug.root) console.log('before Resize helpers');
   // called from script in html file as well as below
-  BrowserResizeEventHandler = function () {
+  av.ui.browserResizeEventHandler = function () {
     if ("block" == domStyle.get("analysisBlock", "display")) {
       AnaChartFn();
     }
@@ -528,19 +444,19 @@ require([
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
       //console.log('rightDetail', height, rd);
-      updateOrgTrace();
+      av.gen.updateOrgTrace();
     }
   };
 
   ready(function () {
     aspect.after(registry.byId("gridHolder"), "resize", function () {
-      BrowserResizeEventHandler();
+      av.ui.browserResizeEventHandler();
     });
     aspect.after(registry.byId("popChartHolder"), "resize", function () {
-      BrowserResizeEventHandler();
+      av.ui.browserResizeEventHandler();
     });
     aspect.after(registry.byId("organismCanvasHolder"), "resize", function () {
-      BrowserResizeEventHandler();
+      av.ui.browserResizeEventHandler();
     });
   });
 
@@ -588,7 +504,7 @@ require([
       if ('w' === av.fzr.actConfig.type) {
         console.log('world config so there more to do');
       }
-      if ('map'==brs.subpage) {av.grd.drawGridSetupFn();} //draw grid
+      if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
   });
 
@@ -626,7 +542,7 @@ require([
     if ('organCanvas' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
       landOrganCanvas(av.dnd, av.fzr, source, nodes, target);
-      doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+      av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -637,14 +553,14 @@ require([
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
       landOrganIcon(av, source, nodes, target);
       //Change to Organism Page
-      mainBoxSwap("organismBlock");
+      av.ui.mainBoxSwap("organismBlock");
       organismCanvasHolderSize();
       var height = ($("#rightDetail").innerHeight() - 375) / 2;
       document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
-      doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+      av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -652,7 +568,7 @@ require([
     if ('activeOrgan' == target.node.id) {
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
       landActiveOrgan(av.dnd, av.fzr, source, nodes, target);
-      doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+      av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -742,9 +658,9 @@ require([
       cellConflict(av.grd.cols, av.grd.rows, av.grd, av.parents);
       av.grd.drawGridSetupFn();
       console.log('parents', av.parents);
-      brs.subpage = 'map';
+      av.ui.subpage = 'map';
     }
-    else {brs.subpage = 'setup';}
+    else {av.ui.subpage = 'setup';}
   };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats" button
@@ -1207,7 +1123,7 @@ require([
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) av.grd.drawGridSetupFn();
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
-        mainBoxSwap("organismBlock");
+        av.ui.mainBoxSwap("organismBlock");
         organismCanvasHolderSize();
         var height = ($("#rightDetail").innerHeight() - 375) / 2;
         document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
@@ -1215,7 +1131,7 @@ require([
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
         console.log('from parent', av.parent, '; fzr', av.fzr);
-        doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+        av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
       }
     }
     else if ('offspring' == av.mouse.Picked) {
@@ -1228,14 +1144,14 @@ require([
       target = KidMouse(evt, av.dnd, av.fzr, av.grd);
       if ('organIcon' == evt.target.id) {
         //Change to Organism Page
-        mainBoxSwap("organismBlock");
+        av.ui.mainBoxSwap("organismBlock");
         organismCanvasHolderSize();
         var height = ($("#rightDetail").innerHeight() - 375) / 2;
         document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
         document.getElementById("ExecuteAbout").style.height = height + "px";
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
-        doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+        av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
       }
 /*      else if ('fzOrgan' == target) {
         //make_database_entry if using a database (av.fio, av.fzr);
@@ -1380,7 +1296,7 @@ require([
     document.getElementById(htChangeDiv).style.height = NewHt + 'px';
 
     //redraw the screen
-    mainBoxSwap(page);
+    av.ui.mainBoxSwap(page);
     if (debut.root) console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
       document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
       document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
@@ -1642,7 +1558,7 @@ require([
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
     console.log('settings dialog closed', av.gen.settingsChanged);
-    if (av.gen.settingsChanged) doOrgTrace(av.fio, av.fzr);
+    if (av.gen.settingsChanged) av.msg.doOrgTrace(av.fio, av.fzr);
   });
 
   $(function slideOrganism() {
@@ -1690,20 +1606,20 @@ require([
   // ****************************************************************
   dijit.byId("mnCnOrganismTrace").on("Click", function () {
     traceSelected(av.dnd, av.fzr, av.grd);
-    mainBoxSwap("organismBlock");
+    av.ui.mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
     document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+    av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
   });
 
   //Put the offspring in the parent position on Organism Trace
   dijit.byId("mnCnOffspringTrace").on("Click", function () {
     //Open Oranism view
-    mainBoxSwap("organismBlock");
+    av.ui.mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
     document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
@@ -1724,7 +1640,7 @@ require([
     av.gen.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
   }
 
-  function updateOrgTrace() {
+  av.gen.updateOrgTrace = function () {
     //set canvas size
     //console.log('gen', av.gen);
     //console.log('av.traceObj', av.traceObj);
@@ -1749,29 +1665,29 @@ require([
 
   dijit.byId("orgBack").on("Click", function () {
     var ii = Number(document.getElementById("orgCycle").value);
-    if (cycleSlider.get("minimum") < cycleSlider.get("value")) {
+    if (av.gen.cycleSlider.get("minimum") < av.gen.cycleSlider.get("value")) {
       ii--;
       dijit.byId("orgCycle").set("value", ii);
       av.gen.cycle = ii;
-      updateOrgTrace()
+      av.gen.updateOrgTrace()
     }
   });
 
   dijit.byId("orgForward").on("Click", function () {
     var ii = Number(document.getElementById("orgCycle").value);
-    if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
+    if (av.gen.cycleSlider.get("maximum") > av.gen.cycleSlider.get("value")) {
       ii++;
       dijit.byId("orgCycle").set("value", ii);
       av.gen.cycle = ii;
       console.log('ii', ii,'; gen', av.gen);
-      updateOrgTrace()
+      av.gen.updateOrgTrace()
     }
   });
 
   dijit.byId("orgReset").on("Click", function () {
     dijit.byId("orgCycle").set("value", 0);
     av.gen.cycle = 0;
-    updateOrgTrace();
+    av.gen.updateOrgTrace();
     orgStopFn()
   });
 
@@ -1783,10 +1699,10 @@ require([
   }
 
   function orgRunFn() {
-    if (cycleSlider.get("maximum") > cycleSlider.get("value")) {
+    if (av.gen.cycleSlider.get("maximum") > av.gen.cycleSlider.get("value")) {
       av.gen.cycle++;
       dijit.byId("orgCycle").set("value", av.gen.cycle);
-      updateOrgTrace();
+      av.gen.updateOrgTrace();
     }
     else {
       orgStopFn();
@@ -1804,21 +1720,21 @@ require([
   });
 
   dijit.byId("orgEnd").on("Click", function () {
-    dijit.byId("orgCycle").set("value", cycleSlider.get("maximum"));
-    av.gen.cycle = cycleSlider.get("maximum");
-    updateOrgTrace();
+    dijit.byId("orgCycle").set("value", av.gen.cycleSlider.get("maximum"));
+    av.gen.cycle = av.gen.cycleSlider.get("maximum");
+    av.gen.updateOrgTrace();
     orgStopFn()
   });
 
   dijit.byId("orgCycle").on("Change", function (value) {
-    cycleSlider.set("value", value);
+    av.gen.cycleSlider.set("value", value);
     av.gen.cycle = value;
     //console.log('orgCycle.change');
-    updateOrgTrace();
+    av.gen.updateOrgTrace();
   });
 
   /* Organism Gestation Length Slider */
-  var cycleSlider = new HorizontalSlider({
+  av.gen.cycleSlider = new HorizontalSlider({
     name: "cycleSlider",
     value: 0,
     minimum: 0,
@@ -1830,7 +1746,7 @@ require([
       document.getElementById("orgCycle").value = value;
       av.gen.cycle = value;
       //console.log('cycleSlider');
-      updateOrgTrace();
+      av.gen.updateOrgTrace();
     }
   }, "cycleSlider");
 
@@ -1962,7 +1878,7 @@ require([
     document.getElementById(htChangeDiv).style.height = NewHt + 'px';
 
     //redraw the screen
-    //mainBoxSwap(page);
+    //av.ui.mainBoxSwap(page);
     if (av.debug.root) console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
       document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
       document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
@@ -1972,7 +1888,7 @@ require([
   removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
   removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
   removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
-  mainBoxSwap('populationBlock');
+  av.ui.mainBoxSwap('populationBlock');
 
   popChartFn();
   //av.grd.drawGridSetupFn(); //Draw initial background

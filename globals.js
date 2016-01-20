@@ -115,19 +115,21 @@ clearGrd(av.grd);
 // and new IE Edge outputs to true now for window.chrome
 // so use the below updated condition
 
-var brs = {};  //browser and operating system data
+av.ui = {};  //user interface functions and variables
+av.ui.page = 'population';
+av.ui.subpage = 'map';
 
-brs.isChromium = window.chrome;
-  brs.vendorName = window.navigator.vendor;
-  brs.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
-  brs.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
-if (brs.isChromium !== null && brs.isChromium !== undefined && brs.vendorName === "Google Inc." && brs.isOpera === false && brs.isIEedge === false) {
-  brs.chrome = true;
+av.brs = {};  //browser and operating system data
+
+av.brs.isChromium = window.chrome;
+  av.brs.vendorName = window.navigator.vendor;
+  av.brs.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
+  av.brs.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
+if (av.brs.isChromium !== null && av.brs.isChromium !== undefined && av.brs.vendorName === "Google Inc." && av.brs.isOpera === false && av.brs.isIEedge === false) {
+  av.brs.chrome = true;
 } else {
-  brs.chrome = false; // not Google chrome
+  av.brs.chrome = false; // not Google chrome
 }
-brs.page = 'population';
-brs.subpage = 'map';
 
 av.utl = {};  // holds utility functions
 
