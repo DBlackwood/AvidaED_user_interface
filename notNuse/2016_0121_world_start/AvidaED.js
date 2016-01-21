@@ -433,7 +433,7 @@ require([
       AnaChartFn();
     }
     if ("block" == domStyle.get("populationBlock", "display")) {
-      av.grd.popChartFn();
+      popChartFn();
       av.grd.drawGridSetupFn();
     }
     if ("block" == domStyle.get("organismBlock", "display")) {
@@ -811,7 +811,7 @@ require([
     //writeHardDefault(av.dft);
 
     //re-write grid if that page is visible
-    av.grd.popChartFn();
+    popChartFn();
     av.grd.drawGridSetupFn();
   }
 
@@ -1156,10 +1156,10 @@ require([
         document.getElementById("ExecuteAbout").style.width = "100%";
         av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
       }
-      /*      else if ('fzOrgan' == target) {
-       //make_database_entry if using a database (av.fio, av.fzr);
-       }
-       */
+/*      else if ('fzOrgan' == target) {
+        //make_database_entry if using a database (av.fio, av.fzr);
+      }
+*/
     }
     av.mouse.Picked = "";
   });
@@ -1464,10 +1464,11 @@ require([
   /* ---------------------------------------------------------------------- */
 
   //need to get the next two values from real data.
-  av.grd.popY = [];
-  av.grd.popY2 = [];
-  av.grd.ytitle = dijit.byId("yaxis").value;
-  av.grd.popChart = new Chart("popChart");
+  //var popY = [1, 1, 1, 2, 2, 2, 4, 4, 4, 8,8,8,14,15,16,16,16,24,24,25,26,36,36,36,48,48]; /
+  var popY = [];
+  var popY2 = [];
+  var ytitle = dijit.byId("yaxis").value;
+  var popChart = new Chart("popChart");
 
   //use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
   //this required the use of a theme, but I'm no longer using the theme. Could take 'Wetland' out of require statemet as long a this is not used
@@ -1475,58 +1476,58 @@ require([
   //myTheme.axis.majorTick.color = "#CCC";  //grey
   //myTheme.axis.minorTick.color = "red";
 
-  av.grd.popChartFn = function () {
+  function popChartFn() {
     if ("Average Fitness" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_fitness;
-      av.grd.popY2 = av.grd.log_fitness;
+      popY = av.grd.ave_fitness;
+      popY2 = av.grd.log_fitness;
     }
     else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_gestation_time;
-      av.grd.popY2 = av.grd.log_gestation_time;
+      popY = av.grd.ave_gestation_time;
+      popY2 = av.grd.log_gestation_time;
     }
     else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_metabolic_rate;
-      av.grd.popY2 = av.grd.log_metabolic_rate;
+      popY = av.grd.ave_metabolic_rate;
+      popY2 = av.grd.log_metabolic_rate;
     }
     else if ("Number of Organisms" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.population_size;
-      av.grd.popY2 = av.grd.log_pop_size;
+      popY = av.grd.population_size;
+      popY2 = av.grd.log_pop_size;
     }
-    //console.log('popY',av.grd.popY);
-    //console.log('pop2', av.grd.popY2);
-    //av.grd.popChart.setTheme(myTheme);
-    av.grd.popChart.addPlot("default", {type: "Lines"});
-    //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
+    //console.log('popY',popY);
+    //console.log('pop2', popY2);
+    //popChart.setTheme(myTheme);
+    popChart.addPlot("default", {type: "Lines"});
+    //popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
     // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-    av.grd.popChart.addPlot("grid", {
+    popChart.addPlot("grid", {
       type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
       vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
     });
 
-    av.grd.popChart.addAxis("x", {
+    popChart.addAxis("x", {
       fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
       titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"
     });
-    //av.grd.popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
-    av.grd.popChart.addAxis("y", {
+    //popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
+    popChart.addAxis("y", {
       vertical: true,
       fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
     });
-    //av.grd.popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
-    //av.grd.popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
-    av.grd.popChart.addSeries("Series y", av.grd.popY, {plot: "default", stroke: {color: "blue", width: 1}});
-    av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
-    av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
+    //popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
+    //popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
+    popChart.addSeries("Series y", popY, {plot: "default", stroke: {color: "blue", width: 1}});
+    popChart.addSeries("Series y2", popY2, {plot: "default", stroke: {color: "green", width: 1}});
+    popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
       domGeometry.position(document.getElementById("popChartHolder")).h - 30);
-    av.grd.popChart.render();
+    popChart.render();
   };
 
   //Set Y-axis title and choose the correct array to plot
   dijit.byId("yaxis").on("Change", function () {
-    av.grd.ytitle = dijit.byId("yaxis").value;
+    ytitle = dijit.byId("yaxis").value;
     //need to get correct array to plot from freezer
     //console.log('changeyaxis popChartFn');
-    av.grd.popChartFn();
+    popChartFn();
   });
 
   /* *************************************************************** */
@@ -1892,7 +1893,7 @@ require([
   removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
   av.ui.mainBoxSwap('populationBlock');
 
-  av.grd.popChartFn();
+  popChartFn();
   //av.grd.drawGridSetupFn(); //Draw initial background
   //************************************************************************
   //Useful Generic functions

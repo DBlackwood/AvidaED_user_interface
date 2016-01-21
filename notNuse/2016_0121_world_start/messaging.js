@@ -27,7 +27,8 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webPopulationStats':
         updatePopStats(av.grd, msg);
-        av.grd.popChartFn();
+        console.log('popY', popY);
+        popChartFn();
         if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
         var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
