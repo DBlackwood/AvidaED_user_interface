@@ -98,20 +98,14 @@ function makeFzrAncestorHand(idStr, fzr, parents) {
   makeFzrFile(fzr, idStr+'/ancestors_manual', txt);
 }
 
-av.fio.makeConfig2send = function(fzr, parents) {
+//only change the files that are changed by the user input
+av.fio.form2cfgFolder = function(fzr, parents) {
   'use strict';
   var em = false;
   makeFzrAvidaCfg(fzr, 'cfg', em);
   makeFzrEnvironmentCfg(fzr, 'cfg', em);
-  makeFzrFile(fzr, 'cfg'+'/events.cfg', '');
-  //makeFzrFile(fzr, 'cfg'+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
-  makeFzrInstsetCfg(fzr, 'cfg');
   makeFzrAncestor('cfg', fzr, parents);
   makeFzrAncestorHand('cfg', fzr, parents);
-  if ('c' === fzr.actConfig.type) {
-    if (fzr.file['cfg/clade.ssg']) delete fzr.file['cfg/clade.ssg'];
-    delete fzr.file['cfg/detail.spop'];
-  }
 }
 
 function makeFzrConfig(fzr, num, parents) {

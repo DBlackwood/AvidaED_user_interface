@@ -94,17 +94,23 @@ function landActiveConfig(dnd, pkg) {
   av.fzr.actConfig.name = document.getElementById(domid).textContent;
   av.fzr.actConfig.fzDomid = Object.keys(pkg.source.selection)[0];
   av.fzr.actConfig.dir = av.fzr.dir[av.fzr.actConfig.fzDomid];
-
-  switch (pkg.source.node.id) {
-    case 'fzConfig':
-      av.fzr.actConfig.type = 'c';
-      break;
-    case 'fzWorld':
-      av.fzr.actConfig.type = 'w';
-      av.fzr.file['cfg/clade.ssg']   = av.fzr.file[av.actConfig.dir + '/clade.ssg'];
-      av.fzr.file['cfg/detail.spop'] = av.fzr.file[av.actConfig.dir + '/detail.spop'];
-      av.fzr.file['cfg/update'] = av.fzr.file[av.actConfig.dir + '/update'];
-      break;
+  delete av.fzr.file['cfg/instset.cfg'];
+  if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {
+    av.fzr.file['cfg/instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];
+  }
+  if ('fzConfig' === pkg.source.node.id) {
+    av.fzr.actConfig.type = 'c';
+    av.fzr.file['cfg/events.cfg'] = ' ';
+    if (av.fzr.file['cfg/clade.ssg']) delete av.fzr.file['cfg/clade.ssg'];
+    delete av.fzr.file['cfg/detail.spop'];
+    delete av.fzr.file['cfg/update'];
+  }
+  else if ('fzWorld' == pkg.source.node.id) {
+    av.fzr.actConfig.type = 'w';
+    av.fzr.file['cfg/clade.ssg'] = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
+    av.fzr.file['cfg/detail.spop'] = av.fzr.file[av.fzr.actConfig.dir + '/detail.spop'];
+    av.fzr.file['cfg/events.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/events.cfg'];
+    av.fzr.file['cfg/update'] = av.fzr.file[av.fzr.actConfig.dir + '/update'];
   }
 
   //I tried to see if I could just remove the one node rather than all of them and re-instering. Seems to work.

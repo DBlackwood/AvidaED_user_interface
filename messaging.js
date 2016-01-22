@@ -26,12 +26,12 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'webPopulationStats':
-        updatePopStats(av.grd, msg);
+        av.grd.popStatsMsg = msg;
+        updatePopStats(av.grd, av.grd.popStatsMsg);
         av.grd.popChartFn();
         if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
         var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
-        console.log('webPopulationStats', msg);
         break;
       case 'webGridData':
         //mObj=JSON.parse(JSON.stringify(jsonObject));
@@ -44,7 +44,6 @@ av.msg.readMsg = function (ee) {
         if (av.debug.msgOrder) console.log('out',av.grd.out);
         var stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
-        console.log('webGridData', msg);
         break;
       case 'webOrgDataByCellID':
         //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
@@ -82,15 +81,28 @@ av.msg.readMsg = function (ee) {
 
 av.msg.importExpr = function () {
   'use strict';
+  var fList = ['avida.cfg'
+    , 'clade.ssg'
+    , 'detail.spop'
+    , 'environment.cfg'
+    , 'events.cfg'
+    , 'instset.cfg'
+    , 'update'
+  ];
+  var dir = 'cfg/';
   var request = {
     'type': 'addEvent',
     'name': 'importExpr',
     'trigger': 'immediate',
     'files': [
-      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
-      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
+//      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
     ]
   };
+  var lngth = fList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    if (av.fzr.file[dir+fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+fList[ii]] }); }
+  }
   if (av.debug.msg) console.log('importExpr', request);
   console.log('importExpr', request);
   av.fio.uiWorker.postMessage(request);

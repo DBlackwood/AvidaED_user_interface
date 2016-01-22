@@ -304,7 +304,7 @@ function DrawGridUpdate(grd, parents) {
 
   DrawGridBackground(grd);
   //Check to see if run has started
-  if (grd.newrun) {
+  if ('prepping' === grd.runState) {
     DrawParent(grd, parents);
   }
   else {
@@ -312,7 +312,7 @@ function DrawGridUpdate(grd, parents) {
   }
   //Draw Selected as one of the last items to draw
   if (grd.flagSelected) { DrawSelected(grd) }
-  if (!grd.newrun) DrawLogicSelected(grd);
+  if ('prepping' !== grd.runState) DrawLogicSelected(grd);
 }
 
 function DrawGridBackground(grd) {
@@ -411,7 +411,7 @@ function GradientScale(grd) {
   grd.sCtx.fillStyle = grad;
   grd.sCtx.fillRect(xStart, legendHt, gradWidth, grd.CanvasScale.height - legendHt);
   //Draw Values if run started
-  if (!grd.newrun) {
+  if ('prepping' !== grd.runState) {
     //if (true) {  grd.fillmax = 805040;
     grd.sCtx.font = "14px Arial";
     grd.sCtx.fillStyle = "#000";

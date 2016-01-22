@@ -54,7 +54,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       else av.fio.anID = av.fio.fName;
       //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
       //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
-      if (3 < av.fio.fName.length) processFiles(loadConfigFlag);  //do not load configfile
+      if (3 < av.fio.fName.length) av.fio.processFiles(loadConfigFlag);  //do not load configfile
     };
     //note setup form is updated when the files are read.
     //console.log('after read loop: fzr', av.fzr);
@@ -108,7 +108,7 @@ https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascri
         else av.fio.anID = av.fio.fName;
         //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
         //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
-        if (3 < av.fio.fName.length) processFiles(false);  //do not load configfile
+        if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
       }
       av.grd.drawGridSetupFn();
       av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.

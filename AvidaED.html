@@ -86,6 +86,7 @@
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnHpAbout" label="About"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnHpHardware" label="Ancestor and Hardware"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnHpProblem" label="Report Problem"></span>
             <div data-dojo-type="dijit/MenuSeparator"></div>
             <div data-dojo-type="dijit/PopupMenuItem">
               <span>Color Gradient</span>
@@ -94,7 +95,9 @@
               <span data-dojo-type="dijit/MenuItem" id="mnCubehelix" label="Cubehelix"></span>
               <span data-dojo-type="dijit/MenuItem" id="mnGnuplot2" label="Gnuplot2"></span>
             </div>
-            <span data-dojo-type="dijit/MenuItem" id="mnHpProblem" label="Report Problem"></span>
+            <div data-dojo-type="dijit/MenuSeparator"></div>
+            <span data-dojo-type="dijit/MenuItem" id="mnDbThrowError" label="Throw Error"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnDbThrowData" label="Send Data to console"></span>
         </span>
       </span>
 
@@ -447,7 +450,6 @@
                       <button id="freezeButton">Freeze</button>
                     </td>
                     <td>
-                      <button id="grdTestButton">grdTest</button><br />
                       <div id="ZoomSlide" style="height: auto; width: 120px;float:right">
                         <!--<div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>-->
                         <!--<ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="1x,20x" style="height: 20px;">-->

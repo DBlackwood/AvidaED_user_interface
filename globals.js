@@ -64,49 +64,53 @@ av.gen = {};
 
 av.grd = {};         //data about the grid canvas
 av.grd.popStatFlag = true;  //flag that determines if the stats panel is visible.
+// initialize data for chart on population page
+av.grd.popY = [];
+av.grd.popY2 = [];
+av.grd.ytitle = 'Average Fitness';
 
-function clearGrd(grd) {
-  grd.newrun = true;
-  grd.updateNum = 0;
-  grd.cols = 0;    //Number of columns in the grid
-  grd.rows = 0;    //Number of rows in the grid
-  grd.sizeX = 0;  //size of canvas in pixels
-  grd.sizeY = 0;  //size of canvas in pixels
-  grd.boxX = 0;   //size based zoom
-  grd.boxY = 0;   //size based zoom
-  grd.flagSelected = false; //is a cell selected
-  grd.zoom = 1;     //magnification for zooming.
+av.grd.clearGrd = function () {
+  av.grd.runState = 'prepping';  //'started'; 'world';
+  av.grd.updateNum = 0;
+  av.grd.cols = 0;    //Number of columns in the grid
+  av.grd.rows = 0;    //Number of rows in the grid
+  av.grd.sizeX = 0;  //size of canvas in pixels
+  av.grd.sizeY = 0;  //size of canvas in pixels
+  av.grd.boxX = 0;   //size based zoom
+  av.grd.boxY = 0;   //size based zoom
+  av.grd.flagSelected = false; //is a cell selected
+  av.grd.zoom = 1;     //magnification for zooming.
   //structure for colors in the grid
-  grd.fill = [];  //deals with color to fill a grid cell
-  grd.out = [];   // deals with the color of the grid outline
-  grd.fillmax = 0;    // max value for grid scale for the gradient color
-  grd.msg = {};
-  grd.mxFit = 0.4;   //store maximum fitness during an experiment
-  grd.mxGest = 400;  //store maximum gestation time during an experiment
-  grd.mxRate = 40;  //store maximum metabolic rate during an experiment
-  grd.rescaleTolerance = 0.1;
-  grd.rescaleTimeConstant = 10;
-  grd.SelectedColor = '#ffffff';
-  grd.LogicColor = '#00ff00';
-  grd.kidStatus = '';
-  grd.ave_fitness = [];  //ave is for all avidians.
-  grd.log_fitness = [];  //log is for avidians that performm logic functions
-  grd.ave_gestation_time = [];
-  grd.log_gestation_time = [];
-  grd.ave_metabolic_rate = [];
-  grd.log_metabolic_rate = [];
-  grd.population_size = [];
-  grd.log_pop_size = [];
-  grd.allOff = true;
-  grd.marginX = 1;  //width of black line between the cells
-  grd.marginY = 1;  //width of black line between the cells
+  av.grd.fill = [];  //deals with color to fill a grid cell
+  av.grd.out = [];   // deals with the color of the grid outline
+  av.grd.fillmax = 0;    // max value for grid scale for the gradient color
+  av.grd.msg = {};
+  av.grd.mxFit = 0.4;   //store maximum fitness during an experiment
+  av.grd.mxGest = 400;  //store maximum gestation time during an experiment
+  av.grd.mxRate = 40;  //store maximum metabolic rate during an experiment
+  av.grd.rescaleTolerance = 0.1;
+  av.grd.rescaleTimeConstant = 10;
+  av.grd.SelectedColor = '#ffffff';
+  av.grd.LogicColor = '#00ff00';
+  av.grd.kidStatus = '';
+  av.grd.ave_fitness = [];  //ave is for all avidians.
+  av.grd.log_fitness = [];  //log is for avidians that performm logic functions
+  av.grd.ave_gestation_time = [];
+  av.grd.log_gestation_time = [];
+  av.grd.ave_metabolic_rate = [];
+  av.grd.log_metabolic_rate = [];
+  av.grd.population_size = [];
+  av.grd.log_pop_size = [];
+  av.grd.allOff = true;
+  av.grd.marginX = 1;  //width of black line between the cells
+  av.grd.marginY = 1;  //width of black line between the cells
 
-  grd.legendPad = 10;   //padding on left so it is not right at edge of canvas
-  grd.colorWide = 13;   //width and heigth of color square
-  grd.RowHt = 20;       //height of each row of text
-  grd.leftpad = 10;     //padding to allow space between each column of text in the legend
+  av.grd.legendPad = 10;   //padding on left so it is not right at edge of canvas
+  av.grd.colorWide = 13;   //width and heigth of color square
+  av.grd.RowHt = 20;       //height of each row of text
+  av.grd.leftpad = 10;     //padding to allow space between each column of text in the legend
 }
-clearGrd(av.grd);
+av.grd.clearGrd();
 
 //http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
 // please note,

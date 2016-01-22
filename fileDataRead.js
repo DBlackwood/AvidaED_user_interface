@@ -94,7 +94,7 @@ function add2freezerFromFile(loadConfigFlag) {
   av.fzr.dir[domid] = dir;
 }
 
-function processFiles(loadConfigFlag){
+av.fio.processFiles = function (loadConfigFlag){
   "use strict";
   var fileType = wsa('/', av.fio.anID);
   switch (fileType) {
@@ -355,40 +355,35 @@ av.fio.handAncestorLoad = function(fileStr) {
 //----------------------- section to put data from clade.ssg into parents ----------------------------------------------
 //nothing in this section works.
 
-var cladeSSGlineParse = function(instr){
-  'use strict';
-  var num = 0;
-  var flag = true;
-  var cfgary = flexsplit(instr).split(',');
-  if (0 < cfgary[3].length) {num = wsb(':',wsa('=',cfgary[3]));}
-  if (0 == num) {flag = false;} //use == in this case as they are of different type
-  //if (av.debug.fio) console.log('flag', flag, '; num', num, '; cfgary', cfgary[3], '; instr', instr);
-  var rslt = {
-    name : cfgary[1],
-    value : flag
-  };
-  return rslt;
-};
-
 // makes a dictionary out of a environment.cfg file
 var cladeSSGparse = function (filestr) {
   'use strict';
-  var rslt = {};
-  var lineobj;
+  var rslt = [];
+  var lineobj, cfgary, name;
   var lines = filestr.split("\n");
   for (var ii = 0; ii < lines.length; ii++) {
     if (3 < lines[ii].length) {
-      lineobj = cladeSSGlineParse(lines[ii]);
-      rslt[lineobj.name.toUpperCase()] = lineobj.value;
+      cfgary = flexsplit(lines[ii]).split(',');   //replaces white space with a comma, then splits on comma
+      name = cfgary[0];
+      if ('#' != name[0]) {
+        rslt.push(name);
+      }
     }
   } // for
   return rslt;
 };
 
 // puts data from the environment.cfg into the setup form for the population page
-function cladeSSG2parents(fileStr) {
+av.fio.cladeSSG2parents = function (fileStr) {
   'use strict';
-  var dict = cladeSSGparse(fileStr);
+  var list = cladeSSGparse(fileStr);
+  var lngth = list.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    av.parents.name[ii] = list[ii];
+    av.dnd.ancestorBox.insertNodes(false, [{data: av.parents.name[ii], type: ['g']}]);
+  }
+  av.dnd.ancestorBox.sync();
+  console.log('parents', av.parents);
 }
 
 //------------------------------------------------- rest may not be in use ---------------------------------------------

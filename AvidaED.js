@@ -157,6 +157,18 @@ require([
 
   av.parents.clearParentsFn();
 
+  // -------------------------------------------------------------------------------------------------------------------
+  // Initialize variables that depend on files loaded in requiement statement
+  // -------------------------------------------------------------------------------------------------------------------
+
+  av.grd.popChart = new Chart("popChart");
+
+  dijit.byId("mnCnPause").attr("disabled", true);
+  dijit.byId("mnFzOrganism").attr("disabled", true);
+  dijit.byId("mnFzOffspring").attr("disabled", true);
+  dijit.byId("mnFzPopulation").attr("disabled", true);
+  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
+
   //**************************************************************************************************
   //                web worker to talk to avida
   //**************************************************************************************************/
@@ -174,6 +186,7 @@ require([
   // ********************************************************************************************************************
   av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
   av.fio.FileSaver = FileSaver;
+  av.fio.dijit = dijit;
 
   av.fio.readZipWS(av.fio.defaultFname, true);
   //av.fio.loadDefaultConfig();
@@ -489,6 +502,7 @@ require([
       var str;
       var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
       landActiveConfig(av.dnd, pkg);  //dojoDnd
+      av.parents.clearParentsFn;
       updateSetup(av);  //fileIO
       if ('fzConfig' === pkg.source.node.id) {
         if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
@@ -504,8 +518,10 @@ require([
       else if ('fzWorld' === pkg.source.node.id) {
         console.log('world config so there more to do');
         //load parents from clade.ssg and ancestors.
-
+        str = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
+        av.fio.cladeSSG2parents(str);
         //run status is no longer 'new' it is "world"
+        av.grd.popWorldState_ui();
       }
       if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
@@ -651,7 +667,9 @@ require([
 
   if (av.debug.root) console.log('before Population Page');
 //----------------------------------------------------------------------------------------------------------------------
-// Population page Buttons
+//                                    End of dojo based DND triggered functions
+//----------------------------------------------------------------------------------------------------------------------
+//                                             Population page Buttons
 //----------------------------------------------------------------------------------------------------------------------
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
@@ -666,31 +684,17 @@ require([
     else {av.ui.subpage = 'setup';}
   };
 
-  // hides and shows the population and selected organsim data on right of population page with "Stats" button
-  document.getElementById("PopStatsButton").onclick = function () {
-    popStatView(av.grd);
-  };
-  // hides and shows the population and selected organsim data on right of population page with "Stats" button
-
-  //--------------------------------------------------------------------------------------------------------------------
-  ///   Map Grid buttons - New  Run/Pause Freeze
-  //--------------------------------------------------------------------------------------------------------------------
-  dijit.byId("mnCnPause").attr("disabled", true);
-  dijit.byId("mnFzOrganism").attr("disabled", true);
-  dijit.byId("mnFzOffspring").attr("disabled", true);
-  dijit.byId("mnFzPopulation").attr("disabled", true);
-  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
-
-  function popStatView(grd) {
-    if (grd.popStatFlag) {
-      grd.popStatFlag = false;
+  // hides and shows the population and selected organsim data on right of population page with "Stats/mpa" button
+  function popStatView() {
+    if (av.grd.popStatFlag) {
+      av.grd.popStatFlag = false;
       registry.byId("popRight").domNode.style.width = "1px";
       registry.byId("mainBC").layout();
       dijit.byId("popRight").set("style", "display: block; visibility: visible;");
 
     }
     else {
-      grd.popStatFlag = true;
+      av.grd.popStatFlag = true;
       registry.byId("selectOrganPane").domNode.style.width = "150px";
       registry.byId("popRight").domNode.style.width = "395px";
       registry.byId("mainBC").layout();
@@ -698,6 +702,12 @@ require([
 
     }
   }
+
+  document.getElementById("PopStatsButton").onclick = function () {popStatView() };
+
+  //--------------------------------------------------------------------------------------------------------------------
+  ///   Map Grid buttons - New  Run/Pause Freeze
+  //--------------------------------------------------------------------------------------------------------------------
 
   function runPopFn() {
     //check for ancestor organism in configuration data
@@ -710,16 +720,15 @@ require([
       NeedAncestorDialog.show();
     }
     else { // setup for a new run by sending config data to avida
-      if (av.grd.newrun) {
+      if ('started' != av.grd.runState) {
         requestPopStats(av.fio);  //fio.uiWorker
         requestGridData(av.fio);  //fio.uiWorker
 
         //change ui parameters for the correct state when the avida population has started running
-        popRunningState_ui(av.dnd, av.grd);
-        dom.byId('ancestorBox').isSource = false;
+        av.grd.popRunningState_ui();
 
         //collect setup data to send to avida
-        av.fio.makeConfig2send(av.fzr, av.parents);          //fileDataWrite.js
+        av.fio.form2cfgFolder(av.fzr, av.parents);          //fileDataWrite.js
         av.msg.importExpr();
         if ('c' === av.fzr.actConfig.type) injectAncestors(av.fio, av.parents); //fio.uiWorker
       }
@@ -777,7 +786,7 @@ require([
   });
 
   function newButtonBoth() {
-    if (av.grd.newrun) {// reset petri dish
+    if ('prepping' == av.grd.runState) {// reset petri dish
       resetDishFn();
     }
     else {// check to see about saving current population
@@ -794,7 +803,7 @@ require([
 
   //reset values
   function resetDishFn() { //Need to reset all settings to @default
-    av.grd.newrun = true;
+    av.grd.runState = 'prepping';
     dijit.byId("mnCnOrganismTrace").attr("disabled", true);
     dijit.byId("mnFzOrganism").attr("disabled", true);
 
@@ -815,22 +824,28 @@ require([
     av.grd.drawGridSetupFn();
   }
 
-  //test - delete later ----------------------------------------------------------
-  document.getElementById("grdTestButton").onclick = function () {
+  //test - delete later ------------------------------------------------------------------------------------------------
+  document.getElementById("mnDbThrowData").onclick = function () {
     'use strict';
     console.log('av', av);
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
+    console.log('av.grd.msg',av.grd.msg);
+    console.log('av.grd.popStatsMsg', av.grd.popStatsMsg);
+  };
+
+  document.getElementById("mnDbThrowError").onclick = function () {
+    'use strict';
     var george = fred;
     console.log('log', av.debug.log);
     //console.log('av', av);
   };
 
-  //******* Freeze Button ********************************************
+  //**************************************      Freeze Button      *****************************************************
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.*/
   document.getElementById("freezeButton").onclick = function () {
-    if (av.grd.newrun) FrConfigFn();
+    if ('prepping' == av.grd.runState) FrConfigFn();
     else fzDialog.show();
   };
 
@@ -1009,7 +1024,7 @@ require([
       }
       e.preventDefault(); // prevent the default action (scroll / move caret)
       av.grd.selectedNdx = av.grd.selectedRow*av.grd.cols + av.grd.selectedCol;
-      if (moved && !av.grd.newrun) {  //look for decendents (kids)
+      if (moved && 'prepping' != av.grd.runState) {  //look for decendents (kids)
         //find out if there is a kid in that cell
         //if which ancestor is not null then there is a 'kid' there.
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
@@ -1041,7 +1056,7 @@ require([
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
-      if (av.grd.newrun) {  //run has not started so look to see if cell contains ancestor
+      if ('prepping' == av.grd.runState) {  //run has not started so look to see if cell contains ancestor
         av.mouse.ParentNdx = findParentNdx(av.parents);
         if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
         if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
@@ -1164,9 +1179,11 @@ require([
     av.mouse.Picked = "";
   });
 
-  /* *************************************************************** */
-  // ****************  Draw Population Grid ************************ */
-  /* *************************************************************** */
+  // *******************************************************************************************************************
+  //                                      Pouplation Page
+  // *******************************************************************************************************************
+  //                                      Draw Population Grid
+  // *******************************************************************************************************************
 
   //Set up canvas objects
   av.grd.CanvasScale = document.getElementById("scaleCanvas");
@@ -1186,7 +1203,7 @@ require([
   av.grd.drawGridSetupFn = function () {
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
 
-    if(!av.grd.newrun && undefined != av.grd.msg.fitness) {
+    if('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
       setMapData(av.grd);  //update color information for offpsring once run has started
       findLogicOutline(av.grd);
     }
@@ -1305,13 +1322,13 @@ require([
       document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
   }
 
-  //
-  // The rest of this code is in PopulationGrid.js
-  // *************************************************************** */
-  //        Color Map Color Mode and Zoom Slide Controls             //
-  // *************************************************************** */
+  // The rest of grid canvas drawing code is in PopulationGrid.js
 
-  //Get color map data from Avida and draw
+  // *******************************************************************************************************************
+  //        Color Map Color Mode and Zoom Slide Controls
+  // *******************************************************************************************************************
+
+  // Get color map data from Avida and draw
   dijit.byId("colorMode").on("Change", function () {
     var scaleType = dijit.byId("colorMode").value;
     //need to request data to update the color map from Avida
@@ -1364,38 +1381,89 @@ require([
     av.grd.drawGridSetupFn();
   });
 
-  // *************************************************************** */
+  // *******************************************************************************************************************
   //    Buttons that select organisms that perform a logic function
-  // *************************************************************** */
+  // *******************************************************************************************************************
   if (av.debug.root) console.log('before logic buttons');
 
-  function toggle(button) {
-    if ('on' == document.getElementById(button).value) {
-      document.getElementById(button).value = 'off';
-      document.getElementById(button).className = 'bitButtonOff';
-    }
-    else {
-      document.getElementById(button).value = 'on';
-      document.getElementById(button).className = 'bitButtonOn';
-    }
-    for (ii=0; ii<av.grd.ave_fitness.length; ii++){
-      av.grd.log_fitness[ii] = null;
-      av.grd.log_gestation_time[ii] = null;
-      av.grd.log_metabolic_rate[ii] = null;
-      av.grd.log_pop_size[ii] = null;
-    }
-    av.grd.drawGridSetupFn();
-  }
+  document.getElementById("notButton").onclick = function () {av.grd.toggle('notButton');} //av.grd.toggle in popControls.js
+  document.getElementById("nanButton").onclick = function () {av.grd.toggle('nanButton');}
+  document.getElementById("andButton").onclick = function () {av.grd.toggle('andButton');}
+  document.getElementById("ornButton").onclick = function () {av.grd.toggle('ornButton');}
+  document.getElementById("oroButton").onclick = function () {av.grd.toggle('oroButton');}
+  document.getElementById("antButton").onclick = function () {av.grd.toggle('antButton');}
+  document.getElementById("norButton").onclick = function () {av.grd.toggle('norButton');}
+  document.getElementById("xorButton").onclick = function () {av.grd.toggle('xorButton');}
+  document.getElementById("equButton").onclick = function () {av.grd.toggle('equButton');}
 
-  document.getElementById("notButton").onclick = function () {toggle('notButton');}
-  document.getElementById("nanButton").onclick = function () {toggle('nanButton');}
-  document.getElementById("andButton").onclick = function () {toggle('andButton');}
-  document.getElementById("ornButton").onclick = function () {toggle('ornButton');}
-  document.getElementById("oroButton").onclick = function () {toggle('oroButton');}
-  document.getElementById("antButton").onclick = function () {toggle('antButton');}
-  document.getElementById("norButton").onclick = function () {toggle('norButton');}
-  document.getElementById("xorButton").onclick = function () {toggle('xorButton');}
-  document.getElementById("equButton").onclick = function () {toggle('equButton');}
+  // -------------------------------------------------------------------------------------------------------------------
+  //                    Population Chart   ; pop chart; popchart
+  // -------------------------------------------------------------------------------------------------------------------
+  // tried moving this whole section to another file:
+  //   dijit.byId lines need to be in this file.
+  //   some of the chart definition lines need to be in this file.
+
+  // Chart control on population page
+  //Set Y-axis title and choose the correct array to plot
+  dijit.byId("yaxis").on("Change", function () {
+    av.grd.ytitle = dijit.byId("yaxis").value;
+    //need to get correct array to plot from freezer
+    //console.log('changeyaxis popChartFn');
+    av.grd.popChartFn();
+  });
+
+//use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
+//this required the use of a theme, but I'm no longer using the theme. Could take 'Wetland' out of require statemet as long a this is not used
+//var myTheme = Wetland; // Or any other theme
+//myTheme.axis.majorTick.color = "#CCC";  //grey
+//myTheme.axis.minorTick.color = "red";
+
+  av.grd.popChartFn = function () {
+    'use strict';
+    if ("Average Fitness" == dijit.byId("yaxis").value) {
+      av.grd.popY = av.grd.ave_fitness;
+      av.grd.popY2 = av.grd.log_fitness;
+    }
+    else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
+      av.grd.popY = av.grd.ave_gestation_time;
+      av.grd.popY2 = av.grd.log_gestation_time;
+    }
+    else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
+      av.grd.popY = av.grd.ave_metabolic_rate;
+      av.grd.popY2 = av.grd.log_metabolic_rate;
+    }
+    else if ("Number of Organisms" == dijit.byId("yaxis").value) {
+      av.grd.popY = av.grd.population_size;
+      av.grd.popY2 = av.grd.log_pop_size;
+    }
+    //console.log('popY',av.grd.popY);
+    //console.log('pop2', av.grd.popY2);
+    //av.grd.popChart.setTheme(myTheme);
+    av.grd.popChart.addPlot("default", {type: "Lines"});
+    //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
+    // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
+    av.grd.popChart.addPlot("grid", {
+      type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
+      vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
+    });
+
+    av.grd.popChart.addAxis("x", {
+      fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
+      titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"
+    });
+    //av.grd.popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
+    av.grd.popChart.addAxis("y", {
+      vertical: true,
+      fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
+    });
+    //av.grd.popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
+    //av.grd.popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
+    av.grd.popChart.addSeries("Series y", av.grd.popY, {plot: "default", stroke: {color: "blue", width: 1}});
+    av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
+    av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
+      domGeometry.position(document.getElementById("popChartHolder")).h - 30);
+    av.grd.popChart.render();
+  };
 
   // *************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
@@ -1457,76 +1525,6 @@ require([
       $("#mRate").val(100000 * Math.log(1 + (parseFloat(this.value))));
       //console.log("in mute change");
     });
-  });
-
-  /* ---------------------------------------------------------------------- */
-  /*                    Population Chart   ; pop chart; popchart            */
-  /* ---------------------------------------------------------------------- */
-
-  //need to get the next two values from real data.
-  av.grd.popY = [];
-  av.grd.popY2 = [];
-  av.grd.ytitle = dijit.byId("yaxis").value;
-  av.grd.popChart = new Chart("popChart");
-
-  //use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
-  //this required the use of a theme, but I'm no longer using the theme. Could take 'Wetland' out of require statemet as long a this is not used
-  //var myTheme = Wetland; // Or any other theme
-  //myTheme.axis.majorTick.color = "#CCC";  //grey
-  //myTheme.axis.minorTick.color = "red";
-
-  av.grd.popChartFn = function () {
-    if ("Average Fitness" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_fitness;
-      av.grd.popY2 = av.grd.log_fitness;
-    }
-    else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_gestation_time;
-      av.grd.popY2 = av.grd.log_gestation_time;
-    }
-    else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_metabolic_rate;
-      av.grd.popY2 = av.grd.log_metabolic_rate;
-    }
-    else if ("Number of Organisms" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.population_size;
-      av.grd.popY2 = av.grd.log_pop_size;
-    }
-    //console.log('popY',av.grd.popY);
-    //console.log('pop2', av.grd.popY2);
-    //av.grd.popChart.setTheme(myTheme);
-    av.grd.popChart.addPlot("default", {type: "Lines"});
-    //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
-    // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-    av.grd.popChart.addPlot("grid", {
-      type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
-      vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
-    });
-
-    av.grd.popChart.addAxis("x", {
-      fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
-      titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"
-    });
-    //av.grd.popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
-    av.grd.popChart.addAxis("y", {
-      vertical: true,
-      fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
-    });
-    //av.grd.popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
-    //av.grd.popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
-    av.grd.popChart.addSeries("Series y", av.grd.popY, {plot: "default", stroke: {color: "blue", width: 1}});
-    av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
-    av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
-      domGeometry.position(document.getElementById("popChartHolder")).h - 30);
-    av.grd.popChart.render();
-  };
-
-  //Set Y-axis title and choose the correct array to plot
-  dijit.byId("yaxis").on("Change", function () {
-    av.grd.ytitle = dijit.byId("yaxis").value;
-    //need to get correct array to plot from freezer
-    //console.log('changeyaxis popChartFn');
-    av.grd.popChartFn();
   });
 
   /* *************************************************************** */
@@ -2013,7 +2011,7 @@ require([
 
       //In the grid and selected. Now look to see contents of cell are dragable.
       shrew.chipNdx = -1; //index into chips array if chip selected else -1;
-      if (av.grd.newrun) {  //run has not started so look to see if cell contains ancestor
+      if (true) {  //run has not started so look to see if cell contains ancestor
         shrew.chipNdx = findchipNdx(chck, chips);
         if (-1 < shrew.chipNdx) { //selected a chip, check for dragging
           document.getElementById('colorDemo').style.cursor = 'copy';

@@ -1,9 +1,10 @@
-/* *************************************************************** */
-/* Population page script ******************************************/
-/* *************************************************************** */
+// *********************************************************************************************************************
+//                                       Population page script
+// *********************************************************************************************************************
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
 function popBoxSwap() {
+  'use strict';
   if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
     //var height = $("#mapBlock").innerHeight() - 6;
     //dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
@@ -20,13 +21,33 @@ function popBoxSwap() {
   }
 }
 
-function popRunningState_ui(dnd, grd) {
-  grd.newrun = false;  //the run will no longer be "new"
+av.grd.popWorldState_ui = function () {
+  'use strict';
+  av.grd.runState = 'world';
   //Disable some of the options on the Setup page
-  dnd.ancestorBox.isSource = false;
-  dnd.activeConfig.isSource = false;
-  delete dnd.ancestorBox.accept['g'];
-  delete dnd.activeConfig.accept['c'];
+  //av.dnd.ancestorBox.isSource = false;
+  av.dnd.ancestorBox.copyOnly = true;
+  av.dnd.activeConfig.isSource = false;
+  delete av.dnd.ancestorBox.accept['g'];
+  delete av.dnd.activeConfig.accept['c'];
+  dijit.byId("sizeCols").attr("disabled", true);
+  dijit.byId("sizeRows").attr("disabled", true);
+  dijit.byId("experimentRadio").attr("disabled", true);
+  dijit.byId("demoRadio").attr("disabled", true);
+
+  //there will be a population so it can now be frozen.
+  dijit.byId("mnFzPopulation").attr("disabled", false);
+}
+
+av.grd.popRunningState_ui = function (dnd, grd) {
+  'use strict';
+  av.grd.runState = 'started';  //the run has now started
+  //Disable some of the options on the Setup page
+  av.dnd.ancestorBox.copyOnly = true;
+  //av.dnd.ancestorBox.isSource = false;
+  av.dnd.activeConfig.isSource = false;
+  delete av.dnd.ancestorBox.accept['g'];
+  delete av.dnd.activeConfig.accept['c'];
   $("#muteSlide").slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
   dijit.byId("sizeCols").attr("disabled", true);
   dijit.byId("sizeRows").attr("disabled", true);
@@ -65,6 +86,7 @@ function popNewExState(dnd, fzr, grd, parents) {
   dnd.ancestorBox.accept['g'] = 1;
   dnd.activeConfig.accept['c'] = 1;
   dnd.ancestorBox.isSource = true;
+  dnd.ancestorBox.copyOnly = false;
   dnd.activeConfig.isSource = true;
   $("#muteSlide").slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
   dijit.byId("sizeCols").attr("disabled", false);
@@ -160,6 +182,7 @@ function popNewExState(dnd, fzr, grd, parents) {
 
 //Freeze the selected organism
 function FrOrganismFn(trigger) {
+  'use strict';
   var fzName = 'new';
   var parentName = "";
   var gene;
@@ -196,6 +219,7 @@ function FrOrganismFn(trigger) {
 }
 
 function FrConfigFn() {
+  'use strict';
   var fzName = prompt("Please name the new configuration", "newConfig");
   if (fzName) {
     //var namelist = dojo.query('> .dojoDndItem', 'fzConfig');  console.log('namelist', namelist); not in use, but does show another way to get data
@@ -217,6 +241,7 @@ function FrConfigFn() {
 
 //Save a populated dish
 function FrPopulationFn() {
+  'use strict';
   var fzName = prompt("Please name the new population", "newPopulation");
   if (fzName) {
     fzName = getUniqueName(fzName, av.dnd.fzWorld);
@@ -236,6 +261,25 @@ function FrPopulationFn() {
   }
 }
 
+av.grd.toggle = function (button) {
+  'use strict';
+  if ('on' == document.getElementById(button).value) {
+    document.getElementById(button).value = 'off';
+    document.getElementById(button).className = 'bitButtonOff';
+  }
+  else {
+    document.getElementById(button).value = 'on';
+    document.getElementById(button).className = 'bitButtonOn';
+  }
+  for (ii=0; ii<av.grd.ave_fitness.length; ii++){
+    av.grd.log_fitness[ii] = null;
+    av.grd.log_gestation_time[ii] = null;
+    av.grd.log_metabolic_rate[ii] = null;
+    av.grd.log_pop_size[ii] = null;
+  }
+  av.grd.drawGridSetupFn();
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // code below this line is not in use tiba delete later
@@ -243,6 +287,7 @@ function FrPopulationFn() {
 //for now this is hard coded to what would be in @default. will need a way to request data from PouchDB
 //and read the returned JSON string.
 function writeHardDefault(av) {
+  'use strict';
   dijit.byId("sizeCols").set('value', av.dft.sizeCols);
   dijit.byId("sizeRows").set('value', av.dft.sizeRows);
   dijit.byId("sizeCols").set('value', '20');    //delete later; av.debug only taba
@@ -283,3 +328,4 @@ function writeHardDefault(av) {
     dijit.byId("updateRadio").set('checked', true);
   };
 }
+
