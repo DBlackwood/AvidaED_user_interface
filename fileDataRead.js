@@ -45,6 +45,7 @@ av.fio.loadDefaultConfig = function() {
   var mapItems = Object.keys(av.dnd.activeConfig.map);
   av.fzr.actConfig.actDomid = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
   av.fzr.actConfig.fzDomid = av.fzr.domid['c0'];
+  console.log('avida.cfg', av.fzr.file['c0/avida.cfg'])
   avidaCFG2form(av.fzr.file['c0/avida.cfg']);
   environmentCFG2form(av.fzr.file['c0/environment.cfg']);
 }
@@ -115,7 +116,10 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'tr3':
     case 'update':
       if (loadConfigFlag) {
-        if ('c0/avida.cfg' == av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText());}
+        if ('c0/avida.cfg' == av.fio.anID) {
+          console.log('avida.cfg',av.fio.thisfile.asText());
+          avidaCFG2form(av.fio.thisfile.asText());
+        }
         if ('c0/environment.cfg' == av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim());}
       }
       //writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
@@ -140,7 +144,7 @@ function updateSetup(av) {
   //if (av.debug.fio) console.log('fzr.file', av.fzr.file);
   //if (av.debug.fio) console.log('doctxt', av.fzr.file['c0/avida.cfg'])
   //if (av.debug.fio) console.log('updateSetup = path', path, '; doc', doctext);
-  avidaCFG2form(doctext);
+    avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
   //if (av.debug.fio) console.log('updateSetup = dir', dir, '; doc', doctext);
   environmentCFG2form(doctext);
@@ -384,6 +388,34 @@ av.fio.cladeSSG2parents = function (fileStr) {
   }
   av.dnd.ancestorBox.sync();
   console.log('parents', av.parents);
+}
+
+//----------------------- section to put data from tr files into data from charts --------------------------------------
+//nothing in this section works.
+
+// makes a dictionary out of a environment.cfg file
+var tr2chartParse = function (filestr) {
+  'use strict';
+  var rslt = {};
+  rslt.update = [];
+  rslt.data = [];
+  var lineobj, cfgary, name;
+  var pairs = filestr.split(',');
+  var pairLngth = pairs.length;
+  for (var ii = 0; ii < pairLngth; ii++) {
+    lineobj = pairs[ii].split(':');
+    rslt.update[ii] = lineobj[0];
+    rslt.data[ii] = lineobj[1];
+  } // for
+  return rslt;
+};
+
+// puts data from the environment.cfg into the setup form for the population page
+av.fio.tr2chart = function (fileStr) {
+  'use strict';
+  var dual = cladeSSGparse(fileStr);
+  console.log('dual', dual);
+  return dual.data;
 }
 
 //------------------------------------------------- rest may not be in use ---------------------------------------------

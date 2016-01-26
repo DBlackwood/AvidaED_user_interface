@@ -187,6 +187,20 @@ av.fzr.clearFzrFn = function () {
   av.fzr.actOrgan = {'name': '', 'actDomid': '', 'fzDomid': '', 'genome': ''};
   //hold genome for active organism in Organism View
   av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': ''};
+  av.fzr.pop1 = {};
+  av.fzr.pop1.fit = [];
+  av.fzr.pop1.ges = [];
+  av.fzr.pop1.met = [];
+  av.fzr.pop1.num = [];
+
+  av.fzr.pop = [];
+  for (var ii=0; ii<3; ii++) {
+    av.fzr.pop[ii] = {};
+    av.fzr.pop[ii].fit = [];
+    av.fzr.pop[ii].ges = [];
+    av.fzr.pop[ii].met = [];
+    av.fzr.pop[ii].num = [];
+  }
   av.fzr.saved = true;
 };
 
@@ -202,21 +216,13 @@ av.fzr.clearMainFzrFn = function () {
   av.fzr.saved = true;
 };
 
+av.anl = {};  //Analysis page functions and data
+av.anl.color = [];   //holds the three colors for the three populations
+av.anl.pop = [];
+for (var ii=0; ii<3; ii++) {
+  av.anl.pop[ii] = {};
+  av.anl.pop[ii].left = [];
+  av.anl.pop[ii].right = [];
+}
+
 console.log('end of globals');
-/* Fzr - Freezer.
- av.fzr.dir.dojoUnique14 = 'g0';
- av.fzr.dir.dojoUnique15 = 'g1';
- av.fzr.dir.dojoUnique16 = 'g4';
- av.fzr.domid.c0 = 'dojoUnique4';
- av.fzr.domid.c1 = 'dojoUnique5';
- av.fzr.domid.c2 = 'dojoUnique6';
- av.fzr.file['c0/avida.cfg'] = 'text1';
- av.fzr.file['c0/environment.cfg'] = 'text2';
- av.fzr.file['c0/entryname.txt'] = 'text3';
-
- var gennomelist = invertHash(av.fzr.dir);
- console.log('genomelist', gennomelist);
-
- var dirlist = invertHash(av.fzr.domid);
- console.log('dirlist', dirlist)
-*/

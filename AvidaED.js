@@ -151,9 +151,9 @@ require([
   });
   av.dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
   //Targets only accept object, source can do both
+  av.dnd.graphPop0 = new dndTarget('graphPop0', {accept: ['w'], singular: true});
   av.dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
   av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
-  av.dnd.graphPop3 = new dndTarget('graphPop3', {accept: ['w'], singular: true});
 
   av.parents.clearParentsFn();
 
@@ -168,6 +168,14 @@ require([
   dijit.byId("mnFzOffspring").attr("disabled", true);
   dijit.byId("mnFzPopulation").attr("disabled", true);
   dijit.byId("mnCnOrganismTrace").attr("disabled", true);
+
+  // for analyze page
+  av.anl.color[0] = dictColor[dijit.byId('pop0color').value];
+  av.anl.color[1] = dictColor[dijit.byId('pop1color').value];
+  av.anl.color[2] = dictColor[dijit.byId('pop2color').value];
+  av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
+  av.anl.yRightTitle = dijit.byId("yRightSelect").value;
+  var anaChart = new Chart("analyzeChart");
 
   //**************************************************************************************************
   //                web worker to talk to avida
@@ -186,7 +194,6 @@ require([
   // ********************************************************************************************************************
   av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
   av.fio.FileSaver = FileSaver;
-  av.fio.dijit = dijit;
 
   av.fio.readZipWS(av.fio.defaultFname, true);
   //av.fio.loadDefaultConfig();
@@ -443,7 +450,7 @@ require([
   // called from script in html file as well as below
   av.ui.browserResizeEventHandler = function () {
     if ("block" == domStyle.get("analysisBlock", "display")) {
-      AnaChartFn();
+      av.anl.AnaChartFn();
     }
     if ("block" == domStyle.get("populationBlock", "display")) {
       av.grd.popChartFn();
@@ -606,27 +613,27 @@ require([
     }
   });
 
+  av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
+    if ('graphPop0' == target.node.id) {
+      if (av.debug.dnd) console.log('graphPop0: s, t', source, target);
+      landgraphPop0(av.dnd, source, nodes, target, plt);
+      av.anl.AnaChartFn();
+    }
+  });
+
   av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
-      landGraphPop1(av.dnd, source, nodes, target, plt);
-      AnaChartFn();
+      landgraphPop1(av.dnd, source, nodes, target, plt);
+      av.anl.AnaChartFn();
     }
   });
 
   av.dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
-      landGraphPop2(av.dnd, source, nodes, target, plt);
-      AnaChartFn();
-    }
-  });
-
-  av.dnd.graphPop3.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop3
-    if ('graphPop3' == target.node.id) {
-      if (av.debug.dnd) console.log('graphPop3: s, t', source, target);
-      landGraphPop3(av.dnd, source, nodes, target, plt);
-      AnaChartFn();
+      landgraphPop2(av.dnd, source, nodes, target, plt);
+      av.anl.AnaChartFn();
     }
   });
 
@@ -643,24 +650,24 @@ require([
     }
   });
 
-  av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+  av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
     // The code is here in case the dnd type is changed to 'source'
     switch (source.node.id) {
+      case 'graphPop0':
+        av.anl.pop[0].left = [];       //remove lines from population 1
+        av.anl.pop[0].right = [];
+        av.anl.AnaChartFn();
+        break;
       case 'graphPop1':
-        pop1a = [];       //remove lines from population 1
-        pop1b = [];
-        AnaChartFn();
+        av.anl.pop[1].left = [];       //remove lines from population 2
+        av.anl.pop[1].right = [];
+        av.anl.AnaChartFn();
         break;
       case 'graphPop2':
-        pop2a = [];       //remove lines from population 2
-        pop2b = [];
-        AnaChartFn();
-        break;
-      case 'graphPop3':
-        pop3a = [];       //remove lines from population 3
-        pop3b = [];
-        AnaChartFn();
+        av.anl.pop[2].left = [];       //remove lines from population 3
+        av.anl.pop[2].right = [];
+        av.anl.AnaChartFn();
         break;
     }
   });
@@ -721,18 +728,17 @@ require([
     }
     else { // setup for a new run by sending config data to avida
       if ('started' != av.grd.runState) {
-        requestPopStats(av.fio);  //fio.uiWorker
-        requestGridData(av.fio);  //fio.uiWorker
-
         //change ui parameters for the correct state when the avida population has started running
         av.grd.popRunningState_ui();
 
         //collect setup data to send to avida
         av.fio.form2cfgFolder(av.fzr, av.parents);          //fileDataWrite.js
         av.msg.importExpr();
-        if ('c' === av.fzr.actConfig.type) injectAncestors(av.fio, av.parents); //fio.uiWorker
+        av.msg.requestPopStats(av.fio);  //fio.uiWorker
+        av.msg.requestGridData(av.fio);  //fio.uiWorker
+        if ('c' === av.fzr.actConfig.type) av.msg.injectAncestors(av.fio, av.parents); //fio.uiWorker
       }
-      doRunPause(av.fio);
+      av.msg.doRunPause(av.fio);
     }
     //update screen based on data from C++
   }
@@ -752,7 +758,7 @@ require([
       document.getElementById("runStopButton").innerHTML = "Run";
       dijit.byId("mnCnPause").attr("disabled", true);
       dijit.byId("mnCnRun").attr("disabled", false);
-      doRunPause(av.fio);
+      av.msg.doRunPause(av.fio);
       //console.log("pop size ", av.grd.population_size);
     }
   };
@@ -768,7 +774,7 @@ require([
     dijit.byId("mnCnPause").attr("disabled", true);
     dijit.byId("mnCnRun").attr("disabled", false);
     document.getElementById("runStopButton").innerHTML = "Run";
-    doRunPause(av.fio);
+    av.msg.doRunPause(av.fio);
   });
 
   /* ************** New Button and new Dialog ***********************/
@@ -806,20 +812,20 @@ require([
     av.grd.runState = 'prepping';
     dijit.byId("mnCnOrganismTrace").attr("disabled", true);
     dijit.byId("mnFzOrganism").attr("disabled", true);
-
     // send reset to Avida adaptor
-    doReset(av.fio);
+    av.msg.doReset(av.fio);
     //Enable the options on the Setup page
     popNewExState(av.dnd, av.fzr, av.grd, av.parents);
     //Clear grid settings
     av.parents.clearParentsFn();
-    //reset values in population settings based on a 'file' @default
+    // reset values in population settings based on a 'file' @default
+    av.fzr.actConfig.dir = 'c0';
     updateSetup(av);
 
-    //write if @default not found - need to figure out a test for this
-    //writeHardDefault(av.dft);
+    // write if @default not found - need to figure out a test for this
+    // writeHardDefault(av.dft);
 
-    //re-write grid if that page is visible
+    // re-write grid if that page is visible
     av.grd.popChartFn();
     av.grd.drawGridSetupFn();
   }
@@ -1029,7 +1035,7 @@ require([
         //if which ancestor is not null then there is a 'kid' there.
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
           av.grd.kidStatus = 'getgenome';
-          doSelectedOrganismType(av.fio, av.grd);
+          av.msg.doSelectedOrganismType(av.fio, av.grd);
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnCnOrganismTrace").attr("disabled", false);
@@ -1075,7 +1081,7 @@ require([
         //if ancestor not null then there is a 'kid' there.
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
           av.grd.kidStatus = 'getgenome';
-          doSelectedOrganismType(av.fio, av.grd);
+          av.msg.doSelectedOrganismType(av.fio, av.grd);
           SelectedKidMouseStyle(av.dnd, av.fzr, av.grd);
           av.mouse.Picked = 'kid';
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
@@ -1094,7 +1100,7 @@ require([
       dijit.byId("mnCnOrganismTrace").attr("disabled", true);
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
-    doSelectedOrganismType(av.fio, av.grd);
+    av.msg.doSelectedOrganismType(av.fio, av.grd);
     av.grd.drawGridSetupFn();
   });
 
@@ -1465,9 +1471,9 @@ require([
     av.grd.popChart.render();
   };
 
-  // *************************************************************** */
+  // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
-  // *************************************************************** */
+  // **************************************************************************************************************** */
   av.grd.gridWasCols = Number(document.getElementById("sizeCols").value);
   av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
 
@@ -1750,34 +1756,11 @@ require([
     }
   }, "cycleSlider");
 
-  /* ****************************************************************/
-  /* Analysis Page **************************************************/
-  /* ****************************************************************/
-  var plt = {};
-  plt.dictPlota = {};
-  plt.dictPlotb = {};
-  plt.dictPlota["@example"] = [1, 2, 1, 2, 2, 3, 2, 3, 3, 4];
-  plt.dictPlota["m2w30u1000not"] = [0.6, 1.8, 2, 2, 2.4, 2.7, 3];
-  plt.dictPlota["m2w30u1000nand"] = [1, 1, 1.5, 2, 3, 3, 4, 4, 4.5];
-  plt.dictPlotb["@example"] = [60, 50, 50, 40, 40, 37, 30, 20, 15, 7];
-  plt.dictPlotb["m2w30u1000not"] = [70, 68, 60, 50, 50, 47, 40];
-  plt.dictPlotb["m2w30u1000nand"] = [80, 70, 75, 60, 50, 50, 40, 40, 30];
-  plt.dictPlota["newPopulation"] = [0.5, 1, 2, 1.7, 2, 2.7, 3.2, 3.2];
-  plt.dictPlotb["newPopulation"] = [65, 50, 50, 47, 40, 37, 32, 22];
-  plt.pop1a = [];
-  plt.pop1b = [];
-  plt.pop2a = [];
-  plt.pop2b = [];
-  plt.pop3a = [];
-  plt.pop3b = [];
-  var color1 = dictColor[dijit.byId("pop1color").value];
-  var color2 = dictColor[dijit.byId("pop2color").value];
-  var color3 = dictColor[dijit.byId("pop3color").value];
-  var y1title = "Average Fitness";
-  var y2title = 'Average Gestation Time';
-  var anaChart = new Chart("analyzeChart");
+  // **************************************************************************************************************** */
+  //                                                Analysis Page
+  // **************************************************************************************************************** */
 
-  function AnaChartFn() {
+  av.anl.AnaChartFn = function () {
     anaChart.addPlot("default", {type: "Lines", hAxis: "x", vAxis: "y"});
     anaChart.addPlot("other", {type: "Lines", hAxis: "x", vAxis: "right y"});
     //grid line info on https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
@@ -1789,19 +1772,19 @@ require([
     anaChart.addAxis("y", {
       vertical: true,
       fixLower: "major",
-      title: y1title,
+      title: av.anl.yLeftTitle,
       titleOrientation: 'axis',
       fixUpper: "major",
       min: 0
     });
     //anaChart.addAxis("top x", {leftBottom: false});
-    anaChart.addAxis("right y", {vertical: true, leftBottom: false, min: 0, title: y2title});
-    anaChart.addSeries("Series 1a", plt.pop1a, {stroke: {color: color1, width: 2}});
-    anaChart.addSeries("Series 2a", plt.pop2a, {stroke: {color: color2, width: 2}});
-    anaChart.addSeries("Series 3a", plt.pop3a, {stroke: {color: color3, width: 2}});
-    anaChart.addSeries("Series 1b", plt.pop1b, {plot: "other", stroke: {color: color1, width: .3}});
-    anaChart.addSeries("Series 2b", plt.pop2b, {plot: "other", stroke: {color: color2, width: .3}});
-    anaChart.addSeries("Series 3b", plt.pop3b, {plot: "other", stroke: {color: color3, width: .3}});
+    anaChart.addAxis("right y", {vertical: true, leftBottom: false, min: 0, title: av.anl.yRightTitle});
+    anaChart.addSeries("Series 0a", av.anl.pop[0].left, {stroke: {color: av.anl.color[0], width: 2}});
+    anaChart.addSeries("Series 1a", av.anl.pop[1].left, {stroke: {color: av.anl.color[1], width: 2}});
+    anaChart.addSeries("Series 2a", av.anl.pop[2].left, {stroke: {color: av.anl.color[2], width: 2}});
+    anaChart.addSeries("Series 0b", av.anl.pop[0].right, {plot: "other", stroke: {color: av.anl.color[0], width: .3}});
+    anaChart.addSeries("Series 1b", av.anl.pop[1].right, {plot: "other", stroke: {color: av.anl.color[1], width: .3}});
+    anaChart.addSeries("Series 2b", av.anl.pop[2].right, {plot: "other", stroke: {color: av.anl.color[2], width: .3}});
 
     anaChart.resize(domGeometry.position(document.getElementById("chartHolder")).w - 10,
       domGeometry.position(document.getElementById("chartHolder")).h - 15);
@@ -1811,53 +1794,59 @@ require([
   };
 
   /* Chart buttons ****************************************/
+  document.getElementById("pop0delete").onclick = function () {
+    av.anl.pop[0].left = [];
+    av.anl.pop[0].right = [];
+    av.anl.AnaChartFn();
+    av.dnd.graphPop0.selectAll().deleteSelectedNodes();
+  }
   document.getElementById("pop1delete").onclick = function () {
-    plt.pop1a = [];
-    plt.pop1b = [];
-    AnaChartFn();
+    av.anl.pop[1].left = [];
+    av.anl.pop[1].right = [];
+    av.anl.AnaChartFn();
     av.dnd.graphPop1.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop2delete").onclick = function () {
-    plt.pop2a = [];
-    plt.pop2b = [];
-    AnaChartFn();
+    av.anl.pop[2].left = [];
+    av.anl.pop[2].right = [];
+    av.anl.AnaChartFn();
     av.dnd.graphPop2.selectAll().deleteSelectedNodes();
   }
-  document.getElementById("pop3delete").onclick = function () {
-    plt.pop3a = [];
-    plt.pop3b = [];
-    AnaChartFn();
-    av.dnd.graphPop3.selectAll().deleteSelectedNodes();
-  }
-  dijit.byId("pop1color").on("Change", function () {
-    color1 = dictColor[dijit.byId("pop1color").value];
-    AnaChartFn();
+  dijit.byId('pop0color').on("Change", function () {
+    Rav.anl.color[0] = dictColor[dijit.byId('pop0color').value];
+    av.anl.AnaChartFn();
   });
-  dijit.byId("pop2color").on("Change", function () {
-    color2 = dictColor[dijit.byId("pop2color").value];
-    AnaChartFn();
+  dijit.byId('pop1color').on("Change", function () {
+    av.anl.color[1] = dictColor[dijit.byId('pop1color').value];
+    av.anl.AnaChartFn();
   });
-  dijit.byId("pop3color").on("Change", function () {
-    color3 = dictColor[dijit.byId("pop3color").value];
-    AnaChartFn();
+  dijit.byId('pop2color').on("Change", function () {
+    av.anl.color[2] = dictColor[dijit.byId('pop2color').value];
+    av.anl.AnaChartFn();
   });
 
   //Set Y-axis title and choose the correct array to plot
-  dijit.byId("y1select").on("Change", function () {
-    y1title = dijit.byId("y1select").value;
+  dijit.byId("yLeftSelect").on("Change", function () {
+    av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
     //need to get correct array to plot from freezer
-    AnaChartFn();
+    av.anl.loadSelectedData(0, 'yLeftSelect', 'left')  //numbers are world landing spots
+    av.anl.loadSelectedData(1, 'yLeftSelect', 'left')
+    av.anl.loadSelectedData(2, 'yLeftSelect', 'left')
+    av.anl.AnaChartFn();
   });
 
-  dijit.byId("y2select").on("Change", function () {
-    y2title = dijit.byId("y2select").value;
+  dijit.byId("yRightSelect").on("Change", function () {
+    av.anl.yRightTitle = dijit.byId("yRightSelect").value;
     //need to get correct array to plot from freezer
-    AnaChartFn();
+    av.anl.loadSelectedData(0, 'yRightSelect', 'right')
+    av.anl.loadSelectedData(1, 'yRightSelect', 'right')
+    av.anl.loadSelectedData(2, 'yRightSelect', 'right')
+    av.anl.AnaChartFn();
   });
 
-  //************************************************************************
+  // **************************************************************************************************************** */
   //Tasks that Need to be run when page is loaded but after chart is defined
-  //************************************************************************
+  // **************************************************************************************************************** */
 
   //used to set the height so the data just fits. Done because different monitor/brower combinations require a diffent height in pixels.
   //may need to take out as requires loading twice now.
@@ -1892,9 +1881,10 @@ require([
 
   av.grd.popChartFn();
   //av.grd.drawGridSetupFn(); //Draw initial background
-  //************************************************************************
-  //Useful Generic functions
-  //************************************************************************
+
+  // **************************************************************************************************************** */
+  //                                          Useful Generic functions
+  // **************************************************************************************************************** */
 
   //Modulo that is more accurate than %; Math.fmod(aa, bb);
   Math.fmod = function (aa, bb) {

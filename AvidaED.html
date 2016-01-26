@@ -734,9 +734,9 @@
                  refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" style="width: 500px;"
                  doLayout="false">
               <div class="lftmargin">
-                <button id="pop1delete">X</button>
+                <button id="pop0delete">X</button>
               </div>
-              <select data-dojo-type="dijit/form/Select" id="pop1color" data-dojo-props="name: 'color'" class="fltLeft">
+              <select data-dojo-type="dijit/form/Select" id="pop0color" data-dojo-props="name: 'color'" class="fltLeft">
                 <option value="Red" selected="selected">Red</option>
                 <option value="Blue">Blue</option>
                 <option value="Green">Green</option>
@@ -747,12 +747,12 @@
                 <option value="Yellow">Yellow</option>
               </select>
 
-              <div id="graphPop1" class="popContainer"></div>
+              <div id="graphPop0" class="popContainer"></div>
 
               <div class="lftmargin">
-                <button id="pop2delete">X</button>
+                <button id="pop1delete">X</button>
               </div>
-              <select data-dojo-type="dijit/form/Select" id="pop2color" data-dojo-props="name: 'color'" class="fltLeft">
+              <select data-dojo-type="dijit/form/Select" id="pop1color" data-dojo-props="name: 'color'" class="fltLeft">
                 <option value="Red">Red</option>
                 <option value="Blue">Blue</option>
                 <option value="Green" selected="selected">Green</option>
@@ -763,10 +763,10 @@
                 <option value="Yellow">Yellow</option>
               </select>
 
-              <div id="graphPop2" class="popContainer"></div>
+              <div id="graphPop1" class="popContainer"></div>
               <div class="lftmargin">
-                <button id="pop3delete">X</button>
-                <select data-dojo-type="dijit/form/Select" id="pop3color" data-dojo-props="name: 'color'">
+                <button id="pop2delete">X</button>
+                <select data-dojo-type="dijit/form/Select" id="pop2color" data-dojo-props="name: 'color'">
                   <option value="Red">Red</option>
                   <option value="Blue" selected="selected">Blue</option>
                   <option value="Green">Green</option>
@@ -777,11 +777,11 @@
                   <option value="Yellow">Yellow</option>
                 </select>
               </div>
-              <div id="graphPop3" class="popContainer"></div>
+              <div id="graphPop2" class="popContainer"></div>
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                  refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
-              <select data-dojo-type="dijit/form/Select" id="y1select" data-dojo-props="name: 'yyaxis'">
+              <select data-dojo-type="dijit/form/Select" id="yLeftSelect" data-dojo-props="name: 'yyaxis'">
                 <option value="None">None</option>
                 <option value="Average Fitness" selected="selected">Average Fitness</option>
                 <option value="Average Gestation Time">Average Gestation Time</option>
@@ -789,7 +789,7 @@
                 <option value="Number of Organisms">Number of Organisms</option>
               </select>
               <br></br>
-              <select data-dojo-type="dijit/form/Select" id="y2select" data-dojo-props="name: 'yyaxis'">
+              <select data-dojo-type="dijit/form/Select" id="yRightSelect" data-dojo-props="name: 'yyaxis'">
                 <option value="None">None</option>
                 <option value="Average Fitness">Average Fitness</option>
                 <option value="Average Gestation Time" selected="selected">Average Gestation Time</option>

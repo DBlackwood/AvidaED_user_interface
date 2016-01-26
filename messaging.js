@@ -27,7 +27,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webPopulationStats':
         av.grd.popStatsMsg = msg;
-        updatePopStats(av.grd, av.grd.popStatsMsg);
+        av.msg.updatePopStats(av.grd, av.grd.popStatsMsg);
         av.grd.popChartFn();
         if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
         var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
@@ -47,7 +47,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webOrgDataByCellID':
         //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
-        updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
+        av.grd.updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
         var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         //console.log('webOrgDataByCellID', msg);
@@ -66,7 +66,7 @@ av.msg.readMsg = function (ee) {
         LoadLabel.textContent = msg.message;
         break;
       case 'warning':
-        console.log('avida:warn: ',msg.message);
+        console.log('avida:warn: ',msg);
         break;
       case 'fatal':
         console.log('avida:fatal: ',msg.message);
@@ -135,7 +135,7 @@ av.msg.doOrgTrace = function (fio, fzr) {
 }
 
 //request data from Avida to update SelectedOrganismType
-function doSelectedOrganismType(fio, grd) {
+av.msg.doSelectedOrganismType = function (fio, grd) {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -149,7 +149,7 @@ function doSelectedOrganismType(fio, grd) {
 }
 
 //fio.uiWorker function
-function requestPopStats(fio) {
+av.msg.requestPopStats = function (fio) {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -162,7 +162,7 @@ function requestPopStats(fio) {
 }
 
 //fio.uiWorker function
-function requestGridData(fio) {
+av.msg.requestGridData = function (fio) {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -176,7 +176,7 @@ function requestGridData(fio) {
 
 //sends message to worker to tell Avida to run/pause as a toggle.
 //fio.uiWorker function
-function doRunPause(fio) {
+av.msg.doRunPause = function (fio) {
   'use strict';
   var request;
   if (dijit.byId("manRadio").get('checked')) {
@@ -200,7 +200,7 @@ function doRunPause(fio) {
 }
 
 //fio.uiWorker function
-function doReset(fio) {
+av.msg.doReset = function (fio) {
   'use strict';
   var request = {
     'Key': 'Reset'
@@ -219,7 +219,7 @@ function doDbReady(fio) {
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
-function injectAncestors(fio, parents) {
+av.msg.injectAncestors = function (fio, parents) {
   'use strict';
   var request;
   for (var ii = 0; ii < parents.name.length; ii++) {
@@ -243,7 +243,7 @@ function injectAncestors(fio, parents) {
 }
 
 //---------------------------------
-function updatePopStats(grd, msg) {
+av.msg.updatePopStats = function (grd, msg) {
   'use strict';
   var place = 2;
   document.getElementById("TimeLabel").textContent = msg.update.formatNum(0) + " updates";
@@ -275,7 +275,7 @@ function updatePopStats(grd, msg) {
   //console.log('update length', msg.update.formatNum(0), grd.ave_fitness.length);
 }
 
-function updateLogicAve(grd, msg){
+updateLogicAve = function (grd, msg){
   'use strict';
   if (grd.allOff) {
     grd.log_fitness[msg.update] = null;
@@ -310,7 +310,7 @@ function updateLogicAve(grd, msg){
 }
 
 //writes out data for WebOrgDataByCellID
-function updateSelectedOrganismType(grd, msg, parents) {
+av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
   'use strict';
   var prefix = '';
   if (av.debug.msg) console.log('selected_msg', msg);
@@ -391,7 +391,7 @@ function updateSelectedOrganismType(grd, msg, parents) {
   }
   if (av.debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
 
-  fillColorBlock(grd, msg, parents);
+  av.msg.fillColorBlock(grd, msg, parents);
   if (av.debug.msg) console.log('Kidstatus', grd.kidStatus);
   if ('getgenome' == grd.kidStatus) {
     if (av.debug.msg) console.log('in kidStatus');
@@ -402,7 +402,7 @@ function updateSelectedOrganismType(grd, msg, parents) {
   }
 }
 
-  function fillColorBlock(grd, msg, parents) {  //Draw the color block
+av.msg.fillColorBlock = function (grd, msg, parents) {  //Draw the color block
     'use strict';
     if (av.debug.msg) console.log('in fillColorBlock');
     if (av.debug.msg) console.log('ndx', grd.selectedNdx, '; msg.ancestor.data[ndx]',grd.msg.ancestor.data[grd.selectedNdx]);
