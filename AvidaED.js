@@ -64,7 +64,7 @@ require([
   "fileDataWrite.js",
   "fileIO.js",
   //"indexDB.js", //put in to look at again. Looks confusing. tiba need to delete this file when this line is removed
-  "colorTest.js",
+  "ColorTest.js",
   "PopulationGrid.js",
   "organismView.js",
   'dojoDnd.js',
@@ -945,56 +945,60 @@ require([
       isRightMB = evt.which == 3;
     else if ("button" in e)  // IE, Opera
       isRightMB = evt.button == 2;
-    if (av.gen.didDivide) {  //offpsring exists
-      distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
-      if (25 > distance) {
-        //for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';  //tiba delete later
-        for (var dir in av.fzr.domid) {
-          if ('g'==dir.substring(0,1)) document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';
+    if (av.traceObj) {
+      if (av.gen.didDivide) {  //offpsring exists
+        distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
+        if (25 > distance) {
+          //for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';  //tiba delete later
+          for (var dir in av.fzr.domid) {
+            if ('g' == dir.substring(0, 1)) document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';
+          }
+          document.getElementById('organIcon').style.cursor = 'copy';
+          document.getElementById('organCanvas').style.cursor = 'copy';
+          document.getElementById('mainBC').style.cursor = 'move';
+          av.mouse.Picked = "offspring";
+          if (av.debug.gen) console.log('av.gen.dna', av.gen.dna);
         }
-        document.getElementById('organIcon').style.cursor = 'copy';
-        document.getElementById('organCanvas').style.cursor = 'copy';
-        document.getElementById('mainBC').style.cursor = 'move';
-        av.mouse.Picked = "offspring";
-        if (av.debug.gen) console.log('av.gen.dna', av.gen.dna);
       }
-    }
-    if ('offspring' != av.mouse.Picked) {
-      if (av.debug.gen) {console.log('gen', av.gen);}
-      for (var gg = 0; gg < av.traceObj[av.gen.cycle].memSpace.length; gg++) { //gg is generation
-        for (var ii = 0; ii < av.gen.dna[gg].length; ii++) {  //ii is the isntruction number
-          distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.gen.smCenY[gg][ii], 2));
-          if ( av.gen.smallR >= distance ){
-            //console.log('found, gg, ii', gg, ii, '; xy',av.gen.smCenX[gg][ii],av.gen.smCenY[gg][ii] );
-            ith = ii;
-            hh = gg;
-            av.mouse.Picked = 'instruction';
-            break;
+      if ('offspring' != av.mouse.Picked) {
+        if (av.debug.gen) {
+          console.log('gen', av.gen);
+        }
+        for (var gg = 0; gg < av.traceObj[av.gen.cycle].memSpace.length; gg++) { //gg is generation
+          for (var ii = 0; ii < av.gen.dna[gg].length; ii++) {  //ii is the isntruction number
+            distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.gen.smCenY[gg][ii], 2));
+            if (av.gen.smallR >= distance) {
+              //console.log('found, gg, ii', gg, ii, '; xy',av.gen.smCenX[gg][ii],av.gen.smCenY[gg][ii] );
+              ith = ii;
+              hh = gg;
+              av.mouse.Picked = 'instruction';
+              break;
+            }
           }
         }
       }
-    }
-    var instructionNum = ith + 1;
-    if ('instruction' == av.mouse.Picked) {
-      if (isRightMB) {  //right click on instruction. allow replacement letter.
-        if (av.debug.mouse) console.log('right click');
-        evt.preventDefault();  //supposed to prevent default right click menu - does not work
-        return false;         //supposed to prevent default right click menu - does not work
-      }
-      else {//hh is generation, ith is the instruction
-        var labX = av.gen.cx[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.cos(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
-        var labY = av.gen.cy[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.sin(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
-        if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.gen.rotate[hh], '; xy', labX, labY);
-        av.gen.ctx.beginPath();
-        av.gen.ctx.arc(labX, labY, 1.1 * av.gen.smallR, 0, 2 * Math.PI);
-        av.gen.ctx.fillStyle = dictColor['White'];  //use if av.gen.dna is a string
-        av.gen.ctx.fill();   //required to render fill
-        //draw number;
-        av.gen.ctx.fillStyle = dictColor["Black"];
-        av.gen.ctx.font = av.gen.fontsize + "px Arial";
-        var txtW = av.gen.ctx.measureText(instructionNum).width;  //use if av.gen.dna is a string
-        //txtW = av.gen.ctx.measureText(av.gen.dna[gg][ith]).width;     //use if av.gen.dna is an array
-        av.gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.gen.smallR / 2);  //use if av.gen.dna is a string
+      var instructionNum = ith + 1;
+      if ('instruction' == av.mouse.Picked) {
+        if (isRightMB) {  //right click on instruction. allow replacement letter.
+          if (av.debug.mouse) console.log('right click');
+          evt.preventDefault();  //supposed to prevent default right click menu - does not work
+          return false;         //supposed to prevent default right click menu - does not work
+        }
+        else {//hh is generation, ith is the instruction
+          var labX = av.gen.cx[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.cos(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
+          var labY = av.gen.cy[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.sin(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
+          if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.gen.rotate[hh], '; xy', labX, labY);
+          av.gen.ctx.beginPath();
+          av.gen.ctx.arc(labX, labY, 1.1 * av.gen.smallR, 0, 2 * Math.PI);
+          av.gen.ctx.fillStyle = dictColor['White'];  //use if av.gen.dna is a string
+          av.gen.ctx.fill();   //required to render fill
+          //draw number;
+          av.gen.ctx.fillStyle = dictColor["Black"];
+          av.gen.ctx.font = av.gen.fontsize + "px Arial";
+          var txtW = av.gen.ctx.measureText(instructionNum).width;  //use if av.gen.dna is a string
+          //txtW = av.gen.ctx.measureText(av.gen.dna[gg][ith]).width;     //use if av.gen.dna is an array
+          av.gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.gen.smallR / 2);  //use if av.gen.dna is a string
+        }
       }
     }
   });
@@ -1136,7 +1140,10 @@ require([
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
     //console.log('fzr', av.fzr);
-    for (var dir in av.fzr.domid) document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
+    for (var dir in av.fzr.domid) {
+      console.log('dir', dir, '; domid', av.fzr.domid[dir]);
+      document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
+    }
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
     av.mouse.Dn = false;

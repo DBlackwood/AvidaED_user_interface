@@ -323,16 +323,18 @@ function landOrganIcon(av, source, nodes, target) {
   //clear out the old data if an organism is already there
   'use strict';
   console.log('source', source.node.id);
-  var items = getAllItems(av.dnd.activeOrgan);    //gets some data about the items in the container
-  if (0 < items.length) {
-    av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-    av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
-  }
-  //get the data for the new organism
+  if ('activeOrgan' != source.node.id) {
+    var items = getAllItems(av.dnd.activeOrgan);    //gets some data about the items in the container
+    if (0 < items.length) {
+      av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
+      av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
+    }
+    //get the data for the new organism
     source.forInSelectedItems(function (item, id) {
-    av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
-    av.dnd.activeOrgan.sync();
-  });
+      av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
+      av.dnd.activeOrgan.sync();
+    });
+  }
   if ('fzOrgan' === source.node.id) { updateFromFzrOrganism(av.dnd, av.fzr); }
   else if ('ancestorBox' === source.node.id) {
     var domid = Object.keys(av.dnd.ancestorBox.selection)[0];
