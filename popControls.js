@@ -194,7 +194,7 @@ function FrOrganismFn(trigger) {
     //get name from parent
     parentName = document.getElementById(Object.keys(av.dnd.activeOrgan.map)[0]).textContent;
     fzName = prompt("Please name the offspring", parentName + '_Offspring');
-    gene = '0,heads_default,' + av.gen.dna[1];
+    gene = '0,heads_default,' + av.ind.dna[1];
   }
   else {
     fzName = prompt("Please name the organism", "newOrganism");

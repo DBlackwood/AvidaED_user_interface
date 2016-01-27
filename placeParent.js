@@ -431,15 +431,15 @@ function drawArc1(gen, spot1, spot2, rep){
     ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
   } else { ctx.strokeStyle = dictColor["Red"];}
   ctx.beginPath();
-  xx1 = gen.cx[0] + gen.tanR*Math.cos(spot1*2*Math.PI/gen.size[0]); //Draw line from Spot1
-  yy1 = gen.cy[0] + gen.tanR*Math.sin(spot1*2*Math.PI/gen.size[0]);
+  xx1 = av.ind.cx[0] + av.ind.tanR*Math.cos(spot1*2*Math.PI/av.ind.size[0]); //Draw line from Spot1
+  yy1 = av.ind.cy[0] + av.ind.tanR*Math.sin(spot1*2*Math.PI/av.ind.size[0]);
   ctx.moveTo(xx1, yy1);
-  xx2 = gen.cx[0] + gen.tanR*Math.cos(spot2*2*Math.PI/gen.size[0]); //Draw line to Spot2
-  yy2 = gen.cy[0] + gen.tanR*Math.sin(spot2*2*Math.PI/gen.size[0]);
+  xx2 = av.ind.cx[0] + av.ind.tanR*Math.cos(spot2*2*Math.PI/av.ind.size[0]); //Draw line to Spot2
+  yy2 = av.ind.cy[0] + av.ind.tanR*Math.sin(spot2*2*Math.PI/av.ind.size[0]);
   //Set Control point on line perpendicular to line between Spot1 & spot2
-  gen.pathR = gen.bigR-(2+rep)*gen.smallR;
-  xxc = gen.cx[0] + gen.pathR*Math.cos(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
-  yyc = gen.cy[0] + gen.pathR*Math.sin(spot2*2*Math.PI/gen.size[0] + (spot1-spot2)*(Math.PI)/gen.size[0]);
+  av.ind.pathR = av.ind.bigR-(2+rep)*av.ind.smallR;
+  xxc = av.ind.cx[0] + av.ind.pathR*Math.cos(spot2*2*Math.PI/av.ind.size[0] + (spot1-spot2)*(Math.PI)/av.ind.size[0]);
+  yyc = av.ind.cy[0] + av.ind.pathR*Math.sin(spot2*2*Math.PI/av.ind.size[0] + (spot1-spot2)*(Math.PI)/av.ind.size[0]);
   ctx.quadraticCurveTo(xxc, yyc, xx2, yy2);
   ctx.stroke();
 }

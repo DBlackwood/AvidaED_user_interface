@@ -417,7 +417,7 @@ require([
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
     if (undefined != av.traceObj) {
-      av.gen.updateOrgTrace();
+      av.ind.updateOrgTrace();
     }
     av.ui.page = 'organism';
   };
@@ -464,7 +464,7 @@ require([
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
       //console.log('rightDetail', height, rd);
-      av.gen.updateOrgTrace();
+      av.ind.updateOrgTrace();
     }
   };
 
@@ -946,8 +946,8 @@ require([
     else if ("button" in e)  // IE, Opera
       isRightMB = evt.button == 2;
     if (av.traceObj) {
-      if (av.gen.didDivide) {  //offpsring exists
-        distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.cx[1], 2) + Math.pow(evt.offsetY - av.gen.cy[1], 2));
+      if (av.ind.didDivide) {  //offpsring exists
+        distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.cx[1], 2) + Math.pow(evt.offsetY - av.ind.cy[1], 2));
         if (25 > distance) {
           //for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';  //tiba delete later
           for (var dir in av.fzr.domid) {
@@ -957,18 +957,18 @@ require([
           document.getElementById('organCanvas').style.cursor = 'copy';
           document.getElementById('mainBC').style.cursor = 'move';
           av.mouse.Picked = "offspring";
-          if (av.debug.gen) console.log('av.gen.dna', av.gen.dna);
+          if (av.debug.ind) console.log('av.ind.dna', av.ind.dna);
         }
       }
       if ('offspring' != av.mouse.Picked) {
-        if (av.debug.gen) {
+        if (av.debug.ind) {
           console.log('gen', av.gen);
         }
-        for (var gg = 0; gg < av.traceObj[av.gen.cycle].memSpace.length; gg++) { //gg is generation
-          for (var ii = 0; ii < av.gen.dna[gg].length; ii++) {  //ii is the isntruction number
-            distance = Math.sqrt(Math.pow(evt.offsetX - av.gen.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.gen.smCenY[gg][ii], 2));
-            if (av.gen.smallR >= distance) {
-              //console.log('found, gg, ii', gg, ii, '; xy',av.gen.smCenX[gg][ii],av.gen.smCenY[gg][ii] );
+        for (var gg = 0; gg < av.traceObj[av.ind.cycle].memSpace.length; gg++) { //gg is generation
+          for (var ii = 0; ii < av.ind.dna[gg].length; ii++) {  //ii is the isntruction number
+            distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.ind.smCenY[gg][ii], 2));
+            if (av.ind.smallR >= distance) {
+              //console.log('found, gg, ii', gg, ii, '; xy',av.ind.smCenX[gg][ii],av.ind.smCenY[gg][ii] );
               ith = ii;
               hh = gg;
               av.mouse.Picked = 'instruction';
@@ -985,19 +985,19 @@ require([
           return false;         //supposed to prevent default right click menu - does not work
         }
         else {//hh is generation, ith is the instruction
-          var labX = av.gen.cx[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.cos(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
-          var labY = av.gen.cy[hh] + (av.gen.bigR[hh] + 2.1 * av.gen.smallR) * Math.sin(ith * 2 * Math.PI / av.gen.size[hh] + av.gen.rotate[hh]);
-          if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.gen.rotate[hh], '; xy', labX, labY);
-          av.gen.ctx.beginPath();
-          av.gen.ctx.arc(labX, labY, 1.1 * av.gen.smallR, 0, 2 * Math.PI);
-          av.gen.ctx.fillStyle = dictColor['White'];  //use if av.gen.dna is a string
-          av.gen.ctx.fill();   //required to render fill
+          var labX = av.ind.cx[hh] + (av.ind.bigR[hh] + 2.1 * av.ind.smallR) * Math.cos(ith * 2 * Math.PI / av.ind.size[hh] + av.ind.rotate[hh]);
+          var labY = av.ind.cy[hh] + (av.ind.bigR[hh] + 2.1 * av.ind.smallR) * Math.sin(ith * 2 * Math.PI / av.ind.size[hh] + av.ind.rotate[hh]);
+          if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.ind.rotate[hh], '; xy', labX, labY);
+          av.ind.ctx.beginPath();
+          av.ind.ctx.arc(labX, labY, 1.1 * av.ind.smallR, 0, 2 * Math.PI);
+          av.ind.ctx.fillStyle = dictColor['White'];  //use if av.ind.dna is a string
+          av.ind.ctx.fill();   //required to render fill
           //draw number;
-          av.gen.ctx.fillStyle = dictColor["Black"];
-          av.gen.ctx.font = av.gen.fontsize + "px Arial";
-          var txtW = av.gen.ctx.measureText(instructionNum).width;  //use if av.gen.dna is a string
-          //txtW = av.gen.ctx.measureText(av.gen.dna[gg][ith]).width;     //use if av.gen.dna is an array
-          av.gen.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.gen.smallR / 2);  //use if av.gen.dna is a string
+          av.ind.ctx.fillStyle = dictColor["Black"];
+          av.ind.ctx.font = av.ind.fontsize + "px Arial";
+          var txtW = av.ind.ctx.measureText(instructionNum).width;  //use if av.ind.dna is a string
+          //txtW = av.ind.ctx.measureText(av.ind.dna[gg][ith]).width;     //use if av.ind.dna is an array
+          av.ind.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.ind.smallR / 2);  //use if av.ind.dna is a string
         }
       }
     }
@@ -1566,14 +1566,14 @@ require([
 
   //Opens Settings dialog box
   document.getElementById("OrgSetting").onclick = function () {
-    av.gen.settingsChanged = false;
+    av.ind.settingsChanged = false;
     OrganSetupDialog.show();
   }
 
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
-    console.log('settings dialog closed', av.gen.settingsChanged);
-    if (av.gen.settingsChanged) av.msg.doOrgTrace(av.fio, av.fzr);
+    console.log('settings dialog closed', av.ind.settingsChanged);
+    if (av.ind.settingsChanged) av.msg.doOrgTrace(av.fio, av.fzr);
   });
 
   $(function slideOrganism() {
@@ -1593,8 +1593,8 @@ require([
         //$( "#orMRate" ).val( ui.value);  /*put slider value in the text near slider */
         $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3) + "%");
         /*put the value in the text box */
-        av.gen.settingsChanged = true;
-        if (av.debug.trace) console.log('orSlide changed', av.gen.settingsChanged)
+        av.ind.settingsChanged = true;
+        if (av.debug.trace) console.log('orSlide changed', av.ind.settingsChanged)
       }
     });
     /* initialize */
@@ -1604,8 +1604,8 @@ require([
     /*update slide based on textbox */
     $("#orMuteInput").change(function () {
       slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
-      av.gen.settingsChanged = true;
-      if (av.debug.trace) console.log('orMute changed', av.gen.settingsChanged)
+      av.ind.settingsChanged = true;
+      if (av.debug.trace) console.log('orMute changed', av.ind.settingsChanged)
       //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log("in mute change");
     });
@@ -1613,8 +1613,8 @@ require([
 
   //triggers flag that requests more data when the settings dialog is closed.
   //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
-  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {av.gen.settingsChanged=true;});
-  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {av.gen.settingsChanged=true;});
+  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {av.ind.settingsChanged=true;});
+  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {av.ind.settingsChanged=true;});
 
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
@@ -1651,21 +1651,21 @@ require([
   av.gen = clearGen(av.gen);
   //set canvas size; called from many places
   function organismCanvasHolderSize() {
-    av.gen.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
-    av.gen.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
+    av.ind.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
+    av.ind.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
   }
 
-  av.gen.updateOrgTrace = function () {
+  av.ind.updateOrgTrace = function () {
     //set canvas size
     //console.log('gen', av.gen);
     //console.log('av.traceObj', av.traceObj);
     organismCanvasHolderSize();
-    //if (undefined == av.traceObj[av.gen.cycle]) console.log('its undefined');
-    if (!(undefined == av.traceObj || {} == av.traceObj || undefined == av.traceObj[av.gen.cycle])) {
-      av.gen.didDivide = av.traceObj[av.gen.cycle].didDivide; //update global version of didDivide
+    //if (undefined == av.traceObj[av.ind.cycle]) console.log('its undefined');
+    if (!(undefined == av.traceObj || {} == av.traceObj || undefined == av.traceObj[av.ind.cycle])) {
+      av.ind.didDivide = av.traceObj[av.ind.cycle].didDivide; //update global version of didDivide
       updateOrganTrace(av.traceObj, av.gen);
     }
-    else av.gen.didDivide = false;
+    else av.ind.didDivide = false;
   }
   /* ****************************************************************/
   /*             End of Canvas to draw genome and update details
@@ -1680,29 +1680,29 @@ require([
 
   dijit.byId("orgBack").on("Click", function () {
     var ii = Number(document.getElementById("orgCycle").value);
-    if (av.gen.cycleSlider.get("minimum") < av.gen.cycleSlider.get("value")) {
+    if (av.ind.cycleSlider.get("minimum") < av.ind.cycleSlider.get("value")) {
       ii--;
       dijit.byId("orgCycle").set("value", ii);
-      av.gen.cycle = ii;
-      av.gen.updateOrgTrace()
+      av.ind.cycle = ii;
+      av.ind.updateOrgTrace()
     }
   });
 
   dijit.byId("orgForward").on("Click", function () {
     var ii = Number(document.getElementById("orgCycle").value);
-    if (av.gen.cycleSlider.get("maximum") > av.gen.cycleSlider.get("value")) {
+    if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
       ii++;
       dijit.byId("orgCycle").set("value", ii);
-      av.gen.cycle = ii;
+      av.ind.cycle = ii;
       console.log('ii', ii,'; gen', av.gen);
-      av.gen.updateOrgTrace()
+      av.ind.updateOrgTrace()
     }
   });
 
   dijit.byId("orgReset").on("Click", function () {
     dijit.byId("orgCycle").set("value", 0);
-    av.gen.cycle = 0;
-    av.gen.updateOrgTrace();
+    av.ind.cycle = 0;
+    av.ind.updateOrgTrace();
     orgStopFn()
   });
 
@@ -1714,10 +1714,10 @@ require([
   }
 
   function orgRunFn() {
-    if (av.gen.cycleSlider.get("maximum") > av.gen.cycleSlider.get("value")) {
-      av.gen.cycle++;
-      dijit.byId("orgCycle").set("value", av.gen.cycle);
-      av.gen.updateOrgTrace();
+    if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
+      av.ind.cycle++;
+      dijit.byId("orgCycle").set("value", av.ind.cycle);
+      av.ind.updateOrgTrace();
     }
     else {
       orgStopFn();
@@ -1735,21 +1735,21 @@ require([
   });
 
   dijit.byId("orgEnd").on("Click", function () {
-    dijit.byId("orgCycle").set("value", av.gen.cycleSlider.get("maximum"));
-    av.gen.cycle = av.gen.cycleSlider.get("maximum");
-    av.gen.updateOrgTrace();
+    dijit.byId("orgCycle").set("value", av.ind.cycleSlider.get("maximum"));
+    av.ind.cycle = av.ind.cycleSlider.get("maximum");
+    av.ind.updateOrgTrace();
     orgStopFn()
   });
 
   dijit.byId("orgCycle").on("Change", function (value) {
-    av.gen.cycleSlider.set("value", value);
-    av.gen.cycle = value;
+    av.ind.cycleSlider.set("value", value);
+    av.ind.cycle = value;
     //console.log('orgCycle.change');
-    av.gen.updateOrgTrace();
+    av.ind.updateOrgTrace();
   });
 
   /* Organism Gestation Length Slider */
-  av.gen.cycleSlider = new HorizontalSlider({
+  av.ind.cycleSlider = new HorizontalSlider({
     name: "cycleSlider",
     value: 0,
     minimum: 0,
@@ -1759,9 +1759,9 @@ require([
     style: "width:100%;",
     onChange: function (value) {
       document.getElementById("orgCycle").value = value;
-      av.gen.cycle = value;
+      av.ind.cycle = value;
       //console.log('cycleSlider');
-      av.gen.updateOrgTrace();
+      av.ind.updateOrgTrace();
     }
   }, "cycleSlider");
 

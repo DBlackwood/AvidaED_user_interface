@@ -16,7 +16,7 @@ av.debug.grid = false;     //population grid
 av.debug.msgOrder = false; //message order
 av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
-av.debug.gen = false; //oranism page
+av.debug.ind = false; //oranism page
 
 av.debug.log = 'message and error log';
 
@@ -60,7 +60,7 @@ clearmouse(av);
 var traceObj = {}; //global that holds the traceObject that was sent from Avida
 
 //initialize gen (genome) object. Used in organism view
-av.gen = {};
+av.ind = {};
 
 av.grd = {};         //data about the grid canvas
 av.grd.popStatFlag = true;  //flag that determines if the stats panel is visible.

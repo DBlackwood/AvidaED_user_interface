@@ -57,7 +57,7 @@ function offspringTrace(dnd, fio, fzr, gen) {
   dnd.activeOrgan.sync();
 
   fzr.actOrgan.name = parent + "_offspring";
-  fzr.actOrgan.genome = '0,heads_default,' + av.gen.dna[av.gen.son];  //this should be the full genome when the offspring is complete.
+  fzr.actOrgan.genome = '0,heads_default,' + av.ind.dna[av.ind.son];  //this should be the full genome when the offspring is complete.
   fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
   console.log('fzr.actOrgan', fzr.actOrgan);
   //get genome from offspring data //needs work!!
@@ -95,7 +95,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
           fzr.dir[mapItems[mapItems.length - 1]] = gdir;
           fzr.domid[gdir] = mapItems[mapItems.length - 1];
           fzr.file[gdir + '/entryname.txt'] = avidian;
-          fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.gen.dna[av.gen.son];
+          fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.ind.dna[av.ind.son];
           fzr.gNum++;
           fzr.saved = false;
           if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);

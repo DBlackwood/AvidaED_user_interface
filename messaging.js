@@ -17,11 +17,11 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
         av.traceObj = msg.snapshots;
-        av.gen.cycle = 0;
+        av.ind.cycle = 0;
         dijit.byId("orgCycle").set("value", 0);
-        av.gen.cycleSlider.set("maximum", av.traceObj.length - 1);
-        av.gen.cycleSlider.set("discreteValues", av.traceObj.length);
-        av.gen.updateOrgTrace();
+        av.ind.cycleSlider.set("maximum", av.traceObj.length - 1);
+        av.ind.cycleSlider.set("discreteValues", av.traceObj.length);
+        av.ind.updateOrgTrace();
         //console.log('webOrgTraceBySequence', msg);
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
