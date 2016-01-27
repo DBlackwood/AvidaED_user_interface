@@ -115,50 +115,50 @@ function DrawKids(grd, parents) {  //Draw the children of parents
 function findLogicOutline(grd) {
   'use strict';
   var ii;
-  grd.allOff = true;
+  av.ptd.allOff = true;
   //console.log('not',grd.msg.not.data);
   for (ii = 0; ii < grd.msg.not.data.length; ii++) {
     grd.out[ii] = 1;
   }
   if ('on' == document.getElementById('notButton').value) {
     for (ii = 0; ii < grd.msg.not.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.not.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('nanButton').value) {
     for (ii = 0; ii < grd.msg.nand.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nand.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('andButton').value) {
     for (ii = 0; ii < grd.msg.and.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.and.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('ornButton').value) {
     for (ii = 0; ii < grd.msg.orn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.orn.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
     if (av.debug.logic) console.log('or', grd.msg.orn.data);
   }
   if ('on' == document.getElementById('oroButton').value) {
     for (ii = 0; ii < grd.msg.or.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.or.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
     if (av.debug.logic) console.log('or', grd.msg.or.data);
   }
   if ('on' == document.getElementById('antButton').value) {
     for (ii = 0; ii < grd.msg.andn.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.andn.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('norButton').value) {
     for (ii = 0; ii < grd.msg.nor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.nor.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('xorButton').value) {
     for (ii = 0; ii < grd.msg.xor.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.xor.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('equButton').value) {
     for (ii = 0; ii < grd.msg.equ.data.length; ii++) {grd.out[ii] = grd.out[ii] * grd.msg.equ.data[ii];}
-    grd.allOff = false;
+    av.ptd.allOff = false;
   }
-  if (grd.allOff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
+  if (av.ptd.allOff) {for (ii = 0; ii < grd.msg.not.data.length; ii++) { grd.out[ii] = 0 } }
 
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (av.debug.logic) console.log('setLogic', grd.out);

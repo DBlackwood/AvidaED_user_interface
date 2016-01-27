@@ -760,7 +760,7 @@ require([
       dijit.byId("mnCnPause").attr("disabled", true);
       dijit.byId("mnCnRun").attr("disabled", false);
       av.msg.doRunPause(av.fio);
-      //console.log("pop size ", av.grd.population_size);
+      //console.log("pop size ", av.ptd.aveNum);
     }
   };
 
@@ -788,7 +788,7 @@ require([
   dijit.byId("newSave").on("Click", function () {
     newDialog.hide();
     resetDishFn();
-    av.pop.FrPopulationFn();
+    av.ptd.FrPopulationFn();
     //console.log("newSave click");
   });
 
@@ -869,11 +869,11 @@ require([
   //button to freeze a population
   dijit.byId("FzPopulation").on("Click", function () {
     fzDialog.hide();
-    av.pop.FrPopulationFn();
+    av.ptd.FrPopulationFn();
   });
 
   dijit.byId("mnFzPopulation").on("Click", function () {
-    av.pop.FrPopulationFn();
+    av.ptd.FrPopulationFn();
   });
 
   //Buttons on drop down menu to save an organism
@@ -1436,20 +1436,20 @@ require([
   av.grd.popChartFn = function () {
     'use strict';
     if ("Average Fitness" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_fitness;
-      av.grd.popY2 = av.grd.log_fitness;
+      av.grd.popY = av.ptd.aveFit;
+      av.grd.popY2 = av.ptd.logFit;
     }
     else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_gestation_time;
-      av.grd.popY2 = av.grd.log_gestation_time;
+      av.grd.popY = av.ptd.aveGnl;
+      av.grd.popY2 = av.ptd.logGnl;
     }
     else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.ave_metabolic_rate;
-      av.grd.popY2 = av.grd.log_metabolic_rate;
+      av.grd.popY = av.ptd.aveMet;
+      av.grd.popY2 = av.ptd.logMet;
     }
     else if ("Number of Organisms" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.grd.population_size;
-      av.grd.popY2 = av.grd.log_pop_size;
+      av.grd.popY = av.ptd.aveNum;
+      av.grd.popY2 = av.ptd.logNum;
     }
     //console.log('popY',av.grd.popY);
     //console.log('pop2', av.grd.popY2);

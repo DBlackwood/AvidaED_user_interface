@@ -22,9 +22,9 @@ function makeEmDxFile(fio, path, contents) {
 }
 
 //kept this one line function in case we need to go to storing the workspace in a database instead of freezer memory
-function makeFzrFile(fzr, fileId, text) {
+function makeFzrFile(fileId, text) {
   'use strict';
-  fzr.file[fileId] = text;
+  av.fzr.file[fileId] = text;
 }
 
 // copy instruction set from default config.
@@ -38,7 +38,7 @@ function makeFzrWorldEventsCfg(fzr, idStr, em) {
   var txt = 'u begin LoadPopulation detail.spop' + '\n';
   txt += 'u begin LoadStructuredSystematicsGroup role=clade:filename=clade.ssg';
   if (em) {makeEmDxFile(fzr, idStr+'/events.cfg', txt);}
-  else {makeFzrFile(fzr, idStr+'/events.cfg', txt);}
+  else {makeFzrFile(idStr+'/events.cfg', txt);}
 }
 
 function makeFzrAvidaCfg(fzr, idStr, em) {
@@ -58,7 +58,7 @@ function makeFzrAvidaCfg(fzr, idStr, em) {
   txt += '#include instset.cfg\n';
   txt += 'I';
   if (em) {makeEmDxFile(fzr, idStr+'/avida.cfg', txt);}
-  else {makeFzrFile(fzr, idStr+'/avida.cfg', txt);}
+  else {makeFzrFile(idStr+'/avida.cfg', txt);}
 }
 
 function makeFzrEnvironmentCfg(fzr, idStr, em) {
@@ -74,7 +74,7 @@ function makeFzrEnvironmentCfg(fzr, idStr, em) {
   if (dijit.byId("xorose").get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1';    else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1';
   if (em) {makeEmDxFile(fzr, idStr+'/environment.cfg', txt);}
-  else  { makeFzrFile(fzr, idStr+'/environment.cfg', txt);}
+  else  { makeFzrFile(idStr+'/environment.cfg', txt);}
 }
 
 function makeFzrAncestor(idStr, fzr, parents) {
@@ -84,7 +84,7 @@ function makeFzrAncestor(idStr, fzr, parents) {
     txt += parents.name[parents.autoNdx[ii]] + '\n';
     txt += parents.genome[parents.autoNdx[ii]] + '\n';
   }
-  makeFzrFile(fzr, idStr+'/ancestors', txt);
+  makeFzrFile(idStr+'/ancestors', txt);
 }
 
 function makeFzrAncestorHand(idStr, fzr, parents) {
@@ -95,7 +95,18 @@ function makeFzrAncestorHand(idStr, fzr, parents) {
     txt += parents.genome[parents.handNdx[ii]] + '\n';
     txt += parents.col[parents.handNdx[ii]] + ',' + parents.row[parents.handNdx[ii]] + '\n';
   }
-  makeFzrFile(fzr, idStr+'/ancestors_manual', txt);
+  makeFzrFile(idStr+'/ancestors_manual', txt);
+}
+
+function makeFzrTRfile(path, data) {
+  var text = '';
+  var pairs = [];
+  var dataLn = data.length;
+  for (var ii = 0; ii < dataLn; ii++) {
+    pairs[ii] = ii + ':' + data[ii];
+  }
+  text = pairs.join();
+  makeFzrFile(path, text);
 }
 
 //only change the files that are changed by the user input
@@ -113,8 +124,8 @@ function makeFzrConfig(fzr, num, parents) {
   var em = false;
   makeFzrAvidaCfg(fzr, 'c'+num, em);
   makeFzrEnvironmentCfg(fzr, 'c'+num, em);
-  makeFzrFile(fzr, 'c'+num+'/events.cfg', '');
-  //makeFzrFile(fzr, 'c'+num+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
+  makeFzrFile('c'+num+'/events.cfg', '');
+  //makeFzrFile('c'+num+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
   makeFzrInstsetCfg(fzr, 'c'+num);
   makeFzrAncestor('c'+num, fzr, parents)
   makeFzrAncestorHand('c'+num, fzr, parents)
@@ -125,16 +136,16 @@ function makeFzrWorld(fzr, num, parents) {
   var em = false;
   makeFzrAvidaCfg(fzr, 'w'+num, em);
   makeFzrEnvironmentCfg(fzr, 'w'+num, em);
-  makeFzrFile(fzr, 'w'+num+'/events.cfg', '');
-  //makeFzrFile(fzr, 'c'+num+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
+  makeFzrFile('w'+num+'/events.cfg', '');
+  //makeFzrFile('c'+num+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
   makeFzrInstsetCfg(fzr, 'w'+num);
   makeFzrAncestor('w'+num, fzr, parents)
   makeFzrAncestorHand('w'+num, fzr, parents);
-  for (var ii = 0; ii < 4; ii++) {
-    makeFzrTRfile('w'+num, ii);
-  }
-
-  makeFzrFile(fzr, 'w'+num + '/update', av.grd.updateNum);
+  makeFzrTRfile('w'+num+'/tr0', av.ptd.aveFit);
+  makeFzrTRfile('w'+num+'/tr1', av.ptd.aveGnl);
+  makeFzrTRfile('w'+num+'/tr2', av.ptd.aveMet);
+  makeFzrTRfile('w'+num+'/tr3', av.ptd.aveNum);
+  makeFzrFile('w'+num + '/update', av.grd.updateNum);
   //there are more files needed to talk to Matt, tiba
 }
 

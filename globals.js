@@ -62,6 +62,7 @@ var traceObj = {}; //global that holds the traceObject that was sent from Avida
 //initialize gen (genome) object. Used in organism view
 av.ind = {};
 
+av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
 av.grd = {};         //data about the grid canvas
 av.grd.popStatFlag = true;  //flag that determines if the stats panel is visible.
 // initialize data for chart on population page
@@ -94,26 +95,25 @@ av.grd.clearGrd = function () {
   av.grd.SelectedColor = '#ffffff';
   av.grd.LogicColor = '#00ff00';
   av.grd.kidStatus = '';
-  av.grd.ave_fitness = [];  //ave is for all avidians.
-  av.grd.log_fitness = [];  //log is for avidians that performm logic functions
-  av.grd.ave_gestation_time = [];
-  av.grd.log_gestation_time = [];
-  av.grd.ave_metabolic_rate = [];
-  av.grd.log_metabolic_rate = [];
-  av.grd.population_size = [];
-  av.grd.log_pop_size = [];
-  av.grd.allOff = true;
-  av.grd.marginX = 1;  //width of black line between the cells
-  av.grd.marginY = 1;  //width of black line between the cells
 
   av.grd.legendPad = 10;   //padding on left so it is not right at edge of canvas
   av.grd.colorWide = 13;   //width and heigth of color square
   av.grd.RowHt = 20;       //height of each row of text
   av.grd.leftpad = 10;     //padding to allow space between each column of text in the legend
+  av.grd.marginX = 1;  //width of black line between the cells
+  av.grd.marginY = 1;  //width of black line between the cells
+
+  av.ptd.aveFit = [];  //ave is for all avidians.
+  av.ptd.logFit = [];  //log is for avidians that performm logic functions
+  av.ptd.aveGnl = [];  //generation length - used to be gestation time
+  av.ptd.logGnl = [];
+  av.ptd.aveMet = [];
+  av.ptd.logMet = [];
+  av.ptd.aveNum = [];
+  av.ptd.logNum = [];
+  av.ptd.allOff = true;
 }
 av.grd.clearGrd();
-
-av.pop = {} // on population page that are not part of the grid.
 
 //http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
 // please note,

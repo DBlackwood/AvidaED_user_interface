@@ -29,7 +29,7 @@ av.msg.readMsg = function (ee) {
         av.grd.popStatsMsg = msg;
         av.msg.updatePopStats(av.grd, av.grd.popStatsMsg);
         av.grd.popChartFn();
-        if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.grd.ave_fitness.length);
+        if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         break;
@@ -37,7 +37,7 @@ av.msg.readMsg = function (ee) {
         //mObj=JSON.parse(JSON.stringify(jsonObject));
         av.grd.msg = msg;
         av.grd.drawGridSetupFn();
-        if (av.debug.msgOrder) console.log('webGridData length', av.grd.ave_fitness.length);
+        if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
         //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
         //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
         if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
@@ -266,46 +266,42 @@ av.msg.updatePopStats = function (grd, msg) {
   document.getElementById("equPop").textContent = msg.equ;
   //update graph arrays
   if (0 <= msg.update) {
-    grd.ave_fitness[msg.update] = msg.ave_fitness;
-    grd.ave_gestation_time[msg.update] = msg.ave_gestation_time;
-    grd.ave_metabolic_rate[msg.update] = msg.ave_metabolic_rate;
-    grd.population_size[msg.update] = msg.organisms;
+    av.ptd.aveFit[msg.update] = msg.ave_fitness;
+    av.ptd.aveGnl[msg.update] = msg.ave_gestation_time;
+    av.ptd.aveMet[msg.update] = msg.ave_metabolic_rate;
+    av.ptd.aveNum[msg.update] = msg.organisms;
     updateLogicAve(grd, msg);  //for graph data
   }
-  //console.log('update length', msg.update.formatNum(0), grd.ave_fitness.length);
 }
 
 updateLogicAve = function (grd, msg){
   'use strict';
-  if (grd.allOff) {
-    grd.log_fitness[msg.update] = null;
-    grd.log_gestation_time[msg.update] = null;
-    grd.log_metabolic_rate[msg.update] = null;
-    grd.log_pop_size[msg.update] = null;
+  if (av.ptd.allOff) {
+    av.ptd.logFit[msg.update] = null;
+    av.ptd.logGnl[msg.update] = null;
+    av.ptd.logMet[msg.update] = null;
+    av.ptd.logNum[msg.update] = null;
   }
   else {
-    grd.log_fitness[msg.update] = 0;
-    grd.log_gestation_time[msg.update] = 0;
-    grd.log_metabolic_rate[msg.update] = 0;
-    grd.log_pop_size[msg.update] = 0;
+    av.ptd.logFit[msg.update] = 0;
+    av.ptd.logGnl[msg.update] = 0;
+    av.ptd.logMet[msg.update] = 0;
+    av.ptd.logNum[msg.update] = 0;
     //console.log('out_', grd.out );
     //console.log('gest', grd.msg.gestation.data);
     for (var ii=0; ii < grd.out.length; ii++){
       if (0 < grd.out[ii]) {
-        grd.log_fitness[msg.update] += grd.msg.fitness.data[ii];
-        grd.log_gestation_time[msg.update] += grd.msg.gestation.data[ii];
-        grd.log_metabolic_rate[msg.update] += grd.msg.metabolism.data[ii];
-        grd.log_pop_size[msg.update]++;
+        av.ptd.logFit[msg.update] += grd.msg.fitness.data[ii];
+        av.ptd.logGnl[msg.update] += grd.msg.gestation.data[ii];
+        av.ptd.logMet[msg.update] += grd.msg.metabolism.data[ii];
+        av.ptd.logNum[msg.update]++;
       }
     }
-    //console.log('fit, ges, met, pop', grd.log_fitness[msg.update],grd.log_gestation_time[msg.update],grd.log_metabolic_rate[msg.update],grd.log_pop_size[msg.update])
-    if (0 < grd.log_pop_size[msg.update]) {
-      grd.log_fitness[msg.update] = grd.log_fitness[msg.update]/grd.log_pop_size[msg.update];
-      grd.log_gestation_time[msg.update] = grd.log_gestation_time[msg.update]/grd.log_pop_size[msg.update];
-      grd.log_metabolic_rate[msg.update] = grd.log_metabolic_rate[msg.update]/grd.log_pop_size[msg.update];
+    if (0 < av.ptd.logNum[msg.update]) {
+      av.ptd.logFit[msg.update] = av.ptd.logFit[msg.update]/av.ptd.logNum[msg.update];
+      av.ptd.logGnl[msg.update] = av.ptd.logGnl[msg.update]/av.ptd.logNum[msg.update];
+      av.ptd.logMet[msg.update] = av.ptd.logMet[msg.update]/av.ptd.logNum[msg.update];
     }
-    //console.log('fit', grd.log_fitness[msg.update].formatNum(2),'; ges',grd.log_gestation_time[msg.update].formatNum(2),
-    //  '; met',grd.log_metabolic_rate[msg.update].formatNum(2),'; pop',grd.log_pop_size[msg.update])
   }
 }
 

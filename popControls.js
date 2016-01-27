@@ -115,14 +115,14 @@ function popNewExState(dnd, fzr, grd, parents) {
   document.getElementById("runStopButton").innerHTML = "Run";
 
   //clear the time series graphs
-  grd.ave_fitness = [];
-  grd.log_fitness = [];
-  grd.ave_gestation_time = [];
-  grd.log_gestation_time = [];
-  grd.ave_metabolic_rate = [];
-  grd.log_metabolic_rate = [];
-  grd.population_size = [];
-  grd.log_pop_size = [];
+  av.ptd.aveFit = [];
+  av.ptd.logFit = [];
+  av.ptd.aveGnl = [];
+  av.ptd.logGnl = [];
+  av.ptd.aveMet = [];
+  av.ptd.logMet = [];
+  av.ptd.aveNum = [];
+  av.ptd.logNum = [];
 
   TimeLabel.textContent = 0;
   //avidaCFG2form(fileStr);
@@ -240,7 +240,7 @@ function FrConfigFn() {
 }
 
 //Save a populated dish
-av.pop.FrPopulationFn = function () {
+av.ptd.FrPopulationFn = function () {
   'use strict';
   var fzName = prompt("Please name the new population", "newPopulation");
   if (fzName) {
@@ -271,11 +271,11 @@ av.grd.toggle = function (button) {
     document.getElementById(button).value = 'on';
     document.getElementById(button).className = 'bitButtonOn';
   }
-  for (ii=0; ii<av.grd.ave_fitness.length; ii++){
-    av.grd.log_fitness[ii] = null;
-    av.grd.log_gestation_time[ii] = null;
-    av.grd.log_metabolic_rate[ii] = null;
-    av.grd.log_pop_size[ii] = null;
+  for (ii=0; ii<av.ptd.aveFit.length; ii++){
+    av.ptd.logFit[ii] = null;
+    av.ptd.logGnl[ii] = null;
+    av.ptd.logMet[ii] = null;
+    av.ptd.logNum[ii] = null;
   }
   av.grd.drawGridSetupFn();
 }
