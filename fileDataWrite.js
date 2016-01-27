@@ -129,7 +129,10 @@ function makeFzrWorld(fzr, num, parents) {
   //makeFzrFile(fzr, 'c'+num+'/entryname.txt', fzr.config[ndx].name);  // this was created in dnd menu code
   makeFzrInstsetCfg(fzr, 'w'+num);
   makeFzrAncestor('w'+num, fzr, parents)
-  makeFzrAncestorHand('w'+num, fzr, parents)
+  makeFzrAncestorHand('w'+num, fzr, parents);
+  for (var ii = 0; ii < 4; ii++) {
+    makeFzrTRfile('w'+num, ii);
+  }
 
   makeFzrFile(fzr, 'w'+num + '/update', av.grd.updateNum);
   //there are more files needed to talk to Matt, tiba

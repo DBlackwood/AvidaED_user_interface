@@ -59,7 +59,7 @@ clearmouse(av);
 //initialize globals needed to hold Organism Trace Data
 var traceObj = {}; //global that holds the traceObject that was sent from Avida
 
-//initialize gen (genome) object.
+//initialize gen (genome) object. Used in organism view
 av.gen = {};
 
 av.grd = {};         //data about the grid canvas
@@ -112,6 +112,8 @@ av.grd.clearGrd = function () {
   av.grd.leftpad = 10;     //padding to allow space between each column of text in the legend
 }
 av.grd.clearGrd();
+
+av.pop = {} // on population page that are not part of the grid.
 
 //http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
 // please note,

@@ -240,7 +240,7 @@ function FrConfigFn() {
 }
 
 //Save a populated dish
-function FrPopulationFn() {
+av.pop.FrPopulationFn = function () {
   'use strict';
   var fzName = prompt("Please name the new population", "newPopulation");
   if (fzName) {

@@ -788,7 +788,7 @@ require([
   dijit.byId("newSave").on("Click", function () {
     newDialog.hide();
     resetDishFn();
-    FrPopulationFn();
+    av.pop.FrPopulationFn();
     //console.log("newSave click");
   });
 
@@ -869,11 +869,11 @@ require([
   //button to freeze a population
   dijit.byId("FzPopulation").on("Click", function () {
     fzDialog.hide();
-    FrPopulationFn();
+    av.pop.FrPopulationFn();
   });
 
   dijit.byId("mnFzPopulation").on("Click", function () {
-    FrPopulationFn();
+    av.pop.FrPopulationFn();
   });
 
   //Buttons on drop down menu to save an organism
