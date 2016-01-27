@@ -616,7 +616,7 @@ require([
   av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('graphPop0' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop0: s, t', source, target);
-      landgraphPop0(av.dnd, source, nodes, target, plt);
+      landgraphPop0(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -624,7 +624,7 @@ require([
   av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
-      landgraphPop1(av.dnd, source, nodes, target, plt);
+      landgraphPop1(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -632,7 +632,7 @@ require([
   av.dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
-      landgraphPop2(av.dnd, source, nodes, target, plt);
+      landgraphPop2(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -734,6 +734,7 @@ require([
         //collect setup data to send to avida
         av.fio.form2cfgFolder(av.fzr, av.parents);          //fileDataWrite.js
         av.msg.importExpr();
+        if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell(); 
         av.msg.requestPopStats(av.fio);  //fio.uiWorker
         av.msg.requestGridData(av.fio);  //fio.uiWorker
         if ('c' === av.fzr.actConfig.type) av.msg.injectAncestors(av.fio, av.parents); //fio.uiWorker
@@ -1035,7 +1036,7 @@ require([
         //if which ancestor is not null then there is a 'kid' there.
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
           av.grd.kidStatus = 'getgenome';
-          av.msg.doSelectedOrganismType(av.fio, av.grd);
+          av.msg.doWebOrgDataByCell();
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
           dijit.byId("mnCnOrganismTrace").attr("disabled", false);
@@ -1081,7 +1082,7 @@ require([
         //if ancestor not null then there is a 'kid' there.
         if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
           av.grd.kidStatus = 'getgenome';
-          av.msg.doSelectedOrganismType(av.fio, av.grd);
+          av.msg.doWebOrgDataByCell();
           SelectedKidMouseStyle(av.dnd, av.fzr, av.grd);
           av.mouse.Picked = 'kid';
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
@@ -1100,7 +1101,7 @@ require([
       dijit.byId("mnCnOrganismTrace").attr("disabled", true);
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
-    av.msg.doSelectedOrganismType(av.fio, av.grd);
+    av.msg.doWebOrgDataByCell();
     av.grd.drawGridSetupFn();
   });
 
@@ -1166,6 +1167,7 @@ require([
     else if ('kid' == av.mouse.Picked) {
       av.mouse.Picked = "";
       target = KidMouse(evt, av.dnd, av.fzr, av.grd);
+      if (av.debug.mouse) console.log('kidMouse: target', target, '===============',evt.target.id);
       if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         av.ui.mainBoxSwap("organismBlock");
@@ -1768,6 +1770,7 @@ require([
       type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
       vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
     });
+    console.log('add x axis');
     anaChart.addAxis("x", {fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away'});
     anaChart.addAxis("y", {
       vertical: true,
@@ -1785,9 +1788,10 @@ require([
     anaChart.addSeries("Series 0b", av.anl.pop[0].right, {plot: "other", stroke: {color: av.anl.color[0], width: .3}});
     anaChart.addSeries("Series 1b", av.anl.pop[1].right, {plot: "other", stroke: {color: av.anl.color[1], width: .3}});
     anaChart.addSeries("Series 2b", av.anl.pop[2].right, {plot: "other", stroke: {color: av.anl.color[2], width: .3}});
-
-    anaChart.resize(domGeometry.position(document.getElementById("chartHolder")).w - 10,
-      domGeometry.position(document.getElementById("chartHolder")).h - 15);
+    var wdth = domGeometry.position(document.getElementById("chartHolder")).w - 10;
+    var ht = domGeometry.position(document.getElementById("chartHolder")).h - 15;
+    console.log('before resize: w', wdth, '; h', ht);
+    anaChart.resize(wdth, ht);
     var dZoom = new MouseZoomAndPan(anaChart, "default");
     //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
     anaChart.render();
@@ -1797,18 +1801,21 @@ require([
   document.getElementById("pop0delete").onclick = function () {
     av.anl.pop[0].left = [];
     av.anl.pop[0].right = [];
+    av.anl.clearWorldData(0);
     av.anl.AnaChartFn();
     av.dnd.graphPop0.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop1delete").onclick = function () {
     av.anl.pop[1].left = [];
     av.anl.pop[1].right = [];
+    av.anl.clearWorldData(1);
     av.anl.AnaChartFn();
     av.dnd.graphPop1.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop2delete").onclick = function () {
     av.anl.pop[2].left = [];
     av.anl.pop[2].right = [];
+    av.anl.clearWorldData(2);
     av.anl.AnaChartFn();
     av.dnd.graphPop2.selectAll().deleteSelectedNodes();
   }

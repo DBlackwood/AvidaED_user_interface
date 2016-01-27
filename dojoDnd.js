@@ -485,7 +485,43 @@ var landTrashCan = function (dnd, fzr, parents, source, nodes, target) {
 //          DND Analysis page
 //--------------------------------------------------------------------------------------------------------------------//
 
-function landgraphPop0(dnd, source, nodes, target, plt) {
+av.anl.loadWorldData = function (worldNum, dir) {
+  av.fzr.pop[worldNum].fit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
+  av.fzr.pop[worldNum].ges = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
+  av.fzr.pop[worldNum].met = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
+  av.fzr.pop[worldNum].num = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
+};
+
+av.anl.clearWorldData = function (worldNum){
+  'use strict';
+  av.fzr.pop[worldNum].fit = [];
+  av.fzr.pop[worldNum].ges = [];
+  av.fzr.pop[worldNum].met = [];
+  av.fzr.pop[worldNum].num = [];
+}
+
+av.anl.loadSelectedData = function (worldNum, axisSide, side) {
+  'use strict';
+  switch(dijit.byId(axisSide).value) {
+    case 'None':
+      av.anl.pop[worldNum][side] = [];
+      break;
+    case 'Average Fitness':
+      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].fit;
+      break;
+    case 'Average Gestation Time':
+      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].ges;
+      break;
+    case 'Average Metabolic Rate':
+      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].met;
+      break;
+    case 'Number of Organisms':
+      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].num;
+      break;
+  }
+};
+
+function landgraphPop0(dnd, source, nodes, target) {
   'use strict';
   var items = getAllItems(dnd.graphPop0);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
@@ -499,55 +535,15 @@ function landgraphPop0(dnd, source, nodes, target, plt) {
       dnd.graphPop0.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
     });
     dnd.graphPop0.sync();
-    //if (av.debug.dnd) console.log("dnd.graphPop0.map=", dnd.graphPop0.map);
   }
-  var fzdomid = Object.keys(pkg.source.selection)[0];
+  var fzdomid = Object.keys(source.selection)[0];
   var dir = av.fzr.dir[fzdomid];
   av.anl.loadWorldData(0, dir);
   av.anl.loadSelectedData(0, 'yLeftSelect', 'left')
   av.anl.loadSelectedData(0, 'yRightSelect', 'right')
-  //another way to get the name of the dish.
-  //currentItem = Object.keys(dnd.graphPop0.map)[0];
-  //domItm = document.getElementById(currentItem).textContent;
-  // var dishName = nodes[0].textContent;  //name of world/population
-  //update the graph
-  //this works for demo purposes only. We will be using textContent rather than data
 }
 
-av.anl.loadWorldData = function (worldNum, dir) {
-  av.fzr.pop[worldNum].fit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
-  av.fzr.pop[worldNum].ges = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
-  av.fzr.pop[worldNum].met = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
-  av.fzr.pop[worldNum].num = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
-};
-
-av.anl.clearWorldData = function (worldNum){
-  av.fzr.pop[worldNum].fit = [];
-  av.fzr.pop[worldNum].ges = [];
-  av.fzr.pop[worldNum].met = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
-  av.fzr.pop[worldNum].num = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
-}
-av.anl.loadSelectedData = function (worldNum, axisSide, side) {
-  switch(dijit.byId(axisSide).value) {
-    case 'None':
-      av.anl.pop[worldNum][side] = [];
-      break;
-    case 'Average Fitness':
-      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].fit;
-      break;
-    case 'Average Gestation Time':
-      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].ges;
-      break
-    case 'Average Metabolic Rate':
-      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].met;
-      break;
-    case 'Number of Organisms':
-      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].num;
-      break;
-  }
-};
-
-function landgraphPop1(dnd, source, nodes, target, plt) {
+function landgraphPop1(dnd, source, nodes, target) {
   'use strict';
   var items = getAllItems(dnd.graphPop1);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
@@ -561,18 +557,15 @@ function landgraphPop1(dnd, source, nodes, target, plt) {
       dnd.graphPop1.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
     });
     dnd.graphPop1.sync();
-    //if (av.debug.dnd) console.log("graphPop1.map=", graphPop1.map);
-
   }
-  var dishName = nodes[0].textContent;
-  //update the graph
-  //this works for demo purposes only. We will be using textContent rather than data
-  plt.pop2a = plt.dictPlota[dishName];
-  plt.pop2b = plt.dictPlotb[dishName];
-  //if (av.debug.dnd) console.log('2=', domItm);
+  var fzdomid = Object.keys(source.selection)[0];
+  var dir = av.fzr.dir[fzdomid];
+  av.anl.loadWorldData(1, dir);
+  av.anl.loadSelectedData(1, 'yLeftSelect', 'left')
+  av.anl.loadSelectedData(1, 'yRightSelect', 'right')
 }
 
-function landgraphPop2(dnd, source, nodes, target, plt) {
+function landgraphPop2(dnd, source, nodes, target) {
   'use strict';
   var items = getAllItems(dnd.graphPop2);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
@@ -588,11 +581,11 @@ function landgraphPop2(dnd, source, nodes, target, plt) {
     dnd.graphPop2.sync();
     //if (av.debug.dnd) console.log("graphPop2.map=", graphPop2.map);
   }
-  var dishName = nodes[0].textContent;
-  //update the graph
-  plt.pop3a = plt.dictPlota[dishName];
-  plt.pop3b = plt.dictPlotb[dishName];
-  //if (av.debug.dnd) console.log('3=', dishName);
+  var fzdomid = Object.keys(source.selection)[0];
+  var dir = av.fzr.dir[fzdomid];
+  av.anl.loadWorldData(2, dir);
+  av.anl.loadSelectedData(2, 'yLeftSelect', 'left')
+  av.anl.loadSelectedData(2, 'yRightSelect', 'right')
 }
 
 /* ********************************************************************** */

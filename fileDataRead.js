@@ -390,7 +390,7 @@ av.fio.cladeSSG2parents = function (fileStr) {
   console.log('parents', av.parents);
 }
 
-//----------------------- section to put data from tr files into data from charts --------------------------------------
+//----------------------- section to put data from time recorder (tr) files into data from charts ----------------------
 //nothing in this section works.
 
 // makes a dictionary out of a environment.cfg file
@@ -402,20 +402,20 @@ var tr2chartParse = function (filestr) {
   var lineobj, cfgary, name;
   var pairs = filestr.split(',');
   var pairLngth = pairs.length;
+  console.log('pairLngth', pairLngth);
   for (var ii = 0; ii < pairLngth; ii++) {
     lineobj = pairs[ii].split(':');
-    rslt.update[ii] = lineobj[0];
-    rslt.data[ii] = lineobj[1];
+    rslt.update[ii] = Number(lineobj[0]);
+    rslt.data[ii] = Number(lineobj[1]);
   } // for
-  return rslt;
+  return rslt.data;
 };
 
 // puts data from the environment.cfg into the setup form for the population page
 av.fio.tr2chart = function (fileStr) {
   'use strict';
-  var dual = cladeSSGparse(fileStr);
-  console.log('dual', dual);
-  return dual.data;
+  var data = tr2chartParse(fileStr);
+  return data;
 }
 
 //------------------------------------------------- rest may not be in use ---------------------------------------------

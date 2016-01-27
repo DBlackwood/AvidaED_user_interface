@@ -135,15 +135,15 @@ av.msg.doOrgTrace = function (fio, fzr) {
 }
 
 //request data from Avida to update SelectedOrganismType
-av.msg.doSelectedOrganismType = function (fio, grd) {
+av.msg.doWebOrgDataByCell = function () {
   'use strict';
   var request = {
     'type': 'addEvent',
     'name': 'WebOrgDataByCellID',
     //'singleton': true,
-    'args': grd.selectedNdx
+    'args': av.grd.selectedNdx
   }
-  if (av.debug.msg) console.log('doSelectedOrganismType; selectedNdx', grd.selectedNdx)
+  if (av.debug.msg) console.log('doSelectedOrganismType; selectedNdx', av.grd.selectedNdx)
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
@@ -314,7 +314,6 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
   'use strict';
   var prefix = '';
   if (av.debug.msg) console.log('selected_msg', msg);
-  if (av.debug.msg) console.log('selected_msg', msg.tasks);
   if (msg.isEstimate) prefix = "est. ";
   else prefix = '';
   document.getElementById("nameLabel").textContent = msg.genotypeName;
@@ -398,6 +397,7 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
     grd.kidStatus = "havegenome";
     grd.kidName = msg.genotypeName;
     grd.kidGenome = msg.genome;
+    console.log('genome',grd.kidGenome, '-------------------');
     dijit.byId("mnCnOrganismTrace").attr("disabled", false);
   }
 }

@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojoDnd.js" afterPath="$PROJECT_DIR$/dojoDnd.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileDataRead.js" afterPath="$PROJECT_DIR$/fileDataRead.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mouse.js" afterPath="$PROJECT_DIR$/mouse.js" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,7 +32,7 @@
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="224" column="22" selection-start-line="224" selection-start-column="22" selection-end-line="224" selection-end-column="22" />
+              <caret line="189" column="35" selection-start-line="189" selection-start-column="35" selection-end-line="189" selection-end-column="43" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -54,7 +54,7 @@
         <entry file="file://$PROJECT_DIR$/fileDataRead.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="413" column="0" selection-start-line="413" selection-start-column="0" selection-end-line="413" selection-end-column="16" />
+              <caret line="406" column="35" selection-start-line="406" selection-start-column="35" selection-end-line="406" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -66,18 +66,6 @@
             <state vertical-scroll-proportion="-15.0">
               <caret line="188" column="16" selection-start-line="188" selection-start-column="2" selection-end-line="188" selection-end-column="16" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fileIO.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fileIO.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="107" column="40" selection-start-line="107" selection-start-column="40" selection-end-line="107" selection-end-column="40" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -95,8 +83,8 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.333333">
-              <caret line="737" column="55" selection-start-line="737" selection-start-column="55" selection-end-line="737" selection-end-column="55" />
+            <state vertical-scroll-proportion="-15.222222">
+              <caret line="1817" column="29" selection-start-line="1817" selection-start-column="29" selection-end-line="1817" selection-end-column="29" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -104,11 +92,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dojoDnd.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="mouse.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mouse.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="123" column="65" selection-start-line="123" selection-start-column="65" selection-end-line="123" selection-end-column="65" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dojoDnd.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dojoDnd.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.548388">
-              <caret line="544" column="26" selection-start-line="544" selection-start-column="26" selection-end-line="544" selection-end-column="26" />
+            <state vertical-scroll-proportion="-0.51111114">
+              <caret line="494" column="0" selection-start-line="494" selection-start-column="0" selection-end-line="494" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -126,11 +124,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/messaging.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.7692308">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="-8.333333">
+              <caret line="393" column="36" selection-start-line="393" selection-start-column="33" selection-end-line="393" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -180,18 +178,18 @@
         <option value="$PROJECT_DIR$/fzrIO.js" />
         <option value="$PROJECT_DIR$/indexDB.js" />
         <option value="$PROJECT_DIR$/utilities.js" />
-        <option value="$PROJECT_DIR$/mouse.js" />
         <option value="$PROJECT_DIR$/PopulationGrid.js" />
         <option value="$PROJECT_DIR$/fileIO.js" />
         <option value="$PROJECT_DIR$/fileDataWrite.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
         <option value="$PROJECT_DIR$/lib/dojox/mvc/tests/1.7/doh/doh_mvc_binding-simple.html" />
-        <option value="$PROJECT_DIR$/messaging.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
-        <option value="$PROJECT_DIR$/fileDataRead.js" />
         <option value="$PROJECT_DIR$/globals.js" />
-        <option value="$PROJECT_DIR$/AvidaED.js" />
+        <option value="$PROJECT_DIR$/messaging.js" />
+        <option value="$PROJECT_DIR$/mouse.js" />
+        <option value="$PROJECT_DIR$/fileDataRead.js" />
         <option value="$PROJECT_DIR$/dojoDnd.js" />
+        <option value="$PROJECT_DIR$/AvidaED.js" />
       </list>
     </option>
   </component>
@@ -237,16 +235,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="av_ui" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="av_ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="av_ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -627,14 +615,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mouse.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="66" column="2" selection-start-line="66" selection-start-column="2" selection-end-line="66" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PopulationGrid.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -709,14 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="413" column="0" selection-start-line="413" selection-start-column="0" selection-end-line="413" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-15.0">
@@ -743,6 +715,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.333333">
+          <caret line="393" column="36" selection-start-line="393" selection-start-column="33" selection-end-line="393" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -754,17 +734,33 @@
     <entry file="file://$PROJECT_DIR$/globals.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="224" column="22" selection-start-line="224" selection-start-column="22" selection-end-line="224" selection-end-column="22" />
+          <caret line="189" column="35" selection-start-line="189" selection-start-column="35" selection-end-line="189" selection-end-column="43" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mouse.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="123" column="65" selection-start-line="123" selection-start-column="65" selection-end-line="123" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="406" column="35" selection-start-line="406" selection-start-column="35" selection-end-line="406" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.333333">
-          <caret line="737" column="55" selection-start-line="737" selection-start-column="55" selection-end-line="737" selection-end-column="55" />
+        <state vertical-scroll-proportion="-15.222222">
+          <caret line="1817" column="29" selection-start-line="1817" selection-start-column="29" selection-end-line="1817" selection-end-column="29" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -773,16 +769,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dojoDnd.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.548388">
-          <caret line="544" column="26" selection-start-line="544" selection-start-column="26" selection-end-line="544" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.7692308">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.51111114">
+          <caret line="494" column="0" selection-start-line="494" selection-start-column="0" selection-end-line="494" selection-end-column="21" />
           <folding />
         </state>
       </provider>

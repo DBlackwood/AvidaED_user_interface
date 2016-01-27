@@ -37,9 +37,6 @@ function SelectedKidMouseStyle(dnd, fzr, grd) {
   document.getElementById('fzOrgan').style.cursor = 'copy';
   document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
-  for (var ndx in fzr.domid) {
-
-  }
   for (var dir in fzr.domid[dir]) {document.getElementById(fzr.domid[dir]).style.cursor = 'copy';}
   grd.kidName = 'temporary';
   grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
@@ -120,9 +117,11 @@ function traceSelected(dnd, fzr, grd) {
   dnd.activeOrgan.insertNodes(false, [{data: grd.kidName, type: ['g']}]);
   dnd.activeOrgan.sync();
   //genome data should be in parents.genome[av.mouse.ParentNdx];
+  console.log('genome', grd.kidGenome);
   fzr.actOrgan.genome = grd.kidGenome;
   fzr.actOrgan.name = grd.kidName;
-  fzr.actOrgan.domId = "";
+  fzr.actOrgan.fzDomid = "";
+  fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
 }
 
 var KidMouse = function (evt, dnd, fzr, grd){
@@ -132,13 +131,13 @@ var KidMouse = function (evt, dnd, fzr, grd){
   if (5 < grd.kidGenome.length) {
     if ('organIcon' == evt.target.id) {
       target = 'organIcon';
-      //traceSelected(dnd, fzr, grd);
+      traceSelected(dnd, fzr, grd);
     }
     else { // look for target in the freezer
       var found = false;
       console.log('target.id',evt.target.id, '; fzr.domid', fzr.domid);
       for (var dir in fzr.domid) {
-        console.log('dir', dir);
+        //console.log('dir', dir);
         if ((fzr.domid[dir] == evt.target.id) && ('g'==dir.substring(0,1)) ) {
           found = true;
           break;
