@@ -151,6 +151,7 @@ require([
   });
   av.dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
   //Targets only accept object, source can do both
+  av.dnd.analyzeChart = new dndTarget('analyzeChart', {accept: ['w'], singular: true});
   av.dnd.graphPop0 = new dndTarget('graphPop0', {accept: ['w'], singular: true});
   av.dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
   av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
@@ -610,6 +611,14 @@ require([
         remove.dir = av.fzr.dir[remove.domid];
         av.fzr.removeFzrItem(av.fzr, remove.dir, remove.type);
       }
+    }
+  });
+
+  av.dnd.analyzeChart.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
+    if ('analyzeChart' == target.node.id) {
+      if (av.debug.dnd) console.log('analyzeChart: s, t', source, target);
+      landanalyzeChart(av.dnd, source, nodes, target);
+      av.anl.AnaChartFn();
     }
   });
 
