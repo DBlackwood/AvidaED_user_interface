@@ -194,6 +194,7 @@ av.utl.objectLength = function(object){
 //                        Utilities to convert text to and from format needed by emscripten database
 //                                      Created by ruppmatt on 12/16/15.
 //**********************************************************************************************************************
+/*
 
 function utf16to8(str) {
   'use strict';
@@ -251,13 +252,14 @@ function utf8to16(str) {
   return out;
 }
 
+// IE does not like line 'for (var char of str8){'
 function utf8bytesEncode(str16){
   'use strict';
   var bytes = []
   var str8 = utf16to8(str16);
   for (var char of str8){
     bytes.push(char.charCodeAt(0));
-  }
+  };
   return bytes;
 }
 
@@ -277,7 +279,7 @@ function display(text)
   para.appendChild(child);
   document.body.appendChild(para);
 }
-
+*/
 //**********************************************************************************************************************
 //   Another way to encode; decode stuff for emscripten files  system
 //**********************************************************************************************************************

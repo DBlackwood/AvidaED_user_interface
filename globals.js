@@ -142,6 +142,8 @@ av.utl = {};  // holds utility functions
 
 av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
 
+av.fwt = {}; // file data write
+av.frd = {}; // file data read
 av.fio = {}; //file input output data
 av.fio.dbName = 'wsdb';  //for workspace database
 av.fio.wsdb = null;

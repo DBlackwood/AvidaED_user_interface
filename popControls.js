@@ -232,7 +232,7 @@ av.ptd.FrConfigFn = function () {
       av.fzr.dir[domid] = 'c'+ av.fzr.cNum;
       av.fzr.domid['c'+ av.fzr.cNum] = domid;
       av.fzr.file[av.fzr.dir[domid]+'/entryname.txt'] = fzName;
-      makeFzrConfig(av.fzr, av.fzr.cNum, av.parents);
+      av.fwt.makeFzrConfig(av.fzr.cNum);
       av.fzr.cNum++;
       //Create context menu for right-click on this item
       av.dnd.contextMenu(av.dnd.fzConfig, domid);
@@ -254,7 +254,7 @@ av.ptd.FrPopulationFn = function () {
       av.fzr.dir[domid] = 'w'+ av.fzr.wNum;
       av.fzr.domid['w'+ av.fzr.wNum] = domid;
       av.fzr.file[av.fzr.dir[domid]+'/entryname.txt'] = fzName;
-      makeFzrWorld(av.fzr, av.fzr.wNum, av.parents);
+      av.fwt.makeFzrWorld(av.fzr.wNum);
       av.fzr.wNum++;
       //Create context menu for right-click on this item
       av.dnd.contextMenu(av.dnd.fzWorld, domid);

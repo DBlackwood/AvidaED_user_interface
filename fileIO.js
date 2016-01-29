@@ -146,7 +146,6 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   av.fzr.saved = true;
 };
 
-
 /* PouchDB websites
  http://pouchdb.com/api.html#database_information
  https://github.com/webinista/PouchNotes
@@ -176,6 +175,10 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
  FileSaver cannot tell when a file is done saving
  https://github.com/eligrey/FileSaver.js/     //for browsers that don't support SaveAs; does not know when done saving
     http://stackoverflow.com/questions/19521894/close-window-after-file-save-in-filesaver-js
+
+ study these to see try to figure out if a file was actually saved
+ http://stackoverflow.com/questions/13405129/javascript-create-and-save-file
+ http://www.html5rocks.com/en/tutorials/file/filesystem/#toc-direntry
  */
 
 /* Reading files

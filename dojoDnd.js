@@ -646,11 +646,11 @@ av.dnd.contextMenu = function(target, fzItemID) {
         dir = av.fzr.dir[fzItemID];
         av.fzr.file[dir+'/entryname.txt'];
         if ('fzOrgan' == fzSection) {
-          av.fzr.removeFzrItem(av.fzr, dir, 'g')
+          av.fwt.removeFzrItem(dir, 'g')
         } else if ('fzConfig' == fzSection){
-          av.fzr.removeFzrItem(av.fzr, dir, 'c')
+          av.fwt.removeFzrItem(dir, 'c')
         } else if ('fzWorld' == fzSection){
-          av.fzr.removeFzrItem(av.fzr, dir, 'w')
+          av.fwt.removeFzrItem(dir, 'w')
         }
         target.selectNone();
         dojo.destroy(fzItemID);

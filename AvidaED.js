@@ -216,18 +216,9 @@ require([
     console.log('before call save workspace');
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
     console.log('after call to save workspace');
-    setTimeout(null, 8000);
-    console.log('after setTimeout');
-    sWSfDialog.hide();
-    console.log('after hide dialog');
-    if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
-    else {
-      document.getElementById("inputFile").click();  //to get user picked file
-    }
-    console.log('after open file');
   });
 
-  dijit.byId("sWSfDiscard").on("Click", function () {
+  dijit.byId("sWSfOpen").on("Click", function () {
     sWSfDialog.hide();
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
@@ -339,7 +330,7 @@ require([
     av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
     //av.debug.log += '\n' + 'L:' + line + ', C:' + col + ', F:' + file + ', M:' + message;
     //console.log('in on error, log contents starting on next line \n', av.debug.log);
-    //av.debug.errorEmailFn();
+    av.debug.errorEmailFn();
   }
   //More usefull websites to catch errors
   // https://davidwalsh.name/javascript-stack-trace
@@ -540,7 +531,7 @@ require([
     if ('fzConfig' === target.node.id) {
       var num = av.fzr.cNum;
       av.dnd.landFzConfig(source, nodes, target);  //needed as part of call to contextMenu
-      if (num !== av.fzr.cNum) { makeFzrConfig(av.fzr, num, av.parents); }
+      if (num !== av.fzr.cNum) { av.fwt.makeFzrConfig(num); }
       console.log('fzr', av.fzr);
     }
   });
@@ -609,7 +600,7 @@ require([
       if ('' != remove.type) {
         //removeFzrItem(av.fzr, remove.dir, remove.type);
         remove.dir = av.fzr.dir[remove.domid];
-        av.fzr.removeFzrItem(av.fzr, remove.dir, remove.type);
+        av.fwt.removeFzrItem(remove.dir, remove.type);
       }
     }
   });
@@ -654,8 +645,8 @@ require([
       pkg.nodes = nodes;
       pkg.copy = copy;
       pkg.target = target;
-      av.dnd.landFzWorldFn(pkg);   //will never be called as fzPopDish is the only source for the popDish type.
-      //if (num !== fzr.cNum) {makeFzrWorld(av.fzr, num, parents);} //need to implement this to get data in files
+      av.dnd.landFzWorldFn(pkg);
+      if (num !== fzr.cNum) {av.fwt.makeFzrWorld(num);} //tiba need to check this
     }
   });
 
@@ -741,7 +732,7 @@ require([
         av.ptd.popRunningStateUi();
 
         //collect setup data to send to avida
-        av.fio.form2cfgFolder(av.fzr, av.parents);          //fileDataWrite.js
+        av.fwt.form2cfgFolder();          //fileDataWrite.js
         av.msg.importExpr();
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell(); 
         av.msg.requestPopStats(av.fio);  //fio.uiWorker
@@ -1150,8 +1141,10 @@ require([
     document.getElementById('fzOrgan').style.cursor = 'default';
     //console.log('fzr', av.fzr);
     for (var dir in av.fzr.domid) {
-      console.log('dir', dir, '; domid', av.fzr.domid[dir]);
-      document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
+      //console.log('dir', dir, '; domid', av.fzr.domid[dir]);
+      if (null != document.getElementById(av.fzr.domid[dir])) {
+        document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
+      }
     }
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
@@ -1254,7 +1247,7 @@ require([
       //document.getElementById('mapBlock').style.height = '96%'; //96
     } else {
       //document.getElementById('mapBlock').style.height = '94%';  //94
-      if (brs.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
+      if (av.brs.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
     }
 
     var mapBlockWd = mapBlockHoldWd-8;
