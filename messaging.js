@@ -110,9 +110,9 @@ av.msg.importExpr = function () {
 }
 
 //fio.uiWorker function
-av.msg.doOrgTrace = function (fio, fzr) {
+av.msg.doOrgTrace = function () {
   'use strict';
-  console.log('doOrgTrace: fzr', fzr);
+  console.log('doOrgTrace: fzr', av.fzr);
   var seed = 100 * Math.random();
   if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
   else {seed = -1};
@@ -121,8 +121,8 @@ av.msg.doOrgTrace = function (fio, fzr) {
     'name': 'webOrgTraceBySequence',
     'triggerType': 'immediate',
     'args': [
-      //'0,heads_default,' + fzr.actOrgan.genome,                                  //genome string
-      fzr.actOrgan.genome,                                  //genome string
+      //'0,heads_default,' + av.fzr.actOrgan.genome,                                  //genome string
+      av.fzr.actOrgan.genome,                                  //genome string
       dijit.byId("orMuteInput").get('value')/100,     // point mutation rate
       seed                                            //seed where 0 = random; >0 to replay that number
     ]
@@ -200,7 +200,7 @@ av.msg.doRunPause = function (fio) {
 }
 
 //fio.uiWorker function
-av.msg.doReset = function (fio) {
+av.msg.doReset = function () {
   'use strict';
   var request = {
     'Key': 'Reset'
@@ -416,7 +416,7 @@ av.msg.fillColorBlock = function (grd, msg, parents) {  //Draw the color block
         if (null === grd.msg.ancestor.data[grd.selectedNdx]) grd.selCtx.fillStyle = '#000';
         else grd.selCtx.fillStyle = '#888';
       }
-      else if (0 == grd.fill[grd.selectedNdx]) grd.selCtx.fillStyle = defaultKidColor;
+      else if (0 == grd.fill[grd.selectedNdx]) grd.selCtx.fillStyle = av.color.defaultKidColor;
       else {  //get_color0 = function(cmap, dx, d1, d2)
         grd.selCtx.fillStyle = get_color0(grd.cmap, grd.fill[grd.selectedNdx], 0, grd.fillmax);
         //console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));

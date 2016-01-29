@@ -169,7 +169,7 @@ av.parents.clearParentsFn = function () {
   av.parents.handNdx = [];
   av.parents.howPlaced = [];
   av.parents.domid = [];  //need domID of entry in ancestorBox so that it can be removed from ancestor box when square on grid is dragged from box
-  av.parents.Colors = ColorBlind.slice();
+  av.parents.Colors = av.color.parentColorList.slice();
   av.parents.Colors.reverse();  //needed for the stack to have the "easy to see" colors on top
   return av.parents;
 };

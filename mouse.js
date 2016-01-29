@@ -85,7 +85,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
       //make sure there is a name.
       var avidian = prompt("Please name your avidian", parent + '_offspring');
       if (avidian) {
-        avidian = getUniqueName(avidian, dnd.fzOrgan);
+        avidian = av.dnd.getUniqueName(avidian, dnd.fzOrgan);
         if (null != avidian) {  //add to Freezer
           dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
           dnd.fzOrgan.sync();
@@ -101,7 +101,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
           if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);
           //create a right mouse-click context menu for the item just created.
           if (av.debug.mouse) console.log('Offspring-->freezer; fzf', fzr);
-          av.dnd.contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
+          av.dnd.contextMenu(dnd.fzOrgan, fzr.domid[gdir]);
         }
       }
     }
@@ -149,7 +149,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
         //make sure there is a name.
         var avidian = prompt("Please name your avidian", grd.kidName);
         if (avidian) {
-          avidian = getUniqueName(avidian, dnd.fzOrgan);
+          avidian = av.dnd.getUniqueName(avidian, dnd.fzOrgan);
           if (null != avidian) {  //add to Freezer
             dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
             dnd.fzOrgan.sync();
@@ -165,7 +165,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
             if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
             if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
             //create a right mouse-click context menu for the item just created.
-            av.dnd.contextMenu(fzr, dnd.fzOrgan, fzr.domid[gdir]);
+            av.dnd.contextMenu(dnd.fzOrgan, fzr.domid[gdir]);
           }
         }
       }
@@ -194,8 +194,8 @@ function ParentMouse(evt, av) {
       //change from auto placed to hand placed if needed
       if ('auto' == av.parents.howPlaced[av.mouse.ParentNdx]) {
         av.parents.howPlaced[av.mouse.ParentNdx] = 'hand';
-        makeHandAutoNdx(av.parents);
-        //PlaceAncestors(parents);
+        av.parents.makeHandAutoNdx();
+        //av.parents.placeAncestors(parents);
       }
       console.log('auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
       console.log('hand', av.parents.handNdx.length, av.parents.handNdx);
@@ -212,7 +212,7 @@ function ParentMouse(evt, av) {
     av.dnd.ancestorBox.sync();
 
     //remove from main list.
-    removeParent(av.mouse.ParentNdx, av.parents);
+    av.parents.removeParent(av.mouse.ParentNdx);
   }
   //-------------------------------------------- organism view
   else if ('organIcon' == evt.target.id) {

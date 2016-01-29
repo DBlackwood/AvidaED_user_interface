@@ -18,13 +18,13 @@ function placeChips(chips, chck){
     var cols = chck.cols;
     var rows = chck.rows;
     var sqLength = 5; // 5 by 6 in demo
-    for (ii = 0; ii < ChipColors.length; ii++) {
+    for (ii = 0; ii < av.color.chipColors.length; ii++) {
         cc = ii%sqLength;
         rr = Math.floor(ii/sqLength);
         chips.col[ii] = Math.floor(cols*(2*cc+1)/(2*sqLength));
         chips.row[ii] = Math.floor(rows*(2*rr+1)/(2*6));
-        chips.name[ii] = ColorNames[ii];
-        chips.color[ii]= ChipColors[ii];
+        chips.name[ii] = av.color.parentColorNames[ii];
+        chips.color[ii]= av.color.chipColors[ii];
         chips.outColor[ii] = outColor[ii];
     }
 }
@@ -35,8 +35,8 @@ function backgroundBoard(chck) {
         xx = chck.marginX + chck.xOffset + ii*chck.cellWd;
         for (jj=0; jj<chck.rows; jj++) {
             yy = chck.marginY + chck.yOffset + jj*chck.cellHt;
-            //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
-            //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
+            //boxColor = get_color0(av.color.ViridisCmap, Math.random(), 0, 1);
+            //boxColor = get_color0(av.color.ViridisCmap, 0.5, 0, 1);
             //console.log('color=', boxColor);
             chck.ctxt.fillStyle = '#222';
             chck.ctxt.fillRect(xx, yy, chck.cellWd-1, chck.cellHt-1);
@@ -163,10 +163,10 @@ function DrawCheckBackground(chck) {
     chck.ctxt.setTransform(1, 0, 0, 1, 0, 0);
     chck.ctxt.clearRect(0, 0, chck.CanvasCheck.width, chck.CanvasCheck.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
     //draw grey rectangle as back ground
-    chck.ctxt.fillStyle = dictColor["ltGrey"];
+    chck.ctxt.fillStyle = av.color.dictColor["ltGrey"];
     chck.ctxt.fillRect(0,0, chck.CanvasCheck.width, chck.CanvasCheck.height);
 
-    chck.ctxt.fillStyle=dictColor['Black'];
+    chck.ctxt.fillStyle=av.color.dictColor['Black'];
     chck.ctxt.fillRect(chck.xOffset,chck.yOffset,chck.sizeX,chck.sizeY);
 
     backgroundBoard(chck);
@@ -204,7 +204,7 @@ function drawCheckLegend(chck, chips) {
     //console.log('chip_names',chips.name.length, '; legCol', legendCols, '; legRow', legendRows);
     //set canvas height based on space needed
     chck.CanvasChipScale.height = RowHt * legendRows;
-    chck.ctxSc.fillStyle = dictColor["ltGrey"];
+    chck.ctxSc.fillStyle = av.color.dictColor["ltGrey"];
     chck.ctxSc.fillRect(0,0, chck.CanvasCheck.width, chck.CanvasCheck.height);
     var colWide = (chck.CanvasChipScale.width-leftPad)/legendCols
     var col = 0;

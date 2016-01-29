@@ -110,14 +110,14 @@ function DrawTimeline(obj, gen) {
   }
   //Draw horizontal line
   av.ind.ctx.lineWidth = 1;
-  av.ind.ctx.strokeStyle = dictColor["Black"];
+  av.ind.ctx.strokeStyle = av.color.dictColor["Black"];
   av.ind.ctx.beginPath();
   av.ind.ctx.moveTo(startX, lineY);
   av.ind.ctx.lineTo(endX, lineY);
   av.ind.ctx.stroke();
   //Draw upTicks for indicating when logic functions complete
   av.ind.ctx.font = "12px Arial";
-  av.ind.ctx.fillStyle = dictColor["Black"];
+  av.ind.ctx.fillStyle = av.color.dictColor["Black"];
   for (var ii = 0; ii < upNum.length; ii++) {
     upTickX[ii] = startX + length * upNdx[ii] / numCycles;
     av.ind.ctx.moveTo(upTickX[ii], lineY);
@@ -141,7 +141,7 @@ function DrawTimeline(obj, gen) {
   //Draw red circle indicating current av.ind.cycle
   av.ind.ctx.beginPath();
   dnTickX = startX + av.ind.cycle * length / numCycles;
-  av.ind.ctx.fillStyle = dictColor["Red"];
+  av.ind.ctx.fillStyle = av.color.dictColor["Red"];
   av.ind.ctx.arc(dnTickX, lineY, radius, 0, 2 * Math.PI);
   av.ind.ctx.fill();
 }
@@ -158,17 +158,17 @@ function drawBitStr(context, row, bitStr) {
     //draw outline of rectangle
     context.beginPath();
     context.lineWidth = 1;
-    context.strokeStyle = orgColorCodes["outline"];
+    context.strokeStyle = av.color.orgColorCodes["outline"];
     context.rect(xx, yy, recWidth, recHeight);
     context.stroke();
     //fill in rectangle
     context.beginPath();
     str = bitStr.substr(ii, 1);
     if ("0" == str) {
-      context.fillStyle = orgColorCodes["0"];
+      context.fillStyle = av.color.orgColorCodes["0"];
     }
     else {
-      context.fillStyle = orgColorCodes["1"];
+      context.fillStyle = av.color.orgColorCodes["1"];
     }
     context.fillRect(xx, yy, recWidth, recHeight);
     context.fill();
@@ -176,7 +176,7 @@ function drawBitStr(context, row, bitStr) {
     if (0 == Math.fmod(ii, 4)) {
       context.beginPath();
       context.lineWidth = 1;
-      context.strokeStyle = dictColor["Black"];
+      context.strokeStyle = av.color.dictColor["Black"];
       context.moveTo(xx, yy);
       context.lineTo(xx, yy + recHeight);
       context.stroke();
@@ -200,13 +200,13 @@ function genomeCircle(gen, gg, obj) { //gg is generation
     //console.log('gg', gg, '; ii', ii, '; gen', gen);
     av.ind.ctx.arc(av.ind.smCenX[gg][ii], av.ind.smCenY[gg][ii], av.ind.smallR, 0, 2 * Math.PI);
     //Assign color based on letter code of instruction
-    av.ind.ctx.fillStyle = letterColor[av.ind.dna[gg].substr(ii, 1)];  //use if av.ind.dna is a string
-    //av.ind.ctx.fillStyle = letterColor[av.ind.dna[gg][ii]];  //use if av.ind.dna is an array
+    av.ind.ctx.fillStyle = av.color.letterColor[av.ind.dna[gg].substr(ii, 1)];  //use if av.ind.dna is a string
+    //av.ind.ctx.fillStyle = av.color.letterColor[av.ind.dna[gg][ii]];  //use if av.ind.dna is an array
     av.ind.ctx.fill();   //required to render fill
     //Draw ring if there was a mutation in the offspring
     if (undefined != obj[av.ind.cycle].memSpace[av.ind.son]) {
       if (1 == gg && obj[av.ind.cycle].memSpace[av.ind.son].mutated[ii]) {
-        av.ind.ctx.strokeStyle = orgColorCodes["mutate"];
+        av.ind.ctx.strokeStyle = av.color.orgColorCodes["mutate"];
         av.ind.ctx.lineWidth = 2;
         av.ind.ctx.arc(av.ind.smCenX[gg][ii], av.ind.smCenY[gg][ii], av.ind.SmallR, 0, 2 * Math.PI);
         av.ind.ctx.stroke();
@@ -224,7 +224,7 @@ function genomeCircle(gen, gg, obj) { //gg is generation
       }
     }
     //Draw letter inside circle
-    av.ind.ctx.fillStyle = dictColor["Black"];
+    av.ind.ctx.fillStyle = av.color.dictColor["Black"];
     av.ind.ctx.font = av.ind.fontsize + "px Arial";
     txtW = av.ind.ctx.measureText(av.ind.dna[gg].substr(ii, 1)).width;  //use if av.ind.dna is a string
     //txtW = av.ind.ctx.measureText(av.ind.dna[gg][ii]).width;     //use if av.ind.dna is an array
@@ -245,7 +245,7 @@ function drawHead(gen, spot, gg, head) {
   hy = av.ind.cy[gg] + av.ind.bigR[gg] * Math.sin(spot * 2 * Math.PI / av.ind.size[gg] + av.ind.rotate[gg]);
   av.ind.ctx.beginPath();
   av.ind.ctx.arc(hx, hy, av.ind.smallR, 0, 2 * Math.PI);
-  av.ind.ctx.strokeStyle = orgColorCodes[head];
+  av.ind.ctx.strokeStyle = av.color.orgColorCodes[head];
   av.ind.ctx.lineWidth = 2;
   av.ind.ctx.stroke();
   //draw head tangent to instruction
@@ -253,12 +253,12 @@ function drawHead(gen, spot, gg, head) {
   hy = av.ind.cy[gg] + av.ind.headR[gg] * Math.sin(spot * 2 * Math.PI / av.ind.size[gg] + av.ind.rotate[gg]);
   av.ind.ctx.beginPath();
   av.ind.ctx.arc(hx, hy, av.ind.smallR, 0, 2 * Math.PI);
-  av.ind.ctx.fillStyle = orgColorCodes["headFill"];
+  av.ind.ctx.fillStyle = av.color.orgColorCodes["headFill"];
   av.ind.ctx.fill();
-  av.ind.ctx.fillStyle = orgColorCodes[head];
+  av.ind.ctx.fillStyle = av.color.orgColorCodes[head];
   av.ind.ctx.font = av.ind.fontsize + "px Arial";
-  txtW = av.ind.ctx.measureText(headCodes[head]).width;
-  av.ind.ctx.fillText(headCodes[head], hx - txtW / 2, hy + av.ind.smallR / 2);
+  txtW = av.ind.ctx.measureText(av.color.headCodes[head]).width;
+  av.ind.ctx.fillText(av.color.headCodes[head], hx - txtW / 2, hy + av.ind.smallR / 2);
 }
 
 //Draw arc using Bézier curve and two control points http://www.w3schools.com/tags/canvas_beziercurveto.asp
@@ -267,9 +267,9 @@ function drawArc2(gen, spot1, spot2, rep) { //draw an arc
   var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2;
   av.ind.ctx.lineWidth = 1;
   if (spot2 >= spot1) {
-    av.ind.ctx.strokeStyle = dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+    av.ind.ctx.strokeStyle = av.color.dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
   } else {
-    av.ind.ctx.strokeStyle = dictColor["Red"];
+    av.ind.ctx.strokeStyle = av.color.dictColor["Red"];
   }
   av.ind.ctx.beginPath();
   xx1 = av.ind.cx[av.ind.mom] + av.ind.tanR * Math.cos(spot1 * 2 * Math.PI / av.ind.size[av.ind.mom]); //Draw line from Spot1
@@ -298,7 +298,7 @@ function drawIcon(gen) {
   drw.onload = function () {   //image size(width, height) from http://stackoverflow.com/questions/5173796/html5-get-image-dimension
     av.ind.ctx.drawImage(drw, av.ind.cx[av.ind.son] - drw.width / 2, av.ind.cy[av.ind.son] - drw.height / 2);
   }
-  av.ind.ctx.fillStyle = dictColor["black"];
+  av.ind.ctx.fillStyle = av.color.dictColor["black"];
   av.ind.ctx.font = av.ind.fontsize + "px Arial";
   var txtWd = av.ind.ctx.measureText(txt).width;
   av.ind.ctx.fillText(txt, av.ind.cx[av.ind.son] - txtWd / 2, av.ind.cy[av.ind.son] + drw.height);
@@ -476,15 +476,15 @@ function writeInstructDetails(obj, gen) {
   }
   else {
     letter = obj[av.ind.cycle - 1].nextInstruction;
-    document.getElementById("ExecuteJust").textContent = letter + ": " + InstDescribe[letter];
-    //console.log("Inst", InstDescribe[letter]);
+    document.getElementById("ExecuteJust").textContent = letter + ": " + av.color.InstDescribe[letter];
+    //console.log("Inst", av.color.InstDescribe[letter]);
   }
   if (undefined == obj[av.ind.cycle].memSpace[av.ind.mom].memory[IPspot]) {
     document.getElementById("ExecuteAbout").textContent = "(none)";
   }
   else {
     letter = obj[av.ind.cycle].memSpace[av.ind.mom].memory[IPspot];
-    document.getElementById("ExecuteAbout").textContent = letter + ": " + InstDescribe[letter];
+    document.getElementById("ExecuteAbout").textContent = letter + ": " + av.color.InstDescribe[letter];
   }
-  //console.log('spot=', IPspot, ' letter=', letter, " Instr=", InstDescribe[letter]);
+  //console.log('spot=', IPspot, ' letter=', letter, " Instr=", av.color.InstDescribe[letter]);
 }

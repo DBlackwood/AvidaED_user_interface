@@ -1,9 +1,10 @@
 //Definition of Viridis and other dictionaries or color data sets
+av.color = {};
 
-var defaultParentColor = 'rgb(200, 200, 200)';
-var defaultKidColor = 'rgb(130, 130, 130)';
+av.color.defaultParentColor = 'rgb(200, 200, 200)';
+av.color.defaultKidColor = 'rgb(130, 130, 130)';
 
-var Viridis_cmap = [
+av.color.ViridisCmap = [
 //   'rgb(34, 1, 42)'
    'rgb(68, 1, 84)'
    ,'rgb(68, 2, 86)'
@@ -263,7 +264,7 @@ var Viridis_cmap = [
    ,'rgb(253, 231, 37)'
 ];
 
-var Gnuplot2_cmap = [
+av.color.Gnuplot2cmap = [
 /* 'rgb(0, 0, 0)'
 , 'rgb(0, 0, 4)'
 , 'rgb(0, 0, 8)'
@@ -522,7 +523,7 @@ var Gnuplot2_cmap = [
 , 'rgb(255, 255, 255)' */
   ];
 
-var Cubehelix_cmap = [  //djb version
+av.color.cubehelixCmap = [  //djb version
 /* 'rgb(0, 0, 0)'
 , 'rgb(3, 3, 1)'
 , 'rgb(5, 5, 1)'
@@ -845,281 +846,10 @@ var Cubehelix_cmap = [  //djb version
 , 'rgb(255, 255, 255)'*/
   ];
 
-var OriginalCubehelix_cmap = [
- 'rgb(2, 1, 2)'
-, 'rgb(3, 1, 3)'
-, 'rgb(5, 2, 5)'
-, 'rgb(7, 2, 6)'
-, 'rgb(8, 3, 8)'
-, 'rgb(10, 3, 10)'
-, 'rgb(11, 4, 12)'
-, 'rgb(12, 5, 14)'
-, 'rgb(14, 5, 15)'
-, 'rgb(15, 6, 17)'
-, 'rgb(16, 7, 19)'
-, 'rgb(17, 8, 21)'
-, 'rgb(18, 8, 23)'
-, 'rgb(19, 9, 25)'
-, 'rgb(20, 10, 27)'
-, 'rgb(21, 11, 29)'
-, 'rgb(22, 12, 31)'
-, 'rgb(22, 13, 33)'
-, 'rgb(23, 14, 35)'
-, 'rgb(24, 15, 37)'
-, 'rgb(24, 16, 39)'
-, 'rgb(25, 17, 41)'
-, 'rgb(25, 18, 43)'
-, 'rgb(25, 19, 45)'
-, 'rgb(26, 20, 47)'
-, 'rgb(26, 22, 49)'
-, 'rgb(26, 23, 51)'
-, 'rgb(26, 24, 53)'
-, 'rgb(27, 26, 54)'
-, 'rgb(27, 27, 56)'
-, 'rgb(27, 28, 58)'
-, 'rgb(27, 30, 59)'
-, 'rgb(27, 31, 61)'
-, 'rgb(26, 33, 62)'
-, 'rgb(26, 34, 64)'
-, 'rgb(26, 36, 65)'
-, 'rgb(26, 37, 67)'
-, 'rgb(26, 39, 68)'
-, 'rgb(25, 40, 69)'
-, 'rgb(25, 42, 70)'
-, 'rgb(25, 44, 71)'
-, 'rgb(25, 45, 72)'
-, 'rgb(24, 47, 73)'
-, 'rgb(24, 49, 74)'
-, 'rgb(24, 50, 75)'
-, 'rgb(23, 52, 76)'
-, 'rgb(23, 54, 76)'
-, 'rgb(23, 55, 77)'
-, 'rgb(22, 57, 77)'
-, 'rgb(22, 59, 78)'
-, 'rgb(22, 61, 78)'
-, 'rgb(22, 63, 78)'
-, 'rgb(22, 64, 78)'
-, 'rgb(21, 66, 78)'
-, 'rgb(21, 68, 79)'
-, 'rgb(21, 70, 78)'
-, 'rgb(21, 71, 78)'
-, 'rgb(21, 73, 78)'
-, 'rgb(21, 75, 78)'
-, 'rgb(21, 77, 78)'
-, 'rgb(21, 78, 77)'
-, 'rgb(21, 80, 77)'
-, 'rgb(21, 82, 76)'
-, 'rgb(22, 83, 76)'
-, 'rgb(22, 85, 75)'
-, 'rgb(22, 87, 75)'
-, 'rgb(23, 88, 74)'
-, 'rgb(23, 90, 73)'
-, 'rgb(24, 91, 72)'
-, 'rgb(25, 93, 72)'
-, 'rgb(25, 94, 71)'
-, 'rgb(26, 96, 70)'
-, 'rgb(27, 97, 69)'
-, 'rgb(28, 99, 68)'
-, 'rgb(29, 100, 67)'
-, 'rgb(30, 101, 66)'
-, 'rgb(31, 103, 65)'
-, 'rgb(32, 104, 64)'
-, 'rgb(34, 105, 63)'
-, 'rgb(35, 106, 62)'
-, 'rgb(37, 107, 61)'
-, 'rgb(38, 108, 60)'
-, 'rgb(40, 109, 59)'
-, 'rgb(42, 110, 58)'
-, 'rgb(43, 111, 57)'
-, 'rgb(45, 112, 56)'
-, 'rgb(47, 113, 55)'
-, 'rgb(49, 114, 54)'
-, 'rgb(51, 115, 53)'
-, 'rgb(53, 116, 53)'
-, 'rgb(56, 116, 52)'
-, 'rgb(58, 117, 51)'
-, 'rgb(60, 118, 50)'
-, 'rgb(63, 118, 50)'
-, 'rgb(65, 119, 49)'
-, 'rgb(68, 119, 49)'
-, 'rgb(70, 120, 48)'
-, 'rgb(73, 120, 48)'
-, 'rgb(76, 121, 47)'
-, 'rgb(78, 121, 47)'
-, 'rgb(81, 121, 47)'
-, 'rgb(84, 121, 47)'
-, 'rgb(87, 122, 47)'
-, 'rgb(90, 122, 47)'
-, 'rgb(93, 122, 47)'
-, 'rgb(96, 122, 47)'
-, 'rgb(99, 122, 47)'
-, 'rgb(102, 122, 48)'
-, 'rgb(105, 123, 48)'
-, 'rgb(108, 123, 49)'
-, 'rgb(111, 123, 49)'
-, 'rgb(114, 123, 50)'
-, 'rgb(117, 123, 51)'
-, 'rgb(120, 123, 52)'
-, 'rgb(123, 122, 53)'
-, 'rgb(126, 122, 54)'
-, 'rgb(129, 122, 55)'
-, 'rgb(132, 122, 56)'
-, 'rgb(135, 122, 58)'
-, 'rgb(138, 122, 59)'
-, 'rgb(141, 122, 61)'
-, 'rgb(144, 122, 62)'
-, 'rgb(147, 122, 64)'
-, 'rgb(150, 122, 66)'
-, 'rgb(153, 121, 68)'
-, 'rgb(156, 121, 70)'
-, 'rgb(159, 121, 72)'
-, 'rgb(161, 121, 74)'
-, 'rgb(164, 121, 76)'
-, 'rgb(167, 121, 79)'
-, 'rgb(169, 121, 81)'
-, 'rgb(172, 121, 84)'
-, 'rgb(174, 121, 86)'
-, 'rgb(177, 121, 89)'
-, 'rgb(179, 121, 91)'
-, 'rgb(181, 121, 94)'
-, 'rgb(183, 121, 97)'
-, 'rgb(185, 121, 100)'
-, 'rgb(188, 121, 103)'
-, 'rgb(190, 121, 106)'
-, 'rgb(191, 121, 109)'
-, 'rgb(193, 122, 112)'
-, 'rgb(195, 122, 115)'
-, 'rgb(197, 122, 118)'
-, 'rgb(198, 122, 121)'
-, 'rgb(200, 123, 124)'
-, 'rgb(201, 123, 127)'
-, 'rgb(202, 124, 131)'
-, 'rgb(204, 124, 134)'
-, 'rgb(205, 125, 137)'
-, 'rgb(206, 125, 140)'
-, 'rgb(207, 126, 143)'
-, 'rgb(208, 126, 147)'
-, 'rgb(209, 127, 150)'
-, 'rgb(209, 128, 153)'
-, 'rgb(210, 128, 156)'
-, 'rgb(211, 129, 160)'
-, 'rgb(211, 130, 163)'
-, 'rgb(211, 131, 166)'
-, 'rgb(212, 132, 169)'
-, 'rgb(212, 133, 172)'
-, 'rgb(212, 134, 175)'
-, 'rgb(212, 135, 178)'
-, 'rgb(213, 136, 181)'
-, 'rgb(213, 137, 184)'
-, 'rgb(212, 138, 187)'
-, 'rgb(212, 140, 190)'
-, 'rgb(212, 141, 193)'
-, 'rgb(212, 142, 195)'
-, 'rgb(212, 144, 198)'
-, 'rgb(211, 145, 201)'
-, 'rgb(211, 146, 203)'
-, 'rgb(210, 148, 206)'
-, 'rgb(210, 149, 208)'
-, 'rgb(210, 151, 210)'
-, 'rgb(209, 152, 212)'
-, 'rgb(208, 154, 215)'
-, 'rgb(208, 156, 217)'
-, 'rgb(207, 157, 219)'
-, 'rgb(207, 159, 221)'
-, 'rgb(206, 161, 223)'
-, 'rgb(205, 162, 224)'
-, 'rgb(204, 164, 226)'
-, 'rgb(204, 166, 228)'
-, 'rgb(203, 168, 229)'
-, 'rgb(202, 169, 231)'
-, 'rgb(202, 171, 232)'
-, 'rgb(201, 173, 233)'
-, 'rgb(200, 175, 234)'
-, 'rgb(200, 177, 236)'
-, 'rgb(199, 178, 237)'
-, 'rgb(198, 180, 238)'
-, 'rgb(198, 182, 238)'
-, 'rgb(197, 184, 239)'
-, 'rgb(197, 186, 240)'
-, 'rgb(196, 188, 241)'
-, 'rgb(196, 189, 241)'
-, 'rgb(195, 191, 242)'
-, 'rgb(195, 193, 242)'
-, 'rgb(194, 195, 242)'
-, 'rgb(194, 197, 243)'
-, 'rgb(194, 198, 243)'
-, 'rgb(194, 200, 243)'
-, 'rgb(193, 202, 243)'
-, 'rgb(193, 204, 243)'
-, 'rgb(193, 205, 243)'
-, 'rgb(193, 207, 243)'
-, 'rgb(193, 209, 243)'
-, 'rgb(194, 210, 243)'
-, 'rgb(194, 212, 243)'
-, 'rgb(194, 214, 243)'
-, 'rgb(194, 215, 243)'
-, 'rgb(195, 217, 243)'
-, 'rgb(195, 218, 242)'
-, 'rgb(196, 220, 242)'
-, 'rgb(196, 221, 242)'
-, 'rgb(197, 223, 242)'
-, 'rgb(198, 224, 241)'
-, 'rgb(198, 225, 241)'
-, 'rgb(199, 227, 241)'
-, 'rgb(200, 228, 240)'
-, 'rgb(201, 229, 240)'
-, 'rgb(202, 231, 240)'
-, 'rgb(203, 232, 240)'
-, 'rgb(204, 233, 239)'
-, 'rgb(205, 234, 239)'
-, 'rgb(207, 235, 239)'
-, 'rgb(208, 236, 239)'
-, 'rgb(209, 237, 239)'
-, 'rgb(211, 238, 239)'
-, 'rgb(212, 239, 239)'
-, 'rgb(214, 240, 239)'
-, 'rgb(215, 241, 239)'
-, 'rgb(217, 242, 239)'
-, 'rgb(219, 243, 239)'
-, 'rgb(220, 243, 239)'
-, 'rgb(222, 244, 239)'
-, 'rgb(224, 245, 240)'
-, 'rgb(226, 246, 240)'
-, 'rgb(227, 246, 240)'
-, 'rgb(229, 247, 241)'
-, 'rgb(231, 248, 241)'
-, 'rgb(233, 248, 242)'
-, 'rgb(235, 249, 243)'
-, 'rgb(237, 250, 244)'
-, 'rgb(239, 250, 244)'
-, 'rgb(240, 251, 245)'
-, 'rgb(242, 251, 246)'
-, 'rgb(244, 252, 247)'
-, 'rgb(246, 252, 248)'
-, 'rgb(248, 253, 250)'
-, 'rgb(250, 253, 251)'
-, 'rgb(251, 254, 252)'
-, 'rgb(253, 254, 254)'
-, 'rgb(255, 255, 255)'
-  ];
-  
-    var Viridis12 = [
-   'rgb( 72,  31, 112)' //1
-  ,'rgb(200, 224,  32)' //b
-  ,'rgb( 32, 164, 134)' //7
-  ,'rgb( 59,  82, 139)' //3
-  ,'rgb( 92, 200,  99)' //9
-  ,'rgb( 40, 124, 142)' //5
-  ,'rgb(253, 231,  37)' //c
-  ,'rgb( 53, 183, 121)' //8
-  ,'rgb( 68,  58, 131)' //2
-  ,'rgb( 33, 145, 140)' //6
-  ,'rgb(144, 215,  67)' //a
-  ,'rgb( 49, 104, 142)' //b
-];
+
     //http://www.color-blindness.com/coblis-color-blindness-simulator/
     //http://www.vischeck.com/vischeck/vischeckImage.php
-    var ColorBlind = [  //http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
+av.color.parentColorList = [  //http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
      'rgb(  0, 109, 219)' //1  blue              website #7
     ,'rgb(255, 255,   0)' //2  yellow            website #15 modified was 255, 255, 109
     ,'rgb(  0, 146, 146)' //3  medium blue green website #3
@@ -1150,7 +880,7 @@ var OriginalCubehelix_cmap = [
     ,'rgb(187, 187, 187)'  // 27 dark grey
     ];
 
-var ColorNames = [
+av.color.parentColorNames = [
     'A blue'    //1               website #7
    ,'B yellow'  //2            website #15 modified was 255, 255, 109
    ,'C medium blue green' // website #3
@@ -1180,913 +910,377 @@ var ColorNames = [
    ,'2 grey'   //27
 ];
 
-//not in use, I was going to try different outlines with rectangles with different color fill
-var outColor = [
-     '#00FF00' //'A blue' //               website #7
-    ,'#00FF00'//,'B yellow'  //            website #15 modified was 255, 255, 109
-    ,'#00FF00'//,'C medium blue green' // website #3
-    ,'#00FF00'//,'D pink' //              website #4
-    ,'#00FF00'//,'E brown' //             website #12 modified was 146, 73, 0
-    ,'#00FF00'//,'F lt pink' //           used digital color meter to match #5 on website lt pink
-    ,'#00FF00'//,'G orange brown' //      used digital color meter to match #5 on website;
-    ,'#00FF00'//,'H red brown' //         website #11 modified was 146,   0,   0
-    ,'#00FF00'//,'I lt blue' //           website #9
-    ,'#00FF00'//,'J lavender' //          website #8
-    ,'#00FF00'///,'K pale orange' //       website #5 but does not look pink
-    ,'#00FF00'//,'L pale blue' //         website #10
-    ,'#00FF00'//,'M dark blue-green' //   website #2 modified was 0, 73, 73
-    ,'#00FF00'//,'N dark yellow' //       website #13 modified was 219, 209, 0
-    ,'#00FF00'//,'O purple' //            website #6 modified was 73,   0, 146
-    ,'#00FF00'//,'P green' //             website #14 modied was 36, 255,  36
-    ,'#00FF00'//,'Q magenta' //
-    ,'#00FF00'//,'R pale yellow' //
-    ,'#00FF00'//,'S red'
-    ,'#00FF00'//,'T blue-green'
-    ,'#00FF00'//,'U dark blue'
-    ,'#00FF00'//,'V hot pink'
-    ,'#00FF00'//,'W sky blue'
-    ,'#00FF00'//,'X red-orange'
-    ,'#00FF00'//,'Y dark grey'
-    ,'#00FF00'//,'Z bright light blue'
-    ,'#00FF00'//,'2 grey'
-];
+av.color.chipColors = av.color.parentColorList.slice();
 
-    var ChipColors = ColorBlind.slice();
-
-  //colors too close to others already in use
-  //,'rgb(255, 204, 0)'  // 32 dark yellow
-  //,'rgb(255, 255,   5)'  // 17 yellow
-  //,'rgb(232,  62, 193)'  // 18 hot pink
-  //,'rgb(255, 178,  77)'  // 19 pale orange
-  //,'rgb(107,   0, 255)'  // 20 purple
-  //,'rgb(255, 100, 155)'  // 21 pink
-  //,'rgb(255, 218,  37)'  // 22 dark yellow
-  //,'rgb(255, 140, 115)'  // 26 pink
-  //,'rgb(0, 200,   0)'  // 28 green
-  //,'rgb(0,   0, 255)'  // 33 dark blue
-  //,'rgb( 48,   0, 255)'  // 20 blue
-  //,'rgb( 75,   0, 255)'  // 21 blue-purple
-  //,'rgb(170,  22, 233)'  // 20 dark pink
-  //,'rgb(  0, 102,  51)'  // 24 dark green
-
-    var dictColor =  {};
-    dictColor["Red"] = "#FF0000";
-    //dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
-    dictColor["Green"] = "#00FF00";
-    dictColor["Blue"] = "#0000FF";
-    dictColor["Magenta"] = "#FF00FF";
-    dictColor["Cyan"] = "#00FFFF";
-    dictColor["Yellow"] = "#FFFF00";
-    dictColor["Purple"] = "#8800FF";
-    dictColor["Orange"] = "#FFAA00";
-    dictColor["Black"] = "#000000";
-    dictColor["ltGrey"] = "#CCCCCC";
-    dictColor["White"] = '#FFFFFF';
+av.color.dictColor =  {};
+    av.color.dictColor["Red"] = "#FF0000";
+    //av.color.dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
+    av.color.dictColor["Green"] = "#00FF00";
+    av.color.dictColor["Blue"] = "#0000FF";
+    av.color.dictColor["Magenta"] = "#FF00FF";
+    av.color.dictColor["Cyan"] = "#00FFFF";
+    av.color.dictColor["Yellow"] = "#FFFF00";
+    av.color.dictColor["Purple"] = "#8800FF";
+    av.color.dictColor["Orange"] = "#FFAA00";
+    av.color.dictColor["Black"] = "#000000";
+    av.color.dictColor["ltGrey"] = "#CCCCCC";
+    av.color.dictColor["White"] = '#FFFFFF';
 
     //Dictionarys
-    var letterColor = {};
-    letterColor["a"] = "#F9CC65"; //color Meter
-    letterColor["b"] = "#EFC461"; //color Meter
-    letterColor["c"] = "#E5BC5D"; //color Meter 
-    letterColor["d"] = "#59FF71"; //color Meter
-    letterColor["e"] = "#55FF6D"; //color Meter
-    letterColor["f"] = "#52F768"; //color Meter
-    letterColor["g"] = "#BBFF5C"; //color Meter
-    letterColor["h"] = "#B4FF59"; //color Meter
-    letterColor["i"] = "#ACF655"; //color Meter
-    letterColor["j"] = "#A5EC51"; //color Meter 
-    letterColor["k"] = "#6EFFEB"; //color Meter
-    letterColor["l"] = "#69FAE2"; //color Meter
-    letterColor["m"] = "#65F0D8"; //color Meter
-    letterColor["n"] = "#61E5CF"; //color Meter
-    letterColor["o"] = "#7B8FFF"; //color Meter
-    letterColor["p"] = "#7B8FFF"; //color Meter
-    letterColor["q"] = "#7084EA"; //color Meter
-    letterColor["r"] = "#6C7EE1"; //color Meter
-    letterColor["s"] = "#5CDBC5"; //color Meter
-    letterColor["t"] = "#58D1BC"; //color Meter
-    letterColor["u"] = "#53C6B3"; //color Meter
-    letterColor["v"] = "#FF26EE"; //color Meter
-    letterColor["x"] = "#ED24DB"; //color Meter
-    letterColor["w"] = "#F725E5"; //color Meter
-    letterColor["y"] = "#AE2CFF"; //color Meter
-    letterColor["z"] = "#9DE14E"; //color Meter
+av.color.letterColor = {};
+    av.color.letterColor["a"] = "#F9CC65"; //color Meter
+    av.color.letterColor["b"] = "#EFC461"; //color Meter
+    av.color.letterColor["c"] = "#E5BC5D"; //color Meter
+    av.color.letterColor["d"] = "#59FF71"; //color Meter
+    av.color.letterColor["e"] = "#55FF6D"; //color Meter
+    av.color.letterColor["f"] = "#52F768"; //color Meter
+    av.color.letterColor["g"] = "#BBFF5C"; //color Meter
+    av.color.letterColor["h"] = "#B4FF59"; //color Meter
+    av.color.letterColor["i"] = "#ACF655"; //color Meter
+    av.color.letterColor["j"] = "#A5EC51"; //color Meter
+    av.color.letterColor["k"] = "#6EFFEB"; //color Meter
+    av.color.letterColor["l"] = "#69FAE2"; //color Meter
+    av.color.letterColor["m"] = "#65F0D8"; //color Meter
+    av.color.letterColor["n"] = "#61E5CF"; //color Meter
+    av.color.letterColor["o"] = "#7B8FFF"; //color Meter
+    av.color.letterColor["p"] = "#7B8FFF"; //color Meter
+    av.color.letterColor["q"] = "#7084EA"; //color Meter
+    av.color.letterColor["r"] = "#6C7EE1"; //color Meter
+    av.color.letterColor["s"] = "#5CDBC5"; //color Meter
+    av.color.letterColor["t"] = "#58D1BC"; //color Meter
+    av.color.letterColor["u"] = "#53C6B3"; //color Meter
+    av.color.letterColor["v"] = "#FF26EE"; //color Meter
+    av.color.letterColor["x"] = "#ED24DB"; //color Meter
+    av.color.letterColor["w"] = "#F725E5"; //color Meter
+    av.color.letterColor["y"] = "#AE2CFF"; //color Meter
+    av.color.letterColor["z"] = "#9DE14E"; //color Meter
 
-    var orgColorCodes = {};
-    orgColorCodes["mutate_old"] = "#00FF00"; //color Meter green
-    orgColorCodes["mutate"] = "#000000"; //color black
-    orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
-    orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
-    orgColorCodes["headFill"] = "#AAAAAA"; //lighter grey
-    orgColorCodes["WRITE"] = "#FA0022"; //color Meter  red
-    orgColorCodes["READ"] = "#5300FF"; //color Meter  blue
-    orgColorCodes["FLOW"] = "#00FF00"; //color Meter  green
-    orgColorCodes["IP"] = "#000000"; //color Meter  black
-    orgColorCodes["outline"] = "#666666"; //grey
-    orgColorCodes["0"] = "#BBBBFF"; //lt blue
-    orgColorCodes["1"] = "#F5FF00"; //color Meter yellow
-    var headCodes = {};
-    headCodes["READ"] = "R";
-    headCodes["WRITE"] = "W";
-    headCodes["FLOW"] = "F";
-    headCodes["IP"] = "I";
-    var InstDescribe = {};
-    InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    InstDescribe["c"]="nop-C is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    InstDescribe["d"]="if-n-equ: This instruction compares the BX register to its complement. If they are not equal, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If they are equal, that next instruction is skipped.";
-    InstDescribe["e"]="if-less: This instruction compares the BX register to its complement. If BX is the lesser of the pair, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If it is greater or equal, then that next instruction is skipped.";
-    InstDescribe["f"]="if-label: This instruction reads in the template that follows it, and tests if its complement template was the most recent series of instructions copied. If so, it executed the next instruction, otherwise it skips it. This instruction is commonly used for an organism to determine when it has finished producing its offspring.";
-    InstDescribe["g"]="mov-head: This instruction will cause the IP to jump to the position in memory of the flow-head.";
-    InstDescribe["h"]="jmp-head: This instruction will read in the value of the CX register, and the move the IP by that fixed amount through the organism's memory.";
-    InstDescribe["i"]="get-head: This instruction will copy the position of the IP into the CX register.";
-    InstDescribe["j"]="set-flow: This instruction moves the flow-head to the memory position denoted in the CX register.";
-    InstDescribe["k"]="shift-r: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the right by one. In effect, it divides the value stored in the register by two, rounding down.";
-    InstDescribe["l"]="shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.";
-    InstDescribe["m"]="inc: This instruction reads in the content of the BX register and increments it by one.";
-    InstDescribe["n"]="dec: This instruction reads in the content of the BX register and decrements it by one.";
-    InstDescribe["o"]="pop: This instruction removes the top element from the active stack, and places it into the BX register.";
-    InstDescribe["p"]="push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.";
-    InstDescribe["q"]="swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.";
-    InstDescribe["r"]="swap: This instruction swaps the contents of the BX register with its complement.";
-    InstDescribe["s"]="add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.";
-    InstDescribe["t"]="sub: This instruction reads in the contents of the BX and CX registers and subtracts CX from BX (respectively). The result of this operation is then placed in the BX register.";
-    InstDescribe["u"]="nand: This instruction reads in the contents of the BX and CX registers (each of which are 32-bit numbers) and performs a bitwise nand operation on them. The result of this operation is placed in the BX register. Note that this is the only logic operation provided in the basic avida instruction set.";
-    InstDescribe["v"]="h-copy: This instruction reads the contents of the organism's memory at the position of the read-head, and copy that to the position of the write-head. If a non-zero copy mutation rate is set, a test will be made based on this probability to determine if a mutation occurs. If so, a random instruction (chosen from the full set with equal probability) will be placed at the write-head instead.";
-    InstDescribe["w"]="h-alloc: This instruction allocates additional memory for the organism up to the maximum it is allowed to use for its offspring.";
-    InstDescribe["x"]="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
-    InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
-    InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
+av.color.orgColorCodes = {};
+    av.color.orgColorCodes["mutate_old"] = "#00FF00"; //color Meter green
+    av.color.orgColorCodes["mutate"] = "#000000"; //color black
+    av.color.orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
+    av.color.orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
+    av.color.orgColorCodes["headFill"] = "#AAAAAA"; //lighter grey
+    av.color.orgColorCodes["WRITE"] = "#FA0022"; //color Meter  red
+    av.color.orgColorCodes["READ"] = "#5300FF"; //color Meter  blue
+    av.color.orgColorCodes["FLOW"] = "#00FF00"; //color Meter  green
+    av.color.orgColorCodes["IP"] = "#000000"; //color Meter  black
+    av.color.orgColorCodes["outline"] = "#666666"; //grey
+    av.color.orgColorCodes["0"] = "#BBBBFF"; //lt blue
+    av.color.orgColorCodes["1"] = "#F5FF00"; //color Meter yellow
+av.color.headCodes = {};
+    av.color.headCodes["READ"] = "R";
+    av.color.headCodes["WRITE"] = "W";
+    av.color.headCodes["FLOW"] = "F";
+    av.color.headCodes["IP"] = "I";
+av.color.InstDescribe = {};
+    av.color.InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    av.color.InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    av.color.InstDescribe["c"]="nop-C is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
+    av.color.InstDescribe["d"]="if-n-equ: This instruction compares the BX register to its complement. If they are not equal, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If they are equal, that next instruction is skipped.";
+    av.color.InstDescribe["e"]="if-less: This instruction compares the BX register to its complement. If BX is the lesser of the pair, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If it is greater or equal, then that next instruction is skipped.";
+    av.color.InstDescribe["f"]="if-label: This instruction reads in the template that follows it, and tests if its complement template was the most recent series of instructions copied. If so, it executed the next instruction, otherwise it skips it. This instruction is commonly used for an organism to determine when it has finished producing its offspring.";
+    av.color.InstDescribe["g"]="mov-head: This instruction will cause the IP to jump to the position in memory of the flow-head.";
+    av.color.InstDescribe["h"]="jmp-head: This instruction will read in the value of the CX register, and the move the IP by that fixed amount through the organism's memory.";
+    av.color.InstDescribe["i"]="get-head: This instruction will copy the position of the IP into the CX register.";
+    av.color.InstDescribe["j"]="set-flow: This instruction moves the flow-head to the memory position denoted in the CX register.";
+    av.color.InstDescribe["k"]="shift-r: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the right by one. In effect, it divides the value stored in the register by two, rounding down.";
+    av.color.InstDescribe["l"]="shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.";
+    av.color.InstDescribe["m"]="inc: This instruction reads in the content of the BX register and increments it by one.";
+    av.color.InstDescribe["n"]="dec: This instruction reads in the content of the BX register and decrements it by one.";
+    av.color.InstDescribe["o"]="pop: This instruction removes the top element from the active stack, and places it into the BX register.";
+    av.color.InstDescribe["p"]="push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.";
+    av.color.InstDescribe["q"]="swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.";
+    av.color.InstDescribe["r"]="swap: This instruction swaps the contents of the BX register with its complement.";
+    av.color.InstDescribe["s"]="add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.";
+    av.color.InstDescribe["t"]="sub: This instruction reads in the contents of the BX and CX registers and subtracts CX from BX (respectively). The result of this operation is then placed in the BX register.";
+    av.color.InstDescribe["u"]="nand: This instruction reads in the contents of the BX and CX registers (each of which are 32-bit numbers) and performs a bitwise nand operation on them. The result of this operation is placed in the BX register. Note that this is the only logic operation provided in the basic avida instruction set.";
+    av.color.InstDescribe["v"]="h-copy: This instruction reads the contents of the organism's memory at the position of the read-head, and copy that to the position of the write-head. If a non-zero copy mutation rate is set, a test will be made based on this probability to determine if a mutation occurs. If so, a random instruction (chosen from the full set with equal probability) will be placed at the write-head instead.";
+    av.color.InstDescribe["w"]="h-alloc: This instruction allocates additional memory for the organism up to the maximum it is allowed to use for its offspring.";
+    av.color.InstDescribe["x"]="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
+    av.color.InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
+    av.color.InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
 
-//color maps to delete later
-var rainbow = [
-  'rgb(0, 0, 0)'
-  ,'rgb(0, 64, 0)'
-  ,'rgb(0, 68, 5)'
-  ,'rgb(0, 72, 10)'
-  ,'rgb(0, 75, 15)'
-  ,'rgb(0, 79, 20)'
-  ,'rgb(0, 83, 26)'
-  ,'rgb(0, 87, 31)'
-  ,'rgb(0, 91, 36)'
-  ,'rgb(0, 95, 41)'
-  ,'rgb(0, 98, 46)'
-  ,'rgb(0, 102, 51)'
-  ,'rgb(0, 106, 56)'
-  ,'rgb(0, 110, 61)'
-  ,'rgb(0, 114, 66)'
-  ,'rgb(0, 117, 71)'
-  ,'rgb(0, 121, 77)'
-  ,'rgb(0, 125, 82)'
-  ,'rgb(0, 129, 87)'
-  ,'rgb(0, 133, 92)'
-  ,'rgb(0, 137, 97)'
-  ,'rgb(0, 140, 102)'
-  ,'rgb(0, 144, 107)'
-  ,'rgb(0, 148, 112)'
-  ,'rgb(0, 152, 117)'
-  ,'rgb(0, 156, 122)'
-  ,'rgb(0, 160, 128)'
-  ,'rgb(0, 163, 133)'
-  ,'rgb(0, 167, 138)'
-  ,'rgb(0, 171, 143)'
-  ,'rgb(0, 175, 148)'
-  ,'rgb(0, 179, 153)'
-  ,'rgb(0, 182, 158)'
-  ,'rgb(0, 186, 163)'
-  ,'rgb(0, 190, 168)'
-  ,'rgb(0, 194, 173)'
-  ,'rgb(0, 198, 179)'
-  ,'rgb(0, 202, 184)'
-  ,'rgb(0, 205, 189)'
-  ,'rgb(0, 209, 194)'
-  ,'rgb(0, 213, 199)'
-  ,'rgb(0, 217, 204)'
-  ,'rgb(0, 221, 209)'
-  ,'rgb(0, 224, 214)'
-  ,'rgb(0, 228, 219)'
-  ,'rgb(0, 232, 224)'
-  ,'rgb(0, 236, 230)'
-  ,'rgb(0, 240, 235)'
-  ,'rgb(0, 244, 240)'
-  ,'rgb(0, 247, 245)'
-  ,'rgb(0, 251, 250)'
-  ,'rgb(0, 255, 255)'
-  ,'rgb(0, 250, 255)'
-  ,'rgb(0, 245, 255)'
-  ,'rgb(0, 240, 255)'
-  ,'rgb(0, 235, 255)'
-  ,'rgb(0, 230, 255)'
-  ,'rgb(0, 224, 255)'
-  ,'rgb(0, 219, 255)'
-  ,'rgb(0, 214, 255)'
-  ,'rgb(0, 209, 255)'
-  ,'rgb(0, 204, 255)'
-  ,'rgb(0, 199, 255)'
-  ,'rgb(0, 194, 255)'
-  ,'rgb(0, 189, 255)'
-  ,'rgb(0, 184, 255)'
-  ,'rgb(0, 179, 255)'
-  ,'rgb(0, 173, 255)'
-  ,'rgb(0, 168, 255)'
-  ,'rgb(0, 163, 255)'
-  ,'rgb(0, 158, 255)'
-  ,'rgb(0, 153, 255)'
-  ,'rgb(0, 148, 255)'
-  ,'rgb(0, 143, 255)'
-  ,'rgb(0, 138, 255)'
-  ,'rgb(0, 133, 255)'
-  ,'rgb(0, 128, 255)'
-  ,'rgb(0, 122, 255)'
-  ,'rgb(0, 117, 255)'
-  ,'rgb(0, 112, 255)'
-  ,'rgb(0, 107, 255)'
-  ,'rgb(0, 102, 255)'
-  ,'rgb(0, 97, 255)'
-  ,'rgb(0, 92, 255)'
-  ,'rgb(0, 87, 255)'
-  ,'rgb(0, 82, 255)'
-  ,'rgb(0, 77, 255)'
-  ,'rgb(0, 71, 255)'
-  ,'rgb(0, 66, 255)'
-  ,'rgb(0, 61, 255)'
-  ,'rgb(0, 56, 255)'
-  ,'rgb(0, 51, 255)'
-  ,'rgb(0, 46, 255)'
-  ,'rgb(0, 41, 255)'
-  ,'rgb(0, 36, 255)'
-  ,'rgb(0, 31, 255)'
-  ,'rgb(0, 26, 255)'
-  ,'rgb(0, 20, 255)'
-  ,'rgb(0, 15, 255)'
-  ,'rgb(0, 10, 255)'
-  ,'rgb(0, 5, 255)'
-  ,'rgb(0, 0, 255)'
-  ,'rgb(5, 0, 255)'
-  ,'rgb(10, 0, 255)'
-  ,'rgb(15, 0, 255)'
-  ,'rgb(20, 0, 255)'
-  ,'rgb(26, 0, 255)'
-  ,'rgb(31, 0, 255)'
-  ,'rgb(36, 0, 255)'
-  ,'rgb(41, 0, 255)'
-  ,'rgb(46, 0, 255)'
-  ,'rgb(51, 0, 255)'
-  ,'rgb(56, 0, 255)'
-  ,'rgb(61, 0, 255)'
-  ,'rgb(66, 0, 255)'
-  ,'rgb(71, 0, 255)'
-  ,'rgb(77, 0, 255)'
-  ,'rgb(82, 0, 255)'
-  ,'rgb(87, 0, 255)'
-  ,'rgb(92, 0, 255)'
-  ,'rgb(97, 0, 255)'
-  ,'rgb(102, 0, 255)'
-  ,'rgb(107, 0, 255)'
-  ,'rgb(112, 0, 255)'
-  ,'rgb(117, 0, 255)'
-  ,'rgb(122, 0, 255)'
-  ,'rgb(128, 0, 255)'
-  ,'rgb(133, 0, 255)'
-  ,'rgb(138, 0, 255)'
-  ,'rgb(143, 0, 255)'
-  ,'rgb(148, 0, 255)'
-  ,'rgb(153, 0, 255)'
-  ,'rgb(158, 0, 255)'
-  ,'rgb(163, 0, 255)'
-  ,'rgb(168, 0, 255)'
-  ,'rgb(173, 0, 255)'
-  ,'rgb(179, 0, 255)'
-  ,'rgb(184, 0, 255)'
-  ,'rgb(189, 0, 255)'
-  ,'rgb(194, 0, 255)'
-  ,'rgb(199, 0, 255)'
-  ,'rgb(204, 0, 255)'
-  ,'rgb(209, 0, 255)'
-  ,'rgb(214, 0, 255)'
-  ,'rgb(219, 0, 255)'
-  ,'rgb(224, 0, 255)'
-  ,'rgb(230, 0, 255)'
-  ,'rgb(235, 0, 255)'
-  ,'rgb(240, 0, 255)'
-  ,'rgb(245, 0, 255)'
-  ,'rgb(250, 0, 255)'
-  ,'rgb(255, 0, 255)'
-  ,'rgb(255, 0, 250)'
-  ,'rgb(255, 0, 245)'
-  ,'rgb(255, 0, 240)'
-  ,'rgb(255, 0, 235)'
-  ,'rgb(255, 0, 230)'
-  ,'rgb(255, 0, 224)'
-  ,'rgb(255, 0, 219)'
-  ,'rgb(255, 0, 214)'
-  ,'rgb(255, 0, 209)'
-  ,'rgb(255, 0, 204)'
-  ,'rgb(255, 0, 199)'
-  ,'rgb(255, 0, 194)'
-  ,'rgb(255, 0, 189)'
-  ,'rgb(255, 0, 184)'
-  ,'rgb(255, 0, 179)'
-  ,'rgb(255, 0, 173)'
-  ,'rgb(255, 0, 168)'
-  ,'rgb(255, 0, 163)'
-  ,'rgb(255, 0, 158)'
-  ,'rgb(255, 0, 153)'
-  ,'rgb(255, 0, 148)'
-  ,'rgb(255, 0, 143)'
-  ,'rgb(255, 0, 138)'
-  ,'rgb(255, 0, 133)'
-  ,'rgb(255, 0, 128)'
-  ,'rgb(255, 0, 122)'
-  ,'rgb(255, 0, 117)'
-  ,'rgb(255, 0, 112)'
-  ,'rgb(255, 0, 107)'
-  ,'rgb(255, 0, 102)'
-  ,'rgb(255, 0, 97)'
-  ,'rgb(255, 0, 92)'
-  ,'rgb(255, 0, 87)'
-  ,'rgb(255, 0, 82)'
-  ,'rgb(255, 0, 77)'
-  ,'rgb(255, 0, 71)'
-  ,'rgb(255, 0, 66)'
-  ,'rgb(255, 0, 61)'
-  ,'rgb(255, 0, 56)'
-  ,'rgb(255, 0, 51)'
-  ,'rgb(255, 0, 46)'
-  ,'rgb(255, 0, 41)'
-  ,'rgb(255, 0, 36)'
-  ,'rgb(255, 0, 31)'
-  ,'rgb(255, 0, 26)'
-  ,'rgb(255, 0, 20)'
-  ,'rgb(255, 0, 15)'
-  ,'rgb(255, 0, 10)'
-  ,'rgb(255, 0, 5)'
-  ,'rgb(255, 0, 0)'
-  ,'rgb(255, 5, 0)'
-  ,'rgb(255, 10, 0)'
-  ,'rgb(255, 15, 0)'
-  ,'rgb(255, 20, 0)'
-  ,'rgb(255, 26, 0)'
-  ,'rgb(255, 31, 0)'
-  ,'rgb(255, 36, 0)'
-  ,'rgb(255, 41, 0)'
-  ,'rgb(255, 46, 0)'
-  ,'rgb(255, 51, 0)'
-  ,'rgb(255, 56, 0)'
-  ,'rgb(255, 61, 0)'
-  ,'rgb(255, 66, 0)'
-  ,'rgb(255, 71, 0)'
-  ,'rgb(255, 77, 0)'
-  ,'rgb(255, 82, 0)'
-  ,'rgb(255, 87, 0)'
-  ,'rgb(255, 92, 0)'
-  ,'rgb(255, 97, 0)'
-  ,'rgb(255, 102, 0)'
-  ,'rgb(255, 107, 0)'
-  ,'rgb(255, 112, 0)'
-  ,'rgb(255, 117, 0)'
-  ,'rgb(255, 122, 0)'
-  ,'rgb(255, 128, 0)'
-  ,'rgb(255, 133, 0)'
-  ,'rgb(255, 138, 0)'
-  ,'rgb(255, 143, 0)'
-  ,'rgb(255, 148, 0)'
-  ,'rgb(255, 153, 0)'
-  ,'rgb(255, 158, 0)'
-  ,'rgb(255, 163, 0)'
-  ,'rgb(255, 168, 0)'
-  ,'rgb(255, 173, 0)'
-  ,'rgb(255, 179, 0)'
-  ,'rgb(255, 184, 0)'
-  ,'rgb(255, 189, 0)'
-  ,'rgb(255, 194, 0)'
-  ,'rgb(255, 199, 0)'
-  ,'rgb(255, 204, 0)'
-  ,'rgb(255, 209, 0)'
-  ,'rgb(255, 214, 0)'
-  ,'rgb(255, 219, 0)'
-  ,'rgb(255, 224, 0)'
-  ,'rgb(255, 230, 0)'
-  ,'rgb(255, 235, 0)'
-  ,'rgb(255, 240, 0)'
-  ,'rgb(255, 245, 0)'
-  ,'rgb(255, 250, 0)'
-  ,'rgb(255, 255, 0)'
+// -------------------------------------------------------- Not in use -------------------------------------------------
+av.color.notNuse = {};
+
+av.color.notNuse.Viridis12 = [
+  'rgb( 72,  31, 112)' //1
+  ,'rgb(200, 224,  32)' //b
+  ,'rgb( 32, 164, 134)' //7
+  ,'rgb( 59,  82, 139)' //3
+  ,'rgb( 92, 200,  99)' //9
+  ,'rgb( 40, 124, 142)' //5
+  ,'rgb(253, 231,  37)' //c
+  ,'rgb( 53, 183, 121)' //8
+  ,'rgb( 68,  58, 131)' //2
+  ,'rgb( 33, 145, 140)' //6
+  ,'rgb(144, 215,  67)' //a
+  ,'rgb( 49, 104, 142)' //b
 ];
 
-var rainbow2 = [
-  'rgb(0, 0, 0)'
-  ,'rgb(0, 64, 0)'
-  ,'rgb(0, 68, 0)'
-  ,'rgb(0, 72, 0)'
-  ,'rgb(0, 75, 0)'
-  ,'rgb(0, 79, 0)'
-  ,'rgb(0, 83, 0)'
-  ,'rgb(0, 87, 0)'
-  ,'rgb(0, 91, 0)'
-  ,'rgb(0, 95, 0)'
-  ,'rgb(0, 98, 0)'
-  ,'rgb(0, 102, 0)'
-  ,'rgb(0, 106, 0)'
-  ,'rgb(0, 110, 0)'
-  ,'rgb(0, 114, 0)'
-  ,'rgb(0, 117, 0)'
-  ,'rgb(0, 121, 0)'
-  ,'rgb(0, 125, 0)'
-  ,'rgb(0, 129, 0)'
-  ,'rgb(0, 133, 0)'
-  ,'rgb(0, 137, 0)'
-  ,'rgb(0, 140, 0)'
-  ,'rgb(0, 144, 0)'
-  ,'rgb(0, 148, 0)'
-  ,'rgb(0, 152, 0)'
-  ,'rgb(0, 156, 0)'
-  ,'rgb(0, 160, 0)'
-  ,'rgb(0, 163, 0)'
-  ,'rgb(0, 167, 0)'
-  ,'rgb(0, 171, 0)'
-  ,'rgb(0, 175, 0)'
-  ,'rgb(0, 179, 0)'
-  ,'rgb(0, 182, 0)'
-  ,'rgb(0, 186, 0)'
-  ,'rgb(0, 190, 0)'
-  ,'rgb(0, 194, 0)'
-  ,'rgb(0, 198, 0)'
-  ,'rgb(0, 202, 0)'
-  ,'rgb(0, 205, 0)'
-  ,'rgb(0, 209, 0)'
-  ,'rgb(0, 213, 0)'
-  ,'rgb(0, 217, 0)'
-  ,'rgb(0, 221, 0)'
-  ,'rgb(0, 224, 0)'
-  ,'rgb(0, 228, 0)'
-  ,'rgb(0, 232, 0)'
-  ,'rgb(0, 236, 0)'
-  ,'rgb(0, 240, 0)'
-  ,'rgb(0, 244, 0)'
-  ,'rgb(0, 247, 0)'
-  ,'rgb(0, 251, 0)'
-  ,'rgb(0, 255, 0)'
-  ,'rgb(0, 250, 5)'
-  ,'rgb(0, 245, 10)'
-  ,'rgb(0, 240, 15)'
-  ,'rgb(0, 235, 20)'
-  ,'rgb(0, 230, 26)'
-  ,'rgb(0, 224, 31)'
-  ,'rgb(0, 219, 36)'
-  ,'rgb(0, 214, 41)'
-  ,'rgb(0, 209, 46)'
-  ,'rgb(0, 204, 51)'
-  ,'rgb(0, 199, 56)'
-  ,'rgb(0, 194, 61)'
-  ,'rgb(0, 189, 66)'
-  ,'rgb(0, 184, 71)'
-  ,'rgb(0, 179, 77)'
-  ,'rgb(0, 173, 82)'
-  ,'rgb(0, 168, 87)'
-  ,'rgb(0, 163, 92)'
-  ,'rgb(0, 158, 97)'
-  ,'rgb(0, 153, 102)'
-  ,'rgb(0, 148, 107)'
-  ,'rgb(0, 143, 112)'
-  ,'rgb(0, 138, 117)'
-  ,'rgb(0, 133, 122)'
-  ,'rgb(0, 128, 128)'
-  ,'rgb(0, 122, 133)'
-  ,'rgb(0, 117, 138)'
-  ,'rgb(0, 112, 143)'
-  ,'rgb(0, 107, 148)'
-  ,'rgb(0, 102, 153)'
-  ,'rgb(0, 97, 158)'
-  ,'rgb(0, 92, 163)'
-  ,'rgb(0, 87, 168)'
-  ,'rgb(0, 82, 173)'
-  ,'rgb(0, 77, 179)'
-  ,'rgb(0, 71, 184)'
-  ,'rgb(0, 66, 189)'
-  ,'rgb(0, 61, 194)'
-  ,'rgb(0, 56, 199)'
-  ,'rgb(0, 51, 204)'
-  ,'rgb(0, 46, 209)'
-  ,'rgb(0, 41, 214)'
-  ,'rgb(0, 36, 219)'
-  ,'rgb(0, 31, 224)'
-  ,'rgb(0, 26, 230)'
-  ,'rgb(0, 20, 235)'
-  ,'rgb(0, 15, 240)'
-  ,'rgb(0, 10, 245)'
-  ,'rgb(0, 5, 250)'
-  ,'rgb(0, 0, 255)'
-  ,'rgb(5, 0, 255)'
-  ,'rgb(10, 0, 255)'
-  ,'rgb(15, 0, 255)'
-  ,'rgb(20, 0, 255)'
-  ,'rgb(26, 0, 255)'
-  ,'rgb(31, 0, 255)'
-  ,'rgb(36, 0, 255)'
-  ,'rgb(41, 0, 255)'
-  ,'rgb(46, 0, 255)'
-  ,'rgb(51, 0, 255)'
-  ,'rgb(56, 0, 255)'
-  ,'rgb(61, 0, 255)'
-  ,'rgb(66, 0, 255)'
-  ,'rgb(71, 0, 255)'
-  ,'rgb(77, 0, 255)'
-  ,'rgb(82, 0, 255)'
-  ,'rgb(87, 0, 255)'
-  ,'rgb(92, 0, 255)'
-  ,'rgb(97, 0, 255)'
-  ,'rgb(102, 0, 255)'
-  ,'rgb(107, 0, 255)'
-  ,'rgb(112, 0, 255)'
-  ,'rgb(117, 0, 255)'
-  ,'rgb(122, 0, 255)'
-  ,'rgb(128, 0, 255)'
-  ,'rgb(133, 0, 255)'
-  ,'rgb(138, 0, 255)'
-  ,'rgb(143, 0, 255)'
-  ,'rgb(148, 0, 255)'
-  ,'rgb(153, 0, 255)'
-  ,'rgb(158, 0, 255)'
-  ,'rgb(163, 0, 255)'
-  ,'rgb(168, 0, 255)'
-  ,'rgb(173, 0, 255)'
-  ,'rgb(179, 0, 255)'
-  ,'rgb(184, 0, 255)'
-  ,'rgb(189, 0, 255)'
-  ,'rgb(194, 0, 255)'
-  ,'rgb(199, 0, 255)'
-  ,'rgb(204, 0, 255)'
-  ,'rgb(209, 0, 255)'
-  ,'rgb(214, 0, 255)'
-  ,'rgb(219, 0, 255)'
-  ,'rgb(224, 0, 255)'
-  ,'rgb(230, 0, 255)'
-  ,'rgb(235, 0, 255)'
-  ,'rgb(240, 0, 255)'
-  ,'rgb(245, 0, 255)'
-  ,'rgb(250, 0, 255)'
-  ,'rgb(255, 0, 255)'
-  ,'rgb(255, 0, 250)'
-  ,'rgb(255, 0, 245)'
-  ,'rgb(255, 0, 240)'
-  ,'rgb(255, 0, 235)'
-  ,'rgb(255, 0, 230)'
-  ,'rgb(255, 0, 224)'
-  ,'rgb(255, 0, 219)'
-  ,'rgb(255, 0, 214)'
-  ,'rgb(255, 0, 209)'
-  ,'rgb(255, 0, 204)'
-  ,'rgb(255, 0, 199)'
-  ,'rgb(255, 0, 194)'
-  ,'rgb(255, 0, 189)'
-  ,'rgb(255, 0, 184)'
-  ,'rgb(255, 0, 179)'
-  ,'rgb(255, 0, 173)'
-  ,'rgb(255, 0, 168)'
-  ,'rgb(255, 0, 163)'
-  ,'rgb(255, 0, 158)'
-  ,'rgb(255, 0, 153)'
-  ,'rgb(255, 0, 148)'
-  ,'rgb(255, 0, 143)'
-  ,'rgb(255, 0, 138)'
-  ,'rgb(255, 0, 133)'
-  ,'rgb(255, 0, 128)'
-  ,'rgb(255, 0, 122)'
-  ,'rgb(255, 0, 117)'
-  ,'rgb(255, 0, 112)'
-  ,'rgb(255, 0, 107)'
-  ,'rgb(255, 0, 102)'
-  ,'rgb(255, 0, 97)'
-  ,'rgb(255, 0, 92)'
-  ,'rgb(255, 0, 87)'
-  ,'rgb(255, 0, 82)'
-  ,'rgb(255, 0, 77)'
-  ,'rgb(255, 0, 71)'
-  ,'rgb(255, 0, 66)'
-  ,'rgb(255, 0, 61)'
-  ,'rgb(255, 0, 56)'
-  ,'rgb(255, 0, 51)'
-  ,'rgb(255, 0, 46)'
-  ,'rgb(255, 0, 41)'
-  ,'rgb(255, 0, 36)'
-  ,'rgb(255, 0, 31)'
-  ,'rgb(255, 0, 26)'
-  ,'rgb(255, 0, 20)'
-  ,'rgb(255, 0, 15)'
-  ,'rgb(255, 0, 10)'
-  ,'rgb(255, 0, 5)'
-  ,'rgb(255, 0, 0)'
-  ,'rgb(255, 5, 0)'
-  ,'rgb(255, 10, 0)'
-  ,'rgb(255, 15, 0)'
-  ,'rgb(255, 20, 0)'
-  ,'rgb(255, 26, 0)'
-  ,'rgb(255, 31, 0)'
-  ,'rgb(255, 36, 0)'
-  ,'rgb(255, 41, 0)'
-  ,'rgb(255, 46, 0)'
-  ,'rgb(255, 51, 0)'
-  ,'rgb(255, 56, 0)'
-  ,'rgb(255, 61, 0)'
-  ,'rgb(255, 66, 0)'
-  ,'rgb(255, 71, 0)'
-  ,'rgb(255, 77, 0)'
-  ,'rgb(255, 82, 0)'
-  ,'rgb(255, 87, 0)'
-  ,'rgb(255, 92, 0)'
-  ,'rgb(255, 97, 0)'
-  ,'rgb(255, 102, 0)'
-  ,'rgb(255, 107, 0)'
-  ,'rgb(255, 112, 0)'
-  ,'rgb(255, 117, 0)'
-  ,'rgb(255, 122, 0)'
-  ,'rgb(255, 128, 0)'
-  ,'rgb(255, 133, 0)'
-  ,'rgb(255, 138, 0)'
-  ,'rgb(255, 143, 0)'
-  ,'rgb(255, 148, 0)'
-  ,'rgb(255, 153, 0)'
-  ,'rgb(255, 158, 0)'
-  ,'rgb(255, 163, 0)'
-  ,'rgb(255, 168, 0)'
-  ,'rgb(255, 173, 0)'
-  ,'rgb(255, 179, 0)'
-  ,'rgb(255, 184, 0)'
-  ,'rgb(255, 189, 0)'
-  ,'rgb(255, 194, 0)'
-  ,'rgb(255, 199, 0)'
-  ,'rgb(255, 204, 0)'
-  ,'rgb(255, 209, 0)'
-  ,'rgb(255, 214, 0)'
-  ,'rgb(255, 219, 0)'
-  ,'rgb(255, 224, 0)'
-  ,'rgb(255, 230, 0)'
-  ,'rgb(255, 235, 0)'
-  ,'rgb(255, 240, 0)'
-  ,'rgb(255, 245, 0)'
-  ,'rgb(255, 250, 0)'
-  ,'rgb(255, 255, 0)'
+av.color.notNuse.OriginalCubehelixCmap = [
+  'rgb(2, 1, 2)'
+  , 'rgb(3, 1, 3)'
+  , 'rgb(5, 2, 5)'
+  , 'rgb(7, 2, 6)'
+  , 'rgb(8, 3, 8)'
+  , 'rgb(10, 3, 10)'
+  , 'rgb(11, 4, 12)'
+  , 'rgb(12, 5, 14)'
+  , 'rgb(14, 5, 15)'
+  , 'rgb(15, 6, 17)'
+  , 'rgb(16, 7, 19)'
+  , 'rgb(17, 8, 21)'
+  , 'rgb(18, 8, 23)'
+  , 'rgb(19, 9, 25)'
+  , 'rgb(20, 10, 27)'
+  , 'rgb(21, 11, 29)'
+  , 'rgb(22, 12, 31)'
+  , 'rgb(22, 13, 33)'
+  , 'rgb(23, 14, 35)'
+  , 'rgb(24, 15, 37)'
+  , 'rgb(24, 16, 39)'
+  , 'rgb(25, 17, 41)'
+  , 'rgb(25, 18, 43)'
+  , 'rgb(25, 19, 45)'
+  , 'rgb(26, 20, 47)'
+  , 'rgb(26, 22, 49)'
+  , 'rgb(26, 23, 51)'
+  , 'rgb(26, 24, 53)'
+  , 'rgb(27, 26, 54)'
+  , 'rgb(27, 27, 56)'
+  , 'rgb(27, 28, 58)'
+  , 'rgb(27, 30, 59)'
+  , 'rgb(27, 31, 61)'
+  , 'rgb(26, 33, 62)'
+  , 'rgb(26, 34, 64)'
+  , 'rgb(26, 36, 65)'
+  , 'rgb(26, 37, 67)'
+  , 'rgb(26, 39, 68)'
+  , 'rgb(25, 40, 69)'
+  , 'rgb(25, 42, 70)'
+  , 'rgb(25, 44, 71)'
+  , 'rgb(25, 45, 72)'
+  , 'rgb(24, 47, 73)'
+  , 'rgb(24, 49, 74)'
+  , 'rgb(24, 50, 75)'
+  , 'rgb(23, 52, 76)'
+  , 'rgb(23, 54, 76)'
+  , 'rgb(23, 55, 77)'
+  , 'rgb(22, 57, 77)'
+  , 'rgb(22, 59, 78)'
+  , 'rgb(22, 61, 78)'
+  , 'rgb(22, 63, 78)'
+  , 'rgb(22, 64, 78)'
+  , 'rgb(21, 66, 78)'
+  , 'rgb(21, 68, 79)'
+  , 'rgb(21, 70, 78)'
+  , 'rgb(21, 71, 78)'
+  , 'rgb(21, 73, 78)'
+  , 'rgb(21, 75, 78)'
+  , 'rgb(21, 77, 78)'
+  , 'rgb(21, 78, 77)'
+  , 'rgb(21, 80, 77)'
+  , 'rgb(21, 82, 76)'
+  , 'rgb(22, 83, 76)'
+  , 'rgb(22, 85, 75)'
+  , 'rgb(22, 87, 75)'
+  , 'rgb(23, 88, 74)'
+  , 'rgb(23, 90, 73)'
+  , 'rgb(24, 91, 72)'
+  , 'rgb(25, 93, 72)'
+  , 'rgb(25, 94, 71)'
+  , 'rgb(26, 96, 70)'
+  , 'rgb(27, 97, 69)'
+  , 'rgb(28, 99, 68)'
+  , 'rgb(29, 100, 67)'
+  , 'rgb(30, 101, 66)'
+  , 'rgb(31, 103, 65)'
+  , 'rgb(32, 104, 64)'
+  , 'rgb(34, 105, 63)'
+  , 'rgb(35, 106, 62)'
+  , 'rgb(37, 107, 61)'
+  , 'rgb(38, 108, 60)'
+  , 'rgb(40, 109, 59)'
+  , 'rgb(42, 110, 58)'
+  , 'rgb(43, 111, 57)'
+  , 'rgb(45, 112, 56)'
+  , 'rgb(47, 113, 55)'
+  , 'rgb(49, 114, 54)'
+  , 'rgb(51, 115, 53)'
+  , 'rgb(53, 116, 53)'
+  , 'rgb(56, 116, 52)'
+  , 'rgb(58, 117, 51)'
+  , 'rgb(60, 118, 50)'
+  , 'rgb(63, 118, 50)'
+  , 'rgb(65, 119, 49)'
+  , 'rgb(68, 119, 49)'
+  , 'rgb(70, 120, 48)'
+  , 'rgb(73, 120, 48)'
+  , 'rgb(76, 121, 47)'
+  , 'rgb(78, 121, 47)'
+  , 'rgb(81, 121, 47)'
+  , 'rgb(84, 121, 47)'
+  , 'rgb(87, 122, 47)'
+  , 'rgb(90, 122, 47)'
+  , 'rgb(93, 122, 47)'
+  , 'rgb(96, 122, 47)'
+  , 'rgb(99, 122, 47)'
+  , 'rgb(102, 122, 48)'
+  , 'rgb(105, 123, 48)'
+  , 'rgb(108, 123, 49)'
+  , 'rgb(111, 123, 49)'
+  , 'rgb(114, 123, 50)'
+  , 'rgb(117, 123, 51)'
+  , 'rgb(120, 123, 52)'
+  , 'rgb(123, 122, 53)'
+  , 'rgb(126, 122, 54)'
+  , 'rgb(129, 122, 55)'
+  , 'rgb(132, 122, 56)'
+  , 'rgb(135, 122, 58)'
+  , 'rgb(138, 122, 59)'
+  , 'rgb(141, 122, 61)'
+  , 'rgb(144, 122, 62)'
+  , 'rgb(147, 122, 64)'
+  , 'rgb(150, 122, 66)'
+  , 'rgb(153, 121, 68)'
+  , 'rgb(156, 121, 70)'
+  , 'rgb(159, 121, 72)'
+  , 'rgb(161, 121, 74)'
+  , 'rgb(164, 121, 76)'
+  , 'rgb(167, 121, 79)'
+  , 'rgb(169, 121, 81)'
+  , 'rgb(172, 121, 84)'
+  , 'rgb(174, 121, 86)'
+  , 'rgb(177, 121, 89)'
+  , 'rgb(179, 121, 91)'
+  , 'rgb(181, 121, 94)'
+  , 'rgb(183, 121, 97)'
+  , 'rgb(185, 121, 100)'
+  , 'rgb(188, 121, 103)'
+  , 'rgb(190, 121, 106)'
+  , 'rgb(191, 121, 109)'
+  , 'rgb(193, 122, 112)'
+  , 'rgb(195, 122, 115)'
+  , 'rgb(197, 122, 118)'
+  , 'rgb(198, 122, 121)'
+  , 'rgb(200, 123, 124)'
+  , 'rgb(201, 123, 127)'
+  , 'rgb(202, 124, 131)'
+  , 'rgb(204, 124, 134)'
+  , 'rgb(205, 125, 137)'
+  , 'rgb(206, 125, 140)'
+  , 'rgb(207, 126, 143)'
+  , 'rgb(208, 126, 147)'
+  , 'rgb(209, 127, 150)'
+  , 'rgb(209, 128, 153)'
+  , 'rgb(210, 128, 156)'
+  , 'rgb(211, 129, 160)'
+  , 'rgb(211, 130, 163)'
+  , 'rgb(211, 131, 166)'
+  , 'rgb(212, 132, 169)'
+  , 'rgb(212, 133, 172)'
+  , 'rgb(212, 134, 175)'
+  , 'rgb(212, 135, 178)'
+  , 'rgb(213, 136, 181)'
+  , 'rgb(213, 137, 184)'
+  , 'rgb(212, 138, 187)'
+  , 'rgb(212, 140, 190)'
+  , 'rgb(212, 141, 193)'
+  , 'rgb(212, 142, 195)'
+  , 'rgb(212, 144, 198)'
+  , 'rgb(211, 145, 201)'
+  , 'rgb(211, 146, 203)'
+  , 'rgb(210, 148, 206)'
+  , 'rgb(210, 149, 208)'
+  , 'rgb(210, 151, 210)'
+  , 'rgb(209, 152, 212)'
+  , 'rgb(208, 154, 215)'
+  , 'rgb(208, 156, 217)'
+  , 'rgb(207, 157, 219)'
+  , 'rgb(207, 159, 221)'
+  , 'rgb(206, 161, 223)'
+  , 'rgb(205, 162, 224)'
+  , 'rgb(204, 164, 226)'
+  , 'rgb(204, 166, 228)'
+  , 'rgb(203, 168, 229)'
+  , 'rgb(202, 169, 231)'
+  , 'rgb(202, 171, 232)'
+  , 'rgb(201, 173, 233)'
+  , 'rgb(200, 175, 234)'
+  , 'rgb(200, 177, 236)'
+  , 'rgb(199, 178, 237)'
+  , 'rgb(198, 180, 238)'
+  , 'rgb(198, 182, 238)'
+  , 'rgb(197, 184, 239)'
+  , 'rgb(197, 186, 240)'
+  , 'rgb(196, 188, 241)'
+  , 'rgb(196, 189, 241)'
+  , 'rgb(195, 191, 242)'
+  , 'rgb(195, 193, 242)'
+  , 'rgb(194, 195, 242)'
+  , 'rgb(194, 197, 243)'
+  , 'rgb(194, 198, 243)'
+  , 'rgb(194, 200, 243)'
+  , 'rgb(193, 202, 243)'
+  , 'rgb(193, 204, 243)'
+  , 'rgb(193, 205, 243)'
+  , 'rgb(193, 207, 243)'
+  , 'rgb(193, 209, 243)'
+  , 'rgb(194, 210, 243)'
+  , 'rgb(194, 212, 243)'
+  , 'rgb(194, 214, 243)'
+  , 'rgb(194, 215, 243)'
+  , 'rgb(195, 217, 243)'
+  , 'rgb(195, 218, 242)'
+  , 'rgb(196, 220, 242)'
+  , 'rgb(196, 221, 242)'
+  , 'rgb(197, 223, 242)'
+  , 'rgb(198, 224, 241)'
+  , 'rgb(198, 225, 241)'
+  , 'rgb(199, 227, 241)'
+  , 'rgb(200, 228, 240)'
+  , 'rgb(201, 229, 240)'
+  , 'rgb(202, 231, 240)'
+  , 'rgb(203, 232, 240)'
+  , 'rgb(204, 233, 239)'
+  , 'rgb(205, 234, 239)'
+  , 'rgb(207, 235, 239)'
+  , 'rgb(208, 236, 239)'
+  , 'rgb(209, 237, 239)'
+  , 'rgb(211, 238, 239)'
+  , 'rgb(212, 239, 239)'
+  , 'rgb(214, 240, 239)'
+  , 'rgb(215, 241, 239)'
+  , 'rgb(217, 242, 239)'
+  , 'rgb(219, 243, 239)'
+  , 'rgb(220, 243, 239)'
+  , 'rgb(222, 244, 239)'
+  , 'rgb(224, 245, 240)'
+  , 'rgb(226, 246, 240)'
+  , 'rgb(227, 246, 240)'
+  , 'rgb(229, 247, 241)'
+  , 'rgb(231, 248, 241)'
+  , 'rgb(233, 248, 242)'
+  , 'rgb(235, 249, 243)'
+  , 'rgb(237, 250, 244)'
+  , 'rgb(239, 250, 244)'
+  , 'rgb(240, 251, 245)'
+  , 'rgb(242, 251, 246)'
+  , 'rgb(244, 252, 247)'
+  , 'rgb(246, 252, 248)'
+  , 'rgb(248, 253, 250)'
+  , 'rgb(250, 253, 251)'
+  , 'rgb(251, 254, 252)'
+  , 'rgb(253, 254, 254)'
+  , 'rgb(255, 255, 255)'
 ];
 
-var rainbow3 = [
-  'rgb(0, 0, 0)'
-  ,'rgb(0, 64, 0)'
-  ,'rgb(0, 68, 0)'
-  ,'rgb(1, 72, 1)'
-  ,'rgb(1, 75, 1)'
-  ,'rgb(2, 79, 2)'
-  ,'rgb(2, 83, 2)'
-  ,'rgb(2, 87, 2)'
-  ,'rgb(3, 91, 3)'
-  ,'rgb(3, 95, 3)'
-  ,'rgb(4, 98, 4)'
-  ,'rgb(4, 102, 4)'
-  ,'rgb(4, 106, 4)'
-  ,'rgb(5, 110, 5)'
-  ,'rgb(5, 114, 5)'
-  ,'rgb(6, 117, 6)'
-  ,'rgb(6, 121, 6)'
-  ,'rgb(6, 125, 6)'
-  ,'rgb(7, 129, 7)'
-  ,'rgb(7, 133, 7)'
-  ,'rgb(8, 137, 8)'
-  ,'rgb(8, 140, 8)'
-  ,'rgb(8, 144, 8)'
-  ,'rgb(9, 148, 9)'
-  ,'rgb(9, 152, 9)'
-  ,'rgb(10, 156, 10)'
-  ,'rgb(10, 160, 10)'
-  ,'rgb(10, 163, 10)'
-  ,'rgb(11, 167, 11)'
-  ,'rgb(11, 171, 11)'
-  ,'rgb(12, 175, 12)'
-  ,'rgb(12, 179, 12)'
-  ,'rgb(12, 182, 12)'
-  ,'rgb(13, 186, 13)'
-  ,'rgb(13, 190, 13)'
-  ,'rgb(14, 194, 14)'
-  ,'rgb(14, 198, 14)'
-  ,'rgb(14, 202, 14)'
-  ,'rgb(15, 205, 15)'
-  ,'rgb(15, 209, 15)'
-  ,'rgb(16, 213, 16)'
-  ,'rgb(16, 217, 16)'
-  ,'rgb(16, 221, 16)'
-  ,'rgb(17, 224, 17)'
-  ,'rgb(17, 228, 17)'
-  ,'rgb(18, 232, 18)'
-  ,'rgb(18, 236, 18)'
-  ,'rgb(18, 240, 18)'
-  ,'rgb(19, 244, 19)'
-  ,'rgb(19, 247, 19)'
-  ,'rgb(20, 251, 20)'
-  ,'rgb(20, 255, 20)'
-  ,'rgb(20, 251, 25)'
-  ,'rgb(21, 246, 29)'
-  ,'rgb(21, 242, 34)'
-  ,'rgb(22, 238, 39)'
-  ,'rgb(22, 234, 44)'
-  ,'rgb(22, 229, 48)'
-  ,'rgb(23, 225, 53)'
-  ,'rgb(23, 221, 58)'
-  ,'rgb(24, 216, 62)'
-  ,'rgb(24, 212, 67)'
-  ,'rgb(24, 208, 72)'
-  ,'rgb(25, 203, 76)'
-  ,'rgb(25, 199, 81)'
-  ,'rgb(26, 195, 86)'
-  ,'rgb(26, 191, 91)'
-  ,'rgb(26, 186, 95)'
-  ,'rgb(27, 182, 100)'
-  ,'rgb(27, 178, 105)'
-  ,'rgb(28, 173, 109)'
-  ,'rgb(28, 169, 114)'
-  ,'rgb(28, 165, 119)'
-  ,'rgb(29, 160, 123)'
-  ,'rgb(29, 156, 128)'
-  ,'rgb(30, 152, 133)'
-  ,'rgb(30, 148, 138)'
-  ,'rgb(30, 143, 142)'
-  ,'rgb(31, 139, 147)'
-  ,'rgb(31, 135, 152)'
-  ,'rgb(32, 130, 156)'
-  ,'rgb(32, 126, 161)'
-  ,'rgb(32, 122, 166)'
-  ,'rgb(33, 117, 170)'
-  ,'rgb(33, 113, 175)'
-  ,'rgb(34, 109, 180)'
-  ,'rgb(34, 105, 185)'
-  ,'rgb(34, 100, 189)'
-  ,'rgb(35, 96, 194)'
-  ,'rgb(35, 92, 199)'
-  ,'rgb(36, 87, 203)'
-  ,'rgb(36, 83, 208)'
-  ,'rgb(36, 79, 213)'
-  ,'rgb(37, 74, 217)'
-  ,'rgb(37, 70, 222)'
-  ,'rgb(38, 66, 227)'
-  ,'rgb(38, 62, 232)'
-  ,'rgb(38, 57, 236)'
-  ,'rgb(39, 53, 241)'
-  ,'rgb(39, 49, 246)'
-  ,'rgb(40, 44, 250)'
-  ,'rgb(40, 40, 255)'
-  ,'rgb(44, 40, 255)'
-  ,'rgb(49, 41, 255)'
-  ,'rgb(53, 41, 255)'
-  ,'rgb(57, 42, 255)'
-  ,'rgb(62, 42, 255)'
-  ,'rgb(66, 42, 255)'
-  ,'rgb(70, 43, 255)'
-  ,'rgb(74, 43, 255)'
-  ,'rgb(79, 44, 255)'
-  ,'rgb(83, 44, 255)'
-  ,'rgb(87, 44, 255)'
-  ,'rgb(92, 45, 255)'
-  ,'rgb(96, 45, 255)'
-  ,'rgb(100, 46, 255)'
-  ,'rgb(105, 46, 255)'
-  ,'rgb(109, 46, 255)'
-  ,'rgb(113, 47, 255)'
-  ,'rgb(117, 47, 255)'
-  ,'rgb(122, 48, 255)'
-  ,'rgb(126, 48, 255)'
-  ,'rgb(130, 48, 255)'
-  ,'rgb(135, 49, 255)'
-  ,'rgb(139, 49, 255)'
-  ,'rgb(143, 50, 255)'
-  ,'rgb(148, 50, 255)'
-  ,'rgb(152, 50, 255)'
-  ,'rgb(156, 51, 255)'
-  ,'rgb(160, 51, 255)'
-  ,'rgb(165, 52, 255)'
-  ,'rgb(169, 52, 255)'
-  ,'rgb(173, 52, 255)'
-  ,'rgb(178, 53, 255)'
-  ,'rgb(182, 53, 255)'
-  ,'rgb(186, 54, 255)'
-  ,'rgb(191, 54, 255)'
-  ,'rgb(195, 54, 255)'
-  ,'rgb(199, 55, 255)'
-  ,'rgb(203, 55, 255)'
-  ,'rgb(208, 56, 255)'
-  ,'rgb(212, 56, 255)'
-  ,'rgb(216, 56, 255)'
-  ,'rgb(221, 57, 255)'
-  ,'rgb(225, 57, 255)'
-  ,'rgb(229, 58, 255)'
-  ,'rgb(234, 58, 255)'
-  ,'rgb(238, 58, 255)'
-  ,'rgb(242, 59, 255)'
-  ,'rgb(246, 59, 255)'
-  ,'rgb(251, 60, 255)'
-  ,'rgb(255, 60, 255)'
-  ,'rgb(255, 60, 252)'
-  ,'rgb(255, 61, 248)'
-  ,'rgb(255, 61, 245)'
-  ,'rgb(255, 62, 241)'
-  ,'rgb(255, 62, 238)'
-  ,'rgb(255, 62, 234)'
-  ,'rgb(255, 63, 231)'
-  ,'rgb(255, 63, 227)'
-  ,'rgb(255, 64, 224)'
-  ,'rgb(255, 64, 220)'
-  ,'rgb(255, 64, 217)'
-  ,'rgb(255, 65, 213)'
-  ,'rgb(255, 65, 210)'
-  ,'rgb(255, 66, 206)'
-  ,'rgb(255, 66, 203)'
-  ,'rgb(255, 66, 199)'
-  ,'rgb(255, 67, 196)'
-  ,'rgb(255, 67, 192)'
-  ,'rgb(255, 68, 189)'
-  ,'rgb(255, 68, 185)'
-  ,'rgb(255, 68, 182)'
-  ,'rgb(255, 69, 178)'
-  ,'rgb(255, 69, 175)'
-  ,'rgb(255, 70, 171)'
-  ,'rgb(255, 70, 168)'
-  ,'rgb(255, 70, 164)'
-  ,'rgb(255, 71, 161)'
-  ,'rgb(255, 71, 157)'
-  ,'rgb(255, 72, 154)'
-  ,'rgb(255, 72, 150)'
-  ,'rgb(255, 72, 147)'
-  ,'rgb(255, 73, 143)'
-  ,'rgb(255, 73, 140)'
-  ,'rgb(255, 74, 136)'
-  ,'rgb(255, 74, 133)'
-  ,'rgb(255, 74, 129)'
-  ,'rgb(255, 75, 126)'
-  ,'rgb(255, 75, 122)'
-  ,'rgb(255, 76, 119)'
-  ,'rgb(255, 76, 115)'
-  ,'rgb(255, 76, 112)'
-  ,'rgb(255, 77, 108)'
-  ,'rgb(255, 77, 105)'
-  ,'rgb(255, 78, 101)'
-  ,'rgb(255, 78, 98)'
-  ,'rgb(255, 78, 94)'
-  ,'rgb(255, 79, 91)'
-  ,'rgb(255, 79, 87)'
-  ,'rgb(255, 80, 84)'
-  ,'rgb(255, 80, 80)'
-  ,'rgb(255, 84, 80)'
-  ,'rgb(255, 87, 81)'
-  ,'rgb(255, 91, 81)'
-  ,'rgb(255, 94, 82)'
-  ,'rgb(255, 98, 82)'
-  ,'rgb(255, 101, 82)'
-  ,'rgb(255, 105, 83)'
-  ,'rgb(255, 108, 83)'
-  ,'rgb(255, 112, 84)'
-  ,'rgb(255, 115, 84)'
-  ,'rgb(255, 119, 84)'
-  ,'rgb(255, 122, 85)'
-  ,'rgb(255, 126, 85)'
-  ,'rgb(255, 129, 86)'
-  ,'rgb(255, 133, 86)'
-  ,'rgb(255, 136, 86)'
-  ,'rgb(255, 140, 87)'
-  ,'rgb(255, 143, 87)'
-  ,'rgb(255, 147, 88)'
-  ,'rgb(255, 150, 88)'
-  ,'rgb(255, 154, 88)'
-  ,'rgb(255, 157, 89)'
-  ,'rgb(255, 161, 89)'
-  ,'rgb(255, 164, 90)'
-  ,'rgb(255, 168, 90)'
-  ,'rgb(255, 171, 90)'
-  ,'rgb(255, 175, 91)'
-  ,'rgb(255, 178, 91)'
-  ,'rgb(255, 182, 92)'
-  ,'rgb(255, 185, 92)'
-  ,'rgb(255, 189, 92)'
-  ,'rgb(255, 192, 93)'
-  ,'rgb(255, 196, 93)'
-  ,'rgb(255, 199, 94)'
-  ,'rgb(255, 203, 94)'
-  ,'rgb(255, 206, 94)'
-  ,'rgb(255, 210, 95)'
-  ,'rgb(255, 213, 95)'
-  ,'rgb(255, 217, 96)'
-  ,'rgb(255, 220, 96)'
-  ,'rgb(255, 224, 96)'
-  ,'rgb(255, 227, 97)'
-  ,'rgb(255, 231, 97)'
-  ,'rgb(255, 234, 98)'
-  ,'rgb(255, 238, 98)'
-  ,'rgb(255, 241, 98)'
-  ,'rgb(255, 245, 99)'
-  ,'rgb(255, 248, 99)'
-  ,'rgb(255, 252, 100)'
-  ,'rgb(255, 255, 100)'
-];
-
+//----------------------------------------------------------------------------------------------------------------------
 /* web sites about color 
  *  * 
- * colors I used for colorblind distinct colors
+ * colors I used for av.color.parentColorList distinct colors
  * http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
  * 
  * https://personal.sron.nl/~pault/   has set of 9 color blind freindly distinct colors
@@ -2112,7 +1306,7 @@ var rainbow3 = [
  * 
  * http://stackoverflow.com/questions/3620663/color-theory-how-to-convert-munsell-hvc-to-rgb-hsb-hsl
  *
- * Color tools to see what image looks like to colorblind from Mike
+ * Color tools to see what image looks like to av.color.parentColorList from Mike
  *  http://www.color-blindness.com/coblis-color-blindness-simulator/
  *  http://www.vischeck.com/vischeck/vischeckImage.php
 */

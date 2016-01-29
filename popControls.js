@@ -1,9 +1,10 @@
 // *********************************************************************************************************************
 //                                       Population page script
 // *********************************************************************************************************************
+// ptd = PeTri Dish
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
-function popBoxSwap() {
+av.ptd.popBoxSwap = function () {
   'use strict';
   if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
     //var height = $("#mapBlock").innerHeight() - 6;
@@ -21,7 +22,7 @@ function popBoxSwap() {
   }
 }
 
-av.grd.popWorldState_ui = function () {
+av.ptd.popWorldStateUi = function () {
   'use strict';
   av.grd.runState = 'world';
   //Disable some of the options on the Setup page
@@ -39,7 +40,7 @@ av.grd.popWorldState_ui = function () {
   dijit.byId("mnFzPopulation").attr("disabled", false);
 }
 
-av.grd.popRunningState_ui = function (dnd, grd) {
+av.ptd.popRunningStateUi = function () {
   'use strict';
   av.grd.runState = 'started';  //the run has now started
   //Disable some of the options on the Setup page
@@ -70,24 +71,24 @@ av.grd.popRunningState_ui = function (dnd, grd) {
   dijit.byId("mnFzPopulation").attr("disabled", false);
 }
 
-function popNewExState(dnd, fzr, grd, parents) {
+av.ptd.popNewExState = function () {
   'use strict';
   //set configuation to default
   var fname = "@default";
-  dnd.activeConfig.selectAll().deleteSelectedNodes();
-  dnd.activeConfig.insertNodes(false, [{data: fname, type: ['c']}]);
-  dnd.activeConfig.sync();
-  var domId = Object.keys(dnd.activeConfig.map)[0];
+  av.dnd.activeConfig.selectAll().deleteSelectedNodes();
+  av.dnd.activeConfig.insertNodes(false, [{data: fname, type: ['c']}]);
+  av.dnd.activeConfig.sync();
+  var domId = Object.keys(av.dnd.activeConfig.map)[0];
   fzr.actConfig.domID = domId;
   fzr.actConfig.name = fname;
   fzr.actConfig.type = 'c';
   fzr.actConfig._id = 'c0';
   // clear parents
-  dnd.ancestorBox.accept['g'] = 1;
-  dnd.activeConfig.accept['c'] = 1;
-  dnd.ancestorBox.isSource = true;
-  dnd.ancestorBox.copyOnly = false;
-  dnd.activeConfig.isSource = true;
+  av.dnd.ancestorBox.accept['g'] = 1;
+  av.dnd.activeConfig.accept['c'] = 1;
+  av.dnd.ancestorBox.isSource = true;
+  av.dnd.ancestorBox.copyOnly = false;
+  av.dnd.activeConfig.isSource = true;
   $("#muteSlide").slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
   dijit.byId("sizeCols").attr("disabled", false);
   dijit.byId("sizeRows").attr("disabled", false);
@@ -107,7 +108,7 @@ function popNewExState(dnd, fzr, grd, parents) {
   dijit.byId("demoRadio").attr("disabled", false);
 
   //reset Ancestor Color stack
-  parents.Colors = ColorBlind;
+  parents.Colors = av.color.parentColorList;
   parents.Colors.reverse();
   //set run/stop and drop down menu to the 'stopped' state
   dijit.byId("mnCnPause").attr("disabled", true);
@@ -126,10 +127,10 @@ function popNewExState(dnd, fzr, grd, parents) {
 
   TimeLabel.textContent = 0;
   //avidaCFG2form(fileStr);
-  dnd.ancestorBox.selectAll().deleteSelectedNodes();
-  dnd.ancestorBox.sync();
-  dnd.gridCanvas.selectAll().deleteSelectedNodes();
-  dnd.gridCanvas.sync();
+  av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
+  av.dnd.ancestorBox.sync();
+  av.dnd.gridCanvas.selectAll().deleteSelectedNodes();
+  av.dnd.gridCanvas.sync();
 
   //Update data for Selected Organism Type
   document.getElementById("nameLabel").textContent = "-";
@@ -181,7 +182,7 @@ function popNewExState(dnd, fzr, grd, parents) {
 //----------------------------------------------------------------------------------------------------------------------
 
 //Freeze the selected organism
-function FrOrganismFn(trigger) {
+av.ptd.FrOrganismFn = function (trigger) {
   'use strict';
   var fzName = 'new';
   var parentName = "";
@@ -200,7 +201,7 @@ function FrOrganismFn(trigger) {
     fzName = prompt("Please name the organism", "newOrganism");
     console.log('source unknwon', trigger);
   }
-  fzName = getUniqueName(fzName, av.dnd.fzOrgan);
+  fzName = av.dnd.getUniqueName(fzName, av.dnd.fzOrgan);
   if (null != fzName) {
     //insert new item into the freezer.
     av.dnd.fzOrgan.insertNodes(false, [{data: fzName, type: ['g']}]);
@@ -214,16 +215,16 @@ function FrOrganismFn(trigger) {
     av.fzr.file['g' + av.fzr.gNum + '/genome.seq'] = gene;
     av.fzr.file['g' + av.fzr.gNum + '/entryname.txt'] = fzName;
     av.fzr.gNum++;
-    av.dnd.contextMenu(av.fzr, av.dnd.fzOrgan, domid);
+    av.dnd.contextMenu(av.dnd.fzOrgan, domid);
   }
 }
 
-function FrConfigFn() {
+av.ptd.FrConfigFn = function () {
   'use strict';
   var fzName = prompt("Please name the new configuration", "newConfig");
   if (fzName) {
     //var namelist = dojo.query('> .dojoDndItem', 'fzConfig');  console.log('namelist', namelist); not in use, but does show another way to get data
-    fzName = getUniqueName(fzName, av.dnd.fzConfig);
+    fzName = av.dnd.getUniqueName(fzName, av.dnd.fzConfig);
     if (null != fzName) {
       av.dnd.fzConfig.insertNodes(false, [{data: fzName, type: ['c']}]);
       av.dnd.fzConfig.sync();
@@ -234,7 +235,7 @@ function FrConfigFn() {
       makeFzrConfig(av.fzr, av.fzr.cNum, av.parents);
       av.fzr.cNum++;
       //Create context menu for right-click on this item
-      av.dnd.contextMenu(av.fzr, av.dnd.fzConfig, domid);
+      av.dnd.contextMenu(av.dnd.fzConfig, domid);
     }
   }
 }
@@ -244,7 +245,7 @@ av.ptd.FrPopulationFn = function () {
   'use strict';
   var fzName = prompt("Please name the new population", "newPopulation");
   if (fzName) {
-    fzName = getUniqueName(fzName, av.dnd.fzWorld);
+    fzName = av.dnd.getUniqueName(fzName, av.dnd.fzWorld);
     if (null != fzName) {
       av.dnd.fzWorld.insertNodes(false, [{data: fzName, type: ['w']}]);
       av.dnd.fzWorld.sync();
@@ -256,12 +257,12 @@ av.ptd.FrPopulationFn = function () {
       makeFzrWorld(av.fzr, av.fzr.wNum, av.parents);
       av.fzr.wNum++;
       //Create context menu for right-click on this item
-      av.dnd.contextMenu(av.fzr, av.dnd.fzWorld, domid);
+      av.dnd.contextMenu(av.dnd.fzWorld, domid);
     }
   }
 }
 
-av.grd.toggle = function (button) {
+av.ptd.bitToggle = function (button) {
   'use strict';
   if ('on' == document.getElementById(button).value) {
     document.getElementById(button).value = 'off';
@@ -283,10 +284,10 @@ av.grd.toggle = function (button) {
 
 //----------------------------------------------------------------------------------------------------------------------
 // code below this line is not in use tiba delete later
-//writes data to Environmental Settings page based on the content of dnd.activeConfig
+//writes data to Environmental Settings page based on the content of av.dnd.activeConfig
 //for now this is hard coded to what would be in @default. will need a way to request data from PouchDB
 //and read the returned JSON string.
-function writeHardDefault(av) {
+av.ptd.writeHardDefault = function (av) {
   'use strict';
   dijit.byId("sizeCols").set('value', av.dft.sizeCols);
   dijit.byId("sizeRows").set('value', av.dft.sizeRows);

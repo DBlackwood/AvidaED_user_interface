@@ -171,9 +171,9 @@ require([
   dijit.byId("mnCnOrganismTrace").attr("disabled", true);
 
   // for analyze page
-  av.anl.color[0] = dictColor[dijit.byId('pop0color').value];
-  av.anl.color[1] = dictColor[dijit.byId('pop1color').value];
-  av.anl.color[2] = dictColor[dijit.byId('pop2color').value];
+  av.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
+  av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
+  av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
   av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
   av.anl.yRightTitle = dijit.byId("yRightSelect").value;
   var anaChart = new Chart("analyzeChart");
@@ -509,7 +509,7 @@ require([
     if ('activeConfig' === target.node.id) {
       var str;
       var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
-      landActiveConfig(av.dnd, pkg);  //dojoDnd
+      av.dnd.landActiveConfig(pkg);  //dojoDnd
       av.parents.clearParentsFn;
       updateSetup(av);  //fileIO
       if ('fzConfig' === pkg.source.node.id) {
@@ -529,7 +529,7 @@ require([
         str = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
         av.fio.cladeSSG2parents(str);
         //run status is no longer 'new' it is "world"
-        av.grd.popWorldState_ui();
+        av.ptd.popWorldStateUi();
       }
       if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
@@ -539,7 +539,7 @@ require([
   av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
       var num = av.fzr.cNum;
-      landFzConfig(av.dnd, av.fzr, source, nodes, target);  //needed as part of call to contextMenu
+      av.dnd.landFzConfig(source, nodes, target);  //needed as part of call to contextMenu
       if (num !== av.fzr.cNum) { makeFzrConfig(av.fzr, num, av.parents); }
       console.log('fzr', av.fzr);
     }
@@ -547,20 +547,20 @@ require([
 
   av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
-      landFzOrgan(av.dnd, av.fzr, av.parents,source, nodes, target);
+      av.dnd.landFzOrgan(source, nodes, target);
     }
   });
 
   av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
-      landAncestorBox(av.dnd, av.fzr, av.parents,source, nodes, target);
+      av.dnd.landAncestorBox(source, nodes, target);
       console.log('ancestorBox', av.dnd.ancestorBox);
     }
   });
 
   av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
-      landGridCanvas(av, av.dnd, av.fzr, av.grd, av.parents, source, nodes, target);
+      av.dnd.landGridCanvas(source, nodes, target);
       av.grd.drawGridSetupFn();
     }
   });
@@ -568,8 +568,8 @@ require([
   av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
-      landOrganCanvas(av.dnd, av.fzr, source, nodes, target);
-      av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+      av.dnd.landOrganCanvas(source, nodes, target);
+      av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -578,7 +578,7 @@ require([
     if ('organIcon' == target.node.id) {
       console.log('target', target.node.id, '; source',source.node.id, '-------------------------------------------------------------------');
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
-      landOrganIcon(av, source, nodes, target);
+      av.dnd.landOrganIcon(source, nodes, target);
       //Change to Organism Page
       av.ui.mainBoxSwap("organismBlock");
       organismCanvasHolderSize();
@@ -587,15 +587,15 @@ require([
       document.getElementById("ExecuteAbout").style.height = height + "px";
       document.getElementById("ExecuteJust").style.width = "100%";
       document.getElementById("ExecuteAbout").style.width = "100%";
-      av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+      av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
 
   av.dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
-      landActiveOrgan(av.dnd, av.fzr, source, nodes, target);
-      av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+      av.dnd.landActiveOrgan(source, nodes, target);
+      av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
 
@@ -605,7 +605,7 @@ require([
       remove.type = '';
       remove.dir = '';
       if (av.debug.dnd) console.log('trashCan: s, t', source, target);
-      remove = landTrashCan(av.dnd, av.fzr, av.parents, source, nodes, target);
+      remove = av.dnd.landTrashCan(source, nodes, target);
       if ('' != remove.type) {
         //removeFzrItem(av.fzr, remove.dir, remove.type);
         remove.dir = av.fzr.dir[remove.domid];
@@ -617,7 +617,7 @@ require([
   av.dnd.analyzeChart.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('analyzeChart' == target.node.id) {
       if (av.debug.dnd) console.log('analyzeChart: s, t', source, target);
-      landanalyzeChart(av.dnd, source, nodes, target);
+      av.dnd.landanalyzeChart(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -625,7 +625,7 @@ require([
   av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('graphPop0' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop0: s, t', source, target);
-      landgraphPop0(av.dnd, source, nodes, target);
+      av.dnd.landgraphPop0(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -633,7 +633,7 @@ require([
   av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
-      landgraphPop1(av.dnd, source, nodes, target);
+      av.dnd.landgraphPop1(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -641,7 +641,7 @@ require([
   av.dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
       if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
-      landgraphPop2(av.dnd, source, nodes, target);
+      av.dnd.landgraphPop2(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -654,7 +654,7 @@ require([
       pkg.nodes = nodes;
       pkg.copy = copy;
       pkg.target = target;
-      av.dnd.landFzWorldFn(av.dnd, av.fzr, pkg);   //will never be called as fzPopDish is the only source for the popDish type.
+      av.dnd.landFzWorldFn(pkg);   //will never be called as fzPopDish is the only source for the popDish type.
       //if (num !== fzr.cNum) {makeFzrWorld(av.fzr, num, parents);} //need to implement this to get data in files
     }
   });
@@ -690,7 +690,7 @@ require([
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById("PopSetupButton").onclick = function () {
-    popBoxSwap();   //in popControls.js
+    av.ptd.popBoxSwap();   //in popControls.js
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
       cellConflict(av.grd.cols, av.grd.rows, av.grd, av.parents);
       av.grd.drawGridSetupFn();
@@ -738,7 +738,7 @@ require([
     else { // setup for a new run by sending config data to avida
       if ('started' != av.grd.runState) {
         //change ui parameters for the correct state when the avida population has started running
-        av.grd.popRunningState_ui();
+        av.ptd.popRunningStateUi();
 
         //collect setup data to send to avida
         av.fio.form2cfgFolder(av.fzr, av.parents);          //fileDataWrite.js
@@ -823,9 +823,9 @@ require([
     dijit.byId("mnCnOrganismTrace").attr("disabled", true);
     dijit.byId("mnFzOrganism").attr("disabled", true);
     // send reset to Avida adaptor
-    av.msg.doReset(av.fio);
+    av.msg.doReset();
     //Enable the options on the Setup page
-    popNewExState(av.dnd, av.fzr, av.grd, av.parents);
+    av.ptd.popNewExState();
     //Clear grid settings
     av.parents.clearParentsFn();
     // reset values in population settings based on a 'file' @default
@@ -833,7 +833,7 @@ require([
     updateSetup(av);
 
     // write if @default not found - need to figure out a test for this
-    // writeHardDefault(av.dft);
+    // av.ptd.writeHardDefault(av);
 
     // re-write grid if that page is visible
     av.grd.popChartFn();
@@ -861,18 +861,18 @@ require([
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.*/
   document.getElementById("freezeButton").onclick = function () {
-    if ('prepping' == av.grd.runState) FrConfigFn();
+    if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
     else fzDialog.show();
   };
 
   dijit.byId("FzConfiguration").on("Click", function () {
     fzDialog.hide();
-    FrConfigFn();
+    av.ptd.FrConfigFn();
   });
 
   //Drop down menu to save a configuration item
   dijit.byId("mnFzConfig").on("Click", function () {
-    FrConfigFn()
+    av.ptd.FrConfigFn()
   });
 
   //button to freeze a population
@@ -887,12 +887,12 @@ require([
 
   //Buttons on drop down menu to save an organism
   dijit.byId("mnFzOrganism").on("Click", function () {
-    FrOrganismFn('selected')
+    av.ptd.FrOrganismFn('selected')
   });
 
   //Buttons on drop down menu to save an offspring
   dijit.byId("mnFzOffspring").on("Click", function () {
-    FrOrganismFn('offspring')
+    av.ptd.FrOrganismFn('offspring')
   });
 
   // End of Freezer functions
@@ -999,10 +999,10 @@ require([
           if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.ind.rotate[hh], '; xy', labX, labY);
           av.ind.ctx.beginPath();
           av.ind.ctx.arc(labX, labY, 1.1 * av.ind.smallR, 0, 2 * Math.PI);
-          av.ind.ctx.fillStyle = dictColor['White'];  //use if av.ind.dna is a string
+          av.ind.ctx.fillStyle = av.color.dictColor['White'];  //use if av.ind.dna is a string
           av.ind.ctx.fill();   //required to render fill
           //draw number;
-          av.ind.ctx.fillStyle = dictColor["Black"];
+          av.ind.ctx.fillStyle = av.color.dictColor["Black"];
           av.ind.ctx.font = av.ind.fontsize + "px Arial";
           var txtW = av.ind.ctx.measureText(instructionNum).width;  //use if av.ind.dna is a string
           //txtW = av.ind.ctx.measureText(av.ind.dna[gg][ith]).width;     //use if av.ind.dna is an array
@@ -1172,7 +1172,7 @@ require([
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
         console.log('from parent', av.parent, '; fzr', av.fzr);
-        av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+        av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
     }
     else if ('offspring' == av.mouse.Picked) {
@@ -1193,7 +1193,7 @@ require([
         document.getElementById("ExecuteAbout").style.height = height + "px";
         document.getElementById("ExecuteJust").style.width = "100%";
         document.getElementById("ExecuteAbout").style.width = "100%";
-        av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+        av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
       /*      else if ('fzOrgan' == target) {
        //make_database_entry if using a database (av.fio, av.fzr);
@@ -1410,15 +1410,15 @@ require([
   // *******************************************************************************************************************
   if (av.debug.root) console.log('before logic buttons');
 
-  document.getElementById("notButton").onclick = function () {av.grd.toggle('notButton');} //av.grd.toggle in popControls.js
-  document.getElementById("nanButton").onclick = function () {av.grd.toggle('nanButton');}
-  document.getElementById("andButton").onclick = function () {av.grd.toggle('andButton');}
-  document.getElementById("ornButton").onclick = function () {av.grd.toggle('ornButton');}
-  document.getElementById("oroButton").onclick = function () {av.grd.toggle('oroButton');}
-  document.getElementById("antButton").onclick = function () {av.grd.toggle('antButton');}
-  document.getElementById("norButton").onclick = function () {av.grd.toggle('norButton');}
-  document.getElementById("xorButton").onclick = function () {av.grd.toggle('xorButton');}
-  document.getElementById("equButton").onclick = function () {av.grd.toggle('equButton');}
+  document.getElementById("notButton").onclick = function () {av.ptd.bitToggle('notButton');} //av.ptd.bitToggle in popControls.js
+  document.getElementById("nanButton").onclick = function () {av.ptd.bitToggle('nanButton');}
+  document.getElementById("andButton").onclick = function () {av.ptd.bitToggle('andButton');}
+  document.getElementById("ornButton").onclick = function () {av.ptd.bitToggle('ornButton');}
+  document.getElementById("oroButton").onclick = function () {av.ptd.bitToggle('oroButton');}
+  document.getElementById("antButton").onclick = function () {av.ptd.bitToggle('antButton');}
+  document.getElementById("norButton").onclick = function () {av.ptd.bitToggle('norButton');}
+  document.getElementById("xorButton").onclick = function () {av.ptd.bitToggle('xorButton');}
+  document.getElementById("equButton").onclick = function () {av.ptd.bitToggle('equButton');}
 
   // -------------------------------------------------------------------------------------------------------------------
   //                    Population Chart   ; pop chart; popchart
@@ -1513,7 +1513,7 @@ require([
     av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
     //reset zoom power to 1
     av.grd.ZoomSlide.set("value", 1);
-    PlaceAncestors(av.parents);
+    av.parents.placeAncestors();
     //are any parents on the same cell?
     cellConflict(NewCols, NewRows, av.grd, av.parents);
   }
@@ -1582,7 +1582,7 @@ require([
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
     console.log('settings dialog closed', av.ind.settingsChanged);
-    if (av.ind.settingsChanged) av.msg.doOrgTrace(av.fio, av.fzr);
+    if (av.ind.settingsChanged) av.msg.doOrgTrace();
   });
 
   $(function slideOrganism() {
@@ -1637,7 +1637,7 @@ require([
     document.getElementById("ExecuteAbout").style.height = height + "px";
     document.getElementById("ExecuteJust").style.width = "100%";
     document.getElementById("ExecuteAbout").style.width = "100%";
-    av.msg.doOrgTrace(av.fio, av.fzr);  //request new Organism Trace from Avida and draw that.
+    av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
 
   //Put the offspring in the parent position on Organism Trace
@@ -1836,15 +1836,15 @@ require([
     av.dnd.graphPop2.selectAll().deleteSelectedNodes();
   }
   dijit.byId('pop0color').on("Change", function () {
-    Rav.anl.color[0] = dictColor[dijit.byId('pop0color').value];
+    Rav.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
     av.anl.AnaChartFn();
   });
   dijit.byId('pop1color').on("Change", function () {
-    av.anl.color[1] = dictColor[dijit.byId('pop1color').value];
+    av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
     av.anl.AnaChartFn();
   });
   dijit.byId('pop2color').on("Change", function () {
-    av.anl.color[2] = dictColor[dijit.byId('pop2color').value];
+    av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
     av.anl.AnaChartFn();
   });
 
@@ -1926,7 +1926,7 @@ require([
   };
 
   //------- not in use = example
-  //var hexColor = invertHash(dictColor);
+  //var hexColor = invertHash(av.color.dictColor);
   //var theColor = hexColor["#000000"];  //This should get 'Black'
   //console.log("theColor=", theColor);
 
@@ -2069,8 +2069,8 @@ require([
         //change from auto placed to hand placed if needed
         if ('auto' == chips.howPlaced[shrew.chipNdx]) {
           chips.howPlaced[shrew.chipNdx] = 'hand';
-          makeHandAutoNdx();
-          //PlaceAncestors(chips);
+          av.parents.makeHandAutoNdx();
+          //av.parents.placeAncestors(chips);
         }
         //console.log('auto', chips.autoNdx.length, chips.autoNdx, chips.name);
         //console.log('hand', chips.handNdx.length, chips.handNdx);

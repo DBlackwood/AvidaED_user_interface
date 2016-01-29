@@ -28,8 +28,8 @@ av.fio.addFzItem = function(dndSection, name, type, fileNum) {
 
   //create a right av.mouse-click context menu for the item just created.
   //console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id);
-  if (0 < fileNum) { av.dnd.contextMenu(av.fzr, dndSection, domid); }
-  //av.dnd.contextMenu(av.fzr, dndSection, domid);
+  if (0 < fileNum) { av.dnd.contextMenu(dndSection, domid); }
+  //av.dnd.contextMenu(dndSection, domid);
   return domid;
 }
 
@@ -116,10 +116,7 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'tr3':
     case 'update':
       if (loadConfigFlag) {
-        if ('c0/avida.cfg' == av.fio.anID) {
-          console.log('avida.cfg',av.fio.thisfile.asText());
-          avidaCFG2form(av.fio.thisfile.asText());
-        }
+        if ('c0/avida.cfg' == av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText());}
         if ('c0/environment.cfg' == av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim());}
       }
       //writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
@@ -288,9 +285,9 @@ av.fio.autoAncestorLoad = function(fileStr) {
     av.parents.domid.push(domIds[domIds.length-1]); //domid in ancestorBox used to remove if square in grid moved to trashcan
     //Find color of ancestor
     if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}
-    else { av.parents.color.push(defaultParentColor); }
+    else { av.parents.color.push(av.color.defaultParentColor); }
     av.parents.autoNdx.push(nn);
-    PlaceAncestors(av.parents);
+    av.parents.placeAncestors();
     if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], av.parents.domid[nn], av.parents.genome[nn]);
   }
 };
@@ -343,7 +340,7 @@ av.fio.handAncestorLoad = function(fileStr) {
     av.parents.domid.push(domIds[domIds.length-1]); //domid in ancestorBox used to remove if square in grid moved to trashcan
     //Find color of ancestor
     if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}
-    else { av.parents.color.push(defaultParentColor); }
+    else { av.parents.color.push(av.color.defaultParentColor); }
     av.parents.handNdx.push(nn);
     av.parents.howPlaced.push('hand');
     av.parents.genome[nn] = dict.gen[name];

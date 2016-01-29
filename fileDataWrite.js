@@ -156,7 +156,7 @@ function makeFzrOrgan(fzr) {
   makeEmDxFile(fzr, fzr.genome[ndx]._id+'/genome.seq', fzr.genome[ndx].genome);
 }
 
-function removeFzrConfig(fzr, dir) {
+av.fio.removeFzrConfig = function(fzr, dir) {
   'use strict';
   deleteFzrFile(fzr, dir+'/ancestors');
   deleteFzrFile(fzr, dir+'/ancestors_manual');
@@ -168,9 +168,9 @@ function removeFzrConfig(fzr, dir) {
   var domid = fzr.domid[dir];
   delete fzr.domid[dir];
   delete fzr.dir[domid];
-}
+};
 
-function removeFzrGenome(fzr, dir) {
+av.fio.removeFzrGenome = function (fzr, dir) {
   'use strict';
   deleteFzrFile(fzr, dir+'/entryname.txt');
   deleteFzrFile(fzr, dir+'/genome.seq');
@@ -205,7 +205,7 @@ av.fzr.removeFzrItem = function(fzr, dir, type){
       removeFzrConfig(fzr, dir);
       break;
     case 'g':
-      removeFzrGenome(fzr, dir);
+      av.fio.removeFzrGenome(fzr, dir);
       break;
     case 'w':
       removeFzrWorld(fzr, dir);

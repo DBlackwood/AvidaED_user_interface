@@ -5,8 +5,8 @@ function backgroundSquares(grd) {
     var xx = grd.marginX + grd.xOffset + ii * grd.cellWd;
     for (var jj = 0; jj < grd.rows; jj++) {
       var yy = grd.marginY + grd.yOffset + jj * grd.cellHt;
-      //boxColor = get_color0(Viridis_cmap, Math.random(), 0, 1);
-      //boxColor = get_color0(Viridis_cmap, 0.5, 0, 1);
+      //boxColor = get_color0(av.color.ViridisCmap, Math.random(), 0, 1);
+      //boxColor = get_color0(av.color.ViridisCmap, 0.5, 0, 1);
       //console.log('color=', boxColor);
       grd.cntx.fillStyle = 'rgb(40, 40, 40)';
       grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
@@ -62,7 +62,7 @@ function DrawParent(grd, parents) {
         grd.cntx.fillStyle = parents.color[ii];
       }
       else {
-        grd.cntx.fillStyle = defaultParentColor;
+        grd.cntx.fillStyle = av.color.defaultParentColor;
       }
       grd.cntx.fillRect(xx, yy, grd.cellWd - 1, grd.cellHt - 1);
       //console.log('x, y, wd, Ht', xx, yy, grd.cellWd, grd.cellHt);
@@ -102,7 +102,7 @@ function DrawKids(grd, parents) {  //Draw the children of parents
         if (null === grd.msg.ancestor.data[ii]) grd.cntx.fillStyle = '#000';
         else grd.cntx.fillStyle = '#888';
       }
-      else if (0 == grd.fill[ii]) grd.cntx.fillStyle = defaultKidColor;
+      else if (0 == grd.fill[ii]) grd.cntx.fillStyle = av.color.defaultKidColor;
       else {  //get_color0 = function(cmap, dx, d1, d2)
         grd.cntx.fillStyle = get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax);
         //console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));
@@ -321,11 +321,11 @@ function DrawGridBackground(grd) {
   grd.cntx.setTransform(1, 0, 0, 1, 0, 0);
   grd.cntx.clearRect(0, 0, grd.CanvasGrid.width, grd.CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
   //draw grey rectangle as back ground
-  grd.cntx.fillStyle = dictColor['ltGrey'];
+  grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
   grd.cntx.fillRect(0, 0, grd.CanvasGrid.width, grd.CanvasGrid.height);
 
   //grd.cntx.translate(grd.xOffset, grd.yOffset);
-  grd.cntx.fillStyle = dictColor['Black'];
+  grd.cntx.fillStyle = av.color.dictColor['Black'];
   grd.cntx.fillRect(grd.xOffset, grd.yOffset, grd.sizeX, grd.sizeY);
 
   backgroundSquares(grd);
@@ -365,7 +365,7 @@ function drawLegend(grd, parents) {
   }
   //set canvas height based on space needed
   grd.CanvasScale.height = RowHt * legendRows;
-  grd.sCtx.fillStyle = dictColor["ltGrey"];
+  grd.sCtx.fillStyle = av.color.dictColor["ltGrey"];
   grd.sCtx.fillRect(0, 0, grd.CanvasScale.width, grd.CanvasScale.height);
   var colWide = (grd.CanvasScale.width - leftPad) / legendCols
   var col = 0;
@@ -388,7 +388,7 @@ function drawLegend(grd, parents) {
 function GradientScale(grd) {
   'use strict';
   grd.CanvasScale.height = 30;
-  grd.sCtx.fillStyle = dictColor["ltGrey"];
+  grd.sCtx.fillStyle = av.color.dictColor["ltGrey"];
   grd.sCtx.fillRect(0, 0, grd.CanvasScale.width, grd.CanvasScale.height);
   var xStart = 15;
   var xEnd = grd.CanvasScale.width - 2.5 * xStart;
@@ -397,13 +397,13 @@ function GradientScale(grd) {
   var legendHt = 15;
   switch (grd.colorMap) {
     case "Viridis":
-      grd.cmap = Viridis_cmap;
+      grd.cmap = av.color.ViridisCmap;
       break;
     case 'Gnuplot2':
-      grd.cmap = Gnuplot2_cmap;
+      grd.cmap = av.color.Gnuplot2cmap;
       break;
     case 'Cubehelix':
-      grd.cmap = Cubehelix_cmap;
+      grd.cmap = av.color.cubehelixCmap;
   }
   for (var ii = 0; ii < grd.cmap.length; ii++) {
     grad.addColorStop(ii / (grd.cmap.length - 1), grd.cmap[ii]);
