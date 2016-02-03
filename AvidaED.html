@@ -34,8 +34,9 @@
   <link rel="stylesheet" href="lib/jquery-ui/themes/smoothness/jquery-ui.css">
 
   <style>@import "themes/claro/document.css";
-  @import "themes/claro/claro.css";
-  @import "AvidaED.css";</style>
+    @import "themes/claro/claro.css";
+    @import "AvidaED.css";
+  </style>
   <script>
     function aPlace2putFns() {
       console.log("initial handler in html only");
@@ -232,7 +233,7 @@
                       <td><label id="metabolicLabel"></label></td>
                     </tr>
                     <tr>
-                      <td>Gestation:</td>
+                      <td>Generation:</td>
                       <td><label id="generateLabel"></label></td>
                     </tr>
                     <tr>
@@ -318,7 +319,7 @@
                       <td><label id="aMetabolicLabel"></label></td>
                     </tr>
                     <tr>
-                      <td>Avg. Gestation:</td>
+                      <td>Avg. Generation:</td>
                       <td><label id="aGestateLabel"></label></td>
                     </tr>
                     <tr>
@@ -402,7 +403,7 @@
                  doLayout="false">
               <select data-dojo-type="dijit/form/Select" id="yaxis" data-dojo-props="name: 'yyAxis'">
                 <option value="Average Fitness" selected="selected">Average Fitness</option>
-                <option value="Average Gestation Time">Average Gestation Time</option>
+                <option value="Average Generation Length">Average Generation Length</option>
                 <option value="Average Metabolic Rate">Average Metabolic Rate</option>
                 <option value="Number of Organisms">Number of Organisms</option>
               </select>
@@ -441,7 +442,7 @@
                       Mode
                       <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
                         <option value="Fitness" selected="selected">Fitness</option>
-                        <option value="Gestation Time">Gestation Time</option>
+                        <option value="Generation Length">Generation Length</option>
                         <option value="Metabolic Rate">Metabolic Rate</option>
                         <option value="Ancestor Organism">Ancestor Organism</option>
                       </select><br/>
@@ -784,7 +785,7 @@
               <select data-dojo-type="dijit/form/Select" id="yLeftSelect" data-dojo-props="name: 'yyaxis'">
                 <option value="None">None</option>
                 <option value="Average Fitness" selected="selected">Average Fitness</option>
-                <option value="Average Gestation Time">Average Gestation Time</option>
+                <option value="Average Generation Length">Average Generation Length</option>
                 <option value="Average Metabolic Rate">Average Metabolic Rate</option>
                 <option value="Number of Organisms">Number of Organisms</option>
               </select> Thicker line; left y-axis
@@ -792,7 +793,7 @@
               <select data-dojo-type="dijit/form/Select" id="yRightSelect" data-dojo-props="name: 'yyaxis'">
                 <option value="None">None</option>
                 <option value="Average Fitness">Average Fitness</option>
-                <option value="Average Gestation Time" selected="selected">Average Gestation Time</option>
+                <option value="Average Generation Length" selected="selected">Average Generation Length</option>
                 <option value="Average Metabolic Rate">Average Metabolic Rate</option>
                 <option value="Number of Organisms">Number of Organisms</option>
               </select> Thinner line; right y-axis

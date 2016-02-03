@@ -497,7 +497,7 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
     case 'Average Fitness':
       av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].fit;
       break;
-    case 'Average Gestation Time':
+    case 'Average Generation Length':
       av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].ges;
       break;
     case 'Average Metabolic Rate':

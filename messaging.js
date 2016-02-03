@@ -93,7 +93,7 @@ av.msg.importExpr = function () {
   var request = {
     'type': 'addEvent',
     'name': 'importExpr',
-    'trigger': 'immediate',
+    'triggerType': 'immediate',
     'files': [
 //      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
 //      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
@@ -222,15 +222,15 @@ function doDbReady(fio) {
 av.msg.injectAncestors = function (fio, parents) {
   'use strict';
   var request;
-  for (var ii = 0; ii < parents.name.length; ii++) {
+  for (var ii = 0; ii < av.parents.name.length; ii++) {
     request = {
       'type': 'addEvent',
       'name': 'injectSequence',
       'start': 'now',   //was begin
       'interval': 'once',
       'args': [
-        parents.genome[ii],           //'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab',  //genome_sequence,
-        parents.AvidaNdx[ii], //cell_start,
+        av.parents.genome[ii],           //'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab',  //genome_sequence,
+        av.parents.AvidaNdx[ii], //cell_start,
         -1, //cell_end,
         -1, //default_merit,
         ii, // lineage_label,  @ancestor
@@ -247,7 +247,7 @@ av.msg.updatePopStats = function (grd, msg) {
   'use strict';
   var place = 2;
   document.getElementById("TimeLabel").textContent = msg.update.formatNum(0) + " updates";
-  grd.updateNum = msg.update;
+  av.grd.updateNum = msg.update;
   document.getElementById("popSizeLabel").textContent = msg.organisms.formatNum(0);
   document.getElementById("aFitLabel").textContent = msg.ave_fitness.formatNum(2);
   if (msg.ave_metabolic_rate > 1000) place = 0;
@@ -287,13 +287,13 @@ updateLogicAve = function (grd, msg){
     av.ptd.logGnl[msg.update] = 0;
     av.ptd.logMet[msg.update] = 0;
     av.ptd.logNum[msg.update] = 0;
-    //console.log('out_', grd.out );
-    //console.log('gest', grd.msg.gestation.data);
-    for (var ii=0; ii < grd.out.length; ii++){
-      if (0 < grd.out[ii]) {
-        av.ptd.logFit[msg.update] += grd.msg.fitness.data[ii];
-        av.ptd.logGnl[msg.update] += grd.msg.gestation.data[ii];
-        av.ptd.logMet[msg.update] += grd.msg.metabolism.data[ii];
+    //console.log('out_', av.grd.out );
+    //console.log('gest', av.grd.msg.gestation.data);
+    for (var ii=0; ii < av.grd.out.length; ii++){
+      if (0 < av.grd.out[ii]) {
+        av.ptd.logFit[msg.update] += av.grd.msg.fitness.data[ii];
+        av.ptd.logGnl[msg.update] += av.grd.msg.gestation.data[ii];
+        av.ptd.logMet[msg.update] += av.grd.msg.metabolism.data[ii];
         av.ptd.logNum[msg.update]++;
       }
     }
@@ -322,16 +322,16 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
   if (null == msg.age) document.getElementById("ageLabel").textContent = '-';
     else document.getElementById("ageLabel").textContent = msg.age;
   if (null === msg.ancestor) {
-    //console.log('grd.msg', grd.msg);
+    //console.log('av.grd.msg', av.grd.msg);
     if (av.debug.msg) console.log('msg.ancestor === null_______________________________________________________');
-    if ('undefined' != typeof grd.msg.ancestor) {
-      if (null === grd.msg.ancestor.data[grd.selectedNdx])
+    if ('undefined' != typeof av.grd.msg.ancestor) {
+      if (null === av.grd.msg.ancestor.data[av.grd.selectedNdx])
         document.getElementById("ancestorLabel").textContent = '-';
-      else document.getElementById("ancestorLabel").textContent = parents.name[grd.msg.ancestor.data[grd.selectedNdx]];
+      else document.getElementById("ancestorLabel").textContent = av.parents.name[av.grd.msg.ancestor.data[av.grd.selectedNdx]];
     }
     else document.getElementById("ancestorLabel").textContent = '-';
   }
-  else document.getElementById("ancestorLabel").textContent = parents.name[msg.ancestor];
+  else document.getElementById("ancestorLabel").textContent = av.parents.name[msg.ancestor];
   //add + or - to text of logic function
   if (null != msg.tasks) {
     if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";
@@ -387,13 +387,13 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
   if (av.debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
 
   av.msg.fillColorBlock(grd, msg, parents);
-  if (av.debug.msg) console.log('Kidstatus', grd.kidStatus);
-  if ('getgenome' == grd.kidStatus) {
+  if (av.debug.msg) console.log('Kidstatus', av.grd.kidStatus);
+  if ('getgenome' == av.grd.kidStatus) {
     if (av.debug.msg) console.log('in kidStatus');
-    grd.kidStatus = "havegenome";
-    grd.kidName = msg.genotypeName;
-    grd.kidGenome = msg.genome;
-    console.log('genome',grd.kidGenome, '-------------------');
+    av.grd.kidStatus = "havegenome";
+    av.grd.kidName = msg.genotypeName;
+    av.grd.kidGenome = msg.genome;
+    console.log('genome',av.grd.kidGenome, '-------------------');
     dijit.byId("mnCnOrganismTrace").attr("disabled", false);
   }
 }
@@ -401,29 +401,29 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
 av.msg.fillColorBlock = function (grd, msg, parents) {  //Draw the color block
     'use strict';
     if (av.debug.msg) console.log('in fillColorBlock');
-    if (av.debug.msg) console.log('ndx', grd.selectedNdx, '; msg.ancestor.data[ndx]',grd.msg.ancestor.data[grd.selectedNdx]);
-    if (av.debug.msg) console.log('grd.fill[grd.selectedNdx]',grd.fill[grd.selectedNdx]);
+    if (av.debug.msg) console.log('ndx', av.grd.selectedNdx, '; msg.ancestor.data[ndx]',av.grd.msg.ancestor.data[av.grd.selectedNdx]);
+    if (av.debug.msg) console.log('av.grd.fill[av.grd.selectedNdx]',av.grd.fill[av.grd.selectedNdx]);
     if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-      if (null === grd.fill[grd.selectedNdx]) {
-        grd.selCtx.fillStyle = '#000'
+      if (null === av.grd.fill[av.grd.selectedNdx]) {
+        av.grd.selCtx.fillStyle = '#000'
       }
       else {
-        grd.selCtx.fillStyle = parents.color[grd.fill[grd.selectedNdx]]
+        av.grd.selCtx.fillStyle = av.parents.color[av.grd.fill[av.grd.selectedNdx]]
       }
     }
     else {
-      if (null === grd.fill[grd.selectedNdx]) {
-        if (null === grd.msg.ancestor.data[grd.selectedNdx]) grd.selCtx.fillStyle = '#000';
-        else grd.selCtx.fillStyle = '#888';
+      if (null === av.grd.fill[av.grd.selectedNdx]) {
+        if (null === av.grd.msg.ancestor.data[av.grd.selectedNdx]) av.grd.selCtx.fillStyle = '#000';
+        else av.grd.selCtx.fillStyle = '#888';
       }
-      else if (0 == grd.fill[grd.selectedNdx]) grd.selCtx.fillStyle = av.color.defaultKidColor;
+      else if (0 == av.grd.fill[av.grd.selectedNdx]) av.grd.selCtx.fillStyle = av.color.defaultKidColor;
       else {  //get_color0 = function(cmap, dx, d1, d2)
-        grd.selCtx.fillStyle = get_color0(grd.cmap, grd.fill[grd.selectedNdx], 0, grd.fillmax);
-        //console.log('fillStyle', get_color0(grd.cmap, grd.fill[ii], 0, grd.fillmax));
+        av.grd.selCtx.fillStyle = get_color0(av.grd.cmap, av.grd.fill[av.grd.selectedNdx], 0, av.grd.fillmax);
+        //console.log('fillStyle', get_color0(av.grd.cmap, av.grd.fill[ii], 0, av.grd.fillmax));
       }
     }
-    if (av.debug.msg) console.log('color', grd.selCtx.fillStyle);
-    grd.selCtx.fillRect(0, 0, grd.SelectedWd, grd.SelectedHt);
+    if (av.debug.msg) console.log('color', av.grd.selCtx.fillStyle);
+    av.grd.selCtx.fillRect(0, 0, av.grd.SelectedWd, av.grd.SelectedHt);
 
   }
 

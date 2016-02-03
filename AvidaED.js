@@ -295,14 +295,14 @@ require([
   av.debug.errorEmailFn = function () {
     var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed? If so, Please write any comments at the top of the email.');
     if (sure) {
-      var mailData = 'mailto:diane.blackwood@gmail.com'
+      var mailData = 'mailto: ' + av.fio.mailAddress
         + '?subject=Avida-ED error message'
         + '&body=' + av.debug.log;
       //window.open(mailData);
       //window.open('mailto:test@example.com?subject=subject&body=av.debug.log');
 
       //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-      var link = 'mailto:diane.blackwood@gmail.com' +
+      var link = 'mailto:' + av.fio.mailAddress +
           //"?cc=CCaddress@example.com" +
         "?subject=" + escape("Avida-Ed error message") +
         "&body=" + escape(av.debug.log);
@@ -315,7 +315,7 @@ require([
     var sure = confirm('Please describe the problem in detail in the top of the e-mail that should appear after you click "ok". Then send the e-mail. Thanks.');
     if (sure) {
       //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-      var link = 'mailto:diane.blackwood@gmail.com' +
+      var link = 'mailto:' + av.fio.mailAddress +
           //"?cc=CCaddress@example.com" +
         "?subject=" + escape("Avida-Ed session log") +
         "&body=" + escape(av.debug.log);
@@ -502,7 +502,7 @@ require([
       var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
       av.dnd.landActiveConfig(pkg);  //dojoDnd
       av.parents.clearParentsFn;
-      updateSetup(av);  //fileIO
+      av.frd.updateSetup();  //fileIO
       if ('fzConfig' === pkg.source.node.id) {
         if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
           str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors'];
@@ -646,7 +646,7 @@ require([
       pkg.copy = copy;
       pkg.target = target;
       av.dnd.landFzWorldFn(pkg);
-      if (num !== fzr.cNum) {av.fwt.makeFzrWorld(num);} //tiba need to check this
+      if (num !== av.fzr.cNum) {av.fwt.makeFzrWorld(num);} //tiba need to check this
     }
   });
 
@@ -821,7 +821,7 @@ require([
     av.parents.clearParentsFn();
     // reset values in population settings based on a 'file' @default
     av.fzr.actConfig.dir = 'c0';
-    updateSetup(av);
+    av.frd.updateSetup();
 
     // write if @default not found - need to figure out a test for this
     // av.ptd.writeHardDefault(av);
@@ -890,21 +890,6 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
   //    mouse DND functions
   //--------------------------------------------------------------------------------------------------------------------
-  /* mouse websites
-   mouse clicks
-   http://stackoverflow.com/questions/706655/bind-event-to-right-mouse-click
-   http://stackoverflow.com/questions/7343117/cant-use-jquerys-click-event-handler-to-detect-right-click
-   http://stackoverflow.com/questions/1206203/how-to-distinguish-between-left-and-right-mouse-click-with-jquery
-   http://www.w3schools.com/jsref/dom_obj_event.asp
-
-   overide mouse shape
-   http://stackoverflow.com/questions/10750582/global-override-of-mouse-cursor-with-javascript
-   https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
-   http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
-   http://www.w3schools.com/cssref/playit.asp?filename=playcss_cursor&preval=row-resize
-   http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
-   */
-
 
   //http://maffelu.net/jquery-handle-left-click-right-click-and-double-click-at-the-same-time/
   // I just had to handle a left-click, right-click and a dbl-click at the same time which turned
@@ -1441,7 +1426,7 @@ require([
       av.grd.popY = av.ptd.aveFit;
       av.grd.popY2 = av.ptd.logFit;
     }
-    else if ("Average Gestation Time" == dijit.byId("yaxis").value) {
+    else if ("Average Generation Length" == dijit.byId("yaxis").value) {
       av.grd.popY = av.ptd.aveGnl;
       av.grd.popY2 = av.ptd.logGnl;
     }
@@ -1750,7 +1735,7 @@ require([
     av.ind.updateOrgTrace();
   });
 
-  /* Organism Gestation Length Slider */
+  /* Organism Generation Length Slider */
   av.ind.cycleSlider = new HorizontalSlider({
     name: "cycleSlider",
     value: 0,

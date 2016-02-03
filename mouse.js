@@ -9,9 +9,9 @@ var nearly = function (aa, bb) {
 var findParentNdx = function (parents) {
   'use strict';
   var MomNdx = -1;
-  for (var ii = 0; ii < parents.name.length; ii++) {
-    //if (matches([grd.selectedCol, grd.selectedRow], [parents.col[ii], parents.row[ii]])) {
-    if (av.grd.selectedNdx == parents.AvidaNdx[ii]) {
+  for (var ii = 0; ii < av.parents.name.length; ii++) {
+    //if (matches([av.grd.selectedCol, av.grd.selectedRow], [av.parents.col[ii], av.parents.row[ii]])) {
+    if (av.grd.selectedNdx == av.parents.AvidaNdx[ii]) {
       MomNdx = ii;
       //console.log('parent found in function', MomNdx);
       break;  //found a parent no need to keep looking
@@ -22,12 +22,12 @@ var findParentNdx = function (parents) {
 
 function findSelected(evt, grd) {
   'use strict';
-  var mouseX = evt.offsetX - grd.marginX - grd.xOffset;
-  var mouseY = evt.offsetY - grd.marginY - grd.yOffset;
-  grd.selectedCol = Math.floor(mouseX / grd.cellWd);
-  grd.selectedRow = Math.floor(mouseY / grd.cellHt);
-  grd.selectedNdx = grd.selectedRow*grd.cols + grd.selectedCol;
-  if (av.debug.mouse) console.log('mx,y', mouseX, mouseY, '; selected Col, Row', grd.selectedCol, grd.selectedRow);
+  var mouseX = evt.offsetX - av.grd.marginX - av.grd.xOffset;
+  var mouseY = evt.offsetY - av.grd.marginY - av.grd.yOffset;
+  av.grd.selectedCol = Math.floor(mouseX / av.grd.cellWd);
+  av.grd.selectedRow = Math.floor(mouseY / av.grd.cellHt);
+  av.grd.selectedNdx = av.grd.selectedRow*av.grd.cols + av.grd.selectedCol;
+  if (av.debug.mouse) console.log('mx,y', mouseX, mouseY, '; selected Col, Row', av.grd.selectedCol, av.grd.selectedRow);
 }
 
 //update data about a kid in the selecred organism to move = primarily genome and name
@@ -37,9 +37,9 @@ function SelectedKidMouseStyle(dnd, fzr, grd) {
   document.getElementById('fzOrgan').style.cursor = 'copy';
   document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
-  for (var dir in fzr.domid[dir]) {document.getElementById(fzr.domid[dir]).style.cursor = 'copy';}
-  grd.kidName = 'temporary';
-  grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
+  for (var dir in av.fzr.domid[dir]) {document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';}
+  av.grd.kidName = 'temporary';
+  av.grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
 }
 
 function offspringTrace(dnd, fio, fzr, gen) {
@@ -56,10 +56,10 @@ function offspringTrace(dnd, fio, fzr, gen) {
   dnd.activeOrgan.insertNodes(false, [{data: parent + "_offspring", type: ["g"]}]);
   dnd.activeOrgan.sync();
 
-  fzr.actOrgan.name = parent + "_offspring";
-  fzr.actOrgan.genome = '0,heads_default,' + av.ind.dna[av.ind.son];  //this should be the full genome when the offspring is complete.
-  fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
-  console.log('fzr.actOrgan', fzr.actOrgan);
+  av.fzr.actOrgan.name = parent + "_offspring";
+  av.fzr.actOrgan.genome = '0,heads_default,' + av.ind.dna[av.ind.son];  //this should be the full genome when the offspring is complete.
+  av.fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
+  console.log('av.fzr.actOrgan', av.fzr.actOrgan);
   //get genome from offspring data //needs work!!
   av.msg.doOrgTrace(fio, fzr);  //request new Organism Trace from Avida and draw that.
 };
@@ -72,7 +72,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
   target = 'organIcon';}
   else { // look for target in the freezer
     var found = false;
-    for (var dir in fzr.domid) {if (fzr.domid[dir] == evt.target.id) {found=true; break;}}
+    for (var dir in av.fzr.domid) {if (av.fzr.domid[dir] == evt.target.id) {found=true; break;}}
     if (found || 'freezerDiv' == evt.target.id) {
       target  = 'fzOrgan';
       //create a new freezer item
@@ -91,17 +91,17 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
           dnd.fzOrgan.sync();
           //find domId of parent as listed in dnd.fzOrgan
           var mapItems = Object.keys(dnd.fzOrgan.map);
-          var gdir =  'g' + fzr.gNum;
-          fzr.dir[mapItems[mapItems.length - 1]] = gdir;
-          fzr.domid[gdir] = mapItems[mapItems.length - 1];
-          fzr.file[gdir + '/entryname.txt'] = avidian;
-          fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.ind.dna[av.ind.son];
-          fzr.gNum++;
-          fzr.saved = false;
+          var gdir =  'g' + av.fzr.gNum;
+          av.fzr.dir[mapItems[mapItems.length - 1]] = gdir;
+          av.fzr.domid[gdir] = mapItems[mapItems.length - 1];
+          av.fzr.file[gdir + '/entryname.txt'] = avidian;
+          av.fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.ind.dna[av.ind.son];
+          av.fzr.gNum++;
+          av.fzr.saved = false;
           if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);
           //create a right mouse-click context menu for the item just created.
           if (av.debug.mouse) console.log('Offspring-->freezer; fzf', fzr);
-          av.dnd.contextMenu(dnd.fzOrgan, fzr.domid[gdir]);
+          av.dnd.contextMenu(dnd.fzOrgan, av.fzr.domid[gdir]);
         }
       }
     }
@@ -114,31 +114,31 @@ function traceSelected(dnd, fzr, grd) {
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   dnd.activeOrgan.sync();   //should be done after insertion or deletion
   //Put name of offspring in OrganCurrentNode
-  dnd.activeOrgan.insertNodes(false, [{data: grd.kidName, type: ['g']}]);
+  dnd.activeOrgan.insertNodes(false, [{data: av.grd.kidName, type: ['g']}]);
   dnd.activeOrgan.sync();
-  //genome data should be in parents.genome[av.mouse.ParentNdx];
-  console.log('genome', grd.kidGenome);
-  fzr.actOrgan.genome = grd.kidGenome;
-  fzr.actOrgan.name = grd.kidName;
-  fzr.actOrgan.fzDomid = "";
-  fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
+  //genome data should be in av.parents.genome[av.mouse.ParentNdx];
+  console.log('genome', av.grd.kidGenome);
+  av.fzr.actOrgan.genome = av.grd.kidGenome;
+  av.fzr.actOrgan.name = av.grd.kidName;
+  av.fzr.actOrgan.fzDomid = "";
+  av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
 }
 
 var KidMouse = function (evt, dnd, fzr, grd){
   'use strict';
   var target = '';
   if (av.debug.mouse) console.log('in KidMouse', evt.target.id, evt);
-  if (5 < grd.kidGenome.length) {
+  if (5 < av.grd.kidGenome.length) {
     if ('organIcon' == evt.target.id) {
       target = 'organIcon';
       traceSelected(dnd, fzr, grd);
     }
     else { // look for target in the freezer
       var found = false;
-      console.log('target.id',evt.target.id, '; fzr.domid', fzr.domid);
-      for (var dir in fzr.domid) {
+      console.log('target.id',evt.target.id, '; av.fzr.domid', av.fzr.domid);
+      for (var dir in av.fzr.domid) {
         //console.log('dir', dir);
-        if ((fzr.domid[dir] == evt.target.id) && ('g'==dir.substring(0,1)) ) {
+        if ((av.fzr.domid[dir] == evt.target.id) && ('g'==dir.substring(0,1)) ) {
           found = true;
           break;
         }
@@ -147,31 +147,31 @@ var KidMouse = function (evt, dnd, fzr, grd){
         target = 'fzOrgan';
         if (av.debug.mouse) console.log('freezerDiv');
         //make sure there is a name.
-        var avidian = prompt("Please name your avidian", grd.kidName);
+        var avidian = prompt("Please name your avidian", av.grd.kidName);
         if (avidian) {
           avidian = av.dnd.getUniqueName(avidian, dnd.fzOrgan);
           if (null != avidian) {  //add to Freezer
             dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
             dnd.fzOrgan.sync();
             var mapItems = Object.keys(dnd.fzOrgan.map);
-            var gdir =  'g' + fzr.gNum;
-            fzr.file[gdir + '/entryname.txt'] = avidian;
-            fzr.dir[mapItems[mapItems.length - 1]] = gdir;
-            fzr.domid[gdir] = mapItems[mapItems.length - 1];
-            //fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + grd.kidGenome;
-            fzr.file[gdir + '/genome.seq'] = grd.kidGenome;
-            fzr.gNum++;
-            fzr.saved = false;
+            var gdir =  'g' + av.fzr.gNum;
+            av.fzr.file[gdir + '/entryname.txt'] = avidian;
+            av.fzr.dir[mapItems[mapItems.length - 1]] = gdir;
+            av.fzr.domid[gdir] = mapItems[mapItems.length - 1];
+            //av.fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.grd.kidGenome;
+            av.fzr.file[gdir + '/genome.seq'] = av.grd.kidGenome;
+            av.fzr.gNum++;
+            av.fzr.saved = false;
             if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
             if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
             //create a right mouse-click context menu for the item just created.
-            av.dnd.contextMenu(dnd.fzOrgan, fzr.domid[gdir]);
+            av.dnd.contextMenu(dnd.fzOrgan, av.fzr.domid[gdir]);
           }
         }
       }
     }
   }
-  else console.log('Kid->OrganismIcon: genome too short ', grd.kidGenome);
+  else console.log('Kid->OrganismIcon: genome too short ', av.grd.kidGenome);
   return target;
 }
 
@@ -225,8 +225,6 @@ function ParentMouse(evt, av) {
     av.fzr.actOrgan.genome = av.parents.genome[av.mouse.ParentNdx];
     av.fzr.actOrgan.name = av.parents.name[av.mouse.ParentNdx];
     av.fzr.actOrgan.domId = av.parents.domid[av.mouse.ParentNdx];
-
-
   }
 }
 
@@ -245,3 +243,25 @@ function fromAncestorBoxRemove(removeName) {
   dnd.ancestorBox.parent.removeChild(node);
   dnd.ancestorBox.sync();
 }
+
+/* mouse websites
+ mouse clicks
+ http://stackoverflow.com/questions/706655/bind-event-to-right-mouse-click
+ http://stackoverflow.com/questions/7343117/cant-use-jquerys-click-event-handler-to-detect-right-click
+ http://stackoverflow.com/questions/1206203/how-to-distinguish-between-left-and-right-mouse-click-with-jquery
+ http://www.w3schools.com/jsref/dom_obj_event.asp
+
+ overide mouse shape
+ http://stackoverflow.com/questions/10750582/global-override-of-mouse-cursor-with-javascript
+ https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
+ http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
+ http://www.w3schools.com/cssref/playit.asp?filename=playcss_cursor&preval=row-resize
+ http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
+
+dragging
+ https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
+ https://jsfiddle.net/d2wyv8fo/
+
+ cursors
+ http://www.useragentman.com/blog/2011/12/21/cross-browser-css-cursor-images-in-depth/
+ */

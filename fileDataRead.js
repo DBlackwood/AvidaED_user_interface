@@ -1,24 +1,5 @@
 //Read file data
 
-// folders will be:
-// cwd = current working directory
-// saved = where files are put to save to user workspace
-
-function writeDxFile(db, path, contents) {
-  'use strict';
-  db.work.add( {
-      name: path,
-      timestamp: Date.now(),  //We may need to do more work with this property
-      contents: contents,
-      mode: 33206
-    }
-  ).then(function () {
-      //console.log('Able to add file ' + path);
-    }).catch(function () {
-      console.log('Unable to add file ' + path);
-    });
-}
-
 av.fio.addFzItem = function(dndSection, name, type, fileNum) {
   'use strict';
   dndSection.insertNodes(false, [{data: name, type: [type]}]);
@@ -46,8 +27,8 @@ av.fio.loadDefaultConfig = function() {
   av.fzr.actConfig.actDomid = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
   av.fzr.actConfig.fzDomid = av.fzr.domid['c0'];
   console.log('avida.cfg', av.fzr.file['c0/avida.cfg'])
-  avidaCFG2form(av.fzr.file['c0/avida.cfg']);
-  environmentCFG2form(av.fzr.file['c0/environment.cfg']);
+  av.frd.avidaCFG2form(av.fzr.file['c0/avida.cfg']);
+  av.frd.environmentCFG2form(av.fzr.file['c0/environment.cfg']);
 }
 
 av.fio.setActiveConfig = function(dndSection, name, type){
@@ -61,7 +42,7 @@ av.fio.setActiveConfig = function(dndSection, name, type){
   return av.fzr.actConfig.domId;
 }
 
-function add2freezerFromFile(loadConfigFlag) {
+av.frd.add2freezerFromFile = function (loadConfigFlag) {
   "use strict";
   var type = av.fio.anID.substr(0, 1);
   //console.log('av.fio.anID', av.fio.anID);
@@ -100,7 +81,7 @@ av.fio.processFiles = function (loadConfigFlag){
   var fileType = wsa('/', av.fio.anID);
   switch (fileType) {
     case 'entryname.txt':
-      add2freezerFromFile(loadConfigFlag);
+      av.frd.add2freezerFromFile(loadConfigFlag);
     case 'ancestors':
     case 'ancestors_manual':
     case 'avida.cfg':
@@ -116,8 +97,8 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'tr3':
     case 'update':
       if (loadConfigFlag) {
-        if ('c0/avida.cfg' == av.fio.anID) {avidaCFG2form(av.fio.thisfile.asText());}
-        if ('c0/environment.cfg' == av.fio.anID) {environmentCFG2form(av.fio.thisfile.asText().trim());}
+        if ('c0/avida.cfg' == av.fio.anID) {av.frd.avidaCFG2form(av.fio.thisfile.asText());}
+        if ('c0/environment.cfg' == av.fio.anID) {av.frd.environmentCFG2form(av.fio.thisfile.asText().trim());}
       }
       //writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
       av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
@@ -130,26 +111,25 @@ av.fio.processFiles = function (loadConfigFlag){
   //console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
 }
 
-
 //---------------------------------- update config data from file data stored in freezer -------------------------------
-function updateSetup(av) {
+av.frd.updateSetup = function () {
   'use strict';
 
   var dir = av.fzr.actConfig.dir;
   var path = dir + '/avida.cfg';
   var doctext = av.fzr.file[path];
-  //if (av.debug.fio) console.log('fzr.file', av.fzr.file);
+  //if (av.debug.fio) console.log('av.fzr.file', av.fzr.file);
   //if (av.debug.fio) console.log('doctxt', av.fzr.file['c0/avida.cfg'])
   //if (av.debug.fio) console.log('updateSetup = path', path, '; doc', doctext);
-    avidaCFG2form(doctext);
+    av.frd.avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
   //if (av.debug.fio) console.log('updateSetup = dir', dir, '; doc', doctext);
-  environmentCFG2form(doctext);
+  av.frd.environmentCFG2form(doctext);
 }
 
 //----------------------- section to put data from environment.cfg into setup form of population page ------------------
 
-var environmentCFGlineParse = function(instr){
+av.frd.environmentCFGlineParse = function(instr){
   'use strict';
   var num = 0;
   var flag = true;
@@ -165,14 +145,14 @@ var environmentCFGlineParse = function(instr){
 };
 
 // makes a dictionary out of a environment.cfg file
-var environmentCFGparse = function (filestr) {
+av.frd.environmentCFGparse = function (filestr) {
   'use strict';
   var rslt = {};
   var lineobj;
   var lines = filestr.split("\n");
   for (var ii = 0; ii < lines.length; ii++) {
     if (3 < lines[ii].length) {
-      lineobj = environmentCFGlineParse(lines[ii]);
+      lineobj = av.frd.environmentCFGlineParse(lines[ii]);
       rslt[lineobj.name.toUpperCase()] = lineobj.value;
     }
   } // for
@@ -180,9 +160,9 @@ var environmentCFGparse = function (filestr) {
 };
 
 // puts data from the environment.cfg into the setup form for the population page
-function environmentCFG2form(fileStr) {
+av.frd.environmentCFG2form = function (fileStr) {
   'use strict';
-  var dict = environmentCFGparse(fileStr);
+  var dict = av.frd.environmentCFGparse(fileStr);
   dijit.byId("notose").set('checked', dict.NOT);
   dijit.byId("nanose").set('checked', dict.NAND);
   dijit.byId("andose").set('checked', dict.AND);
@@ -195,7 +175,7 @@ function environmentCFG2form(fileStr) {
 }
 //----------------------------- section to put data from avida.cfg into setup form of population page ------------------
 //makes a dictionary entry out of line if the key and value are the first two items.
-var avidaCFGlineParse = function(instr){
+av.frd.avidaCFGlineParse = function(instr){
   'use strict';
   var cfgary = flexsplit(instr).split(',');  //replaces white space with a comma, then splits on comma
   var rslt = {
@@ -206,21 +186,21 @@ var avidaCFGlineParse = function(instr){
 };
 
 // makes a dictionary out of a avida.cfg file
-var avidaCFGparse = function (filestr) {
+av.frd.avidaCFGparse = function (filestr) {
   'use strict';
   var rslt = {};
   var lines = filestr.split("\n");
   for (var ii = 0; ii < lines.length; ii++) {
-    var lineobj = avidaCFGlineParse(lines[ii]);
+    var lineobj = av.frd.avidaCFGlineParse(lines[ii]);
     rslt[lineobj.name.toUpperCase()] = lineobj.value;
   } // for
   return rslt;
 };
 
 // puts data from the avida.cfg into the setup form for the population page
-function avidaCFG2form(fileStr){
+av.frd.avidaCFG2form = function (fileStr){
   'use strict';
-  var dict = avidaCFGparse(fileStr);
+  var dict = av.frd.avidaCFGparse(fileStr);
   dijit.byId("sizeCols").set('value', dict.WORLD_X);
   dijit.byId("sizeRows").set('value', dict.WORLD_Y);
   document.getElementById("muteInput").value = dict.COPY_MUT_PROB*100;
@@ -347,7 +327,7 @@ av.fio.handAncestorLoad = function(fileStr) {
     av.parents.col[nn] = dict.col[name];
     av.parents.row[nn] = dict.row[name];
     av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(dijit.byId("sizeCols").get('value'));
-    //parents.AvidaNdx[parents.autoNdx[ii]] = parents.col[parents.autoNdx[ii]] + cols * parents.row[parents.autoNdx[ii]];
+    //av.parents.AvidaNdx[av.parents.autoNdx[ii]] = av.parents.col[av.parents.autoNdx[ii]] + cols * av.parents.row[av.parents.autoNdx[ii]];
     if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], '; domid', av.parents.domid[nn], '; gen', av.parents.genome[nn]);
   }
   if (av.debug.fio) console.log('parents', av.parents);
@@ -357,7 +337,7 @@ av.fio.handAncestorLoad = function(fileStr) {
 //nothing in this section works.
 
 // makes a dictionary out of a environment.cfg file
-var cladeSSGparse = function (filestr) {
+av.frd.cladeSSGparse = function (filestr) {
   'use strict';
   var rslt = [];
   var lineobj, cfgary, name;
@@ -377,7 +357,7 @@ var cladeSSGparse = function (filestr) {
 // puts data from the environment.cfg into the setup form for the population page
 av.fio.cladeSSG2parents = function (fileStr) {
   'use strict';
-  var list = cladeSSGparse(fileStr);
+  var list = av.frd.cladeSSGparse(fileStr);
   var lngth = list.length;
   for (var ii = 0; ii < lngth; ii++) {
     av.parents.name[ii] = list[ii];
@@ -391,7 +371,7 @@ av.fio.cladeSSG2parents = function (fileStr) {
 //nothing in this section works.
 
 // makes a dictionary out of a environment.cfg file
-var tr2chartParse = function (filestr) {
+av.frd.tr2chartParse = function (filestr) {
   'use strict';
   var rslt = {};
   rslt.update = [];
@@ -411,33 +391,13 @@ var tr2chartParse = function (filestr) {
 // puts data from the environment.cfg into the setup form for the population page
 av.fio.tr2chart = function (fileStr) {
   'use strict';
-  var data = tr2chartParse(fileStr);
+  var data = av.frd.tr2chartParse(fileStr);
   return data;
 }
 
 //------------------------------------------------- rest may not be in use ---------------------------------------------
-
-//console.log("declaring _getAllFilesFromFolder()");
-var _getAllFilesFromFolder = function(dir) {
-
-  var filesystem = require("fs");
-  var results = [];
-
-  filesystem.readdirSync(dir).forEach(function(file) {
-
-    file = dir+'/'+file;
-    var stat = filesystem.statSync(file);
-
-    if (stat && stat.isDirectory()) {
-      results = results.concat(_getAllFilesFromFolder(file))
-    } else results.push(file);
-
-  });
-  return results;
-};
-
-//console.log("declaring download()");
 // http://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
+/*
 function download(filename, text) {
   var pom = document.createElement('a');
   pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -452,7 +412,7 @@ function download(filename, text) {
     pom.click();
   }
 }
-
+*/
 //console.log("declaring window.downloadFile()");
 // http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
 window.downloadFile = function(sUrl) {
@@ -484,3 +444,20 @@ window.downloadFile = function(sUrl) {
   window.open(sUrl + query);
 }
 
+//------------------------------------------- not using ----------------------------------------------------------------
+/*
+function writeDxFile(db, path, contents) {
+  'use strict';
+  db.work.add( {
+      name: path,
+      timestamp: Date.now(),  //We may need to do more work with this property
+      contents: contents,
+      mode: 33206
+    }
+  ).then(function () {
+      //console.log('Able to add file ' + path);
+    }).catch(function () {
+      console.log('Unable to add file ' + path);
+    });
+}
+*/

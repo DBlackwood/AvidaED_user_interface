@@ -88,7 +88,7 @@ av.grd.clearGrd = function () {
   av.grd.fillmax = 0;    // max value for grid scale for the gradient color
   av.grd.msg = {};
   av.grd.mxFit = 0.4;   //store maximum fitness during an experiment
-  av.grd.mxGest = 400;  //store maximum gestation time during an experiment
+  av.grd.mxGest = 400;  //store maximum Generation Length during an experiment
   av.grd.mxRate = 40;  //store maximum metabolic rate during an experiment
   av.grd.rescaleTolerance = 0.1;
   av.grd.rescaleTimeConstant = 10;
@@ -105,7 +105,7 @@ av.grd.clearGrd = function () {
 
   av.ptd.aveFit = [];  //ave is for all avidians.
   av.ptd.logFit = [];  //log is for avidians that performm logic functions
-  av.ptd.aveGnl = [];  //generation length - used to be gestation time
+  av.ptd.aveGnl = [];  //generation length - used to be Generation Length
   av.ptd.logGnl = [];
   av.ptd.aveMet = [];
   av.ptd.logMet = [];
@@ -146,7 +146,7 @@ av.fwt = {}; // file data write
 av.frd = {}; // file data read
 av.fio = {}; //file input output data
 av.fio.dbName = 'wsdb';  //for workspace database
-av.fio.wsdb = null;
+//av.fio.wsdb = null;
 av.fio.defaultFname = 'default_Web.avidaedworkspace.zip';
 av.fio.defaultFname = 'default.avidaedworkspace.zip';
 av.fio.uiWorker = null;
@@ -154,6 +154,7 @@ av.fio.fileReadingDone = false;
 av.fio.defaultUserFname = 'avidaWS.avidaedworkspace.zip';
 av.fio.userFname = av.fio.defaultUserFname;
 av.fio.useDefault = true;
+av.fio.mailAddress = 'avida-ed-development@googlegroups.com';  //'mailto:diane.blackwood@gmail.com'
 
 av.dnd = {};  //details in AvidiaEd.js as it access the DOM
 

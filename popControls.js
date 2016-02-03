@@ -79,10 +79,10 @@ av.ptd.popNewExState = function () {
   av.dnd.activeConfig.insertNodes(false, [{data: fname, type: ['c']}]);
   av.dnd.activeConfig.sync();
   var domId = Object.keys(av.dnd.activeConfig.map)[0];
-  fzr.actConfig.domID = domId;
-  fzr.actConfig.name = fname;
-  fzr.actConfig.type = 'c';
-  fzr.actConfig._id = 'c0';
+  av.fzr.actConfig.domID = domId;
+  av.fzr.actConfig.name = fname;
+  av.fzr.actConfig.type = 'c';
+  av.fzr.actConfig._id = 'c0';
   // clear parents
   av.dnd.ancestorBox.accept['g'] = 1;
   av.dnd.activeConfig.accept['c'] = 1;
@@ -108,8 +108,8 @@ av.ptd.popNewExState = function () {
   dijit.byId("demoRadio").attr("disabled", false);
 
   //reset Ancestor Color stack
-  parents.Colors = av.color.parentColorList;
-  parents.Colors.reverse();
+  av.parents.Colors = av.color.parentColorList;
+  av.parents.Colors.reverse();
   //set run/stop and drop down menu to the 'stopped' state
   dijit.byId("mnCnPause").attr("disabled", true);
   dijit.byId("mnCnRun").attr("disabled", false);
@@ -126,7 +126,7 @@ av.ptd.popNewExState = function () {
   av.ptd.logNum = [];
 
   TimeLabel.textContent = 0;
-  //avidaCFG2form(fileStr);
+  //av.frd.avidaCFG2form(fileStr);
   av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
   av.dnd.ancestorBox.sync();
   av.dnd.gridCanvas.selectAll().deleteSelectedNodes();
@@ -172,7 +172,7 @@ av.ptd.popNewExState = function () {
   document.getElementById("norPop").textContent = "-";
   document.getElementById("xorPop").textContent = "-";
   document.getElementById("equPop").textContent = "-";
-  grd.flagSelected = false;
+  av.grd.flagSelected = false;
   dijit.byId("mnFzOrganism").attr("disabled", true);
   dijit.byId("mnCnOrganismTrace").attr("disabled", true);
 }
