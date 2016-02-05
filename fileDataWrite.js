@@ -181,7 +181,7 @@ av.fwt.removeFzrGenome = function (dir) {
   var domid = av.fzr.domid[dir];
   delete av.fzr.domid[dir];
   delete av.fzr.dir[domid];
-  console.log('after remove genome: dir', dir, '; av.fzr', av.fzr);
+  //console.log('after remove genome: dir', dir, '; av.fzr', av.fzr);
 }
 
 av.fwt.removeFzrWorld = function (dir) {
@@ -203,7 +203,7 @@ av.fwt.removeFzrWorld = function (dir) {
 
 av.fwt.removeFzrItem = function(dir, type){
   'use strict';
-  console.log('dir', dir, '; type', type, '; dir0', dir[0]);
+  //console.log('dir', dir, '; type', type, '; dir0', dir[0]);
   switch (type){
     case 'c':
       av.fwt.removeFzrConfig(dir);

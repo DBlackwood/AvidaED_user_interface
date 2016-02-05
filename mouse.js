@@ -47,7 +47,7 @@ function offspringTrace(dnd, fio, fzr, gen) {
   //Get name of parent that is in OrganCurrentNode
   var parent;
   var parentID = Object.keys(dnd.activeOrgan.map)[0];
-  console.log('parentID', parentID);
+  if (av.debug.mouse) console.log('parentID', parentID);
   if (undefined == parentID) parent = '';
   else parent = document.getElementById(parentID).textContent;
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
@@ -59,7 +59,7 @@ function offspringTrace(dnd, fio, fzr, gen) {
   av.fzr.actOrgan.name = parent + "_offspring";
   av.fzr.actOrgan.genome = '0,heads_default,' + av.ind.dna[av.ind.son];  //this should be the full genome when the offspring is complete.
   av.fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
-  console.log('av.fzr.actOrgan', av.fzr.actOrgan);
+  if (av.debug.mouse) console.log('av.fzr.actOrgan', av.fzr.actOrgan);
   //get genome from offspring data //needs work!!
   av.msg.doOrgTrace(fio, fzr);  //request new Organism Trace from Avida and draw that.
 };
@@ -79,7 +79,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
       if (av.debug.mouse) console.log('offSpring->freezerDiv');
       var parent;
       var parentID = Object.keys(dnd.activeOrgan.map)[0];
-      console.log('parentID', parentID);
+      if (av.debug.mouse) console.log('parentID', parentID);
       if (undefined == parentID) parent = 'noParentName';
       else parent = document.getElementById(parentID).textContent;
       //make sure there is a name.
@@ -117,7 +117,7 @@ function traceSelected(dnd, fzr, grd) {
   dnd.activeOrgan.insertNodes(false, [{data: av.grd.kidName, type: ['g']}]);
   dnd.activeOrgan.sync();
   //genome data should be in av.parents.genome[av.mouse.ParentNdx];
-  console.log('genome', av.grd.kidGenome);
+  if (av.debug.mouse) console.log('genome', av.grd.kidGenome);
   av.fzr.actOrgan.genome = av.grd.kidGenome;
   av.fzr.actOrgan.name = av.grd.kidName;
   av.fzr.actOrgan.fzDomid = "";
@@ -135,7 +135,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
     }
     else { // look for target in the freezer
       var found = false;
-      console.log('target.id',evt.target.id, '; av.fzr.domid', av.fzr.domid);
+      if (av.debug.mouse) console.log('target.id',evt.target.id, '; av.fzr.domid', av.fzr.domid);
       for (var dir in av.fzr.domid) {
         //console.log('dir', dir);
         if ((av.fzr.domid[dir] == evt.target.id) && ('g'==dir.substring(0,1)) ) {
@@ -188,25 +188,24 @@ function ParentMouse(evt, av) {
       av.parents.col[av.mouse.ParentNdx] = av.grd.selectedCol;
       av.parents.row[av.mouse.ParentNdx] = av.grd.selectedRow;
       av.parents.AvidaNdx[av.mouse.ParentNdx] = av.parents.col[av.mouse.ParentNdx] + av.grd.cols * av.parents.row[av.mouse.ParentNdx];
-      console.log('mvparent', av.mouse.ParentNdx, av.parents.col[av.mouse.ParentNdx], av.parents.row[av.mouse.ParentNdx]);
-      console.log('b auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
-      console.log('b hand', av.parents.handNdx.length, av.parents.handNdx);
+      if (av.debug.mouse) console.log('mvparent', av.mouse.ParentNdx, av.parents.col[av.mouse.ParentNdx], av.parents.row[av.mouse.ParentNdx]);
+      if (av.debug.mouse) console.log('b auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
+      if (av.debug.mouse) console.log('b hand', av.parents.handNdx.length, av.parents.handNdx);
       //change from auto placed to hand placed if needed
       if ('auto' == av.parents.howPlaced[av.mouse.ParentNdx]) {
         av.parents.howPlaced[av.mouse.ParentNdx] = 'hand';
         av.parents.makeHandAutoNdx();
         //av.parents.placeAncestors(parents);
       }
-      console.log('auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
-      console.log('hand', av.parents.handNdx.length, av.parents.handNdx);
+      if (av.debug.mouse) console.log('auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
+      if (av.debug.mouse) console.log('hand', av.parents.handNdx.length, av.parents.handNdx);
     }
   }  // close on canvas
   //-------------------------------------------- av.dnd.trashCan
   else if ('TrashCanImage' == evt.target.id) {
     if (av.debug.mouse) console.log('parent->trashCan', evt);
-    console.log('parent->trashCan', evt);
-    console.log('av.mouse.ParentNdx', av.mouse.ParentNdx, '; domid', av.parents.domid[av.mouse.ParentNdx]);
-    console.log('ancestorBox', av.dnd.ancestorBox);
+    if (av.debug.mouse) console.log('av.mouse.ParentNdx', av.mouse.ParentNdx, '; domid', av.parents.domid[av.mouse.ParentNdx]);
+    if (av.debug.mouse) console.log('ancestorBox', av.dnd.ancestorBox);
     var node = dojo.byId(av.parents.domid[av.mouse.ParentNdx]);
     av.dnd.ancestorBox.parent.removeChild(node);
     av.dnd.ancestorBox.sync();
@@ -239,7 +238,7 @@ function fromAncestorBoxRemove(removeName) {
     }
   }
   var node = dojo.byId(domItems[nodeIndex]);
-  console.log('nodeIndex', nodeIndex, domItems[nodeIndex]);
+  if (av.debug.mouse) console.log('nodeIndex', nodeIndex, domItems[nodeIndex]);
   dnd.ancestorBox.parent.removeChild(node);
   dnd.ancestorBox.sync();
 }

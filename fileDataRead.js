@@ -8,7 +8,7 @@ av.fio.addFzItem = function(dndSection, name, type, fileNum) {
   var domid  =  mapItems[mapItems.length - 1];
 
   //create a right av.mouse-click context menu for the item just created.
-  //console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id);
+  if (av.debug.fio) console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id);
   if (0 < fileNum) { av.dnd.contextMenu(dndSection, domid); }
   //av.dnd.contextMenu(dndSection, domid);
   return domid;
@@ -18,7 +18,6 @@ av.fio.addFzItem = function(dndSection, name, type, fileNum) {
 av.fio.loadDefaultConfig = function() {
   'use strict';
   av.fzr.actConfig.name = av.fzr.file['c0/entryname.txt'];
-  console.log()
   av.fzr.actConfig.type = 'c';
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();
   av.dnd.activeConfig.insertNodes(false, [{data: av.fzr.actConfig.name, type: [av.fzr.actConfig.type]}]);
@@ -26,7 +25,7 @@ av.fio.loadDefaultConfig = function() {
   var mapItems = Object.keys(av.dnd.activeConfig.map);
   av.fzr.actConfig.actDomid = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
   av.fzr.actConfig.fzDomid = av.fzr.domid['c0'];
-  console.log('avida.cfg', av.fzr.file['c0/avida.cfg'])
+  if (av.debug.fio) console.log('avida.cfg', av.fzr.file['c0/avida.cfg'])
   av.frd.avidaCFG2form(av.fzr.file['c0/avida.cfg']);
   av.frd.environmentCFG2form(av.fzr.file['c0/environment.cfg']);
 }
@@ -250,7 +249,7 @@ av.fio.autoAncestorParse = function (filestr) {
 // puts data from the ancestor into parents file using autoplace
 av.fio.autoAncestorLoad = function(fileStr) {
   'use strict';
-  console.log('in av.autoAncestorLoad: fileStr', fileStr);
+  if (av.debug.fio) console.log('in av.autoAncestorLoad: fileStr', fileStr);
   var dict = av.fio.autoAncestorParse(fileStr);
   //Now put in ancestors and place parents
   for (var name in dict) {
@@ -379,7 +378,7 @@ av.frd.tr2chartParse = function (filestr) {
   var lineobj, cfgary, name;
   var pairs = filestr.split(',');
   var pairLngth = pairs.length;
-  console.log('pairLngth', pairLngth);
+  if (av.debug.fio) console.log('pairLngth', pairLngth);
   for (var ii = 0; ii < pairLngth; ii++) {
     lineobj = pairs[ii].split(':');
     rslt.update[ii] = Number(lineobj[0]);

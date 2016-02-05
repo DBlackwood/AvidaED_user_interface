@@ -118,7 +118,7 @@ av.dnd.landActiveConfig = function (pkg) {
 //Process when an Configuration is added to the Freezer
 av.dnd.landFzConfig = function (source, nodes, target) {
   'use strict';
-  console.log('av.dnd.landFzConfig: fzr', av.fzr);
+  if (av.debug.dnd) console.log('av.dnd.landFzConfig: fzr', av.fzr);
   var domid = Object.keys(target.selection)[0];
   var dishCon = prompt("Please name your dish configuration", nodes[0].textContent + "_1");
   if (dishCon) {
@@ -126,8 +126,8 @@ av.dnd.landFzConfig = function (source, nodes, target) {
     if (null != configName) {
       document.getElementById(domid).textContent = configName;
       target.map[domid].data = configName;
-      console.log('data', target.map[domid].data, target.map[domid]);
-      console.log('type', target.map[domid].type[0]);
+      if (av.debug.dnd) console.log('data', target.map[domid].data, target.map[domid]);
+      if (av.debug.dnd) console.log('type', target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
       var domID = av.dnd.getDomId(configName, target);
@@ -140,7 +140,7 @@ av.dnd.landFzConfig = function (source, nodes, target) {
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(target, domID);
       av.fzr.saved = false;
-      console.log('dir', av.fzr.dir[domID], '; configName', configName );
+      if (av.debug.dnd) console.log('dir', av.fzr.dir[domID], '; configName', configName );
     }
     else {  //user cancelled so the item should NOT be added to the freezer.
       av.dnd.fzConfig.deleteSelectedNodes();  //clear items
@@ -207,7 +207,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   }
   if (av.debug.dnd) console.log('near end of av.dnd.landFzOrgan');
   if ('ancestorBox' != source.node.id) {
-    console.log('dojo dnd to Organ Freezer, not from Ancestor Box');
+    if (av.debug.dnd) console.log('dojo dnd to Organ Freezer, not from Ancestor Box');
   }
   if (av.debug.dnd) console.log('End of av.dnd.landFzOrgan');
 }
@@ -238,7 +238,7 @@ av.dnd.landAncestorBox = function (source, nodes, target) {
 av.dnd.landGridCanvas = function (source, nodes, target) {
   'use strict';
   if (av.debug.dnd) console.log('inside gridCanvas dnd');
-  console.log('parents', av.parents);
+  if (av.debug.dnd) console.log('parents', av.parents);
   //was it dropped on the grid of cells?
   //if (av.debug.dnd) console.log('xOff, yOff, xUP, y', av.grd.xOffset, av.grd.yOffset, av.mouse.UpGridPos[0];, av.mouse.UpGridPos[1];);
   //calculated grid cell to see if it was a valid grid position.
@@ -298,8 +298,8 @@ av.dnd.updateFromFzrOrganism = function () {
   av.fzr.actOrgan.name = av.fzr.file[dir+'/entryname.txt'];
   av.fzr.actOrgan.genome = av.fzr.file[dir+'/genome.seq'];
   if (av.debug.dnd) console.log('domId', domId);
-  console.log('domId', domId, '; dir', dir, '; name', av.fzr.actOrgan.name, '; genome', av.fzr.actOrgan.genome);
-  console.log('fzr', av.fzr);
+  if (av.debug.dnd) console.log('domId', domId, '; dir', dir, '; name', av.fzr.actOrgan.name, '; genome', av.fzr.actOrgan.genome);
+  if (av.debug.dnd) console.log('fzr', av.fzr);
 
   //av.fzr.actOrgan.domId = Object.keys(av.dnd.activeOrgan.map)[0];  //don't think this is used; delete later
   if (av.debug.dnd) console.log('av.fzr.actOrgan', av.fzr.actOrgan);
@@ -308,7 +308,7 @@ av.dnd.updateFromFzrOrganism = function () {
 av.dnd.landOrganIcon = function (source, nodes, target) {
   //clear out the old data if an organism is already there
   'use strict';
-  console.log('source', source.node.id);
+  if (av.debug.dnd) console.log('source', source.node.id);
   if ('activeOrgan' != source.node.id) {
     var items = av.dnd.getAllItems(av.dnd.activeOrgan);    //gets some data about the items in the container
     if (0 < items.length) {
@@ -327,7 +327,7 @@ av.dnd.landOrganIcon = function (source, nodes, target) {
     var Ndx = av.parents.domid.indexOf(domid);  //Find index into parent structure
     av.fzr.actOrgan.name = av.parents.name[Ndx];
     av.fzr.actOrgan.genome = av.parents.genome[Ndx];
-    console.log('fzr', av.fzr, '; parents', av.parents, '; ndx', Ndx);
+    if (av.debug.dnd) console.log('fzr', av.fzr, '; parents', av.parents, '; ndx', Ndx);
   }
 
   //clear out av.dnd.organIcon as nothing is stored there - just moved on to OrganismCurrent
@@ -383,7 +383,7 @@ av.dnd.landOrganCanvas = function (source, nodes, target) {
 //Process when an World is added to the Freezer
 av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   'use strict';
-  console.log('landFzPopDish: fzr', av.fzr);
+  if (av.debug.dnd) console.log('landFzPopDish: fzr', av.fzr);
   var domid = Object.keys(pkg.target.selection)[0];
   var worldName = prompt("Please name your dish Worlduration", pkg.nodes[0].textContent + "_1");
   if (worldName) {
@@ -672,11 +672,11 @@ av.dnd.contextMenu = function(target, fzItemID) {
         type = dir.substring(0,1);
         var FIzip = new av.fio.JSZip();  //FreezerItemZip
         FIzip.file('entrytype.txt', type);
-        console.log('type', type);
+        if (av.debug.dnd) console.log('type', type);
         for (var fname in av.fzr.file) {
           //console.log('dir', dir, '; fname', fname);
           if (dir == fname.substring(0, dir.length)) {
-            console.log('export filename', fname.substring(dir.length + 1));
+            if (av.debug.dnd) console.log('export filename', fname.substring(dir.length + 1));
             FIzip.file(fname.substring(dir.length + 1), av.fzr.file[fname]);
           }
         }

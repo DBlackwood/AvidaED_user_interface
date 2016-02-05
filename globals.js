@@ -8,7 +8,7 @@ var av = av || {};  //incase av already exists
 av.debug = {};
 av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
 av.debug.logic = false;  //av.debug statements that look for errors outlining logic functions
-av.debug.mouse = true;   //av.debug statements about non-dojo drag and drop
+av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
 av.debug.dnd = false;     //debu statements about dojo dnd
 av.debug.msg = false;     //messages to and from avida
 av.debug.trace = false;   //organism page
@@ -17,6 +17,7 @@ av.debug.msgOrder = false; //message order
 av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
 av.debug.ind = false; //oranism page
+av.debug.anl = false; //analysis page
 
 av.debug.log = 'message and error log';
 
@@ -126,6 +127,10 @@ av.ui = {};  //user interface functions and variables
 av.ui.page = 'population';
 av.ui.subpage = 'map';
 
+//not really ui, but not sure where to put them
+av.ui.num = 0;   //tenporary holder for a number;
+av.ui.numTxt = '';
+
 av.brs = {};  //browser and operating system data
 
 av.brs.isChromium = window.chrome;
@@ -231,4 +236,3 @@ for (var ii=0; ii<3; ii++) {
   av.anl.pop[ii].right = [];
 }
 
-console.log('end of globals');

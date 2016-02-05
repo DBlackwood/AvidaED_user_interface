@@ -45,8 +45,8 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
         }
         else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {av.fio.zipPathRoot='';}
-        console.log('Path=', av.fio.zipPathRoot, '; __a=', nameOfFileContainedInZipFile.indexOf('.avidaedworkspace/'),
-          '; __b=',nameOfFileContainedInZipFile.indexOf('MACOSX'));
+        //console.log('Path=', av.fio.zipPathRoot, '; __a=', nameOfFileContainedInZipFile.indexOf('.avidaedworkspace/'),
+        //  '; __b=',nameOfFileContainedInZipFile.indexOf('MACOSX'));
       }
       av.fio.thisfile = av.fio.zipfile.files[nameOfFileContainedInZipFile];
       av.fio.fName = nameOfFileContainedInZipFile;
@@ -55,7 +55,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
       //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
       if (3 < av.fio.fName.length) av.fio.processFiles(loadConfigFlag);  //do not load configfile
-    };
+    }
     //note setup form is updated when the files are read.
     //console.log('after read loop: fzr', av.fzr);
     av.fio.fileReadingDone = true;
@@ -66,7 +66,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     av.fzr.wNum++;
   };
   oReq.send();
-}
+};
 
 https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.userPickZipRead = function () {

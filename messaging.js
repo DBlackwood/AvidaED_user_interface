@@ -4,14 +4,14 @@ av.msg.readMsg = function (ee) {
     switch (msg.name) {
       case 'runPause':
         if (true != msg["Success"]) {
-          console.log("Error: ", msg);  // msg failed
+          if (av.debug.msg) console.log("Error: ", msg);  // msg failed
           runStopFn();  //flip state back since the message failed to get to Avida
         }
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'reset':
         if (true !== msg.Success) {
-          console.log("Reset failed: ", msg);
+          if (av.debug.msg) console.log("Reset failed: ", msg);
         }
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
@@ -53,7 +53,7 @@ av.msg.readMsg = function (ee) {
         //console.log('webOrgDataByCellID', msg);
         break;
       default:
-        console.log('____________UnknownRequest: ', msg);
+        if (av.debug.msg) console.log('____________UnknownRequest: ', msg);
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
     }
@@ -62,17 +62,17 @@ av.msg.readMsg = function (ee) {
     av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
     switch (msg.level) {
       case 'notification':
-        console.log('avida:notify: ',msg.message);
+        if (av.debug.msg) console.log('avida:notify: ',msg.message);
         LoadLabel.textContent = msg.message;
         break;
       case 'warning':
-        console.log('avida:warn: ',msg);
+        if (av.debug.msg) console.log('avida:warn: ',msg);
         break;
       case 'fatal':
-        console.log('avida:fatal: ',msg.message);
+        if (av.debug.msg) console.log('avida:fatal: ',msg.message);
         break;
       default:
-        console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
+        if (av.debug.msg) console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
         break;
     }
   }
@@ -104,7 +104,6 @@ av.msg.importExpr = function () {
     if (av.fzr.file[dir+fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+fList[ii]] }); }
   }
   if (av.debug.msg) console.log('importExpr', request);
-  console.log('importExpr', request);
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
@@ -112,7 +111,7 @@ av.msg.importExpr = function () {
 //fio.uiWorker function
 av.msg.doOrgTrace = function () {
   'use strict';
-  console.log('doOrgTrace: fzr', av.fzr);
+  if (av.debug.msg) console.log('doOrgTrace: fzr', av.fzr);
   var seed = 100 * Math.random();
   if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
   else {seed = -1};
@@ -128,8 +127,8 @@ av.msg.doOrgTrace = function () {
     ]
   };
   if (av.debug.msg) console.log('trace', request);
-  console.log('doOrgTrace', request);
-  console.log('doOrgTrace string', av.utl.json2stringFn(request));
+  if (av.debug.msg) console.log('doOrgTrace', request);
+  if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
@@ -179,41 +178,32 @@ av.msg.requestGridData = function (fio) {
 av.msg.doRunPause = function (fio) {
   'use strict';
   var request;
-  if (dijit.byId("manRadio").get('checked')) {
     request = {
       'type': 'addEvent',
       'name': 'runPause',
       'triggerType': 'immediate'
     };
-  }
-  else {
-    var num = dijit.byId("updateSpinner").get('value');
-    request = {
-      'type': 'addEvent',
-      'name': 'runPause',
-      'start': num,
-      'interval': 'once'
-    }
-  }
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
 //fio.uiWorker function
-av.msg.doReset = function () {
+av.msg.reset = function () {
   'use strict';
   var request = {
-    'Key': 'Reset'
+    'type': 'addEvent',
+    'name': 'reset',
+    'triggerType': 'immediate'
   };
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
-//fio.uiWorker function
-function doDbReady(fio) {
-  'use strict';
+av.msg.pause = function(update) {
   var request = {
-    'type': 'dbReady'
+    'type': 'addEvent',
+    'name': 'pause',
+    'start': update
   };
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
@@ -393,7 +383,7 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
     av.grd.kidStatus = "havegenome";
     av.grd.kidName = msg.genotypeName;
     av.grd.kidGenome = msg.genome;
-    console.log('genome',av.grd.kidGenome, '-------------------');
+    if (av.debug.msg) console.log('genome',av.grd.kidGenome, '-------------------');
     dijit.byId("mnCnOrganismTrace").attr("disabled", false);
   }
 }
@@ -427,3 +417,12 @@ av.msg.fillColorBlock = function (grd, msg, parents) {  //Draw the color block
 
   }
 
+// ------------------------------------------------ not in use ---------------------------------------------------------
+function doDbReady(fio) {
+  'use strict';
+  var request = {
+    'type': 'dbReady'
+  };
+  av.fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+}
