@@ -736,14 +736,24 @@ require([
   ///   Map Grid buttons - New  Run/Pause Freeze
   //--------------------------------------------------------------------------------------------------------------------
 
+  av.ptd.makePauseState = function () {
+    dijit.byId("mnCnPause").attr("disabled", true);
+    dijit.byId("mnCnRun").attr("disabled", false);
+    document.getElementById("runStopButton").innerHTML = "Run";
+  }
+
+  av.ptd.makeRunState = function () {
+    document.getElementById("runStopButton").innerHTML = "Pause";
+    dijit.byId("mnCnPause").attr("disabled", false);
+    dijit.byId("mnCnRun").attr("disabled", true);
+  }
+
   function runPopFn() {
     //check for ancestor organism in configuration data
     var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
     //console.log("namelist", namelist);
     if (1 > namelist.length) {
-      document.getElementById("runStopButton").innerHTML = "Run";
-      dijit.byId("mnCnPause").attr("disabled", true);
-      dijit.byId("mnCnRun").attr("disabled", false);
+      av.ptd.makePauseState();
       NeedAncestorDialog.show();
     }
     else { // setup for a new run by sending config data to avida
@@ -759,7 +769,7 @@ require([
         av.msg.requestGridData(av.fio);  //fio.uiWorker
         if ('c' === av.fzr.actConfig.type) av.msg.injectAncestors(av.fio, av.parents); //fio.uiWorker
       }
-      if (dijit.byId("manRadio").get('checked')) {
+      if (dijit.byId("updateRadio").get('checked')) {
         av.msg.pause(dijit.byId("updateSpinner").get('value'));
       }
       av.msg.doRunPause(av.fio);
@@ -767,38 +777,31 @@ require([
     //update screen based on data from C++
   }
 
-  //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
-  document.getElementById("runStopButton").onclick = function () {
-    runStopFn();
-  };
-
   function runStopFn() {
     if ("Run" == document.getElementById("runStopButton").innerHTML) {
-      document.getElementById("runStopButton").innerHTML = "Pause";
-      dijit.byId("mnCnPause").attr("disabled", false);
-      dijit.byId("mnCnRun").attr("disabled", true);
+      av.ptd.makeRunState();
       runPopFn();
     } else {
-      document.getElementById("runStopButton").innerHTML = "Run";
-      dijit.byId("mnCnPause").attr("disabled", true);
-      dijit.byId("mnCnRun").attr("disabled", false);
+      av.ptd.makePauseState();
       av.msg.doRunPause(av.fio);
       //console.log("pop size ", av.ptd.aveNum);
     }
   };
 
+  //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
+  document.getElementById("runStopButton").onclick = function () {
+    runStopFn();
+  };
+
+  dijit.byId("mnCnPause").on("Click", function () {
+    av.ptd.makePauseState();
+    av.msg.doRunPause(av.fio);
+  });
+
   //process run/Stop buttons as above but for drop down menu
   dijit.byId("mnCnRun").on("Click", function () {
-    dijit.byId("mnCnPause").attr("disabled", false);
-    dijit.byId("mnCnRun").attr("disabled", true);
-    document.getElementById("runStopButton").innerHTML = "Pause";
+    av.ptd.makeRunState();
     runPopFn();
-  });
-  dijit.byId("mnCnPause").on("Click", function () {
-    dijit.byId("mnCnPause").attr("disabled", true);
-    dijit.byId("mnCnRun").attr("disabled", false);
-    document.getElementById("runStopButton").innerHTML = "Run";
-    av.msg.doRunPause(av.fio);
   });
 
   /* ************** New Button and new Dialog ***********************/

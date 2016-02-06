@@ -2,16 +2,19 @@ av.msg.readMsg = function (ee) {
   var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
   if ('data' == msg.type) {
     switch (msg.name) {
-      case 'runPause':
-        if (true != msg["Success"]) {
-          if (av.debug.msg) console.log("Error: ", msg);  // msg failed
-          runStopFn();  //flip state back since the message failed to get to Avida
-        }
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+      case 'paused':
+        av.ptd.makePauseState();
         break;
       case 'reset':
         if (true !== msg.Success) {
           if (av.debug.msg) console.log("Reset failed: ", msg);
+        }
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        break;
+      case 'runPause':
+        if (true != msg["Success"]) {
+          if (av.debug.msg) console.log("Error: ", msg);  // msg failed
+          runStopFn();  //flip state back since the message failed to get to Avida
         }
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
