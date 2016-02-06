@@ -284,16 +284,59 @@ require([
     HardwareDialog.show();
   });
 
-  dijit.byId('mnHpProblem').on("Click", function () {
+  dijit.byId('mnHpLog').on("Click", function () {
     av.debug.msgEmailFn();
   });
+
+  dijit.byId('mnHpProblem').on("Click", function () {
+    //alert(av.debug.log);
+    // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-Ed: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
+    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log;
+    //dijit.byId('sendLogDialog').set('value', 'Avida-Ed problem report');
+    document.getElementById('sendLogPara').textContent =
+      'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
+
+    sendLogDialog.show();  //textarea must be visable first
+    av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
+    av.debug.sendLogTextarea.focus();
+    av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
+  });
+
+  dijit.byId('sendEmail').on("Click", function () {
+    var link = 'mailto:' + av.fio.mailAddress +
+        //"?cc=CCaddress@example.com" +
+      "?subject=" + escape("Avida-Ed session log") +
+      "&body=" + escape(av.debug.log);
+    window.location.href = link;
+  });
+
 
   //********************************************************************************************************************
   // Error logging
   //********************************************************************************************************************
 
-  av.debug.errorEmailFn = function () {
-    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed? If so, Please write any comments at the top of the email.');
+  //https://bugsnag.com/blog/js-stacktracess
+  window.onerror = function (message, file, line, col, error) {
+    //console.log(message, ' from ', error.stack, '------------------');
+    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
+    //av.debug.errorEmailFn();
+
+    //dijit.byId('sendLogDialog').set('title', 'javascrip error report');
+    document.getElementById('sendLogPara').textContent = 'The error is the last line in the session log in the text below.';
+    sendLogDialog.show();  //textarea must be visable first
+    av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
+    av.debug.sendLogTextarea.focus();
+    av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
+  }
+  //More usefull websites to catch errors
+  // https://davidwalsh.name/javascript-stack-trace
+  // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
+  //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
+
+
+/*
+  av.debug.msgEmailFn = function () {
+    var sure = confirm('Please describe the problem in detail in the top of the e-mail that should appear after you click "ok". Then send the e-mail. Thanks.');
     if (sure) {
       var mailData = 'mailto: ' + av.fio.mailAddress
         + '?subject=Avida-ED error message'
@@ -304,36 +347,26 @@ require([
       //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
       var link = 'mailto:' + av.fio.mailAddress +
           //"?cc=CCaddress@example.com" +
+        "?subject=" + escape("Avida-Ed session log") +
+        "&body=" + escape(av.debug.log);
+      window.location.href = link;
+    }
+  }
+
+  av.debug.errorEmailFn = function () {
+    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed? If so, Please write any comments at the top of the email.');
+    if (sure) {
+
+      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
+      var link = 'mailto:' + av.fio.mailAddress +
+          //"?cc=CCaddress@example.com" +
         "?subject=" + escape("Avida-Ed error message") +
         "&body=" + escape(av.debug.log);
       window.location.href = link;
 
     }
   }
-
-  av.debug.msgEmailFn = function () {
-    var sure = confirm('Please describe the problem in detail in the top of the e-mail that should appear after you click "ok". Then send the e-mail. Thanks.');
-    if (sure) {
-      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-      var link = 'mailto:' + av.fio.mailAddress +
-          //"?cc=CCaddress@example.com" +
-        "?subject=" + escape("Avida-Ed session log") +
-        "&body=" + escape(av.debug.log);
-      window.location.href = link;
-
-    }
-  }
-
-  //https://bugsnag.com/blog/js-stacktracess
-  window.onerror = function (message, file, line, col, error) {
-    //console.log(message, ' from ', error.stack, '------------------');
-    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
-    av.debug.errorEmailFn();
-  }
-  //More usefull websites to catch errors
-  // https://davidwalsh.name/javascript-stack-trace
-  // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
-  //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
+*/
 
   //--------------------------------------------------------------------------------------------------------------------
   // main button scripts
@@ -1080,7 +1113,7 @@ require([
       dijit.byId("mnCnOrganismTrace").attr("disabled", true);
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
-    av.msg.doWebOrgDataByCell();
+    //av.msg.doWebOrgDataByCell();   //was sending twice. I hope this is the right one to take out 2016 Feb 5
     av.grd.drawGridSetupFn();
   });
 
@@ -1112,7 +1145,7 @@ require([
     document.getElementById('trashCan').style.cursor = 'default';
     document.getElementById('TrashCanImage').style.cursor = 'default';
     document.getElementById('mainBC').style.cursor = 'default';
-    document.getElementById('organIcon').style.cursor = 'default';
+    document.getElementById('organIcon').style.cursor = 'default';  
     document.getElementById('fzOrgan').style.cursor = 'default';
     //console.log('fzr', av.fzr);
     for (var dir in av.fzr.domid) {

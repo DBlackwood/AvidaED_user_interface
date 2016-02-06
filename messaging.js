@@ -145,6 +145,18 @@ av.msg.doWebOrgDataByCell = function () {
   if (av.debug.msg) console.log('doSelectedOrganismType; selectedNdx', av.grd.selectedNdx)
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+  console.log('runStopButton',document.getElementById("runStopButton").textContent);
+  if ('Run' === document.getElementById("runStopButton").textContent) {
+    var request = {
+      'triggerType': 'immediate',
+      'name': 'WebOrgDataByCellID',
+      //'singleton': true,
+      'args': av.grd.selectedNdx
+    }
+    av.fio.uiWorker.postMessage(request);
+    av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+  }
+
 }
 
 //fio.uiWorker function
