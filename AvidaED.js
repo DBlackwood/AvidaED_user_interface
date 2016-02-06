@@ -284,10 +284,6 @@ require([
     HardwareDialog.show();
   });
 
-  dijit.byId('mnHpLog').on("Click", function () {
-    av.debug.msgEmailFn();
-  });
-
   dijit.byId('mnHpProblem').on("Click", function () {
     //alert(av.debug.log);
     // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-Ed: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
@@ -322,6 +318,7 @@ require([
     //av.debug.errorEmailFn();
 
     //dijit.byId('sendLogDialog').set('title', 'javascrip error report');
+    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log;
     document.getElementById('sendLogPara').textContent = 'The error is the last line in the session log in the text below.';
     sendLogDialog.show();  //textarea must be visable first
     av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
@@ -1145,7 +1142,7 @@ require([
     document.getElementById('trashCan').style.cursor = 'default';
     document.getElementById('TrashCanImage').style.cursor = 'default';
     document.getElementById('mainBC').style.cursor = 'default';
-    document.getElementById('organIcon').style.cursor = 'default';  
+    document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
     //console.log('fzr', av.fzr);
     for (var dir in av.fzr.domid) {
