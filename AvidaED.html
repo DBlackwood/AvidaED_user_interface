@@ -42,6 +42,13 @@
       console.log("initial handler in html only");
       av.ui.browserResizeEventHandler()
     }
+
+    //never triggered not sure why. trying to get mouse coordinates for IE
+    function getCoords(event) {
+      av.mouse.grdX = event.clientX;
+      av.mouse.grdY = event.clientY;
+      console.log(' on grid in html xy', event.clientX, event.clientY);
+    }
   </script>
 </head>
 
@@ -54,10 +61,8 @@
   <!-- contentPane for top that contains main menu -->
   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
        refreshOnShow="false" region="top" splitter="false" maxSize="Infinity" doLayout="false" style="height:26px;">
-    <input id='fileGet' type="file" style = 'display:none' ></input>
-    <input id="inputFile" type="file" style = 'display:none' onchange="av.fio.userPickZipRead()"></input>
-    <input id='getWS' type="file" style = 'display:none'></input>
-    <input id='putWS' type="file" style = 'display:none'></input>
+    <input id="putWS" type="file" style = 'display:none' onchange="av.fio.userPickZipRead()"></input>
+    <input id='putWdelte' type="file" style = 'display:none'></input>
     <input type="hidden" value="mymail@gmail.com" id="mailto" />
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
@@ -99,11 +104,14 @@
               <span data-dojo-type="dijit/MenuItem" id="mnGnuplot2" label="Gnuplot2"></span>
             </div>
             <div data-dojo-type="dijit/MenuSeparator"></div>
+          </span>
+        </span>
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Debug" style = 'visibility: visible'>
+          <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnDbThrowError" label="Throw Error"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnDbThrowData" label="Send Data to console"></span>
+          </span>
         </span>
-      </span>
-
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -425,22 +433,22 @@
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"
                style="height: 100%;"> <!-- 95%-->
           <div id="mapBlock" style="height: 100%; width:100%;"> <!-- 95%-->
-            <div data-dojo-type="dijit/layout/ContentPane" id="gridHolder" style="width:100%; height: 5px;">
-              <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" style="border:1px solid #DDDDDD;"></canvas>
+            <div data-dojo-type="dijit/layout/ContentPane" id="gridHolder" style="width:100%; height: 5px;" onclick="getCoords">
+              <canvas data-dojo-type="dojo.dnd.Target" id="gridCanvas" style="border:1px solid #DDDDDD;" ></canvas>
             </div>
             <div id="scaleDiv" data-dojo-type="dijit/layout/ContentPane">
                 <canvas id="scaleCanvas" height="30px" style="border:1px solid #DDDDDD;"></canvas>
             </div>
               <div id="popBot" style="height: 8px; min-width: 343px;">  <!-- align="center"-->
                 <!--<table border="0" style="border-collapse: collapse; table-layout: auto; width: 96%; height: auto;" id="gridTable">-->
-                <table border="1" style="table-layout: auto; width: 99%; height: auto;" id="gridTable">
+                <table border="0" style="table-layout: auto; width: 99%; height: auto;" id="gridTable">
                 <!--<table border="0" style="border-collapse: collapse; table-layout: auto;" id="gridTable">-->
                   <tbody>
                   <tr>
                     <td>
                       Time: <label id="TimeLabel">(not started)</label><br/>
                     </td>
-                    <td style="text-align: center; width:186px">
+                    <td style="text-align: center; min-width:186px">
                       Mode
                       <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
                         <option value="Fitness" selected="selected">Fitness</option>
@@ -583,6 +591,23 @@
                        trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$"
                        value="1000" data-dojo-props="smallDelta:100, constraints:{places:0}" style="width:80px"></input>
               </div>
+              <span data-dojo-type="dijit/TitlePane" id="AdvancedSetup" title="Advanced Setup"
+                    extractContent="false" preventCache="false" preload="false" refreshOnShow="false" duration="200"
+                    open="false" style="min-width: 1px; width: 100%; height: auto;">
+                <div class="even">
+                  Time Slice:
+                  <input id="aveTimeSlice" type="text" data-dojo-type="dijit/form/NumberTextBox" value=30 required="true" ;
+                         data-dojo-props="constraints:{min:0, max:500,places:0},
+                    invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid time slice.'"
+                         style="width: 3em; height:1.8em"></input>
+                  &nbsp; Update Delay: &nbsp;
+                  <input id="sleepDelay" type="text" data-dojo-type="dijit/form/NumberTextBox"
+                         required="true" value="250" data-dojo-props="constraints:{min:0, max:5000,places:0},
+                    invalidMessage:'Please enter a numeric value.', rangeMessage:'Invalid update Delay.'"
+                         style="width:4em; height:1.8em"/></input>
+                  cells&nbsp;<span id="sizeCells"></span>
+                </div>
+              </span>
             </form>
           </div>
           <!-- </span> -->

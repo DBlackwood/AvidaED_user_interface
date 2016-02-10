@@ -80,8 +80,8 @@ https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascri
     av.dnd.fzWorld.selectAll().deleteSelectedNodes();
     av.dnd.fzWorld.sync();
 
-    var inputFile = document.getElementById("inputFile");
-    var zipFileToLoad = inputFile.files[0];
+    var inputWSfile = document.getElementById('putWS');
+    var zipFileToLoad = inputWSfile.files[0];
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent)
     {

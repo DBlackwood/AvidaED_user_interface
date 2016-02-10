@@ -1,13 +1,15 @@
 // need a server to run this. The one below works.
-//python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
-//Then visit http://127.0.0.1:8000/avidaED.html
+// python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
+// Then visit http://127.0.0.1:8000/avidaED.html
 //
 // to have chrome run from file
 ///Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --allow-file-access-from-files
 //
 // to get to mac files on parallels
 // net use z: \\Mac\Home
-
+//
+// Path in TX for Filezilla /var/www/vhosts/bwng/public_html/projects/avida-ED
+//
 define.amd.jQuery = true;
 require([
   "dijit/dijit",
@@ -330,40 +332,12 @@ require([
   // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
   //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
 
+  // how to send e-mail
+  // http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
 
-/*
-  av.debug.msgEmailFn = function () {
-    var sure = confirm('Please describe the problem in detail in the top of the e-mail that should appear after you click "ok". Then send the e-mail. Thanks.');
-    if (sure) {
-      var mailData = 'mailto: ' + av.fio.mailAddress
-        + '?subject=Avida-ED error message'
-        + '&body=' + av.debug.log;
-      //window.open(mailData);
-      //window.open('mailto:test@example.com?subject=subject&body=av.debug.log');
-
-      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-      var link = 'mailto:' + av.fio.mailAddress +
-          //"?cc=CCaddress@example.com" +
-        "?subject=" + escape("Avida-Ed session log") +
-        "&body=" + escape(av.debug.log);
-      window.location.href = link;
-    }
-  }
-
-  av.debug.errorEmailFn = function () {
-    var sure = confirm('An error has occured. Should e-mail be sent to the avida-Ed developers to help improve Avida-Ed? If so, Please write any comments at the top of the email.');
-    if (sure) {
-
-      //http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-      var link = 'mailto:' + av.fio.mailAddress +
-          //"?cc=CCaddress@example.com" +
-        "?subject=" + escape("Avida-Ed error message") +
-        "&body=" + escape(av.debug.log);
-      window.location.href = link;
-
-    }
-  }
-*/
+  // selected text
+  // http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+  // http://www.javascriptkit.com/javatutors/copytoclipboard.shtml
 
   //--------------------------------------------------------------------------------------------------------------------
   // main button scripts
@@ -574,6 +548,7 @@ require([
     if ('gridCanvas' == target.node.id) {
       av.dnd.landGridCanvas(source, nodes, target);
       av.grd.drawGridSetupFn();
+      console.log('in gridCanvas.on');
     }
   });
 
@@ -1138,6 +1113,7 @@ require([
   $(document).on('mouseup', function (evt) {
     'use strict';
     var target = '';
+    console.log('in mouse up: evt', evt)
     if (av.debug.mouse) console.log('av.mouseup; evt', evt.target.id, evt);
     document.getElementById('organCanvas').style.cursor = 'default';
     document.getElementById('gridCanvas').style.cursor = 'default';

@@ -223,6 +223,8 @@ av.frd.avidaCFG2form = function (fileStr){
     dijit.byId("experimentRadio").set('checked', false);
     dijit.byId("demoRadio").set('checked', true);
   }
+  dijit.byId("aveTimeSlice").set('value', dict.AVE_TIME_SLICE);
+  dijit.byId("sleepDelay").set('value', dict.SLEEP_DELAY);
 }
 
 //----------------------- section to put data from ancestors file into ancestorBox and placeparents auto ---------------

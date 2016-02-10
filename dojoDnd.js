@@ -689,18 +689,6 @@ av.dnd.contextMenu = function(target, fzItemID) {
 
 /* ****************************************************************************************************************** */
 /* ****************************************************************************************************************** */
-//delete eventually
 /*
-var fndFzrNdx = function (domId, av.fzrSection) {
-  'use strict';
-  for (var ii = 0; ii < fzrSection.length; ii++) {
-    if (domId == fzrSection[ii].domId) {
-      return ii;
-      break;
-    }
-  }
-  if (av.debug.dnd) console.log('GenomeNdx not found');
-  return -1;
-};
-*/
-
+Looking at DND move https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveable.html
+ */

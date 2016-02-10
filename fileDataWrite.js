@@ -46,18 +46,20 @@ av.fwt.makeFzrEventsCfgWorld = function (idStr, em) {
 
 av.fwt.makeFzrAvidaCfg = function (idStr, em) {
   'use strict';
-  var txt = 'WORLD_X ' + dijit.byId("sizeCols").get('value') + '\n';
-  txt += 'WORLD_Y ' + dijit.byId("sizeRows").get('value') + '\n';
+  var txt = 'WORLD_X ' + dijit.byId('sizeCols').get('value') + '\n';
+  txt += 'WORLD_Y ' + dijit.byId('sizeRows').get('value') + '\n';
   txt += 'WORLD_GEOMETRY 1 \n';
-  txt += 'COPY_MUT_PROB ' + document.getElementById("muteInput").value/100 + '\n';
+  txt += 'COPY_MUT_PROB ' + document.getElementById('muteInput').value/100 + '\n';
   txt += 'DIVIDE_INS_PROB 0.0 \n';
   txt += 'DIVIDE_DEL_PROB 0.0 \n';
   txt += 'OFFSPRING_SIZE_RANGE 1.0 \n';
   // parents (ancestors) are injected into avida separately.
-  if (dijit.byId("childParentRadio").get('checked')) txt += 'BIRTH_METHOD 0 \n';  //near parent
+  if (dijit.byId('childParentRadio').get('checked')) txt += 'BIRTH_METHOD 0 \n';  //near parent
   else txt += 'BIRTH_METHOD 4 \n';   //anywhere randomly
-  if (dijit.byId("experimentRadio").get('checked')) txt += 'RANDOM_SEED -1 \n';
+  if (dijit.byId('experimentRadio').get('checked')) txt += 'RANDOM_SEED -1 \n';
   else txt += 'RANDOM_SEED 100\n';
+  txt += 'AVE_TIME_SLICE ' + dijit.byId('aveTimeSlice').get('value') + '\n';
+  txt += 'SLEEP_DELAY ' + dijit.byId('sleepDelay').get('value') + '\n';
   txt += '#include instset.cfg\n';
   txt += 'I';
   if (em) {av.fwt.makeEmDxFile(idStr+'/avida.cfg', txt);}
@@ -67,15 +69,15 @@ av.fwt.makeFzrAvidaCfg = function (idStr, em) {
 av.fwt.makeFzrEnvironmentCfg = function (idStr, em) {
   'use strict';
   var txt = '';
-  if (dijit.byId("notose").get('checked')) txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("nanose").get('checked')) txt += 'REACTION  NAND nand  process:value=1:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NAND nand  process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("andose").get('checked')) txt += 'REACTION  AND  and   process:value=2:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  AND  and   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("ornose").get('checked')) txt += 'REACTION  ORN  orn   process:value=2:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  ORN  orn   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("orose").get('checked'))  txt += 'REACTION  OR   or    process:value=3:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  OR   or    process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("andnose").get('checked')) txt += 'REACTION  ANDN andn  process:value=3:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  ANDN andn  process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("norose").get('checked')) txt += 'REACTION  NOR  nor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOR  nor   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("xorose").get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
-  if (dijit.byId("equose").get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1';    else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1';
+  if (dijit.byId('notose').get('checked')) txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('nanose').get('checked')) txt += 'REACTION  NAND nand  process:value=1:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NAND nand  process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('andose').get('checked')) txt += 'REACTION  AND  and   process:value=2:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  AND  and   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('ornose').get('checked')) txt += 'REACTION  ORN  orn   process:value=2:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  ORN  orn   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('orose').get('checked'))  txt += 'REACTION  OR   or    process:value=3:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  OR   or    process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('andnose').get('checked')) txt += 'REACTION  ANDN andn  process:value=3:type=pow  requisite:max_count=1\n'; else txt += 'REACTION  ANDN andn  process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('norose').get('checked')) txt += 'REACTION  NOR  nor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOR  nor   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('xorose').get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
+  if (dijit.byId('equose').get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1';    else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1';
   if (em) {av.fwt.makeEmDxFile(idStr+'/environment.cfg', txt);}
   else  { av.fwt.makeFzrFile(idStr+'/environment.cfg', txt);}
 }
