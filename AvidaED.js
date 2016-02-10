@@ -548,7 +548,7 @@ require([
     if ('gridCanvas' == target.node.id) {
       av.dnd.landGridCanvas(source, nodes, target);
       av.grd.drawGridSetupFn();
-      console.log('in gridCanvas.on');
+      //console.log('in gridCanvas.on');
     }
   });
 
@@ -1113,7 +1113,7 @@ require([
   $(document).on('mouseup', function (evt) {
     'use strict';
     var target = '';
-    console.log('in mouse up: evt', evt)
+    if (av.debug.mouse) console.log('in mouse up: evt', evt)
     if (av.debug.mouse) console.log('av.mouseup; evt', evt.target.id, evt);
     document.getElementById('organCanvas').style.cursor = 'default';
     document.getElementById('gridCanvas').style.cursor = 'default';
