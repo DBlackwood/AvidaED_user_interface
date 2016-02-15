@@ -167,7 +167,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
       document.getElementById(domid).textContent = avName;
       target.map[domid].data = avName;
 
-      if ('ancestorBox' == source.node.id) {
+      if ('ancestorBox' == source.node.id && false === av.dnd.ancestorBox.copyOnly) {  //do not remove if population has started running
         //update structure to hold freezer data for Organisms.
         var Ndx = av.parents.domid.indexOf(nodes[0].id);  //Find index into parent structure
         gen = av.parents.genome[Ndx];
@@ -231,7 +231,7 @@ av.dnd.landAncestorBox = function (source, nodes, target) {
     av.parents.placeAncestors();
     if (av.debug.dnd) console.log('parents', av.parents.name[nn], av.parents.domid[nn], av.parents.genome[nn]);
   }
-}
+};
 
 // Process Drop on gridCanvas
 //This triggers for every dnd drop, not just those of gridCanvas
@@ -239,10 +239,13 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
   'use strict';
   if (av.debug.dnd) console.log('inside gridCanvas dnd');
   if (av.debug.dnd) console.log('parents', av.parents);
+
   //was it dropped on the grid of cells?
   //if (av.debug.dnd) console.log('xOff, yOff, xUP, y', av.grd.xOffset, av.grd.yOffset, av.mouse.UpGridPos[0];, av.mouse.UpGridPos[1];);
   //calculated grid cell to see if it was a valid grid position.
   var nn = av.parents.name.length;
+  var event = event || window.event;
+  console.log('landGrid event', event);
   var mouseX = av.mouse.UpGridPos[0] - av.grd.marginX - av.grd.xOffset;
   var mouseY = av.mouse.UpGridPos[1] - av.grd.marginY - av.grd.yOffset;
   if (av.debug.dnd) console.log('mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);

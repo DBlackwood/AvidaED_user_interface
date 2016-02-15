@@ -2,6 +2,8 @@
 // python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 // Then visit http://127.0.0.1:8000/avidaED.html
 //
+// /var/www/vhosts/bwng/public_html/projects/
+//
 // to have chrome run from file
 ///Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --allow-file-access-from-files
 //
@@ -297,7 +299,8 @@ require([
     sendLogDialog.show();  //textarea must be visable first
     av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
     av.debug.sendLogTextarea.focus();
-    av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
+    //av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
+    av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
   });
 
   dijit.byId('sendEmail').on("Click", function () {
@@ -325,7 +328,8 @@ require([
     sendLogDialog.show();  //textarea must be visable first
     av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
     av.debug.sendLogTextarea.focus();
-    av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
+    //av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
+    av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
   }
   //More usefull websites to catch errors
   // https://davidwalsh.name/javascript-stack-trace
