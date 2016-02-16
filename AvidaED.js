@@ -1071,14 +1071,21 @@ require([
         if (av.debug.mouse) console.log('kidSelected; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
         //find out if there is a kid in that cell
         //if ancestor not null then there is a 'kid' there.
-        if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
-          av.grd.kidStatus = 'getgenome';
-          av.msg.doWebOrgDataByCell();
-          SelectedKidMouseStyle(av.dnd, av.fzr, av.grd);
-          av.mouse.Picked = 'kid';
-          if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
-          dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
-          dijit.byId("mnCnOrganismTrace").attr("disabled", false);
+        //if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+        if (av.grd.msg.ancestor) {
+          if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+            av.grd.kidStatus = 'getgenome';
+            av.msg.doWebOrgDataByCell();
+            SelectedKidMouseStyle(av.dnd, av.fzr, av.grd);
+            av.mouse.Picked = 'kid';
+            if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
+            dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
+            dijit.byId("mnCnOrganismTrace").attr("disabled", false);
+          }
+          else {
+            dijit.byId("mnCnOrganismTrace").attr("disabled", true);
+            dijit.byId("mnFzOrganism").attr("disabled", true);  //kid not selected, then it cannot be save via the menu
+          }
         }
         else {
           dijit.byId("mnCnOrganismTrace").attr("disabled", true);
@@ -1222,14 +1229,14 @@ require([
      console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
      console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
      console.log('Canvas Ht Grid, Scale total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height, av.grd.CanvasGrid.height+av.grd.CanvasScale.height)
-
+*/
      console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
      console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
      console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
      console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
      console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
      console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
-     */  //find width
+     //find width
 
     var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth-2;
     if (navigator.userAgent.indexOf('Mac OS X') != -1) {
@@ -1239,6 +1246,7 @@ require([
       if (av.brs.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
     }
 
+    //var mapBlockWd = mapBlockHoldWd-8;
     var mapBlockWd = mapBlockHoldWd-8;
     av.ui.num = mapBlockHoldWd-22;
     //console.log('mapBlockHoldWd, mapBlockWd, av.ui.num',mapBlockHoldWd, mapBlockWd,av.ui.num)
@@ -1295,7 +1303,7 @@ require([
      console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
      console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
      console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-     /*
+     */
      console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
      console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
      console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
@@ -1303,7 +1311,7 @@ require([
      console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
      console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
      console.log('-----------------------------------------')
-     */
+     //
   }
 
   function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {
