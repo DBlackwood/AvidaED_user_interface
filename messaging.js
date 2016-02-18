@@ -3,6 +3,8 @@ av.msg.readMsg = function (ee) {
   if ('data' == msg.type) {
     switch (msg.name) {
       case 'paused':
+        console.log('about to call av.ptd.makePauseState()');
+        av.debug.log += 'about to call av.ptd.makePauseState() in messaging.js line 7 \n';
         av.ptd.makePauseState();
         break;
       case 'reset':
@@ -79,7 +81,7 @@ av.msg.readMsg = function (ee) {
         break;
     }
   }
-  else av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+  else av.debug.log += '\nAvida --> ui line82 \n' + av.utl.json2stringFn(msg);
 }
 
 av.msg.importExpr = function () {

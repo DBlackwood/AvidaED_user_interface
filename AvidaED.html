@@ -432,7 +432,7 @@
              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false"
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"
-               style="height: 97%;"> <!-- 93; 95%-->
+               style="height: 96%;"> <!-- 93; 95%-->
             <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                  id="mapBC" style="min-width: 343px; min-height: 1px; z-index: 0; width: 90%; height: 100%;">  <!--width: 96%;-->
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -449,7 +449,7 @@
                     <td>
                       Time: <label id="TimeLabel">(not started)</label><br/>
                     </td>
-                    <td style="text-align: center; width:166px">
+                    <td style="text-align: center; min-width:166px"><!--166px-->
                       Mode
                       <select data-dojo-type="dijit/form/Select" id="colorMode" data-dojo-props="name: 'colorMode'">
                         <option value="Fitness" selected="selected">Fitness</option>

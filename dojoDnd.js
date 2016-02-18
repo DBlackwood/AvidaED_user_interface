@@ -244,8 +244,6 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
   //if (av.debug.dnd) console.log('xOff, yOff, xUP, y', av.grd.xOffset, av.grd.yOffset, av.mouse.UpGridPos[0];, av.mouse.UpGridPos[1];);
   //calculated grid cell to see if it was a valid grid position.
   var nn = av.parents.name.length;
-  var event = event || window.event;
-  console.log('landGrid event', event);
   var mouseX = av.mouse.UpGridPos[0] - av.grd.marginX - av.grd.xOffset;
   var mouseY = av.mouse.UpGridPos[1] - av.grd.marginY - av.grd.yOffset;
   if (av.debug.dnd) console.log('mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);

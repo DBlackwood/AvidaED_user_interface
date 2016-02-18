@@ -394,7 +394,7 @@ function drawLegend(grd, parents) {
 
 function GradientScale(grd) {
   'use strict';
-  console.log('gradientScale')
+  //console.log('gradientScale')
   av.grd.CanvasScale.height = 30;
   av.grd.sCtx.fillStyle = av.color.dictColor["ltGrey"];
   av.grd.sCtx.fillRect(0, 0, av.grd.CanvasScale.width, av.grd.CanvasScale.height);
@@ -419,7 +419,7 @@ function GradientScale(grd) {
   av.grd.sCtx.fillStyle = grad;
   av.grd.sCtx.fillRect(xStart, legendHt, gradWidth, av.grd.CanvasScale.height - legendHt);
   //Draw Values if run started
-  console.log('GradientScale runState = ',av.grd.runState);
+  //console.log('GradientScale runState = ',av.grd.runState);
   if ('prepping' !== av.grd.runState) {
     //if (true) {  av.grd.fillmax = 805040;
     av.grd.sCtx.font = "14px Arial";

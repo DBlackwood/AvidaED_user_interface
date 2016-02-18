@@ -720,6 +720,8 @@ require([
   av.ptd.makePauseState = function () {
     dijit.byId("mnCnPause").attr("disabled", true);
     dijit.byId("mnCnRun").attr("disabled", false);
+    console.log('pauseState; button=run');
+    av.debug.log += 'set runStopButton=Run in AvidaEd.js line 724 \n';
     document.getElementById("runStopButton").innerHTML = "Run";
   }
 
@@ -734,6 +736,8 @@ require([
     var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
     //console.log("namelist", namelist);
     if (1 > namelist.length) {
+      console.log('about to call av.ptd.makePauseState()');
+      av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 740 \n';
       av.ptd.makePauseState();
       NeedAncestorDialog.show();
     }
@@ -753,6 +757,7 @@ require([
       if (dijit.byId("updateRadio").get('checked')) {
         av.msg.pause(dijit.byId("updateSpinner").get('value'));
       }
+      av.ptd.makeRunState();
       av.msg.doRunPause(av.fio);
     }
     //update screen based on data from C++
@@ -763,6 +768,8 @@ require([
       av.ptd.makeRunState();
       runPopFn();
     } else {
+      console.log('about to call av.ptd.makePauseState()');
+      av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
       av.ptd.makePauseState();
       av.msg.doRunPause(av.fio);
       //console.log("pop size ", av.ptd.aveNum);
@@ -775,6 +782,8 @@ require([
   };
 
   dijit.byId("mnCnPause").on("Click", function () {
+    console.log('about to call av.ptd.makePauseState()');
+    av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 786 \n';
     av.ptd.makePauseState();
     av.msg.doRunPause(av.fio);
   });
@@ -1227,8 +1236,8 @@ require([
     //figure out scale or legend
     av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth -1;
     document.getElementById('popBot').style.height = '5px';
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents); console.log('called drawLegend')}
-    else { GradientScale(av.grd); console.log('called gradientScale'); }
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents);}
+    else { GradientScale(av.grd); }
     //av.grd.CanvasScale.height = 60;  //tiba delete later for resizing test only
 
     document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';

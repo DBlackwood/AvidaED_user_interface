@@ -114,6 +114,8 @@ av.ptd.popNewExState = function () {
   dijit.byId("mnCnPause").attr("disabled", true);
   dijit.byId("mnCnRun").attr("disabled", false);
   document.getElementById("runStopButton").innerHTML = "Run";
+  av.debug.log += 'set runStopButton=Run in popControl.js line 117 in av.ptd.popNewExState';
+  console.log('pauseState; button=run in av.ptd.popNewExState');
 
   //clear the time series graphs
   av.ptd.aveFit = [];
