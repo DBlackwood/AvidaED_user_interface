@@ -266,7 +266,14 @@ function findGridSize(grd, parents){
     av.grd.spaceCells = av.grd.cols;  //cols exactly fit the space when zoom = 1x
   }
 
-  //Determine offset and size of canvas based on grid size relative to space size in that direction
+  //Determine new size of grid
+    av.grd.CanvasGrid.width = av.grd.sizeX;
+    av.grd.xOffset = 0;
+    av.grd.CanvasGrid.height = av.grd.sizeY;
+    av.grd.yOffset = 0;
+
+  //Determine offset and size of canvas based on grid size relative to space size in that direction = old way with offsets
+  /*
   if (av.grd.sizeX < av.grd.spaceX) {
     av.grd.CanvasGrid.width = av.grd.spaceX;
     av.grd.xOffset = (av.grd.spaceX - av.grd.sizeX) / 2;
@@ -284,7 +291,7 @@ function findGridSize(grd, parents){
     av.grd.yOffset = 0;
   }
   //console.log('Xsize', av.grd.sizeX, '; Ysize', av.grd.sizeY, '; zoom=', av.grd.zoom);
-
+  */
 }
 function DrawGridUpdate(grd, parents) {
   'use strict';
@@ -296,7 +303,7 @@ function DrawGridUpdate(grd, parents) {
   var zMaxCells = Math.floor(av.grd.spaceCells / 25);  // at least 10 cells   was trunc
   var zMaxWide = Math.floor(10 / av.grd.spaceCellWd);  // at least 10 pixels  was trunc
   var zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
-  var zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
+  zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
 
   av.grd.ZoomSlide.set("maximum", zMax);
   av.grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
@@ -387,6 +394,7 @@ function drawLegend(grd, parents) {
 
 function GradientScale(grd) {
   'use strict';
+  console.log('gradientScale')
   av.grd.CanvasScale.height = 30;
   av.grd.sCtx.fillStyle = av.color.dictColor["ltGrey"];
   av.grd.sCtx.fillRect(0, 0, av.grd.CanvasScale.width, av.grd.CanvasScale.height);
@@ -411,6 +419,7 @@ function GradientScale(grd) {
   av.grd.sCtx.fillStyle = grad;
   av.grd.sCtx.fillRect(xStart, legendHt, gradWidth, av.grd.CanvasScale.height - legendHt);
   //Draw Values if run started
+  console.log('GradientScale runState = ',av.grd.runState);
   if ('prepping' !== av.grd.runState) {
     //if (true) {  av.grd.fillmax = 805040;
     av.grd.sCtx.font = "14px Arial";

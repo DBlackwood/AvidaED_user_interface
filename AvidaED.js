@@ -163,7 +163,7 @@ require([
   av.parents.clearParentsFn();
 
   // -------------------------------------------------------------------------------------------------------------------
-  // Initialize variables that depend on files loaded in requiement statement
+  // Initialize variables that depend on files loaded in requirement statement
   // -------------------------------------------------------------------------------------------------------------------
 
   av.grd.popChart = new Chart("popChart");
@@ -448,8 +448,10 @@ require([
       av.anl.AnaChartFn();
     }
     if ("block" == domStyle.get("populationBlock", "display")) {
-      av.grd.popChartFn();
-      av.grd.drawGridSetupFn();
+      if (av.grd.notInDrawingGrid) {
+        av.grd.popChartFn();
+        av.grd.drawGridSetupFn();
+      }
     }
     if ("block" == domStyle.get("organismBlock", "display")) {
       var rd = $("#rightDetail").innerHeight();
@@ -1207,20 +1209,88 @@ require([
   av.grd.SelectedWd = $('#SelectedColor').innerWidth();
   av.grd.SelectedHt = $('#SelectedColor').innerHeight();
 
-  av.grd.CanvasScale.width = $("#gridHolder").innerWidth() - 6;
-  av.grd.CanvasGrid.width = $("#gridHolder").innerWidth() - 6;
-  av.grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - av.grd.CanvasScale.height;
+  av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
+  av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientHeight/2;
+  //av.grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - av.grd.CanvasScale.height;
+  av.grd.CanvasGrid.height = 15;
 
   //--------------------------------------------------------------------------------------------------------------------
   if (av.debug.root) console.log('before av.grd.drawGridSetupFn');
+
   av.grd.drawGridSetupFn = function () {
+    'use strict';
+    av.grd.notInDrawingGrid = false;
+    if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
+      setMapData(av.grd);  //update color information for offpsring once run has started
+      findLogicOutline(av.grd);
+    }
+    //figure out scale or legend
+    av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth -1;
+    document.getElementById('popBot').style.height = '5px';
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents); console.log('called drawLegend')}
+    else { GradientScale(av.grd); console.log('called gradientScale'); }
+    //av.grd.CanvasScale.height = 60;  //tiba delete later for resizing test only
+
+    document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
+    //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
+    dijit.byId('populationBlock').resize();
+    //console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+
+    var gridHolderHt = document.getElementById('gridHolder').clientHeight;
+    av.ui.num = Math.floor(gridHolderHt/4);
+    //document.getElementById('gridVertSpacer').style.height = 0 + 'px';
+
+    av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientWidth-1;
+    av.grd.CanvasGrid.height = gridHolderHt-2;
+    av.grd.spaceX = av.grd.CanvasGrid.width;
+    av.grd.spaceY = av.grd.CanvasGrid.height;
+
+    findGridSize(av.grd, av.parents);
+    if (document.getElementById('gridHolder').scrollHeight==document.getElementById('gridHolder').clientHeight+17){
+      var numGH = document.getElementById('gridHolder').clientHeight;
+      av.grd.CanvasGrid.height = numGH - 6-17;
+      findGridSize(av.grd, av.parents);     //in PopulationGrid.js
+    }
+    DrawGridUpdate(av.grd, av.parents);   //in PopulationGrid.js
+
+    //draw grey rectangle as back ground  //temp delete next two lines later
+    //av.grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
+    //av.grd.cntx.fillRect(0, 0, av.grd.CanvasGrid.width, av.grd.CanvasGrid.height);
+    //delete above two lines later
+
+    av.grd.notInDrawingGrid = true;
+
+    /*
+     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
+     console.log('gridControlTable Wd client', document.getElementById('gridControlTable').clientWidth);
+     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+     console.log('gridHolderHt',gridHolderHt);
+     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+     */
+
+  }
+
+
+
+
+
+
+
+  av.grd.drawGridSetupFn_real = function () {
     var gridHolderHt = document.getElementById('gridHolder').clientHeight;
 
     if('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
       setMapData(av.grd);  //update color information for offpsring once run has started
       findLogicOutline(av.grd);
+
+      document.getElementById('popBot').style.height = '5px';
+      if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents) }
+      else { GradientScale(av.grd) }
+      document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
+
     }
-    /*
+
      //http://stackoverflow.com/questions/10118172/setting-div-width-and-height-in-javascript
      //the console.log is to look at why scroll bars show up when they should not
      console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
@@ -1229,7 +1299,7 @@ require([
      console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
      console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
      console.log('Canvas Ht Grid, Scale total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height, av.grd.CanvasGrid.height+av.grd.CanvasScale.height)
-*/
+/*
      console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
      console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
      console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
@@ -1245,14 +1315,14 @@ require([
       //document.getElementById('mapBlock').style.height = '94%';  //94
       if (av.brs.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
     }
-
+/*
     //var mapBlockWd = mapBlockHoldWd-8;
     var mapBlockWd = mapBlockHoldWd-8;
     av.ui.num = mapBlockHoldWd-22;
     //console.log('mapBlockHoldWd, mapBlockWd, av.ui.num',mapBlockHoldWd, mapBlockWd,av.ui.num)
     av.grd.CanvasScale.width = av.ui.num;
     av.grd.CanvasGrid.width = av.grd.CanvasScale.width;
-    document.getElementById('gridTable').style.width = av.ui.num + 'px';
+    //document.getElementById('gridTable').style.width = av.ui.num + 'px';
     av.ui.num += 2;
     document.getElementById('gridHolder').style.width = av.ui.num + 'px';
     document.getElementById('scaleDiv').style.width = av.ui.num + 'px';
@@ -1261,9 +1331,8 @@ require([
 
     document.getElementById('mapBlock').style.width = mapBlockWd + 'px';
     document.getElementById('mapBlockHold').style.width = mapBlockHoldWd + 'px';
-
+*/
     //Determine if a color gradient or legend will be displayed
-//    if ("Ancestor Organism" == dijit.byId("colorMode").value) { findLegendSize(av.grd, av.parents); drawLegend(av.grd, av.parents) }
     document.getElementById('popBot').style.height = '5px';
     if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents) }
     else { GradientScale(av.grd) }
@@ -1296,14 +1365,15 @@ require([
     }
     DrawGridUpdate(av.grd, av.parents);   //in PopulationGrid.js
 
-    //console.log('after');
-    /*   console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+    console.log('after');
+
+    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
      console.log('Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
      console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
      console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
      console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
      console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-     */
+    /*
      console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
      console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
      console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
@@ -1311,7 +1381,7 @@ require([
      console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
      console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
      console.log('-----------------------------------------')
-     //
+     */
   }
 
   function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {
