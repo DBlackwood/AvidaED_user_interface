@@ -3,14 +3,18 @@ av.msg.readMsg = function (ee) {
   if ('data' == msg.type) {
     switch (msg.name) {
       case 'paused':
-        console.log('about to call av.ptd.makePauseState()');
-        av.debug.log += 'about to call av.ptd.makePauseState() in messaging.js line 7 \n';
+        //console.log('about to call av.ptd.makePauseState()');
+        //av.debug.log += '\nabout to call av.ptd.makePauseState() in messaging.js line 7 \n';
         av.ptd.makePauseState();
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        break;
+      case 'running':
+        //console.log('about to call av.ptd.makePauseState()');
+        //av.debug.log += '\nabout to call av.ptd.makeRunState() in messaging.js line 13 \n';
+        av.ptd.makeRunState();
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'reset':
-        if (true !== msg.Success) {
-          if (av.debug.msg) console.log("Reset failed: ", msg);
-        }
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'runPause':
@@ -55,16 +59,16 @@ av.msg.readMsg = function (ee) {
         av.grd.updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
         var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
-        //console.log('webOrgDataByCellID', msg);
+        console.log('Avida --> ui webOrgDataByCellID', msg);
         break;
       default:
         if (av.debug.msg) console.log('____________UnknownRequest: ', msg);
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\nAvida --> ui in default in messaging on line 66 \n' + av.utl.json2stringFn(msg);
         break;
     }
   }
   else if ('userFeedback' == msg.type) {
-    av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+    av.debug.log += '\nAvida --> ui on line 71 \n' + av.utl.json2stringFn(msg);
     switch (msg.level) {
       case 'notification':
         if (av.debug.msg) console.log('avida:notify: ',msg.message);

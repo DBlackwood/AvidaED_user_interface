@@ -1,4 +1,4 @@
-function backgroundSquares(grd) {
+av.grd.backgroundSquares = function () {
   'use strict';
   var boxColor = '#111';
   for (var ii = 0; ii < av.grd.cols; ii++) {
@@ -14,7 +14,7 @@ function backgroundSquares(grd) {
   }
 }
 
-function setMapData(grd) {
+av.grd.setMapData = function () {
   'use strict';
   if (undefined != av.grd.msg.fitness) {
     if (av.grd.mxFit < av.grd.msg.fitness.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxFit > av.grd.msg.fitness.maxVal) {
@@ -51,7 +51,7 @@ function setMapData(grd) {
   //console.log('fitmax',av.grd.msg.fitness.maxVal,'; Gest',av.grd.msg.gestation.maxVal,'; rate',av.grd.msg.metabolism.maxVal,'; fillmax',av.grd.fillmax);
 }
 
-function DrawParent(grd, parents) {
+av.grd.drawParent = function () {
   'use strict';
   //console.log('av.parents.col.length, marginX, xOffset', av.parents.col.length, av.grd.marginX, av.grd.xOffset);
   if (undefined != av.parents.col) {
@@ -72,7 +72,7 @@ function DrawParent(grd, parents) {
 
 //only one line changes between the two loops. Thought it would be faster to do the if outside the loop rather than
 //inside the loop. Need to time things to see if it makes a difference
-function DrawKids(grd, parents) {  //Draw the children of parents
+av.grd.drawKids = function () {  //Draw the children of parents
   'use strict';
   var cc, rr, xx, yy;
   //console.log('fill', av.grd.fill);
@@ -112,7 +112,7 @@ function DrawKids(grd, parents) {  //Draw the children of parents
   }
 }
 
-function findLogicOutline(grd) {
+av.grd.findLogicOutline = function () {
   'use strict';
   var ii;
   av.ptd.allOff = true;
@@ -164,21 +164,21 @@ function findLogicOutline(grd) {
   if (av.debug.logic) console.log('setLogic', av.grd.out);
 }
 
-function cellConflict(NewCols, NewRows, grd, parents) {
+av.grd.cellConflict = function (NewCols, NewRows) {
   'use strict';
   var places = [[1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]];
   var flg = false;
   var tryCol, tryRow, avNdx;
   if (undefined != av.parents.handNdx) {
     for (var ii = 0; ii < av.parents.handNdx.length; ii++) {
-      flg = cellFilled(av.parents.AvidaNdx[av.parents.handNdx[ii]], ii, parents);
+      flg = av.grd.cellFilled(av.parents.AvidaNdx[av.parents.handNdx[ii]], ii);
       if (flg) {
         for (var jj = 0; jj < places.length; jj++) {
           tryCol = av.parents.col[av.parents.handNdx[ii]] + places[jj][0];
           tryRow = av.parents.row[av.parents.handNdx[ii]] + places[jj][1];
           avNdx = tryCol + tryRow * NewCols;
           if (0 <= tryCol && tryCol < NewCols && 0 <= tryRow && tryRow < NewRows) {
-            flg = cellFilled(avNdx, ii, parents)
+            flg = av.grd.cellFilled(avNdx, ii);
           }
           else {
             flg = true
@@ -195,7 +195,7 @@ function cellConflict(NewCols, NewRows, grd, parents) {
   }
 }
 
-function DrawLogicSelected(grd) {
+av.grd.DrawLogicSelected = function () {
   'use strict';
   //console.log('DrawLogic', av.grd.out);
   var cc, rr, xx, yy;
@@ -211,23 +211,23 @@ function DrawLogicSelected(grd) {
       rr = Math.floor(ii / av.grd.cols);  //was trunc
       xx = av.grd.marginX + av.grd.xOffset + cc * av.grd.cellWd + inner;
       yy = av.grd.marginY + av.grd.yOffset + rr * av.grd.cellHt + inner;
-      DrawCellOutline(thick, av.grd.LogicColor, xx, yy, av.grd.cellWd-2*inner, av.grd.cellHt-2*inner, grd)
+      av.grd.drawCellOutline(thick, av.grd.LogicColor, xx, yy, av.grd.cellWd-2*inner, av.grd.cellHt-2*inner);
     }
   }
 
 }
 
 //Draw Cell outline or including special case for Selected
-function DrawSelected(grd) {
+av.grd.drawSelected = function () {
   'use strict';
   var thick = 0.1 * av.grd.cellWd;
   if (1 > thick) thick = 1;
   av.grd.selectX = av.grd.marginX + av.grd.xOffset + av.grd.selectedCol * av.grd.cellWd;
   av.grd.selectY = av.grd.marginY + av.grd.yOffset + av.grd.selectedRow * av.grd.cellHt;
-  DrawCellOutline(thick, av.grd.SelectedColor, av.grd.selectX, av.grd.selectY, av.grd.cellWd, av.grd.cellHt, grd)
+  av.grd.drawCellOutline(thick, av.grd.SelectedColor, av.grd.selectX, av.grd.selectY, av.grd.cellWd, av.grd.cellHt)
 }
 
-function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {
+av.grd.drawCellOutline = function (lineThickness, color, xx, yy, wide, tall) {
   'use strict';
   av.grd.cntx.beginPath();
   av.grd.cntx.rect(xx, yy, wide, tall);
@@ -236,7 +236,7 @@ function DrawCellOutline(lineThickness, color, xx, yy, wide, tall, grd) {
   av.grd.cntx.stroke();
 }
 
-function findGridSize(grd, parents){
+av.grd.findGridSize = function (){
   'use strict';
   // When zoom = 1x, set canvas size based on space available and cell size
   // based on rows and columns requested by the user. Zoom acts as a factor
@@ -293,7 +293,7 @@ function findGridSize(grd, parents){
   //console.log('Xsize', av.grd.sizeX, '; Ysize', av.grd.sizeY, '; zoom=', av.grd.zoom);
   */
 }
-function DrawGridUpdate(grd, parents) {
+av.grd.drawGridUpdate = function () {
   'use strict';
   //get cell size based on grid size and number of columns and rows
   av.grd.cellWd = ((av.grd.sizeX - av.grd.marginX) / av.grd.cols);
@@ -309,20 +309,20 @@ function DrawGridUpdate(grd, parents) {
   av.grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
   //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, av.grd.zoom);
 
-  DrawGridBackground(grd);
+  av.grd.drawGridBackground();
   //Check to see if run has started
   if ('prepping' === av.grd.runState) {
-    DrawParent(grd, parents);
+    av.grd.drawParent();
   }
   else {
-    DrawKids(grd, parents);
+    av.grd.drawKids();
   }
   //Draw Selected as one of the last items to draw
-  if (av.grd.flagSelected) { DrawSelected(grd) }
-  if ('prepping' !== av.grd.runState) DrawLogicSelected(grd);
+  if (av.grd.flagSelected) { av.grd.drawSelected() }
+  if ('prepping' !== av.grd.runState) av.grd.DrawLogicSelected();
 }
 
-function DrawGridBackground(grd) {
+av.grd.drawGridBackground = function () {
   'use strict';
   // Use the identity matrix while clearing the canvas    http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
   av.grd.cntx.setTransform(1, 0, 0, 1, 0, 0);
@@ -335,7 +335,7 @@ function DrawGridBackground(grd) {
   av.grd.cntx.fillStyle = av.color.dictColor['Black'];
   av.grd.cntx.fillRect(av.grd.xOffset, av.grd.yOffset, av.grd.sizeX, av.grd.sizeY);
 
-  backgroundSquares(grd);
+  av.grd.backgroundSquares();
 }
 
 //--------------- Draw legend --------------------------------------
@@ -344,7 +344,7 @@ function DrawGridBackground(grd) {
 //allow for the width of the color box to see how many columns fit across
 //the width of av.grd.CanvasScale. We will need to increase the size of the
 //legend box by the height of a line for each additional line.
-function drawLegend(grd, parents) {
+av.grd.drawLegend = function () {
   'use strict';
   var legendPad = 10;   //padding on left so it is not right at edge of canvas
   var colorWide = 13;   //width and heigth of color square
@@ -392,7 +392,7 @@ function drawLegend(grd, parents) {
   }
 }
 
-function GradientScale(grd) {
+av.grd.gradientScale = function () {
   'use strict';
   //console.log('gradientScale')
   av.grd.CanvasScale.height = 30;
@@ -458,9 +458,9 @@ function GradientScale(grd) {
    */
 }
 
-var cellFilled = function (AvNdx, ii, parents) {
+av.grd.cellFilled = function (AvNdx, ii) {
   var flag = false;
-  //console.log('cellFilled', AvNdx, av.parents.AvidaNdx)
+  //console.log('av.grd.cellFilled', AvNdx, av.parents.AvidaNdx)
   for (var jj = 0; jj < av.parents.name.length; jj++) {
     if (av.parents.handNdx[ii] != jj) {
       if (AvNdx == av.parents.AvidaNdx[jj]) {

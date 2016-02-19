@@ -685,7 +685,7 @@ require([
   document.getElementById("PopSetupButton").onclick = function () {
     av.ptd.popBoxSwap();   //in popControls.js
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
-      cellConflict(av.grd.cols, av.grd.rows, av.grd, av.parents);
+      av.grd.cellConflict(av.grd.cols, av.grd.rows);
       av.grd.drawGridSetupFn();
       av.ui.subpage = 'map';
     }
@@ -721,7 +721,7 @@ require([
     dijit.byId("mnCnPause").attr("disabled", true);
     dijit.byId("mnCnRun").attr("disabled", false);
     console.log('pauseState; button=run');
-    av.debug.log += 'set runStopButton=Run in AvidaEd.js line 724 \n';
+    //av.debug.log += 'set runStopButton=Run in AvidaEd.js line 724 \n';  //debug only delete later
     document.getElementById("runStopButton").innerHTML = "Run";
   }
 
@@ -1230,14 +1230,14 @@ require([
     'use strict';
     av.grd.notInDrawingGrid = false;
     if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
-      setMapData(av.grd);  //update color information for offpsring once run has started
-      findLogicOutline(av.grd);
+      av.grd.setMapData();  //update color information for offpsring once run has started
+      av.grd.findLogicOutline();
     }
     //figure out scale or legend
     av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth -1;
     document.getElementById('popBot').style.height = '5px';
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents);}
-    else { GradientScale(av.grd); }
+    if ("Ancestor Organism" == dijit.byId("colorMode").value) { av.grd.drawLegend();}
+    else { av.grd.gradientScale(); }
     //av.grd.CanvasScale.height = 60;  //tiba delete later for resizing test only
 
     document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
@@ -1254,13 +1254,13 @@ require([
     av.grd.spaceX = av.grd.CanvasGrid.width;
     av.grd.spaceY = av.grd.CanvasGrid.height;
 
-    findGridSize(av.grd, av.parents);
+    av.grd.findGridSize(av.grd, av.parents);
     if (document.getElementById('gridHolder').scrollHeight==document.getElementById('gridHolder').clientHeight+17){
       var numGH = document.getElementById('gridHolder').clientHeight;
       av.grd.CanvasGrid.height = numGH - 6-17;
-      findGridSize(av.grd, av.parents);     //in PopulationGrid.js
+      av.grd.findGridSize(av.grd, av.parents);     //in PopulationGrid.js
     }
-    DrawGridUpdate(av.grd, av.parents);   //in PopulationGrid.js
+    av.grd.drawGridUpdate();   //in PopulationGrid.js
 
     //draw grey rectangle as back ground  //temp delete next two lines later
     //av.grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
@@ -1278,141 +1278,6 @@ require([
      console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
      */
 
-  }
-
-
-
-
-
-
-
-  av.grd.drawGridSetupFn_real = function () {
-    var gridHolderHt = document.getElementById('gridHolder').clientHeight;
-
-    if('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
-      setMapData(av.grd);  //update color information for offpsring once run has started
-      findLogicOutline(av.grd);
-
-      document.getElementById('popBot').style.height = '5px';
-      if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents) }
-      else { GradientScale(av.grd) }
-      document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
-
-    }
-
-     //http://stackoverflow.com/questions/10118172/setting-div-width-and-height-in-javascript
-     //the console.log is to look at why scroll bars show up when they should not
-     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     console.log('Canvas Ht Grid, Scale total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height, av.grd.CanvasGrid.height+av.grd.CanvasScale.height)
-/*
-     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
-     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
-     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
-     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
-     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-     console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
-     //find width
-
-    var mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth-2;
-    if (navigator.userAgent.indexOf('Mac OS X') != -1) {
-      //document.getElementById('mapBlock').style.height = '96%'; //96
-    } else {
-      //document.getElementById('mapBlock').style.height = '94%';  //94
-      if (av.brs.chrome) mapBlockHoldWd = document.getElementById('mapBlockHold').clientWidth;
-    }
-/*
-    //var mapBlockWd = mapBlockHoldWd-8;
-    var mapBlockWd = mapBlockHoldWd-8;
-    av.ui.num = mapBlockHoldWd-22;
-    //console.log('mapBlockHoldWd, mapBlockWd, av.ui.num',mapBlockHoldWd, mapBlockWd,av.ui.num)
-    av.grd.CanvasScale.width = av.ui.num;
-    av.grd.CanvasGrid.width = av.grd.CanvasScale.width;
-    //document.getElementById('gridTable').style.width = av.ui.num + 'px';
-    av.ui.num += 2;
-    document.getElementById('gridHolder').style.width = av.ui.num + 'px';
-    document.getElementById('scaleDiv').style.width = av.ui.num + 'px';
-    av.ui.num += 14;
-    document.getElementById('popBot').style.width = av.ui.num + 'px';
-
-    document.getElementById('mapBlock').style.width = mapBlockWd + 'px';
-    document.getElementById('mapBlockHold').style.width = mapBlockHoldWd + 'px';
-*/
-    //Determine if a color gradient or legend will be displayed
-    document.getElementById('popBot').style.height = '5px';
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { drawLegend(av.grd, av.parents) }
-    else { GradientScale(av.grd) }
-    document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
-
-    av.ui.num = document.getElementById('mapBlockHold').clientHeight-6;
-    document.getElementById('mapBlock').style.height = av.ui.num + 'px';
-
-    gridHolderHt = document.getElementById('mapBlock').clientHeight - document.getElementById('popBot').scrollHeight - document.getElementById('scaleDiv').scrollHeight-16;
-
-    //console.log('gridHolderHt', gridHolderHt);
-    document.getElementById('gridHolder').style.height = gridHolderHt + 'px';
-
-    av.grd.CanvasGrid.height = gridHolderHt - 6;
-
-    //find the space available to display the grid in pixels
-    av.grd.spaceX = av.grd.CanvasGrid.width;
-    av.grd.spaceY = av.grd.CanvasGrid.height;
-    //console.log('spaceY', av.grd.spaceY, '; gdHolder', gridHolderHt, '; scaleCanv', av.grd.CanvasScale.height);
-
-    //DrawGridBackground(av.grd);        //use to test scroll bars instead of the two calls below; in PopulationGrid.js
-    findGridSize(av.grd, av.parents);     //in PopulationGrid.js
-    //console.log('mid gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-    //console.log('mid Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
-
-    if (document.getElementById('gridHolder').scrollHeight==document.getElementById('gridHolder').clientHeight+17){
-      var numGH = document.getElementById('gridHolder').clientHeight;
-      av.grd.CanvasGrid.height = numGH - 6-17;
-      findGridSize(av.grd, av.parents);     //in PopulationGrid.js
-    }
-    DrawGridUpdate(av.grd, av.parents);   //in PopulationGrid.js
-
-    console.log('after');
-
-    console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     console.log('Canvas Ht Grid, Scale, popBot total, client Total', av.grd.CanvasGrid.height, av.grd.CanvasScale.height,document.getElementById('popBot').clientHeight, av.grd.CanvasGrid.height+av.grd.CanvasScale.height+document.getElementById('popBot').clientHeight)
-     console.log('mapBlockHold Ht scroll, client', document.getElementById('mapBlockHold').scrollHeight,document.getElementById('mapBlockHold').clientHeight);
-     console.log('mapBlock Ht scroll, client', document.getElementById('mapBlock').scrollHeight,document.getElementById('mapBlock').clientHeight);
-     console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-     console.log('scaleDiv Ht scroll, client', document.getElementById('scaleDiv').scrollHeight,document.getElementById('scaleDiv').clientHeight);
-    /*
-     console.log('mapBlockHold Wd scroll, client', document.getElementById('mapBlockHold').scrollWidth,document.getElementById('mapBlockHold').clientWidth);
-     console.log('mapBlock Wd scroll, client', document.getElementById('mapBlock').scrollWidth,document.getElementById('mapBlock').clientWidth);
-     console.log('popBot Wd scroll, client', document.getElementById('popBot').scrollWidth,document.getElementById('popBot').clientWidth);
-     console.log('gridHolder Wd scroll, client', document.getElementById('gridHolder').scrollWidth,document.getElementById('gridHolder').clientWidth);
-     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-     console.log('Canvas Wd Grid, Scale total, client Total', av.grd.CanvasGrid.width, av.grd.CanvasScale.width, av.grd.CanvasGrid.width+av.grd.CanvasScale.width)
-     console.log('-----------------------------------------')
-     */
-  }
-
-  function removeWideScrollbar_example(scrollDiv, htChangeDiv, page) {
-    //https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
-    //if the two heights are different then there is a scroll bar
-    var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
-    var hasScrollbar = 0 < ScrollDif;
-    if (av.debug.root) console.log('scroll',scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
-      document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
-      document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
-
-    var divHt = document.getElementById(htChangeDiv).style.height.match(/\d/g);  //get 0-9 globally in the string  //http://stackoverflow.com/questions/10003683/javascript-get-number-from-string
-    divHt = divHt.join(''); //converts array to string
-    var NewHt = Number(divHt) + 1 + ScrollDif;  //add the ht difference to the outer div that holds this one
-    //line below is where the height of the div actually changes
-    document.getElementById(htChangeDiv).style.height = NewHt + 'px';
-
-    //redraw the screen
-    av.ui.mainBoxSwap(page);
-    if (av.debug.root) console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
-      document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
-      document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
   }
 
   // The rest of grid canvas drawing code is in PopulationGrid.js
@@ -1584,7 +1449,7 @@ require([
     av.grd.ZoomSlide.set("value", 1);
     av.parents.placeAncestors();
     //are any parents on the same cell?
-    cellConflict(NewCols, NewRows, av.grd, av.parents);
+    av.grd.cellConflict(NewCols, NewRows);
   }
 
   dijit.byId("sizeCols").on("Change", popSizeFn);

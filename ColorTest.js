@@ -48,7 +48,7 @@ function backgroundBoard(chck) {
 function drawSelected(chck) {
     chck.selectX = chck.marginX + chck.xOffset + chck.selectedCol * chck.cellWd;
     chck.selectY = chck.marginY + chck.yOffset + chck.selectedRow * chck.cellHt;
-    drawCellOutline(2, chck.outlineColor, chck.selectX, chck.selectY, chck.cellWd, chck.cellHt, chck)
+    av.grd.drawCellOutline(2, chck.outlineColor, chck.selectX, chck.selectY, chck.cellWd, chck.cellHt, chck);
 }
 
 function drawCellOutline(lineThickness, color, xx, yy, wide, tall, chck) {
