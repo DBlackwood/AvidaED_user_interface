@@ -36,7 +36,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webPopulationStats':
         av.grd.popStatsMsg = msg;
-        av.msg.updatePopStats(av.grd, av.grd.popStatsMsg);
+        av.msg.updatePopStats(av.grd.popStatsMsg);
         av.grd.popChartFn();
         if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
@@ -56,10 +56,10 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webOrgDataByCellID':
         //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
-        av.grd.updateSelectedOrganismType(av.grd, msg, av.parents);  //in messageing
+        av.grd.updateSelectedOrganismType(msg);  //in messaging
         var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
-        console.log('Avida --> ui webOrgDataByCellID', msg);
+        //console.log('Avida --> ui webOrgDataByCellID', msg);
         break;
       default:
         if (av.debug.msg) console.log('____________UnknownRequest: ', msg);
@@ -233,7 +233,8 @@ av.msg.pause = function(update) {
 av.msg.injectAncestors = function (fio, parents) {
   'use strict';
   var request;
-  for (var ii = 0; ii < av.parents.name.length; ii++) {
+  var lngth = av.parents.name.length;
+  for (var ii = 0; ii < lngth; ii++) {
     request = {
       'type': 'addEvent',
       'name': 'injectSequence',
@@ -254,7 +255,7 @@ av.msg.injectAncestors = function (fio, parents) {
 }
 
 //---------------------------------
-av.msg.updatePopStats = function (grd, msg) {
+av.msg.updatePopStats = function (msg) {
   'use strict';
   var place = 2;
   document.getElementById("TimeLabel").textContent = msg.update.formatNum(0) + " updates";
@@ -281,11 +282,11 @@ av.msg.updatePopStats = function (grd, msg) {
     av.ptd.aveGnl[msg.update] = msg.ave_gestation_time;
     av.ptd.aveMet[msg.update] = msg.ave_metabolic_rate;
     av.ptd.aveNum[msg.update] = msg.organisms;
-    updateLogicAve(grd, msg);  //for graph data
+    updateLogicAve(msg);  //for graph data
   }
 }
 
-updateLogicAve = function (grd, msg){
+updateLogicAve = function (msg){
   'use strict';
   if (av.ptd.allOff) {
     av.ptd.logFit[msg.update] = null;
@@ -300,7 +301,8 @@ updateLogicAve = function (grd, msg){
     av.ptd.logNum[msg.update] = 0;
     //console.log('out_', av.grd.out );
     //console.log('gest', av.grd.msg.gestation.data);
-    for (var ii=0; ii < av.grd.out.length; ii++){
+    var lngth = av.grd.out.length;
+    for (var ii=0; ii < lngth; ii++){
       if (0 < av.grd.out[ii]) {
         av.ptd.logFit[msg.update] += av.grd.msg.fitness.data[ii];
         av.ptd.logGnl[msg.update] += av.grd.msg.gestation.data[ii];
@@ -317,7 +319,7 @@ updateLogicAve = function (grd, msg){
 }
 
 //writes out data for WebOrgDataByCellID
-av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
+av.grd.updateSelectedOrganismType = function (msg) {
   'use strict';
   var prefix = '';
   if (av.debug.msg) console.log('selected_msg', msg);
@@ -396,8 +398,7 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
     document.getElementById("equTime").textContent = '-';
   }
   if (av.debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
-
-  av.msg.fillColorBlock(grd, msg, parents);
+  av.msg.fillColorBlock(msg);
   if (av.debug.msg) console.log('Kidstatus', av.grd.kidStatus);
   if ('getgenome' == av.grd.kidStatus) {
     if (av.debug.msg) console.log('in kidStatus');
@@ -409,7 +410,7 @@ av.grd.updateSelectedOrganismType = function (grd, msg, parents) {
   }
 }
 
-av.msg.fillColorBlock = function (grd, msg, parents) {  //Draw the color block
+av.msg.fillColorBlock = function (msg) {  //Draw the color block
     'use strict';
     if (av.debug.msg) console.log('in fillColorBlock');
     if (av.debug.msg) console.log('ndx', av.grd.selectedNdx, '; msg.ancestor.data[ndx]',av.grd.msg.ancestor.data[av.grd.selectedNdx]);

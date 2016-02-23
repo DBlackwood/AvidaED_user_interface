@@ -149,7 +149,8 @@ av.frd.environmentCFGparse = function (filestr) {
   var rslt = {};
   var lineobj;
   var lines = filestr.split("\n");
-  for (var ii = 0; ii < lines.length; ii++) {
+  var lngth = lines.length;
+  for (var ii = 0; ii < lngth; ii++) {
     if (3 < lines[ii].length) {
       lineobj = av.frd.environmentCFGlineParse(lines[ii]);
       rslt[lineobj.name.toUpperCase()] = lineobj.value;
@@ -189,7 +190,8 @@ av.frd.avidaCFGparse = function (filestr) {
   'use strict';
   var rslt = {};
   var lines = filestr.split("\n");
-  for (var ii = 0; ii < lines.length; ii++) {
+  var lngth = lines.length;
+  for (var ii = 0; ii < lngth; ii++) {
     var lineobj = av.frd.avidaCFGlineParse(lines[ii]);
     rslt[lineobj.name.toUpperCase()] = lineobj.value;
   } // for
@@ -235,7 +237,8 @@ av.fio.autoAncestorParse = function (filestr) {
   var rslt = {};
   var lineobj, gen, name;
   var lines = filestr.split("\n");
-  for (var ii = 0; ii < lines.length; ii++) {
+  var lngth = lines.length;
+  for (var ii = 0; ii < lngth; ii++) {
     if (1 < lines[ii].length) {
       if (ii % 2 < 1) {//even
         name = lines[ii];  //tiba need to get rid of whitespace in string
@@ -285,7 +288,8 @@ av.fio.handAncestorParse = function (filestr) {
   var lineobj, gen, name, xx, yy;
   var pair = [];
   var lines = filestr.split("\n");
-  for (var ii = 0; ii < lines.length; ii++) {
+  var lngth = lines.length;;
+  for (var ii = 0; ii < lngth; ii++) {
     if (1 < lines[ii].length) {
       if (0 === ii % 3) {// divide by 3 evenly => first line
         name = lines[ii];  //tiba need to get rid of whitespace in string
@@ -343,7 +347,8 @@ av.frd.cladeSSGparse = function (filestr) {
   var rslt = [];
   var lineobj, cfgary, name;
   var lines = filestr.split("\n");
-  for (var ii = 0; ii < lines.length; ii++) {
+  var lngth = lines.length;
+  for (var ii = 0; ii < lngth; ii++) {
     if (3 < lines[ii].length) {
       cfgary = flexsplit(lines[ii]).split(',');   //replaces white space with a comma, then splits on comma
       name = cfgary[0];

@@ -55,7 +55,8 @@ av.grd.drawParent = function () {
   'use strict';
   //console.log('av.parents.col.length, marginX, xOffset', av.parents.col.length, av.grd.marginX, av.grd.xOffset);
   if (undefined != av.parents.col) {
-    for (var ii = 0; ii < av.parents.col.length; ii++) {
+    var lngth = av.parents.col.length;
+    for (var ii = 0; ii < lngth; ii++) {
       var xx = av.grd.marginX + av.grd.xOffset + av.parents.col[ii] * av.grd.cellWd;
       var yy = av.grd.marginY + av.grd.yOffset + av.parents.row[ii] * av.grd.cellHt;
       if ("Ancestor Organism" == dijit.byId("colorMode").value) {
@@ -74,16 +75,17 @@ av.grd.drawParent = function () {
 //inside the loop. Need to time things to see if it makes a difference
 av.grd.drawKids = function () {  //Draw the children of parents
   'use strict';
-  var cc, rr, xx, yy;
+  var cc, ii, rr, xx, yy, lngth;
   //console.log('fill', av.grd.fill);
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-    for (var ii = 0; ii < av.grd.fill.length; ii++) {
+    lngth = av.grd.fill.length;
+    for (ii = 0; ii < lngth; ii++) {
       cc = ii % av.grd.cols;
       rr = Math.floor(ii / av.grd.cols);       //was trunc
       xx = av.grd.marginX + av.grd.xOffset + cc * av.grd.cellWd;
       yy = av.grd.marginY + av.grd.yOffset + rr * av.grd.cellHt;
       if (null === av.grd.fill[ii]) {
-        av.grd.cntx.fillStyle = '#000'
+        av.grd.cntx.fillStyle = '#000';
       }
       else {
         av.grd.cntx.fillStyle = av.parents.color[av.grd.fill[ii]]
@@ -92,7 +94,8 @@ av.grd.drawKids = function () {  //Draw the children of parents
     }
   }
   else {
-    for (ii = 0; ii < av.grd.fill.length; ii++) {
+    lngth = av.grd.fill.length;
+    for (ii = 0; ii <  lngth; ii++) {
       cc = ii % av.grd.cols;
       rr = Math.floor(ii / av.grd.cols);     //was trunc
       xx = av.grd.marginX + av.grd.xOffset + cc * av.grd.cellWd;
@@ -114,53 +117,73 @@ av.grd.drawKids = function () {  //Draw the children of parents
 
 av.grd.findLogicOutline = function () {
   'use strict';
-  var ii;
+  var ii, lngth;
   av.ptd.allOff = true;
   //console.log('not',av.grd.msg.not.data);
-  for (ii = 0; ii < av.grd.msg.not.data.length; ii++) {
+  lngth = av.grd.msg.not.data.length;
+  for (ii = 0; ii < lngth; ii++) {
     av.grd.out[ii] = 1;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('notButton').value) {
-    for (ii = 0; ii < av.grd.msg.not.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.not.data[ii];}
+    lngth = av.grd.msg.not.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.not.data[ii];}
     av.ptd.allOff = false;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('nanButton').value) {
-    for (ii = 0; ii < av.grd.msg.nand.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nand.data[ii];}
+    lngth = av.grd.msg.nand.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nand.data[ii];}
     av.ptd.allOff = false;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('andButton').value) {
-    for (ii = 0; ii < av.grd.msg.and.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.and.data[ii];}
+    lngth = av.grd.msg.and.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.and.data[ii];}
     av.ptd.allOff = false;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('ornButton').value) {
-    for (ii = 0; ii < av.grd.msg.orn.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.orn.data[ii];}
+    lngth = av.grd.msg.orn.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.orn.data[ii];}
     av.ptd.allOff = false;
-    if (av.debug.logic) console.log('or', av.grd.msg.orn.data);
+    if (av.debug.logic) console.log('orn', av.grd.msg.orn.data);
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('oroButton').value) {
-    for (ii = 0; ii < av.grd.msg.or.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.or.data[ii];}
+    lngth = av.grd.msg.or.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.or.data[ii];}
     av.ptd.allOff = false;
     if (av.debug.logic) console.log('or', av.grd.msg.or.data);
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('antButton').value) {
-    for (ii = 0; ii < av.grd.msg.andn.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.andn.data[ii];}
+    lngth = av.grd.msg.andn.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.andn.data[ii];}
     av.ptd.allOff = false;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('norButton').value) {
-    for (ii = 0; ii < av.grd.msg.nor.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nor.data[ii];}
+    lngth = av.grd.msg.nor.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nor.data[ii];}
     av.ptd.allOff = false;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('xorButton').value) {
-    for (ii = 0; ii < av.grd.msg.xor.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.xor.data[ii];}
+    lngth = av.grd.msg.xor.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.xor.data[ii];}
     av.ptd.allOff = false;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('equButton').value) {
-    for (ii = 0; ii < av.grd.msg.equ.data.length; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.equ.data[ii];}
+    lngth = av.grd.msg.equ.data.length;
+    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.equ.data[ii];}
     av.ptd.allOff = false;
   }
+  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if (av.ptd.allOff) {for (ii = 0; ii < av.grd.msg.not.data.length; ii++) { av.grd.out[ii] = 0 } }
 
-  //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
+  console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (av.debug.logic) console.log('setLogic', av.grd.out);
 }
 
@@ -170,10 +193,12 @@ av.grd.cellConflict = function (NewCols, NewRows) {
   var flg = false;
   var tryCol, tryRow, avNdx;
   if (undefined != av.parents.handNdx) {
-    for (var ii = 0; ii < av.parents.handNdx.length; ii++) {
+    var handNum = av.parents.handNdx.length;
+    for (var ii = 0; ii < handNum; ii++) {
       flg = av.grd.cellFilled(av.parents.AvidaNdx[av.parents.handNdx[ii]], ii);
       if (flg) {
-        for (var jj = 0; jj < places.length; jj++) {
+        var lngth = places.length;
+        for (var jj = 0; jj < lngth; jj++) {
           tryCol = av.parents.col[av.parents.handNdx[ii]] + places[jj][0];
           tryRow = av.parents.row[av.parents.handNdx[ii]] + places[jj][1];
           avNdx = tryCol + tryRow * NewCols;
@@ -205,7 +230,8 @@ av.grd.DrawLogicSelected = function () {
   if (1 > thick) thick = 1;
   //console.log('=========================')
   //console.log('logic', av.grd.out);
-  for (var ii = 0; ii < av.grd.out.length; ii++) {
+  var lngth = av.grd.out.length;
+  for (var ii = 0; ii < lngth; ii++) {
     if (0 != av.grd.out[ii]) {
       cc = ii % av.grd.cols;
       rr = Math.floor(ii / av.grd.cols);  //was trunc
@@ -214,7 +240,6 @@ av.grd.DrawLogicSelected = function () {
       av.grd.drawCellOutline(thick, av.grd.LogicColor, xx, yy, av.grd.cellWd-2*inner, av.grd.cellHt-2*inner);
     }
   }
-
 }
 
 //Draw Cell outline or including special case for Selected
@@ -357,7 +382,8 @@ av.grd.drawLegend = function () {
   //console.log('in drawLedgend')
   av.grd.sCtx.font = "14px Arial";
   //find out how much space is needed
-  for (var ii = 0; ii < av.parents.name.length; ii++) {
+  var lngth = av.parents.name.length;
+  for (var ii = 0; ii < lngth; ii++) {
     txtWide = av.grd.sCtx.measureText(av.parents.name[ii]).width;
     if (txtWide > maxWide) {
       maxWide = txtWide
@@ -377,7 +403,8 @@ av.grd.drawLegend = function () {
   var colWide = (av.grd.CanvasScale.width - leftPad) / legendCols
   var col = 0;
   var row = 0;
-  for (ii = 0; ii < av.parents.name.length; ii++) {
+  lngth = av.parents.name.length;
+  for (ii = 0; ii < lngth; ii++) {
     col = ii % legendCols;
     row = Math.floor(ii / legendCols);    //was trunc
     //xx = leftPad + col*(maxWide+colorWide+legendPad);
@@ -413,7 +440,8 @@ av.grd.gradientScale = function () {
     case 'Cubehelix':
       av.grd.cmap = av.color.cubehelixCmap;
   }
-  for (var ii = 0; ii < av.grd.cmap.length; ii++) {
+  var lngth = av.grd.cmap.length;
+  for (var ii = 0; ii < lngth; ii++) {
     grad.addColorStop(ii / (av.grd.cmap.length - 1), av.grd.cmap[ii]);
   }
   av.grd.sCtx.fillStyle = grad;
@@ -461,7 +489,8 @@ av.grd.gradientScale = function () {
 av.grd.cellFilled = function (AvNdx, ii) {
   var flag = false;
   //console.log('av.grd.cellFilled', AvNdx, av.parents.AvidaNdx)
-  for (var jj = 0; jj < av.parents.name.length; jj++) {
+  var lngth = av.parents.name.length;
+  for (var jj = 0; jj < lngth; jj++) {
     if (av.parents.handNdx[ii] != jj) {
       if (AvNdx == av.parents.AvidaNdx[jj]) {
         flag = true;
@@ -472,3 +501,7 @@ av.grd.cellFilled = function (AvNdx, ii) {
   }
   return flag;
 }
+
+/*how to center grid
+http://stackoverflow.com/questions/5127937/how-to-center-canvas-in-html5
+*/

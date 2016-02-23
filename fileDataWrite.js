@@ -85,7 +85,8 @@ av.fwt.makeFzrEnvironmentCfg = function (idStr, em) {
 av.fwt.makeFzrAncestorAuto = function (idStr) {
   'use strict';
   var txt = '';
-  for (var ii = 0; ii < av.parents.autoNdx.length; ii++) {
+  var lngth = av.parents.autoNdx.length;
+  for (var ii = 0; ii < lngth; ii++) {
     txt += av.parents.name[av.parents.autoNdx[ii]] + '\n';
     txt += av.parents.genome[av.parents.autoNdx[ii]] + '\n';
   }
@@ -95,7 +96,8 @@ av.fwt.makeFzrAncestorAuto = function (idStr) {
 av.fwt.makeFzrAncestorHand = function (idStr) {
   'use strict';
   var txt = '';
-  for (var ii = 0; ii < av.parents.handNdx.length; ii++) {
+  var lngth = av.parents.handNdx.length;
+  for (var ii = 0; ii < lngth; ii++) {
     txt += av.parents.name[av.parents.handNdx[ii]] + '\n';
     txt += av.parents.genome[av.parents.handNdx[ii]] + '\n';
     txt += av.parents.col[av.parents.handNdx[ii]] + ',' + av.parents.row[av.parents.handNdx[ii]] + '\n';

@@ -70,7 +70,8 @@ function DrawTimeline(obj, gen) {
   numCycles = obj.length - 1;
   //go through all numCycles comparing the current with the previous av.ind.cycle
   //Start with comparing av.ind.cycle 1 to av.ind.cycle 0 since there are no negative numCycles.
-  for (var ii = 1; ii < obj.length; ii++) {
+  var lngth = obj.length;
+  for (var ii = 1; ii < lngth; ii++) {
     if (obj[ii - 1].functions.not < obj[ii].functions.not) {
       upNum.push("0");
       upNdx.push(ii);
@@ -118,7 +119,8 @@ function DrawTimeline(obj, gen) {
   //Draw upTicks for indicating when logic functions complete
   av.ind.ctx.font = "12px Arial";
   av.ind.ctx.fillStyle = av.color.dictColor["Black"];
-  for (var ii = 0; ii < upNum.length; ii++) {
+  var lngth = upNum.length;
+  for (var ii = 0; ii < lngth; ii++) {
     upTickX[ii] = startX + length * upNdx[ii] / numCycles;
     av.ind.ctx.moveTo(upTickX[ii], lineY);
     av.ind.ctx.lineTo(upTickX[ii], upTickY);
@@ -153,7 +155,8 @@ function drawBitStr(context, row, bitStr) {
   var yy = row * recHeight;    //upper-left corner of rectangle
   var str = "1";
   var color;
-  for (var ii = 0; ii < bitStr.length; ii++) {
+  var lngth = bitStr.length;
+  for (var ii = 0; ii < lngth; ii++) {
     xx = ii * (recWidth);
     //draw outline of rectangle
     context.beginPath();
@@ -193,7 +196,8 @@ function genomeCircle(gen, gg, obj) { //gg is generation
   //var tickX, tickY  //mutation tick mark: position of inner tick mark
   //var tanX, tanY    //mutation tick mark: position of end of tick mark tangent to instruction circle.
   //if (av.debug.trace) console.log('gg, size', gg, av.ind.size[gg]);
-  for (var ii = 0; ii < av.ind.dna[gg].length; ii++) {
+  var lngth = av.ind.dna[gg].length;
+  for (var ii = 0; ii < lngth; ii++) {
     av.ind.smCenX[gg][ii] = av.ind.cx[gg] + av.ind.bigR[gg] * Math.cos(ii * 2 * Math.PI / av.ind.size[gg] + av.ind.rotate[gg]);
     av.ind.smCenY[gg][ii] = av.ind.cy[gg] + av.ind.bigR[gg] * Math.sin(ii * 2 * Math.PI / av.ind.size[gg] + av.ind.rotate[gg]);
     av.ind.ctx.beginPath();
@@ -309,7 +313,8 @@ function drawIcon(gen) {
 function updateOrganTrace(obj, gen) {
   'use strict';
   //Find size and content of each genome.
-  for (var ii = 0; ii < obj[av.ind.cycle].memSpace.length; ii++) {
+  var lngth = obj[av.ind.cycle].memSpace.length;
+  for (var ii = 0; ii < lngth; ii++) {
     av.ind.dna[ii] = obj[av.ind.cycle].memSpace[ii].memory.join('');
     av.ind.size[ii] = obj[av.ind.cycle].memSpace[ii].memory.length;
     //console.log('updateOrgTrace: ii',ii,'; av.ind.dna',av.ind.dna[ii]);
@@ -359,11 +364,13 @@ function updateOrganTrace(obj, gen) {
   }
   //Draw path of acrs
   //drawArc2(gen, spot1, spot2, rep)
-  for (var ii = 0; ii < obj[av.ind.cycle].jumps.length; ii++) {
+  var lngth = obj[av.ind.cycle].jumps.length;
+  for (var ii = 0; ii < lngth; ii++) {
     drawArc2(gen, obj[av.ind.cycle].jumps[ii].fromIDX, obj[av.ind.cycle].jumps[ii].toIDX, obj[av.ind.cycle].jumps[ii].freq);
   }
   //drawHead(gen, spot, generation, head) // draws the various heads for parent (Mom)
-  for (var ii = 0; ii < obj[av.ind.cycle].memSpace.length; ii++) {
+  lngth = obj[av.ind.cycle].memSpace.length;
+  for (var ii = 0; ii < lngth; ii++) {
     if (undefined != obj[av.ind.cycle].memSpace[ii].heads.read) {
       drawHead(gen, obj[av.ind.cycle].memSpace[ii].heads.read, ii, "READ");
     }
@@ -379,7 +386,8 @@ function updateOrganTrace(obj, gen) {
   }
   //Draw buffers ---------------------------------------------------
   //drawBitStr (name, row, bitStr);
-  for (var ii = 0; ii < obj[av.ind.cycle].buffers.input.length; ii++) {
+  var lngth = obj[av.ind.cycle].buffers.input.length;
+  for (var ii = 0; ii < lngth; ii++) {
     drawBitStr(av.ind.bufferCtx, ii, obj[av.ind.cycle].buffers.input[ii]);
   }
   drawBitStr(av.ind.registerCtx, 0, obj[av.ind.cycle].registers['ax']);

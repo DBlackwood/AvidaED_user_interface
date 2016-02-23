@@ -506,7 +506,7 @@ require([
       var str;
       var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
       av.dnd.landActiveConfig(pkg);  //dojoDnd
-      av.parents.clearParentsFn;
+      av.parents.clearParentsFn();
       av.frd.updateSetup();  //fileIO
       if ('fzConfig' === pkg.source.node.id) {
         if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
@@ -962,8 +962,10 @@ require([
       if ('offspring' != av.mouse.Picked) {
         if (av.debug.ind) {
         }
-        for (var gg = 0; gg < av.traceObj[av.ind.cycle].memSpace.length; gg++) { //gg is generation
-          for (var ii = 0; ii < av.ind.dna[gg].length; ii++) {  //ii is the isntruction number
+        var lngth = av.traceObj[av.ind.cycle].memSpace.length;
+        for (var gg = 0; gg < lngth; gg++) { //gg is generation
+          var iiLngth = av.ind.dna[gg].length;
+          for (var ii = 0; ii <  iiLngth; ii++) {  //ii is the isntruction number
             distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.ind.smCenY[gg][ii], 2));
             if (av.ind.smallR >= distance) {
               //console.log('found, gg, ii', gg, ii, '; xy',av.ind.smCenX[gg][ii],av.ind.smCenY[gg][ii] );
@@ -1393,6 +1395,7 @@ require([
     else if ("Number of Organisms" == dijit.byId("yaxis").value) {
       av.grd.popY = av.ptd.aveNum;
       av.grd.popY2 = av.ptd.logNum;
+      console.log('logicNum', av.ptd.logNum);
     }
     //console.log('popY',av.grd.popY);
     //console.log('pop2', av.grd.popY2);
@@ -1435,7 +1438,8 @@ require([
     document.getElementById("sizeCells").innerHTML = "is a total of " + NewCols * NewRows + " cells";
     //Linear scale the position for Ancestors added by hand;
     if (undefined != av.parents.handNdx) {
-      for (var ii = 0; ii < av.parents.handNdx.length; ii++) {
+      var lngth = av.parents.handNdx.length;
+      for (var ii = 0; ii <  lngth; ii++) {
         //console.log('old cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
         av.parents.col[av.parents.handNdx[ii]] = Math.floor(NewCols * av.parents.col[av.parents.handNdx[ii]] / av.grd.gridWasCols);  //was trunc
         av.parents.row[av.parents.handNdx[ii]] = Math.floor(NewRows * av.parents.row[av.parents.handNdx[ii]] / av.grd.gridWasRows);  //was trunc
@@ -2014,7 +2018,8 @@ require([
 
   var findchipNdx = function () {
     var ChipedNdx = -1;
-    for (var ii = 0; ii < chips.name.length; ii++) {
+    var chipsLngth = chips.name.length;
+    for (var ii = 0; ii < chipsLngth; ii++) {
       if (matches([chck.selectedCol, chck.selectedRow], [chips.col[ii], chips.row[ii]])) {
         ChipedNdx = ii;
         //console.log('chip found in function', ChipedNdx);
@@ -2031,3 +2036,11 @@ require([
 
 
 });
+
+/* Capture Close event
+ http://stackoverflow.com/questions/1631959/how-to-capture-the-browser-window-close-event
+ http://stackoverflow.com/questions/5712195/js-listen-when-child-window-is-closed
+
+ Single page app
+ http://singlepageappbook.com/detail1.html
+ */

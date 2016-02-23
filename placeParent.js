@@ -4,6 +4,7 @@
 av.parents.placeAncestors = function () {
   var cols = dijit.byId("sizeCols").get('value');
   var rows = dijit.byId("sizeRows").get('value');
+  var lngth;
   var cc, rr, ii;
   if (undefined != av.parents.autoNdx) {
     switch (av.parents.autoNdx.length) {
@@ -14,14 +15,16 @@ av.parents.placeAncestors = function () {
         break;
       case 2:
         if (cols > rows) {  //place av.parents horizontally
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols * (2 * ii + 1) / 4);
             av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 2);
             av.parents.AvidaNdx[av.parents.autoNdx[ii]] = av.parents.col[av.parents.autoNdx[ii]] + cols * av.parents.row[av.parents.autoNdx[ii]];
           }
         }
         else {  //place av.parents vertically
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 2);
             av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows * (2 * ii + 1) / 4);
             av.parents.AvidaNdx[av.parents.autoNdx[ii]] = av.parents.col[av.parents.autoNdx[ii]] + cols * av.parents.row[av.parents.autoNdx[ii]];
@@ -52,7 +55,8 @@ av.parents.placeAncestors = function () {
         break;
       case 4:
         //var cc, rr;
-        for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+        lngth = av.parents.autoNdx.length;
+        for (ii = 0; ii < lngth; ii++) {
           if (ii < 2) {
             av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 4)
           }
@@ -72,7 +76,8 @@ av.parents.placeAncestors = function () {
           //console.log('cols,rows, cc, rr', cols, rows, cc, rr);
         }
       case 5:
-        for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+        lngth = av.parents.autoNdx.length;
+        for (ii = 0; ii < lngth; ii++) {
           if (ii < 2) {
             av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 5)
           }
@@ -128,7 +133,8 @@ av.parents.placeAncestors = function () {
         if (0 != cols % 2) cols = cols - 1;
         if (0 != rows % 2) rows = rows - 1;
         if (cols > rows) {  //place av.parents horizontally
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 3) {
               av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 4)
             }
@@ -147,7 +153,8 @@ av.parents.placeAncestors = function () {
           }
         }
         else {
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 3) {
               av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 4)
             }
@@ -167,7 +174,8 @@ av.parents.placeAncestors = function () {
         break;
       case 9:
         console.log('case9');
-        for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+        lngth = av.parents.autoNdx.length;
+        for (ii = 0; ii < lngth; ii++) {
           if (ii < 3) {
             av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 5)
           }
@@ -184,7 +192,8 @@ av.parents.placeAncestors = function () {
         break;
       case 10:
         if (cols > rows) {  //place av.parents horizontally
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 4) {
               av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 4)
             }
@@ -203,7 +212,8 @@ av.parents.placeAncestors = function () {
           }
         }
         else {
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 4) {
               av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 4)
             }
@@ -223,7 +233,8 @@ av.parents.placeAncestors = function () {
         break;
       case 11:
         if (cols > rows) {  //place av.parents horizontally
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 4) {
               av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 5)
             }
@@ -241,7 +252,8 @@ av.parents.placeAncestors = function () {
           }
         }
         else {
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 4) {
               av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 5)
             }
@@ -261,7 +273,8 @@ av.parents.placeAncestors = function () {
         break;
       case 12:
         if (cols > rows) {  //place av.parents horizontally
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 4) {
               av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 6)
             }
@@ -277,7 +290,8 @@ av.parents.placeAncestors = function () {
           }
         }
         else {
-          for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+          lngth = av.parents.autoNdx.length;
+          for (ii = 0; ii < lngth; ii++) {
             if (ii < 4) {
               av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 6)
             }
@@ -301,7 +315,8 @@ av.parents.placeAncestors = function () {
         else {
           sqLength = Math.floor(Math.sqrt(av.parents.autoNdx.length)) + 1;
         }
-        for (ii = 0; ii < av.parents.autoNdx.length; ii++) {
+        lngth = av.parents.autoNdx.length;
+        for (ii = 0; ii < lngth; ii++) {
           cc = ii % sqLength;
           rr = Math.floor(ii / sqLength);
           av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols * (2 * cc + 1) / (2 * sqLength));
@@ -322,7 +337,8 @@ av.parents.makeHandAutoNdx = function () {
   var aa = 0;  //index into auto placed
   av.parents.handNdx = [];
   av.parents.autoNdx = [];
-  for (var ii = 0; ii < av.parents.name.length; ii++) {
+  var lngth = av.parents.name.length;
+  for (var ii = 0; ii < lngth; ii++) {
     if ('hand' == av.parents.howPlaced[ii]) {
       av.parents.handNdx[hh] = ii;
       hh++;

@@ -29,9 +29,10 @@ av.dnd.getUniqueName = function(name, target) {
   'use strict';
   var namelist = dojo.query('> .dojoDndItem', target.node.id);
   var unique = true;
+  var lngth = namelist.length;
   while (unique) {
     unique = false;
-    for (var ii = 0; ii < namelist.length; ii++) {
+    for (var ii = 0; ii < lngth;  ii++) {
       //if (av.debug.dnd) console.log ("name ", namelist[ii].innerHTML);
       if (name == namelist[ii].textContent) {
         name = prompt("Please give your item a unique name ", name + "_1")
@@ -47,7 +48,8 @@ av.dnd.getDomId = function (name, target){
   //Now find which node has the new content so it can get a context menu.
   var domItems = Object.keys(target.map);
   var nodeIndex = -1;
-  for (var ii = 0; ii < domItems.length; ii++) {
+  var lngth = domItems.length;
+  for (var ii = 0; ii < lngth; ii++) {
     if (target.map[domItems[ii]].data == name) {
       nodeIndex = ii;
       break;
@@ -386,7 +388,7 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   'use strict';
   if (av.debug.dnd) console.log('landFzPopDish: fzr', av.fzr);
   var domid = Object.keys(pkg.target.selection)[0];
-  var worldName = prompt("Please name your dish Worlduration", pkg.nodes[0].textContent + "_1");
+  var worldName = prompt("Please name your populated dish", pkg.nodes[0].textContent + "_1");
   if (worldName) {
     var WorldName = av.dnd.getUniqueName(worldName, pkg.target);
     if (null != WorldName) {
@@ -692,4 +694,5 @@ av.dnd.contextMenu = function(target, fzItemID) {
 /* ****************************************************************************************************************** */
 /*
 Looking at DND move https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveable.html
+ https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveable.html
  */

@@ -288,23 +288,28 @@ function encodeUtf8(s) {
 }
 
 function decodeUtf8(s) {
+  'use strict';
   return decodeURIComponent(escape(s));
 }
 
 var UTF8 = (function () {
+  'use strict';
   function UTF8() {
   }
   UTF8.getBytes = function (stringValue) {
     var bytes = [];
-    for (var i = 0; i < stringValue.length; ++i) {
+    var lngth = stringValue.length;
+    for (var i = 0; i < lngth; ++i) {
       bytes.push(stringValue.charCodeAt(i));
     }
     return bytes;
   };
 
   UTF8.getString = function (utftext) {
+    'use strict';
     var result = "";
-    for (var i = 0; i < utftext.length; i++) {
+    var lngth = utftext.length;
+    for (var i = 0; i < lngth; i++) {
       result += String.fromCharCode(parseInt(utftext[i], 10));
     }
     return result;

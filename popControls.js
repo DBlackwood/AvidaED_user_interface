@@ -108,7 +108,7 @@ av.ptd.popNewExState = function () {
   dijit.byId("demoRadio").attr("disabled", false);
 
   //reset Ancestor Color stack
-  av.parents.Colors = av.color.parentColorList;
+  //av.parents.Colors = av.color.parentColorList.slice();   //delete this later
   av.parents.Colors.reverse();
   //set run/stop and drop down menu to the 'stopped' state
   dijit.byId("mnCnPause").attr("disabled", true);
@@ -245,7 +245,8 @@ av.ptd.FrConfigFn = function () {
 //Save a populated dish
 av.ptd.FrPopulationFn = function () {
   'use strict';
-  var fzName = prompt("Please name the new population", "newPopulation");
+  var popName = av.fzr.actConfig.name + '_at_' + av.grd.popStatsMsg.update.formatNum(0);  // need update here star
+  var fzName = prompt("Please name the new population", popName);
   if (fzName) {
     fzName = av.dnd.getUniqueName(fzName, av.dnd.fzWorld);
     if (null != fzName) {
@@ -274,7 +275,8 @@ av.ptd.bitToggle = function (button) {
     document.getElementById(button).value = 'on';
     document.getElementById(button).className = 'bitButtonOn';
   }
-  for (ii=0; ii<av.ptd.aveFit.length; ii++){
+  var lngth = av.ptd.aveFit.length;
+  for (ii=0; ii < lngth; ii++){
     av.ptd.logFit[ii] = null;
     av.ptd.logGnl[ii] = null;
     av.ptd.logMet[ii] = null;

@@ -9,7 +9,8 @@ var nearly = function (aa, bb) {
 var findParentNdx = function (parents) {
   'use strict';
   var MomNdx = -1;
-  for (var ii = 0; ii < av.parents.name.length; ii++) {
+  var lngth = av.parents.name.length;
+  for (var ii = 0; ii < lngth; ii++) {
     //if (matches([av.grd.selectedCol, av.grd.selectedRow], [av.parents.col[ii], av.parents.row[ii]])) {
     if (av.grd.selectedNdx == av.parents.AvidaNdx[ii]) {
       MomNdx = ii;
@@ -232,7 +233,8 @@ function fromAncestorBoxRemove(removeName) {
   var domItems = Object.keys(dnd.ancestorBox.map);
   //console.log("domItems=", domItems);
   var nodeIndex = -1;
-  for (var ii = 0; ii < domItems.length; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
+  var lngth = domItems.length;
+  for (var ii = 0; ii < lngth; ii++) { //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
     if (dnd.ancestorBox.map[domItems[ii]].data == removeName) {
       nodeIndex = ii;
     }
@@ -251,16 +253,34 @@ function fromAncestorBoxRemove(removeName) {
  http://www.w3schools.com/jsref/dom_obj_event.asp
 
  overide mouse shape
+
  http://stackoverflow.com/questions/10750582/global-override-of-mouse-cursor-with-javascript
  https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
  http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
  http://www.w3schools.com/cssref/playit.asp?filename=playcss_cursor&preval=row-resize
  http://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor
 
-dragging
+set capture??
  https://developer.mozilla.org/en-US/docs/Web/API/Element/setCapture
+ http://stackoverflow.com/questions/820026/capture-mouse-in-firefox
+ http://stackoverflow.com/questions/820026/capture-mouse-in-firefox
+ http://stackoverflow.com/questions/7481022/mouse-capture-in-non-ie-browser
+
+ dragging
  https://jsfiddle.net/d2wyv8fo/
+ http://stackoverflow.com/questions/8528428/cleanest-drag-and-drop-code-in-javascript-canvas
 
  cursors
+ http://www.echoecho.com/csscursors.htm
  http://www.useragentman.com/blog/2011/12/21/cross-browser-css-cursor-images-in-depth/
+ http://stackoverflow.com/questions/10866471/javascript-how-to-change-mouse-cursor-to-an-image
+ http://www.htmlgoodies.com/beyond/css/create-custom-cursors-with-javascript-and-css3.html#fbid=zWT2yc03gfP
+ http://stackoverflow.com/questions/192900/wait-cursor-over-entire-html-page
+
+ making cur files
+ http://stackoverflow.com/questions/426372/convert-a-gif-into-a-cur-file
+ https://convertio.co/png-cur/
+ http://customize.org/cursor/help/How_To_Create_Cursors
+ http://www.ehow.com/video_12213843_create-cursor-gimp.html
  */
+
