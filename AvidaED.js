@@ -1268,7 +1268,7 @@ require([
     //av.grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
     //av.grd.cntx.fillRect(0, 0, av.grd.CanvasGrid.width, av.grd.CanvasGrid.height);
     //delete above two lines later
-
+    rescaleLabel.textContent = av.grd.fillRescale;
     av.grd.notInDrawingGrid = true;
 
     /*

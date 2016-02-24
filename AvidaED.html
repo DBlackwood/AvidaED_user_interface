@@ -428,7 +428,7 @@
         <!-- Then end of the main right pane for Population Stop revertion-->
 
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-             style="height: 100%;" ID="mapBlockHold"
+             style="height: 100%;overflow:hidden" ID="mapBlockHold"
              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false"
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"
@@ -436,7 +436,7 @@
             <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                  id="mapBC" style="min-width: 343px; min-height: 1px; z-index: 0; width: 90%; height: 100%;">  <!--width: 96%;-->
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-                   id="popBot" style="height: 5px; min-width: 343px;"
+                   id="popBot" style="height: 5px; min-width: 343px; overflow:hidden"
                    refreshOnShow="false" doLayout="true" region="bottom" splitter="false" maxSize="Infinity">
                 <table border="0" style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto;" id="gridControlTable">
                   <tbody>
@@ -462,6 +462,7 @@
                       <button id="freezeButton">Freeze</button>
                     </td>
                     <td>
+                      <label id="rescaleLabel"> </label><br />
                       <div id="ZoomSlide" style="height: auto; width: 120px;float:right">
                         <!--<div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration" style="height: 5px;"></div>-->
                         <!--<ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration" labels="1x,20x" style="height: 20px;">-->
@@ -1004,7 +1005,7 @@
       selected text or click on the send e-mail button.
     </p>
     <br />
-    <textarea id="sendLogTextarea" cols="90" rows="25" ></textarea>
+    <textarea id="sendLogTextarea" cols="90" rows="20" ></textarea>
   </div>
   <div class="dijitDialogPaneActionBar">
     <button data-dojo-type="dijit/form/Button" type="button" id="sendEmail">Send email</button>

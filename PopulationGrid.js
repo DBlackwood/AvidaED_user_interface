@@ -19,31 +19,41 @@ av.grd.setMapData = function () {
   if (undefined != av.grd.msg.fitness) {
     if (av.grd.mxFit < av.grd.msg.fitness.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxFit > av.grd.msg.fitness.maxVal) {
       av.grd.mxFit = av.grd.mxFit + ((1 + av.grd.rescaleTolerance) * av.grd.msg.fitness.maxVal - av.grd.mxFit) / av.grd.rescaleTimeConstant;
+      av.grd.reScaleFit = 'rescaling';
     }
+    else av.grd.reScaleFit = '';
     if (av.grd.mxGest < av.grd.msg.gestation.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxGest > av.grd.msg.gestation.maxVal) {
       av.grd.mxGest = av.grd.mxGest + ((1 + av.grd.rescaleTolerance) * av.grd.msg.gestation.maxVal - av.grd.mxGest) / av.grd.rescaleTimeConstant;
+      av.grd.reScaleGest = 'rescaling';
     }
+    else av.grd.reScaleGest = '';
     if (av.grd.mxRate < av.grd.msg.metabolism.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxRate > av.grd.msg.metabolism.maxVal) {
       av.grd.mxRate = av.grd.mxRate + ((1 + av.grd.rescaleTolerance) * av.grd.msg.metabolism.maxVal - av.grd.mxRate) / av.grd.rescaleTimeConstant;
+      av.grd.reScaleRate = 'rescaling';
     }
+    else av.grd.reScaleRate = '';
     switch (dijit.byId("colorMode").value) {
       case 'Fitness':
         av.grd.fill = av.grd.msg.fitness.data;
         av.grd.fillmax = av.grd.mxFit;
         av.grd.fillmin = av.grd.msg.fitness.minVal;
+        av.grd.fillRescale = av.grd.reScaleFit;
         break;
       case 'Generation Length':
         av.grd.fill = av.grd.msg.gestation.data;
         av.grd.fillmax = av.grd.mxGest;
         av.grd.fillmin = av.grd.msg.gestation.minVal;
+        av.grd.fillRescale = av.grd.reScaleGest;
         break;
       case 'Metabolic Rate':
         av.grd.fill = av.grd.msg.metabolism.data;
         av.grd.fillmax = av.grd.mxRate;
         av.grd.fillmin = av.grd.msg.metabolism.minVal;
+        av.grd.fillRescale = av.grd.reScaleRate;
         break;
       case 'Ancestor Organism':
         av.grd.fill = av.grd.msg.ancestor.data;
+        av.grd.fillRescale = '';
         break;
     }
   }
@@ -124,66 +134,56 @@ av.grd.findLogicOutline = function () {
   for (ii = 0; ii < lngth; ii++) {
     av.grd.out[ii] = 1;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('notButton').value) {
     lngth = av.grd.msg.not.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.not.data[ii];}
     av.ptd.allOff = false;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('nanButton').value) {
     lngth = av.grd.msg.nand.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nand.data[ii];}
     av.ptd.allOff = false;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('andButton').value) {
     lngth = av.grd.msg.and.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.and.data[ii];}
     av.ptd.allOff = false;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('ornButton').value) {
     lngth = av.grd.msg.orn.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.orn.data[ii];}
     av.ptd.allOff = false;
     if (av.debug.logic) console.log('orn', av.grd.msg.orn.data);
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('oroButton').value) {
     lngth = av.grd.msg.or.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.or.data[ii];}
     av.ptd.allOff = false;
     if (av.debug.logic) console.log('or', av.grd.msg.or.data);
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('antButton').value) {
     lngth = av.grd.msg.andn.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.andn.data[ii];}
     av.ptd.allOff = false;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('norButton').value) {
     lngth = av.grd.msg.nor.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nor.data[ii];}
     av.ptd.allOff = false;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('xorButton').value) {
     lngth = av.grd.msg.xor.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.xor.data[ii];}
     av.ptd.allOff = false;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if ('on' == document.getElementById('equButton').value) {
     lngth = av.grd.msg.equ.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.equ.data[ii];}
     av.ptd.allOff = false;
   }
-  console.log('alloff=', av.ptd.allOff, '; out=', av.grd.out);
   if (av.ptd.allOff) {for (ii = 0; ii < av.grd.msg.not.data.length; ii++) { av.grd.out[ii] = 0 } }
 
-  console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
+  //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (av.debug.logic) console.log('setLogic', av.grd.out);
 }
 
