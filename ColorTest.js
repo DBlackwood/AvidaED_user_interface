@@ -25,7 +25,7 @@ function placeChips(chips, chck){
         chips.row[ii] = Math.floor(rows*(2*rr+1)/(2*6));
         chips.name[ii] = av.color.parentColorNames[ii];
         chips.color[ii]= av.color.chipColors[ii];
-        chips.outColor[ii] = outColor[ii];
+        chips.outColor[ii] = av.color.outColor[ii];
     }
 }
 

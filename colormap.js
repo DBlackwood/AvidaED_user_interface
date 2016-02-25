@@ -910,6 +910,36 @@ av.color.parentColorNames = [
    ,'2 grey'   //27
 ];
 
+av.color.outColor = [
+  '#00FF00' //'A blue' //               website #7
+  ,'#00FF00'//,'B yellow'  //            website #15 modified was 255, 255, 109
+  ,'#00FF00'//,'C medium blue green' // website #3
+  ,'#00FF00'//,'D pink' //              website #4
+  ,'#00FF00'//,'E brown' //             website #12 modified was 146, 73, 0
+  ,'#00FF00'//,'F lt pink' //           used digital color meter to match #5 on website lt pink
+  ,'#00FF00'//,'G orange brown' //      used digital color meter to match #5 on website;
+  ,'#00FF00'//,'H red brown' //         website #11 modified was 146,   0,   0
+  ,'#00FF00'//,'I lt blue' //           website #9
+  ,'#00FF00'//,'J lavender' //          website #8
+  ,'#00FF00'///,'K pale orange' //       website #5 but does not look pink
+  ,'#00FF00'//,'L pale blue' //         website #10
+  ,'#00FF00'//,'M dark blue-green' //   website #2 modified was 0, 73, 73
+  ,'#00FF00'//,'N dark yellow' //       website #13 modified was 219, 209, 0
+  ,'#00FF00'//,'O purple' //            website #6 modified was 73,   0, 146
+  ,'#00FF00'//,'P green' //             website #14 modied was 36, 255,  36
+  ,'#00FF00'//,'Q magenta' //
+  ,'#00FF00'//,'R pale yellow' //
+  ,'#00FF00'//,'S red'
+  ,'#00FF00'//,'T blue-green'
+  ,'#00FF00'//,'U dark blue'
+  ,'#00FF00'//,'V hot pink'
+  ,'#00FF00'//,'W sky blue'
+  ,'#00FF00'//,'X red-orange'
+  ,'#00FF00'//,'Y dark grey'
+  ,'#00FF00'//,'Z bright light blue'
+  ,'#00FF00'//,'2 grey'
+];
+
 av.color.chipColors = av.color.parentColorList.slice();
 
 av.color.dictColor =  {};

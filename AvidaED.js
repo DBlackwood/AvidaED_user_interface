@@ -1929,11 +1929,11 @@ require([
 //***************************** av.mouse functions for Color Test
 
   function findShrew(evt) {
-    var mouseX = evt.offsetX - chck.marginX - chck.xOffset;
-    var mouseY = evt.offsetY - chck.marginY - chck.yOffset;
-    chck.selectedCol = Math.floor(av.mouseX / chck.cellWd);
-    chck.selectedRow = Math.floor(av.mouseY / chck.cellHt);
-    //console.log('Shrew col,row', chck.selectedCol, chck.selectedRow);
+    var shrewX = evt.offsetX - chck.marginX - chck.xOffset;
+    var shrewY = evt.offsetY - chck.marginY - chck.yOffset;
+    chck.selectedCol = Math.floor(shrewX / chck.cellWd);
+    chck.selectedRow = Math.floor(shrewY / chck.cellHt);
+    console.log('Shrew col,row', chck.selectedCol, chck.selectedRow);
   }
 
   var shrew = {};
@@ -1953,7 +1953,7 @@ require([
     shrew.Dn = true;
     // Select if it is in the grid
     findShrew(evt);
-    //console.log('colorDemo', shrew.DnGridPos);
+    console.log('colorDemo', shrew.DnGridPos, '; col,row=',chck.selectedCol,chck.selectedRow);
     //check to see if in the grid part of the canvas
     if (chck.selectedCol >= 0 && chck.selectedCol < chck.cols && chck.selectedRow >= 0 && chck.selectedRow < chck.rows) {
       chck.flagSelected = true;
