@@ -428,11 +428,11 @@
         <!-- Then end of the main right pane for Population Stop revertion-->
 
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
-             style="height: 100%;overflow:hidden" ID="mapBlockHold"
+             style="height: 100%" ID="mapBlockHold"
              refreshOnShow="false" doLayout="true" region="center" splitter="false" maxSize="Infinity">
           <div data-dojo-type="dijit/layout/ContentPane" title="Map" id="mapBlock" extractContent="false"
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" closable="false"
-               style="height: 96%;"> <!-- 93; 95%-->
+               style="height: 96%;overflow:hidden"> <!-- 93; 95%-->
             <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
                  id="mapBC" style="min-width: 343px; min-height: 1px; z-index: 0; width: 90%; height: 100%;">  <!--width: 96%;-->
               <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -484,9 +484,9 @@
             </div>
           </div>
 
-          <div data-dojo-type="dijit/layout/ContentPane" title="SetupB" id="setupBlock" extractContent="false"
+          <div data-dojo-type="dijit/layout/ContentPane" title="SetupBlock" id="setupBlock" extractContent="false"
                preventCache="false" preload="false" refreshOnShow="false" doLayout="true" selected="true"
-               closable="false">
+               closable="false" style="overflow: scroll">
             <form id="setupForm">
               <label>Environmental Settings</label>
 

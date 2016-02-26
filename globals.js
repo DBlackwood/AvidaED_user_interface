@@ -199,13 +199,8 @@ av.fzr.clearFzrFn = function () {
   av.fzr.actOrgan = {'name': '', 'actDomid': '', 'fzDomid': '', 'genome': ''};
   //hold genome for active organism in Organism View
   av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': ''};
-  av.fzr.pop1 = {};
-  av.fzr.pop1.fit = [];
-  av.fzr.pop1.ges = [];
-  av.fzr.pop1.met = [];
-  av.fzr.pop1.num = [];
-
   av.fzr.pop = [];
+  //the pops hold the data for the populated dishes for the Analysis page
   for (var ii=0; ii<3; ii++) {
     av.fzr.pop[ii] = {};
     av.fzr.pop[ii].fit = [];
@@ -213,6 +208,7 @@ av.fzr.clearFzrFn = function () {
     av.fzr.pop[ii].met = [];
     av.fzr.pop[ii].num = [];
   }
+
   av.fzr.saved = true;
 };
 

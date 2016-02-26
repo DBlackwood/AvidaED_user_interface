@@ -113,8 +113,22 @@ av.fwt.makeFzrTRfile = function (path, data) {
     pairs[ii] = ii + ':' + data[ii];
   }
   text = pairs.join();
+  console.log(path, text);
   av.fwt.makeFzrFile(path, text);
 }
+
+av.fwt.makeFzrTimeRecorder = function (fname, data) {
+  var text='';
+  var lngth = data.length-1;
+  console.log('lngth', lngth);
+  for (ii=0; ii < lngth; ii++) {
+    text += ii + ':' + data[ii] + ',';
+  }
+  lngth++;
+  text += lngth + ':' + data[lngth];
+  av.fwt.makeFzrTRfile(fname, text);
+}
+
 
 // --------------------------------------------------- called by other files -------------------------------------------
 av.fwt.form2cfgFolder = function() {
@@ -134,8 +148,8 @@ av.fwt.makeFzrConfig = function (num) {
   av.fwt.makeFzrFile('c'+num+'/events.cfg', '');
   //av.fwt.makeFzrFile('c'+num+'/entryname.txt', av.fzr.config[ndx].name);  // this was created in dnd menu code
   av.fwt.makeFzrInstsetCfg('c'+num);
-  av.fwt.makeFzrAncestorAuto('c'+num)
-  av.fwt.makeFzrAncestorHand('c'+num)
+  av.fwt.makeFzrAncestorAuto('c'+num);
+  av.fwt.makeFzrAncestorHand('c'+num);
 }
 
 av.fwt.makeFzrWorld = function (num) {
