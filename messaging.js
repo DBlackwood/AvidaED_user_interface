@@ -277,13 +277,24 @@ av.msg.updatePopStats = function (msg) {
   document.getElementById("xorPop").textContent = msg.xor;
   document.getElementById("equPop").textContent = msg.equ;
   //update graph arrays
-  if (0 <= msg.update) {
+/*
+  //if (0 <= msg.update) {  //normal start to loop
+  if (false) {  //no data here to test for size increase without these arrays growing.
     av.ptd.aveFit[msg.update] = msg.ave_fitness;
     av.ptd.aveGnl[msg.update] = msg.ave_gestation_time;
     av.ptd.aveMet[msg.update] = msg.ave_metabolic_rate;
     av.ptd.aveNum[msg.update] = msg.organisms;
     updateLogicAve(msg);  //for graph data
   }
+*/
+  if (0 <= msg.update) {  //normal start to loop
+    av.ptd.aveFit.push(msg.ave_fitness);
+    av.ptd.aveGnl.push(msg.ave_gestation_time);
+    av.ptd.aveMet.push(msg.ave_metabolic_rate);
+    av.ptd.aveNum.push(msg.organisms);
+    updateLogicAve(msg);  //for graph data
+  }
+
 }
 
 updateLogicAve = function (msg){
