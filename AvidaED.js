@@ -524,6 +524,8 @@ require([
         av.fio.cladeSSG2parents(str);
         //run status is no longer 'new' it is "world"
         av.ptd.popWorldStateUi();
+        //send message to Avida
+        av.msg.importExpr();
       }
       if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
@@ -748,7 +750,7 @@ require([
 
         //collect setup data to send to avida
         av.fwt.form2cfgFolder();          //fileDataWrite.js
-        av.msg.importExpr();
+        if ('world' != av.grd.runState) av.msg.importExpr();
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
         av.msg.requestPopStats(av.fio);  //fio.uiWorker
         av.msg.requestGridData(av.fio);  //fio.uiWorker

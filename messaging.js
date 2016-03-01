@@ -294,7 +294,6 @@ av.msg.updatePopStats = function (msg) {
     av.ptd.aveNum.push(msg.organisms);
     updateLogicAve(msg);  //for graph data
   }
-
 }
 
 updateLogicAve = function (msg){
