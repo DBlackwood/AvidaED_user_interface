@@ -98,19 +98,19 @@ av.msg.importConfigExpr = function () {
     , 'instset.cfg'
     , 'update'
   ];
-  var dir = 'cfg/';
   var request = {
     'type': 'addEvent',
     'name': 'importExpr',
     'triggerType': 'immediate',
     'files': [
-//      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
-//      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
+//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
+  console.log('in importConfigExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (av.fzr.file[dir+fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+fList[ii]] }); }
+    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.fio.uiWorker.postMessage(request);
@@ -126,19 +126,19 @@ av.msg.importPopExpr = function () {
     , 'instset.cfg'
     , 'update'
   ];
-  var dir = 'cfg/';
   var request = {
     'type': 'addEvent',
     'name': 'importExpr',
     'triggerType': 'immediate',
     'files': [
-//      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
-//      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
+//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
+  console.log('in importPopExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (av.fzr.file[dir+fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+fList[ii]] }); }
+    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.fio.uiWorker.postMessage(request);
@@ -150,19 +150,19 @@ av.msg.importWorldExpr = function () {
   var fList = ['avida.cfg'
     , 'environment.cfg'
   ];
-  var dir = 'cfg/';
   var request = {
     'type': 'addEvent',
     'name': 'importExpr',
     'triggerType': 'immediate',
     'files': [
-//      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
-//      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
+//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
+  console.log('in importWorldExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (av.fzr.file[dir+fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+fList[ii]] }); }
+    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.fio.uiWorker.postMessage(request);

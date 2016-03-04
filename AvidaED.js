@@ -757,16 +757,18 @@ require([
         //change ui parameters for the correct state when the avida population has started running
         av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
 
-        //collect setup data to send to avida
-        av.fwt.form2cfgFolder();          //fileDataWrite.js
-        if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
-        av.msg.requestPopStats(av.fio);  //fio.uiWorker
-        av.msg.requestGridData(av.fio);  //fio.uiWorker
+        //collect setup data to send to avida.  Order matters. The files must be sent before some other stuff.
         if ('c' === av.fzr.actConfig.type) {
           av.msg.importConfigExpr();
           av.msg.injectAncestors(av.fio, av.parents);
         }
         else { av.msg.importWorldExpr();}
+
+        av.fwt.form2cfgFolder();          //fileDataWrite.js
+        if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
+        av.msg.requestPopStats(av.fio);  //fio.uiWorker
+        av.msg.requestGridData(av.fio);  //fio.uiWorker
+        //if ('c' === av.fzr.actConfig.type) {av.msg.injectAncestors(av.fio, av.parents);}
       }
       if (dijit.byId("updateRadio").get('checked')) {
         av.msg.pause(dijit.byId("updateSpinner").get('value'));

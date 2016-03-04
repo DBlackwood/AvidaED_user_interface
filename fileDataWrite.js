@@ -36,6 +36,11 @@ av.fwt.makeFzrFile = function (fileId, text) {
   av.fzr.file[fileId] = text;
 }
 
+av.fwt.makeActConfigFile = function (fileId, text) {
+  'use strict';
+  av.fzr.actConfig.file[fileId] = text;
+}
+
 // copy instruction set from default config.
 av.fwt.makeFzrInstsetCfg = function (idStr) {
   'use strict';
@@ -50,7 +55,7 @@ av.fwt.makeFzrEventsCfgWorld = function (idStr, em) {
   else {av.fwt.makeFzrFile(idStr+'/events.cfg', txt);}
 }
 
-av.fwt.makeFzrAvidaCfg = function (idStr, em) {
+av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   'use strict';
   var txt = 'WORLD_X ' + dijit.byId('sizeCols').get('value') + '\n';
   txt += 'WORLD_Y ' + dijit.byId('sizeRows').get('value') + '\n';
@@ -68,11 +73,11 @@ av.fwt.makeFzrAvidaCfg = function (idStr, em) {
   txt += 'SLEEP_DELAY ' + dijit.byId('sleepDelay').get('value') + '\n';
   txt += '#include instset.cfg\n';
   txt += 'I';
-  if (em) {av.fwt.makeEmDxFile(idStr+'/avida.cfg', txt);}
+  if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
 }
 
-av.fwt.makeFzrEnvironmentCfg = function (idStr, em) {
+av.fwt.makeFzrEnvironmentCfg = function (idStr, actConfig) {
   'use strict';
   var txt = '';
   if (dijit.byId('notose').get('checked')) txt += 'REACTION  NOT  not   process:value=1:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOT  not   process:value=0:type=pow  requisite:max_count=1\n';
@@ -84,11 +89,11 @@ av.fwt.makeFzrEnvironmentCfg = function (idStr, em) {
   if (dijit.byId('norose').get('checked')) txt += 'REACTION  NOR  nor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  NOR  nor   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId('xorose').get('checked')) txt += 'REACTION  XOR  xor   process:value=4:type=pow  requisite:max_count=1\n';  else txt += 'REACTION  XOR  xor   process:value=0:type=pow  requisite:max_count=1\n';
   if (dijit.byId('equose').get('checked')) txt += 'REACTION  EQU  equ   process:value=5:type=pow  requisite:max_count=1';    else txt += 'REACTION  EQU  equ   process:value=0:type=pow  requisite:max_count=1';
-  if (em) {av.fwt.makeEmDxFile(idStr+'/environment.cfg', txt);}
+  if (actConfig) {av.fwt.makeActConfigFile('environment.cfg', txt);}
   else  { av.fwt.makeFzrFile(idStr+'/environment.cfg', txt);}
 }
 
-av.fwt.makeFzrAncestorAuto = function (idStr) {
+av.fwt.makeFzrAncestorAuto = function (idStr, actConfig) {
   'use strict';
   var txt = '';
   var lngth = av.parents.autoNdx.length;
@@ -96,10 +101,11 @@ av.fwt.makeFzrAncestorAuto = function (idStr) {
     txt += av.parents.name[av.parents.autoNdx[ii]] + '\n';
     txt += av.parents.genome[av.parents.autoNdx[ii]] + '\n';
   }
-  av.fwt.makeFzrFile(idStr+'/ancestors', txt);
+  if (actConfig) {av.fwt.makeActConfigFile('ancestors', txt);}
+  else {av.fwt.makeFzrFile(idStr+'/ancestors', txt);}
 }
 
-av.fwt.makeFzrAncestorHand = function (idStr) {
+av.fwt.makeFzrAncestorHand = function (idStr, actConfig) {
   'use strict';
   var txt = '';
   var lngth = av.parents.handNdx.length;
@@ -108,7 +114,8 @@ av.fwt.makeFzrAncestorHand = function (idStr) {
     txt += av.parents.genome[av.parents.handNdx[ii]] + '\n';
     txt += av.parents.col[av.parents.handNdx[ii]] + ',' + av.parents.row[av.parents.handNdx[ii]] + '\n';
   }
-  av.fwt.makeFzrFile(idStr+'/ancestors_manual', txt);
+  if (actConfig) {av.fwt.makeActConfigFile('ancestors_manual', txt);}
+  else {av.fwt.makeFzrFile(idStr+'/ancestors_manual', txt);}
 }
 
 av.fwt.makeFzrTRfile = function (path, data) {
@@ -135,15 +142,14 @@ av.fwt.makeFzrTimeRecorder = function (fname, data) {
   av.fwt.makeFzrTRfile(fname, text);
 }
 
-
 // --------------------------------------------------- called by other files -------------------------------------------
 av.fwt.form2cfgFolder = function() {
   'use strict';
-  var em = false;
-  av.fwt.makeFzrAvidaCfg('cfg', em);
-  av.fwt.makeFzrEnvironmentCfg('cfg', em);
-  av.fwt.makeFzrAncestorAuto('cfg');
-  av.fwt.makeFzrAncestorHand('cfg');
+  var actConfig = true;
+  av.fwt.makeFzrAvidaCfg('cfg', actConfig);
+  av.fwt.makeFzrEnvironmentCfg('cfg', actConfig);
+  av.fwt.makeFzrAncestorAuto('cfg', actConfig);
+  av.fwt.makeFzrAncestorHand('cfg', actConfig);
 }
 
 av.fwt.makeFzrConfig = function (num) {
@@ -154,8 +160,8 @@ av.fwt.makeFzrConfig = function (num) {
   av.fwt.makeFzrFile('c'+num+'/events.cfg', '');
   //av.fwt.makeFzrFile('c'+num+'/entryname.txt', av.fzr.config[ndx].name);  // this was created in dnd menu code
   av.fwt.makeFzrInstsetCfg('c'+num);
-  av.fwt.makeFzrAncestorAuto('c'+num);
-  av.fwt.makeFzrAncestorHand('c'+num);
+  av.fwt.makeFzrAncestorAuto('c'+num, em);
+  av.fwt.makeFzrAncestorHand('c'+num, em);
 }
 
 av.fwt.makeFzrWorld = function (num) {
@@ -166,8 +172,8 @@ av.fwt.makeFzrWorld = function (num) {
   av.fwt.makeFzrEventsCfgWorld =('w'+num, em)
   //av.fwt.makeFzrFile('c'+num+'/entryname.txt', av.fzr.config[ndx].name);  // this was created in dnd menu code
   av.fwt.makeFzrInstsetCfg('w'+num);
-  av.fwt.makeFzrAncestorAuto('w'+num)
-  av.fwt.makeFzrAncestorHand('w'+num);
+  av.fwt.makeFzrAncestorAuto('w'+num, em);
+  av.fwt.makeFzrAncestorHand('w'+num, em);
   av.fwt.makeFzrTRfile('w'+num+'/tr0', av.ptd.aveFit);
   av.fwt.makeFzrTRfile('w'+num+'/tr1', av.ptd.aveGnl);
   av.fwt.makeFzrTRfile('w'+num+'/tr2', av.ptd.aveMet);

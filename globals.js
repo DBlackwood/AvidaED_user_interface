@@ -200,6 +200,7 @@ av.fzr.clearFzrFn = function () {
   av.fzr.actOrgan = {'name': '', 'actDomid': '', 'fzDomid': '', 'genome': ''};
   //hold genome for active organism in Organism View
   av.fzr.actConfig = {'name': '', 'actDomid': '', 'fzDomid': '', 'type': '', 'dir': ''};
+  av.fzr.actConfig.file = {};
   av.fzr.pop = [];
   //the pops hold the data for the populated dishes for the Analysis page
   for (var ii=0; ii<3; ii++) {

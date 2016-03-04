@@ -82,23 +82,23 @@ av.dnd.landActiveConfig = function (pkg) {
   av.fzr.actConfig.name = document.getElementById(domid).textContent;
   av.fzr.actConfig.fzDomid = Object.keys(pkg.source.selection)[0];
   av.fzr.actConfig.dir = av.fzr.dir[av.fzr.actConfig.fzDomid];
-  delete av.fzr.file['cfg/instset.cfg'];
+  delete av.fzr.actConfig.file['instset.cfg'];
   if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {
-    av.fzr.file['cfg/instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];
+    av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];
   }
   if ('fzConfig' === pkg.source.node.id) {
     av.fzr.actConfig.type = 'c';
-    av.fzr.file['cfg/events.cfg'] = ' ';
-    if (av.fzr.file['cfg/clade.ssg']) delete av.fzr.file['cfg/clade.ssg'];
-    delete av.fzr.file['cfg/detail.spop'];
-    delete av.fzr.file['cfg/update'];
+    av.fzr.actConfig.file['events.cfg'] = ' ';
+    if (av.fzr.actConfig.file['clade.ssg']) delete av.fzr.actConfig.file['clade.ssg'];
+    delete av.fzr.actConfig.file['detail.spop'];
+    delete av.fzr.actConfig.file['update'];
   }
   else if ('fzWorld' == pkg.source.node.id) {
     av.fzr.actConfig.type = 'w';
-    av.fzr.file['cfg/clade.ssg'] = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
-    av.fzr.file['cfg/detail.spop'] = av.fzr.file[av.fzr.actConfig.dir + '/detail.spop'];
-    av.fzr.file['cfg/events.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/events.cfg'];
-    av.fzr.file['cfg/update'] = av.fzr.file[av.fzr.actConfig.dir + '/update'];
+    av.fzr.actConfig.file['clade.ssg'] = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
+    av.fzr.actConfig.file['detail.spop'] = av.fzr.file[av.fzr.actConfig.dir + '/detail.spop'];
+    av.fzr.actConfig.file['events.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/events.cfg'];
+    av.fzr.actConfig.file['update'] = av.fzr.file[av.fzr.actConfig.dir + '/update'];
   }
 
   //I tried to see if I could just remove the one node rather than all of them and re-instering. Seems to work.
