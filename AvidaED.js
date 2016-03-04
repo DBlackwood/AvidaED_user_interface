@@ -226,7 +226,8 @@ require([
     sWSfDialog.hide();
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
-      document.getElementById("inputFile").click();  //to get user picked file
+      //document.getElementById("inputFile").click();  //to get user picked file
+      document.getElementById("putWS").click();  //to get user picked file
     }
   });
 
@@ -237,9 +238,17 @@ require([
     'use strict';
     av.fio.useDefault = false;
     if (!av.fzr.saved) sWSfDialog.show();
-    else document.getElementById("inputFile").click();
+    //else document.getElementById("inputFile").click();
+    else document.getElementById("putWS").click();
   });
 
+  //--------------------------------------------------------------------------------------------------------------------
+
+  dijit.byId("mnFlFzItem").on("Click", function () {
+    'use strict';
+    av.fio.useDefault = false;
+    document.getElementById("import").click();
+  });
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {

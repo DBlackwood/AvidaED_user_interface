@@ -15,7 +15,14 @@
   window.CustomEvent = CustomEvent;
 })();
 
-/* ----------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+if (typeof(String.prototype.trim) === "undefined") {
+  String.prototype.trim = function() {
+    return String(this).replace(/^\s+|\s+$/g, '');
+  };
+}
+
+/*----------------------------------------------------------------------------------------------------------------------
  linmap
  Function by Wesley R. Elsberry, based on
  1989 Turbo Pascal version.

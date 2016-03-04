@@ -110,6 +110,35 @@ av.fio.processFiles = function (loadConfigFlag){
   //console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
 }
 
+
+av.fio.processItemFiles = function (){
+  "use strict";
+  switch (av.fio.anID) {
+    case 'entryname.txt':
+    case 'entrytype.txt':
+    case 'ancestors':
+    case 'ancestors_manual':
+    case 'avida.cfg':
+    case 'clade.ssg':
+    case 'detail.spop':
+    case 'environment.cfg':
+    case 'events.cfg':
+    case 'genome.seq':
+    case 'instset.cfg':
+    case 'tr0':
+    case 'tr1':
+    case 'tr2':
+    case 'tr3':
+    case 'update':
+      av.fzr.item[av.fio.anID] = av.fio.thisfile.asText().trim();
+      break;
+    default:
+      if (av.debug.fio) console.log('undefined file type in zip: full ', av.fio.fName, '; id ', av.fio.anID);
+      break;
+  }
+}
+
+
 //---------------------------------- update config data from file data stored in freezer -------------------------------
 av.frd.updateSetup = function () {
   'use strict';
@@ -288,7 +317,7 @@ av.fio.handAncestorParse = function (filestr) {
   var lineobj, gen, name, xx, yy;
   var pair = [];
   var lines = filestr.split("\n");
-  var lngth = lines.length;;
+  var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (1 < lines[ii].length) {
       if (0 === ii % 3) {// divide by 3 evenly => first line

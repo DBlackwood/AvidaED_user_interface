@@ -6,6 +6,12 @@ av.fwt.deleteFzrFile = function (fileId) {
   catch(e) {av.fzr.file[fileId] = undefined; }
 }
 
+av.fwt.deleteFzrItem = function (fileId) {
+  'use strict';
+  try { delete av.fzr.item[fileId];}
+  catch(e) {av.fzr.item[fileId] = undefined; }
+}
+
 av.fwt.makeEmDxFile = function (path, contents) {
   'use strict';
 /*

@@ -110,13 +110,95 @@ https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascri
         //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
         if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
       }
-      av.grd.drawGridSetupFn();
+      if ('population' === av.ui.page) av.grd.drawGridSetupFn();
       av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
       av.fzr.gNum++;
       av.fzr.wNum++;
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
+
+
+https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
+  av.fio.importZipRead = function () {
+    "use strict";
+    var inputWSfile = document.getElementById('import');
+    var zipFileToLoad = inputWSfile.files[0];
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent)
+    {
+      var zipFileLoaded = new av.fio.JSZip(fileLoadedEvent.target.result);
+
+      av.fio.zipPathRoot = null;
+      for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
+      {
+        var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
+        //Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
+        //This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
+
+        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
+        if (null === av.fio.zipPathRoot) {
+          if (0 < nameOfFileContainedInZipFile.indexOf('avidaedfreezeritem') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
+            av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
+          }
+          else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {av.fio.zipPathRoot='';}
+        }
+        av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
+        av.fio.fName = nameOfFileContainedInZipFile;
+        if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
+        else av.fio.anID = av.fio.fName;
+        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+        //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+        //console.log('-------------------------------------------------------------------------------------------------');
+        if (3 < av.fio.fName.length) av.fio.processItemFiles();  //do not load configfile
+      }
+      av.fio.fixFname();
+      if ('population' === av.ui.page) av.grd.drawGridSetupFn();
+    };
+    fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
+  }
+
+av.fio.fixFname = function() {
+  'use strict';
+  var domid, name, type, dir;
+  if (null === av.fzr.item['entryname.txt']) { name = wsb('.', av.fio.zipPathRoot); }
+  else { name = av.fzr.item['entryname.txt'].trim(); }
+
+  if (av.fzr.item['entrytype.txt']) {
+    type = av.fzr.item['entrytype.txt'].trim();
+    switch (type) {
+      case 'c':
+        domid = av.fio.addFzItem(av.dnd.fzConfig, name, type, av.fzr.cNum);
+        dir = 'c' + av.fzr.cNum;
+        av.fzr.cNum++;
+        //console.log('c: num', num, '; name', name, 'flag', loadConfigFlag);
+        break;
+      case 'g':
+        domid = av.fio.addFzItem(av.dnd.fzOrgan, name, type, av.fzr.gNum);
+        dir = 'g' + av.fzr.gNum;
+        av.fzr.gNum++;
+        break;
+      case 'w':
+        domid = av.fio.addFzItem(av.dnd.fzWorld, name, type, av.fzr.wNum);
+        dir = 'w' + av.fzr.wNum;
+        av.fzr.wNum++;
+        break;
+    }
+    for (var fname in av.fzr.item) {
+      console.log('av.fzr.item', fname);
+      if ('entrytype.txt' !== fname) {
+        av.fzr.file[dir+'/'+fname] = av.fzr.item[fname];
+        //console.log('dir', dir+'/'+fname, '; contents=', av.fzr.file[dir+'/'+fname]);
+      }
+      av.fwt.deleteFzrItem(fname);
+    }
+    av.fzr.domid[dir] = domid;
+    av.fzr.dir[domid] = dir;
+    console.log('av.fzr', av.fzr);
+  }
+}
+
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);

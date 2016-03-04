@@ -191,6 +191,7 @@ av.fzr.clearFzrFn = function () {
   av.fzr.dir = {};
   av.fzr.domid = {};
   av.fzr.file = {};
+  av.fzr.item = {};
 
   av.fzr.cNum = 0;  //value of the next configured dish (config) number
   av.fzr.gNum = 0;  //value of the next organism (genome) number
@@ -208,7 +209,6 @@ av.fzr.clearFzrFn = function () {
     av.fzr.pop[ii].met = [];
     av.fzr.pop[ii].num = [];
   }
-
   av.fzr.saved = true;
 };
 

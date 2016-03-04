@@ -1,0 +1,12 @@
+#filetype systematics_data
+#format name cells 
+# Structured Systematics Group Save
+# Wed Mar  2 17:46:02 2016
+#  1: Clade Name
+#  2: Occupied Cell IDs
+
+not_F54_M94_G173 23,24 
+not_F53_M94_G178 18,22 
+not_F51_M92_G179 9,14 
+not_F42_M96_G226 12 
+oro-orn 0,5,6,10 
