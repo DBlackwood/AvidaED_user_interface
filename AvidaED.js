@@ -534,7 +534,7 @@ require([
         //run status is no longer 'new' it is "world"
         av.ptd.popWorldStateUi();
         //send message to Avida
-        av.msg.importExpr();
+        av.msg.importPopExpr();
       }
       if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
@@ -755,15 +755,18 @@ require([
     else { // setup for a new run by sending config data to avida
       if ('started' != av.grd.runState) {
         //change ui parameters for the correct state when the avida population has started running
-        av.ptd.popRunningStateUi();
+        av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
 
         //collect setup data to send to avida
         av.fwt.form2cfgFolder();          //fileDataWrite.js
-        if ('world' != av.grd.runState) av.msg.importExpr();
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
         av.msg.requestPopStats(av.fio);  //fio.uiWorker
         av.msg.requestGridData(av.fio);  //fio.uiWorker
-        if ('c' === av.fzr.actConfig.type) av.msg.injectAncestors(av.fio, av.parents); //fio.uiWorker
+        if ('c' === av.fzr.actConfig.type) {
+          av.msg.importConfigExpr();
+          av.msg.injectAncestors(av.fio, av.parents);
+        }
+        else { av.msg.importWorldExpr();}
       }
       if (dijit.byId("updateRadio").get('checked')) {
         av.msg.pause(dijit.byId("updateSpinner").get('value'));
@@ -871,6 +874,11 @@ require([
   document.getElementById("mnDbThrowError").onclick = function () {
     'use strict';
     var george = fred;
+  };
+
+  document.getElementById("mnDbLineLog").onclick = function () {
+    'use strict';
+    av.debug.log += '\n-----------------------------------------------------------------------------------------------\n';
   };
 
   //**************************************      Freeze Button      *****************************************************

@@ -85,10 +85,10 @@ av.msg.readMsg = function (ee) {
         break;
     }
   }
-  else av.debug.log += '\nAvida --> ui line82 \n' + av.utl.json2stringFn(msg);
+  else av.debug.log += '\nAvida --> ui line88 \n' + av.utl.json2stringFn(msg);
 }
 
-av.msg.importExpr = function () {
+av.msg.importConfigExpr = function () {
   'use strict';
   var fList = ['avida.cfg'
     , 'clade.ssg'
@@ -114,8 +114,61 @@ av.msg.importExpr = function () {
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.fio.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: importConfigExpr \n' + av.utl.json2stringFn(request);
 }
+
+av.msg.importPopExpr = function () {
+  'use strict';
+  var fList = [
+      'clade.ssg'
+    , 'detail.spop'
+    , 'events.cfg'
+    , 'instset.cfg'
+    , 'update'
+  ];
+  var dir = 'cfg/';
+  var request = {
+    'type': 'addEvent',
+    'name': 'importExpr',
+    'triggerType': 'immediate',
+    'files': [
+//      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
+    ]
+  };
+  var lngth = fList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    if (av.fzr.file[dir+fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+fList[ii]] }); }
+  }
+  if (av.debug.msg) console.log('importExpr', request);
+  av.fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida: inportPopExpr \n' + av.utl.json2stringFn(request);
+}
+
+av.msg.importWorldExpr = function () {
+  'use strict';
+  var fList = ['avida.cfg'
+    , 'environment.cfg'
+  ];
+  var dir = 'cfg/';
+  var request = {
+    'type': 'addEvent',
+    'name': 'importExpr',
+    'triggerType': 'immediate',
+    'files': [
+//      { 'name': 'avida.cfg', 'data': av.fzr.file['cfg/avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.file['cfg/environment.cfg'] }
+    ]
+  };
+  var lngth = fList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    if (av.fzr.file[dir+fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+fList[ii]] }); }
+  }
+  if (av.debug.msg) console.log('importExpr', request);
+  av.fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida: importWorldExpr \n' + av.utl.json2stringFn(request);
+}
+
 
 //fio.uiWorker function
 av.msg.doOrgTrace = function () {
