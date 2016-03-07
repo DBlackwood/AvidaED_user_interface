@@ -758,13 +758,13 @@ require([
         av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
 
         //collect setup data to send to avida.  Order matters. The files must be sent before some other stuff.
+        av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
         if ('c' === av.fzr.actConfig.type) {
           av.msg.importConfigExpr();
           av.msg.injectAncestors(av.fio, av.parents);
         }
         else { av.msg.importWorldExpr();}
 
-        av.fwt.form2cfgFolder();          //fileDataWrite.js
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
         av.msg.requestPopStats(av.fio);  //fio.uiWorker
         av.msg.requestGridData(av.fio);  //fio.uiWorker
@@ -772,6 +772,7 @@ require([
       }
       if (dijit.byId("updateRadio").get('checked')) {
         av.msg.pause(dijit.byId("updateSpinner").get('value'));
+        console.log('stop at ', dijit.byId("updateSpinner").get('value'));
       }
       av.ptd.makeRunState();
       av.msg.doRunPause(av.fio);

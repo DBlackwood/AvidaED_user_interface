@@ -107,10 +107,14 @@ av.msg.importConfigExpr = function () {
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
-  console.log('in importConfigExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
+  //console.log('importConfigExpr', av.fzr.actConfig.file);
+  //for (var fnm in av.fzr.actConfig.file) { console.log('av.fzr.actConfig.file', fnm);}
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
+    console.log('file', ii, fList[ii])
+    if (av.fzr.actConfig.file[fList[ii]]) {
+      request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] });
+    }
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.fio.uiWorker.postMessage(request);

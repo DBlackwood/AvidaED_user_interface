@@ -89,9 +89,9 @@ av.dnd.landActiveConfig = function (pkg) {
   if ('fzConfig' === pkg.source.node.id) {
     av.fzr.actConfig.type = 'c';
     av.fzr.actConfig.file['events.cfg'] = ' ';
-    if (av.fzr.actConfig.file['clade.ssg']) delete av.fzr.actConfig.file['clade.ssg'];
-    delete av.fzr.actConfig.file['detail.spop'];
-    delete av.fzr.actConfig.file['update'];
+    if (av.fzr.actConfig.file['clade.ssg']) {delete av.fzr.actConfig.file['clade.ssg'];}
+    if (av.fzr.actConfig.file['detail.spop']) {delete av.fzr.actConfig.file['detail.spop'];}
+    if (av.fzr.actConfig.file['update']) {delete av.fzr.actConfig.file['update'];}
   }
   else if ('fzWorld' == pkg.source.node.id) {
     av.fzr.actConfig.type = 'w';

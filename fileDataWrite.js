@@ -178,7 +178,7 @@ av.fwt.makeFzrWorld = function (num) {
   av.fwt.makeFzrTRfile('w'+num+'/tr1', av.ptd.aveGnl);
   av.fwt.makeFzrTRfile('w'+num+'/tr2', av.ptd.aveMet);
   av.fwt.makeFzrTRfile('w'+num+'/tr3', av.ptd.aveNum);
-  av.fwt.makeFzrFile('w'+num + '/update', av.grd.updateNum);
+  av.fwt.makeFzrFile('w'+num + '/update', av.grd.updateNum.toString() );
   //there are more files needed to talk to Matt, tiba
 }
 
