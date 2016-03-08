@@ -72,7 +72,6 @@ av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   txt += 'AVE_TIME_SLICE ' + dijit.byId('aveTimeSlice').get('value') + '\n';
   txt += 'SLEEP_DELAY ' + dijit.byId('sleepDelay').get('value') + '\n';
   txt += '#include instset.cfg\n';
-  txt += 'I';
   if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
 }
