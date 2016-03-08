@@ -186,7 +186,7 @@ require([
   //                web worker to talk to avida
   //**************************************************************************************************/
 
-  //fio.uiWorker used when communicating with the web worker and avida
+  //Avida as a web worker
   if (av.debug.root) console.log('before call avida');
   av.fio.uiWorker = new Worker('avida.js');
 
@@ -766,8 +766,8 @@ require([
         else { av.msg.importWorldExpr();}
 
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
-        av.msg.requestPopStats(av.fio);  //fio.uiWorker
-        av.msg.requestGridData(av.fio);  //fio.uiWorker
+        av.msg.requestPopStats(av.fio);
+        av.msg.requestGridData(av.fio);
         //if ('c' === av.fzr.actConfig.type) {av.msg.injectAncestors(av.fio, av.parents);}
       }
       if (dijit.byId("updateRadio").get('checked')) {
@@ -864,7 +864,36 @@ require([
     av.grd.drawGridSetupFn();
   }
 
+  //---------------------------------------------- Restart Avida web worker --------------------------------------------
+
+  av.ui.restartAvida = function () {
+    userMsgLabel.textContent = 'reloading Avida . . .';
+
+    av.fio.uiWorker.terminate();
+    av.fio.uiWorker = undefined;
+
+    if(typeof(Worker) !== "undefined") {
+      if (typeof(av.fio.uiWorker) == "undefined") {
+        av.fio.uiWorker = new Worker('avida.js');
+      }
+    }
+    //need to "start new experiment"
+    restartAvidaDialog.hide();
+  }
+
+  document.getElementById("restartAvidaNow").onclick = function () {av.ui.restartAvida(); }
+
   //test - delete later ------------------------------------------------------------------------------------------------
+  //document.getElementById("mnDbRestartAvida").onclick = function () {
+  document.getElementById("testRestartButton").onclick = function () {
+    console.log('in testRestartButton');
+    av.debug.log += '\nAvida -->ui simulated level:error';
+    restartMsgLabel.textContent = 'Avida message: simulated message from Avida'
+    restartAvidaDialog.show();
+
+    console.log('after dialog show');
+  }
+
   document.getElementById("mnDbThrowData").onclick = function () {
     'use strict';
     console.log('av', av);

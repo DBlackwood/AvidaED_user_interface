@@ -116,6 +116,9 @@
             <span data-dojo-type="dijit/MenuItem" id="mnDbLineLog" label="Add Line to Session Log"></span>
           </span>
         </span>
+        |&nbsp;&nbsp;&nbsp;
+        <label id="userMsgLabel" style="color: blue">Avida is Loading . . .</label>
+        <label id="userMsg2Label" style="color: purple; text-align: right; display:none">test</label>
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -156,6 +159,7 @@
            refreshOnShow="false" region="bottom" splitter="true" maxSize="Infinity" doLayout="false"
            style="height:35px;overflow: auto" id="trashCP">
         <span id="trashCan" class="container"><img id="TrashCanImage" src="images/avida-ed-trash-icon.png" style="width: 32px;"></img></span>
+        <button id="testRestartButton">Test Restart</button>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
            refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="freezerDiv">
@@ -201,7 +205,7 @@
                 <div class="lftmargin"><img src="images/avida-ed-dish-icon.png"></img></div>
                 <div id="activeConfig" class="popContainer"></div>
               </td>
-              <td><label id="LoadLabel">Loading . .</label></td>
+              <td><label id="altMsgLabel"></label></td>
               <td style="text-align: right;">
                 <button id="PopSetupButton">Setup</button>
                 <button id="PopStatsButton">Stats</button>
@@ -997,6 +1001,19 @@
   </div>
 </div>
 
+<!-- New button Dialog -->
+<div data-dojo-type="dijit/Dialog" data-dojo-id="restartAvidaDialog"
+     title="There has been a fatal error in Avida">
+  <div class="dijitDialogPaneContentArea">
+    <p>Would you like to save or discard the current petri dish configuration before restarting Avida?</p>
+    <label id="restartMsgLabel" />
+  </div>
+  <div class="dijitDialogPaneActionBar">
+    <button id="restartAvidaSaveConfig">Save configuration</button>
+    <button id="restartAvidaNow">Restart Avida (maintains current workspace)</button>
+  </div>
+</div>
+
 <!-- Saving session log when no e-mail client present -->
 <div data-dojo-type="dijit/Dialog" data-dojo-id="sendLogDialog"
      title="Avida-Ed Problem Report - help us make Avida-Ed better">
@@ -1016,9 +1033,14 @@
     <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){sendLogDialog.hide();}"
             id="sendLogDialogCancel">Cancel
     </button>
-<!--    <button data-dojo-type="dijit/form/Button" type="button" id="sendLogDialogSave">Save</button>  -->
   </div>
 </div>
+
+
+    <!--    <button data-dojo-type="dijit/form/Button" type="button" id="sendLogDialogSave">Save</button>  -->
+  </div>
+</div>
+
 
 <!-- closing the file -->
 

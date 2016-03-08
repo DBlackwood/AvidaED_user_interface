@@ -1,6 +1,7 @@
 av.msg.readMsg = function (ee) {
   var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
   if ('data' == msg.type) {
+    userMsg2Label.textContent = 'Avida message name: ' + msg.name;
     switch (msg.name) {
       case 'paused':
         //console.log('about to call av.ptd.makePauseState()');
@@ -16,6 +17,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'reset':
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        //userMsgLabel.textContent = 'Avida message name: ' + msg.name;
         break;
       case 'runPause':
         if (true != msg["Success"]) {
@@ -70,23 +72,32 @@ av.msg.readMsg = function (ee) {
   else if ('userFeedback' == msg.type) {
     av.debug.log += '\nAvida --> ui on line 71 \n' + av.utl.json2stringFn(msg);
     switch (msg.level) {
+      case 'error':
+        if (msg.isFatal) {
+          //kill and restart avida worker
+          restartAvidaDialog.show();
+        }
+        else {
+          //return everything to defaults
+        }
+        break;
       case 'notification':
         if (av.debug.msg) console.log('avida:notify: ',msg.message);
-        LoadLabel.textContent = msg.message;
+        userMsgLabel.textContent = 'Avidia notification: ' + msg.message;
         break;
       case 'warning':
-        if (av.debug.msg) console.log('avida:warn: ',msg);
+        if (av.debug.msg) console.log('Avida warn: ',msg);
         break;
       case 'fatal':
-        if (av.debug.msg) console.log('avida:fatal: ',msg.message);
+        if (av.debug.msg) console.log('Avida fatal: ',msg.message);
         break;
       default:
-        if (av.debug.msg) console.log('avida:unkn: level ',msg.level,'; msg=',msg.message);
+        if (av.debug.msg) console.log('Avida unkn: level ',msg.level,'; msg=',msg.message);
         break;
     }
   }
   else av.debug.log += '\nAvida --> ui line88 \n' + av.utl.json2stringFn(msg);
-}
+};
 
 av.msg.importConfigExpr = function () {
   'use strict';
@@ -158,6 +169,7 @@ av.msg.importWorldExpr = function () {
     'type': 'addEvent',
     'name': 'importExpr',
     'triggerType': 'immediate',
+    'amend': 'true',
     'files': [
 //      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }

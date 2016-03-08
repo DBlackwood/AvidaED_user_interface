@@ -693,6 +693,11 @@ av.dnd.contextMenu = function(target, fzItemID) {
 /* ****************************************************************************************************************** */
 /* ****************************************************************************************************************** */
 /*
+A dojo menu drop down cannot call a dojo popup. It crashes
+
+
+
 Looking at DND move https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveable.html
  https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveable.html
  */
+
