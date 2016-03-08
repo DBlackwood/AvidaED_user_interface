@@ -134,9 +134,10 @@ av.msg.importConfigExpr = function () {
 
 av.msg.importPopExpr = function () {
   'use strict';
-  var fList = [
-      'clade.ssg'
+  var fList = ['avida.cfg'
+    , 'clade.ssg'
     , 'detail.spop'
+    , 'environment.cfg'
     , 'events.cfg'
     , 'instset.cfg'
     , 'update'
