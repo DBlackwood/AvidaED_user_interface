@@ -545,6 +545,7 @@ require([
         av.ptd.popWorldStateUi();
         //send message to Avida
         av.msg.importPopExpr();
+        av.msg.requestGridData();
       }
       if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }

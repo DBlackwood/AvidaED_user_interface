@@ -16,7 +16,7 @@ av.debug.grid = false;     //population grid
 av.debug.msgOrder = false; //message order
 av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
-av.debug.ind = true; //oranism page
+av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 
 av.debug.log = 'message and error log';

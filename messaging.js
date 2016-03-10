@@ -39,6 +39,7 @@ av.msg.readMsg = function (ee) {
       case 'webPopulationStats':
         av.grd.popStatsMsg = msg;
         av.msg.updatePopStats(av.grd.popStatsMsg);
+        //if ((1000 < msg.update) || (msg.update % 10 < 1)) {av.grd.popChartFn();}
         av.grd.popChartFn();
         if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
@@ -252,7 +253,7 @@ av.msg.requestPopStats = function (fio) {
 }
 
 //fio.uiWorker function
-av.msg.requestGridData = function (fio) {
+av.msg.requestGridData = function () {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -328,7 +329,8 @@ av.msg.injectAncestors = function (fio, parents) {
 av.msg.updatePopStats = function (msg) {
   'use strict';
   var place = 2;
-  document.getElementById("TimeLabel").textContent = msg.update.formatNum(0) + " updates";
+  //document.getElementById("TimeLabel").textContent = msg.update.formatNum(0) + " updates";
+  TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   av.grd.updateNum = msg.update;
   document.getElementById("popSizeLabel").textContent = msg.organisms.formatNum(0);
   document.getElementById("aFitLabel").textContent = msg.ave_fitness.formatNum(2);

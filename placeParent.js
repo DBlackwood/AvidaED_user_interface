@@ -79,16 +79,16 @@ av.parents.placeAncestors = function () {
         lngth = av.parents.autoNdx.length;
         for (ii = 0; ii < lngth; ii++) {
           if (ii < 2) {
-            av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 5)
+            av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows / 5);
           }
           else {
-            av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows * 4 / 5)
+            av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows * 4 / 5);
           }
           if (ii % 2 < 1) {
-            av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 5)
+            av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 5);
           }
           else {
-            av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols * 4 / 5)
+            av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols * 4 / 5);
           }
           if (4 == ii) {
             av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols / 2);
