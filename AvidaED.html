@@ -930,13 +930,16 @@
      title="The petri dish of the current experiment has not been saved in the freezer">
   <div class="dijitDialogPaneContentArea">
     <p>Would you like to save or discard the current petri dish before starting a new experiment?</p>
+    <p>Configured Dish saves the experiment settings only.</p>
+    <p>Populated Dish saves organisms and experiment history.</p>
   </div>
   <div class="dijitDialogPaneActionBar">
     <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){newDialog.hide();}"
             id="newCancel">Cancel
     </button>
     <button data-dojo-type="dijit/form/Button" type="button" id="newDiscard">Discard</button>
-    <button data-dojo-type="dijit/form/Button" type="button" id="newSave">Save</button>
+    <button data-dojo-type="dijit/form/Button" type="button" id="newSaveConfig">Save Configured Dish</button>
+    <button data-dojo-type="dijit/form/Button" type="button" id="newSaveWorld">Save Populated Dish</button>
   </div>
 </div>
 
@@ -1001,7 +1004,7 @@
   </div>
 </div>
 
-<!-- New button Dialog -->
+<!-- restart Avida Dialog -->
 <div data-dojo-type="dijit/Dialog" data-dojo-id="restartAvidaDialog"
      title="There has been a fatal error in Avida">
   <div class="dijitDialogPaneContentArea">
@@ -1009,7 +1012,7 @@
     <label id="restartMsgLabel" />
   </div>
   <div class="dijitDialogPaneActionBar">
-    <button id="restartAvidaSaveConfig">Save configuration</button>
+    <button id="restartAvidaFrzConfig">Freeze configuration</button>
     <button id="restartAvidaNow">Restart Avida (maintains current workspace)</button>
   </div>
 </div>

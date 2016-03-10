@@ -188,7 +188,19 @@ require([
 
   //Avida as a web worker
   if (av.debug.root) console.log('before call avida');
-  av.fio.uiWorker = new Worker('avida.js');
+  //console.log('typeof(av.fio.uiWorker', typeof(av.fio.uiWorker));
+  if(typeof(Worker) !== "undefined") {
+    console.log('Worker type is not undefined');
+    if (null === av.fio.uiWorker) {
+      av.fio.uiWorker = new Worker('avida.js');
+      //console.log('webworker created');
+      av.debug.log += '\nui --> Avida:  ui killed avida webworker and started a new webworker'
+    }
+  }
+  else {
+    userMsgLabel.textContent = "Sorry, your browser does not support Web workers and Avida won't run";
+  }
+
 
   //process message from web worker
   if (av.debug.root) console.log('before fio.uiWorker on message');
@@ -801,8 +813,8 @@ require([
   dijit.byId("mnCnPause").on("Click", function () {
     console.log('about to call av.ptd.makePauseState()');
     av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 786 \n';
+    av.msg.pause('now');
     av.ptd.makePauseState();
-    av.msg.doRunPause(av.fio);
   });
 
   //process run/Stop buttons as above but for drop down menu
@@ -811,25 +823,35 @@ require([
     runPopFn();
   });
 
-  /* ************** New Button and new Dialog ***********************/
+  /******************************************* New Button and new Dialog **********************************************/
+
   dijit.byId("newDiscard").on("Click", function () {
     newDialog.hide();
-    resetDishFn();
+    av.ptd.resetDishFn(true);
     //console.log("newDiscard click");
   });
 
-  dijit.byId("newSave").on("Click", function () {
-    newDialog.hide();
-    resetDishFn();
+  dijit.byId("newSaveWorld").on("Click", function () {
     av.ptd.FrPopulationFn();
+    newDialog.hide();
+    av.ptd.resetDishFn(true);
+    //console.log("newSave click");
+  });
+
+  dijit.byId("newSaveConfig").on("Click", function () {
+    av.ptd.FrConfigFn();
+    newDialog.hide();
+    av.ptd.resetDishFn(true);
     //console.log("newSave click");
   });
 
   function newButtonBoth() {
     if ('prepping' == av.grd.runState) {// reset petri dish
-      resetDishFn();
+      av.ptd.resetDishFn(true);
     }
     else {// check to see about saving current population
+      av.msg.pause('now');
+      av.ptd.makePauseState();
       newDialog.show();
     }
   }
@@ -837,81 +859,10 @@ require([
   document.getElementById("newDishButton").onclick = function () {
     newButtonBoth();
   };
+
   dijit.byId("mnNewpop").on("Click", function () {
     newButtonBoth();
   });
-
-  //reset values
-  function resetDishFn() { //Need to reset all settings to @default
-    av.grd.runState = 'prepping';
-    dijit.byId("mnCnOrganismTrace").attr("disabled", true);
-    dijit.byId("mnFzOrganism").attr("disabled", true);
-    // send reset to Avida adaptor
-    av.msg.reset();
-    //Enable the options on the Setup page
-    av.ptd.popNewExState();
-    //Clear grid settings
-    av.parents.clearParentsFn();
-    // reset values in population settings based on a 'file' @default
-    av.fzr.actConfig.dir = 'c0';
-    av.frd.updateSetup();
-
-    // write if @default not found - need to figure out a test for this
-    // av.ptd.writeHardDefault(av);
-
-    // re-write grid if that page is visible
-    av.grd.popChartFn();
-    av.grd.drawGridSetupFn();
-  }
-
-  //---------------------------------------------- Restart Avida web worker --------------------------------------------
-
-  av.ui.restartAvida = function () {
-    userMsgLabel.textContent = 'reloading Avida . . .';
-
-    av.fio.uiWorker.terminate();
-    av.fio.uiWorker = undefined;
-
-    if(typeof(Worker) !== "undefined") {
-      if (typeof(av.fio.uiWorker) == "undefined") {
-        av.fio.uiWorker = new Worker('avida.js');
-      }
-    }
-    //need to "start new experiment"
-    restartAvidaDialog.hide();
-  }
-
-  document.getElementById("restartAvidaNow").onclick = function () {av.ui.restartAvida(); }
-
-  //test - delete later ------------------------------------------------------------------------------------------------
-  //document.getElementById("mnDbRestartAvida").onclick = function () {
-  document.getElementById("testRestartButton").onclick = function () {
-    console.log('in testRestartButton');
-    av.debug.log += '\nAvida -->ui simulated level:error';
-    restartMsgLabel.textContent = 'Avida message: simulated message from Avida'
-    restartAvidaDialog.show();
-
-    console.log('after dialog show');
-  }
-
-  document.getElementById("mnDbThrowData").onclick = function () {
-    'use strict';
-    console.log('av', av);
-    console.log('fzr', av.fzr);
-    console.log('parents', av.parents);
-    console.log('av.grd.msg',av.grd.msg);
-    console.log('av.grd.popStatsMsg', av.grd.popStatsMsg);
-  };
-
-  document.getElementById("mnDbThrowError").onclick = function () {
-    'use strict';
-    var george = fred;
-  };
-
-  document.getElementById("mnDbLineLog").onclick = function () {
-    'use strict';
-    av.debug.log += '\n-----------------------------------------------------------------------------------------------\n';
-  };
 
   //**************************************      Freeze Button      *****************************************************
   //Saves either configuration or populated dish
@@ -928,7 +879,7 @@ require([
 
   //Drop down menu to save a configuration item
   dijit.byId("mnFzConfig").on("Click", function () {
-    av.ptd.FrConfigFn()
+    av.ptd.FrConfigFn();
   });
 
   //button to freeze a population
@@ -952,6 +903,68 @@ require([
   });
 
   // End of Freezer functions
+  //---------------------------------------------- Restart Avida web worker --------------------------------------------
+
+  //http://www.w3schools.com/html/tryit.asp?filename=tryhtml5_webworker
+  av.ui.restartAvida = function () {
+    userMsgLabel.textContent = 'reloading Avida . . .';
+
+    av.fio.uiWorker.terminate();
+    av.fio.uiWorker = null;
+
+    console.log('just killed webWorker');
+
+    if(typeof(Worker) !== "undefined") {
+      if (null == av.fio.uiWorker) {
+        av.fio.uiWorker = new Worker('avida.js');
+        console.log('webworker recreated');
+        av.debug.log += '\nui --> Avida:  ui killed avida webworker and started a new webworker'
+      }
+    }
+    else {
+      userMsgLabel.textContent = "Sorry, your browser does not support Web workers and Avida won't run";
+    }
+
+    //need to "start new experiment"
+    av.ptd.resetDishFn(false);  //do not send reset to avida; avida restarted
+    restartAvidaDialog.hide();
+  }
+
+  document.getElementById("restartAvidaNow").onclick = function () {av.ui.restartAvida(); }
+
+  document.getElementById("restartAvidaFrzConfig").onclick = function () {
+    av.ptd.FrConfigFn();
+  }
+
+  //test - delete later ------------------------------------------------------------------------------------------------
+  //document.getElementById("mnDbRestartAvida").onclick = function () {
+  document.getElementById("testRestartButton").onclick = function () {
+    console.log('in testRestartButton');
+    av.debug.log += '\nAvida -->ui simulated level:error';
+    restartMsgLabel.textContent = 'Avida message: simulated message from Avida'
+    restartAvidaDialog.show();
+    console.log('after dialog show');
+  }
+
+  document.getElementById("mnDbThrowData").onclick = function () {
+    'use strict';
+    console.log('av', av);
+    console.log('fzr', av.fzr);
+    console.log('parents', av.parents);
+    console.log('av.grd.msg',av.grd.msg);
+    console.log('av.grd.popStatsMsg', av.grd.popStatsMsg);
+  };
+
+  document.getElementById("mnDbThrowError").onclick = function () {
+    'use strict';
+    var george = fred;
+  };
+
+  document.getElementById("mnDbLineLog").onclick = function () {
+    'use strict';
+    av.debug.log += '\n-----------------------------------------------------------------------------------------------\n';
+  };
+
   //--------------------------------------------------------------------------------------------------------------------
   //    mouse DND functions
   //--------------------------------------------------------------------------------------------------------------------

@@ -114,7 +114,6 @@ av.ptd.popNewExState = function () {
   dijit.byId("mnCnPause").attr("disabled", true);
   dijit.byId("mnCnRun").attr("disabled", false);
   document.getElementById("runStopButton").innerHTML = "Run";
-  av.debug.log += 'set runStopButton=Run in popControl.js line 117 in av.ptd.popNewExState';
   console.log('pauseState; button=run in av.ptd.popNewExState');
 
   //clear the time series graphs
@@ -282,6 +281,33 @@ av.ptd.bitToggle = function (button) {
     av.ptd.logMet[ii] = null;
     av.ptd.logNum[ii] = null;
   }
+  av.grd.drawGridSetupFn();
+}
+
+//reset values
+av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settings to @default
+  'use strict';
+  av.msg.pause('now');
+  av.ptd.makePauseState();
+
+  av.grd.runState = 'prepping';
+  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
+  dijit.byId("mnFzOrganism").attr("disabled", true);
+  // send reset to Avida adaptor
+  if (need2sendRest2avida) {av.msg.reset();}
+  //Enable the options on the Setup page
+  av.ptd.popNewExState();
+  //Clear grid settings
+  av.parents.clearParentsFn();
+  // reset values in population settings based on a 'file' @default
+  av.fzr.actConfig.dir = 'c0';
+  av.frd.updateSetup();
+
+  // write if @default not found - need to figure out a test for this
+  // av.ptd.writeHardDefault(av);
+
+  // re-write grid if that page is visible
+  av.grd.popChartFn();
   av.grd.drawGridSetupFn();
 }
 
