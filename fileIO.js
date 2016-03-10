@@ -110,7 +110,7 @@ https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascri
         //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
         if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
       }
-      if ('population' === av.ui.page) av.grd.drawGridSetupFn();
+      if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
       av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
       av.fzr.gNum++;
       av.fzr.wNum++;
@@ -154,7 +154,7 @@ https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascri
         if (3 < av.fio.fName.length) av.fio.processItemFiles();  //do not load configfile
       }
       av.fio.fixFname();
-      if ('population' === av.ui.page) av.grd.drawGridSetupFn();
+      if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }

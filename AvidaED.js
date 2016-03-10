@@ -403,6 +403,7 @@ require([
    dijit.byId("mapBC").set("style", "height: "+ mapNewHt +"px;");
    */
   av.ui.mainBoxSwap = function (showBlock) {
+    av.ui.page = showBlock;
     dijit.byId("populationBlock").set("style", "display: none;");
     dijit.byId("organismBlock").set("style", "display: none;");
     dijit.byId("analysisBlock").set("style", "display: none;");
@@ -419,7 +420,6 @@ require([
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
     if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
-    av.ui.page = 'population';
     av.ui.mainBoxSwap("populationBlock");
   }
 
@@ -435,12 +435,10 @@ require([
     if (undefined != av.traceObj) {
       av.ind.updateOrgTrace();
     }
-    av.ui.page = 'organism';
   };
 
   document.getElementById("analysisButton").onclick = function () {
     av.ui.mainBoxSwap("analysisBlock");
-    av.ui.page = 'population';
   };
   //Take testBlock out completely later
 
@@ -1294,56 +1292,61 @@ require([
 
   av.grd.drawGridSetupFn = function () {
     'use strict';
-    av.grd.notInDrawingGrid = false;
-    if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
-      av.grd.setMapData();  //update color information for offpsring once run has started
-      av.grd.findLogicOutline();
+    if ('populationBlock' === av.ui.page) {
+      av.grd.notInDrawingGrid = false;
+      if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
+        av.grd.setMapData();  //update color information for offpsring once run has started
+        av.grd.findLogicOutline();
+      }
+      //figure out scale or legend
+      av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
+      document.getElementById('popBot').style.height = '5px';
+      if ("Ancestor Organism" == dijit.byId("colorMode").value) {
+        av.grd.drawLegend();
+      }
+      else {
+        av.grd.gradientScale();
+      }
+      //av.grd.CanvasScale.height = 60;  //tiba delete later for resizing test only
+
+      document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
+      //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
+      dijit.byId('populationBlock').resize();
+      //console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
+
+      var gridHolderHt = document.getElementById('gridHolder').clientHeight;
+      av.ui.num = Math.floor(gridHolderHt / 4);
+      //document.getElementById('gridVertSpacer').style.height = 0 + 'px';
+
+      av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientWidth - 1;
+      av.grd.CanvasGrid.height = gridHolderHt - 2;
+      av.grd.spaceX = av.grd.CanvasGrid.width;
+      av.grd.spaceY = av.grd.CanvasGrid.height;
+
+      av.grd.findGridSize(av.grd, av.parents);
+      if (document.getElementById('gridHolder').scrollHeight == document.getElementById('gridHolder').clientHeight + 17) {
+        var numGH = document.getElementById('gridHolder').clientHeight;
+        av.grd.CanvasGrid.height = numGH - 6 - 17;
+        av.grd.findGridSize(av.grd, av.parents);     //in PopulationGrid.js
+      }
+      av.grd.drawGridUpdate();   //in PopulationGrid.js
+
+      //draw grey rectangle as back ground  //temp delete next two lines later
+      //av.grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
+      //av.grd.cntx.fillRect(0, 0, av.grd.CanvasGrid.width, av.grd.CanvasGrid.height);
+      //delete above two lines later
+      rescaleLabel.textContent = av.grd.fillRescale;
+      av.grd.notInDrawingGrid = true;
+
+      /*
+       console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
+       console.log('gridControlTable Wd client', document.getElementById('gridControlTable').clientWidth);
+       console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+       console.log('gridHolderHt',gridHolderHt);
+       console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+       console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
+       */
     }
-    //figure out scale or legend
-    av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth -1;
-    document.getElementById('popBot').style.height = '5px';
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) { av.grd.drawLegend();}
-    else { av.grd.gradientScale(); }
-    //av.grd.CanvasScale.height = 60;  //tiba delete later for resizing test only
-
-    document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
-    //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
-    dijit.byId('populationBlock').resize();
-    //console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-
-    var gridHolderHt = document.getElementById('gridHolder').clientHeight;
-    av.ui.num = Math.floor(gridHolderHt/4);
-    //document.getElementById('gridVertSpacer').style.height = 0 + 'px';
-
-    av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientWidth-1;
-    av.grd.CanvasGrid.height = gridHolderHt-2;
-    av.grd.spaceX = av.grd.CanvasGrid.width;
-    av.grd.spaceY = av.grd.CanvasGrid.height;
-
-    av.grd.findGridSize(av.grd, av.parents);
-    if (document.getElementById('gridHolder').scrollHeight==document.getElementById('gridHolder').clientHeight+17){
-      var numGH = document.getElementById('gridHolder').clientHeight;
-      av.grd.CanvasGrid.height = numGH - 6-17;
-      av.grd.findGridSize(av.grd, av.parents);     //in PopulationGrid.js
-    }
-    av.grd.drawGridUpdate();   //in PopulationGrid.js
-
-    //draw grey rectangle as back ground  //temp delete next two lines later
-    //av.grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
-    //av.grd.cntx.fillRect(0, 0, av.grd.CanvasGrid.width, av.grd.CanvasGrid.height);
-    //delete above two lines later
-    rescaleLabel.textContent = av.grd.fillRescale;
-    av.grd.notInDrawingGrid = true;
-
-    /*
-     console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-     console.log('gridControlTable Wd client', document.getElementById('gridControlTable').clientWidth);
-     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     console.log('gridHolderHt',gridHolderHt);
-     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-     */
-
   }
 
   // The rest of grid canvas drawing code is in PopulationGrid.js

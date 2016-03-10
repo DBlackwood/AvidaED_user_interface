@@ -16,7 +16,7 @@ av.debug.grid = false;     //population grid
 av.debug.msgOrder = false; //message order
 av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
-av.debug.ind = false; //oranism page
+av.debug.ind = true; //oranism page
 av.debug.anl = false; //analysis page
 
 av.debug.log = 'message and error log';
@@ -125,7 +125,7 @@ av.grd.clearGrd();
 // so use the below updated condition
 
 av.ui = {};  //user interface functions and variables
-av.ui.page = 'population';
+av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';
 
 //not really ui, but not sure where to put them
