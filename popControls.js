@@ -30,7 +30,9 @@ av.ptd.popWorldStateUi = function () {
   av.dnd.ancestorBox.copyOnly = true;
   av.dnd.activeConfig.isSource = false;
   delete av.dnd.ancestorBox.accept['g'];
+  delete av.dnd.gridCanvas.accept['g'];
   delete av.dnd.activeConfig.accept['c'];
+  delete av.dnd.activeConfig.accept['w'];
   dijit.byId("sizeCols").attr("disabled", true);
   dijit.byId("sizeRows").attr("disabled", true);
   dijit.byId("experimentRadio").attr("disabled", true);
@@ -48,7 +50,9 @@ av.ptd.popRunningStateUi = function () {
   //av.dnd.ancestorBox.isSource = false;
   av.dnd.activeConfig.isSource = false;
   delete av.dnd.ancestorBox.accept['g'];
+  delete av.dnd.gridCanvas.accept['g'];
   delete av.dnd.activeConfig.accept['c'];
+  delete av.dnd.activeConfig.accept['w'];
   $("#muteSlide").slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
   dijit.byId("sizeCols").attr("disabled", true);
   dijit.byId("sizeRows").attr("disabled", true);
@@ -85,7 +89,9 @@ av.ptd.popNewExState = function () {
   av.fzr.actConfig._id = 'c0';
   // clear parents
   av.dnd.ancestorBox.accept['g'] = 1;
+  av.dnd.gridCanvas.accept['g'] = 1;
   av.dnd.activeConfig.accept['c'] = 1;
+  av.dnd.activeConfig.accept['w'] = 1;
   av.dnd.ancestorBox.isSource = true;
   av.dnd.ancestorBox.copyOnly = false;
   av.dnd.activeConfig.isSource = true;

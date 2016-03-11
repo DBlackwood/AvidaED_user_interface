@@ -768,7 +768,7 @@ require([
         //change ui parameters for the correct state when the avida population has started running
         av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
 
-        //collect setup data to send to avida.  Order matters. The files must be sent before some other stuff.
+        //collect setup data to send to avida.  Order matters. Files must be created first. Then files must be sent before some other stuff.
         av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
         if ('c' === av.fzr.actConfig.type) {
           av.msg.importConfigExpr();
