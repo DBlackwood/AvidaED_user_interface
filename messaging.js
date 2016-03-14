@@ -241,7 +241,7 @@ av.msg.doWebOrgDataByCell = function () {
 }
 
 //fio.uiWorker function
-av.msg.requestPopStats = function (fio) {
+av.msg.requestPopStats = function () {
   'use strict';
   var request = {
     'type': 'addEvent',
@@ -301,7 +301,7 @@ av.msg.pause = function(update) {
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
-av.msg.injectAncestors = function (fio, parents) {
+av.msg.injectAncestors_old  = function (fio, parents) { //tiba delete
   'use strict';
   var request;
   var lngth = av.parents.name.length;
@@ -319,6 +319,24 @@ av.msg.injectAncestors = function (fio, parents) {
         ii, // lineage_label,  @ancestor
         0 //neutral_metric
       ]
+    }
+    av.fio.uiWorker.postMessage(request);
+    av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+  }
+}
+
+av.msg.injectAncestors = function () {
+  'use strict';
+  var request;
+  var lngth = av.parents.name.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    request = {
+      'type': 'addEvent',
+      'name': 'webInjectSequence',
+      'start': 'begin',   //was begin
+      'genome': av.parents.genome[ii],
+      'start_cell_id': av.parents.AvidaNdx[ii],
+      'clade_name': av.parents.name[ii]
     }
     av.fio.uiWorker.postMessage(request);
     av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);

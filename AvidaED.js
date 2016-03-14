@@ -777,12 +777,12 @@ require([
         av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
         if ('c' === av.fzr.actConfig.type) {
           av.msg.importConfigExpr();
-          av.msg.injectAncestors(av.fio, av.parents);
+          av.msg.injectAncestors();
         }
         else { av.msg.importWorldExpr();}
 
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
-        av.msg.requestPopStats(av.fio);
+        av.msg.requestPopStats();
         av.msg.requestGridData();
         //if ('c' === av.fzr.actConfig.type) {av.msg.injectAncestors(av.fio, av.parents);}
       }
