@@ -66,12 +66,13 @@ av.msg.readMsg = function (ee) {
         break;
       default:
         if (av.debug.msg) console.log('____________UnknownRequest: ', msg);
-        av.debug.log += '\nAvida --> ui in default in messaging on line 66 \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\nAvida --> ui in default in messaging on line 69 \n' + av.utl.json2stringFn(msg);
         break;
     }
   }
   else if ('userFeedback' == msg.type) {
-    av.debug.log += '\nAvida --> ui on line 71 \n' + av.utl.json2stringFn(msg);
+    av.debug.log += '\nAvida --> ui on line 74 \n' + av.utl.json2stringFn(msg);
+    console.log('userFeedback', msg);
     switch (msg.level) {
       case 'error':
         if (msg.isFatal) {
@@ -222,7 +223,7 @@ av.msg.doWebOrgDataByCell = function () {
     //'singleton': true,
     'args': av.grd.selectedNdx
   }
-  if (av.debug.msg) console.log('doSelectedOrganismType; selectedNdx', av.grd.selectedNdx)
+  console.log('doSelectedOrganismType; selectedNdx', av.grd.selectedNdx)
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   console.log('runStopButton',document.getElementById("runStopButton").textContent);
@@ -252,24 +253,13 @@ av.msg.requestPopStats = function (fio) {
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
-av.msg.requestGridDataOnGoing = function () {
+av.msg.requestGridData = function () {
   'use strict';
   var request = {
     'type': 'addEvent',
     'name': 'webGridData',
-    'start': 'now',
+    'start': 'begin',
     'interval': 'always'
-  }
-  av.fio.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
-}
-
-av.msg.requestGridDataNow = function () {
-  'use strict';
-  var request = {
-    'type': 'addEvent',
-    'name': 'webGridData',
-    'triggerType': 'immediate'
   }
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);

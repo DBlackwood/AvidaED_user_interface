@@ -32,7 +32,7 @@ function findSelected(evt, grd) {
 }
 
 //update data about a kid in the selecred organism to move = primarily genome and name
-function SelectedKidMouseStyle(dnd, fzr, grd) {
+function SelectedKidMouseStyle() {
   'use strict';
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('fzOrgan').style.cursor = 'copy';

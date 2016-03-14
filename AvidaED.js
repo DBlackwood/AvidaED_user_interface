@@ -199,7 +199,7 @@ require([
     if (null === av.fio.uiWorker) {
       av.fio.uiWorker = new Worker('avida.js');
       //console.log('webworker created');
-      av.debug.log += '\nui --> Avida:  ui killed avida webworker and started a new webworker'
+      av.debug.log += '\nui --> Avida:  av.fio.uiWorker was null, started a new webworker';
     }
   }
   else {
@@ -550,7 +550,7 @@ require([
         av.ptd.popWorldStateUi();
         //send message to Avida
         av.msg.importPopExpr();
-        av.msg.requestGridDataNow();
+        av.msg.requestGridData();
       }
       if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
@@ -783,7 +783,7 @@ require([
 
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
         av.msg.requestPopStats(av.fio);
-        av.msg.requestGridDataOnGoing();
+        av.msg.requestGridData();
         //if ('c' === av.fzr.actConfig.type) {av.msg.injectAncestors(av.fio, av.parents);}
       }
       if (dijit.byId("updateRadio").get('checked')) {
@@ -1157,7 +1157,7 @@ require([
           if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
             av.grd.kidStatus = 'getgenome';
             av.msg.doWebOrgDataByCell();
-            SelectedKidMouseStyle(av.dnd, av.fzr, av.grd);
+            SelectedKidMouseStyle();
             av.mouse.Picked = 'kid';
             if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
             dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
