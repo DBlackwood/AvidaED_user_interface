@@ -2,6 +2,11 @@
 // python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 // Then visit http://127.0.0.1:8000/avidaED.html
 //
+// Git commands used to push
+// git add .
+// git commit -m "comment about the change being pushed"
+// git push -u origin master
+//
 // /var/www/vhosts/bwng/public_html/projects/
 //
 // to have chrome run from file
@@ -545,7 +550,7 @@ require([
         av.ptd.popWorldStateUi();
         //send message to Avida
         av.msg.importPopExpr();
-        av.msg.requestGridData();
+        av.msg.requestGridDataNow();
       }
       if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
@@ -778,7 +783,7 @@ require([
 
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
         av.msg.requestPopStats(av.fio);
-        av.msg.requestGridData(av.fio);
+        av.msg.requestGridDataOnGoing();
         //if ('c' === av.fzr.actConfig.type) {av.msg.injectAncestors(av.fio, av.parents);}
       }
       if (dijit.byId("updateRadio").get('checked')) {

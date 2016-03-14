@@ -9,6 +9,8 @@ av.fio.addFzItem = function(dndSection, name, type, fileNum) {
 
   //create a right av.mouse-click context menu for the item just created.
   if (av.debug.fio) console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id);
+  console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id, '; type', type);
+
   if (0 < fileNum) { av.dnd.contextMenu(dndSection, domid); }
   //av.dnd.contextMenu(dndSection, domid);
   return domid;

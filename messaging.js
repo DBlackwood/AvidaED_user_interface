@@ -252,14 +252,24 @@ av.msg.requestPopStats = function (fio) {
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
-//fio.uiWorker function
-av.msg.requestGridData = function () {
+av.msg.requestGridDataOnGoing = function () {
   'use strict';
   var request = {
     'type': 'addEvent',
     'name': 'webGridData',
     'start': 'now',
     'interval': 'always'
+  }
+  av.fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+}
+
+av.msg.requestGridDataNow = function () {
+  'use strict';
+  var request = {
+    'type': 'addEvent',
+    'name': 'webGridData',
+    'triggerType': 'immediate'
   }
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
