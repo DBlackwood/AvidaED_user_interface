@@ -345,6 +345,7 @@ require([
   //https://bugsnag.com/blog/js-stacktracess
   window.onerror = function (message, file, line, col, error) {
     //console.log(message, ' from ', error.stack, '------------------');
+    av.msg.pause('now');
     av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
     //av.debug.errorEmailFn();
 
@@ -1496,7 +1497,7 @@ require([
     av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
     av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
       domGeometry.position(document.getElementById("popChartHolder")).h - 30);
-    av.grd.popChart.render();
+    //av.grd.popChart.render();
   };
 
   // **************************************************************************************************************** */
