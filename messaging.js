@@ -101,6 +101,12 @@ av.msg.readMsg = function (ee) {
   else av.debug.log += '\nAvida --> ui line88 \n' + av.utl.json2stringFn(msg);
 };
 
+/* web pages related to killing re-starting a web-worker
+ http://www.w3schools.com/html/html5_webworkers.asp
+ http://stackoverflow.com/questions/29181021/how-to-stop-javascript-in-webworker-from-outside
+ */
+
+
 av.msg.importConfigExpr = function () {
   'use strict';
   var fList = ['avida.cfg'
