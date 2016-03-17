@@ -195,12 +195,13 @@ require([
   if (av.debug.root) console.log('before call avida');
   //console.log('typeof(av.fio.uiWorker', typeof(av.fio.uiWorker));
   if(typeof(Worker) !== "undefined") {
-    console.log('Worker type is not undefined');
+    //console.log('Worker type is not undefined');
     if (null === av.fio.uiWorker) {
       av.fio.uiWorker = new Worker('avida.js');
       //console.log('webworker created');
       av.debug.log += '\nui --> Avida:  av.fio.uiWorker was null, started a new webworker';
     }
+    else console.log('av.fio.uiWorker is not null');
   }
   else {
     userMsgLabel.textContent = "Sorry, your browser does not support Web workers and Avida won't run";
@@ -544,9 +545,15 @@ require([
         }
       }
       else if ('fzWorld' === pkg.source.node.id) {
+
         //load parents from clade.ssg and ancestors.
-        str = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
-        av.fio.cladeSSG2parents(str);
+        av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
+        var handList = av.fio.handAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
+        var autoList = av.fio.autoAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
+        var lngth = av.parents.name.length;
+        for (var kk = 0; kk <  lngth; kk++) {
+
+        }
         //run status is no longer 'new' it is "world"
         av.ptd.popWorldStateUi();
         //send message to Avida

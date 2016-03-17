@@ -72,9 +72,10 @@ av.msg.readMsg = function (ee) {
   }
   else if ('userFeedback' == msg.type) {
     av.debug.log += '\nAvida --> ui on line 74 \n' + av.utl.json2stringFn(msg);
-    console.log('userFeedback', msg);
+    //console.log('userFeedback', msg);
     switch (msg.level) {
       case 'error':
+        console.log('type:userFeedback; level:error');
         if (msg.isFatal) {
           //kill and restart avida worker
           restartAvidaDialog.show();
@@ -130,7 +131,7 @@ av.msg.importConfigExpr = function () {
   //for (var fnm in av.fzr.actConfig.file) { console.log('av.fzr.actConfig.file', fnm);}
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    console.log('file', ii, fList[ii])
+    console.log('Config: file', ii, fList[ii])
     if (av.fzr.actConfig.file[fList[ii]]) {
       request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] });
     }
@@ -159,7 +160,7 @@ av.msg.importPopExpr = function () {
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
-  console.log('in importPopExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
+  //console.log('in importPopExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
@@ -340,6 +341,7 @@ av.msg.injectAncestors = function () {
       'type': 'addEvent',
       'name': 'webInjectSequence',
       'start': 'begin',   //was begin
+      'interval': 'once',
       'genome': av.parents.genome[ii],
       'start_cell_id': av.parents.AvidaNdx[ii],
       'clade_name': av.parents.name[ii]
