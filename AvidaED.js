@@ -526,6 +526,7 @@ require([
 
   av.dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     'use strict';
+    var ii, kk, jj, klen, jlen, flag;
     //console.log('pkg.target', pkg.target);
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
@@ -550,9 +551,21 @@ require([
         av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
         var handList = av.fio.handAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
         var autoList = av.fio.autoAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
-        var lngth = av.parents.name.length;
-        for (var kk = 0; kk <  lngth; kk++) {
+        klen = av.parents.name.length;
+        for (kk = 0; kk <  lngth; kk++) {
+          jlen = autoList.nam.length;
+          //for (var jj = 0; jj < jlen; jj++)
+          flag = true;
+          jj = 0;
+/*
+          while (flag) {
+            if (av.parents.name[kk] == autoList.nam[jj]) {
+              flag = false;
+              av.parents.genome[kk] = autoList.gen[jj];
+            }
 
+          }
+          */
         }
         //run status is no longer 'new' it is "world"
         av.ptd.popWorldStateUi();

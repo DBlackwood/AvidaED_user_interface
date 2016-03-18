@@ -315,7 +315,7 @@ av.fio.autoAncestorLoad = function(fileStr) {
 
 //---------------- section to put data from ancestors_manual file into ancestorBox and placeparents hand ---------------
 
-// makes a dictionary out of a ancestors_manual file
+// makes a listing out of a ancestors_manual file
 av.fio.handAncestorParse = function (filestr) {
   'use strict';
   var rslt = {};
@@ -379,7 +379,6 @@ av.fio.handAncestorLoad = function(fileStr) {
 };
 
 //----------------------- section to put data from clade.ssg into parents ----------------------------------------------
-//nothing in this section works.
 
 // makes a dictionary out of a environment.cfg file
 av.frd.cladeSSGparse = function (filestr) {
@@ -405,7 +404,7 @@ av.fio.cladeSSG2parents = function (fileStr) {
   'use strict';
   var list = av.frd.cladeSSGparse(fileStr);
   var lngth = list.length;
-  for (var ii = 0; ii < lngth; ii++) {
+  for (var ii = lngth-1; 0 <= ii; ii--) {
     av.parents.name[ii] = list[ii];
     //console.log('Dads', list[ii]);
     av.dnd.ancestorBox.insertNodes(false, [{data: av.parents.name[ii], type: ['g']}]);

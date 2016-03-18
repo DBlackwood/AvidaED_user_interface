@@ -56,6 +56,10 @@ av.grd.setMapData = function () {
         av.grd.fillRescale = '';
         break;
     }
+    //console.log('av.grd.msg.anc.data', av.grd.msg.ancestor.data);
+    //console.log('av.grd.msg.fit.data', av.grd.msg.fitness.data);
+    //console.log('av.grd.msg.gen.data', av.grd.msg.gestation.data);
+    //console.log('av.grd.msg.met.data', av.grd.msg.metabolism.data);
   }
   //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
   //console.log('fitmax',av.grd.msg.fitness.maxVal,'; Gest',av.grd.msg.gestation.maxVal,'; rate',av.grd.msg.metabolism.maxVal,'; fillmax',av.grd.fillmax);

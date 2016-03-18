@@ -3,6 +3,9 @@ av.msg.readMsg = function (ee) {
   if ('data' == msg.type) {
     userMsg2Label.textContent = 'Avida message name: ' + msg.name;
     switch (msg.name) {
+      case 'exportExpr':
+        av.fwt.popExpWrite(msg);
+        break;
       case 'paused':
         //console.log('about to call av.ptd.makePauseState()');
         //av.debug.log += '\nabout to call av.ptd.makePauseState() in messaging.js line 7 \n';
@@ -48,6 +51,7 @@ av.msg.readMsg = function (ee) {
       case 'webGridData':
         //mObj=JSON.parse(JSON.stringify(jsonObject));
         av.grd.msg = msg;
+
         av.grd.drawGridSetupFn();
         if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
         //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
@@ -107,7 +111,6 @@ av.msg.readMsg = function (ee) {
  http://stackoverflow.com/questions/29181021/how-to-stop-javascript-in-webworker-from-outside
  */
 
-
 av.msg.importConfigExpr = function () {
   'use strict';
   var fList = ['avida.cfg'
@@ -127,8 +130,6 @@ av.msg.importConfigExpr = function () {
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
-  //console.log('importConfigExpr', av.fzr.actConfig.file);
-  //for (var fnm in av.fzr.actConfig.file) { console.log('av.fzr.actConfig.file', fnm);}
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
     console.log('Config: file', ii, fList[ii])
@@ -195,7 +196,17 @@ av.msg.importWorldExpr = function () {
   av.debug.log += '\nui --> Avida: importWorldExpr \n' + av.utl.json2stringFn(request);
 }
 
-
+av.msg.exportExpr = function (popName) {
+  'use strict';
+  var request = {
+    'type': 'data',
+    'name': 'exportExpr',
+    'popName': popName,
+    'triggerType': 'immediate'
+  }
+  av.fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida: importWorldExpr \n' + av.utl.json2stringFn(request);
+}
 //fio.uiWorker function
 av.msg.doOrgTrace = function () {
   'use strict';
@@ -452,7 +463,8 @@ av.grd.updateSelectedOrganismType = function (msg) {
     }
     else document.getElementById("ancestorLabel").textContent = '-';
   }
-  else document.getElementById("ancestorLabel").textContent = av.parents.name[msg.ancestor];
+  //else document.getElementById("ancestorLabel").textContent = av.parents.name[msg.ancestor];
+  else document.getElementById("ancestorLabel").textContent = msg.ancestor;
   //add + or - to text of logic function
   if (null != msg.tasks) {
     if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";

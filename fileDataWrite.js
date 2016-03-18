@@ -181,6 +181,11 @@ av.fwt.makeFzrWorld = function (num) {
   //there are more files needed to talk to Matt, tiba
 }
 
+av.fwt.popExpWrite = function (msg) {
+  'use strict';
+  console.log('exportExpr', msg);
+}
+
 // never called. Not in use as of 2016_029
 av.fwt.makeFzrOrgan = function () {
   'use strict';
