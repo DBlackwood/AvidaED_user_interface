@@ -551,21 +551,28 @@ require([
         av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
         var handList = av.fio.handAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
         var autoList = av.fio.autoAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
+        var ndx = 0;
         klen = av.parents.name.length;
-        for (kk = 0; kk <  lngth; kk++) {
-          jlen = autoList.nam.length;
-          //for (var jj = 0; jj < jlen; jj++)
-          flag = true;
-          jj = 0;
-/*
-          while (flag) {
-            if (av.parents.name[kk] == autoList.nam[jj]) {
-              flag = false;
-              av.parents.genome[kk] = autoList.gen[jj];
-            }
-
+        for (kk = 0; kk <  klen; kk++) {
+          ndx = autoList.nam.indexOf(av.parents.name[kk]);
+          if (-1 < ndx) {
+            av.parents.genome[kk] = autoList.gen[ndx];
+            autoList.nam.splice(ndx,1);
+            autoList.gen.splice(ndx,1);
           }
-          */
+          else {
+            ndx = handList.nam.indexOf(av.parents.name[kk]);
+            if (-1 < ndx) {
+              av.parents.genome[kk] = handList.gen[ndx];
+              av.parents.col[kk] = handList.col[ndx];
+              av.parents.row[kk] = handList.row[ndx];
+              handList.nam.splice(ndx,1);
+              handList.gen.splice(ndx,1);
+              handList.col.splice(ndx,1);
+              handList.row.splice(ndx,1);
+            }
+            else {console.log('Name, ', av.parents.name[kk], ', not found');}
+          }
         }
         //run status is no longer 'new' it is "world"
         av.ptd.popWorldStateUi();
