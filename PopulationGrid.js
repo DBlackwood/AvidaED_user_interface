@@ -89,8 +89,8 @@ av.grd.drawParent = function () {
 //inside the loop. Need to time things to see if it makes a difference
 av.grd.drawKids = function () {  //Draw the children of parents
   'use strict';
-  var cc, ii, rr, xx, yy, lngth;
-  //console.log('fill', av.grd.fill);
+  var cc, ii, rr, xx, yy, lngth, ndx;
+  //console.log('mode', dijit.byId("colorMode").value, '; fill', av.grd.fill);
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
     lngth = av.grd.fill.length;
     for (ii = 0; ii < lngth; ii++) {
@@ -102,7 +102,12 @@ av.grd.drawKids = function () {  //Draw the children of parents
         av.grd.cntx.fillStyle = '#000';
       }
       else {
-        av.grd.cntx.fillStyle = av.parents.color[av.grd.fill[ii]]
+        ndx = av.parents.name.indexOf(av.grd.fill[ii]);
+        if ('-' === av.grd.fill[ii]) {av.grd.cntx.fillStyle = 'black';}
+        else
+          av.grd.cntx.fillStyle = av.parents.color[ndx];
+        //av.grd.cntx.fillStyle = av.parents.color[av.grd.fill[ii]]
+        //console.log('ndx=', ndx, '; name', av.parents.name[av.grd.fill[ii]], '; color', av.parents.color[ndx]);
       }
       av.grd.cntx.fillRect(xx, yy, av.grd.cellWd - 1, av.grd.cellHt - 1);
     }
@@ -116,7 +121,7 @@ av.grd.drawKids = function () {  //Draw the children of parents
       yy = av.grd.marginY + av.grd.yOffset + rr * av.grd.cellHt;
       if (null === av.grd.fill[ii]) {
         //console.log('ii', ii, '; msg.ancestor.data[ii]',av.grd.msg.ancestor.data[ii]);
-        if (null === av.grd.msg.ancestor.data[ii]) av.grd.cntx.fillStyle = '#000';
+        if ('-' === av.grd.msg.ancestor.data[ii]) av.grd.cntx.fillStyle = '#000';
         else av.grd.cntx.fillStyle = '#888';
       }
       else if (0 == av.grd.fill[ii]) av.grd.cntx.fillStyle = av.color.defaultKidColor;

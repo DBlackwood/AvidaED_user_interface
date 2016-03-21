@@ -51,7 +51,7 @@ av.msg.readMsg = function (ee) {
       case 'webGridData':
         //mObj=JSON.parse(JSON.stringify(jsonObject));
         av.grd.msg = msg;
-
+        //console.log('av.grd.msg', ee.data);
         av.grd.drawGridSetupFn();
         if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
         //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);

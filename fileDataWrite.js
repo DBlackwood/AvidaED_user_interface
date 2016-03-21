@@ -126,7 +126,7 @@ av.fwt.makeFzrTRfile = function (path, data) {
     pairs[ii] = ii + ':' + data[ii];
   }
   text = pairs.join();
-  console.log(path, text);
+  //console.log(path, text);
   av.fwt.makeFzrFile(path, text);
 }
 
