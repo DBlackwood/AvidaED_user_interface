@@ -557,6 +557,8 @@ require([
           ndx = autoList.nam.indexOf(av.parents.name[kk]);
           if (-1 < ndx) {
             av.parents.genome[kk] = autoList.gen[ndx];
+            av.parents.howPlaced[kk] = 'auto';
+            av.parents.autoNdx.push(kk);
             autoList.nam.splice(ndx,1);
             autoList.gen.splice(ndx,1);
           }
@@ -566,6 +568,8 @@ require([
               av.parents.genome[kk] = handList.gen[ndx];
               av.parents.col[kk] = handList.col[ndx];
               av.parents.row[kk] = handList.row[ndx];
+              av.parents.howPlaced[kk] = 'hand';
+              av.parents.handNdx.push(kk);
               handList.nam.splice(ndx,1);
               handList.gen.splice(ndx,1);
               handList.col.splice(ndx,1);
@@ -574,6 +578,7 @@ require([
             else {console.log('Name, ', av.parents.name[kk], ', not found');}
           }
         }
+        av.parents.placeAncestors();
         //run status is no longer 'new' it is "world"
         av.ptd.popWorldStateUi();
         //send message to Avida
