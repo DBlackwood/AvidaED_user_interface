@@ -199,7 +199,7 @@ av.msg.importWorldExpr = function () {
 av.msg.exportExpr = function (popName) {
   'use strict';
   var request = {
-    'type': 'data',
+    'type': 'addEvent',
     'name': 'exportExpr',
     'popName': popName,
     'triggerType': 'immediate'
