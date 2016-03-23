@@ -122,7 +122,7 @@ av.grd.drawKids = function () {  //Draw the children of parents
       if (null === av.grd.fill[ii]) {
         //console.log('ii', ii, '; msg.ancestor.data[ii]',av.grd.msg.ancestor.data[ii]);
         if ('-' === av.grd.msg.ancestor.data[ii]) av.grd.cntx.fillStyle = '#000';
-        else av.grd.cntx.fillStyle = '#888';
+        else av.grd.cntx.fillStyle = '#888'; //not viable
       }
       else if (0 == av.grd.fill[ii]) av.grd.cntx.fillStyle = av.color.defaultKidColor;
       else {  //get_color0 = function(cmap, dx, d1, d2)

@@ -73,6 +73,7 @@ av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   txt += 'SLEEP_DELAY ' + dijit.byId('sleepDelay').get('value') + '\n';
   txt += '#include instset.cfg\n';
   txt += 'PRECALC_PHENOTYPE 1\n';
+  txt += 'VERSION_ID 2.14.0 \n';
   if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
 }

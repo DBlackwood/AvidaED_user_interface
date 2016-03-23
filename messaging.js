@@ -6,6 +6,7 @@ av.msg.readMsg = function (ee) {
     switch (msg.name) {
       case 'exportExpr':
         av.fwt.popExpWrite(msg);
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'paused':
         //console.log('about to call av.ptd.makePauseState()');
@@ -63,7 +64,7 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui:  ' + stub;
         break;
       case 'webOrgDataByCellID':
-        //if ('undefined' != typeof av.grd.msg.ancestor) {console.log('webOrgDataByCellID anc',av.grd.msg.ancestor.data);}
+        console.log('webOrgDataByCellID', msg);
         av.grd.updateSelectedOrganismType(msg);  //in messaging
         var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
@@ -242,10 +243,10 @@ av.msg.doWebOrgDataByCell = function () {
     //'singleton': true,
     'args': av.grd.selectedNdx
   }
-  console.log('doSelectedOrganismType; selectedNdx', av.grd.selectedNdx)
+  //console.log('doSelectedOrganismType; selectedNdx', av.grd.selectedNdx)
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
-  console.log('runStopButton',document.getElementById("runStopButton").textContent);
+  //console.log('runStopButton',document.getElementById("runStopButton").textContent);
   if ('Run' === document.getElementById("runStopButton").textContent) {
     var request = {
       'triggerType': 'immediate',
@@ -517,7 +518,8 @@ av.grd.updateSelectedOrganismType = function (msg) {
     document.getElementById("xorTime").textContent = '-';
     document.getElementById("equTime").textContent = '-';
   }
-  if (av.debug.msg) document.getElementById("dnaLabel").textContent = wsa(",", wsa(",", msg.genome));
+  if (av.debug.msg) dnaLabel.textContent = wsa(",", wsa(",", msg.genome));
+  viableLabel.textContent = msg.isViable;
   av.msg.fillColorBlock(msg);
   if (av.debug.msg) console.log('Kidstatus', av.grd.kidStatus);
   if ('getgenome' == av.grd.kidStatus) {
@@ -533,7 +535,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
 av.msg.fillColorBlock = function (msg) {  //Draw the color block
     'use strict';
     if (av.debug.msg) console.log('in fillColorBlock');
-    if (av.debug.msg) console.log('ndx', av.grd.selectedNdx, '; msg.ancestor.data[ndx]',av.grd.msg.ancestor.data[av.grd.selectedNdx]);
+    //if (av.debug.msg) console.log('ndx', av.grd.selectedNdx, '; msg.ancestor.data[ndx]',av.grd.msg.ancestor.data[av.grd.selectedNdx]);
     if (av.debug.msg) console.log('av.grd.fill[av.grd.selectedNdx]',av.grd.fill[av.grd.selectedNdx]);
     if ("Ancestor Organism" == dijit.byId("colorMode").value) {
       if (null === av.grd.fill[av.grd.selectedNdx]) {
