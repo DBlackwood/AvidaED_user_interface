@@ -780,7 +780,7 @@ require([
   av.ptd.makePauseState = function () {
     dijit.byId("mnCnPause").attr("disabled", true);
     dijit.byId("mnCnRun").attr("disabled", false);
-    console.log('pauseState; button=run');
+    //console.log('pauseState; button=run');
     //av.debug.log += 'set runStopButton=Run in AvidaEd.js line 724 \n';  //debug only delete later
     document.getElementById("runStopButton").innerHTML = "Run";
   }
@@ -1904,9 +1904,9 @@ require([
   dijit.byId("yRightSelect").on("Change", function () {
     av.anl.yRightTitle = dijit.byId("yRightSelect").value;
     //need to get correct array to plot from freezer
-    av.anl.loadSelectedData(0, 'yRightSelect', 'right')
-    av.anl.loadSelectedData(1, 'yRightSelect', 'right')
-    av.anl.loadSelectedData(2, 'yRightSelect', 'right')
+    av.anl.loadSelectedData(0, 'yRightSelect', 'right');
+    av.anl.loadSelectedData(1, 'yRightSelect', 'right');
+    av.anl.loadSelectedData(2, 'yRightSelect', 'right');
     av.anl.AnaChartFn();
   });
 
@@ -1914,7 +1914,7 @@ require([
   //Tasks that Need to be run when page is loaded but after chart is defined
   // **************************************************************************************************************** */
 
-  //used to set the height so the data just fits. Done because different monitor/brower combinations require a diffent height in pixels.
+  //used to set the height so the data just fits. Done because different monitor/browser combinations require a diffent height in pixels.
   //may need to take out as requires loading twice now.
 
   function removeVerticalScrollbar(scrollDiv, htChangeDiv, page) {

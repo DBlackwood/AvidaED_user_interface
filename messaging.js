@@ -1,5 +1,6 @@
 av.msg.readMsg = function (ee) {
   var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
+  //console.log('msg', msg);
   if ('data' == msg.type) {
     userMsg2Label.textContent = 'Avida message name: ' + msg.name;
     switch (msg.name) {
@@ -132,7 +133,7 @@ av.msg.importConfigExpr = function () {
   };
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    console.log('Config: file', ii, fList[ii])
+    //console.log('Config: file', ii, fList[ii])
     if (av.fzr.actConfig.file[fList[ii]]) {
       request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] });
     }
@@ -255,7 +256,6 @@ av.msg.doWebOrgDataByCell = function () {
     av.fio.uiWorker.postMessage(request);
     av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   }
-
 }
 
 //fio.uiWorker function
