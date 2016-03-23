@@ -279,7 +279,7 @@ av.fio.autoAncestorParse = function (filestr) {
       }
       else { //odd
         rslt.gen[kk] = lines[ii]; //content will be genome line; leave white space alone
-        console.log('autAncestor', kk, rslt.nam[kk], rslt.gen[kk]);
+        //console.log('autAncestor', kk, rslt.nam[kk], rslt.gen[kk]);
         kk++;
       }
     }

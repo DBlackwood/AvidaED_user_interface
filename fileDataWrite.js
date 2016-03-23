@@ -188,19 +188,19 @@ av.fwt.popExpWrite = function (msg) {
   //assume last world for now.
   var lngth = msg.files.length;
   for (var ii = 0; ii < lngth; ii++) {
-    switch (msg.files[ii].data) {
+    switch (msg.files[ii].name) {
       case 'clade.ssg':
       case 'detail.spop':
       //case 'instset.cfg':
       //case 'events.cfg':
       //case 'environment.cfg':
       //case 'avida.cfg':
-        av.fwt.makeFzrFile('w'+av.fzr.wNum + '/' + msg.files[ii].name, msg.files[ii].data);
-        console.log('ii, filename', ii, msg.files[ii].name);
+        console.log('ii', ii, '; name', msg.files[ii].name);
+        av.fwt.makeFzrFile(msg.popName + '/' + msg.files[ii].name, msg.files[ii].data);
         break;
     }
   }
-  console.log('fzr', av.fzr.files);
+  console.log('fzr', av.fzr.file);
 }
 
 // never called. Not in use as of 2016_029
