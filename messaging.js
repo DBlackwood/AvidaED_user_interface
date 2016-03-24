@@ -519,7 +519,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
     document.getElementById("equTime").textContent = '-';
   }
   if (av.debug.msg) dnaLabel.textContent = wsa(",", wsa(",", msg.genome));
-  viableLabel.textContent = msg.isViable;
+  viableLabel.textContent = 'Viable: ' + msg.isViable;
   av.msg.fillColorBlock(msg);
   if (av.debug.msg) console.log('Kidstatus', av.grd.kidStatus);
   if ('getgenome' == av.grd.kidStatus) {
