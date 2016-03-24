@@ -90,7 +90,7 @@ av.grd.drawParent = function () {
 av.grd.drawKids = function () {  //Draw the children of parents
   'use strict';
   var cc, ii, rr, xx, yy, lngth, ndx;
-  //console.log('mode', dijit.byId("colorMode").value, '; fill', av.grd.fill);
+  console.log('mode', dijit.byId("colorMode").value, '; fill', av.grd.fill);
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
     lngth = av.grd.fill.length;
     for (ii = 0; ii < lngth; ii++) {
