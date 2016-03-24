@@ -64,7 +64,6 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui:  ' + stub;
         break;
       case 'webOrgDataByCellID':
-        console.log('webOrgDataByCellID', msg);
         av.grd.updateSelectedOrganismType(msg);  //in messaging
         var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
@@ -240,23 +239,29 @@ av.msg.doWebOrgDataByCell = function () {
   var request = {
     'type': 'addEvent',
     'name': 'WebOrgDataByCellID',
+    'triggerType': 'immediate',
+    //'interval': 'always',
     //'singleton': true,
     'args': av.grd.selectedNdx
   }
-  //console.log('doSelectedOrganismType; selectedNdx', av.grd.selectedNdx)
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   //console.log('runStopButton',document.getElementById("runStopButton").textContent);
+  /*
   if ('Run' === document.getElementById("runStopButton").textContent) {
+    request.triggerType = 'immediate';
+
     var request = {
       'triggerType': 'immediate',
       'name': 'WebOrgDataByCellID',
       //'singleton': true,
       'args': av.grd.selectedNdx
     }
+
     av.fio.uiWorker.postMessage(request);
     av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   }
+  */
 }
 
 //fio.uiWorker function
@@ -387,16 +392,14 @@ av.msg.updatePopStats = function (msg) {
   document.getElementById("xorPop").textContent = msg.xor;
   document.getElementById("equPop").textContent = msg.equ;
   //update graph arrays
-/*
-  //if (0 <= msg.update) {  //normal start to loop
-  if (false) {  //no data here to test for size increase without these arrays growing.
+  if (0 <= msg.update) {  //normal start to loop
     av.ptd.aveFit[msg.update] = msg.ave_fitness;
     av.ptd.aveGnl[msg.update] = msg.ave_gestation_time;
     av.ptd.aveMet[msg.update] = msg.ave_metabolic_rate;
     av.ptd.aveNum[msg.update] = msg.organisms;
     updateLogicAve(msg);  //for graph data
   }
-*/
+/*
   if (0 <= msg.update) {  //normal start to loop
     av.ptd.aveFit.push(msg.ave_fitness);
     av.ptd.aveGnl.push(msg.ave_gestation_time);
@@ -404,6 +407,7 @@ av.msg.updatePopStats = function (msg) {
     av.ptd.aveNum.push(msg.organisms);
     updateLogicAve(msg);  //for graph data
   }
+  */
 }
 
 updateLogicAve = function (msg){
