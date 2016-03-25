@@ -72,7 +72,7 @@ av.dnd.landActiveConfig = function (pkg) {
 
   av.fzr.actConfig.actDomid = domid;
   av.fzr.actConfig.name = document.getElementById(domid).textContent;
-  console.log('New Config:', av.fzr.actConfig.name);
+  //console.log('New Config:', av.fzr.actConfig.name);
   av.fzr.actConfig.fzDomid = Object.keys(pkg.source.selection)[0];
   av.fzr.actConfig.dir = av.fzr.dir[av.fzr.actConfig.fzDomid];
   delete av.fzr.actConfig.file['instset.cfg'];
@@ -154,11 +154,11 @@ av.dnd.landActiveConfig = function (pkg) {
     av.ptd.logGnl = av.utl.newFilledArray(lngth, null);
     av.ptd.logMet = av.utl.newFilledArray(lngth, null);
     av.ptd.logNum = av.utl.newFilledArray(lngth, null);
-    console.log('tr length=', av.ptd.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
-    console.log('aveFit', av.ptd.aveFit);
-    console.log('aveGnl', av.ptd.aveGnl);
-    console.log('aveMet', av.ptd.aveMet);
-    console.log('aveNum', av.ptd.aveNum);
+    //console.log('tr length=', av.ptd.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
+    //console.log('aveFit', av.ptd.aveFit);
+    //console.log('aveGnl', av.ptd.aveGnl);
+    //console.log('aveMet', av.ptd.aveMet);
+    //console.log('aveNum', av.ptd.aveNum);
 
     //send message to Avida
     av.msg.importPopExpr();
@@ -354,7 +354,6 @@ av.dnd.updateFromFzrOrganism = function () {
   if (av.debug.dnd) console.log('domId', domId, '; dir', dir, '; name', av.fzr.actOrgan.name, '; genome', av.fzr.actOrgan.genome);
   if (av.debug.dnd) console.log('fzr', av.fzr);
 
-  //av.fzr.actOrgan.domId = Object.keys(av.dnd.activeOrgan.map)[0];  //don't think this is used; delete later
   if (av.debug.dnd) console.log('av.fzr.actOrgan', av.fzr.actOrgan);
 }
 

@@ -149,7 +149,6 @@ require([
     copyOnly: true,
     selfAccept: false
   });
-  //av.dnd.activeConfig.insertNodes(false, [{data: "@default", type: ['c']}]);  //tiba delete later
 
   //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.activeOrgan = new dndSource('activeOrgan', {
@@ -399,16 +398,6 @@ require([
   //av.ui.mainBoxSwap("populationBlock");  //commented out here as it is called near the end of this file
   dijit.byId("setupBlock").set("style", "display: none;");
 
-  //this section gets rid of scroll bars, but then page no longer resizes correctly
-  // delete later if fix that uses 95% to 98% of height takes care of the problem.
-  /*    var popNewHt = $("#blockHolder").height()-10;
-   dijit.byId("populationBlock").set("style", "height: "+ popNewHt +"px");
-   dijit.byId("popBC").set("style", "height: "+ popNewHt+"px");
-   var mapNewHt = $("#mapBlockHold").height()-10;
-   dijit.byId("mapBlock").set("style", "height: "+ mapNewHt +"px");
-   //mapNewHt = mapNewHt - 5;
-   dijit.byId("mapBC").set("style", "height: "+ mapNewHt +"px;");
-   */
   av.ui.mainBoxSwap = function (showBlock) {
     av.ui.page = showBlock;
     dijit.byId("populationBlock").set("style", "display: none;");
@@ -726,7 +715,6 @@ require([
     dijit.byId("mnCnPause").attr("disabled", true);
     dijit.byId("mnCnRun").attr("disabled", false);
     //console.log('pauseState; button=run');
-    //av.debug.log += 'set runStopButton=Run in AvidaEd.js line 724 \n';  //debug only delete later
     document.getElementById("runStopButton").innerHTML = "Run";
   }
 
@@ -766,7 +754,7 @@ require([
       }
       if (dijit.byId("updateRadio").get('checked')) {
         av.msg.pause(dijit.byId("updateSpinner").get('value'));
-        console.log('stop at ', dijit.byId("updateSpinner").get('value'));
+        //console.log('stop at ', dijit.byId("updateSpinner").get('value'));
       }
       av.ptd.makeRunState();
       av.msg.doRunPause(av.fio);
@@ -998,7 +986,6 @@ require([
       if (av.ind.didDivide) {  //offpsring exists
         distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.cx[1], 2) + Math.pow(evt.offsetY - av.ind.cy[1], 2));
         if (25 > distance) {
-          //for (var ii=1; ii<av.fzr.genome.length; ii++) document.getElementById(av.fzr.genome[ii].domId).style.cursor = 'copy';  //tiba delete later
           for (var dir in av.fzr.domid) {
             if ('g' == dir.substring(0, 1)) document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';
           }
@@ -1295,7 +1282,6 @@ require([
       else {
         av.grd.gradientScale();
       }
-      //av.grd.CanvasScale.height = 60;  //tiba delete later for resizing test only
 
       document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
       //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
@@ -1454,8 +1440,8 @@ require([
       av.grd.popY2 = av.ptd.logNum;
       console.log('logicNum', av.ptd.logNum);
     }
-    console.log('popY after',av.grd.popY);
-    console.log('pop2 after', av.grd.popY2);
+    //console.log('popY after',av.grd.popY);
+    //console.log('pop2 after', av.grd.popY2);
     //av.grd.popChart.setTheme(myTheme);
     av.grd.popChart.addPlot("default", {type: "Lines"});
     //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.

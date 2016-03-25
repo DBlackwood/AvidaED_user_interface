@@ -414,7 +414,7 @@ av.fio.cladeSSG2parents = function (fileStr) {
     else {av.parents.color.push(av.color.defaultParentColor);}
   }
   av.dnd.ancestorBox.sync();
-  console.log('parents', av.parents);
+  //console.log('parents', av.parents);
 }
 
 //----------------------- section to put data from time recorder (tr) files into data from charts ----------------------

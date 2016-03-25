@@ -113,7 +113,7 @@ av.msg.readMsg = function (ee) {
     }
   }
   else if ('response' === msg.type) {
-    console.log('msg.request.type', msg.request.type);
+    //console.log('msg.request.type', msg.request.type);
     if ('sync' !== msg.request.type) {
       av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
     }
@@ -201,7 +201,7 @@ av.msg.importWorldExpr = function () {
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
-  console.log('in importWorldExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
+  //console.log('in importWorldExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }

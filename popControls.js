@@ -120,7 +120,7 @@ av.ptd.popNewExState = function () {
   dijit.byId("mnCnPause").attr("disabled", true);
   dijit.byId("mnCnRun").attr("disabled", false);
   document.getElementById("runStopButton").innerHTML = "Run";
-  console.log('pauseState; button=run in av.ptd.popNewExState');
+  //console.log('pauseState; button=run in av.ptd.popNewExState');
 
   //clear the time series graphs
   av.ptd.aveFit = [];
@@ -347,8 +347,6 @@ av.ptd.writeHardDefault = function (av) {
   'use strict';
   dijit.byId("sizeCols").set('value', av.dft.sizeCols);
   dijit.byId("sizeRows").set('value', av.dft.sizeRows);
-  dijit.byId("sizeCols").set('value', '20');    //delete later; av.debug only taba
-  dijit.byId("sizeRows").set('value', '5');     //delete lager; av.debug only tiba
   if ('childParentRadio'==av.dft.child) {
     dijit.byId("childParentRadio").set('checked', true);
     dijit.byId("childRandomRadio").set('checked', false);

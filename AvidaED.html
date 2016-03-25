@@ -63,8 +63,6 @@
        refreshOnShow="false" region="top" splitter="false" maxSize="Infinity" doLayout="false" style="height:26px;">
     <input id="putWS" type="file" style = 'display:none' onchange="av.fio.userPickZipRead()" />
     <input id="import" type="file" style = 'display:none' onchange="av.fio.importZipRead()" />
-    <!-- <input id='putWdelte' type="file" style = 'display:none' />
-    <input id='inputFile' type="file" style = 'display:none' /> not in use delete later -->
     <input type="hidden" value="mymail@gmail.com" id="mailto" />
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
@@ -928,9 +926,8 @@
 
 <!-- New button Dialog -->
 <div data-dojo-type="dijit/Dialog" data-dojo-id="newDialog"
-     title="The petri dish of the current experiment has not been saved in the freezer">
+     title="Would you like to save or discard the current petri dish before starting a new experiment?">
   <div class="dijitDialogPaneContentArea">
-    <p>Would you like to save or discard the current petri dish before starting a new experiment?</p>
     <p>Configured Dish saves the experiment settings only.</p>
     <p>Populated Dish saves organisms and experiment history.</p>
   </div>

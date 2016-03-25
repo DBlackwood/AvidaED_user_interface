@@ -185,7 +185,7 @@ av.fwt.makeFzrWorld = function (num) {
 
 av.fwt.popExpWrite = function (msg) {
   'use strict';
-  console.log('exportExpr', msg);
+  //console.log('exportExpr', msg);
   //assume last world for now.
   var lngth = msg.files.length;
   for (var ii = 0; ii < lngth; ii++) {
@@ -196,12 +196,12 @@ av.fwt.popExpWrite = function (msg) {
       case 'events.cfg':
       //case 'environment.cfg':
       //case 'avida.cfg':
-        console.log('ii', ii, '; name', msg.files[ii].name);
+        //console.log('ii', ii, '; name', msg.files[ii].name);
         av.fwt.makeFzrFile(msg.popName + '/' + msg.files[ii].name, msg.files[ii].data);
         break;
     }
   }
-  console.log('fzr', av.fzr.file);
+  //console.log('fzr', av.fzr.file);
 }
 
 // never called. Not in use as of 2016_029
