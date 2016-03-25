@@ -44,10 +44,12 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'webPopulationStats':
-        stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
+        stub = 'name: ' + msg.name.toString() + '; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
+             + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
+             + '; Met:' + msg.ave_metabolic_rate.formatNum(2) + '; Num:' + msg.organisms.formatNum(2);
         av.debug.log += '\nAvida --> ui:  ' + stub;
         av.grd.popStatsMsg = msg;
-        if (av.grd.oldUpdate !== msg.update) {
+        if (av.grd.oldUpdate != msg.update) {  //use only one = as one maybe number and the other string
           av.grd.oldUpdate = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
           //if ((1000 < msg.update) || (msg.update % 10 < 1)) {av.grd.popChartFn();}

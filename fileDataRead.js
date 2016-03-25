@@ -148,13 +148,11 @@ av.frd.updateSetup = function () {
   var dir = av.fzr.actConfig.dir;
   var path = dir + '/avida.cfg';
   var doctext = av.fzr.file[path];
-  //if (av.debug.fio) console.log('av.fzr.file', av.fzr.file);
-  //if (av.debug.fio) console.log('doctxt', av.fzr.file['c0/avida.cfg'])
-  //if (av.debug.fio) console.log('updateSetup = path', path, '; doc', doctext);
-    av.frd.avidaCFG2form(doctext);
+  av.frd.avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
-  //if (av.debug.fio) console.log('updateSetup = dir', dir, '; doc', doctext);
   av.frd.environmentCFG2form(doctext);
+
+
 }
 
 //----------------------- section to put data from environment.cfg into setup form of population page ------------------

@@ -1435,9 +1435,7 @@ require([
 
   //av.grd.popChartFn = function () {}
 
-  av.grd.popChartFn = function () {}
-
-  av.grd.popChartFn_real = function () {
+  av.grd.popChartFn = function () {
     'use strict';
     if ("Average Fitness" == dijit.byId("yaxis").value) {
       av.grd.popY = av.ptd.aveFit;

@@ -111,6 +111,7 @@ av.grd.clearGrd = function () {
   av.grd.marginY = 1;  //width of black line between the cells
 
   av.grd.oldUpdate = -1;
+  av.ptd.autoPauseUpdate = 1000;
 
   av.ptd.aveFit = [];  //ave is for all avidians.
   av.ptd.logFit = [];  //log is for avidians that performm logic functions

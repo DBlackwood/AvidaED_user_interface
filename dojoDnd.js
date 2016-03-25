@@ -72,6 +72,7 @@ av.dnd.landActiveConfig = function (pkg) {
 
   av.fzr.actConfig.actDomid = domid;
   av.fzr.actConfig.name = document.getElementById(domid).textContent;
+  console.log('New Config:', av.fzr.actConfig.name);
   av.fzr.actConfig.fzDomid = Object.keys(pkg.source.selection)[0];
   av.fzr.actConfig.dir = av.fzr.dir[av.fzr.actConfig.fzDomid];
   delete av.fzr.actConfig.file['instset.cfg'];
@@ -104,6 +105,8 @@ av.dnd.landActiveConfig = function (pkg) {
     av.fzr.actConfig.file['environment.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/environment.cfg'];
     av.fzr.actConfig.file['events.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/events.cfg'];
     av.fzr.actConfig.file['update'] = av.fzr.file[av.fzr.actConfig.dir + '/update'];
+    av.grd.oldUpdate = av.fzr.actConfig.file['update'];
+    TimeLabel.textContent = av.grd.oldUpdate;
 
     //load parents from clade.ssg and ancestors.
     av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
@@ -151,7 +154,11 @@ av.dnd.landActiveConfig = function (pkg) {
     av.ptd.logGnl = av.utl.newFilledArray(lngth, null);
     av.ptd.logMet = av.utl.newFilledArray(lngth, null);
     av.ptd.logNum = av.utl.newFilledArray(lngth, null);
-    console.log('tr length=', av.ptd.aveFit.length, '; update=', av.fzr.actConfig.file['update']);
+    console.log('tr length=', av.ptd.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
+    console.log('aveFit', av.ptd.aveFit);
+    console.log('aveGnl', av.ptd.aveGnl);
+    console.log('aveMet', av.ptd.aveMet);
+    console.log('aveNum', av.ptd.aveNum);
 
     //send message to Avida
     av.msg.importPopExpr();

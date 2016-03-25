@@ -314,6 +314,12 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   av.fzr.actConfig.dir = 'c0';
   av.frd.updateSetup();
 
+  //Clear options that are not in the config files
+  dijit.byId("manRadio").set('checked', true);
+  dijit.byId("updateRadio").set('checked', false);
+  dijit.byId("updateSpinner").set('value', av.ptd.autoPauseUpdate);
+
+  av.ptd.clearLogicButtons();
   // write if @default not found - need to figure out a test for this
   // av.ptd.writeHardDefault(av);
 
@@ -322,6 +328,15 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   av.grd.drawGridSetupFn();
 }
 
+//clear logic Buttons
+av.ptd.clearLogicButtons = function() {
+  var logicButtons = ['notButton', 'nanButton', 'andButton', 'ornButton', 'oroButton', 'antButton', 'norButton', 'xorButton', 'equButton'];
+  var len = logicButtons.length;
+  for (var ii = 0; ii < len; ii++) {
+    document.getElementById(logicButtons[ii]).value = 'off';
+    document.getElementById(logicButtons[ii]).className = 'bitButtonOff';
+  }
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 // code below this line is not in use tiba delete later
