@@ -184,6 +184,9 @@ av.ptd.popNewExState = function () {
   dijit.byId("mnCnOrganismTrace").attr("disabled", true);
 }
 
+av.ptd.reset = function () {
+
+}
 //----------------------------------------------------------------------------------------------------------------------
 // Freezer Button functions
 //----------------------------------------------------------------------------------------------------------------------
@@ -294,14 +297,15 @@ av.ptd.bitToggle = function (button) {
 //reset values
 av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settings to @default
   'use strict';
+  // send reset to Avida adaptor
+  //if (need2sendRest2avida) {av.msg.reset();} //Take this out if we only reset when avida resets After sending a request for reset.
+
   av.msg.pause('now');
   av.ptd.makePauseState();
 
   av.grd.runState = 'prepping';
   dijit.byId("mnCnOrganismTrace").attr("disabled", true);
   dijit.byId("mnFzOrganism").attr("disabled", true);
-  // send reset to Avida adaptor
-  if (need2sendRest2avida) {av.msg.reset();}
   //Enable the options on the Setup page
   av.ptd.popNewExState();
   //Clear grid settings

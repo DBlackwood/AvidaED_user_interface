@@ -440,7 +440,7 @@ av.frd.tr2chartParse = function (filestr) {
   return rslt.data;
 };
 
-// puts data from the environment.cfg into the setup form for the population page
+// puts data from the environment.cfg into the setup form for the Analysis Page
 av.fio.tr2chart = function (fileStr) {
   'use strict';
   var data = av.frd.tr2chartParse(fileStr);

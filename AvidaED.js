@@ -526,66 +526,11 @@ require([
 
   av.dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     'use strict';
-    var ii, kk, jj, klen, jlen, flag;
     //console.log('pkg.target', pkg.target);
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
-      var str;
       var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
       av.dnd.landActiveConfig(pkg);  //dojoDnd
-      av.parents.clearParentsFn();
-      av.frd.updateSetup();  //fileIO
-      if ('fzConfig' === pkg.source.node.id) {
-        if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
-          str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors'];
-          av.fio.autoAncestorLoad(str);
-        }
-        if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']) {
-          str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
-          av.fio.handAncestorLoad(str);
-        }
-      }
-      else if ('fzWorld' === pkg.source.node.id) {
-
-        //load parents from clade.ssg and ancestors.
-        av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
-        var handList = av.fio.handAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
-        var autoList = av.fio.autoAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
-        var ndx = 0;
-        klen = av.parents.name.length;
-        for (kk = 0; kk <  klen; kk++) {
-          ndx = autoList.nam.indexOf(av.parents.name[kk]);
-          if (-1 < ndx) {
-            av.parents.genome[kk] = autoList.gen[ndx];
-            av.parents.howPlaced[kk] = 'auto';
-            av.parents.autoNdx.push(kk);
-            autoList.nam.splice(ndx,1);
-            autoList.gen.splice(ndx,1);
-          }
-          else {
-            ndx = handList.nam.indexOf(av.parents.name[kk]);
-            if (-1 < ndx) {
-              av.parents.genome[kk] = handList.gen[ndx];
-              av.parents.col[kk] = handList.col[ndx];
-              av.parents.row[kk] = handList.row[ndx];
-              av.parents.howPlaced[kk] = 'hand';
-              av.parents.handNdx.push(kk);
-              handList.nam.splice(ndx,1);
-              handList.gen.splice(ndx,1);
-              handList.col.splice(ndx,1);
-              handList.row.splice(ndx,1);
-            }
-            else {console.log('Name, ', av.parents.name[kk], ', not found');}
-          }
-        }
-        av.parents.placeAncestors();
-        //run status is no longer 'new' it is "world"
-        av.ptd.popWorldStateUi();
-        //send message to Avida
-        av.msg.importPopExpr();
-        av.msg.requestGridData();
-      }
-      if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
     }
   });
 
@@ -864,27 +809,31 @@ require([
 
   dijit.byId("newDiscard").on("Click", function () {
     newDialog.hide();
-    av.ptd.resetDishFn(true);
+    av.msg.reset();
+    //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
     //console.log("newDiscard click");
   });
 
   dijit.byId("newSaveWorld").on("Click", function () {
     av.ptd.FrPopulationFn();
     newDialog.hide();
-    av.ptd.resetDishFn(true);
+    av.msg.reset();
+    //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
     //console.log("newSave click");
   });
 
   dijit.byId("newSaveConfig").on("Click", function () {
     av.ptd.FrConfigFn();
     newDialog.hide();
-    av.ptd.resetDishFn(true);
+    av.msg.reset();
+    //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
     //console.log("newSave click");
   });
 
   function newButtonBoth() {
     if ('prepping' == av.grd.runState) {// reset petri dish
-      av.ptd.resetDishFn(true);
+      av.msg.reset();
+      //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
     }
     else {// check to see about saving current population
       av.msg.pause('now');
@@ -1484,6 +1433,8 @@ require([
 //myTheme.axis.majorTick.color = "#CCC";  //grey
 //myTheme.axis.minorTick.color = "red";
 
+  //av.grd.popChartFn = function () {}
+
   av.grd.popChartFn = function () {}
 
   av.grd.popChartFn_real = function () {
@@ -1505,8 +1456,8 @@ require([
       av.grd.popY2 = av.ptd.logNum;
       console.log('logicNum', av.ptd.logNum);
     }
-    console.log('popY',av.grd.popY);
-    console.log('pop2', av.grd.popY2);
+    console.log('popY after',av.grd.popY);
+    console.log('pop2 after', av.grd.popY2);
     //av.grd.popChart.setTheme(myTheme);
     av.grd.popChart.addPlot("default", {type: "Lines"});
     //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.

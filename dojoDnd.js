@@ -3,18 +3,6 @@
 //functions used to process events that happen when a dojo drag and drop lands on the particular dnd 'target'.
 //Note that all dnd 'source' elements can also be 'targets'.
 
-// General Drag and Drop (DnD) functions --------------------------------------
-
-//not sure that this is in use
-/*  dojo.declare("AcceptOneItemSource", dndSource, {
- checkAcceptance: function (source, nodes) {
- if (this.node.children.length >= 1) {
- return false;
- }
- return this.inherited(arguments);
- }
- });
- */
 //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
 //Puts the contents of the source in a object (list) called items.
 av.dnd.getAllItems = function (source) {
@@ -66,6 +54,10 @@ av.dnd.getDomId = function (name, target){
 av.dnd.landActiveConfig = function (pkg) {
   'use strict';
   var ndx = -1;
+  var klen = 0;
+  var kk = 0;
+  var str = '';
+  var dir = '';
   //there is always a node here, so it must always be cleared when adding a new one.
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.activeConfig.sync();   //should be done after insertion or deletion
@@ -86,14 +78,25 @@ av.dnd.landActiveConfig = function (pkg) {
   if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {
     av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];
   }
+  av.parents.clearParentsFn();
+  av.frd.updateSetup();  //fileIO
   if ('fzConfig' === pkg.source.node.id) {
     av.fzr.actConfig.type = 'c';
     av.fzr.actConfig.file['events.cfg'] = ' ';
     if (av.fzr.actConfig.file['clade.ssg']) {delete av.fzr.actConfig.file['clade.ssg'];}
     if (av.fzr.actConfig.file['detail.spop']) {delete av.fzr.actConfig.file['detail.spop'];}
     if (av.fzr.actConfig.file['update']) {delete av.fzr.actConfig.file['update'];}
+    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
+      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors'];
+      av.fio.autoAncestorLoad(str);
+    }
+    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']) {
+      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
+      av.fio.handAncestorLoad(str);
+    }
+    if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
   }
-  else if ('fzWorld' == pkg.source.node.id) {
+  else if ('fzWorld' === pkg.source.node.id) {
     av.fzr.actConfig.type = 'w';
     av.fzr.actConfig.file['avida.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/avida.cfg'];
     av.fzr.actConfig.file['clade.ssg'] = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
@@ -101,22 +104,60 @@ av.dnd.landActiveConfig = function (pkg) {
     av.fzr.actConfig.file['environment.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/environment.cfg'];
     av.fzr.actConfig.file['events.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/events.cfg'];
     av.fzr.actConfig.file['update'] = av.fzr.file[av.fzr.actConfig.dir + '/update'];
+
+    //load parents from clade.ssg and ancestors.
+    av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
+    var handList = av.fio.handAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
+    var autoList = av.fio.autoAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
+    var ndx = 0;
+    klen = av.parents.name.length;
+    for (kk = 0; kk <  klen; kk++) {
+      ndx = autoList.nam.indexOf(av.parents.name[kk]);
+      if (-1 < ndx) {
+        av.parents.genome[kk] = autoList.gen[ndx];
+        av.parents.howPlaced[kk] = 'auto';
+        av.parents.autoNdx.push(kk);
+        autoList.nam.splice(ndx,1);
+        autoList.gen.splice(ndx,1);
+      }
+      else {
+        ndx = handList.nam.indexOf(av.parents.name[kk]);
+        if (-1 < ndx) {
+          av.parents.genome[kk] = handList.gen[ndx];
+          av.parents.col[kk] = handList.col[ndx];
+          av.parents.row[kk] = handList.row[ndx];
+          av.parents.howPlaced[kk] = 'hand';
+          av.parents.handNdx.push(kk);
+          handList.nam.splice(ndx,1);
+          handList.gen.splice(ndx,1);
+          handList.col.splice(ndx,1);
+          handList.row.splice(ndx,1);
+        }
+        else {console.log('Name, ', av.parents.name[kk], ', not found');}
+      }
+    }
+    av.parents.placeAncestors();
+    //run status is no longer 'new' it is "world"
+    av.ptd.popWorldStateUi();
+
+    //Load Time Recorder Data.
+    dir = av.fzr.actConfig.dir;
+    av.ptd.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
+    av.ptd.aveGnl = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
+    av.ptd.aveMet = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
+    av.ptd.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
+    var lngth = av.ptd.aveFit.length;
+    av.ptd.logFit = av.utl.newFilledArray(lngth, null);
+    av.ptd.logGnl = av.utl.newFilledArray(lngth, null);
+    av.ptd.logMet = av.utl.newFilledArray(lngth, null);
+    av.ptd.logNum = av.utl.newFilledArray(lngth, null);
+    console.log('tr length=', av.ptd.aveFit.length, '; update=', av.fzr.actConfig.file['update']);
+
+    //send message to Avida
+    av.msg.importPopExpr();
+    av.msg.requestGridData();
+    //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }
-
-  //I tried to see if I could just remove the one node rather than all of them and re-instering. Seems to work.
-  //source.parent.removeChild(nodes[0]);    this statement works in trash to remove node from fzOrgan
-  //statement below only works if new config added to the bottom
-  //pkg.target.parent.removeChild(pkg.target.parent.childNodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
-
-  //Dojo uses .data to help keep track of .textContent or .innerHTML
-  //At one time I was trying to keep the original name in .data and allow the user
-  //to change the .textContent name only. I have now decided that will cause trouble.
-  //I'm keeping the following commented out code that would update the .textContent specifically.
-  //var currentItem = Object.keys(av.dnd.activeConfig.map)[0];
-  //var freezeItem = Object.keys(av.dnd.fzConfig.selection)[0];
-  //if (av.debug.dnd) console.log("currentI", currentItem, " freezeI", freezeItem);
-  //document.getElementById(currentItem).textContent = document.getElementById(freezeItem).textContent;
-
 }
 
 //Process when an Configuration is added to the Freezer
@@ -703,3 +744,16 @@ Looking at DND move https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveab
  https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveable.html
  */
 
+//I tried to see if I could just remove the one node rather than all of them and re-instering. Seems to work.
+//source.parent.removeChild(nodes[0]);    this statement works in trash to remove node from fzOrgan
+//statement below only works if new config added to the bottom
+//pkg.target.parent.removeChild(pkg.target.parent.childNodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+
+//Dojo uses .data to help keep track of .textContent or .innerHTML
+//At one time I was trying to keep the original name in .data and allow the user
+//to change the .textContent name only. I have now decided that will cause trouble.
+//I'm keeping the following commented out code that would update the .textContent specifically.
+//var currentItem = Object.keys(av.dnd.activeConfig.map)[0];
+//var freezeItem = Object.keys(av.dnd.fzConfig.selection)[0];
+//if (av.debug.dnd) console.log("currentI", currentItem, " freezeI", freezeItem);
+//document.getElementById(currentItem).textContent = document.getElementById(freezeItem).textContent;

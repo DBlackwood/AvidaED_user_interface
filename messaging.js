@@ -1,4 +1,6 @@
 av.msg.readMsg = function (ee) {
+  'use strict';
+  var stub = '';
   var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
   //console.log('msg', msg);
   if ('data' == msg.type) {
@@ -12,13 +14,17 @@ av.msg.readMsg = function (ee) {
         av.ptd.makePauseState();
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
+      case 'reset':
+        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        userMsgLabel.textContent = 'Avida: ' + msg.name;
+        if (true === av.msg.uiReqestedReset) {
+          av.ptd.resetDishFn();
+          av.msg.uiReqestedReset = false;
+        }
+        break;
       case 'running':
         av.ptd.makeRunState();
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-        break;
-      case 'reset':
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-        //userMsgLabel.textContent = 'Avida message name: ' + msg.name;
         break;
       case 'runPause':
         if (true != msg["Success"]) {
@@ -38,22 +44,25 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'webPopulationStats':
-        var stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
+        stub = 'name: ' + msg.name.toString() + '; update: ' + msg.update.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         av.grd.popStatsMsg = msg;
-        av.msg.updatePopStats(av.grd.popStatsMsg);
-        //if ((1000 < msg.update) || (msg.update % 10 < 1)) {av.grd.popChartFn();}
-        av.msg.sync('webPopulationStats-update:' + msg.update.toString());
-        av.grd.popChartFn();
-        if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
+        if (av.grd.oldUpdate !== msg.update) {
+          av.grd.oldUpdate = msg.update;
+          av.msg.updatePopStats(av.grd.popStatsMsg);
+          //if ((1000 < msg.update) || (msg.update % 10 < 1)) {av.grd.popChartFn();}
+          av.msg.sync('webPopulationStats-update:' + msg.update.toString());
+          av.grd.popChartFn();
+          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
+        }
         break;
       case 'webGridData':
-        var stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString();  //may not display anyway
+        stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         av.grd.msg = msg;
         av.msg.sync('webGridData');
         av.grd.drawGridSetupFn();
-        if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
+        //if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
         //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
         //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
         //if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
@@ -61,7 +70,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webOrgDataByCellID':
         av.grd.updateSelectedOrganismType(msg);  //in messaging
-        var stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
+        stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         //console.log('Avida --> ui webOrgDataByCellID', msg);
         break;
@@ -73,6 +82,7 @@ av.msg.readMsg = function (ee) {
   }
   else if ('userFeedback' == msg.type) {
     av.debug.log += '\nAvida --> ui on line 74 \n' + av.utl.json2stringFn(msg);
+    userMsgLabel.textContent = 'Avida userFeedback: ' + msg.level + ' at ' + av.grd.oldUpdate.toString();
     //console.log('userFeedback', msg);
     switch (msg.level) {
       case 'error':
@@ -321,11 +331,13 @@ av.msg.doRunPause = function (fio) {
 //fio.uiWorker function
 av.msg.reset = function () {
   'use strict';
+  av.msg.uiReqestedReset = true;
   var request = {
     'type': 'addEvent',
     'name': 'reset',
     'triggerType': 'immediate'
   };
+  userMsgLabel.textContent = 'ui-->Avida: reset requested';
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
@@ -407,6 +419,7 @@ av.msg.updatePopStats = function (msg) {
   document.getElementById("xorPop").textContent = msg.xor;
   document.getElementById("equPop").textContent = msg.equ;
   //update graph arrays
+  /*
   if (0 <= msg.update) {  //normal start to loop
     av.ptd.aveFit[msg.update] = msg.ave_fitness;
     av.ptd.aveGnl[msg.update] = msg.ave_gestation_time;
@@ -414,7 +427,7 @@ av.msg.updatePopStats = function (msg) {
     av.ptd.aveNum[msg.update] = msg.organisms;
     updateLogicAve(msg);  //for graph data
   }
-/*
+*/
   if (0 <= msg.update) {  //normal start to loop
     av.ptd.aveFit.push(msg.ave_fitness);
     av.ptd.aveGnl.push(msg.ave_gestation_time);
@@ -422,7 +435,6 @@ av.msg.updatePopStats = function (msg) {
     av.ptd.aveNum.push(msg.organisms);
     updateLogicAve(msg);  //for graph data
   }
-  */
 }
 
 updateLogicAve = function (msg){

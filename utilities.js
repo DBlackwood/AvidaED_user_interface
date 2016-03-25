@@ -1,5 +1,5 @@
 // all instances of Math.floor were Math.trunc, but Internet Explorer does not support Math.trunc
-
+//----------------------------------------------------------------------------------------------------------------------
 //because IE does not understand var event = new Event('change'); in the file fileIO.js
 (function () {
   'use strict';
@@ -195,6 +195,17 @@ av.utl.objectLength = function(object){
     }
     return length;
   }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//http://stackoverflow.com/questions/1295584/most-efficient-way-to-create-a-zero-filled-javascript-array
+av.utl.newFilledArray = function (length, val) {
+  var array = [];
+  var i = 0;
+  while (i < length) {
+    array[i++] = val;
+  }
+  return array;
 }
 
 //**********************************************************************************************************************

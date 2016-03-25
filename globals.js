@@ -92,6 +92,11 @@ av.grd.clearGrd = function () {
   av.grd.mxFit = 0.4;   //store maximum fitness during an experiment
   av.grd.mxGest = 400;  //store maximum Generation Length during an experiment
   av.grd.mxRate = 40;  //store maximum metabolic rate during an experiment
+
+  av.grd.mxFit = 0;   //store maximum fitness during an experiment
+  av.grd.mxGest = 0;  //store maximum Generation Length during an experiment
+  av.grd.mxRate = 0;  //store maximum metabolic rate during an experiment
+
   av.grd.rescaleTolerance = 0.1;
   av.grd.rescaleTimeConstant = 10;
   av.grd.SelectedColor = '#ffffff';
@@ -104,6 +109,8 @@ av.grd.clearGrd = function () {
   av.grd.leftpad = 10;     //padding to allow space between each column of text in the legend
   av.grd.marginX = 1;  //width of black line between the cells
   av.grd.marginY = 1;  //width of black line between the cells
+
+  av.grd.oldUpdate = -1;
 
   av.ptd.aveFit = [];  //ave is for all avidians.
   av.ptd.logFit = [];  //log is for avidians that performm logic functions
@@ -147,6 +154,7 @@ if (av.brs.isChromium !== null && av.brs.isChromium !== undefined && av.brs.vend
 av.utl = {};  // holds utility functions
 
 av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
+av.msg.uiReqestedReset = false;
 
 av.fwt = {}; // file data write
 av.frd = {}; // file data read

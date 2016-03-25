@@ -192,8 +192,8 @@ av.fwt.popExpWrite = function (msg) {
     switch (msg.files[ii].name) {
       case 'clade.ssg':
       case 'detail.spop':
-      //case 'instset.cfg':
-      //case 'events.cfg':
+      case 'instset.cfg':
+      case 'events.cfg':
       //case 'environment.cfg':
       //case 'avida.cfg':
         console.log('ii', ii, '; name', msg.files[ii].name);
