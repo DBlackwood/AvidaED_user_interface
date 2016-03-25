@@ -796,8 +796,8 @@ require([
     var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
     //console.log("namelist", namelist);
     if (1 > namelist.length) {
-      console.log('about to call av.ptd.makePauseState()');
-      av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 740 \n';
+      //console.log('about to call av.ptd.makePauseState()');
+      //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 740 \n';
       av.ptd.makePauseState();
       NeedAncestorDialog.show();
     }
@@ -834,8 +834,8 @@ require([
       av.ptd.makeRunState();
       runPopFn();
     } else {
-      console.log('about to call av.ptd.makePauseState()');
-      av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
+      //console.log('about to call av.ptd.makePauseState()');
+      //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
       av.ptd.makePauseState();
       av.msg.doRunPause(av.fio);
       //console.log("pop size ", av.ptd.aveNum);
@@ -848,7 +848,7 @@ require([
   };
 
   dijit.byId("mnCnPause").on("Click", function () {
-    console.log('about to call av.ptd.makePauseState()');
+    //console.log('about to call av.ptd.makePauseState()');
     av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 786 \n';
     av.msg.pause('now');
     av.ptd.makePauseState();
@@ -1484,7 +1484,9 @@ require([
 //myTheme.axis.majorTick.color = "#CCC";  //grey
 //myTheme.axis.minorTick.color = "red";
 
-  av.grd.popChartFn = function () {
+  av.grd.popChartFn = function () {}
+
+  av.grd.popChartFn_real = function () {
     'use strict';
     if ("Average Fitness" == dijit.byId("yaxis").value) {
       av.grd.popY = av.ptd.aveFit;
@@ -1503,8 +1505,8 @@ require([
       av.grd.popY2 = av.ptd.logNum;
       console.log('logicNum', av.ptd.logNum);
     }
-    //console.log('popY',av.grd.popY);
-    //console.log('pop2', av.grd.popY2);
+    console.log('popY',av.grd.popY);
+    console.log('pop2', av.grd.popY2);
     //av.grd.popChart.setTheme(myTheme);
     av.grd.popChart.addPlot("default", {type: "Lines"});
     //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
@@ -1529,7 +1531,7 @@ require([
     av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
     av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
       domGeometry.position(document.getElementById("popChartHolder")).h - 30);
-    //av.grd.popChart.render();
+    av.grd.popChart.render();
   };
 
   // **************************************************************************************************************** */
