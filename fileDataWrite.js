@@ -185,7 +185,7 @@ av.fwt.makeFzrWorld = function (num) {
 
 av.fwt.popExpWrite = function (msg) {
   'use strict';
-  //console.log('exportExpr', msg);
+  console.log('exportExpr', msg);
   //assume last world for now.
   var lngth = msg.files.length;
   for (var ii = 0; ii < lngth; ii++) {

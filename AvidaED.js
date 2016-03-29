@@ -7,6 +7,8 @@
 // git commit -m "comment about the change being pushed"
 // git push -u origin master
 //
+// [option]<alt>{go} to get library in the list for finder
+//
 // /var/www/vhosts/bwng/public_html/projects/
 //
 // to have chrome run from file
@@ -747,17 +749,16 @@ require([
         }
         else { av.msg.importWorldExpr();}
 
-        if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
         av.msg.requestPopStats();
         av.msg.requestGridData();
-        //if ('c' === av.fzr.actConfig.type) {av.msg.injectAncestors(av.fio, av.parents);}
+        if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
       }
       if (dijit.byId("updateRadio").get('checked')) {
         av.msg.pause(dijit.byId("updateSpinner").get('value'));
         //console.log('stop at ', dijit.byId("updateSpinner").get('value'));
       }
       av.ptd.makeRunState();
-      av.msg.doRunPause(av.fio);
+      av.msg.stepUpdate();   //av.msg.doRunPause(av.fio);
     }
     //update screen based on data from C++
   }
@@ -770,7 +771,7 @@ require([
       //console.log('about to call av.ptd.makePauseState()');
       //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
       av.ptd.makePauseState();
-      av.msg.doRunPause(av.fio);
+      //av.msg.doRunPause(av.fio);
       //console.log("pop size ", av.ptd.aveNum);
     }
   };
@@ -843,7 +844,11 @@ require([
   //Also creates context menu for all new freezer items.*/
   document.getElementById("freezeButton").onclick = function () {
     if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
-    else fzDialog.show();
+    else {
+      if (5 > av.msg.ByCellIDgenome.length) document.getElementById("FzOrganism").style.display = "none";  //block
+      else document.getElementById("FzOrganism").style.display = "block";
+      fzDialog.show();
+    }
   };
 
   dijit.byId("FzConfiguration").on("Click", function () {

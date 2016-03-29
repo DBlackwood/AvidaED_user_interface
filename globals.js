@@ -63,6 +63,9 @@ var traceObj = {}; //global that holds the traceObject that was sent from Avida
 //initialize gen (genome) object. Used in organism view
 av.ind = {};
 
+av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
+av.msg.uiReqestedReset = false;
+
 av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
 av.grd = {};         //data about the grid canvas
 av.grd.popStatFlag = true;  //flag that determines if the stats panel is visible.
@@ -122,6 +125,12 @@ av.grd.clearGrd = function () {
   av.ptd.aveNum = [];
   av.ptd.logNum = [];
   av.ptd.allOff = true;
+
+  av.msg.ByCellIDgenome = '';        //Holdes the genome which is needed to freeze a cell.
+  av.msg.gridDone = -1;
+  av.msg.popStatsDone = -1;
+  av.msg.byCellIDdone = -1;
+  av.msg.previousUpdate = -10;
 }
 av.grd.clearGrd();
 
@@ -153,9 +162,6 @@ if (av.brs.isChromium !== null && av.brs.isChromium !== undefined && av.brs.vend
 }
 
 av.utl = {};  // holds utility functions
-
-av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
-av.msg.uiReqestedReset = false;
 
 av.fwt = {}; // file data write
 av.frd = {}; // file data read
