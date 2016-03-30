@@ -8,7 +8,9 @@ av.msg.readMsg = function (ee) {
     switch (msg.name) {
       case 'exportExpr':
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-        av.fwt.popExpWrite(msg);
+        if ('untitled' != msg.popName) {
+          av.fwt.popExpWrite(msg);
+        }
         break;
       case 'paused':
         av.ptd.makePauseState();
@@ -35,7 +37,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
         av.traceObj = msg.snapshots;
-        av.ind.cycle = 0;
+        av.ind.cycle = -20;
         dijit.byId("orgCycle").set("value", 0);
         av.ind.cycleSlider.set("maximum", av.traceObj.length - 1);
         av.ind.cycleSlider.set("discreteValues", av.traceObj.length);
@@ -44,7 +46,7 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'webPopulationStats':
-        av.msg.popStatsDone = 0;
+        av.msg.popStatsDone = -20;
         stub = 'name: ' + msg.name.toString() + '; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
              + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
              + '; Met:' + msg.ave_metabolic_rate.formatNum(2) + '; Num:' + msg.organisms.formatNum(2);
@@ -78,7 +80,7 @@ av.msg.readMsg = function (ee) {
         av.msg.stepUpdate();
         break;
       case 'webOrgDataByCellID':
-        av.msg.av.msg.byCellID = 0;
+        av.msg.av.msg.byCellID = -20;
         av.msg.ByCellIDgenome = msg.genome;
         av.grd.updateSelectedOrganismType(msg);  //in messaging
         stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
@@ -329,18 +331,19 @@ av.msg.requestGridData = function () {
 }
 
 av.msg.stepUpdate  = function () {
-  'use strict';
-  console.log('stoprun', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
-               , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
-  if ("Pause" == document.getElementById("runStopButton").innerHTML) {
-    if (av.msg.previousUpdate < av.msg.gridDone && av.msg.previousUpdate < av.msg.popStatsDone) {
-      av.msg.previousUpdate = av.msg.gridDone;
-      var request = {'type': 'stepUpdate'}
-      av.fio.uiWorker.postMessage(request);
-      av.debug.log += '\nui --> Avida: ' + av.utl.json2stringFn(request);
+    'use strict';
+    console.log('stoprun', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
+      , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
+    if ("Pause" == document.getElementById("runStopButton").innerHTML) {
+      if (av.msg.previousUpdate <= av.msg.gridDone && av.msg.previousUpdate <= av.msg.popStatsDone) {
+        av.msg.previousUpdate = av.msg.gridDone;
+        var request = {'type': 'stepUpdate'}
+        av.fio.uiWorker.postMessage(request);
+        av.debug.log += '\nui --> Avida: update:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
+      }
     }
   }
-}
+
 
 //sends message to worker to tell Avida to run/pause as a toggle.
 //fio.uiWorker function
