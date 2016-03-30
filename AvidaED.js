@@ -347,7 +347,7 @@ require([
   //https://bugsnag.com/blog/js-stacktracess
   window.onerror = function (message, file, line, col, error) {
     //console.log(message, ' from ', error.stack, '------------------');
-    av.msg.pause('now');
+    document.getElementById("runStopButton").innerHTML = "Run";  //av.msg.pause('now');
     av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
     //av.debug.errorEmailFn();
 
@@ -1287,6 +1287,7 @@ require([
       else {
         av.grd.gradientScale();
       }
+      console.log('after drawing scale or legend. update=',av.grd.msg.update);
 
       document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
       //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');

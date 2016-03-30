@@ -42,11 +42,12 @@ av.msg.readMsg = function (ee) {
         av.ind.cycleSlider.set("maximum", av.traceObj.length - 1);
         av.ind.cycleSlider.set("discreteValues", av.traceObj.length);
         av.ind.updateOrgTrace();
-        //console.log('webOrgTraceBySequence', msg);
+        console.log('webOrgTraceBySequence', msg);
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'webPopulationStats':
         av.msg.popStatsDone = -20;
+        console.log('webPopulationStat start update=', msg.update);
         stub = 'name: ' + msg.name.toString() + '; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
              + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
              + '; Met:' + msg.ave_metabolic_rate.formatNum(2) + '; Num:' + msg.organisms.formatNum(2);
@@ -61,14 +62,16 @@ av.msg.readMsg = function (ee) {
           if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         }
         av.msg.popStatsDone = msg.update;
-        av.msg.stepUpdate();
+        //av.msg.stepUpdate();
+        console.log('webPopulationStat end update=', msg.update);
         break;
       case 'webGridData':
+        console.log('webGridData start update=', msg.update);
         av.msg.gridDone = 0;
         stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         av.grd.msg = msg;
-        av.msg.sync('webGridData');
+        av.msg.sync('webGridData:' + msg.update.toString());
         av.grd.drawGridSetupFn();
         //if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
         //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
@@ -78,6 +81,7 @@ av.msg.readMsg = function (ee) {
         //console.log('webGridData: update', msg.update);
         av.msg.gridDone = msg.update;
         av.msg.stepUpdate();
+        console.log('webGridData END update=', msg.update);
         break;
       case 'webOrgDataByCellID':
         av.msg.av.msg.byCellID = -20;
@@ -259,6 +263,7 @@ av.msg.doOrgTrace = function () {
   if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+  av.msg.sendData();
 }
 
 //request data from Avida to update SelectedOrganismType
@@ -331,9 +336,10 @@ av.msg.requestGridData = function () {
 }
 
 av.msg.stepUpdate  = function () {
-    'use strict';
+  'use strict';
+  setTimeout(function () {
     console.log('stoprun', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
-      , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
+           , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
     if ("Pause" == document.getElementById("runStopButton").innerHTML) {
       if (av.msg.previousUpdate <= av.msg.gridDone && av.msg.previousUpdate <= av.msg.popStatsDone) {
         av.msg.previousUpdate = av.msg.gridDone;
@@ -342,8 +348,16 @@ av.msg.stepUpdate  = function () {
         av.debug.log += '\nui --> Avida: update:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
       }
     }
-  }
+  }, 500);  //number is time in msec for a delay
+}
 
+av.msg.sendData = function () {
+  'use strict';
+  var request;
+  request = {'type': 'sendData'};
+  av.fio.uiWorker.postMessage(request);
+  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+}
 
 //sends message to worker to tell Avida to run/pause as a toggle.
 //fio.uiWorker function
