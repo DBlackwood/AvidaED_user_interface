@@ -550,21 +550,18 @@ require([
 
   av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
-      av.debug.log += '\nDnD_land: fzOrgan';
       av.dnd.landFzOrgan(source, nodes, target);
     }
   });
 
   av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
-      av.debug.log += '\nDnD_land: ancestorBox';
       av.dnd.landAncestorBox(source, nodes, target);
     }
   });
 
   av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
-      av.debug.log += '\nDnD_land: gridCanvas';
       av.dnd.landGridCanvas(source, nodes, target);
       console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
@@ -572,19 +569,9 @@ require([
     }
   });
 
-  av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
-    if ('organCanvas' == target.node.id) {
-      av.debug.log += '\nDnD_land: organCanvas';
-      if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
-      av.dnd.landOrganCanvas(source, nodes, target);
-      av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
-    }
-  });
-
   av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     //setTimeout(null,1000);
     if ('organIcon' == target.node.id) {
-      av.debug.log += '\nDnD_land: organIcon';
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
       av.dnd.landOrganIcon(source, nodes, target);
       //Change to Organism Page
@@ -601,9 +588,17 @@ require([
 
   av.dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
-      av.debug.log += '\nDnD_land: activeOrgan';
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
       av.dnd.landActiveOrgan(source, nodes, target);
+      av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
+    }
+  });
+
+  av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
+    if ('organCanvas' == target.node.id) {
+      av.debug.log += '\nDnD_land: organCanvas';
+      if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
+      av.dnd.landOrganCanvas(source, nodes, target);
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
