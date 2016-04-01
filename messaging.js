@@ -135,7 +135,10 @@ av.msg.readMsg = function (ee) {
   else if ('response' === msg.type) {
     //console.log('msg.request.type', msg.request.type);
     if ('sync' !== msg.request.type) {
-      av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+      av.debug.log += '\nAvida --> ui: type: response; request: sync; success:' + msg.request.success;
+    }
+    else if ('stepUpdate' !== msg.request.type) {
+      av.debug.log += '\nAvida --> ui: type: response; request: stepUpdate; success:' + msg.request.success;
     }
   }
   else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg);
