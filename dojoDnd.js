@@ -82,6 +82,7 @@ av.dnd.landActiveConfig = function (pkg) {
   av.parents.clearParentsFn();
   av.frd.updateSetup();  //fileIO
   if ('fzConfig' === pkg.source.node.id) {
+      av.debug.log += '\nDnD_land: activeConfig from fzConfig: ' +document.getElementById(domid).textContent;
     av.fzr.actConfig.type = 'c';
     av.fzr.actConfig.file['events.cfg'] = ' ';
     if (av.fzr.actConfig.file['clade.ssg']) {delete av.fzr.actConfig.file['clade.ssg'];}
@@ -98,6 +99,7 @@ av.dnd.landActiveConfig = function (pkg) {
     if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
   }
   else if ('fzWorld' === pkg.source.node.id) {
+    av.debug.log += '\nDnD_land: activeConfig from fzWorld: ' + document.getElementById(domid).textContent;
     av.fzr.actConfig.type = 'w';
     av.fzr.actConfig.file['avida.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/avida.cfg'];
     av.fzr.actConfig.file['clade.ssg'] = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
@@ -676,6 +678,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
   aMenu.addChild(new dijit.MenuItem({
     label: "Rename",
     onClick: function () {
+  av.debug.log += '\nButton: Rname:' + document.getElementById(fzItemID).textContent;
       var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).textContent);
       if (fzName) {
         fzName = av.dnd.getUniqueName(fzName, target);
@@ -693,6 +696,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
   aMenu.addChild(new dijit.MenuItem({
     label: "delete",
     onClick: function () {
+      av.debug.log += '\nButton: delete:' + document.getElementById(fzItemID).textContent;
       var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
       if (sure) {
         dir = av.fzr.dir[fzItemID];
@@ -714,6 +718,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
   aMenu.addChild(new dijit.MenuItem({
     label: "export",
     onClick: function () {
+      av.debug.log += '\nButton: export:' + document.getElementById(fzItemID).textContent;
       var type;
       var itemName = document.getElementById(fzItemID).textContent;
       var zName = prompt(itemName + ' will be saved as ' + itemName + '.avidaedfreezeritem.zip', itemName + '.avidaedfreezeritem.zip');

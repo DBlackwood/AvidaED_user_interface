@@ -276,6 +276,7 @@ av.ptd.FrPopulationFn = function () {
 
 av.ptd.bitToggle = function (button) {
   'use strict';
+  av.debug.log += '\nButton: ' + button;
   if ('on' == document.getElementById(button).value) {
     document.getElementById(button).value = 'off';
     document.getElementById(button).className = 'bitButtonOff';

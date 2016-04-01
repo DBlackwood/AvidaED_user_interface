@@ -228,6 +228,7 @@ require([
 
   dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
     'use strict';
+	av.debug.log += '\nButton: mnFlOpenDefaultWS';
     av.fio.useDefault = true;
     if (!av.fzr.saved) sWSfDialog.show();
     else {
@@ -236,12 +237,14 @@ require([
   });
 
   dijit.byId("sWSfSave").on("Click", function () {
+	av.debug.log += '\nButton: sWSSave';
     console.log('before call save workspace');
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
     console.log('after call to save workspace');
   });
 
   dijit.byId("sWSfOpen").on("Click", function () {
+	av.debug.log += '\nButton: sWSfOpen';
     sWSfDialog.hide();
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
@@ -255,6 +258,7 @@ require([
 
   dijit.byId("mnFlOpenWS").on("Click", function () {
     'use strict';
+	av.debug.log += '\nButton: mnFlOpenWS';
     av.fio.useDefault = false;
     if (!av.fzr.saved) sWSfDialog.show();
     //else document.getElementById("inputFile").click();
@@ -265,17 +269,20 @@ require([
 
   dijit.byId("mnFlFzItem").on("Click", function () {
     'use strict';
+	av.debug.log += '\nButton: mnFlFzItem';
     av.fio.useDefault = false;
     document.getElementById("import").click();
   });
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
+	av.debug.log += '\nButton: mnFlSaveWorkspace';
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
   // Save current workspace with a new name(mnFzSaveWorkspaceAs)
   document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
+	av.debug.log += '\nButton: mnFlSaveWorkspaceAs';
     var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
     av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
@@ -287,6 +294,7 @@ require([
   // Drop Help down menu buttons
   //--------------------------------------------------------------------------------------------------------------------
   dijit.byId('mnHpAbout').on("Click", function () {
+	av.debug.log += '\nButton: mnHpAbout';
     mnHpAboutDialog.show();
   });
 
@@ -303,6 +311,7 @@ require([
   });
 
   dijit.byId('mnHpHardware').on("Click", function () {
+	av.debug.log += '\nButton: mnHpHardware';
     if (!HardwareDialog) {
       HardwareDialog = new Dialog({
         title: "Avida : A Guided Tour of an Ancestor and its Hardware",
@@ -317,6 +326,7 @@ require([
   });
 
   dijit.byId('mnHpProblem').on("Click", function () {
+	av.debug.log += '\nButton: mnHpProblem';
     //alert(av.debug.log);
     // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-Ed: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
     document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log;
@@ -422,6 +432,7 @@ require([
   }
 
   document.getElementById("organismButton").onclick = function () {
+	av.debug.log += '\nButton: organismButton';
     av.ui.mainBoxSwap("organismBlock");
     //console.log('after mainBoxSwap');
     organismCanvasHolderSize();
@@ -436,11 +447,13 @@ require([
   };
 
   document.getElementById("analysisButton").onclick = function () {
+	av.debug.log += '\nButton: analysisButton';
     av.ui.mainBoxSwap("analysisBlock");
   };
   //Take testBlock out completely later
 
   document.getElementById("testButton").onclick = function () {
+	av.debug.log += '\nButton: testButton';
     av.ui.mainBoxSwap("testBlock");
     if ('#00FF00' == chck.outlineColor) {
       chck.outlineColor = '#00FFFF';
@@ -537,18 +550,21 @@ require([
 
   av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
+      av.debug.log += '\nDnD_land: fzOrgan';
       av.dnd.landFzOrgan(source, nodes, target);
     }
   });
 
   av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
+      av.debug.log += '\nDnD_land: ancestorBox';
       av.dnd.landAncestorBox(source, nodes, target);
     }
   });
 
   av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
+      av.debug.log += '\nDnD_land: gridCanvas';
       av.dnd.landGridCanvas(source, nodes, target);
       console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
@@ -558,6 +574,7 @@ require([
 
   av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
+      av.debug.log += '\nDnD_land: organCanvas';
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
       av.dnd.landOrganCanvas(source, nodes, target);
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -567,6 +584,7 @@ require([
   av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     //setTimeout(null,1000);
     if ('organIcon' == target.node.id) {
+      av.debug.log += '\nDnD_land: organIcon';
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
       av.dnd.landOrganIcon(source, nodes, target);
       //Change to Organism Page
@@ -583,6 +601,7 @@ require([
 
   av.dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
+      av.debug.log += '\nDnD_land: activeOrgan';
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
       av.dnd.landActiveOrgan(source, nodes, target);
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -591,6 +610,7 @@ require([
 
   av.dnd.trashCan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
     if ('trashCan' == target.node.id) {
+      av.debug.log += '\nDnD_land: trashCan';
       var remove = {};
       remove.type = '';
       remove.dir = '';
@@ -606,6 +626,7 @@ require([
 
   av.dnd.analyzeChart.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('analyzeChart' == target.node.id) {
+      av.debug.log += '\nDnD_land: analyzeChart';
       if (av.debug.dnd) console.log('analyzeChart: s, t', source, target);
       av.dnd.landanalyzeChart(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -614,6 +635,7 @@ require([
 
   av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('graphPop0' == target.node.id) {
+      av.debug.log += '\nDnD_land: graphPop0';
       if (av.debug.dnd) console.log('graphPop0: s, t', source, target);
       av.dnd.landgraphPop0(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -622,6 +644,7 @@ require([
 
   av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
+      av.debug.log += '\nDnD_land: graphPop1';
       if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
       av.dnd.landgraphPop1(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -630,6 +653,7 @@ require([
 
   av.dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
+      av.debug.log += '\nDnD_land: graphPop2';
       if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
       av.dnd.landgraphPop2(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -639,6 +663,7 @@ require([
   //need to figure out active configuration and active world
   av.dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     if ('fzWorld' == target.node.id) {
+      av.debug.log += '\nDnD_land: fzWorld';
       var pkg = {};
       av.ui.num = av.fzr.wNum;
       pkg.source = source;
@@ -655,16 +680,19 @@ require([
     // The code is here in case the dnd type is changed to 'source'
     switch (source.node.id) {
       case 'graphPop0':
+        av.debug.log += '\nDnD_land: graphPop0?';
         av.anl.pop[0].left = [];       //remove lines from population 1
         av.anl.pop[0].right = [];
         av.anl.AnaChartFn();
         break;
       case 'graphPop1':
+      av.debug.log += '\nDnD_land: graphPop1?';
         av.anl.pop[1].left = [];       //remove lines from population 2
         av.anl.pop[1].right = [];
         av.anl.AnaChartFn();
         break;
       case 'graphPop2':
+      av.debug.log += '\nDnD_land: graphPop2?';
         av.anl.pop[2].left = [];       //remove lines from population 3
         av.anl.pop[2].right = [];
         av.anl.AnaChartFn();
@@ -681,6 +709,7 @@ require([
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById("PopSetupButton").onclick = function () {
+	av.debug.log += '\nButton: PopSetupButton';
     av.ptd.popBoxSwap();   //in popControls.js
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
       av.grd.cellConflict(av.grd.cols, av.grd.rows);
@@ -710,7 +739,10 @@ require([
     }
   }
 
-  document.getElementById("PopStatsButton").onclick = function () {popStatView() };
+  document.getElementById("PopStatsButton").onclick = function () {
+	av.debug.log += '\nButton: PopStatsButton';
+	popStatView() 
+  };
 
   //--------------------------------------------------------------------------------------------------------------------
   ///   Map Grid buttons - New  Run/Pause Freeze
@@ -781,10 +813,12 @@ require([
 
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById("runStopButton").onclick = function () {
+	av.debug.log += '\nButton: runStopButton';
     runStopFn();
   };
 
   dijit.byId("mnCnPause").on("Click", function () {
+	av.debug.log += '\nButton: mnCnPause';
     //console.log('about to call av.ptd.makePauseState()');
     av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 786 \n';
     av.msg.pause('now');
@@ -793,6 +827,7 @@ require([
 
   //process run/Stop buttons as above but for drop down menu
   dijit.byId("mnCnRun").on("Click", function () {
+	av.debug.log += '\nButton: mnCnRun';
     av.ptd.makeRunState();
     runPopFn();
   });
@@ -800,6 +835,7 @@ require([
   /******************************************* New Button and new Dialog **********************************************/
 
   dijit.byId("newDiscard").on("Click", function () {
+	av.debug.log += '\nButton: newDiscard';
     newDialog.hide();
     av.msg.reset();
     //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
@@ -807,6 +843,7 @@ require([
   });
 
   dijit.byId("newSaveWorld").on("Click", function () {
+	av.debug.log += '\nButton: newSaveWorld';
     av.ptd.FrPopulationFn();
     newDialog.hide();
     av.msg.reset();
@@ -815,6 +852,7 @@ require([
   });
 
   dijit.byId("newSaveConfig").on("Click", function () {
+	av.debug.log += '\nButton: newSaveConfig';
     av.ptd.FrConfigFn();
     newDialog.hide();
     av.msg.reset();
@@ -835,10 +873,12 @@ require([
   }
 
   document.getElementById("newDishButton").onclick = function () {
+	av.debug.log += '\nButton: newDishButton';
     newButtonBoth();
   };
 
   dijit.byId("mnNewpop").on("Click", function () {
+	av.debug.log += '\nButton: mnNewpop';
     newButtonBoth();
   });
 
@@ -846,6 +886,7 @@ require([
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.*/
   document.getElementById("freezeButton").onclick = function () {
+	av.debug.log += '\nButton: freezeButton';
     if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
     else {
       if (5 > av.msg.ByCellIDgenome.length) document.getElementById("FzOrganism").style.display = "none";  //block
@@ -855,33 +896,39 @@ require([
   };
 
   dijit.byId("FzConfiguration").on("Click", function () {
+	av.debug.log += '\nButton: FzConfiguration';
     fzDialog.hide();
     av.ptd.FrConfigFn();
   });
 
   //Drop down menu to save a configuration item
   dijit.byId("mnFzConfig").on("Click", function () {
+	av.debug.log += '\nButton: mnFzConfig';
     av.ptd.FrConfigFn();
   });
 
   //button to freeze a population
   dijit.byId("FzPopulation").on("Click", function () {
+	av.debug.log += '\nButton: FzPopulation';
     fzDialog.hide();
     av.ptd.FrPopulationFn();
   });
 
   dijit.byId("mnFzPopulation").on("Click", function () {
+	av.debug.log += '\nButton: mnFzPopulation';
     av.ptd.FrPopulationFn();
   });
 
   //Buttons on drop down menu to save an organism
   dijit.byId("mnFzOrganism").on("Click", function () {
+	av.debug.log += '\nButton: mnFzOrganism';
     av.ptd.FrOrganismFn('selected')
   });
 
   //Buttons on drop down menu to save an offspring
   dijit.byId("mnFzOffspring").on("Click", function () {
-    av.ptd.FrOrganismFn('offspring')
+ 	av.debug.log += '\nButton: mnFzOffspring';
+   av.ptd.FrOrganismFn('offspring')
   });
 
   // End of Freezer functions
@@ -912,15 +959,20 @@ require([
     restartAvidaDialog.hide();
   }
 
-  document.getElementById("restartAvidaNow").onclick = function () {av.ui.restartAvida(); }
+  document.getElementById("restartAvidaNow").onclick = function () {
+	av.debug.log += '\nButton: restartAvidaNow';
+	av.ui.restartAvida(); 
+  }
 
   document.getElementById("restartAvidaFrzConfig").onclick = function () {
+	av.debug.log += '\nButton: restartAvidaFzrConfig';
     av.ptd.FrConfigFn();
   }
 
   //test - delete later ------------------------------------------------------------------------------------------------
   //document.getElementById("mnDbRestartAvida").onclick = function () {
   document.getElementById("testRestartButton").onclick = function () {
+	av.debug.log += '\nButton: testRestartButton';
     console.log('in testRestartButton');
     av.debug.log += '\nAvida -->ui simulated level:error';
     restartMsgLabel.textContent = 'Avida message: simulated message from Avida'
@@ -930,6 +982,7 @@ require([
 
   document.getElementById("mnDbThrowData").onclick = function () {
     'use strict';
+	av.debug.log += '\nButton: mnDThrowData';
     console.log('av', av);
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
@@ -1376,6 +1429,7 @@ require([
   dijit.byId("mnGnuplot2").attr("disabled", true);
 
   dijit.byId("mnViridis").on("Click", function () {
+	av.debug.log += '\nButton: mnViridis';
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", true);
@@ -1385,6 +1439,7 @@ require([
   });
 
   dijit.byId("mnGnuplot2").on("Click", function () {
+	av.debug.log += '\nButton: mnGnuplot2';
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", true);
     dijit.byId("mnViridis").attr("disabled", false);
@@ -1394,12 +1449,14 @@ require([
   });
 
   dijit.byId("mnCubehelix").on("Click", function () {
+	av.debug.log += '\nButton: mnCubehelix';
     dijit.byId("mnCubehelix").attr("disabled", true);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", false);
     av.grd.colorMap = 'Cubehelix';
     console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
+    av.debug.log += '\nButton: mnCubehelix pressed';
   });
 
   // *******************************************************************************************************************
@@ -1560,6 +1617,7 @@ require([
   //process button to hide or show Organism detail panal.
   var DetailsFlag = true;
   document.getElementById("OrgDetailsButton").onclick = function () {
+	av.debug.log += '\nButton: OrgDetailsButton';
     if (DetailsFlag) {
       DetailsFlag = false;
       dijit.byId("rightDetail").set("style", "display: none;");
@@ -1622,13 +1680,20 @@ require([
 
   //triggers flag that requests more data when the settings dialog is closed.
   //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
-  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {av.ind.settingsChanged=true;});
-  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {av.ind.settingsChanged=true;});
+  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {
+	av.debug.log += '\nButton: OrganExperimentRadio';
+	av.ind.settingsChanged=true;
+  });
+  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {
+	av.ind.settingsChanged=true;
+		av.debug.log += '\nButton: OrganDemoRadio';
+  });
 
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
   dijit.byId("mnCnOrganismTrace").on("Click", function () {
+		av.debug.log += '\nButton: mnCnOrganismTrace';
     traceSelected(av.dnd, av.fzr, av.grd);
     av.ui.mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
@@ -1643,6 +1708,7 @@ require([
   //Put the offspring in the parent position on Organism Trace
   dijit.byId("mnCnOffspringTrace").on("Click", function () {
     //Open Oranism view
+	av.debug.log += '\nButton: mnCnOffspringTrace';
     av.ui.mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
@@ -1688,6 +1754,7 @@ require([
   }
 
   dijit.byId("orgBack").on("Click", function () {
+	av.debug.log += '\nButton: orgBack';
     var ii = Number(document.getElementById("orgCycle").value);
     if (av.ind.cycleSlider.get("minimum") < av.ind.cycleSlider.get("value")) {
       ii--;
@@ -1709,6 +1776,7 @@ require([
   });
 
   dijit.byId("orgReset").on("Click", function () {
+	av.debug.log += '\nButton: orgReset';
     dijit.byId("orgCycle").set("value", 0);
     av.ind.cycle = 0;
     av.ind.updateOrgTrace();
@@ -1734,6 +1802,7 @@ require([
   }
 
   dijit.byId("orgRun").on("Click", function () {
+	av.debug.log += '\nButton: orgRun';
     if ("Run" == dijit.byId("orgRun").get("label")) {
       dijit.byId("orgRun").set("label", "Stop");
       update_timer = setInterval(orgRunFn, 100);
@@ -1744,6 +1813,7 @@ require([
   });
 
   dijit.byId("orgEnd").on("Click", function () {
+	av.debug.log += '\nButton: orgEnd';
     dijit.byId("orgCycle").set("value", av.ind.cycleSlider.get("maximum"));
     av.ind.cycle = av.ind.cycleSlider.get("maximum");
     av.ind.updateOrgTrace();
@@ -1815,6 +1885,7 @@ require([
 
   /* Chart buttons ****************************************/
   document.getElementById("pop0delete").onclick = function () {
+	av.debug.log += '\nButton: pop0delete';
     av.anl.pop[0].left = [];
     av.anl.pop[0].right = [];
     av.anl.clearWorldData(0);
@@ -1822,6 +1893,7 @@ require([
     av.dnd.graphPop0.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop1delete").onclick = function () {
+	av.debug.log += '\nButton: pop1delete';
     av.anl.pop[1].left = [];
     av.anl.pop[1].right = [];
     av.anl.clearWorldData(1);
@@ -1829,6 +1901,7 @@ require([
     av.dnd.graphPop1.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop2delete").onclick = function () {
+	av.debug.log += '\nButton: pop2delete';
     av.anl.pop[2].left = [];
     av.anl.pop[2].right = [];
     av.anl.clearWorldData(2);
@@ -1837,19 +1910,23 @@ require([
   }
   dijit.byId('pop0color').on("Change", function () {
     Rav.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
+	av.debug.log += '\nButton: pop0color';
     av.anl.AnaChartFn();
   });
   dijit.byId('pop1color').on("Change", function () {
+	av.debug.log += '\nButton: pop1color';
     av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
     av.anl.AnaChartFn();
   });
   dijit.byId('pop2color').on("Change", function () {
+	av.debug.log += '\nButton: pop2color';
     av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
     av.anl.AnaChartFn();
   });
 
   //Set Y-axis title and choose the correct array to plot
   dijit.byId("yLeftSelect").on("Change", function () {
+	av.debug.log += '\nButton: yLeftSelect';
     av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yLeftSelect', 'left')  //numbers are world landing spots
