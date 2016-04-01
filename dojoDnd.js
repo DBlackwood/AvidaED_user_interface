@@ -164,6 +164,7 @@ av.dnd.landActiveConfig = function (pkg) {
     //send message to Avida
     av.msg.importPopExpr();
     av.msg.requestGridData();
+    av.msg.sendData();
     //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }
 }

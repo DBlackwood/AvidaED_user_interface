@@ -340,7 +340,7 @@ av.msg.requestGridData = function () {
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
-av.msg.stepUpdate  = function () {
+av.msg.stepUpdate = function () {
   'use strict';
   setTimeout(function () {
 	av.debug.log += 'stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate' 
@@ -353,7 +353,7 @@ av.msg.stepUpdate  = function () {
         av.fio.uiWorker.postMessage(request);
         av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
     }
-  }, 100);  //number is time in msec for a delay
+  }, 200);  //number is time in msec for a delay
 }
 
 av.msg.stepUpdate_old  = function () {
