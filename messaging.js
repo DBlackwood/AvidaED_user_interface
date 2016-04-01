@@ -62,9 +62,9 @@ av.msg.readMsg = function (ee) {
           if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         }
         av.msg.popStatsDone = msg.update;
-        //av.msg.stepUpdate();
         console.log('webPopulationStat end update=', msg.update);
         av.debug.log += '\nAvida --> ui: end webPopulation: update:' + av.grd.popStatsMsg.update;
+        av.msg.stepUpdate();
         break;
       case 'webGridData':
         av.grd.msg = msg;
@@ -81,7 +81,7 @@ av.msg.readMsg = function (ee) {
         //if (av.debug.msgOrder) console.log('out',av.grd.out);
         //console.log('webGridData: update', msg.update);
         av.msg.gridDone = av.grd.msg.update;
-        av.msg.stepUpdate();
+        //av.msg.stepUpdate();
         console.log('webGridData END update=', msg.update);
         av.debug.log += '\nAvida --> ui: end webGridData: update:' + av.grd.msg.update;
         break;
@@ -306,7 +306,7 @@ av.msg.requestPopStats = function () {
     'type': 'addEvent',
     'name': 'webPopulationStats',
     'start': 'now',
-    'interval': 'always'
+    'interval': 1
   }
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
@@ -331,7 +331,7 @@ av.msg.requestGridData = function () {
     'type': 'addEvent',
     'name': 'webGridData',
     'start': 'begin',
-    'interval': 'always'
+    'interval': 1
   }
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
@@ -340,7 +340,25 @@ av.msg.requestGridData = function () {
 av.msg.stepUpdate  = function () {
   'use strict';
   setTimeout(function () {
-    console.log('stoprun', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
+	av.debug.log += 'stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate' 
+	+ av.msg.previousUpdate  + '; popStatsDone' + av.msg.popStatsDone;
+    console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
+           , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
+    if ("Pause" == document.getElementById("runStopButton").innerHTML) {
+        av.msg.previousUpdate = av.msg.gridDone;
+        var request = {'type': 'stepUpdate'}
+        av.fio.uiWorker.postMessage(request);
+        av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
+    }
+  }, 100);  //number is time in msec for a delay
+}
+
+av.msg.stepUpdate_old  = function () {
+  'use strict';
+  setTimeout(function () {
+	av.debug.log += 'stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate' 
+	+ av.msg.previousUpdate  + '; popStatsDone' + av.msg.popStatsDone;
+    console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
            , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
     if ("Pause" == document.getElementById("runStopButton").innerHTML) {
       if (av.msg.previousUpdate <= av.msg.gridDone && av.msg.previousUpdate <= av.msg.popStatsDone) {

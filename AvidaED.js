@@ -467,6 +467,7 @@ require([
     if ("block" == domStyle.get("populationBlock", "display")) {
       if (av.grd.notInDrawingGrid) {
         av.grd.popChartFn();
+        console.log('before call av.grd.drawGridSetupFn');
         av.grd.drawGridSetupFn();
       }
     }
@@ -549,6 +550,7 @@ require([
   av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
       av.dnd.landGridCanvas(source, nodes, target);
+      console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
       //console.log('in gridCanvas.on');
     }
@@ -682,6 +684,7 @@ require([
     av.ptd.popBoxSwap();   //in popControls.js
     if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
       av.grd.cellConflict(av.grd.cols, av.grd.rows);
+      console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
       av.ui.subpage = 'map';
     }
@@ -1088,6 +1091,7 @@ require([
           dijit.byId("mnCnOrganismTrace").attr("disabled", false);
         }
       }
+      console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
     }
   });
@@ -1105,6 +1109,7 @@ require([
     if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
       av.grd.flagSelected = true;
       if (av.debug.mouse) console.log('ongrid', av.grd.selectedNdx);
+      console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
 
       //In the grid and selected. Now look to see contents of cell are dragable.
@@ -1155,6 +1160,7 @@ require([
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
     //av.msg.doWebOrgDataByCell();   //was sending twice. I hope this is the right one to take out 2016 Feb 5
+    console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1204,7 +1210,10 @@ require([
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = "";
       ParentMouse(evt, av);
-      if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) av.grd.drawGridSetupFn();
+      if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) {
+		  console.log('before call av.grd.drawGridSetupFn');
+		  av.grd.drawGridSetupFn();
+	  }
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         av.ui.mainBoxSwap("organismBlock");
@@ -1269,6 +1278,8 @@ require([
 
   //--------------------------------------------------------------------------------------------------------------------
   if (av.debug.root) console.log('before av.grd.drawGridSetupFn');
+
+//need to put a console.log before each call of drawGrdSetupFn to see why it gets called so much
 
   av.grd.drawGridSetupFn = function () {
     'use strict';
@@ -1338,9 +1349,8 @@ require([
   // Get color map data from Avida and draw
   dijit.byId("colorMode").on("Change", function () {
     var scaleType = dijit.byId("colorMode").value;
-    //need to request data to update the color map from Avida
-    // code for that
     //Redraw Grid;
+    console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1357,6 +1367,7 @@ require([
     onChange: function (value) {
       av.grd.zoom = value;
       //console.log('ZoomSlide', av.grd.zoom);
+      console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
     }
   }, "ZoomSlide");
@@ -1369,6 +1380,7 @@ require([
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", true);
     av.grd.colorMap = 'Viridis';
+    console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1377,6 +1389,7 @@ require([
     dijit.byId("mnGnuplot2").attr("disabled", true);
     dijit.byId("mnViridis").attr("disabled", false);
     av.grd.colorMap = 'Gnuplot2';
+    console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1385,6 +1398,7 @@ require([
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", false);
     av.grd.colorMap = 'Cubehelix';
+    console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
