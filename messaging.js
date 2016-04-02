@@ -36,13 +36,14 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
+        //console.log('webOrgTraceBySequence', msg);
         av.traceObj = msg.snapshots;
-        av.ind.cycle = -20;
+        //console.log('av.traceObj', av.traceObj);
+        av.ind.cycle = 0;
         dijit.byId("orgCycle").set("value", 0);
         av.ind.cycleSlider.set("maximum", av.traceObj.length - 1);
         av.ind.cycleSlider.set("discreteValues", av.traceObj.length);
         av.ind.updateOrgTrace();
-        console.log('webOrgTraceBySequence', msg);
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'webPopulationStats':
@@ -86,16 +87,15 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui: end webGridData: update:' + av.grd.msg.update;
         break;
       case 'webOrgDataByCellID':
-        av.msg.av.msg.byCellID = -20;
         av.msg.ByCellIDgenome = msg.genome;
+        av.msg.byCellID = -20;
         av.grd.updateSelectedOrganismType(msg);  //in messaging
         stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         //console.log('Avida --> ui webOrgDataByCellID', msg);
-        av.msg.av.msg.byCellID = true;
-        av.msg.stetUpdate();
+        av.msg.byCellID = true;
+        //av.msg.stetUpdate();
         break;
-        av.msg.av.msg.byCellID = msg.update;
       default:
         if (av.debug.msg) console.log('____________UnknownRequest: ', msg);
         av.debug.log += '\nAvida --> ui in default in messaging on line 69 \n' + av.utl.json2stringFn(msg);
@@ -284,22 +284,8 @@ av.msg.doWebOrgDataByCell = function () {
   }
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+  av.msg.sendData();
   //console.log('runStopButton',document.getElementById("runStopButton").textContent);
-  /*
-  if ('Run' === document.getElementById("runStopButton").textContent) {
-    request.triggerType = 'immediate';
-
-    var request = {
-      'triggerType': 'immediate',
-      'name': 'WebOrgDataByCellID',
-      //'singleton': true,
-      'args': av.grd.selectedNdx
-    }
-
-    av.fio.uiWorker.postMessage(request);
-    av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
-  }
-  */
 }
 
 //fio.uiWorker function

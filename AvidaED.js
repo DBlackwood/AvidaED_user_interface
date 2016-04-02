@@ -1727,8 +1727,9 @@ require([
 
   av.ind.updateOrgTrace = function () {
     //set canvas size
-    //console.log('gen', av.gen);
+    ////console.log('gen', av.gen);
     //console.log('av.traceObj', av.traceObj);
+    //console.log('av.ind.cycle', av.ind.cycle);
     organismCanvasHolderSize();
     //if (undefined == av.traceObj[av.ind.cycle]) console.log('its undefined');
     if (!(undefined == av.traceObj || {} == av.traceObj || undefined == av.traceObj[av.ind.cycle])) {
