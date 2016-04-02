@@ -658,3 +658,4 @@ function doDbReady(fio) {
   av.fio.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
+
