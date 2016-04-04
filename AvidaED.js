@@ -428,6 +428,7 @@ require([
 
   // Buttons that call MainBoxSwap
   document.getElementById("populationButton").onclick = function () {
+    av.debug.log += '\nButton: populationButton';
     if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
     av.ui.mainBoxSwap("populationBlock");
   }
@@ -705,20 +706,13 @@ require([
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById("PopSetupButton").onclick = function () {
-	av.debug.log += '\nButton: PopSetupButton';
     av.ptd.popBoxSwap();   //in popControls.js
-    if ("Setup" == document.getElementById("PopSetupButton").innerHTML) {
-      av.grd.cellConflict(av.grd.cols, av.grd.rows);
-      console.log('before call av.grd.drawGridSetupFn');
-      av.grd.drawGridSetupFn();
-      av.ui.subpage = 'map';
-    }
-    else {av.ui.subpage = 'setup';}
   };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats/mpa" button
   av.ptd.popStatView = function () {
     if (av.ptd.popStatFlag) {
+      av.debug.log += '\nButton: PopStatsButton: start hidding stats';
       av.ptd.popStatFlag = false;
       registry.byId("popRight").domNode.style.width = "1px";
       registry.byId("mainBC").layout();
@@ -726,6 +720,7 @@ require([
 
     }
     else {
+      av.debug.log += '\nButton: PopStatsButton: start showing stats';
       av.ptd.popStatFlag = true;
       registry.byId("selectOrganPane").domNode.style.width = "150px";
       registry.byId("popRight").domNode.style.width = "395px";
@@ -736,8 +731,7 @@ require([
   }
 
   document.getElementById("PopStatsButton").onclick = function () {
-	av.debug.log += '\nButton: PopStatsButton';
-	av.ptd.popStatView() 
+  	av.ptd.popStatView()
   };
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -780,14 +774,18 @@ require([
         }
         else { av.msg.importWorldExpr();}
 
-        av.msg.requestPopStats();
         av.msg.requestGridData();
+        av.msg.requestPopStats();
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
       }
+
       if (dijit.byId("updateRadio").get('checked')) {
-        av.msg.pause(dijit.byId("updateSpinner").get('value'));
-        //console.log('stop at ', dijit.byId("updateSpinner").get('value'));
+        //av.msg.pause(dijit.byId("updateSpinner").get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
+        av.ui.autoStopFlag = true;
+        av.ui.autoStopValue = dijit.byId("updateSpinner").get('value');
+        console.log('stop at ', dijit.byId("updateSpinner").get('value'));
       }
+
       av.ptd.makeRunState();
       av.msg.stepUpdate();   //av.msg.doRunPause(av.fio);
     }
@@ -1605,6 +1603,22 @@ require([
     });
   });
 
+  dojo.connect(dijit.byId('manRadio'), 'onClick', function() {
+    av.debug.log += '\nButton: manRadio';
+    av.ui.autoStopFlag = false;
+  });
+
+  dojo.connect(dijit.byId('updateRadio'), 'onClick', function() {
+    av.debug.log += '\nButton: updateRadio';
+    av.ui.autoStopFlag = true;
+  });
+
+  dojo.connect(dijit.byId('updateSpinner'), 'onChange', function() {
+    av.debug.log += '\nSpinner: updateSpinner=' + dijit.byId("updateSpinner").get('value');
+    av.ui.autoStopValue = dijit.byId("updateSpinner").get('value');
+    console.log('updateSpinner=', dijit.byId("updateSpinner").get('value'));
+  });
+
   /* *************************************************************** */
   /* Organism page script *********************************************/
   /* *************************************************************** */
@@ -1681,7 +1695,7 @@ require([
 	av.ind.settingsChanged=true;
   });
   dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {
-	av.ind.settingsChanged=true;
+  	av.ind.settingsChanged=true;
 		av.debug.log += '\nButton: OrganDemoRadio';
   });
 

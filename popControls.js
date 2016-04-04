@@ -7,18 +7,27 @@
 av.ptd.popBoxSwap = function () {
   'use strict';
   if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
+    av.debug.log += '\nButton: PopSetupButton became Setup';
+    document.getElementById('mapBlock').style.display = 'block';
+    document.getElementById("PopSetupButton").textContent = "Setup";
+    dijit.byId("setupBlock").set("style", "display: none");
+
+    av.grd.cellConflict(av.grd.cols, av.grd.rows);
+    console.log('before call av.grd.drawGridSetupFn');
+    av.grd.drawGridSetupFn();
+    av.ui.subpage = 'map';
     //var height = $("#mapBlock").innerHeight() - 6;
     //dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
     //dijit.byId("mapBlock").set("style", "display: block;");
-    document.getElementById('mapBlock').style.display = 'block'
     //dijit.byId("mapBC").set("style", "height: " + height + "px");
-    dijit.byId("setupBlock").set("style", "display: none");
-    document.getElementById("PopSetupButton").innerHTML = "Setup";
   } else {
-    document.getElementById("PopSetupButton").innerHTML = "Map";
-    dijit.byId("setupBlock").set("style", "display: block;");
-    //dijit.byId("mapBlock").set("style", "display: none;");
+    av.debug.log += '\nButton: PopSetupButton became Map';
     document.getElementById('mapBlock').style.display = 'none'
+    document.getElementById("PopSetupButton").textContent = "Map";
+    dijit.byId("setupBlock").set("style", "display: block;");
+
+    av.ui.subpage = 'setup';
+    //dijit.byId("mapBlock").set("style", "display: none;");
   }
 }
 

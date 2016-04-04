@@ -149,6 +149,8 @@ av.grd.clearGrd();
 av.ui = {};  //user interface functions and variables
 av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';
+av.ui.autoStopFlag = false;
+av.ui.autoStopValue = 987654321;
 
 //not really ui, but not sure where to put them
 av.ui.num = 0;   //tenporary holder for a number;
