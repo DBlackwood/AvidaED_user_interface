@@ -175,7 +175,7 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   if (av.debug.dnd) console.log('av.dnd.landFzConfig: fzr', av.fzr);
   var domid = Object.keys(target.selection)[0];
   var oldName = nodes[0].textContent;
-  var dishCon = prompt("Please name your dish configuration", oldname + "_1");
+  var dishCon = prompt("Please name your dish configuration", oldName + "_1");
   if (dishCon) {
     var configName = av.dnd.getUniqueName(dishCon, target);
     if (null != configName) {

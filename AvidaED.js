@@ -544,9 +544,9 @@ require([
   //This triggers now
   av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
-      av.ui.num = av.fzr.cav.ui.num;
+      av.ui.num = av.fzr.cNum;  //hold current cNum to see if it changes in av.dnd.landConfig
       av.dnd.landFzConfig(source, nodes, target);  //needed as part of call to contextMenu
-      if (av.ui.num !== av.fzr.cav.ui.num) { av.fwt.makeFzrConfig(av.ui.num); }
+      if (av.ui.num !== av.fzr.cNum) { av.fwt.makeFzrConfig(av.fzr.cNum); }
     }
   });
 
