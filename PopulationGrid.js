@@ -132,7 +132,7 @@ av.grd.drawKids = function () {  //Draw the children of parents
       av.grd.cntx.fillRect(xx, yy, av.grd.cellWd - 1, av.grd.cellHt - 1);
     }
   }
-  console.log('end of drawKids update', av.grd.msg.update);
+  //console.log('end of drawKids update', av.grd.msg.update);
 }
 
 av.grd.findLogicOutline = function () {

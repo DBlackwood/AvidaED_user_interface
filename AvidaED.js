@@ -74,13 +74,14 @@ require([
   "fileDataRead.js",
   "fileDataWrite.js",
   "fileIO.js",
-  //"indexDB.js", //put in to look at again. Looks confusing. tiba need to delete this file when this line is removed
   "ColorTest.js",
   "PopulationGrid.js",
   "organismView.js",
   'dojoDnd.js',
   'popControls.js',
   'mouse.js',
+  'restartAvida.js',
+  'diagnosticConsole.js',
   // 'ndxDB.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
@@ -194,15 +195,15 @@ require([
 
   //Avida as a web worker
   if (av.debug.root) console.log('before call avida');
-  //console.log('typeof(av.fio.uiWorker', typeof(av.fio.uiWorker));
+  //console.log('typeof(av.aww.uiWorker', typeof(av.aww.uiWorker));
   if(typeof(Worker) !== "undefined") {
     //console.log('Worker type is not undefined');
-    if (null === av.fio.uiWorker) {
-      av.fio.uiWorker = new Worker('avida.js');
+    if (null === av.aww.uiWorker) {
+      av.aww.uiWorker = new Worker('avida.js');
       //console.log('webworker created');
-      av.debug.log += '\nui --> Avida:  av.fio.uiWorker was null, started a new webworker';
+      av.debug.log += '\nui --> Avida:  av.aww.uiWorker was null, started a new webworker';
     }
-    else console.log('av.fio.uiWorker is not null');
+    else console.log('av.aww.uiWorker is not null');
   }
   else {
     userMsgLabel.textContent = "Sorry, your browser does not support Web workers and Avida won't run";
@@ -211,7 +212,7 @@ require([
 
   //process message from web worker
   if (av.debug.root) console.log('before fio.uiWorker on message');
-  av.fio.uiWorker.onmessage = function (ee) {av.msg.readMsg(ee)};  // in file messaging.js
+  av.aww.uiWorker.onmessage = function (ee) {av.msg.readMsg(ee)};  // in file messaging.js
 
   //********************************************************************************************************************
   //  Read Default Workspace as part of initialization
@@ -716,16 +717,16 @@ require([
   };
 
   // hides and shows the population and selected organsim data on right of population page with "Stats/mpa" button
-  function popStatView() {
-    if (av.grd.popStatFlag) {
-      av.grd.popStatFlag = false;
+  av.ptd.popStatView = function () {
+    if (av.ptd.popStatFlag) {
+      av.ptd.popStatFlag = false;
       registry.byId("popRight").domNode.style.width = "1px";
       registry.byId("mainBC").layout();
-      dijit.byId("popRight").set("style", "display: block; visibility: visible;");
+      dijit.byId("popRight").set("style", "display: block; visibility: hidden;");
 
     }
     else {
-      av.grd.popStatFlag = true;
+      av.ptd.popStatFlag = true;
       registry.byId("selectOrganPane").domNode.style.width = "150px";
       registry.byId("popRight").domNode.style.width = "395px";
       registry.byId("mainBC").layout();
@@ -736,7 +737,7 @@ require([
 
   document.getElementById("PopStatsButton").onclick = function () {
 	av.debug.log += '\nButton: PopStatsButton';
-	popStatView() 
+	av.ptd.popStatView() 
   };
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -933,14 +934,14 @@ require([
   av.ui.restartAvida = function () {
     userMsgLabel.textContent = 'reloading Avida . . .';
 
-    av.fio.uiWorker.terminate();
-    av.fio.uiWorker = null;
+    av.aww.uiWorker.terminate();
+    av.aww.uiWorker = null;
 
     console.log('just killed webWorker');
 
     if(typeof(Worker) !== "undefined") {
-      if (null == av.fio.uiWorker) {
-        av.fio.uiWorker = new Worker('avida.js');
+      if (null == av.aww.uiWorker) {
+        av.aww.uiWorker = new Worker('avida.js');
         console.log('webworker recreated');
         av.debug.log += '\nui --> Avida:  ui killed avida webworker and started a new webworker'
       }
@@ -965,19 +966,19 @@ require([
   }
 
   //test - delete later ------------------------------------------------------------------------------------------------
-  //document.getElementById("mnDbRestartAvida").onclick = function () {
-  document.getElementById("testRestartButton").onclick = function () {
-	av.debug.log += '\nButton: testRestartButton';
-    console.log('in testRestartButton');
-    av.debug.log += '\nAvida -->ui simulated level:error';
-    restartMsgLabel.textContent = 'Avida message: simulated message from Avida'
-    restartAvidaDialog.show();
-    console.log('after dialog show');
+  document.getElementById("mnDbRestartAvida").onclick = function () {
+    av.debug.log += '\nButton: mnDbRestartAvida';
+    av.aww.restartAvidaFn();
+  }
+
+  document.getElementById("mnDbDiagnostic").onclick = function () {
+    av.debug.log += '\nButton: mnDbDiagnostic';
+    av.dcn.diagnosticConsoleFn();
   }
 
   document.getElementById("mnDbThrowData").onclick = function () {
     'use strict';
-	av.debug.log += '\nButton: mnDThrowData';
+	  av.debug.log += '\nButton: mnDThrowData';
     console.log('av', av);
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);

@@ -64,12 +64,16 @@ var traceObj = {}; //global that holds the traceObject that was sent from Avida
 av.ind = {};
 av.ind.cycle = 0;
 
+av.aww = {}; //avida web worker
+av.dcn = {}; //diagnostic console
+
 av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
 av.msg.uiReqestedReset = false;
 
 av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
+av.ptd.popStatFlag = true;  //flag that determines if the stats panel is visible.
+
 av.grd = {};         //data about the grid canvas
-av.grd.popStatFlag = true;  //flag that determines if the stats panel is visible.
 // initialize data for chart on population page
 av.grd.popY = [];
 av.grd.popY2 = [];
@@ -171,7 +175,7 @@ av.fio.dbName = 'wsdb';  //for workspace database
 //av.fio.wsdb = null;
 av.fio.defaultFname = 'default_Web.avidaedworkspace.zip';
 av.fio.defaultFname = 'default.avidaedworkspace.zip';
-av.fio.uiWorker = null;
+av.aww.uiWorker = null;
 av.fio.fileReadingDone = false;
 av.fio.defaultUserFname = 'avidaWS.avidaedworkspace.zip';
 av.fio.userFname = av.fio.defaultUserFname;

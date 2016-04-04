@@ -57,9 +57,8 @@ av.msg.readMsg = function (ee) {
         if (av.grd.oldUpdate != msg.update) {  //use only one = as one maybe number and the other string
           av.grd.oldUpdate = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
-          //if ((1000 < msg.update) || (msg.update % 10 < 1)) {av.grd.popChartFn();}
           av.msg.sync('webPopulationStats-update:' + msg.update.toString());
-          av.grd.popChartFn();
+          if (av.ptd.popStatFlag) av.grd.popChartFn();
           if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         }
         av.msg.popStatsDone = msg.update;
@@ -176,7 +175,7 @@ av.msg.importConfigExpr = function () {
     }
   }
   if (av.debug.msg) console.log('importExpr', request);
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida: importConfigExpr \n' + av.utl.json2stringFn(request);
 }
 
@@ -205,7 +204,7 @@ av.msg.importPopExpr = function () {
     if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
   }
   if (av.debug.msg) console.log('importExpr', request);
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida: inportPopExpr \n' + av.utl.json2stringFn(request);
 }
 
@@ -230,7 +229,7 @@ av.msg.importWorldExpr = function () {
     if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
   }
   if (av.debug.msg) console.log('importExpr', request);
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida: importWorldExpr \n' + av.utl.json2stringFn(request);
 }
 
@@ -242,7 +241,7 @@ av.msg.exportExpr = function (popName) {
     'popName': popName,
     'triggerType': 'immediate'
   }
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida: importWorldExpr \n' + av.utl.json2stringFn(request);
 }
 //fio.uiWorker function
@@ -266,7 +265,7 @@ av.msg.doOrgTrace = function () {
   if (av.debug.msg) console.log('trace', request);
   if (av.debug.msg) console.log('doOrgTrace', request);
   if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   av.msg.sendData();
 }
@@ -282,7 +281,7 @@ av.msg.doWebOrgDataByCell = function () {
     //'singleton': true,
     'args': av.grd.selectedNdx
   }
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   av.msg.sendData();
   //console.log('runStopButton',document.getElementById("runStopButton").textContent);
@@ -297,7 +296,7 @@ av.msg.requestPopStats = function () {
     'start': 'now',
     'interval': 1
   }
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -309,7 +308,7 @@ av.msg.sync = function (trigger) {
     'time': tmp,
     'args': trigger
   }
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   var stub = 'type:sync; args:' + trigger + '; time: ' + tmp;  //may not display anyway
   av.debug.log += '\nui --> Avida:  ' + stub;
 }
@@ -322,7 +321,7 @@ av.msg.requestGridData = function () {
     'start': 'begin',
     'interval': 1
   }
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -336,7 +335,7 @@ av.msg.stepUpdate = function () {
     if ("Pause" == document.getElementById("runStopButton").innerHTML) {
         av.msg.previousUpdate = av.msg.gridDone;
         var request = {'type': 'stepUpdate'}
-        av.fio.uiWorker.postMessage(request);
+        av.aww.uiWorker.postMessage(request);
         av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
     }
   }, 200);  //number is time in msec for a delay
@@ -353,7 +352,7 @@ av.msg.stepUpdate_old  = function () {
       if (av.msg.previousUpdate <= av.msg.gridDone && av.msg.previousUpdate <= av.msg.popStatsDone) {
         av.msg.previousUpdate = av.msg.gridDone;
         var request = {'type': 'stepUpdate'}
-        av.fio.uiWorker.postMessage(request);
+        av.aww.uiWorker.postMessage(request);
         av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
       }
     }
@@ -364,7 +363,7 @@ av.msg.sendData = function () {
   'use strict';
   var request;
   request = {'type': 'sendData'};
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -378,7 +377,7 @@ av.msg.doRunPause = function (fio) {
       'name': 'runPause',
       'triggerType': 'immediate'
     };
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -392,7 +391,7 @@ av.msg.reset = function () {
     'triggerType': 'immediate'
   };
   userMsgLabel.textContent = 'ui-->Avida: reset requested';
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -402,7 +401,7 @@ av.msg.pause = function(update) {
     'name': 'pause',
     'start': update
   };
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
 
@@ -425,7 +424,7 @@ av.msg.injectAncestors_old  = function (fio, parents) { //tiba delete
         0 //neutral_metric
       ]
     }
-    av.fio.uiWorker.postMessage(request);
+    av.aww.uiWorker.postMessage(request);
     av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   }
 }
@@ -444,7 +443,7 @@ av.msg.injectAncestors = function () {
       'start_cell_id': av.parents.AvidaNdx[ii],
       'clade_name': av.parents.name[ii]
     }
-    av.fio.uiWorker.postMessage(request);
+    av.aww.uiWorker.postMessage(request);
     av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   }
 }
@@ -655,7 +654,6 @@ function doDbReady(fio) {
   var request = {
     'type': 'dbReady'
   };
-  av.fio.uiWorker.postMessage(request);
+  av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
-
