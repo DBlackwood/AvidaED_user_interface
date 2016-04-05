@@ -81,7 +81,9 @@ av.dnd.landActiveConfig = function (pkg) {
     av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];
   }
   av.parents.clearParentsFn();
+  console.log('before av.frd.updateSetup');
   av.frd.updateSetup();  //fileIO
+  console.log('after av.frd.updateSetup');
   if ('fzConfig' === pkg.source.node.id) {
     av.fzr.actConfig.type = 'c';
     av.fzr.actConfig.file['events.cfg'] = ' ';
@@ -174,6 +176,8 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   'use strict';
   if (av.debug.dnd) console.log('av.dnd.landFzConfig: fzr', av.fzr);
   var domid = Object.keys(target.selection)[0];
+  console.log('domID', domid, target);
+  console.log('fzConfig', av.dnd.fzConfig);
   var oldName = nodes[0].textContent;
   var dishCon = prompt("Please name your dish configuration", oldName + "_1");
   if (dishCon) {
@@ -191,6 +195,7 @@ av.dnd.landFzConfig = function (source, nodes, target) {
       av.fzr.dir[domID] = 'c'+ av.fzr.cNum;
       av.fzr.domid['c'+ av.fzr.cNum] = domID;
       av.fzr.file[av.fzr.dir[domID]+'/entryname.txt'] = configName;
+      av.fwt.makeFzrConfig(av.fzr.cNum);
       av.fzr.cNum++;
 
       //create a right av.mouse-click context menu for the item just created.
@@ -538,6 +543,7 @@ av.dnd.landTrashCan = function (source, nodes, target) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 av.anl.loadWorldData = function (worldNum, dir) {
+  console.log('loadWorldData: WoldNum:', worldNum, '; dir', dir);
   av.fzr.pop[worldNum].fit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
   av.fzr.pop[worldNum].ges = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
   av.fzr.pop[worldNum].met = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);

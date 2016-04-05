@@ -148,11 +148,10 @@ av.frd.updateSetup = function () {
   var dir = av.fzr.actConfig.dir;
   var path = dir + '/avida.cfg';
   var doctext = av.fzr.file[path];
+  console.log('actConfig: path=', path);
   av.frd.avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
   av.frd.environmentCFG2form(doctext);
-
-
 }
 
 //----------------------- section to put data from environment.cfg into setup form of population page ------------------
@@ -420,7 +419,7 @@ av.fio.cladeSSG2parents = function (fileStr) {
 //----------------------- section to put data from time recorder (tr) files into data from charts ----------------------
 //nothing in this section works.
 
-// makes a dictionary out of a environment.cfg file
+// makes a dictionary out of a time recorder file
 av.frd.tr2chartParse = function (filestr) {
   'use strict';
   var rslt = {};

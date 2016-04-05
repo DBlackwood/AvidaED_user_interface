@@ -146,12 +146,13 @@ https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascri
         }
         av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
         av.fio.fName = nameOfFileContainedInZipFile;
-        if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
+
+        if (2 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
         else av.fio.anID = av.fio.fName;
         //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
         //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
         //console.log('-------------------------------------------------------------------------------------------------');
-        if (3 < av.fio.fName.length) av.fio.processItemFiles();  //do not load configfile
+        if (2 < av.fio.fName.length) av.fio.processItemFiles();  //do not load configfile
       }
       av.fio.fixFname();
       if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();

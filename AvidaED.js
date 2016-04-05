@@ -270,10 +270,11 @@ require([
 
   dijit.byId("mnFlFzItem").on("Click", function () {
     'use strict';
-	av.debug.log += '\nButton: mnFlFzItem';
+  	av.debug.log += '\nButton: mnFlFzItem';
     av.fio.useDefault = false;
     document.getElementById("import").click();
   });
+
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
@@ -546,7 +547,7 @@ require([
     if ('fzConfig' === target.node.id) {
       av.ui.num = av.fzr.cNum;  //hold current cNum to see if it changes in av.dnd.landConfig
       av.dnd.landFzConfig(source, nodes, target);  //needed as part of call to contextMenu
-      if (av.ui.num !== av.fzr.cNum) { av.fwt.makeFzrConfig(av.fzr.cNum); }
+      //if (av.ui.num !== av.fzr.cNum) { av.fwt.makeFzrConfig(av.fzr.cNum); }
     }
   });
 
@@ -982,6 +983,9 @@ require([
     console.log('parents', av.parents);
     console.log('av.grd.msg',av.grd.msg);
     console.log('av.grd.popStatsMsg', av.grd.popStatsMsg);
+    console.log('av.dnd.fzConfig', av.dnd.fzConfig);
+    console.log('av.dnd.fzOrgan', av.dnd.fzOrgan);
+    console.log('av.dnd.fzWorld', av.dnd.fzWorld);
   };
 
   document.getElementById("mnDbThrowError").onclick = function () {
