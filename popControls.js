@@ -326,9 +326,9 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   av.frd.updateSetup();
 
   //Clear options that are not in the config files
-  dijit.byId("manRadio").set('checked', true);
-  dijit.byId("updateRadio").set('checked', false);
-  dijit.byId("updateSpinner").set('value', av.ptd.autoPauseUpdate);
+  dijit.byId("manualUpdateRadio").set('checked', true);
+  dijit.byId("autoUpdateRadio").set('checked', false);
+  dijit.byId("autoUpdateSpinner").set('value', av.ptd.autoPauseUpdate);
 
   av.ptd.clearLogicButtons();
   // write if @default not found - need to figure out a test for this
@@ -376,7 +376,7 @@ av.ptd.writeHardDefault = function (av) {
   dijit.byId("xorose").set('checked', av.dft.xorose);
   dijit.byId("equose").set('checked', av.dft.equose);
   dijit.byId("experimentRadio").set('checked', true);
-  dijit.byId("manRadio").set('checked', true);
+  dijit.byId("manualUpdateRadio").set('checked', true);
   if ('experimentRadio'==av.dft.repeat) {
     dijit.byId("experimentRadio").set('checked', true);
     dijit.byId("demoRadio").set('checked', false);
@@ -385,13 +385,13 @@ av.ptd.writeHardDefault = function (av) {
     dijit.byId("experimentRadio").set('checked', false);
     dijit.byId("demoRadio").set('checked', true);
   }
-  if ('manRadio'==av.dft.pauseType) {
-    dijit.byId("manRadio").set('checked', true);
-    dijit.byId("updateRadio").set('checked', false);
+  if ('manualUpdateRadio'==av.dft.pauseType) {
+    dijit.byId("manualUpdateRadio").set('checked', true);
+    dijit.byId("autoUpdateRadio").set('checked', false);
   }
   else {
-    dijit.byId("manRadio").set('checked', false);
-    dijit.byId("updateRadio").set('checked', true);
+    dijit.byId("manualUpdateRadio").set('checked', false);
+    dijit.byId("autoUpdateRadio").set('checked', true);
   };
 }
 

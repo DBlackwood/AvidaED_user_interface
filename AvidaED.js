@@ -780,11 +780,11 @@ require([
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
       }
 
-      if (dijit.byId("updateRadio").get('checked')) {
-        //av.msg.pause(dijit.byId("updateSpinner").get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
+      if (dijit.byId("autoUpdateRadio").get('checked')) {
+        //av.msg.pause(dijit.byId("autoUpdateSpinner").get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
         av.ui.autoStopFlag = true;
-        av.ui.autoStopValue = dijit.byId("updateSpinner").get('value');
-        console.log('stop at ', dijit.byId("updateSpinner").get('value'));
+        av.ui.autoStopValue = dijit.byId("autoUpdateSpinner").get('value');
+        //console.log('stop at ', dijit.byId("autoUpdateSpinner").get('value'));
       }
 
       av.ptd.makeRunState();
@@ -1616,20 +1616,20 @@ require([
     });
   });
 
-  dojo.connect(dijit.byId('manRadio'), 'onClick', function() {
-    av.debug.log += '\nButton: manRadio';
+  dojo.connect(dijit.byId('manualUpdateRadio'), 'onClick', function() {
+    av.debug.log += '\nButton: manualUpdateRadio';
     av.ui.autoStopFlag = false;
   });
 
-  dojo.connect(dijit.byId('updateRadio'), 'onClick', function() {
-    av.debug.log += '\nButton: updateRadio';
+  dojo.connect(dijit.byId('autoUpdateRadio'), 'onClick', function() {
+    av.debug.log += '\nButton: autoUpdateRadio';
     av.ui.autoStopFlag = true;
   });
 
-  dojo.connect(dijit.byId('updateSpinner'), 'onChange', function() {
-    av.debug.log += '\nSpinner: updateSpinner=' + dijit.byId("updateSpinner").get('value');
-    av.ui.autoStopValue = dijit.byId("updateSpinner").get('value');
-    console.log('updateSpinner=', dijit.byId("updateSpinner").get('value'));
+  dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function() {
+    av.debug.log += '\nSpinner: autoUpdateSpinner=' + dijit.byId("autoUpdateSpinner").get('value');
+    av.ui.autoStopValue = dijit.byId("autoUpdateSpinner").get('value');
+    console.log('autoUpdateSpinner=', dijit.byId("autoUpdateSpinner").get('value'));
   });
 
   /* *************************************************************** */

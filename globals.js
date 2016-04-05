@@ -38,8 +38,8 @@ av.dft.norose = true;
 av.dft.xorose = true;
 av.dft.equose = true;
 av.dft.repeat = 'experimentRadio';   //alternate = 'demoRadio'
-av.dft.pauseType = 'manRadio';     //alternate = 'updateRadio'
-av.dft.updateSpinner = 1000;
+av.dft.pauseType = 'manualUpdateRadio';     //alternate = 'autoUpdateRadio'
+av.dft.autoUpdateSpinner = 1000;
 
 av.mouse = {};
 

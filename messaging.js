@@ -78,6 +78,9 @@ av.msg.readMsg = function (ee) {
           if (av.ui.autoStopValue <= av.grd.popStatsMsg.update) {
             //make pause state
             av.ptd.makePauseState();
+            av.ui.autoStopFlag = false;
+            dijit.byId("manualUpdateRadio").set('checked', true);
+            dijit.byId("autoUpdateRadio").set('checked', false);
           }
           else av.msg.stepUpdate();
         }

@@ -80,6 +80,11 @@ av.dnd.landActiveConfig = function (pkg) {
   if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {
     av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];
   }
+
+  //Clear ancestorBox
+  av.dnd.ancestorBox.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+  av.dnd.ancestorBox.sync();   //should be done after insertion or deletion
+
   av.parents.clearParentsFn();
   console.log('before av.frd.updateSetup');
   av.frd.updateSetup();  //fileIO
