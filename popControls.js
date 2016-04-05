@@ -7,7 +7,7 @@
 av.ptd.popBoxSwap = function () {
   'use strict';
   if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
-    av.debug.log += '\nButton: PopSetupButton became Setup';
+    av.debug.log += '\n -Button: PopSetupButton became Setup';
     document.getElementById('mapBlock').style.display = 'block';
     document.getElementById("PopSetupButton").textContent = "Setup";
     dijit.byId("setupBlock").set("style", "display: none");
@@ -21,7 +21,7 @@ av.ptd.popBoxSwap = function () {
     //dijit.byId("mapBlock").set("style", "display: block;");
     //dijit.byId("mapBC").set("style", "height: " + height + "px");
   } else {
-    av.debug.log += '\nButton: PopSetupButton became Map';
+    av.debug.log += '\n -Button: PopSetupButton became Map';
     document.getElementById('mapBlock').style.display = 'none'
     document.getElementById("PopSetupButton").textContent = "Map";
     dijit.byId("setupBlock").set("style", "display: block;");
@@ -286,7 +286,7 @@ av.ptd.FrPopulationFn = function () {
 
 av.ptd.bitToggle = function (button) {
   'use strict';
-  av.debug.log += '\nButton: ' + button;
+  av.debug.log += '\n -Button: ' + button;
   if ('on' == document.getElementById(button).value) {
     document.getElementById(button).value = 'off';
     document.getElementById(button).className = 'bitButtonOff';

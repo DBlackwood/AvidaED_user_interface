@@ -59,14 +59,14 @@ av.msg.readMsg = function (ee) {
           av.msg.updatePopStats(av.grd.popStatsMsg);
           av.msg.sync('webPopulationStats-update:' + msg.update.toString());
           if ('populationBlock' === av.ui.page && av.ptd.popStatFlag) {
-            av.debug.log += '\nCall popChartFn';
+            av.debug.log += '\n -Call popChartFn';
             av.grd.popChartFn();
           }
           if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         }
         else {
           console.log('Repeat update send');
-          av.debug.log += '\n     Repeat Update sent:', av.grd.oldUpdate;
+          av.debug.log += '\n -     Repeat Update sent:', av.grd.oldUpdate;
         }
         av.msg.popStatsDone = msg.update;
         console.log('webPopulationStat end update=', msg.update);
@@ -95,7 +95,7 @@ av.msg.readMsg = function (ee) {
         av.msg.sync('webGridData:' + msg.update.toString());
         console.log('page=',av.ui.page, '; subpage=',av.ui.subpage);
         if ('populationBlock' === av.ui.page && 'map' === av.ui.subpage) {
-          av.debug.log += '\nCall drawGridSetupFn';
+          av.debug.log += '\n -Call drawGridSetupFn';
           av.grd.drawGridSetupFn();
         }
         //if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
@@ -351,7 +351,7 @@ av.msg.requestGridData = function () {
 av.msg.stepUpdate = function () {
   'use strict';
   setTimeout(function () {
-	av.debug.log += '\nui --> Avida: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
+	av.debug.log += '\n -Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
 	+ av.msg.previousUpdate  + '; popStatsDone' + av.msg.popStatsDone;
     console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
            , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);

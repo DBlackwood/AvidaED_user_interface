@@ -32,7 +32,7 @@ function findSelected(evt, grd) {
 }
 
 //update data about a kid in the selecred organism to move = primarily genome and name
-function SelectedKidMouseStyle() {
+av.mouse.selectedKidMouseStyle = function () {
   'use strict';
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('fzOrgan').style.cursor = 'copy';
@@ -65,12 +65,14 @@ function offspringTrace(dnd, fio, fzr, gen) {
   av.msg.doOrgTrace(fio, fzr);  //request new Organism Trace from Avida and draw that.
 };
 
-var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
+av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
   'use strict';
   var target = '';
   if ('organIcon' == evt.target.id) {
     offspringTrace(dnd, fio, fzr, gen);
-  target = 'organIcon';}
+    av.debug.log += '\n -move to organsimIcon';
+    target = 'organIcon';
+  }
   else { // look for target in the freezer
     var found = false;
     for (var dir in av.fzr.domid) {if (av.fzr.domid[dir] == evt.target.id) {found=true; break;}}
@@ -86,6 +88,7 @@ var OffspringMouse = function(evt, dnd, fio, fzr, gen) {
       //make sure there is a name.
       var avidian = prompt("Please name your avidian", parent + '_offspring');
       if (avidian) {
+        av.debug.log += '\n -move to organism freezer';
         avidian = av.dnd.getUniqueName(avidian, dnd.fzOrgan);
         if (null != avidian) {  //add to Freezer
           dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
@@ -125,13 +128,14 @@ function traceSelected(dnd, fzr, grd) {
   av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
 }
 
-var KidMouse = function (evt, dnd, fzr, grd){
+av.mouse.kidMouse = function (evt, dnd, fzr, grd){
   'use strict';
   var target = '';
   if (av.debug.mouse) console.log('in KidMouse', evt.target.id, evt);
   if (5 < av.grd.kidGenome.length) {
     if ('organIcon' == evt.target.id) {
       target = 'organIcon';
+      av.debug.log += '\n -moved to Organism Icon';
       traceSelected(dnd, fzr, grd);
     }
     else { // look for target in the freezer
@@ -145,11 +149,13 @@ var KidMouse = function (evt, dnd, fzr, grd){
         }
       }
       if (found || 'freezerDiv' == evt.target.id) {
+        av.debug.log += '\n -move to freezer';
         target = 'fzOrgan';
         if (av.debug.mouse) console.log('freezerDiv');
         //make sure there is a name.
         var avidian = prompt("Please name your avidian", av.grd.kidName);
         if (avidian) {
+          av.debug.log += '\n -froze kid=' + avidian;
           avidian = av.dnd.getUniqueName(avidian, dnd.fzOrgan);
           if (null != avidian) {  //add to Freezer
             dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
@@ -176,7 +182,7 @@ var KidMouse = function (evt, dnd, fzr, grd){
   return target;
 }
 
-function ParentMouse(evt, av) {
+av.mouse.ParentMouse = function (evt, av) {
   'use strict';
   if (av.debug.mouse) console.log('ParentMouse', evt.target.id, evt);
   if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
@@ -189,6 +195,7 @@ function ParentMouse(evt, av) {
       av.parents.col[av.mouse.ParentNdx] = av.grd.selectedCol;
       av.parents.row[av.mouse.ParentNdx] = av.grd.selectedRow;
       av.parents.AvidaNdx[av.mouse.ParentNdx] = av.parents.col[av.mouse.ParentNdx] + av.grd.cols * av.parents.row[av.mouse.ParentNdx];
+      av.debug.log += '\n -moved ancestor to col=' + av.grd.selectedCol + '; row=' + av.grd.selectedRow;
       if (av.debug.mouse) console.log('mvparent', av.mouse.ParentNdx, av.parents.col[av.mouse.ParentNdx], av.parents.row[av.mouse.ParentNdx]);
       if (av.debug.mouse) console.log('b auto', av.parents.autoNdx.length, av.parents.autoNdx, av.parents.name);
       if (av.debug.mouse) console.log('b hand', av.parents.handNdx.length, av.parents.handNdx);
@@ -210,12 +217,14 @@ function ParentMouse(evt, av) {
     var node = dojo.byId(av.parents.domid[av.mouse.ParentNdx]);
     av.dnd.ancestorBox.parent.removeChild(node);
     av.dnd.ancestorBox.sync();
+    av.debug.log += '\n -moved ancestor to trash';
 
     //remove from main list.
     av.parents.removeParent(av.mouse.ParentNdx);
   }
   //-------------------------------------------- organism view
   else if ('organIcon' == evt.target.id) {
+    av.debug.log += '\n -moved ancestor to Organsim View';
     av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
     av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
     //Put name of offspring in av.dnd.activeOrganism
