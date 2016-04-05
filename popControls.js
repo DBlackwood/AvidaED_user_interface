@@ -207,7 +207,7 @@ av.ptd.FrOrganismFn = function (trigger) {
   var parentName = "";
   var gene;
   if ('selected' == trigger) {
-    fzName = prompt("Please name the selected organism", "newOrganism");
+    fzName = prompt("Please name the selected organism", av.grd.kidName);
     gene = av.grd.kidGenome;
   }
   else if ('offspring' == trigger) {

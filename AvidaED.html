@@ -913,16 +913,17 @@
 <div data-dojo-type="dijit/Dialog" data-dojo-id="fzDialog" title="What would you like to save to the freezer?">
   <div class="dijitDialogPaneContentArea">
     <p>Configuration saves the experiment settings only.</p>
-
     <p>Population saves organisms and experiment history.</p>
   </div>
   <div class="dijitDialogPaneActionBar">
     <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){fzDialog.hide();}"
             id="FzCancel">Cancel
     </button>
-    <button data-dojo-type="dijit/form/Button" type="button" id="FzConfiguration">Configuration</button>
-    <button data-dojo-type="dijit/form/Button" type="button" id="FzOrganism">Organism</button>
-    <button data-dojo-type="dijit/form/Button" type="button" id="FzPopulation">Population</button>
+    <button data-dojo-type="dijit/form/Button" type="button" id="FzConfigurationButton">Configuration</button>
+    <span id="FzOrgansimSpan">
+      <button data-dojo-type="dijit/form/Button" type="button" id="FzOrganismButton">Organism</button>
+    </span>
+    <button data-dojo-type="dijit/form/Button" type="button" id="FzPopulationButton">Population</button>
   </div>
 </div>
 

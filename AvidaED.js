@@ -884,14 +884,16 @@ require([
 	av.debug.log += '\nButton: freezeButton';
     if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
     else {
-      if (5 > av.msg.ByCellIDgenome.length) document.getElementById("FzOrganism").style.display = "none";  //block
-      else document.getElementById("FzOrganism").style.display = "block";
+      if (5 > av.msg.ByCellIDgenome.length) {
+        document.getElementById("FzOrgansimSpan").style.display = "none";
+      }  //block
+      else document.getElementById("FzOrgansimSpan").style.display = "inline";
       fzDialog.show();
     }
   };
 
-  dijit.byId("FzConfiguration").on("Click", function () {
-	av.debug.log += '\nButton: FzConfiguration';
+  dijit.byId("FzConfigurationButton").on("Click", function () {
+	av.debug.log += '\nButton: FzConfigurationButton';
     fzDialog.hide();
     av.ptd.FrConfigFn();
   });
@@ -902,9 +904,16 @@ require([
     av.ptd.FrConfigFn();
   });
 
+  //
+  dijit.byId("FzOrganismButton").on("Click", function () {
+    av.debug.log += '\nButton: FzOrganismButton';
+    fzDialog.hide();
+    av.ptd.FrOrganismFn('selected');
+  });
+
   //button to freeze a population
-  dijit.byId("FzPopulation").on("Click", function () {
-	av.debug.log += '\nButton: FzPopulation';
+  dijit.byId("FzPopulationButton").on("Click", function () {
+	av.debug.log += '\nButton: FzPopulationButton';
     fzDialog.hide();
     av.ptd.FrPopulationFn();
   });
