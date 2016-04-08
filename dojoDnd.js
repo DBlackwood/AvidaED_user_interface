@@ -205,7 +205,7 @@ av.dnd.landFzConfig = function (source, nodes, target) {
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(target, domID);
-      av.fzr.saved = false;
+      av.fzr.saveUpdateState('no');
       if (av.debug.dnd) console.log('dir', av.fzr.dir[domID], '; configName', configName );
     }
     else {  //user cancelled so the item should NOT be added to the freezer.
@@ -261,7 +261,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
       //create a right av.mouse-click context menu for the item just created.
       if (av.debug.dnd) console.log('before context menu: target',target, '; domId', domid );
       av.dnd.contextMenu(target, domid);
-      av.fzr.saved = false;
+      av.fzr.saveUpdateState('no');
     }
     else { //Not given a name, so it should NOT be added to the freezer.
       av.dnd.fzOrgan.deleteSelectedNodes();  //clear items
@@ -473,7 +473,7 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(pkg.target, domID);
-      av.fzr.saved = false;
+      av.fzr.saveUpdateState('no');
     }
     else {  //user cancelled so the item should NOT be added to the freezer.
       av.dnd.fzWorld.deleteSelectedpkg.nodes();  //clear items
@@ -514,16 +514,19 @@ av.dnd.landTrashCan = function (source, nodes, target) {
     if (av.debug.dnd) console.log('fzOrgan->trash; nodes[0]',nodes[0]);
     if (av.debug.dnd) console.log('fzOrgan->trash; source.parent',source.parent);
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+    av.fzr.saveUpdateState('no');
   }
   else if ('fzConfig' == source.node.id && '@default' != nodes[0].textContent) {
     remove.domid = Object.keys(av.dnd.fzConfig.selection)[0];
     remove.type = 'c';
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+    av.fzr.saveUpdateState('no');
   }
   else if ('fzWorld' == source.node.id && '@example' != nodes[0].textContent) {
     remove.domid = Object.keys(av.dnd.fzWorld.selection)[0];
     remove.type = 'w';
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+    av.fzr.saveUpdateState('no');
   }
   // items from ancestor box require ancestor (parent) handling.
   else if ('ancestorBox' == source.node.id) {
@@ -714,6 +717,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
           //update freezer structure
           dir = av.fzr.dir[fzItemID];
           av.fzr.file[dir+'/entryname.txt']=fzName;
+          av.fzr.saveUpdateState('no');
         }
       }
     }
@@ -736,6 +740,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
         target.selectNone();
         dojo.destroy(fzItemID);
         target.delItem(fzItemID);
+        av.fzr.saveUpdateState('no');
         //need to remove from fzr and pouchDB
       }
     }

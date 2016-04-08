@@ -101,7 +101,7 @@ av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
           av.fzr.file[gdir + '/entryname.txt'] = avidian;
           av.fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.ind.dna[av.ind.son];
           av.fzr.gNum++;
-          av.fzr.saved = false;
+          av.fzr.saveUpdateState('no');
           if (av.debug.mouse) console.log('Offspring-->freezer, dir', gdir, 'fzr', fzr);
           //create a right mouse-click context menu for the item just created.
           if (av.debug.mouse) console.log('Offspring-->freezer; fzf', fzr);
@@ -168,11 +168,12 @@ av.mouse.kidMouse = function (evt, dnd, fzr, grd){
             //av.fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.grd.kidGenome;
             av.fzr.file[gdir + '/genome.seq'] = av.grd.kidGenome;
             av.fzr.gNum++;
-            av.fzr.saved = false;
+            av.fzr.saveUpdateState('no');
             if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
             if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
             //create a right mouse-click context menu for the item just created.
             av.dnd.contextMenu(dnd.fzOrgan, av.fzr.domid[gdir]);
+            av.fzr.saveUpdateState('no');
           }
         }
       }

@@ -66,9 +66,10 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     av.fzr.wNum++;
   };
   oReq.send();
+  av.fzr.saveUpdateState('default');
 };
 
-https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
+  //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.userPickZipRead = function () {
     "use strict";
     av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
@@ -114,12 +115,12 @@ https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascri
       av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
       av.fzr.gNum++;
       av.fzr.wNum++;
+      av.fzr.saveUpdateState('yes');
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
 
-
-https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
+  //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.importZipRead = function () {
     "use strict";
     var inputWSfile = document.getElementById('import');
@@ -218,16 +219,43 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   var content = WSzip.generate({type:"blob"});
   console.log('before saveAs');
   var fsaver = saveAs(content, av.fio.userFname);
-/*  //infinite loop below
-  while (fsaver.readyState != av.fio.FileSaver.DONE){ // ???
-    setTimeout(null, 2000);
-    console.log("waiting for file save", fsaver.readyState, av.fio.FileSaver.DONE);
-  }
-*/
   console.log('afer saveAs');
   // Test works; zip is saved to user's Downloads directory
-  av.fzr.saved = true;
+  av.fzr.saveUpdateState('maybe');
 };
+
+//    wsSavedMsg.textcontent = 'Workspace: default  ';
+av.fzr.saveUpdateState = function (state) {
+  "use strict";
+  console.log('av.fzr.saveState', av.fzr.saveState);
+  av.fzr.saveState = state;
+  if ('yes' === av.fzr.saveState) {
+    wsSavedMsg.textContent = 'Workspace: is saved ';
+    document.getElementById("wsSavedMsg").style.color = 'green';
+    console.log('av.fzr.saveState = yes');
+  }
+  else if ('maybe' === av.fzr.saveState) {
+    wsSavedMsg.textContent = 'Workspace: maybe saved';
+    document.getElementById("wsSavedMsg").style.color = 'orangered';
+    console.log('av.fzr.saveState = no');
+  }
+  else if ('no' === av.fzr.saveState) {
+    wsSavedMsg.textContent = 'Workspace: not saved';
+    document.getElementById("wsSavedMsg").style.color = 'red';
+    console.log('av.fzr.saveState = no');
+  }
+  else if ('default' === av.fzr.saveState) {
+    wsSavedMsg.textContent = 'Workspace: default  ';
+    document.getElementById("wsSavedMsg").style.color = 'blue';
+    console.log('av.fzr.saveState = default');
+  }
+  else {
+    wsSavedMsg.textContent = 'Workspace: confused ';
+    document.getElementById("wsSavedMsg").style.color = 'deeppink';
+    console.log('av.fzr.saveState = other');
+  }
+}
+
 
 /* PouchDB websites
  http://pouchdb.com/api.html#database_information

@@ -4,7 +4,7 @@ av.msg.readMsg = function (ee) {
   var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
   //console.log('msg', msg);
   if ('data' == msg.type) {
-    userMsg2Label.textContent = 'Avida message name: ' + msg.name;
+    //userMsgLabel.textContent = 'Avida message name: ' + msg.name;
     switch (msg.name) {
       case 'exportExpr':
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);

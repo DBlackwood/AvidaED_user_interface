@@ -232,8 +232,10 @@ av.fzr.clearFzrFn = function () {
     av.fzr.pop[ii].met = [];
     av.fzr.pop[ii].num = [];
   }
-  av.fzr.saved = true;
+  av.fzr.saveUpdateState('yes');
 };
+
+av.fzr.saveState = 'default';
 
 av.fzr.clearMainFzrFn = function () {
   'use strict';
@@ -244,7 +246,7 @@ av.fzr.clearMainFzrFn = function () {
   av.fzr.cNum = 0;  //value of the next configured dish (config) number
   av.fzr.gNum = 0;  //value of the next organism (genome) number
   av.fzr.wNum = 0;  //value of the next world (populated dish) number
-  av.fzr.saved = true;
+  av.fzr.saveUpdateState('yes');
 };
 
 av.anl = {};  //Analysis page functions and data

@@ -231,7 +231,7 @@ require([
     'use strict';
 	av.debug.log += '\n -Button: mnFlOpenDefaultWS';
     av.fio.useDefault = true;
-    if (!av.fzr.saved) sWSfDialog.show();
+    if ('no' === av.fzr.saveState) sWSfDialog.show();
     else {
       av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     }
@@ -261,7 +261,7 @@ require([
     'use strict';
 	av.debug.log += '\n -Button: mnFlOpenWS';
     av.fio.useDefault = false;
-    if (!av.fzr.saved) sWSfDialog.show();
+    if ('no' === av.fzr.saveState) sWSfDialog.show();
     //else document.getElementById("inputFile").click();
     else document.getElementById("putWS").click();
   });
@@ -293,7 +293,7 @@ require([
 
   if (av.debug.root) console.log('before Help drop down menu');
   //--------------------------------------------------------------------------------------------------------------------
-  // Drop Help down menu buttons
+  // Help Drop down menu buttons
   //--------------------------------------------------------------------------------------------------------------------
   dijit.byId('mnHpAbout').on("Click", function () {
 	av.debug.log += '\n -Button: mnHpAbout';
@@ -343,6 +343,7 @@ require([
     av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
   });
 
+  //http://stackoverflow.com/questions/7080269/javascript-before-leaving-the-page
   dijit.byId('sendEmail').on("Click", function () {
     var link = 'mailto:' + av.fio.mailAddress +
         //"?cc=CCaddress@example.com" +
@@ -351,7 +352,51 @@ require([
     window.location.href = link;
   });
 
+  var myEvent = window.attachEvent || window.addEventListener;
+  var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
+  myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+    var confirmationMessage = 'Remember to save your workSpace before you leave Avida-ED';  // a space
+    (e || window.event).returnValue = confirmationMessage;
+    return confirmationMessage;
+  });
+
+  /*
+  //http://www.technicaladvices.com/2012/03/26/detecting-the-page-leave-event-in-javascript/
+  //Does not work in firefox
+  window.onbeforeunload = function(event) {
+    if ('no' === av.fzr.saveState) {
+      return "Your workspace has changed sine you last saved. Do you want to save first?";
+
+      //e.stopPropagation works in Firefox.
+      if (event.stopPropagation) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    }
+  }
+
+
+  window.onbeforeunload = function(event){
+
+      return 'Have you saved your workspace?';
+
+  };
+
+  function goodbye(e) {
+    if(!e) e = window.event;
+    //e.cancelBubble is supported by IE - this will kill the bubbling process.
+    e.cancelBubble = true;
+    e.returnValue = 'Have you saved your workspace?'; //This is displayed on the dialog
+
+    //e.stopPropagation works in Firefox.
+    if (e.stopPropagation) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  }
+  window.onbeforeunload=goodbye;
+*/
   //********************************************************************************************************************
   // Error logging
   //********************************************************************************************************************
@@ -1684,7 +1729,7 @@ require([
       max: 461512,
       slide: function (event, ui) {
         //$( "#orMRate" ).val( ui.value);  /*put slider value in the text near slider */
-        $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3) + "%");
+        $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3));
         /*put the value in the text box */
         av.ind.settingsChanged = true;
         if (av.debug.trace) console.log('orSlide changed', av.ind.settingsChanged)

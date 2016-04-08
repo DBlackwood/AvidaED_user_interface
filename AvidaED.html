@@ -40,7 +40,7 @@
   <script>
     function avResize() {
       console.log("initial handler in html only");
-      av.ui.browserResizeEventHandler()
+      // av.ui.browserResizeEventHandler()  //gets an error on a fresh load
     }
 
     //never triggered not sure why. trying to get mouse coordinates for IE
@@ -55,6 +55,7 @@
 <body data-maq-flow-layout="true" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse"
       data-maq-appstates="{}" id="myapp"
       onresize="avResize()">
+
 <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true" id="mainBC"
      style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
 
@@ -107,7 +108,7 @@
             <div data-dojo-type="dijit/MenuSeparator"></div>
           </span>
         </span>
-        <span data-dojo-type="dijit/PopupMenuBarItem" label="Debug" style = 'visibility: visible'>
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Debug3" style = 'visibility: visible'>
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnDbThrowError" label="Throw Error"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnDbThrowData" label="Send Data to console"></span>
@@ -117,8 +118,9 @@
           </span>
         </span>
         |&nbsp;&nbsp;&nbsp;
-        <label id="userMsgLabel" style="color: blue">Avida is Loading . . .</label>
-        <label id="userMsg2Label" style="color: purple; text-align: right; display:none">test</label>
+        <label id="wsSavedMsg" style="color: blue">Workspace: default</label>
+        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <span style="text-align: right"><label id="userMsgLabel" style="color: darkmagenta; text-align: right">Avida is Loading . . .</label></span>
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -136,7 +138,7 @@
           <tr>
             <td><img src="images/avida-ed-population-icon.png" style="width: 32px; height: 32px;"></img></td>
             <td><input type="button" id="populationButton" intermediateChanges="false"
-                       value="Population" iconClass="dijitNoIcon"></input></td>
+                     value="Population" iconClass="dijitNoIcon"></input></td>
           </tr>
           <tr>
             <td><img src="images/avida-ed-organism-icon.png" style="width: 32px; height: 32px;" id="organIcon" /></td>
@@ -150,7 +152,7 @@
           </tr>
           </tbody>
         </table>
-        <input type="button" id="testButton" intermediateChanges="false" label="Test" value="Test"
+        <input type="button" id="testButton" intermediateChanges="false" value="Color Test"
                iconClass="dijitNoIcon"></input>
         <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
         -->
