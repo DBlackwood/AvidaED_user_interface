@@ -352,21 +352,13 @@ require([
     window.location.href = link;
   });
 
-  var myEvent = window.attachEvent || window.addEventListener;
-  var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
-  myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
-    var confirmationMessage = 'Remember to save your workSpace before you leave Avida-ED';  // a space
-    (e || window.event).returnValue = confirmationMessage;
-    return confirmationMessage;
-  });
 
-  /*
   //http://www.technicaladvices.com/2012/03/26/detecting-the-page-leave-event-in-javascript/
-  //Does not work in firefox
+  //Cannot get custom message in Firefox (or Safari for now)
   window.onbeforeunload = function(event) {
-    if ('no' === av.fzr.saveState) {
-      return "Your workspace has changed sine you last saved. Do you want to save first?";
+    if ('no' === av.fzr.saveState || 'maybe' === av.fzr.saveState ) {
+      return "Your workspace may have changed sine you last saved. Do you want to save first?";
 
       //e.stopPropagation works in Firefox.
       if (event.stopPropagation) {
@@ -376,12 +368,16 @@ require([
     }
   }
 
+  /*
+   //http://stackoverflow.com/questions/20773306/mozilla-firefox-not-working-with-window-onbeforeunload
+   var myEvent = window.attachEvent || window.addEventListener;
+   var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
-  window.onbeforeunload = function(event){
-
-      return 'Have you saved your workspace?';
-
-  };
+   myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+   var confirmationMessage = 'Remember to save your workSpace before you leave Avida-ED';  // a space
+   (e || window.event).returnValue = confirmationMessage;
+   return confirmationMessage;
+   });
 
   function goodbye(e) {
     if(!e) e = window.event;
