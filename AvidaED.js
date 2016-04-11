@@ -2252,3 +2252,29 @@ require([
  Single page app
  http://singlepageappbook.com/detail1.html
  */
+
+
+/* Charting packages
+
+Reviews
+ https://iprodev.com/39-javascript-chart-and-graph-libraries-for-developers/
+ http://thenextweb.com/dd/2015/06/12/20-best-javascript-chart-libraries/#gref
+ http://www.sitepoint.com/15-best-javascript-charting-libraries/
+
+Good zooming and point value pop-up
+ http://dygraphs.com/
+ http://jsfiddle.net/eM2Mg/
+
+ Charles likes -
+ http://c3js.org/
+ http://swizec.com/blog/quick-scatterplot-tutorial-for-d3-js/swizec/5337
+ http://bl.ocks.org/peterssonjonas/4a0e7cb8d23231243e0e
+
+real time grapsh shift data over
+ https://square.github.io/cubism/
+ https://bost.ocks.org/mike/cubism/intro/#10
+
+other
+ http://www.flotcharts.org/flot/examples/
+
+ */

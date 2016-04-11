@@ -36,6 +36,7 @@
   <style>@import "themes/claro/document.css";
     @import "themes/claro/claro.css";
     @import "AvidaED.css";
+    @import "splash.css";
   </style>
   <script>
     function avResize() {
@@ -52,9 +53,15 @@
   </script>
 </head>
 
-<body data-maq-flow-layout="true" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse"
+< data-maq-flow-layout="true" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse"
       data-maq-appstates="{}" id="myapp"
       onresize="avResize()">
+
+div id="loader-wrapper">
+<div id="loader"></div>
+  <div class="loader-section section-left"></div>
+  <div class="loader-section section-right"></div>
+</div>
 
 <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true" id="mainBC"
      style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
@@ -1046,6 +1053,7 @@
     <!--    <button data-dojo-type="dijit/form/Button" type="button" id="sendLogDialogSave">Save</button>  -->
   </div>
 </div>
+
 
 
 <!-- closing the file -->
