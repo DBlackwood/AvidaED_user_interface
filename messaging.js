@@ -4,7 +4,7 @@ av.msg.readMsg = function (ee) {
   var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
   //console.log('msg', msg);
   if ('data' == msg.type) {
-    //userMsgLabel.textContent = 'Avida message name: ' + msg.name;
+    if (av.debug.userMsg) userMsgLabel.textContent = 'Avida type:data; name:' + msg.name;
     switch (msg.name) {
       case 'exportExpr':
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
@@ -18,7 +18,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'reset':
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
-        userMsgLabel.textContent = 'Avida: ' + msg.name;
+        if (av.debug.userMsg) userMsgLabel.textContent = 'Avida: ' + msg.name;
         if (true === av.msg.uiReqestedReset) {
           av.ptd.resetDishFn();
           av.msg.uiReqestedReset = false;
@@ -126,7 +126,7 @@ av.msg.readMsg = function (ee) {
   }
   else if ('userFeedback' == msg.type) {
     av.debug.log += '\nAvida --> ui on line 74 \n' + av.utl.json2stringFn(msg);
-    userMsgLabel.textContent = 'Avida userFeedback: ' + msg.level + ' at ' + av.grd.oldUpdate.toString();
+    if (av.debug.userMsg) userMsgLabel.textContent = 'Avida userFeedback: ' + msg.level + ' at ' + av.grd.oldUpdate.toString();
     //console.log('userFeedback', msg);
     switch (msg.level) {
       case 'error':
@@ -141,7 +141,10 @@ av.msg.readMsg = function (ee) {
         break;
       case 'notification':
         if (av.debug.msg) console.log('avida:notify: ',msg.message);
-        userMsgLabel.textContent = 'Avidia notification: ' + msg.message;
+        if (av.debug.userMsg)userMsgLabel.textContent = 'Avidia notification: ' + msg.message; //with splash screen no longer need ready message
+        //hiding splash screen in next two lines
+        $('body').addClass('loaded');
+        //$('h1').css('color','#222222');
         break;
       case 'warning':
         if (av.debug.msg) console.log('Avida warn: ',msg);
@@ -395,7 +398,7 @@ av.msg.reset = function () {
     'name': 'reset',
     'triggerType': 'immediate'
   };
-  userMsgLabel.textContent = 'ui-->Avida: reset requested';
+  if (av.debug.userMsg) userMsgLabel.textContent = 'ui-->Avida: reset requested';
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }

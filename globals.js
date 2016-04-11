@@ -18,6 +18,7 @@ av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
 av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
+av.debug.userMsg  = false; //Show avida messages on screen
 
 av.debug.log = 'message and error log';
 
@@ -155,6 +156,7 @@ av.ui.autoStopValue = 987654321;
 //not really ui, but not sure where to put them
 av.ui.num = 0;   //tenporary holder for a number;
 av.ui.numTxt = '';
+av.msg.avidaReady = false;
 
 av.brs = {};  //browser and operating system data
 
