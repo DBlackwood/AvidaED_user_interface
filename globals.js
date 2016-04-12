@@ -119,7 +119,7 @@ av.grd.clearGrd = function () {
   av.grd.marginX = 1;  //width of black line between the cells
   av.grd.marginY = 1;  //width of black line between the cells
 
-  av.grd.oldUpdate = -1;
+  av.grd.oldUpdate = -10;
   av.ptd.autoPauseUpdate = 1000;
 
   av.ptd.aveFit = [];  //ave is for all avidians.

@@ -128,27 +128,29 @@ require([
    when I've tried putting them in another file it does not work */
 
   av.dnd.fzConfig = new dndSource('fzConfig', {
-    accept: ['b', 'c'],
+    accept: ['b', 'c'],  //b=both; c=config
     copyOnly: true,
     singular: true,
     selfAccept: false
   });
   av.dnd.fzOrgan = new dndSource('fzOrgan', {
-    accept: ['g'],
+    accept: ['g'],  //g=genome
     copyOnly: true,
     singular: true,
     selfAccept: false
   });
   av.dnd.fzWorld = new dndSource('fzWorld', {
-    accept: ['b', 'w'],
+    accept: ['b', 'w'],   //b=both; w=world
     singular: true,
     copyOnly: true,
     selfAccept: false
   });
+  /*  //kept only as an example of how to programatically add data to a dnd container
   av.dnd.fzWorld.insertNodes(false, [
     {data: "m2w30u1000nand", type: ['w']},
     {data: "m2w30u1000not", type: ['w']}
   ]);
+*/
 
   av.dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
   av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
@@ -650,7 +652,7 @@ require([
 
   av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
-      av.debug.log += '\n -DnD_land: organCanvas';
+      //av.debug.log += '\n -DnD_land: organCanvas';
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
       av.dnd.landOrganCanvas(source, nodes, target);
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -659,7 +661,7 @@ require([
 
   av.dnd.trashCan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
     if ('trashCan' == target.node.id) {
-      av.debug.log += '\n -DnD_land: trashCan';
+      //av.debug.log += '\n -DnD_land: trashCan';
       var remove = {};
       remove.type = '';
       remove.dir = '';
@@ -675,7 +677,7 @@ require([
 
   av.dnd.analyzeChart.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('analyzeChart' == target.node.id) {
-      av.debug.log += '\n -DnD_land: analyzeChart';
+      //av.debug.log += '\n -DnD_land: analyzeChart';
       if (av.debug.dnd) console.log('analyzeChart: s, t', source, target);
       av.dnd.landanalyzeChart(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -684,7 +686,7 @@ require([
 
   av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('graphPop0' == target.node.id) {
-      av.debug.log += '\n -DnD_land: graphPop0';
+      //av.debug.log += '\n -DnD_land: graphPop0';
       if (av.debug.dnd) console.log('graphPop0: s, t', source, target);
       av.dnd.landgraphPop0(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -693,7 +695,7 @@ require([
 
   av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
-      av.debug.log += '\n -DnD_land: graphPop1';
+      //av.debug.log += '\n -DnD_land: graphPop1';
       if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
       av.dnd.landgraphPop1(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -702,7 +704,7 @@ require([
 
   av.dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
-      av.debug.log += '\n -DnD_land: graphPop2';
+      //av.debug.log += '\n -DnD_land: graphPop2';
       if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
       av.dnd.landgraphPop2(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
@@ -712,7 +714,7 @@ require([
   //need to figure out active configuration and active world
   av.dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     if ('fzWorld' == target.node.id) {
-      av.debug.log += '\n -DnD_land: fzWorld';
+      //av.debug.log += '\n -DnD_land: fzWorld';
       var pkg = {};
       av.ui.num = av.fzr.wNum;
       pkg.source = source;
@@ -729,19 +731,19 @@ require([
     // The code is here in case the dnd type is changed to 'source'
     switch (source.node.id) {
       case 'graphPop0':
-        av.debug.log += '\n -DnD_land: graphPop0?';
+        av.debug.log += '\n -DnD_from: graphPop0?';
         av.anl.pop[0].left = [];       //remove lines from population 1
         av.anl.pop[0].right = [];
         av.anl.AnaChartFn();
         break;
       case 'graphPop1':
-      av.debug.log += '\n -DnD_land: graphPop1?';
+      av.debug.log += '\n -DnD_from: graphPop1?';
         av.anl.pop[1].left = [];       //remove lines from population 2
         av.anl.pop[1].right = [];
         av.anl.AnaChartFn();
         break;
       case 'graphPop2':
-      av.debug.log += '\n -DnD_land: graphPop2?';
+      av.debug.log += '\n -DnD_from: graphPop2?';
         av.anl.pop[2].left = [];       //remove lines from population 3
         av.anl.pop[2].right = [];
         av.anl.AnaChartFn();
@@ -1015,7 +1017,7 @@ require([
   }
 
   document.getElementById("restartAvidaNow").onclick = function () {
-	av.debug.log += '\nButton: restartAvidaNow';
+	av.debug.log += '\n -Button: restartAvidaNow';
 	av.ui.restartAvida(); 
   }
 
@@ -1046,6 +1048,9 @@ require([
     console.log('av.dnd.fzConfig', av.dnd.fzConfig);
     console.log('av.dnd.fzOrgan', av.dnd.fzOrgan);
     console.log('av.dnd.fzWorld', av.dnd.fzWorld);
+    console.log('av.dnd.fzWorld', av.dnd.activeConfig);
+    console.log('av.dnd.fzWorld', av.dnd.activeOrgan);
+    console.log('av.dnd.fzWorld', av.dnd.ancestorBox);
   };
 
   document.getElementById("mnDbThrowError").onclick = function () {
@@ -1412,7 +1417,7 @@ require([
       else {
         av.grd.gradientScale();
       }
-      console.log('after drawing scale or legend. update=',av.grd.msg.update);
+      console.log('after drawing scale or legend. update=',av.grd.oldUpdate);
 
       document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
       //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
@@ -1988,23 +1993,23 @@ require([
   }
   dijit.byId('pop0color').on("Change", function () {
     Rav.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
-	av.debug.log += '\n -Button: pop0color';
+  	av.debug.log += '\n -Button: pop0color';
     av.anl.AnaChartFn();
   });
   dijit.byId('pop1color').on("Change", function () {
-	av.debug.log += '\n -Button: pop1color';
+	  av.debug.log += '\n -Button: pop1color';
     av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
     av.anl.AnaChartFn();
   });
   dijit.byId('pop2color').on("Change", function () {
-	av.debug.log += '\n -Button: pop2color';
+	  av.debug.log += '\n -Button: pop2color';
     av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
     av.anl.AnaChartFn();
   });
 
   //Set Y-axis title and choose the correct array to plot
   dijit.byId("yLeftSelect").on("Change", function () {
-	av.debug.log += '\n -Button: yLeftSelect';
+	  av.debug.log += '\n -Button: yLeftSelect';
     av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yLeftSelect', 'left')  //numbers are world landing spots
@@ -2014,6 +2019,7 @@ require([
   });
 
   dijit.byId("yRightSelect").on("Change", function () {
+    av.debug.log += '\n -Button: yRightSelect';
     av.anl.yRightTitle = dijit.byId("yRightSelect").value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yRightSelect', 'right');

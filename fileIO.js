@@ -215,11 +215,8 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
     WSzip.file('av.avidaedworkspace/'+fname, av.fzr.file[fname]);
     numFiles++;
   }
-  console.log('after for loop; numFiles=', numFiles);
   var content = WSzip.generate({type:"blob"});
-  console.log('before saveAs');
   var fsaver = saveAs(content, av.fio.userFname);
-  console.log('afer saveAs');
   // Test works; zip is saved to user's Downloads directory
   av.fzr.saveUpdateState('maybe');
 };
@@ -227,32 +224,26 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
 //    wsSavedMsg.textcontent = 'Workspace: default  ';
 av.fzr.saveUpdateState = function (state) {
   "use strict";
-  console.log('av.fzr.saveState', av.fzr.saveState);
   av.fzr.saveState = state;
   if ('yes' === av.fzr.saveState) {
     wsSavedMsg.textContent = 'Workspace: is saved ';
     document.getElementById("wsSavedMsg").style.color = 'green';
-    console.log('av.fzr.saveState = yes');
   }
   else if ('maybe' === av.fzr.saveState) {
     wsSavedMsg.textContent = 'Workspace: maybe saved';
     document.getElementById("wsSavedMsg").style.color = 'orangered';
-    console.log('av.fzr.saveState = no');
   }
   else if ('no' === av.fzr.saveState) {
     wsSavedMsg.textContent = 'Workspace: not saved';
     document.getElementById("wsSavedMsg").style.color = 'red';
-    console.log('av.fzr.saveState = no');
   }
   else if ('default' === av.fzr.saveState) {
     wsSavedMsg.textContent = 'Workspace: default  ';
     document.getElementById("wsSavedMsg").style.color = 'blue';
-    console.log('av.fzr.saveState = default');
   }
   else {
     wsSavedMsg.textContent = 'Workspace: confused ';
     document.getElementById("wsSavedMsg").style.color = 'deeppink';
-    console.log('av.fzr.saveState = other');
   }
 }
 

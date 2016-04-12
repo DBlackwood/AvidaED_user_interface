@@ -61,7 +61,7 @@ av.frd.add2freezerFromFile = function (loadConfigFlag) {
       domid = av.fio.addFzItem(av.dnd.fzConfig, name, type, num);
       if (av.fzr.cNum < Number(num)) {av.fzr.cNum = Number(num); }
       //console.log('c: num', num, '; name', name, 'flag', loadConfigFlag);
-      if (0 == num && loadConfigFlag) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, type);}
+      if (0 == num && loadConfigFlag) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, 'b');}
       break;
     case 'g':
       domid = av.fio.addFzItem(av.dnd.fzOrgan, name, type, num);

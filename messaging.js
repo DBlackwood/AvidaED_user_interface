@@ -56,6 +56,7 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui:  ' + stub;
         if (av.grd.oldUpdate != msg.update) {  //use only one = as one maybe number and the other string
           av.grd.oldUpdate = msg.update;
+          av.msg.popStatsDone = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
           av.msg.sync('webPopulationStats-update:' + msg.update.toString());
           if ('populationBlock' === av.ui.page && av.ptd.popStatFlag) {
@@ -65,12 +66,10 @@ av.msg.readMsg = function (ee) {
           if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         }
         else {
-          console.log('Repeat update send');
-          av.debug.log += '\n -     Repeat Update sent:', av.grd.oldUpdate;
+          console.log('Repeat so webPopulationStats and chart not redrawn');
+          av.debug.log += '\n -     Repeat so webPopulationStats and chart not redrawn; update=', av.grd.oldUpdate;
         }
-        av.msg.popStatsDone = msg.update;
         console.log('webPopulationStat end update=', msg.update);
-        av.debug.log += '\nAvida --> ui: end webPopulation: update:' + av.grd.popStatsMsg.update;
 
         //Is there another update
         console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
@@ -85,6 +84,7 @@ av.msg.readMsg = function (ee) {
           else av.msg.stepUpdate();
         }
         else av.msg.stepUpdate();
+        av.debug.log += '\nAvida --> ui: end webPopulation: update:' + av.grd.popStatsMsg.update;
         break;
       case 'webGridData':
         av.grd.msg = msg;
@@ -358,7 +358,7 @@ av.msg.requestGridData = function () {
 av.msg.stepUpdate = function () {
   'use strict';
   setTimeout(function () {
-	av.debug.log += '\n -Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
+	av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
 	+ av.msg.previousUpdate  + '; popStatsDone' + av.msg.popStatsDone;
     console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
            , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
@@ -371,7 +371,9 @@ av.msg.stepUpdate = function () {
   }, 100);  //number is time in msec for a delay
 }
 
-av.msg.sendData = function () {
+av.msg.sendData = function () {}
+
+av.msg.sendData_real = function () {
   'use strict';
   var request;
   request = {'type': 'sendData'};

@@ -461,7 +461,7 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   if (worldName) {
     var WorldName = av.dnd.getUniqueName(worldName, pkg.target);
     if (null != WorldName) {
-      av.debug.log += '\n -DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + ' --> ' + WorldName;
+      av.debug.log += '\n -DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent + ' --> ' + WorldName;
       document.getElementById(domid).textContent = WorldName;
       pkg.target.map[domid].data = WorldName;
 
