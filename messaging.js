@@ -125,11 +125,12 @@ av.msg.readMsg = function (ee) {
     }
   }
   else if ('userFeedback' == msg.type) {
-    av.debug.log += '\nAvida --> ui on line 74 \n' + av.utl.json2stringFn(msg);
-    if (av.debug.userMsg) userMsgLabel.textContent = 'Avida userFeedback: ' + msg.level + ' at ' + av.grd.oldUpdate.toString();
+    av.debug.log += '\nAvida --> ui: userFeedback \n' + av.utl.json2stringFn(msg);
+    if (av.debug.userMsg) userMsgLabel.textContent = 'Avida userFeedback: ' + msg.level + ' at ' + av.grd.oldUpdate.toString() + ' is ' + msg.message;
     //console.log('userFeedback', msg);
     switch (msg.level) {
       case 'error':
+        userMsgLabel.textContent = 'Avida error at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);
         console.log('type:userFeedback; level:error');
         if (msg.isFatal) {
           //kill and restart avida worker
@@ -143,13 +144,16 @@ av.msg.readMsg = function (ee) {
         if (av.debug.msg) console.log('avida:notify: ',msg.message);
         if (av.debug.userMsg)userMsgLabel.textContent = 'Avidia notification: ' + msg.message; //with splash screen no longer need ready message
         //hiding splash screen in next two lines
-        $('body').addClass('loaded');
+        //$('body').addClass('loaded');
         //$('h1').css('color','#222222');
+        $('#splash').remove();
         break;
       case 'warning':
+        userMsgLabel.textContent = 'Avida warning at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);
         if (av.debug.msg) console.log('Avida warn: ',msg);
         break;
       case 'fatal':
+        userMsgLabel.textContent = 'Avida fatal error at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);
         if (av.debug.msg) console.log('Avida fatal: ',msg.message);
         break;
       default:

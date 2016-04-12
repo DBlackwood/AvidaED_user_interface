@@ -180,6 +180,33 @@ av.utl.json2stringFn = function (jStr) {
   return rstr;
 }
 
+//**********************************************************************************************************************
+// JSon to oneLine
+av.utl.json2oneLine = function (jStr) {
+  'use strict';
+  var rstr = '';
+  for (var ndx in jStr) {
+    if ('object' === typeof jStr[ndx]) {
+      rstr += ndx + ':__';
+      if ('snapshots' != ndx) {
+        var iiStuff = jStr[ndx];
+        for (var ii in iiStuff) {
+          if ('object' === typeof iiStuff[ii]) {
+            rstr += ii + ':__';
+            var jjStuff = iiStuff[ii];
+            for (var jj in jjStuff) {
+              rstr += '    ' + jj + ': ' + jjStuff[jj] + '; ';
+            }
+          }
+          else rstr += '  ' + ii + ': ' + iiStuff[ii] + '; ';
+        }
+      }
+    }
+    else rstr += ndx + ':' + jStr[ndx] + '; s';
+  }
+  return rstr;
+}
+
 //number of items in an object
 //http://stackoverflow.com/questions/16976904/javascript-counting-number-of-objects-in-object
 av.utl.objectLength = function(object){

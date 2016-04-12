@@ -36,7 +36,6 @@
   <style>@import "themes/claro/document.css";
     @import "themes/claro/claro.css";
     @import "AvidaED.css";
-    @import "splash.css";
   </style>
   <script>
     function avResize() {
@@ -57,10 +56,11 @@
       data-maq-appstates="{}" id="myapp"
       onresize="avResize()">
 
-<div id="loader-wrapper">
-<div id="loader"></div>
-  <div class="loader-section section-left"></div>
-  <div class="loader-section section-right"></div>
+<div id="splash" style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A">
+  <div align="center">
+    <h1 style="color:whitesmoke">Avida-ED is loading . . .</h1>
+    <img src="images/avidaGrid.gif" />
+  </div>
 </div>
 
 <div data-dojo-type="dijit/layout/BorderContainer" design="headline" persist="false" gutters="true" id="mainBC"
@@ -127,7 +127,7 @@
         |&nbsp;&nbsp;&nbsp;
         <label id="wsSavedMsg" style="color: blue">Workspace: default</label>
         &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-        <span style="text-align: right"><label id="userMsgLabel" style="color: darkmagenta; text-align: right">Avida is Loading . . .</label></span>
+        <span style="text-align: right"><label id="userMsgLabel" style="color: darkmagenta; text-align: right"></label></span>
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
