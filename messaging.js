@@ -306,9 +306,10 @@ av.msg.doWebOrgDataByCell = function () {
   var request = {
     'type': 'addEvent',
     'name': 'WebOrgDataByCellID',
-    'triggerType': 'immediate',
-    //'interval': 'always',
-    //'singleton': true,
+    //'triggerType': 'immediate',
+    'start': 'now',
+    'interval': 'always',
+    'singleton': true,
     'args': av.grd.selectedNdx
   }
   av.aww.uiWorker.postMessage(request);
