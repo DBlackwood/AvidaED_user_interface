@@ -357,11 +357,13 @@ require([
 
   //http://stackoverflow.com/questions/7080269/javascript-before-leaving-the-page
   dijit.byId('sendEmail').on("Click", function () {
+    av.ui.sendEmailFlag = true;
     var link = 'mailto:' + av.fio.mailAddress +
         //"?cc=CCaddress@example.com" +
       "?subject=" + escape("Avida-Ed session log") +
       "&body=" + escape(av.debug.log);
     window.location.href = link;
+    av.ui.sendEmailFlag = false;
   });
 
 
@@ -369,14 +371,16 @@ require([
   //http://www.technicaladvices.com/2012/03/26/detecting-the-page-leave-event-in-javascript/
   //Cannot get custom message in Firefox (or Safari for now)
   window.onbeforeunload = function(event) {
-    if ('no' === av.fzr.saveState || 'maybe' === av.fzr.saveState ) {
-      return "Your workspace may have changed sine you last saved. Do you want to save first?";
+    if (!av.ui.sendEmailFlag) {
+      if ('no' === av.fzr.saveState || 'maybe' === av.fzr.saveState ) {
+        return "Your workspace may have changed sine you last saved. Do you want to save first?";
 
-      //e.stopPropagation works in Firefox.
-      if (event.stopPropagation) {
-        event.stopPropagation();
-        event.preventDefault();
+        //e.stopPropagation works in Firefox.
+        if (event.stopPropagation) {
+          event.stopPropagation();
+          event.preventDefault();
       }
+    }
     }
   }
 

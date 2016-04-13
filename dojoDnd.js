@@ -475,11 +475,15 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
       var domID = av.dnd.getDomId(WorldName, pkg.target);
       av.fzr.dir[domID] = 'w'+ av.fzr.wNum;
       av.fzr.domid['w'+ av.fzr.wNum] = domID;
-      av.fzr.wNum++;
 
       //create a right av.mouse-click context menu for the item just created.
       av.dnd.contextMenu(pkg.target, domID);
+      av.fwt.makeFzrWorld(av.fzr.wNum);
+      av.msg.exportExpr('w' + av.fzr.wNum);
+      av.msg.sendData();
+
       av.fzr.saveUpdateState('no');
+      av.fzr.wNum++;
     }
     else {  //user cancelled so the item should NOT be added to the freezer.
       av.dnd.fzWorld.deleteSelectedpkg.nodes();  //clear items
