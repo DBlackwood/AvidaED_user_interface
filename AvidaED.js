@@ -140,7 +140,7 @@ require([
     selfAccept: false
   });
   av.dnd.fzWorld = new dndSource('fzWorld', {
-    accept: ['b', 'w'],   //b=both; w=world
+    //accept: ['b', 'w'],   //b=both; w=world  //only after the population started running
     singular: true,
     copyOnly: true,
     selfAccept: false
@@ -1048,9 +1048,9 @@ require([
     console.log('av.dnd.fzConfig', av.dnd.fzConfig);
     console.log('av.dnd.fzOrgan', av.dnd.fzOrgan);
     console.log('av.dnd.fzWorld', av.dnd.fzWorld);
-    console.log('av.dnd.fzWorld', av.dnd.activeConfig);
-    console.log('av.dnd.fzWorld', av.dnd.activeOrgan);
-    console.log('av.dnd.fzWorld', av.dnd.ancestorBox);
+    console.log('av.dnd.activeConfig', av.dnd.activeConfig);
+    console.log('av.dnd.activeOrgan', av.dnd.activeOrgan);
+    console.log('av.dnd.ancestorBox', av.dnd.ancestorBox);
   };
 
   document.getElementById("mnDbThrowError").onclick = function () {

@@ -70,6 +70,8 @@ av.dnd.landActiveConfig = function (pkg) {
   var domid = Object.keys(av.dnd.activeConfig.map)[0];
   pkg.target.map[domid].type[0] = 'b';
   av.dnd.activeConfig.sync();
+  console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
+  console.log('type', pkg.target.map[domid].type[0]);
 
   av.fzr.actConfig.actDomid = domid;
   av.fzr.actConfig.name = document.getElementById(domid).textContent;
@@ -184,15 +186,16 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   console.log('domID', domid, target);
   console.log('fzConfig', av.dnd.fzConfig);
   var oldName = nodes[0].textContent;
-  var dishCon = prompt("Please name your dish configuration", oldName + "_1");
+  var dishCon = prompt("Please name your dish configuration", oldName + '1');
   if (dishCon) {
     var configName = av.dnd.getUniqueName(dishCon, target);
     if (null != configName) {
       av.debug.log += '\n -DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + '; --> ' + configName;
       document.getElementById(domid).textContent = configName;
       target.map[domid].data = configName;
-      if (av.debug.dnd) console.log('data', target.map[domid].data, target.map[domid]);
-      if (av.debug.dnd) console.log('type', target.map[domid].type[0]);
+      target.map[domid].type[0] = 'c';
+      console.log('data', target.map[domid].data, target.map[domid]);
+      console.log('type', target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
       var domID = av.dnd.getDomId(configName, target);
@@ -457,13 +460,16 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   'use strict';
   if (av.debug.dnd) console.log('landFzPopDish: fzr', av.fzr);
   var domid = Object.keys(pkg.target.selection)[0];
-  var worldName = prompt("Please name your populated dish", pkg.nodes[0].textContent + "_1");
+  var worldName = prompt("Please name your populated dish", pkg.nodes[0].textContent + "@"+ av.grd.popStatsMsg.update.formatNum(0));
   if (worldName) {
     var WorldName = av.dnd.getUniqueName(worldName, pkg.target);
     if (null != WorldName) {
       av.debug.log += '\n -DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent + ' --> ' + WorldName;
       document.getElementById(domid).textContent = WorldName;
       pkg.target.map[domid].data = WorldName;
+      pkg.target.map[domid].type[0] = 'w';
+      console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
+      console.log('type', pkg.target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
       var domID = av.dnd.getDomId(WorldName, pkg.target);

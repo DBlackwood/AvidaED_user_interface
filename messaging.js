@@ -60,16 +60,14 @@ av.msg.readMsg = function (ee) {
           av.msg.updatePopStats(av.grd.popStatsMsg);
           av.msg.sync('webPopulationStats-update:' + msg.update.toString());
           if ('populationBlock' === av.ui.page && av.ptd.popStatFlag) {
-            av.debug.log += '\n -Call popChartFn';
+            av.debug.log += '\n - - Call popChartFn';
             av.grd.popChartFn();
           }
-          if (av.debug.msgOrder) console.log('webPopulationStats update length', msg.update.formatNum(0), av.ptd.aveFit.length);
         }
         else {
           console.log('Repeat so webPopulationStats and chart not redrawn');
           av.debug.log += '\n -     Repeat so webPopulationStats and chart not redrawn; update=', av.grd.oldUpdate;
         }
-        console.log('webPopulationStat end update=', msg.update);
 
         //Is there another update
         console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
@@ -81,9 +79,15 @@ av.msg.readMsg = function (ee) {
             dijit.byId("manualUpdateRadio").set('checked', true);
             dijit.byId("autoUpdateRadio").set('checked', false);
           }
-          else av.msg.stepUpdate();
+          else {
+            av.debug.log += '\n - - update('+ av.grd.popStatsMsg.update +') < bar(' + av.ui.autoStopValue + ')';
+            av.msg.stepUpdate();
+          }
         }
-        else av.msg.stepUpdate();
+        else {
+          av.debug.log += '\n - - autoStopFlag=false; update:' + av.grd.popStatsMsg.update;
+          av.msg.stepUpdate();
+        }
         av.debug.log += '\nAvida --> ui: end webPopulation: update:' + av.grd.popStatsMsg.update;
         break;
       case 'webGridData':
@@ -170,7 +174,7 @@ av.msg.readMsg = function (ee) {
       av.debug.log += '\nAvida --> ui: type: response; request: stepUpdate; success:' + msg.request.success;
     }
   }
-  else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg);
+  else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg) + 'endelse';
 };
 
 /* web pages related to killing re-starting a web-worker
@@ -361,8 +365,7 @@ av.msg.stepUpdate = function () {
   setTimeout(function () {
 	av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
 	+ av.msg.previousUpdate  + '; popStatsDone' + av.msg.popStatsDone;
-    console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate
-           , '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
+    //console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate, '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
     if ("Pause" == document.getElementById("runStopButton").innerHTML) {
         av.msg.previousUpdate = av.msg.gridDone;
         var request = {'type': 'stepUpdate'}
