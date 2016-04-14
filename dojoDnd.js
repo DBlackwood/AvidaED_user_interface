@@ -237,20 +237,23 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
       document.getElementById(domid).textContent = avName;
       target.map[domid].data = avName;
 
-      if ('ancestorBox' == source.node.id && false === av.dnd.ancestorBox.copyOnly) {  //do not remove if population has started running
+      if ('ancestorBox' == source.node.id) {  //do not remove if population has started running
         //update structure to hold freezer data for Organisms.
         var Ndx = av.parents.domid.indexOf(nodes[0].id);  //Find index into parent structure
         gen = av.parents.genome[Ndx];
 
-        // need to remove organism from parents list.
-        av.parents.removeParent(Ndx);
-        av.parents.placeAncestors();
+        if (false === av.dnd.ancestorBox.copyOnly) {
 
-        // need to remove organism from the Ancestor Box.
-        // av.dnd.ancestorBox is dojo dnd copyonly to prevent loss of that organsim when the user clicks cancel. The user will
-        // see the cancel as cancelling the dnd rather than canceling the rename.
-        av.dnd.ancestorBox.deleteSelectedNodes();  //clear items
-        av.dnd.ancestorBox.sync();   //should be done after insertion or deletion
+          // need to remove organism from parents list.
+          av.parents.removeParent(Ndx);
+          av.parents.placeAncestors();
+
+          // need to remove organism from the Ancestor Box.
+          // av.dnd.ancestorBox is dojo dnd copyonly to prevent loss of that organsim when the user clicks cancel. The user will
+          // see the cancel as cancelling the dnd rather than canceling the rename.
+          av.dnd.ancestorBox.deleteSelectedNodes();  //clear items
+          av.dnd.ancestorBox.sync();   //should be done after insertion or deletion
+        }
       }
       else if ('activeOrgan' === source.node.id) { gen = av.fzr.actOrgan.genome; }
       av.fzr.dir[domid] = 'g' + av.fzr.gNum;
