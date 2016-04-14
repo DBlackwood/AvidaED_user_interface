@@ -2,9 +2,97 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/.npmignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Observable/Dexie.Observable.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Observable/test/test-observable-dexie-tests.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Observable/test/test-observable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Observable/test/tests-observable-misc.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Syncable/Dexie.Syncable.SyncProtocolAPI.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Syncable/Dexie.Syncable.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Syncable/test/test-syncable-dexie-tests.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Syncable/test/test-syncable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Syncable/test/tests-WebSocketSyncServer.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Syncable/test/tests-syncable.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Syncable/test/tests-syncprovider.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Yield/Dexie.Yield.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/addons/Dexie.Yield/test/tests-yield.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/bower.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/dist/latest/Dexie.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/dist/latest/Dexie.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/dist/latest/Dexie.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/dist/latest/Dexie.min.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/package.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/ajax-populate/populateFromAjaxCall.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/browserify/app.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/browserify/app.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/browserify/bundle.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/browserify/scripts/console.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/browserify/scripts/contact.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/browserify/scripts/db.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/browserify/scripts/main.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/codeproject-article/DexieAlgorithmsSamples.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/db-monitor/db-monitor.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/db-monitor/db-monitor.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/full-text-search/FullTextSearch.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/full-text-search/FullTextSearch2.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/open-existing-db/dump-databases.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/remote-sync/ajax/AjaxSyncProtocol.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/remote-sync/ajax/jquery-2.1.0.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/remote-sync/websocket/WebSocketSyncProtocol.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/remote-sync/websocket/WebSocketSyncServer.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/remote-sync/websocket/websocketserver-shim.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs-with-addons/app.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs-with-addons/app.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs-with-addons/scripts/ChangeLogger.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs-with-addons/scripts/app.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs-with-addons/scripts/console.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs-with-addons/scripts/db.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs-with-addons/scripts/require.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs/app.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs/app.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs/scripts/Contact.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs/scripts/app.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs/scripts/console.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs/scripts/db.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/requirejs/scripts/require.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/typescript/app.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/typescript/app.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/typescript/app.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/typescript/appdb.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/samples/typescript/utils.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/src/Dexie.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/src/Dexie.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/dexie-unittest-utils.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/qunit.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/qunit.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/run-unit-tests.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/run-unit-tests.min.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-collection.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-exception-handling.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-extendability.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-open.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-performance.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-promise.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-table.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-transaction.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-upgrading.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/tests-whereclause.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Dexie.js-master/test/worker.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js.mem" afterPath="$PROJECT_DIR$/avida.js.mem" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/default.avidaedworkspace.zip" afterPath="$PROJECT_DIR$/default.avidaedworkspace.zip" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojoDnd.js" afterPath="$PROJECT_DIR$/dojoDnd.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mouse.js" afterPath="$PROJECT_DIR$/mouse.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popControls.js" afterPath="$PROJECT_DIR$/popControls.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,11 +113,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33282208">
-              <caret line="161" column="90" selection-start-line="161" selection-start-column="90" selection-end-line="161" selection-end-column="90" />
+            <state vertical-scroll-proportion="-11.25">
+              <caret line="161" column="86" selection-start-line="161" selection-start-column="86" selection-end-line="161" selection-end-column="86" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -66,8 +154,8 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.0">
-              <caret line="384" column="3" selection-start-line="384" selection-start-column="3" selection-end-line="384" selection-end-column="3" />
+            <state vertical-scroll-proportion="-10.259259">
+              <caret line="680" column="0" selection-start-line="680" selection-start-column="0" selection-end-line="680" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -88,8 +176,8 @@
       <file leaf-file-name="popControls.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/popControls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.888889">
-              <caret line="273" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="111" column="37" selection-start-line="111" selection-start-column="37" selection-end-line="111" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -98,18 +186,18 @@
       <file leaf-file-name="mouse.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mouse.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="73" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.814815">
+              <caret line="64" column="2" selection-start-line="64" selection-start-column="2" selection-end-line="64" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dojoDnd.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dojoDnd.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dojoDnd.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.333333">
-              <caret line="481" column="41" selection-start-line="481" selection-start-column="30" selection-end-line="481" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.61733615">
+              <caret line="554" column="2" selection-start-line="554" selection-start-column="2" selection-end-line="554" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -128,7 +216,7 @@
       <file leaf-file-name="fileDataWrite.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.7777777">
+            <state vertical-scroll-proportion="0.0">
               <caret line="167" column="19" selection-start-line="167" selection-start-column="0" selection-end-line="167" selection-end-column="19" />
               <folding />
             </state>
@@ -138,8 +226,8 @@
       <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.0">
-              <caret line="124" column="49" selection-start-line="124" selection-start-column="49" selection-end-line="124" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -150,8 +238,8 @@
       <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/messaging.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.88889">
-              <caret line="289" column="36" selection-start-line="289" selection-start-column="36" selection-end-line="289" selection-end-column="36" />
+            <state vertical-scroll-proportion="-12.481482">
+              <caret line="285" column="6" selection-start-line="285" selection-start-column="6" selection-end-line="285" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -205,7 +293,6 @@
         <option value="$PROJECT_DIR$/diagnosticConsole.js" />
         <option value="$PROJECT_DIR$/lib/gridx/tests/demo/playground.js" />
         <option value="$PROJECT_DIR$/restartAvida.js" />
-        <option value="$PROJECT_DIR$/mouse.js" />
         <option value="$PROJECT_DIR$/AvidaED.css" />
         <option value="$PROJECT_DIR$/utilities.js" />
         <option value="$PROJECT_DIR$/splash.css" />
@@ -213,11 +300,12 @@
         <option value="$PROJECT_DIR$/fileIO.js" />
         <option value="$PROJECT_DIR$/fileDataRead.js" />
         <option value="$PROJECT_DIR$/globals.js" />
-        <option value="$PROJECT_DIR$/popControls.js" />
         <option value="$PROJECT_DIR$/messaging.js" />
-        <option value="$PROJECT_DIR$/dojoDnd.js" />
-        <option value="$PROJECT_DIR$/AvidaED.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
+        <option value="$PROJECT_DIR$/mouse.js" />
+        <option value="$PROJECT_DIR$/AvidaED.js" />
+        <option value="$PROJECT_DIR$/popControls.js" />
+        <option value="$PROJECT_DIR$/dojoDnd.js" />
       </list>
     </option>
   </component>
@@ -232,7 +320,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="823" />
+    <option name="height" value="827" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -257,6 +345,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -277,8 +367,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -368,14 +456,14 @@
     <option name="totallyTimeSpent" value="6715000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="823" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="827" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18454936" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18669528" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28180575" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28163266" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -432,6 +520,14 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="360" column="75" selection-start-line="360" selection-start-column="75" selection-end-line="360" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ColorTest.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -663,7 +759,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="893" column="11" selection-start-line="893" selection-start-column="11" selection-end-line="893" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -685,7 +780,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.14962594">
           <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -693,7 +787,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="244" column="0" selection-start-line="244" selection-start-column="0" selection-end-line="244" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -721,11 +814,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mouse.js">
+    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="73" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <caret line="63" column="116" selection-start-line="63" selection-start-column="116" selection-end-line="63" selection-end-column="116" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="167" column="19" selection-start-line="167" selection-start-column="0" selection-end-line="167" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -737,70 +848,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.0">
-          <caret line="124" column="49" selection-start-line="124" selection-start-column="49" selection-end-line="124" selection-end-column="49" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="116" selection-start-line="63" selection-start-column="116" selection-end-line="63" selection-end-column="116" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.88889">
-          <caret line="289" column="36" selection-start-line="289" selection-start-column="36" selection-end-line="289" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/popControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.888889">
-          <caret line="273" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.7777777">
-          <caret line="167" column="19" selection-start-line="167" selection-start-column="0" selection-end-line="167" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dojoDnd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.333333">
-          <caret line="481" column="41" selection-start-line="481" selection-start-column="30" selection-end-line="481" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AvidaED.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.0">
-          <caret line="384" column="3" selection-start-line="384" selection-start-column="3" selection-end-line="384" selection-end-column="3" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33282208">
-          <caret line="161" column="90" selection-start-line="161" selection-start-column="90" selection-end-line="161" selection-end-column="90" />
+        <state vertical-scroll-proportion="-11.25">
+          <caret line="161" column="86" selection-start-line="161" selection-start-column="86" selection-end-line="161" selection-end-column="86" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -830,6 +881,48 @@
             <element signature="n#style#0;n#div#3;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#3;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.481482">
+          <caret line="285" column="6" selection-start-line="285" selection-start-column="6" selection-end-line="285" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mouse.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.814815">
+          <caret line="64" column="2" selection-start-line="64" selection-start-column="2" selection-end-line="64" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/popControls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="111" column="37" selection-start-line="111" selection-start-column="37" selection-end-line="111" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AvidaED.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.259259">
+          <caret line="680" column="0" selection-start-line="680" selection-start-column="0" selection-end-line="680" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dojoDnd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.61733615">
+          <caret line="554" column="2" selection-start-line="554" selection-start-column="2" selection-end-line="554" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>

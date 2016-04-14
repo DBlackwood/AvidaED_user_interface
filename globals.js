@@ -75,6 +75,8 @@ av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
 av.ptd.popStatFlag = true;  //flag that determines if the stats panel is visible.
 
 av.grd = {};         //data about the grid canvas
+av.grd.popStatsMsg = {}
+
 // initialize data for chart on population page
 av.grd.popY = [];
 av.grd.popY2 = [];
@@ -133,10 +135,8 @@ av.grd.clearGrd = function () {
   av.ptd.allOff = true;
 
   av.msg.ByCellIDgenome = '';        //Holdes the genome which is needed to freeze a cell.
-  av.msg.gridDone = -1;
-  av.msg.popStatsDone = -1;
-  av.msg.byCellIDdone = -1;
   av.msg.previousUpdate = -10;
+  av.grd.popStatsMsg.update = -5;
 }
 av.grd.clearGrd();
 
@@ -157,6 +157,7 @@ av.ui.autoStopValue = 987654321;
 av.ui.num = 0;   //tenporary holder for a number;
 av.ui.numTxt = '';
 av.msg.avidaReady = false;
+
 
 av.brs = {};  //browser and operating system data
 

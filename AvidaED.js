@@ -153,7 +153,7 @@ require([
 */
 
   av.dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
-  av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: false, selfAccept: false});
+  av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: true, selfAccept: false});
   av.dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
   av.dnd.trashCan = new dndSource('trashCan', {accept: ['c', 'g', 'w'], singular: true});
   if (av.debug.root) console.log('after trashCan');
@@ -820,17 +820,17 @@ require([
       NeedAncestorDialog.show();
     }
     else { // setup for a new run by sending config data to avida
-      if ('started' != av.grd.runState) {
-        //change ui parameters for the correct state when the avida population has started running
-        av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
-
+      if ('started' !== av.grd.runState) {
         //collect setup data to send to avida.  Order matters. Files must be created first. Then files must be sent before some other stuff.
         av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
-        if ('c' === av.fzr.actConfig.type) {
+        if ('prepping' === av.grd.runState) {
           av.msg.importConfigExpr();
           av.msg.injectAncestors();
         }
         else { av.msg.importWorldExpr();}
+
+        //change ui parameters for the correct state when the avida population has started running
+        av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
 
         av.msg.requestGridData();
         av.msg.requestPopStats();

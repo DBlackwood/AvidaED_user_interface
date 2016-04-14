@@ -62,7 +62,7 @@ av.dnd.landActiveConfig = function (pkg) {
   //there is always a node here, so it must always be cleared when adding a new one.
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.activeConfig.sync();   //should be done after insertion or deletion
-  //delete av.fzr.dir[av.fzr.domid.dfg];     //delete the associated item in the domid dictionary
+
   //get the data for the new configuration
   pkg.source.forInSelectedItems(function (item, id) { //assign the node that is selected from the source.
     av.dnd.activeConfig.insertNodes(false, [item]);
@@ -538,8 +538,8 @@ av.dnd.landTrashCan = function (source, nodes, target) {
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
     av.fzr.saveUpdateState('no');
   }
-  // items from ancestor box require ancestor (parent) handling.
-  else if ('ancestorBox' == source.node.id) {
+  // Delete from Ancestor Box no longer allowed items from ancestor box require ancestor (parent) handling.
+/*  else if ('ancestorBox' == source.node.id) {
     //find index into parents
     if (av.debug.dnd) console.log('ancestorBox->trash; source', source.map);
     //Find index into parent structure
@@ -552,6 +552,7 @@ av.dnd.landTrashCan = function (source, nodes, target) {
     av.parents.placeAncestors();
     if (av.debug.dnd) console.log('ancestorBox->trash, av.parents', av.parents);
   }
+*/
   av.dnd.trashCan.selectAll().deleteSelectedNodes();  //in all cases, empty the av.dnd.trashCan
   return remove;
 };
@@ -723,7 +724,9 @@ av.dnd.contextMenu = function(target, fzItemID) {
         if (null != fzName) {
           //document.getElementById(fzItemID).innerHTML = fzName;  //either works
           document.getElementById(fzItemID).textContent = fzName;
-          //if (av.debug.dnd) console.log(".data=", target.map[fzItemID].data);
+          document.getElementById(fzItemID).data = fzName;
+          target.map[fzItemID].data = fzName;
+          console.log(".data=", target.map[fzItemID].data);
           //update freezer structure
           dir = av.fzr.dir[fzItemID];
           av.fzr.file[dir+'/entryname.txt']=fzName;

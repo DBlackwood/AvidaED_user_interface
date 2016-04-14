@@ -48,7 +48,6 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webPopulationStats':
         av.grd.popStatsMsg = msg;
-        av.msg.popStatsDone = -20;
         console.log('webPopulationStat start update=', msg.update);
         stub = 'name: ' + msg.name.toString() + '; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
              + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
@@ -56,7 +55,6 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui:  ' + stub;
         if (av.grd.oldUpdate != msg.update) {  //use only one = as one maybe number and the other string
           av.grd.oldUpdate = msg.update;
-          av.msg.popStatsDone = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
           av.msg.sync('webPopulationStats-update:' + msg.update.toString());
           if ('populationBlock' === av.ui.page && av.ptd.popStatFlag) {
@@ -88,11 +86,10 @@ av.msg.readMsg = function (ee) {
           av.debug.log += '\n - - autoStopFlag=false; update:' + av.grd.popStatsMsg.update;
           av.msg.stepUpdate();
         }
-        av.debug.log += '\nAvida --> ui: end webPopulation: update:' + av.grd.popStatsMsg.update;
+        av.debug.log += '\n - - end webPopulation: update:' + av.grd.popStatsMsg.update;
         break;
       case 'webGridData':
         av.grd.msg = msg;
-        av.msg.gridDone = 0;
         console.log('webGridData start update=', msg.update);
         stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
@@ -108,19 +105,16 @@ av.msg.readMsg = function (ee) {
         //if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
         //if (av.debug.msgOrder) console.log('out',av.grd.out);
         //console.log('webGridData: update', msg.update);
-        av.msg.gridDone = av.grd.msg.update;
         //av.msg.stepUpdate();
         console.log('webGridData END update=', msg.update);
-        av.debug.log += '\nAvida --> ui: end webGridData: update:' + av.grd.msg.update;
+        av.debug.log += '\n - - end webGridData: update:' + av.grd.msg.update;
         break;
       case 'webOrgDataByCellID':
         av.msg.ByCellIDgenome = msg.genome;
-        av.msg.byCellID = -20;
         av.grd.updateSelectedOrganismType(msg);  //in messaging
         stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         //console.log('Avida --> ui webOrgDataByCellID', msg);
-        av.msg.byCellID = true;
         break;
       default:
         if (av.debug.msg) console.log('____________UnknownRequest: ', msg);
@@ -146,11 +140,9 @@ av.msg.readMsg = function (ee) {
         break;
       case 'notification':
         if (av.debug.msg) console.log('avida:notify: ',msg.message);
-        if (av.debug.userMsg)userMsgLabel.textContent = 'Avidia notification: ' + msg.message; //with splash screen no longer need ready message
-        //hiding splash screen in next two lines
-        //$('body').addClass('loaded');
-        //$('h1').css('color','#222222');
-        $('#splash').remove();
+        if (av.debug.msg) userMsgLabel.textContent = 'Avidia notification: ' + msg.message; //with splash screen no longer need ready message
+        // used to reverse the gif that is in the splash screen http://gifmaker.me/reverser/
+        $('#splash').remove(); //hides splace screen.
         break;
       case 'warning':
         userMsgLabel.textContent = 'Avida warning at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);
@@ -364,10 +356,10 @@ av.msg.stepUpdate = function () {
   'use strict';
   setTimeout(function () {
 	av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
-	+ av.msg.previousUpdate  + '; popStatsDone' + av.msg.popStatsDone;
-    //console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate, '; grid', av.msg.gridDone, '; popStatsDone',av.msg.popStatsDone);
+	+ av.msg.previousUpdate  + '; popStatsupdate' + av.grd.popStatsMsg.update;
+    console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate, '; pop', av.grd.popStatsMsg.update);
     if ("Pause" == document.getElementById("runStopButton").innerHTML) {
-        av.msg.previousUpdate = av.msg.gridDone;
+        av.msg.previousUpdate = av.grd.popStatsMsg.update;
         var request = {'type': 'stepUpdate'}
         av.aww.uiWorker.postMessage(request);
         av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
@@ -375,9 +367,9 @@ av.msg.stepUpdate = function () {
   }, 100);  //number is time in msec for a delay
 }
 
-av.msg.sendData = function () {}
+//av.msg.sendData = function () {}
 
-av.msg.sendData_real = function () {
+av.msg.sendData = function () {
   'use strict';
   var request;
   request = {'type': 'sendData'};

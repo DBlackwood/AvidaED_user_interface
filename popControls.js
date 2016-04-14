@@ -109,7 +109,7 @@ av.ptd.popNewExState = function () {
   av.dnd.fzWorld.accept['w'] = 0;
   av.dnd.fzWorld.accept['b'] = 0;
   av.dnd.ancestorBox.isSource = true;
-  av.dnd.ancestorBox.copyOnly = false;
+  av.dnd.ancestorBox.copyOnly = true;
   av.dnd.activeConfig.isSource = true;
   $("#muteSlide").slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
   dijit.byId("sizeCols").attr("disabled", false);
