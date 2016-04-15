@@ -376,7 +376,9 @@ av.msg.sendData_real = function () {
 
 //sends message to worker to tell Avida to run/pause as a toggle.
 //fio.uiWorker function
-av.msg.doRunPause = function (fio) {
+av.msg.doRunPause = function () {}
+/*
+av.msg.doRunPause = function () {
   'use strict';
   var request;
     request = {
@@ -387,6 +389,7 @@ av.msg.doRunPause = function (fio) {
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
+*/
 
 //fio.uiWorker function
 av.msg.reset = function () {
@@ -403,6 +406,8 @@ av.msg.reset = function () {
 }
 
 //Not used when handshaking is used.
+av.msg.pause = function(update) {}
+/*
 av.msg.pause = function(update) {
   var request = {
     'type': 'addEvent',
@@ -412,6 +417,7 @@ av.msg.pause = function(update) {
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
+*/
 
 av.msg.injectAncestors_old  = function (fio, parents) { //tiba delete
   'use strict';

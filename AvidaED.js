@@ -1570,7 +1570,7 @@ require([
 
   av.grd.popChartFn = function () {
     'use strict';
-    if ('populationBlock' === av.ui.page && av.ptd.popStatFlag) {
+    if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
       av.debug.log += '\n - - Call popChartFn';
       if ("Average Fitness" == dijit.byId("yaxis").value) {
         av.grd.popY = av.ptd.aveFit;
