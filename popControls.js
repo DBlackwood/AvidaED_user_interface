@@ -271,7 +271,7 @@ av.ptd.FrPopulationFn = function () {
   'use strict';
   av.msg.exportExpr('w' + av.fzr.wNum);
   av.msg.sendData();
-  var popName = av.fzr.actConfig.name + '_at_' + av.grd.popStatsMsg.update.formatNum(0);  // need update here star
+  var popName = av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update.formatNum(0);  // need update here star
   var fzName = prompt("Please name the new population", popName);
   if (fzName) {
     fzName = av.dnd.getUniqueName(fzName, av.dnd.fzWorld);

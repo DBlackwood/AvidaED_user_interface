@@ -367,9 +367,9 @@ av.msg.stepUpdate = function () {
   }, 100);  //number is time in msec for a delay
 }
 
-//av.msg.sendData = function () {}
+av.msg.sendData = function () {}
 
-av.msg.sendData = function () {
+av.msg.sendData_real = function () {
   'use strict';
   var request;
   request = {'type': 'sendData'};
