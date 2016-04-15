@@ -1406,7 +1406,7 @@ require([
 
   av.grd.drawGridSetupFn = function () {
     'use strict';
-    if ('populationBlock' === av.ui.page) {
+    if ('populationBlock' === av.ui.page && 'Setup' === document.getElementById("PopSetupButton").textContent) {
       av.grd.notInDrawingGrid = false;
       if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
         av.grd.setMapData();  //update color information for offpsring once run has started
@@ -1570,50 +1570,53 @@ require([
 
   av.grd.popChartFn = function () {
     'use strict';
-    if ("Average Fitness" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.ptd.aveFit;
-      av.grd.popY2 = av.ptd.logFit;
-    }
-    else if ("Average Generation Length" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.ptd.aveGnl;
-      av.grd.popY2 = av.ptd.logGnl;
-    }
-    else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.ptd.aveMet;
-      av.grd.popY2 = av.ptd.logMet;
-    }
-    else if ("Number of Organisms" == dijit.byId("yaxis").value) {
-      av.grd.popY = av.ptd.aveNum;
-      av.grd.popY2 = av.ptd.logNum;
-      console.log('logicNum', av.ptd.logNum);
-    }
-    //console.log('popY after',av.grd.popY);
-    //console.log('pop2 after', av.grd.popY2);
-    //av.grd.popChart.setTheme(myTheme);
-    av.grd.popChart.addPlot("default", {type: "Lines"});
-    //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
-    // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-    av.grd.popChart.addPlot("grid", {
-      type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
-      vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
-    });
+    if ('populationBlock' === av.ui.page && av.ptd.popStatFlag) {
+      av.debug.log += '\n - - Call popChartFn';
+      if ("Average Fitness" == dijit.byId("yaxis").value) {
+        av.grd.popY = av.ptd.aveFit;
+        av.grd.popY2 = av.ptd.logFit;
+      }
+      else if ("Average Generation Length" == dijit.byId("yaxis").value) {
+        av.grd.popY = av.ptd.aveGnl;
+        av.grd.popY2 = av.ptd.logGnl;
+      }
+      else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
+        av.grd.popY = av.ptd.aveMet;
+        av.grd.popY2 = av.ptd.logMet;
+      }
+      else if ("Number of Organisms" == dijit.byId("yaxis").value) {
+        av.grd.popY = av.ptd.aveNum;
+        av.grd.popY2 = av.ptd.logNum;
+        console.log('logicNum', av.ptd.logNum);
+      }
+      //console.log('popY after',av.grd.popY);
+      //console.log('pop2 after', av.grd.popY2);
+      //av.grd.popChart.setTheme(myTheme);
+      av.grd.popChart.addPlot("default", {type: "Lines"});
+      //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
+      // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
+      av.grd.popChart.addPlot("grid", {
+        type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
+        vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
+      });
 
-    av.grd.popChart.addAxis("x", {
-      fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
-      titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"
-    });
-    //av.grd.popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
-    av.grd.popChart.addAxis("y", {
-      vertical: true,
-      fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
-    });
-    //av.grd.popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
-    //av.grd.popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
-    av.grd.popChart.addSeries("Series y", av.grd.popY, {plot: "default", stroke: {color: "blue", width: 1}});
-    av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
-    av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
-      domGeometry.position(document.getElementById("popChartHolder")).h - 30);
-    av.grd.popChart.render();
+      av.grd.popChart.addAxis("x", {
+        fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
+        titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"
+      });
+      //av.grd.popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
+      av.grd.popChart.addAxis("y", {
+        vertical: true,
+        fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
+      });
+      //av.grd.popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
+      //av.grd.popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
+      av.grd.popChart.addSeries("Series y", av.grd.popY, {plot: "default", stroke: {color: "blue", width: 1}});
+      av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
+      av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
+        domGeometry.position(document.getElementById("popChartHolder")).h - 30);
+      av.grd.popChart.render();
+    }
   };
 
   // **************************************************************************************************************** */

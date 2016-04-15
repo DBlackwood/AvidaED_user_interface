@@ -309,6 +309,7 @@ av.ptd.bitToggle = function (button) {
     av.ptd.logMet[ii] = null;
     av.ptd.logNum[ii] = null;
   }
+  console.log('in av.ptd.bitToggle');
   av.grd.drawGridSetupFn();
 }
 
@@ -320,6 +321,7 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
 
   av.msg.pause('now');
   av.ptd.makePauseState();
+  av.grd.clearGrd();
 
   av.grd.runState = 'prepping';
   dijit.byId("mnCnOrganismTrace").attr("disabled", true);
@@ -329,17 +331,34 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   //Clear grid settings
   av.parents.clearParentsFn();
   // reset values in population settings based on a 'file' @default
+  av.fzr.actConfig.file = {};
+  // write if @default not found - need to figure out a test for this
+  // av.ptd.writeHardDefault(av);
   av.fzr.actConfig.dir = 'c0';
+  av.fzr.actConfig.file['events.cfg'] = ' ';
+  if (av.fzr.actConfig.file['clade.ssg']) {delete av.fzr.actConfig.file['clade.ssg'];}
+  if (av.fzr.actConfig.file['detail.spop']) {delete av.fzr.actConfig.file['detail.spop'];}
+  if (av.fzr.actConfig.file['update']) {delete av.fzr.actConfig.file['update'];}
+  if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
+    str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors'];
+    av.fio.autoAncestorLoad(str);
+  }
+  if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']) {
+    str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
+    av.fio.handAncestorLoad(str);
+  }
+
   av.frd.updateSetup();
 
-  //Clear options that are not in the config files
+  if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];}
+
+    //Clear options that are not in the config files
   dijit.byId("manualUpdateRadio").set('checked', true);
   dijit.byId("autoUpdateRadio").set('checked', false);
   dijit.byId("autoUpdateSpinner").set('value', av.ptd.autoPauseUpdate);
 
   av.ptd.clearLogicButtons();
-  // write if @default not found - need to figure out a test for this
-  // av.ptd.writeHardDefault(av);
+  console.log('fzr.activeCon', av.fzr.actConfig);
 
   // re-write grid if that page is visible
   av.grd.popChartFn();

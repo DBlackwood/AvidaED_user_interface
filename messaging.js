@@ -57,10 +57,7 @@ av.msg.readMsg = function (ee) {
           av.grd.oldUpdate = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
           av.msg.sync('webPopulationStats-update:' + msg.update.toString());
-          if ('populationBlock' === av.ui.page && av.ptd.popStatFlag) {
-            av.debug.log += '\n - - Call popChartFn';
-            av.grd.popChartFn();
-          }
+          av.grd.popChartFn();
         }
         else {
           console.log('Repeat so webPopulationStats and chart not redrawn');

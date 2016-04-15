@@ -176,6 +176,7 @@ av.dnd.landActiveConfig = function (pkg) {
     av.msg.sendData();
     //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }
+  console.log('fzr.activeCon', av.fzr.actConfig);
 }
 
 //Process when an Configuration is added to the Freezer
