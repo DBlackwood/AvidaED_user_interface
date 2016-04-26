@@ -1,3 +1,11 @@
+av.ind.orgStopFn = function () {
+  if (av.ind.update_timer) {
+    clearInterval(av.ind.update_timer);
+  }
+  dijit.byId("orgRun").set("label", "Run");
+}
+
+
 
 var clearGen = function(gen) {
   'use strict';

@@ -13,7 +13,6 @@ av.ptd.popBoxSwap = function () {
     dijit.byId("setupBlock").set("style", "display: none");
 
     av.grd.cellConflict(av.grd.cols, av.grd.rows);
-    console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
     av.ui.subpage = 'map';
     //var height = $("#mapBlock").innerHeight() - 6;

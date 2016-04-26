@@ -201,6 +201,35 @@ av.fio.fixFname = function() {
   }
 }
 
+av.fio.fzSaveWorkspaceFn = function () {
+  if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
+  if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
+  var end = av.fio.userFname.substring(av.fio.userFname.length-4);
+  if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
+  console.log('end', end, '; userFname', av.fio.userFname);
+
+  var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+      var json = JSON.stringify(data),
+        blob = new Blob([json], {type: "octet/stream"}),
+        url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    };
+  }());
+
+  var data = { x: 42, s: "hello, world", d: new Date() },
+    fileName = "DianeFile.json";  //av.fio.userFname
+
+  saveData(data, fileName);
+
+  av.fzr.saveUpdateState('maybe');
+}
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
@@ -217,7 +246,6 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   }
   var content = WSzip.generate({type:"blob"});
   var fsaver = saveAs(content, av.fio.userFname);
-  // Test works; zip is saved to user's Downloads directory
   av.fzr.saveUpdateState('maybe');
 };
 

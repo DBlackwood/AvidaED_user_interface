@@ -65,8 +65,10 @@ require([
   "dojox/charting/action2d/MouseZoomAndPan",
 //  "dojox/charting/Theme",
   "dojox/charting/themes/Wetland",
+  "lib/Blob.js",
   "lib/jszip.js",
   "lib/FileSaver.js",
+  //"lib/jquery.fileDownload.js",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -74,7 +76,6 @@ require([
   "fileDataRead.js",
   "fileDataWrite.js",
   "fileIO.js",
-  "ColorTest.js",
   "PopulationGrid.js",
   "organismView.js",
   'dojoDnd.js',
@@ -90,13 +91,15 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             JSZip, FileSaver,
+             Blob, JSZip, FileSaver,  //fileDownload,
              ready, $, jqueryui) {
   "use strict";
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
     // console.log($.fn.jquery);
-  } else {console.log("Jquery ($) is not defined."); }
+  } else {
+    console.log("Jquery ($) is not defined.");
+  }
 
   parser.parse();
 
@@ -112,12 +115,12 @@ require([
   /********************************************************************************************************************/
   // Splash Screen code
   /********************************************************************************************************************/
-/*
-  setTimeout(function(){
-    $('body').addClass('loaded');
-    $('h1').css('color','#222222');
-  }, 300);
-  */
+  /*
+   setTimeout(function(){
+   $('body').addClass('loaded');
+   $('h1').css('color','#222222');
+   }, 300);
+   */
   /********************************************************************************************************************/
 
   if (av.debug.root) console.log('before dnd definitions');
@@ -146,11 +149,11 @@ require([
     selfAccept: false
   });
   /*  //kept only as an example of how to programatically add data to a dnd container
-  av.dnd.fzWorld.insertNodes(false, [
-    {data: "m2w30u1000nand", type: ['w']},
-    {data: "m2w30u1000not", type: ['w']}
-  ]);
-*/
+   av.dnd.fzWorld.insertNodes(false, [
+   {data: "m2w30u1000nand", type: ['w']},
+   {data: "m2w30u1000not", type: ['w']}
+   ]);
+   */
 
   av.dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
   av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: true, selfAccept: false});
@@ -208,7 +211,7 @@ require([
   //Avida as a web worker
   if (av.debug.root) console.log('before call avida');
   //console.log('typeof(av.aww.uiWorker', typeof(av.aww.uiWorker));
-  if(typeof(Worker) !== "undefined") {
+  if (typeof(Worker) !== "undefined") {
     //console.log('Worker type is not undefined');
     if (null === av.aww.uiWorker) {
       av.aww.uiWorker = new Worker('avida.js');
@@ -224,7 +227,9 @@ require([
 
   //process message from web worker
   if (av.debug.root) console.log('before fio.uiWorker on message');
-  av.aww.uiWorker.onmessage = function (ee) {av.msg.readMsg(ee)};  // in file messaging.js
+  av.aww.uiWorker.onmessage = function (ee) {
+    av.msg.readMsg(ee)
+  };  // in file messaging.js
 
   //********************************************************************************************************************
   //  Read Default Workspace as part of initialization
@@ -241,7 +246,7 @@ require([
 
   dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
     'use strict';
-	av.debug.log += '\n -Button: mnFlOpenDefaultWS';
+    av.debug.log += '\n -Button: mnFlOpenDefaultWS';
     av.fio.useDefault = true;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     else {
@@ -250,14 +255,14 @@ require([
   });
 
   dijit.byId("sWSfSave").on("Click", function () {
-	av.debug.log += '\n -Button: sWSSave';
+    av.debug.log += '\n -Button: sWSSave';
     console.log('before call save workspace');
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
     console.log('after call to save workspace');
   });
 
   dijit.byId("sWSfOpen").on("Click", function () {
-	av.debug.log += '\n -Button: sWSfOpen';
+    av.debug.log += '\n -Button: sWSfOpen';
     sWSfDialog.hide();
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
@@ -271,7 +276,7 @@ require([
 
   dijit.byId("mnFlOpenWS").on("Click", function () {
     'use strict';
-	av.debug.log += '\n -Button: mnFlOpenWS';
+    av.debug.log += '\n -Button: mnFlOpenWS';
     av.fio.useDefault = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     //else document.getElementById("inputFile").click();
@@ -282,7 +287,7 @@ require([
 
   dijit.byId("mnFlFzItem").on("Click", function () {
     'use strict';
-  	av.debug.log += '\n -Button: mnFlFzItem';
+    av.debug.log += '\n -Button: mnFlFzItem';
     av.fio.useDefault = false;
     document.getElementById("import").click();
   });
@@ -290,17 +295,39 @@ require([
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById("mnFlSaveWorkspace").onclick = function () {
-	av.debug.log += '\n -Button: mnFlSaveWorkspace';
+    av.debug.log += '\n -Button: mnFlSaveWorkspace';
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
+  /*
+   //With jquery.fileDownload.js custom use with promises
+   $(document).on("click", "a.fileDownloadPromise", function () {
+   $.fileDownload($(this).prop('href'))
+   .done(function () { alert('File download a success!'); })
+   .fail(function () { alert('File download failed!'); });
+
+   return false; //this is critical to stop the click event which will trigger a normal file download
+   });
+
+   $(document).click(function () {
+   $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
+   successCallback: function (url) {
+   alert('You just got a file download dialog or ribbon for this URL :' + url);
+   },
+   failCallback: function (html, url) {
+   alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
+   );
+   }});
+   });
+   */
   // Save current workspace with a new name(mnFzSaveWorkspaceAs)
   document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
-	av.debug.log += '\n -Button: mnFlSaveWorkspaceAs';
+    av.debug.log += '\n -Button: mnFlSaveWorkspaceAs';
     var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
-    av.fio.userFname = prompt('Choose a new name for your Workspace', suggest);
-    av.fio.fzSaveCurrentWorkspaceFn();
+    av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
+
+    //av.fio.fzSaveWorkspaceFn();
   };
 
   if (av.debug.root) console.log('before Help drop down menu');
@@ -308,7 +335,7 @@ require([
   // Help Drop down menu buttons
   //--------------------------------------------------------------------------------------------------------------------
   dijit.byId('mnHpAbout').on("Click", function () {
-	av.debug.log += '\n -Button: mnHpAbout';
+    av.debug.log += '\n -Button: mnHpAbout';
     mnHpAboutDialog.show();
   });
 
@@ -325,7 +352,7 @@ require([
   });
 
   dijit.byId('mnHpHardware').on("Click", function () {
-	av.debug.log += '\n -Button: mnHpHardware';
+    av.debug.log += '\n -Button: mnHpHardware';
     if (!HardwareDialog) {
       HardwareDialog = new Dialog({
         title: "Avida : A Guided Tour of an Ancestor and its Hardware",
@@ -340,7 +367,7 @@ require([
   });
 
   dijit.byId('mnHpProblem').on("Click", function () {
-	av.debug.log += '\n -Button: mnHpProblem';
+    av.debug.log += '\n -Button: mnHpProblem';
     //alert(av.debug.log);
     // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-Ed: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
     document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log;
@@ -367,20 +394,19 @@ require([
   });
 
 
-
   //http://www.technicaladvices.com/2012/03/26/detecting-the-page-leave-event-in-javascript/
   //Cannot get custom message in Firefox (or Safari for now)
-  window.onbeforeunload = function(event) {
+  window.onbeforeunload = function (event) {
     if (!av.ui.sendEmailFlag) {
-      if ('no' === av.fzr.saveState || 'maybe' === av.fzr.saveState ) {
+      if ('no' === av.fzr.saveState || 'maybe' === av.fzr.saveState) {
         return "Your workspace may have changed sine you last saved. Do you want to save first?";
 
         //e.stopPropagation works in Firefox.
         if (event.stopPropagation) {
           event.stopPropagation();
           event.preventDefault();
+        }
       }
-    }
     }
   }
 
@@ -395,20 +421,20 @@ require([
    return confirmationMessage;
    });
 
-  function goodbye(e) {
-    if(!e) e = window.event;
-    //e.cancelBubble is supported by IE - this will kill the bubbling process.
-    e.cancelBubble = true;
-    e.returnValue = 'Have you saved your workspace?'; //This is displayed on the dialog
+   function goodbye(e) {
+   if(!e) e = window.event;
+   //e.cancelBubble is supported by IE - this will kill the bubbling process.
+   e.cancelBubble = true;
+   e.returnValue = 'Have you saved your workspace?'; //This is displayed on the dialog
 
-    //e.stopPropagation works in Firefox.
-    if (e.stopPropagation) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-  }
-  window.onbeforeunload=goodbye;
-*/
+   //e.stopPropagation works in Firefox.
+   if (e.stopPropagation) {
+   e.stopPropagation();
+   e.preventDefault();
+   }
+   }
+   window.onbeforeunload=goodbye;
+   */
   //********************************************************************************************************************
   // Error logging
   //********************************************************************************************************************
@@ -446,18 +472,18 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
 
   //initialize the ht for main buttons and trash can so there is no scroll bar
-  if (document.getElementById('mainButtons').scrollHeight > document.getElementById('mainButtons').clientHeight){
+  if (document.getElementById('mainButtons').scrollHeight > document.getElementById('mainButtons').clientHeight) {
     document.getElementById('mainButtons').style.height = document.getElementById('mainButtons').scrollHeight + 'px';
   }
-  if (document.getElementById('trashCP').scrollHeight > document.getElementById('trashCP').clientHeight){
+  if (document.getElementById('trashCP').scrollHeight > document.getElementById('trashCP').clientHeight) {
     document.getElementById('trashCP').style.height = document.getElementById('trashCP').scrollHeight + 'px';
   }
-  if (document.getElementById('orgTop').scrollHeight > document.getElementById('orgTop').clientHeight){
+  if (document.getElementById('orgTop').scrollHeight > document.getElementById('orgTop').clientHeight) {
     document.getElementById('orgTop').style.height = document.getElementById('orgTop').scrollHeight + 'px';
   }
   //console.log('orgBot', document.getElementById('organismBottom').scrollHeight, document.getElementById('organismBottom').clientHeight);
-  if (document.getElementById('organismBottom').scrollHeight > document.getElementById('organismBottom').clientHeight){
-    av.ui.num = document.getElementById('organismBottom').scrollHeight+9;
+  if (document.getElementById('organismBottom').scrollHeight > document.getElementById('organismBottom').clientHeight) {
+    av.ui.num = document.getElementById('organismBottom').scrollHeight + 9;
     document.getElementById('organismBottom').style.height = av.ui.num + 'px';
   }
 
@@ -474,7 +500,7 @@ require([
     dijit.byId("populationBlock").set("style", "display: none;");
     dijit.byId("organismBlock").set("style", "display: none;");
     dijit.byId("analysisBlock").set("style", "display: none;");
-    dijit.byId("testBlock").set("style", "display: none;");       //take testBlock out completely later
+    //dijit.byId("testBlock").set("style", "display: none;");       //take testBlock out completely later
     dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
     dijit.byId(showBlock).resize();
 
@@ -492,7 +518,7 @@ require([
   }
 
   document.getElementById("organismButton").onclick = function () {
-	av.debug.log += '\n -Button: organismButton';
+    av.debug.log += '\n -Button: organismButton';
     av.ui.mainBoxSwap("organismBlock");
     //console.log('after mainBoxSwap');
     organismCanvasHolderSize();
@@ -507,13 +533,13 @@ require([
   };
 
   document.getElementById("analysisButton").onclick = function () {
-	av.debug.log += '\n -Button: analysisButton';
+    av.debug.log += '\n -Button: analysisButton';
     av.ui.mainBoxSwap("analysisBlock");
   };
   //Take testBlock out completely later
-
+/*
   document.getElementById("testButton").onclick = function () {
-	av.debug.log += '\n -Button: testButton';
+    av.debug.log += '\n -Button: testButton';
     av.ui.mainBoxSwap("testBlock");
     if ('#00FF00' == chck.outlineColor) {
       chck.outlineColor = '#00FFFF';
@@ -527,7 +553,7 @@ require([
     placeChips(chips, chck);
     drawCheckerSetup(chck, chips);
   };
-
+*/
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
@@ -540,7 +566,7 @@ require([
     if ("block" == domStyle.get("populationBlock", "display")) {
       if (av.grd.notInDrawingGrid) {
         av.grd.popChartFn();
-        console.log('before call av.grd.drawGridSetupFn');
+        //console.log('before call av.grd.drawGridSetupFn');
         av.grd.drawGridSetupFn();
       }
     }
@@ -594,7 +620,11 @@ require([
     //console.log('pkg.target', pkg.target);
     //console.log('pkg.target.s', pkg.target.selection);
     if ('activeConfig' === target.node.id) {
-      var pkg = {}; pkg.source = source; pkg.nodes = nodes; pkg.copy = copy; pkg.target = target;
+      var pkg = {};
+      pkg.source = source;
+      pkg.nodes = nodes;
+      pkg.copy = copy;
+      pkg.target = target;
       av.dnd.landActiveConfig(pkg);  //dojoDnd
     }
   });
@@ -726,7 +756,9 @@ require([
       pkg.copy = copy;
       pkg.target = target;
       av.dnd.landFzWorldFn(pkg);
-      if (av.ui.num !== av.fzr.wNum) {av.fwt.makeFzrWorld(av.ui.num);} //tiba need to check this
+      if (av.ui.num !== av.fzr.wNum) {
+        av.fwt.makeFzrWorld(av.ui.num);
+      } //tiba need to check this
     }
   });
 
@@ -741,13 +773,13 @@ require([
         av.anl.AnaChartFn();
         break;
       case 'graphPop1':
-      av.debug.log += '\n -DnD_from: graphPop1?';
+        av.debug.log += '\n -DnD_from: graphPop1?';
         av.anl.pop[1].left = [];       //remove lines from population 2
         av.anl.pop[1].right = [];
         av.anl.AnaChartFn();
         break;
       case 'graphPop2':
-      av.debug.log += '\n -DnD_from: graphPop2?';
+        av.debug.log += '\n -DnD_from: graphPop2?';
         av.anl.pop[2].left = [];       //remove lines from population 3
         av.anl.pop[2].right = [];
         av.anl.AnaChartFn();
@@ -789,7 +821,7 @@ require([
   }
 
   document.getElementById("PopStatsButton").onclick = function () {
-  	av.ptd.popStatView()
+    av.ptd.popStatView()
   };
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -827,7 +859,9 @@ require([
           av.msg.importConfigExpr();
           av.msg.injectAncestors();
         }
-        else { av.msg.importWorldExpr();}
+        else {
+          av.msg.importWorldExpr();
+        }
 
         //change ui parameters for the correct state when the avida population has started running
         av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
@@ -865,12 +899,12 @@ require([
 
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById("runStopButton").onclick = function () {
-	av.debug.log += '\n -Button: runStopButton';
+    av.debug.log += '\n -Button: runStopButton';
     runStopFn();
   };
 
   dijit.byId("mnCnPause").on("Click", function () {
-	av.debug.log += '\n -Button: mnCnPause';
+    av.debug.log += '\n -Button: mnCnPause';
     //console.log('about to call av.ptd.makePauseState()');
     av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 786 \n';
     av.msg.pause('now');
@@ -879,7 +913,7 @@ require([
 
   //process run/Stop buttons as above but for drop down menu
   dijit.byId("mnCnRun").on("Click", function () {
-	av.debug.log += '\n -Button: mnCnRun';
+    av.debug.log += '\n -Button: mnCnRun';
     av.ptd.makeRunState();
     runPopFn();
   });
@@ -887,7 +921,7 @@ require([
   /******************************************* New Button and new Dialog **********************************************/
 
   dijit.byId("newDiscard").on("Click", function () {
-	av.debug.log += '\n -Button: newDiscard';
+    av.debug.log += '\n -Button: newDiscard';
     newDialog.hide();
     av.msg.reset();
     //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
@@ -895,7 +929,7 @@ require([
   });
 
   dijit.byId("newSaveWorld").on("Click", function () {
-	av.debug.log += '\n -Button: newSaveWorld';
+    av.debug.log += '\n -Button: newSaveWorld';
     av.ptd.FrPopulationFn();
     newDialog.hide();
     av.msg.reset();
@@ -904,7 +938,7 @@ require([
   });
 
   dijit.byId("newSaveConfig").on("Click", function () {
-	av.debug.log += '\n -Button: newSaveConfig';
+    av.debug.log += '\n -Button: newSaveConfig';
     av.ptd.FrConfigFn();
     newDialog.hide();
     av.msg.reset();
@@ -925,12 +959,12 @@ require([
   }
 
   document.getElementById("newDishButton").onclick = function () {
-	av.debug.log += '\n -Button: newDishButton';
+    av.debug.log += '\n -Button: newDishButton';
     newButtonBoth();
   };
 
   dijit.byId("mnNewpop").on("Click", function () {
-	av.debug.log += '\n -Button: mnNewpop';
+    av.debug.log += '\n -Button: mnNewpop';
     newButtonBoth();
   });
 
@@ -938,7 +972,7 @@ require([
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.*/
   document.getElementById("freezeButton").onclick = function () {
-	av.debug.log += '\n -Button: freezeButton';
+    av.debug.log += '\n -Button: freezeButton';
     if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
     else {
       if (5 > av.msg.ByCellIDgenome.length) {
@@ -950,14 +984,14 @@ require([
   };
 
   dijit.byId("FzConfigurationButton").on("Click", function () {
-	av.debug.log += '\n -Button: FzConfigurationButton';
+    av.debug.log += '\n -Button: FzConfigurationButton';
     fzDialog.hide();
     av.ptd.FrConfigFn();
   });
 
   //Drop down menu to save a configuration item
   dijit.byId("mnFzConfig").on("Click", function () {
-	av.debug.log += '\n -Button: mnFzConfig';
+    av.debug.log += '\n -Button: mnFzConfig';
     av.ptd.FrConfigFn();
   });
 
@@ -970,26 +1004,26 @@ require([
 
   //button to freeze a population
   dijit.byId("FzPopulationButton").on("Click", function () {
-	av.debug.log += '\n -Button: FzPopulationButton';
+    av.debug.log += '\n -Button: FzPopulationButton';
     fzDialog.hide();
     av.ptd.FrPopulationFn();
   });
 
   dijit.byId("mnFzPopulation").on("Click", function () {
-	av.debug.log += '\n -Button: mnFzPopulation';
+    av.debug.log += '\n -Button: mnFzPopulation';
     av.ptd.FrPopulationFn();
   });
 
   //Buttons on drop down menu to save an organism
   dijit.byId("mnFzOrganism").on("Click", function () {
-	av.debug.log += '\n -Button: mnFzOrganism';
+    av.debug.log += '\n -Button: mnFzOrganism';
     av.ptd.FrOrganismFn('selected')
   });
 
   //Buttons on drop down menu to save an offspring
   dijit.byId("mnFzOffspring").on("Click", function () {
- 	av.debug.log += '\n -Button: mnFzOffspring';
-   av.ptd.FrOrganismFn('offspring')
+    av.debug.log += '\n -Button: mnFzOffspring';
+    av.ptd.FrOrganismFn('offspring')
   });
 
   // End of Freezer functions
@@ -1004,7 +1038,7 @@ require([
 
     console.log('just killed webWorker');
 
-    if(typeof(Worker) !== "undefined") {
+    if (typeof(Worker) !== "undefined") {
       if (null == av.aww.uiWorker) {
         av.aww.uiWorker = new Worker('avida.js');
         console.log('webworker recreated');
@@ -1021,12 +1055,12 @@ require([
   }
 
   document.getElementById("restartAvidaNow").onclick = function () {
-	av.debug.log += '\n -Button: restartAvidaNow';
-	av.ui.restartAvida(); 
+    av.debug.log += '\n -Button: restartAvidaNow';
+    av.ui.restartAvida();
   }
 
   document.getElementById("restartAvidaFrzConfig").onclick = function () {
-	av.debug.log += '\n -Button: restartAvidaFzrConfig';
+    av.debug.log += '\n -Button: restartAvidaFzrConfig';
     av.ptd.FrConfigFn();
   }
 
@@ -1043,11 +1077,11 @@ require([
 
   document.getElementById("mnDbThrowData").onclick = function () {
     'use strict';
-	  av.debug.log += '\n -Button: mnDbThrowData';
+    av.debug.log += '\n -Button: mnDbThrowData';
     console.log('av', av);
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
-    console.log('av.grd.msg',av.grd.msg);
+    console.log('av.grd.msg', av.grd.msg);
     console.log('av.grd.popStatsMsg', av.grd.popStatsMsg);
     console.log('av.dnd.fzConfig', av.dnd.fzConfig);
     console.log('av.dnd.fzOrgan', av.dnd.fzOrgan);
@@ -1131,7 +1165,7 @@ require([
         var lngth = av.traceObj[av.ind.cycle].memSpace.length;
         for (var gg = 0; gg < lngth; gg++) { //gg is generation
           var iiLngth = av.ind.dna[gg].length;
-          for (var ii = 0; ii <  iiLngth; ii++) {  //ii is the isntruction number
+          for (var ii = 0; ii < iiLngth; ii++) {  //ii is the isntruction number
             distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.ind.smCenY[gg][ii], 2));
             if (av.ind.smallR >= distance) {
               //console.log('found, gg, ii', gg, ii, '; xy',av.ind.smCenX[gg][ii],av.ind.smCenY[gg][ii] );
@@ -1170,7 +1204,7 @@ require([
   });
 
   //if a cell is selected, arrow keys can move the selection
-  $(document).keydown(function(e) {
+  $(document).keydown(function (e) {
     if (av.grd.flagSelected) {
       var moved = false;
       switch (e.which) {
@@ -1200,7 +1234,7 @@ require([
           break;
       }
       e.preventDefault(); // prevent the default action (scroll / move caret)
-      av.grd.selectedNdx = av.grd.selectedRow*av.grd.cols + av.grd.selectedCol;
+      av.grd.selectedNdx = av.grd.selectedRow * av.grd.cols + av.grd.selectedCol;
       if (moved && 'prepping' != av.grd.runState) {  //look for decendents (kids)
         //find out if there is a kid in that cell
         //if which ancestor is not null then there is a 'kid' there.
@@ -1232,7 +1266,7 @@ require([
       av.grd.flagSelected = true;
       if (av.debug.mouse) console.log('ongrid', av.grd.selectedNdx);
       av.debug.log += '\n -Grid click on ' + av.grd.selectedNdx;
-      console.log('before call av.grd.drawGridSetupFn');
+      //console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
 
       //In the grid and selected. Now look to see contents of cell are dragable.
@@ -1250,7 +1284,7 @@ require([
         }
       }
       else {  //look for decendents (kids)
-        if (av.debug.mouse) console.log('kidSelected; selectedNdx', av.grd.selectedNdx,'________________________________');
+        if (av.debug.mouse) console.log('kidSelected; selectedNdx', av.grd.selectedNdx, '________________________________');
         if (av.debug.mouse) console.log('kidSelected; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
         //find out if there is a kid in that cell
         //if ancestor not null then there is a 'kid' there.
@@ -1283,7 +1317,7 @@ require([
       dijit.byId("mnFzOrganism").attr("disabled", true);
     }
     //av.msg.doWebOrgDataByCell();   //was sending twice. I hope this is the right one to take out 2016 Feb 5
-    console.log('before call av.grd.drawGridSetupFn');
+    //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1334,9 +1368,9 @@ require([
       av.mouse.Picked = "";
       av.mouse.ParentMouse(evt, av);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) {
-		  console.log('before call av.grd.drawGridSetupFn');
-		  av.grd.drawGridSetupFn();
-	  }
+        console.log('before call av.grd.drawGridSetupFn');
+        av.grd.drawGridSetupFn();
+      }
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         av.ui.mainBoxSwap("organismBlock");
@@ -1358,7 +1392,7 @@ require([
     else if ('kid' == av.mouse.Picked) {
       av.mouse.Picked = "";
       target = av.mouse.kidMouse(evt, av.dnd, av.fzr, av.grd);
-      if (av.debug.mouse) console.log('kidMouse: target', target, '===============',evt.target.id);
+      if (av.debug.mouse) console.log('kidMouse: target', target, '===============', evt.target.id);
       if ('organIcon' == evt.target.id) {
         //Change to Organism Page
         av.ui.mainBoxSwap("organismBlock");
@@ -1395,7 +1429,7 @@ require([
   av.grd.SelectedHt = $('#SelectedColor').innerHeight();
 
   av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
-  av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientHeight/2;
+  av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientHeight / 2;
   //av.grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - av.grd.CanvasScale.height;
   av.grd.CanvasGrid.height = 15;
 
@@ -1421,7 +1455,7 @@ require([
       else {
         av.grd.gradientScale();
       }
-      console.log('after drawing scale or legend. update=',av.grd.oldUpdate);
+      //console.log('after drawing scale or legend. update=',av.grd.oldUpdate);
 
       document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
       //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
@@ -1499,7 +1533,7 @@ require([
   dijit.byId("mnGnuplot2").attr("disabled", true);
 
   dijit.byId("mnViridis").on("Click", function () {
-	av.debug.log += '\n -Button: mnViridis';
+    av.debug.log += '\n -Button: mnViridis';
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", true);
@@ -1509,7 +1543,7 @@ require([
   });
 
   dijit.byId("mnGnuplot2").on("Click", function () {
-	av.debug.log += '\n -Button: mnGnuplot2';
+    av.debug.log += '\n -Button: mnGnuplot2';
     dijit.byId("mnCubehelix").attr("disabled", false);
     dijit.byId("mnGnuplot2").attr("disabled", true);
     dijit.byId("mnViridis").attr("disabled", false);
@@ -1519,7 +1553,7 @@ require([
   });
 
   dijit.byId("mnCubehelix").on("Click", function () {
-	av.debug.log += '\n -Button: mnCubehelix';
+    av.debug.log += '\n -Button: mnCubehelix';
     dijit.byId("mnCubehelix").attr("disabled", true);
     dijit.byId("mnGnuplot2").attr("disabled", false);
     dijit.byId("mnViridis").attr("disabled", false);
@@ -1534,15 +1568,33 @@ require([
   // *******************************************************************************************************************
   if (av.debug.root) console.log('before logic buttons');
 
-  document.getElementById("notButton").onclick = function () {av.ptd.bitToggle('notButton');} //av.ptd.bitToggle in popControls.js
-  document.getElementById("nanButton").onclick = function () {av.ptd.bitToggle('nanButton');}
-  document.getElementById("andButton").onclick = function () {av.ptd.bitToggle('andButton');}
-  document.getElementById("ornButton").onclick = function () {av.ptd.bitToggle('ornButton');}
-  document.getElementById("oroButton").onclick = function () {av.ptd.bitToggle('oroButton');}
-  document.getElementById("antButton").onclick = function () {av.ptd.bitToggle('antButton');}
-  document.getElementById("norButton").onclick = function () {av.ptd.bitToggle('norButton');}
-  document.getElementById("xorButton").onclick = function () {av.ptd.bitToggle('xorButton');}
-  document.getElementById("equButton").onclick = function () {av.ptd.bitToggle('equButton');}
+  document.getElementById("notButton").onclick = function () {
+    av.ptd.bitToggle('notButton');
+  } //av.ptd.bitToggle in popControls.js
+  document.getElementById("nanButton").onclick = function () {
+    av.ptd.bitToggle('nanButton');
+  }
+  document.getElementById("andButton").onclick = function () {
+    av.ptd.bitToggle('andButton');
+  }
+  document.getElementById("ornButton").onclick = function () {
+    av.ptd.bitToggle('ornButton');
+  }
+  document.getElementById("oroButton").onclick = function () {
+    av.ptd.bitToggle('oroButton');
+  }
+  document.getElementById("antButton").onclick = function () {
+    av.ptd.bitToggle('antButton');
+  }
+  document.getElementById("norButton").onclick = function () {
+    av.ptd.bitToggle('norButton');
+  }
+  document.getElementById("xorButton").onclick = function () {
+    av.ptd.bitToggle('xorButton');
+  }
+  document.getElementById("equButton").onclick = function () {
+    av.ptd.bitToggle('equButton');
+  }
 
   // -------------------------------------------------------------------------------------------------------------------
   //                    Population Chart   ; pop chart; popchart
@@ -1571,6 +1623,7 @@ require([
   av.grd.popChartFn = function () {
     'use strict';
     if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
+      //console.log('chart update=', av.grd.popStatsMsg.update);
       av.debug.log += '\n - - Call popChartFn';
       if ("Average Fitness" == dijit.byId("yaxis").value) {
         av.grd.popY = av.ptd.aveFit;
@@ -1632,7 +1685,7 @@ require([
     //Linear scale the position for Ancestors added by hand;
     if (undefined != av.parents.handNdx) {
       var lngth = av.parents.handNdx.length;
-      for (var ii = 0; ii <  lngth; ii++) {
+      for (var ii = 0; ii < lngth; ii++) {
         //console.log('old cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
         av.parents.col[av.parents.handNdx[ii]] = Math.floor(NewCols * av.parents.col[av.parents.handNdx[ii]] / av.grd.gridWasCols);  //was trunc
         av.parents.row[av.parents.handNdx[ii]] = Math.floor(NewRows * av.parents.row[av.parents.handNdx[ii]] / av.grd.gridWasRows);  //was trunc
@@ -1682,17 +1735,17 @@ require([
     });
   });
 
-  dojo.connect(dijit.byId('manualUpdateRadio'), 'onClick', function() {
+  dojo.connect(dijit.byId('manualUpdateRadio'), 'onClick', function () {
     av.debug.log += '\n -Button: manualUpdateRadio';
     av.ui.autoStopFlag = false;
   });
 
-  dojo.connect(dijit.byId('autoUpdateRadio'), 'onClick', function() {
+  dojo.connect(dijit.byId('autoUpdateRadio'), 'onClick', function () {
     av.debug.log += '\n -Button: autoUpdateRadio';
     av.ui.autoStopFlag = true;
   });
 
-  dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function() {
+  dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function () {
     av.debug.log += '\n -Spinner: autoUpdateSpinner=' + dijit.byId("autoUpdateSpinner").get('value');
     av.ui.autoStopValue = dijit.byId("autoUpdateSpinner").get('value');
     console.log('autoUpdateSpinner=', dijit.byId("autoUpdateSpinner").get('value'));
@@ -1706,7 +1759,7 @@ require([
   //process button to hide or show Organism detail panal.
   var DetailsFlag = true;
   document.getElementById("OrgDetailsButton").onclick = function () {
-	av.debug.log += '\n -Button: OrgDetailsButton';
+    av.debug.log += '\n -Button: OrgDetailsButton';
     if (DetailsFlag) {
       DetailsFlag = false;
       dijit.byId("rightDetail").set("style", "display: none;");
@@ -1728,7 +1781,7 @@ require([
   }
 
   //If settings were changed then this will request new data when the settings dialog box is closed.
-  OrganSetupDialog.connect(OrganSetupDialog, "hide", function(e){
+  OrganSetupDialog.connect(OrganSetupDialog, "hide", function (e) {
     if (av.ind.settingsChanged) av.msg.doOrgTrace();
   });
 
@@ -1769,20 +1822,20 @@ require([
 
   //triggers flag that requests more data when the settings dialog is closed.
   //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
-  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function() {
-	av.debug.log += '\n -Button: OrganExperimentRadio';
-	av.ind.settingsChanged=true;
+  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function () {
+    av.debug.log += '\n -Button: OrganExperimentRadio';
+    av.ind.settingsChanged = true;
   });
-  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function() {
-  	av.ind.settingsChanged=true;
-		av.debug.log += '\n -Button: OrganDemoRadio';
+  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function () {
+    av.ind.settingsChanged = true;
+    av.debug.log += '\n -Button: OrganDemoRadio';
   });
 
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
   dijit.byId("mnCnOrganismTrace").on("Click", function () {
-		av.debug.log += '\n -Button: mnCnOrganismTrace';
+    av.debug.log += '\n -Button: mnCnOrganismTrace';
     traceSelected(av.dnd, av.fzr, av.grd);
     av.ui.mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
@@ -1797,7 +1850,7 @@ require([
   //Put the offspring in the parent position on Organism Trace
   dijit.byId("mnCnOffspringTrace").on("Click", function () {
     //Open Oranism view
-	av.debug.log += '\n -Button: mnCnOffspringTrace';
+    av.debug.log += '\n -Button: mnCnOffspringTrace';
     av.ui.mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
@@ -1837,14 +1890,12 @@ require([
    /* ************************************************************** */
 
   /* **** Controls bottum of organism page **************************/
-  var update_timer = null;
-
   function outputUpdate(vol) {
     document.querySelector('#orgCycle').value = vol;
   }
 
   dijit.byId("orgBack").on("Click", function () {
-	av.debug.log += '\n -Button: orgBack';
+    av.debug.log += '\n -Button: orgBack';
     var ii = Number(document.getElementById("orgCycle").value);
     if (av.ind.cycleSlider.get("minimum") < av.ind.cycleSlider.get("value")) {
       ii--;
@@ -1860,25 +1911,19 @@ require([
       ii++;
       dijit.byId("orgCycle").set("value", ii);
       av.ind.cycle = ii;
-      if (av.debug.ind) console.log('ii', ii,'; gen', av.gen);
+      if (av.debug.ind) console.log('ii', ii, '; gen', av.gen);
       av.ind.updateOrgTrace()
     }
   });
 
   dijit.byId("orgReset").on("Click", function () {
-	av.debug.log += '\n -Button: orgReset';
-    dijit.byId("orgCycle").set("value", 0);
-    av.ind.cycle = 0;
-    av.ind.updateOrgTrace();
-    orgStopFn()
+    av.debug.log += '\n -Button: orgReset';
+    //dijit.byId("orgCycle").set("value", 0);
+    //av.ind.cycle = 0;
+    //av.ind.updateOrgTrace();
+    //av.ind.orgStopFn()
+    av.msg.doOrgTrace();
   });
-
-  function orgStopFn() {
-    if (update_timer) {
-      clearInterval(update_timer);
-    }
-    dijit.byId("orgRun").set("label", "Run");
-  }
 
   function orgRunFn() {
     if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
@@ -1887,27 +1932,27 @@ require([
       av.ind.updateOrgTrace();
     }
     else {
-      orgStopFn();
+      av.ind.orgStopFn();
     }
   }
 
   dijit.byId("orgRun").on("Click", function () {
-	av.debug.log += '\n -Button: orgRun';
+    av.debug.log += '\n -Button: orgRun';
     if ("Run" == dijit.byId("orgRun").get("label")) {
       dijit.byId("orgRun").set("label", "Stop");
-      update_timer = setInterval(orgRunFn, 100);
+      av.ind.update_timer = setInterval(orgRunFn, 100);
     }
     else {
-      orgStopFn();
+      av.ind.orgStopFn();
     }
   });
 
   dijit.byId("orgEnd").on("Click", function () {
-	av.debug.log += '\n -Button: orgEnd';
+    av.debug.log += '\n -Button: orgEnd';
     dijit.byId("orgCycle").set("value", av.ind.cycleSlider.get("maximum"));
     av.ind.cycle = av.ind.cycleSlider.get("maximum");
     av.ind.updateOrgTrace();
-    orgStopFn()
+    av.ind.orgStopFn()
   });
 
   dijit.byId("orgCycle").on("Change", function (value) {
@@ -1975,7 +2020,7 @@ require([
 
   /* Chart buttons ****************************************/
   document.getElementById("pop0delete").onclick = function () {
-	av.debug.log += '\n -Button: pop0delete';
+    av.debug.log += '\n -Button: pop0delete';
     av.anl.pop[0].left = [];
     av.anl.pop[0].right = [];
     av.anl.clearWorldData(0);
@@ -1983,7 +2028,7 @@ require([
     av.dnd.graphPop0.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop1delete").onclick = function () {
-	av.debug.log += '\n -Button: pop1delete';
+    av.debug.log += '\n -Button: pop1delete';
     av.anl.pop[1].left = [];
     av.anl.pop[1].right = [];
     av.anl.clearWorldData(1);
@@ -1991,7 +2036,7 @@ require([
     av.dnd.graphPop1.selectAll().deleteSelectedNodes();
   }
   document.getElementById("pop2delete").onclick = function () {
-	av.debug.log += '\n -Button: pop2delete';
+    av.debug.log += '\n -Button: pop2delete';
     av.anl.pop[2].left = [];
     av.anl.pop[2].right = [];
     av.anl.clearWorldData(2);
@@ -2000,23 +2045,23 @@ require([
   }
   dijit.byId('pop0color').on("Change", function () {
     Rav.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
-  	av.debug.log += '\n -Button: pop0color';
+    av.debug.log += '\n -Button: pop0color';
     av.anl.AnaChartFn();
   });
   dijit.byId('pop1color').on("Change", function () {
-	  av.debug.log += '\n -Button: pop1color';
+    av.debug.log += '\n -Button: pop1color';
     av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
     av.anl.AnaChartFn();
   });
   dijit.byId('pop2color').on("Change", function () {
-	  av.debug.log += '\n -Button: pop2color';
+    av.debug.log += '\n -Button: pop2color';
     av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
     av.anl.AnaChartFn();
   });
 
   //Set Y-axis title and choose the correct array to plot
   dijit.byId("yLeftSelect").on("Change", function () {
-	  av.debug.log += '\n -Button: yLeftSelect';
+    av.debug.log += '\n -Button: yLeftSelect';
     av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yLeftSelect', 'left')  //numbers are world landing spots
@@ -2047,9 +2092,9 @@ require([
     //if the two heights are different then there is a scroll bar
     var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
     var hasScrollbar = 0 < ScrollDif;
-    if (av.debug.root) console.log('scroll',scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
-      document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
-      document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
+    if (av.debug.root) console.log('scroll', scrollDiv, hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
+      document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=', document.getElementById(htChangeDiv).scrollHeight,
+      document.getElementById(htChangeDiv).offsetHeight, document.getElementById(htChangeDiv).style.height);
 
     var divHt = document.getElementById(htChangeDiv).style.height.match(/\d/g);  //get 0-9 globally in the string  //http://stackoverflow.com/questions/10003683/javascript-get-number-from-string
     divHt = divHt.join(''); //converts array to string
@@ -2060,8 +2105,8 @@ require([
     //redraw the screen
     //av.ui.mainBoxSwap(page);
     if (av.debug.root) console.log('Afterscroll', hasScrollbar, document.getElementById(scrollDiv).scrollHeight,
-      document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=',document.getElementById(htChangeDiv).scrollHeight,
-      document.getElementById(htChangeDiv).offsetHeight , document.getElementById(htChangeDiv).style.height);
+      document.getElementById(scrollDiv).clientHeight, '; htChangeDiv=', document.getElementById(htChangeDiv).scrollHeight,
+      document.getElementById(htChangeDiv).offsetHeight, document.getElementById(htChangeDiv).style.height);
   }
 
   removeVerticalScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
@@ -2092,6 +2137,7 @@ require([
     }
     return new_obj;
   };
+  });
 
   //------- not in use = example
   //var hexColor = invertHash(av.color.dictColor);
@@ -2117,149 +2163,7 @@ require([
   //  return av.dnd.fzConfig.getItem(node.id).data;
   //});
   //console.log("orderedDataItems", orderedDataItems);
-
-//********************************************************
-//   Color Test Section - Temp this will all be removed later
-//********************************************************
-//structure to hold color test chips
-  var chips = {};
-  chips.name = [];
-  chips.genome = [];
-  chips.color = [];
-  chips.col = [];
-  chips.row = [];
-  chips.AvidaNdx = [];
-  chips.autoNdx = [];
-  chips.handNdx = [];
-  chips.howPlaced = [];
-  chips.domId = [];
-  chips.outColor = [];
-
-  var chck = {};       //data about the ckecker canvas
-  chck.cols = 20;  //Number of columns in the grid
-  chck.rows = 6;  //Number of rows in the grid
-  chck.sizeX = 300;  //size of canvas in pixels
-  chck.sizeY = 300;  //size of canvas in pixels
-  chck.flagSelected = false; //is a cell selected
-  chck.zoom = 1;     //magnification for zooming.
-  chck.outlineColor = "#FFFFFFs"
-
-  chck.CanvasCheck = document.getElementById("colorDemo");
-  chck.ctxt = chck.CanvasCheck.getContext("2d");
-
-  chck.CanvasChipScale = document.getElementById("scaleDemo");
-//console.log('Chip', CanvasChipScale);
-  chck.ctxSc = chck.CanvasChipScale.getContext("2d");
-  chck.CanvasChipScale.width = $("#demoHolder").innerWidth() - 6;
-
-  chck.CanvasCheck.width = $("#demoHolder").innerWidth() - 6;
-  chck.CanvasCheck.height = $("#demoHolder").innerHeight() - 16 - $("#scaleDemo").innerHeight();
-
-// Test of colors to see if a color blind person can tell the colors apart.
-
-//***************************** av.mouse functions for Color Test
-
-  function findShrew(evt) {
-    var shrewX = evt.offsetX - chck.marginX - chck.xOffset;
-    var shrewY = evt.offsetY - chck.marginY - chck.yOffset;
-    chck.selectedCol = Math.floor(shrewX / chck.cellWd);
-    chck.selectedRow = Math.floor(shrewY / chck.cellHt);
-    //console.log('Shrew col,row', chck.selectedCol, chck.selectedRow);
-  }
-
-  var shrew = {};
-  shrew.Dn = false;
-  shrew.DnGridPos = [];
-  shrew.UpGridPos = [];
-  shrew.DnOrganPos = [];
-  shrew.Move = false;
-  shrew.Drag = false;
-  shrew.chipNdx = -1;
-  shrew.chipSelected = false;
-  shrew.Picked = "";
-
-//shrew down on the grid
-  $(document.getElementById('colorDemo')).on('mousedown', function (evt) {
-    shrew.DnGridPos = [evt.offsetX, evt.offsetY];
-    shrew.Dn = true;
-    // Select if it is in the grid
-    findShrew(evt);
-    //console.log('colorDemo', shrew.DnGridPos, '; col,row=',chck.selectedCol,chck.selectedRow);
-    //check to see if in the grid part of the canvas
-    if (chck.selectedCol >= 0 && chck.selectedCol < chck.cols && chck.selectedRow >= 0 && chck.selectedRow < chck.rows) {
-      chck.flagSelected = true;
-      drawCheckerSetup(chck, chips);
-
-      //In the grid and selected. Now look to see contents of cell are dragable.
-      shrew.chipNdx = -1; //index into chips array if chip selected else -1;
-      if (true) {  //run has not started so look to see if cell contains ancestor
-        shrew.chipNdx = findchipNdx(chck, chips);
-        if (-1 < shrew.chipNdx) { //selected a chip, check for dragging
-          document.getElementById('colorDemo').style.cursor = 'copy';
-          shrew.Picked = 'chip';
-        }
-      }
-    }
-    else chck.flagSelected = false;
-  });
-
-//When av.mouse button is released, return cursor to default values
-  $(document).on('mouseup', function (evt) {
-    //console.log('av.mouseup anywhere in document -------------');
-    document.getElementById('colorDemo').style.cursor = 'default';
-    shrew.UpGridPos = [evt.offsetX, evt.offsetY];
-    shrew.Dn = false;
-    //console.log('av.mouseup, picked', shrew.Picked);
-    // --------- process if something picked to dnd ------------------
-    if ('chip' == shrew.Picked) {
-      shrew.Picked = "";
-      //console.log('before call findChipIndex');
-      findchipIndex(evt, chck, chips);
-    }
-    shrew.Picked = "";
-  });
-
-  function findchipIndex(evt, chck, chips) {
-    //console.log('in findchipIndex');
-    if ('colorDemo' == evt.target.id) { // chip moved to another location on grid canvas
-      shrew.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
-      //Move the ancestor on the canvas
-      //console.log("on checkCanvas")
-      //console.log('before', chck.selectedCol, chck.selectedRow);
-      findShrew(evt);
-      // look to see if this is a valid grid cell
-      if (chck.selectedCol >= 0 && chck.selectedCol < chck.cols && chck.selectedRow >= 0 && chck.selectedRow < chck.rows) {
-        //console.log('chipFound', chck.selectedCol, chck.selectedRow);
-        chips.col[shrew.chipNdx] = chck.selectedCol;
-        chips.row[shrew.chipNdx] = chck.selectedRow;
-        chips.AvidaNdx[chips.handNdx[ii]] = chips.col[chips.handNdx[ii]] + chck.cols * chips.row[chips.handNdx[ii]];
-        //console.log('mv', chips.col[shrew.chipNdx], chips.row[shrew.chipNdx], shrew.chipNdx);
-        //change from auto placed to hand placed if needed
-        if ('auto' == chips.howPlaced[shrew.chipNdx]) {
-          chips.howPlaced[shrew.chipNdx] = 'hand';
-          av.parents.makeHandAutoNdx();
-          //av.parents.placeAncestors(chips);
-        }
-        //console.log('auto', chips.autoNdx.length, chips.autoNdx, chips.name);
-        //console.log('hand', chips.handNdx.length, chips.handNdx);
-        drawCheckerSetup(chck, chips);
-      }
-    }  // close on canvas
-  }
-
-  var findchipNdx = function () {
-    var ChipedNdx = -1;
-    var chipsLngth = chips.name.length;
-    for (var ii = 0; ii < chipsLngth; ii++) {
-      if (matches([chck.selectedCol, chck.selectedRow], [chips.col[ii], chips.row[ii]])) {
-        ChipedNdx = ii;
-        //console.log('chip found in function', ChipedNdx);
-        break;  //found a chip no need to keep looking
-      }
-    }
-    return ChipedNdx;
-  }
-
+  /*
   var matches = function (aa, bb) {
     if (aa[0] == bb[0] && aa[1] == bb[1]) return true;
     else return false;
@@ -2267,7 +2171,9 @@ require([
 
 
 });
+*/
 
+// Web sites that looked use for for some task
 /* Capture Close event
  http://stackoverflow.com/questions/1631959/how-to-capture-the-browser-window-close-event
  http://stackoverflow.com/questions/5712195/js-listen-when-child-window-is-closed

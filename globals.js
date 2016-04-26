@@ -64,6 +64,7 @@ var traceObj = {}; //global that holds the traceObject that was sent from Avida
 //initialize gen (genome) object. Used in organism view
 av.ind = {};
 av.ind.cycle = 0;
+av.ind.update_timer = null;
 
 av.aww = {}; //avida web worker
 av.dcn = {}; //diagnostic console

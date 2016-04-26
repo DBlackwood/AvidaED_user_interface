@@ -32,7 +32,7 @@
   <script type="text/javascript" src="AvidaED.js"></script>
 
   <link rel="stylesheet" href="lib/jquery-ui/themes/smoothness/jquery-ui.css">
-
+  Set-Cookie: fileDownload=true; path=/
   <style>@import "themes/claro/document.css";
     @import "themes/claro/claro.css";
     @import "AvidaED.css";
@@ -56,7 +56,7 @@
       data-maq-appstates="{}" id="myapp"
       onresize="avResize()">
 <!-- http://stackoverflow.com/questions/20828799/creating-a-splash-page-in-html5 -->
-<div id="splash" style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A">
+<div id="splash" style="display:block; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A">
   <div align="center">
     <h1 style="color:whitesmoke">Avida-ED is loading . . .</h1>
     <img src="images/avidaGrid.gif" />
@@ -76,7 +76,7 @@
         <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspace" label="Save Current Workspace"></span>
-            <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspaceAs" label="Save Workspace As"></span>
+            <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspaceAs" label="Save Workspace Safari"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlOpenDefaultWS' label="Open Default Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlOpenWS' label="Open Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id='mnFlFzItem' label="Import Freezer Item"></span>
@@ -159,9 +159,10 @@
           </tr>
           </tbody>
         </table>
+        <button>Download The File</button>
+        <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
         <input type="button" id="testButton" intermediateChanges="false" value="Color test"
                iconClass="dijitNoIcon"></input>
-        <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
         -->
       </div>
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
@@ -864,6 +865,7 @@
         </div>
       </div>
     </div>
+    <!--
     <div data-dojo-type="dijit/layout/ContentPane" title="Test" id="testBlock" extractContent="false"
          preventCache="false" preload="false" refreshOnShow="false" closable="false"
          style="height: 97%; visibility:hidden;">
@@ -871,35 +873,15 @@
            style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
              refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" style="width: 50px;">
-          <button id="TestStartButton">
-            Start
-          </button>
-          <button id="TestPauseButton">
-            Pause
-          </button>
-          <button id="TestStepButton">
-            Step
-          </button>
-          <button id="TestStopButton">
-            Stop
-          </button>
+          <!-- content like text and buttons -- >
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
              refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false" id="demoHolder">
-          <!-- <textarea id="consoleTextArea"></textarea>
-           <br></br>
-           <textarea type="text" data-dojo-type="dijit/form/Textarea" id="conDigTextArea" intermediateChanges="false" rows="3" trim="false"
-                      uppercase="false" lowercase="false" propercase="false" style="width: 200px; height: auto;"></textarea>
-                      -->
-          <div id="checkerHolder">
-            <canvas id="colorDemo" width="300" height="300" style="border:1px solid #DDDDDD;"></canvas>
-          </div>
-          <div id="scaleHolder">
-            <canvas id="scaleDemo" width="300" height="30" style="border:1px solid #DDDDDD;"></canvas>
-          </div>
+          <!-- more content like a grid -- >
         </div>
       </div>
     </div>
+    -->
   </div>
 </div>
 

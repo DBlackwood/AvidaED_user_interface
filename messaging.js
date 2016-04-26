@@ -48,7 +48,6 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webPopulationStats':
         av.grd.popStatsMsg = msg;
-        console.log('webPopulationStat start update=', msg.update);
         stub = 'name: ' + msg.name.toString() + '; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
              + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
              + '; Met:' + msg.ave_metabolic_rate.formatNum(2) + '; Num:' + msg.organisms.formatNum(2);
@@ -65,7 +64,7 @@ av.msg.readMsg = function (ee) {
         }
 
         //Is there another update
-        console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
+        //console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
         if (av.ui.autoStopFlag) {
           if (av.ui.autoStopValue <= av.grd.popStatsMsg.update) {
             //make pause state
@@ -87,23 +86,13 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webGridData':
         av.grd.msg = msg;
-        console.log('webGridData start update=', msg.update);
         stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         av.msg.sync('webGridData:' + msg.update.toString());
-        console.log('page=',av.ui.page, '; subpage=',av.ui.subpage);
         if ('populationBlock' === av.ui.page && 'map' === av.ui.subpage) {
           av.debug.log += '\n -Call drawGridSetupFn';
           av.grd.drawGridSetupFn();
         }
-        //if (av.debug.msgOrder) console.log('webGridData length', av.ptd.aveFit.length);
-        //if (av.debug.msgOrder) console.log('ges',av.grd.msg.gestation.data);
-        //if (av.debug.msgOrder) console.log('anc',av.grd.msg.ancestor.data);
-        //if (av.debug.msgOrder) console.log('nan',av.grd.msg.nand.data);
-        //if (av.debug.msgOrder) console.log('out',av.grd.out);
-        //console.log('webGridData: update', msg.update);
-        //av.msg.stepUpdate();
-        console.log('webGridData END update=', msg.update);
         av.debug.log += '\n - - end webGridData: update:' + av.grd.msg.update;
         break;
       case 'webOrgDataByCellID':
@@ -166,10 +155,20 @@ av.msg.readMsg = function (ee) {
   else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg) + 'endelse';
 };
 
-/* web pages related to killing re-starting a web-worker
- http://www.w3schools.com/html/html5_webworkers.asp
- http://stackoverflow.com/questions/29181021/how-to-stop-javascript-in-webworker-from-outside
- */
+av.msg.stepUpdate = function () {
+  'use strict';
+  setTimeout(function () {
+    av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
+      + av.msg.previousUpdate  + '; popStatsupdate' + av.grd.popStatsMsg.update;
+    //console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate, '; pop', av.grd.popStatsMsg.update);
+    if ("Pause" == document.getElementById("runStopButton").innerHTML) {
+      av.msg.previousUpdate = av.grd.popStatsMsg.update;
+      var request = {'type': 'stepUpdate'}
+      av.aww.uiWorker.postMessage(request);
+      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
+    }
+  }, 1);  //number is time in msec for a delay
+}
 
 av.msg.importConfigExpr = function () {
   'use strict';
@@ -347,21 +346,6 @@ av.msg.requestGridData = function () {
   }
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
-}
-
-av.msg.stepUpdate = function () {
-  'use strict';
-  setTimeout(function () {
-	av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
-	+ av.msg.previousUpdate  + '; popStatsupdate' + av.grd.popStatsMsg.update;
-    console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate, '; pop', av.grd.popStatsMsg.update);
-    if ("Pause" == document.getElementById("runStopButton").innerHTML) {
-        av.msg.previousUpdate = av.grd.popStatsMsg.update;
-        var request = {'type': 'stepUpdate'}
-        av.aww.uiWorker.postMessage(request);
-        av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
-    }
-  }, 100);  //number is time in msec for a delay
 }
 
 av.msg.sendData = function () {}
@@ -671,3 +655,9 @@ function doDbReady(fio) {
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
+
+/* web pages related to killing re-starting a web-worker
+ http://www.w3schools.com/html/html5_webworkers.asp
+ http://stackoverflow.com/questions/29181021/how-to-stop-javascript-in-webworker-from-outside
+ */
+
