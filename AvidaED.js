@@ -65,13 +65,13 @@ require([
   "dojox/charting/action2d/MouseZoomAndPan",
 //  "dojox/charting/Theme",
   "dojox/charting/themes/Wetland",
-  "lib/Blob.js",
-  "lib/jszip.js",
-  "lib/FileSaver.js",
-  //"lib/jquery.fileDownload.js",
   "dojo/ready",
   "jquery",
   "jquery-ui",
+  "lib/Blob.js",
+  "lib/jszip.js",
+  "lib/FileSaver.js",
+  "lib/jquery.fileDownload.js",
   "messaging.js",
   "fileDataRead.js",
   "fileDataWrite.js",
@@ -91,8 +91,8 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
-             Blob, JSZip, FileSaver,  //fileDownload,
-             ready, $, jqueryui) {
+             ready, $, jqueryui,
+             Blob, JSZip, FileSaver, fileDownload) {
   "use strict";
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
@@ -299,6 +299,7 @@ require([
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
+
   /*
    //With jquery.fileDownload.js custom use with promises
    $(document).on("click", "a.fileDownloadPromise", function () {
@@ -308,18 +309,42 @@ require([
 
    return false; //this is critical to stop the click event which will trigger a normal file download
    });
+*/
+  $(fileDownloadButton).click(function () {
+    if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
+    if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
+    var end = av.fio.userFname.substring(av.fio.userFname.length - 4);
+    if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
+    console.log('end', end, '; userFname', av.fio.userFname);
+    var WSzip = new av.fio.JSZip();
+    console.log('number of files', av.utl.objectLength(av.fzr.file));
+    var numFiles = 0;
+    for (var fname in av.fzr.file) {
+      WSzip.file('av.avidaedworkspace/' + fname, av.fzr.file[fname]);
+      numFiles++;
+    }
+    var blob = WSzip.generate({type: "blob"});
+    console.log('wrote blob');
+    //var data = { x: 42, s: "hello, world", d: new Date() };
+    //var json = JSON.stringify(data);
+    //var blob = new Blob([json], {type: "octet/stream"});
+    //setTimeout(function () {
+      var tmpUrl = window.URL.createObjectURL(blob);
+      console.log('inside timeout');
+      //$.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
+      $.fileDownload(tmpUrl, {
+        successCallback: function (url) {
+          alert('You just got a file download dialog or ribbon for this URL :' + url);
+        },
+        failCallback: function (html, url) {
+          alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
+          );
+        }
+      });
+      window.URL.revokeObjectURL(tmpUrl);
+    //}, 2000);  //number is time in msec for a delay
+  });
 
-   $(document).click(function () {
-   $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
-   successCallback: function (url) {
-   alert('You just got a file download dialog or ribbon for this URL :' + url);
-   },
-   failCallback: function (html, url) {
-   alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
-   );
-   }});
-   });
-   */
   // Save current workspace with a new name(mnFzSaveWorkspaceAs)
   document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
     av.debug.log += '\n -Button: mnFlSaveWorkspaceAs';

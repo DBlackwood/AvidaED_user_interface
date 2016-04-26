@@ -2,49 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/FileSaver.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c10/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c10/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c10/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c10/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c10/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c10/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c10/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c7/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c7/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c7/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c7/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c7/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c7/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c7/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c8/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c8/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c8/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c8/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c8/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c8/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c8/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c9/ancestors" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c9/ancestors_manual" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c9/avida.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c9/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c9/environment.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c9/events.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/c9/instset.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/g4/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/g4/genome.seq" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/g5/entryname.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testFiles_not4git_orServer/av.avidaedworkspace/g5/genome.seq" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js.mem" afterPath="$PROJECT_DIR$/avida.js.mem" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ColorTest.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/download.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/FileSaver.js" afterPath="$PROJECT_DIR$/lib/FileSaver.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js" afterPath="$PROJECT_DIR$/avida.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileIO.js" afterPath="$PROJECT_DIR$/fileIO.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/organismView.js" afterPath="$PROJECT_DIR$/organismView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popControls.js" afterPath="$PROJECT_DIR$/popControls.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="av_ui.iws" />
@@ -69,8 +31,8 @@
       <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.974359">
-              <caret line="879" column="44" selection-start-line="879" selection-start-column="44" selection-end-line="879" selection-end-column="44" />
+            <state vertical-scroll-proportion="-3.6666667">
+              <caret line="161" column="66" selection-start-line="161" selection-start-column="66" selection-end-line="161" selection-end-column="66" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -112,8 +74,8 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2325926">
-              <caret line="502" column="23" selection-start-line="502" selection-start-column="18" selection-end-line="502" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.8888889">
+              <caret line="344" column="6" selection-start-line="344" selection-start-column="6" selection-end-line="344" selection-end-column="6" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -146,8 +108,8 @@
       <file leaf-file-name="fileIO.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileIO.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="213" column="30" selection-start-line="213" selection-start-column="30" selection-end-line="213" selection-end-column="30" />
+            <state vertical-scroll-proportion="-16.11111">
+              <caret line="247" column="0" selection-start-line="234" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -177,7 +139,7 @@
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="66" column="7" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="7" />
+              <caret line="20" column="58" selection-start-line="20" selection-start-column="58" selection-end-line="20" selection-end-column="58" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -188,8 +150,8 @@
       <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/messaging.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="157" column="33" selection-start-line="157" selection-start-column="33" selection-end-line="157" selection-end-column="33" />
+            <state vertical-scroll-proportion="-13.333333">
+              <caret line="169" column="46" selection-start-line="169" selection-start-column="3" selection-end-line="169" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -250,12 +212,12 @@
         <option value="$PROJECT_DIR$/mouse.js" />
         <option value="$PROJECT_DIR$/dojoDnd.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
-        <option value="$PROJECT_DIR$/globals.js" />
         <option value="$PROJECT_DIR$/organismView.js" />
         <option value="$PROJECT_DIR$/lib/FileSaver.js" />
         <option value="$PROJECT_DIR$/fileIO.js" />
-        <option value="$PROJECT_DIR$/messaging.js" />
+        <option value="$PROJECT_DIR$/globals.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
+        <option value="$PROJECT_DIR$/messaging.js" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
       </list>
     </option>
@@ -269,8 +231,7 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1" />
-    <option name="y" value="74" />
+    <option name="y" value="24" />
     <option name="width" value="1440" />
     <option name="height" value="822" />
   </component>
@@ -422,26 +383,26 @@
     <option name="totallyTimeSpent" value="6715000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="74" width="1440" height="822" extended-state="0" />
+    <frame x="0" y="24" width="1440" height="822" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19957082" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20243205" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2780822" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32955465" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2780822" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -486,18 +447,29 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="58" selection-start-line="20" selection-start-column="58" selection-end-line="20" selection-end-column="58" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="157" column="33" selection-start-line="157" selection-start-column="33" selection-end-line="157" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/messaging.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="360" column="75" selection-start-line="360" selection-start-column="75" selection-end-line="360" selection-end-column="75" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ColorTest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="40" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -679,13 +651,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ColorTest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="132" column="25" selection-start-line="132" selection-start-column="25" selection-end-line="132" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/placeParent.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -776,7 +741,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="64" column="2" selection-start-line="64" selection-start-column="2" selection-end-line="64" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -806,16 +770,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="66" column="7" selection-start-line="66" selection-start-column="7" selection-end-line="66" selection-end-column="7" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/organismView.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -831,26 +785,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileIO.js">
+    <entry file="file://$PROJECT_DIR$/globals.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="213" column="30" selection-start-line="213" selection-start-column="30" selection-end-line="213" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="157" column="33" selection-start-line="157" selection-start-column="33" selection-end-line="157" selection-end-column="33" />
-          <folding />
+          <caret line="20" column="58" selection-start-line="20" selection-start-column="58" selection-end-line="20" selection-end-column="58" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.974359">
-          <caret line="879" column="44" selection-start-line="879" selection-start-column="44" selection-end-line="879" selection-end-column="44" />
+        <state vertical-scroll-proportion="-3.6666667">
+          <caret line="161" column="66" selection-start-line="161" selection-start-column="66" selection-end-line="161" selection-end-column="66" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -888,10 +836,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fileIO.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.11111">
+          <caret line="247" column="0" selection-start-line="234" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.333333">
+          <caret line="169" column="46" selection-start-line="169" selection-start-column="3" selection-end-line="169" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2325926">
-          <caret line="502" column="23" selection-start-line="502" selection-start-column="18" selection-end-line="502" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.8888889">
+          <caret line="344" column="6" selection-start-line="344" selection-start-column="6" selection-end-line="344" selection-end-column="6" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
