@@ -69,7 +69,7 @@ require([
   "jquery",
   "jquery-ui",
   "lib/Blob.js",
-  "lib/jszip.js",
+  "lib/jszip.min.js",
   "lib/FileSaver.js",
   "lib/jquery.fileDownload.js",
   "messaging.js",
