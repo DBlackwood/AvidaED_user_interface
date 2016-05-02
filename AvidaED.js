@@ -299,17 +299,20 @@ require([
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
-
+  // works in safari
   /*
-   //With jquery.fileDownload.js custom use with promises
-   $(document).on("click", "a.fileDownloadPromise", function () {
-   $.fileDownload($(this).prop('href'))
-   .done(function () { alert('File download a success!'); })
-   .fail(function () { alert('File download failed!'); });
-
-   return false; //this is critical to stop the click event which will trigger a normal file download
-   });
+  $(fileDownloadButton).click(function () {
+    $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
+      successCallback: function (url) {
+        alert('You just got a file download dialog or ribbon for this URL :' + url);
+      },
+      failCallback: function (html, url) {
+        alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
+        );
+      }});
+  });
 */
+
   $(fileDownloadButton).click(function () {
     if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
     if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
@@ -329,8 +332,9 @@ require([
     //var json = JSON.stringify(data);
     //var blob = new Blob([json], {type: "octet/stream"});
     //setTimeout(function () {
+      //var tmpUrl = window.URL.createObjectURL(blob);
       var tmpUrl = window.URL.createObjectURL(blob);
-      console.log('inside timeout');
+      console.log('inside timeout: timpURL=', tmpUrl);
       //$.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
       $.fileDownload(tmpUrl, {
         successCallback: function (url) {
@@ -364,31 +368,31 @@ require([
     mnHpAboutDialog.show();
   });
 
-  var HardwareDialog = new Dialog({
+  av.ui.HardwareDialog = new Dialog({
     title: "Avida : A Guided Tour of an Ancestor and its Hardware",
     id: "HardwareDialog",
     href: "cpu_tour.html"
-    //hide: function() {HardwareDialog.destroy()}
+    //hide: function() {av.ui.HardwareDialog.destroy()}
     //style: "width: 600px; height: 400px"
   });
 
-  domStyle.set(HardwareDialog.containerNode, {
+  domStyle.set(av.ui.HardwareDialog.containerNode, {
     position: 'relative'
   });
 
   dijit.byId('mnHpHardware').on("Click", function () {
     av.debug.log += '\n -Button: mnHpHardware';
-    if (!HardwareDialog) {
-      HardwareDialog = new Dialog({
+    if (!av.ui.HardwareDialog) {
+      av.ui.HardwareDialog = new Dialog({
         title: "Avida : A Guided Tour of an Ancestor and its Hardware",
         id: "HardwareDialog",
         href: "cpu_tour.html"
-        //hide: function() {HardwareDialog.destroy()}
+        //hide: function() {av.ui.HardwareDialog.destroy()}
         //style: "width: 600px; height: 400px"
       });
     }
-    //console.log(HardwareDialog);
-    HardwareDialog.show();
+    //console.log(av.ui.HardwareDialog);
+    av.ui.HardwareDialog.show();
   });
 
   dijit.byId('mnHpProblem').on("Click", function () {
@@ -866,7 +870,7 @@ require([
     dijit.byId("mnCnRun").attr("disabled", true);
   }
 
-  function runPopFn() {
+  av.ptd.runPopFn = function () {
     //check for ancestor organism in configuration data
     var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
     //console.log("namelist", namelist);
@@ -909,10 +913,10 @@ require([
     //update screen based on data from C++
   }
 
-  function runStopFn() {
+  av.ptd.runStopFn = function () {
     if ("Run" == document.getElementById("runStopButton").innerHTML) {
       av.ptd.makeRunState();
-      runPopFn();
+      av.ptd.runPopFn();
     } else {
       //console.log('about to call av.ptd.makePauseState()');
       //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
@@ -925,7 +929,7 @@ require([
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById("runStopButton").onclick = function () {
     av.debug.log += '\n -Button: runStopButton';
-    runStopFn();
+    av.ptd.runStopFn();
   };
 
   dijit.byId("mnCnPause").on("Click", function () {
@@ -940,7 +944,7 @@ require([
   dijit.byId("mnCnRun").on("Click", function () {
     av.debug.log += '\n -Button: mnCnRun';
     av.ptd.makeRunState();
-    runPopFn();
+    av.ptd.runPopFn();
   });
 
   /******************************************* New Button and new Dialog **********************************************/
@@ -1282,7 +1286,7 @@ require([
     av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
     av.mouse.Dn = true;
     // Select if it is in the grid
-    findSelected(evt, av.grd);
+    av.mouse.findSelected(evt, av.grd);
     //check to see if in the grid part of the canvas
     if (av.debug.mouse) console.log('av.mousedown', av.grd.selectedNdx);
     //if (av.debug.mouse) console.log('grid Canvas; selectedNdx', av.grd.selectedNdx,'________________________________');
@@ -1297,7 +1301,7 @@ require([
       //In the grid and selected. Now look to see contents of cell are dragable.
       av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
       if ('prepping' == av.grd.runState) {  //run has not started so look to see if cell contains ancestor
-        av.mouse.ParentNdx = findParentNdx(av.parents);
+        av.mouse.ParentNdx = av.mouse.findParentNdx(av.parents);
         if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
         if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
           document.getElementById('organIcon').style.cursor = 'copy';
@@ -1354,7 +1358,7 @@ require([
    //document.getElementById('trashCan').style.cursor = 'copy';
    //console.log('av.mouseMove cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('trashCan').style.cursor);
    //if (av.debug.mouse) console.log('________________________________av.mousemove');
-   if (!nearly([evt.offsetX, evt.offsetY], av.mouse.DnGridPos)) {
+   if (!av.mouse.nearly([evt.offsetX, evt.offsetY], av.mouse.DnGridPos)) {
    //if (av.debug.mouse) console.log('________________________________');
    //if (av.debug.mouse) console.log("gd draging");
    if (av.mouse.Dn) av.mouse.Drag = true;
@@ -1483,7 +1487,7 @@ require([
       //console.log('after drawing scale or legend. update=',av.grd.oldUpdate);
 
       document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
-      //removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
+      //av.ui.removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
       dijit.byId('populationBlock').resize();
       //console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
 
@@ -1861,7 +1865,7 @@ require([
   // ****************************************************************
   dijit.byId("mnCnOrganismTrace").on("Click", function () {
     av.debug.log += '\n -Button: mnCnOrganismTrace';
-    traceSelected(av.dnd, av.fzr, av.grd);
+    av.mouse.traceSelected(av.dnd, av.fzr, av.grd);
     av.ui.mainBoxSwap("organismBlock");
     organismCanvasHolderSize();
     var height = ($("#rightDetail").innerHeight() - 375) / 2;
@@ -1890,7 +1894,7 @@ require([
   /*                  Canvas for Organsim View (genome)
    /* ************************************************************** */
 
-  av.gen = clearGen(av.gen);
+  av.gen = av.ind.clearGen(av.gen);
   //set canvas size; called from many places
   function organismCanvasHolderSize() {
     av.ind.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
@@ -1950,7 +1954,7 @@ require([
     av.msg.doOrgTrace();
   });
 
-  function orgRunFn() {
+  av.ind.orgRunFn = function () {
     if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
       av.ind.cycle++;
       dijit.byId("orgCycle").set("value", av.ind.cycle);
@@ -1965,7 +1969,7 @@ require([
     av.debug.log += '\n -Button: orgRun';
     if ("Run" == dijit.byId("orgRun").get("label")) {
       dijit.byId("orgRun").set("label", "Stop");
-      av.ind.update_timer = setInterval(orgRunFn, 100);
+      av.ind.update_timer = setInterval(av.ind.orgRunFn, 100);
     }
     else {
       av.ind.orgStopFn();
@@ -2112,7 +2116,7 @@ require([
   //used to set the height so the data just fits. Done because different monitor/browser combinations require a diffent height in pixels.
   //may need to take out as requires loading twice now.
 
-  function removeVerticalScrollbar(scrollDiv, htChangeDiv, page) {
+  av.ui.removeVerticalScrollbar = function (scrollDiv, htChangeDiv, page) {
     //https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
     //if the two heights are different then there is a scroll bar
     var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
@@ -2134,10 +2138,10 @@ require([
       document.getElementById(htChangeDiv).offsetHeight, document.getElementById(htChangeDiv).style.height);
   }
 
-  removeVerticalScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
-  removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
-  removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
-  removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
+  av.ui.removeVerticalScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
+  av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
+  av.ui.removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
+  av.ui.removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
   av.ui.mainBoxSwap('populationBlock');
 
   av.grd.popChartFn();
@@ -2153,7 +2157,7 @@ require([
   }
 
   //http://nelsonwells.net/2011/10/swap-object-key-and-values-in-javascript/
-  var invertHash = function (obj) {
+  av.ui.invertHash = function (obj) {
     var new_obj = {};
     for (var prop in obj) {
       if (obj.hasOwnProperty(prop)) {
@@ -2165,7 +2169,7 @@ require([
   });
 
   //------- not in use = example
-  //var hexColor = invertHash(av.color.dictColor);
+  //var hexColor = av.ui.invertHash(av.color.dictColor);
   //var theColor = hexColor["#000000"];  //This should get 'Black'
   //console.log("theColor=", theColor);
 

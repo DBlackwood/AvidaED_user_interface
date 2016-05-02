@@ -31,7 +31,7 @@ av.msg.readMsg = function (ee) {
       case 'runPause':
         if (true != msg["Success"]) {
           if (av.debug.msg) console.log("Error: ", msg);  // msg failed
-          runStopFn();  //flip state back since the message failed to get to Avida
+          av.ptd.runStopFn();  //flip state back since the message failed to get to Avida
         }
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
@@ -647,6 +647,7 @@ av.msg.fillColorBlock = function (msg) {  //Draw the color block
   }
 
 // ------------------------------------------------ not in use ---------------------------------------------------------
+/*
 function doDbReady(fio) {
   'use strict';
   var request = {
@@ -655,7 +656,7 @@ function doDbReady(fio) {
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
 }
-
+*/
 /* web pages related to killing re-starting a web-worker
  http://www.w3schools.com/html/html5_webworkers.asp
  http://stackoverflow.com/questions/29181021/how-to-stop-javascript-in-webworker-from-outside

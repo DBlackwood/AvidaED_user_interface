@@ -5,9 +5,7 @@ av.ind.orgStopFn = function () {
   dijit.byId("orgRun").set("label", "Run");
 }
 
-
-
-var clearGen = function(gen) {
+av.ind.clearGen = function(gen) {
   'use strict';
   av.ind.settingsChanged = false;
   av.ind.cycle = 0;
@@ -156,7 +154,7 @@ function DrawTimeline(obj, gen) {
   av.ind.ctx.fill();
 }
 
-function drawBitStr(context, row, bitStr) {
+av.ind.drawBitStr = function(context, row, bitStr) {
   var recWidth = 5;   //The width of the rectangle, in pixels
   var recHeight = 5;  //The height of the rectangle, in pixels
   var xx; //The x-coordinate of the upper-left corner of the rectangle
@@ -393,23 +391,23 @@ function updateOrganTrace(obj, gen) {
     }
   }
   //Draw buffers ---------------------------------------------------
-  //drawBitStr (name, row, bitStr);
+  //av.ind.drawBitStr (name, row, bitStr);
   var lngth = obj[av.ind.cycle].buffers.input.length;
   for (var ii = 0; ii < lngth; ii++) {
-    drawBitStr(av.ind.bufferCtx, ii, obj[av.ind.cycle].buffers.input[ii]);
+    av.ind.drawBitStr(av.ind.bufferCtx, ii, obj[av.ind.cycle].buffers.input[ii]);
   }
-  drawBitStr(av.ind.registerCtx, 0, obj[av.ind.cycle].registers['ax']);
-  drawBitStr(av.ind.registerCtx, 1, obj[av.ind.cycle].registers['bx']);
-  drawBitStr(av.ind.registerCtx, 2, obj[av.ind.cycle].registers['cx']);
+  av.ind.drawBitStr(av.ind.registerCtx, 0, obj[av.ind.cycle].registers['ax']);
+  av.ind.drawBitStr(av.ind.registerCtx, 1, obj[av.ind.cycle].registers['bx']);
+  av.ind.drawBitStr(av.ind.registerCtx, 2, obj[av.ind.cycle].registers['cx']);
   //console.log("A", obj[av.ind.cycle].buffers);
   for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
     //console.log(ii, obj[av.ind.cycle].buffers["stack A"][ii]);
-    drawBitStr(av.ind.AstackCtx, ii, obj[av.ind.cycle].buffers["stack A"][ii]);
+    av.ind.drawBitStr(av.ind.AstackCtx, ii, obj[av.ind.cycle].buffers["stack A"][ii]);
   }
   for (var ii = 0; ii < 2; ii++) { //only showing the top 2 in the stack of 10
-    drawBitStr(av.ind.BstackCtx, ii, obj[av.ind.cycle].buffers["stack B"][ii]);
+    av.ind.drawBitStr(av.ind.BstackCtx, ii, obj[av.ind.cycle].buffers["stack B"][ii]);
   }
-  drawBitStr(av.ind.outputCtx, 0, obj[av.ind.cycle].buffers.output[av.ind.mom]);
+  av.ind.drawBitStr(av.ind.outputCtx, 0, obj[av.ind.cycle].buffers.output[av.ind.mom]);
   // update details
   updateTimesPerformed(obj, gen);   //Update Times functions are performed.
   writeInstructDetails(obj, gen);   //Write Instruction Details

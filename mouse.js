@@ -1,4 +1,4 @@
-var nearly = function (aa, bb) {
+av.mouse.nearly = function (aa, bb) {
   'use strict';
   var epsilon = 3;
   var distance = Math.sqrt(Math.pow(aa[0] - bb[0], 2) + Math.pow(aa[1] - bb[1], 2));
@@ -6,7 +6,7 @@ var nearly = function (aa, bb) {
   else return true;
 };
 
-var findParentNdx = function (parents) {
+av.mouse.findParentNdx  = function (parents) {
   'use strict';
   var MomNdx = -1;
   var lngth = av.parents.name.length;
@@ -21,7 +21,7 @@ var findParentNdx = function (parents) {
   return MomNdx;
 };
 
-function findSelected(evt, grd) {
+av.mouse.findSelected = function (evt, grd) {
   'use strict';
   var mouseX = evt.offsetX - av.grd.marginX - av.grd.xOffset;
   var mouseY = evt.offsetY - av.grd.marginY - av.grd.yOffset;
@@ -113,7 +113,7 @@ av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
   return target;
 };
 
-function traceSelected(dnd, fzr, grd) {
+av.mouse.traceSelected = function(dnd, fzr, grd) {
   "use strict";
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   dnd.activeOrgan.sync();   //should be done after insertion or deletion
@@ -136,7 +136,7 @@ av.mouse.kidMouse = function (evt, dnd, fzr, grd){
     if ('organIcon' == evt.target.id) {
       target = 'organIcon';
       av.debug.log += '\n -moved to Organism Icon';
-      traceSelected(dnd, fzr, grd);
+      av.mouse.traceSelected(dnd, fzr, grd);
     }
     else { // look for target in the freezer
       var found = false;
@@ -189,7 +189,7 @@ av.mouse.ParentMouse = function (evt, av) {
   if ('gridCanvas' == evt.target.id) { // parent moved to another location on grid canvas
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY]; //not used for now
     //Move the ancestor on the canvas
-    findSelected(evt, av.grd);
+    av.mouse.findSelected(evt, av.grd);
     // look to see if this is a valid grid cell
     if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
       if (av.debug.mouse) console.log('parentMouse, selected,',av.grd.selectedCol, av.grd.selectedRow, av.grd.selectedNdx);
@@ -238,7 +238,7 @@ av.mouse.ParentMouse = function (evt, av) {
   }
 }
 
-function fromAncestorBoxRemove(removeName) {
+av.mouse.fromAncestorBoxRemove = function (removeName) {
   'use strict';
   var domItems = Object.keys(dnd.ancestorBox.map);
   //console.log("domItems=", domItems);
