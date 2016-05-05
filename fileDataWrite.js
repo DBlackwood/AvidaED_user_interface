@@ -268,3 +268,20 @@ av.fwt.removeFzrItem = function(dir, type){
       break;
   }
 }
+
+av.fwt.writeCSV = function() {
+  "use strict";
+  //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
+  //  '@default at update 141 Average Metabolic Rate,@default at update 141 Count of Organisms in the World';
+  av.fwt.csvStrg = 'Update,' +  av.fzr.actConfig.name + ' at update ' + av.grd.popStatsMsg.update + ' Average Fitness,'
+    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Generation Length,'
+    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Metabolic Rate,'
+    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Count of Organisms in the World';
+  var lngth = av.ptd.aveFit.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    av.fwt.csvStrg += '\n' + ii + ',' + av.ptd.aveFit[ii].formatNum(6) + ',' + av.ptd.aveGnl[ii].formatNum(6) + ',' + av.ptd.aveMet[ii].formatNum(6) + ',' + av.ptd.aveNum[ii];
+  }
+  console.log(av.fwt.csvStrg);
+  av.fio.fzSaveCsvfn();
+}
+

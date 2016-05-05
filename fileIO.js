@@ -231,6 +231,14 @@ av.fio.fzSaveWorkspaceFn = function () {
   av.fzr.saveUpdateState('maybe');
 }
 
+av.fio.fzSaveCsvfn = function () {
+  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = prompt('Choose a name for your Workspace', av.fzr.actConfig.name+'@' + av.grd.popStatsMsg.update);
+  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = 'avidaDataRecorder.csv';
+  var end = av.fio.csvFileName.substring(av.fio.csvFileName.length-4);
+  //seems to expect blob and this is plain text
+  var fsaver = saveAs(av.fwt.strg, av.fio.csvFileName);
+};
+
 av.fio.fzSaveCurrentWorkspaceFn = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
   if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;

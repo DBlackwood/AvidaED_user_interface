@@ -185,6 +185,7 @@ av.aww.uiWorker = null;
 av.fio.fileReadingDone = false;
 av.fio.defaultUserFname = 'avidaWS.avidaedworkspace.zip';
 av.fio.userFname = av.fio.defaultUserFname;
+av.fio.csvFileName = 'avidaDataRecorder.cvs';
 av.fio.useDefault = true;
 av.fio.mailAddress = 'avida-ed-development@googlegroups.com';  //'mailto:diane.blackwood@gmail.com'
 

@@ -64,7 +64,7 @@ require([
   "dojox/charting/plot2d/Grid",
   "dojox/charting/action2d/MouseZoomAndPan",
 //  "dojox/charting/Theme",
-  "dojox/charting/themes/Wetland",
+//  "dojox/charting/themes/Wetland",
   "dojo/ready",
   "jquery",
   "jquery-ui",
@@ -76,21 +76,21 @@ require([
   "fileDataRead.js",
   "fileDataWrite.js",
   "fileIO.js",
-  "PopulationGrid.js",
+  "populationGrid.js",
   "organismView.js",
   'dojoDnd.js',
   'popControls.js',
   'mouse.js',
-  'restartAvida.js',
-  'diagnosticConsole.js',
-  // 'ndxDB.js',
+  'mouseDown.js',
+  //'restartAvida.js',
+  //'diagnosticConsole.js',
   "dojo/domReady!"
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, Wetland,
+             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, //Wetland,
              ready, $, jqueryui,
              Blob, JSZip, FileSaver, fileDownload) {
   "use strict";
@@ -299,7 +299,7 @@ require([
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
-  // works in safari
+  // works in safari only in jsfiddle and the file is txt or pdf
   /*
   $(fileDownloadButton).click(function () {
     $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
@@ -313,7 +313,20 @@ require([
   });
 */
 
+  try {
+    var isFileSaverSupported = !!new Blob;
+  } catch (e) {
+    console.log('filesaver supported?', e);
+  }
+
   $(fileDownloadButton).click(function () {
+    //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    //saveAs(blob, "hello world.txt");
+
+    var builder = new WebKitBlobBuilder();
+    builder.append(data);
+    var blob = builder.getBlob();
+
     if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
     if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
     var end = av.fio.userFname.substring(av.fio.userFname.length - 4);
@@ -332,7 +345,6 @@ require([
     //var json = JSON.stringify(data);
     //var blob = new Blob([json], {type: "octet/stream"});
     //setTimeout(function () {
-      //var tmpUrl = window.URL.createObjectURL(blob);
       var tmpUrl = window.URL.createObjectURL(blob);
       console.log('inside timeout: timpURL=', tmpUrl);
       //$.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
@@ -358,6 +370,12 @@ require([
 
     //av.fio.fzSaveWorkspaceFn();
   };
+
+  dijit.byId("mnFlExportData").on("Click", function () {
+    'use strict';
+    av.debug.log += '\n -Button: mnFlExportData';
+    av.fwt.writeCSV();
+  });
 
   if (av.debug.root) console.log('before Help drop down menu');
   //--------------------------------------------------------------------------------------------------------------------
@@ -1157,79 +1175,7 @@ require([
 
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
-    av.mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
-    av.mouse.Dn = true;
-    av.mouse.Picked = '';
-    var distance, jj, hh;
-    var ith = -10;
-    var isRightMB;
-    //http://stackoverflow.com/questions/6926963/understanding-the-window-event-property-and-its-usage
-    evt = evt || window.event;  //for IE since IE does not return an event
-    // also there is no e.target property in IE.
-    // instead IE uses window.event.srcElement
-    //var target = e.target || e.srcElement;  //for IE since IE does not have a target.  //not using target here
-    //is a right click instead of a left click?
-    if ("which" in evt)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
-      isRightMB = evt.which == 3;
-    else if ("button" in e)  // IE, Opera
-      isRightMB = evt.button == 2;
-    if (av.traceObj) {
-      if (av.ind.didDivide) {  //offpsring exists
-        distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.cx[1], 2) + Math.pow(evt.offsetY - av.ind.cy[1], 2));
-        if (25 > distance) {
-          for (var dir in av.fzr.domid) {
-            if ('g' == dir.substring(0, 1)) document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';
-          }
-          document.getElementById('organIcon').style.cursor = 'copy';
-          document.getElementById('organCanvas').style.cursor = 'copy';
-          document.getElementById('mainBC').style.cursor = 'move';
-          av.mouse.Picked = "offspring";
-          if (av.debug.ind) console.log('av.ind.dna', av.ind.dna);
-        }
-      }
-      if ('offspring' != av.mouse.Picked) {
-        av.debug.log += '\n -Click on Offspring';
-        if (av.debug.ind) {
-        }
-        var lngth = av.traceObj[av.ind.cycle].memSpace.length;
-        for (var gg = 0; gg < lngth; gg++) { //gg is generation
-          var iiLngth = av.ind.dna[gg].length;
-          for (var ii = 0; ii < iiLngth; ii++) {  //ii is the isntruction number
-            distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.smCenX[gg][ii], 2) + Math.pow(evt.offsetY - av.ind.smCenY[gg][ii], 2));
-            if (av.ind.smallR >= distance) {
-              //console.log('found, gg, ii', gg, ii, '; xy',av.ind.smCenX[gg][ii],av.ind.smCenY[gg][ii] );
-              ith = ii;
-              hh = gg;
-              av.mouse.Picked = 'instruction';
-              break;
-            }
-          }
-        }
-      }
-      var instructionNum = ith + 1;
-      if ('instruction' == av.mouse.Picked) {
-        if (isRightMB) {  //right click on instruction. allow replacement letter.
-          if (av.debug.mouse) console.log('right click');
-          evt.preventDefault();  //supposed to prevent default right click menu - does not work
-          return false;         //supposed to prevent default right click menu - does not work
-        }
-        else {//hh is generation, ith is the instruction
-          var labX = av.ind.cx[hh] + (av.ind.bigR[hh] + 2.1 * av.ind.smallR) * Math.cos(ith * 2 * Math.PI / av.ind.size[hh] + av.ind.rotate[hh]);
-          var labY = av.ind.cy[hh] + (av.ind.bigR[hh] + 2.1 * av.ind.smallR) * Math.sin(ith * 2 * Math.PI / av.ind.size[hh] + av.ind.rotate[hh]);
-          if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.ind.rotate[hh], '; xy', labX, labY);
-          av.ind.ctx.beginPath();
-          av.ind.ctx.arc(labX, labY, 1.1 * av.ind.smallR, 0, 2 * Math.PI);
-          av.ind.ctx.fillStyle = av.color.dictColor['White'];  //use if av.ind.dna is a string
-          av.ind.ctx.fill();   //required to render fill
-          //draw number;
-          av.ind.ctx.fillStyle = av.color.dictColor["Black"];
-          av.ind.ctx.font = av.ind.fontsize + "px Arial";
-          var txtW = av.ind.ctx.measureText(instructionNum).width;  //use if av.ind.dna is a string
-          //txtW = av.ind.ctx.measureText(av.ind.dna[gg][ith]).width;     //use if av.ind.dna is an array
-          av.ind.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.ind.smallR / 2);  //use if av.ind.dna is a string
-        }
-      }
-    }
+    av.mouse.organCanvasFn(evt);
   });
 
   //if a cell is selected, arrow keys can move the selection
@@ -1367,6 +1313,17 @@ require([
    });
    */
 
+  av.mouse.frzCurserSet = function(state) {
+    'use strict';
+    for (var dir in av.fzr.domid) {
+      //console.log('dir', dir, '; domid', av.fzr.domid[dir]);
+      if (null != document.getElementById(av.fzr.domid[dir])) {
+        document.getElementById(av.fzr.domid[dir]).style.cursor = state;
+        // expect state = 'copy' or 'default'
+      }
+    }
+  }
+
   //When mouse button is released, return cursor to default values
   $(document).on('mouseup', function (evt) {
     'use strict';
@@ -1382,12 +1339,7 @@ require([
     document.getElementById('organIcon').style.cursor = 'default';
     document.getElementById('fzOrgan').style.cursor = 'default';
     //console.log('fzr', av.fzr);
-    for (var dir in av.fzr.domid) {
-      //console.log('dir', dir, '; domid', av.fzr.domid[dir]);
-      if (null != document.getElementById(av.fzr.domid[dir])) {
-        document.getElementById(av.fzr.domid[dir]).style.cursor = 'default';
-      }
-    }
+    av.mouse.frzCurserSet('default');
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
     av.mouse.Dn = false;
@@ -1540,8 +1492,7 @@ require([
     av.grd.drawGridSetupFn();
   });
 
-  //Only effect display, not Avida
-  // Zoom slide
+  // Zoom slide - display only not avida
   av.grd.ZoomSlide = new HorizontalSlider({
     name: "ZoomSlide",
     value: 1,
