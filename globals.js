@@ -20,7 +20,7 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 
-av.debug.log = 'message and error log';
+av.debug.log = 'message and error log: version 2016_0506';
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
@@ -185,7 +185,7 @@ av.aww.uiWorker = null;
 av.fio.fileReadingDone = false;
 av.fio.defaultUserFname = 'avidaWS.avidaedworkspace.zip';
 av.fio.userFname = av.fio.defaultUserFname;
-av.fio.csvFileName = 'avidaDataRecorder.cvs';
+av.fio.csvFileName = 'avidaDataRecorder.csv';
 av.fio.useDefault = true;
 av.fio.mailAddress = 'avida-ed-development@googlegroups.com';  //'mailto:diane.blackwood@gmail.com'
 
