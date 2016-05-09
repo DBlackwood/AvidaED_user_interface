@@ -1175,61 +1175,18 @@ require([
 
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
-    av.mouse.organCanvasFn(evt);
+    av.mouse.downOrganCanvasFn(evt);
   });
 
   //if a cell is selected, arrow keys can move the selection
-  $(document).keydown(function (e) {
-    if (av.grd.flagSelected) {
-      var moved = false;
-      switch (e.which) {
-        case 37: // left
-          if (0 < av.grd.selectedCol) {
-            av.grd.selectedCol = av.grd.selectedCol - 1;
-            moved = true;
-          }
-          break;
-        case 38: // up
-          if (0 < av.grd.selectedRow) {
-            av.grd.selectedRow = av.grd.selectedRow - 1;
-            moved = true;
-          }
-          break;
-        case 39: // right
-          if (av.grd.selectedCol < av.grd.cols - 1) {
-            av.grd.selectedCol++;
-            moved = true;
-          }
-          break;
-        case 40: // down
-          if (av.grd.selectedRow < av.grd.rows - 1) {
-            av.grd.selectedRow = av.grd.selectedRow + 1;
-            moved = true;
-          }
-          break;
-      }
-      e.preventDefault(); // prevent the default action (scroll / move caret)
-      av.grd.selectedNdx = av.grd.selectedRow * av.grd.cols + av.grd.selectedCol;
-      if (moved && 'prepping' != av.grd.runState) {  //look for decendents (kids)
-        //find out if there is a kid in that cell
-        //if which ancestor is not null then there is a 'kid' there.
-        if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
-          av.grd.kidStatus = 'getgenome';
-          av.debug.log += '\n -ArrowKey used to pick kid cellID=' + av.grd.selectedNdx;
-          av.msg.doWebOrgDataByCell();
-          if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
-          dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
-          dijit.byId("mnCnOrganismTrace").attr("disabled", false);
-        }
-      }
-      console.log('before call av.grd.drawGridSetupFn');
-      av.grd.drawGridSetupFn();
-    }
-  });
+  $(document).keydown(function (event) { av.mouse.arrowKeysOnGrid(event)});
 
   //av.mouse down on the grid
   $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
-    av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
+    av.mouse.downGridCanvasFn(evt)  });
+
+  av.mouse.downGridCanvasFn = function (evt) {
+  av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
     av.mouse.Dn = true;
     // Select if it is in the grid
     av.mouse.findSelected(evt, av.grd);
@@ -1250,12 +1207,8 @@ require([
         av.mouse.ParentNdx = av.mouse.findParentNdx(av.parents);
         if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
         if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
-          document.getElementById('organIcon').style.cursor = 'copy';
-          document.getElementById('gridCanvas').style.cursor = 'copy';
-          document.getElementById('TrashCanImage').style.cursor = 'copy';
-          document.getElementById('mainBC').style.cursor = 'move';
+          av.mouse.selectedDadMouseStyle();
           av.mouse.Picked = 'parent';
-          //console.log('Parent cursor GT', document.getElementById('gridCanvas').style.cursor, dom.byId('TrashCanImage').style.cursor);
         }
       }
       else {  //look for decendents (kids)
@@ -1269,6 +1222,8 @@ require([
             av.grd.kidStatus = 'getgenome';
             av.msg.doWebOrgDataByCell();
             av.mouse.selectedKidMouseStyle();
+            av.grd.kidName = 'temporary';
+            av.grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
             av.mouse.Picked = 'kid';
             if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
             dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
@@ -1294,7 +1249,7 @@ require([
     //av.msg.doWebOrgDataByCell();   //was sending twice. I hope this is the right one to take out 2016 Feb 5
     //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
-  });
+  }
 
   //mouse move anywhere on screen - not currently in use.
   /*  $(document.getElementById('gridCanvas')).on('mousemove', function handler (evt) {
@@ -1313,33 +1268,12 @@ require([
    });
    */
 
-  av.mouse.frzCurserSet = function(state) {
-    'use strict';
-    for (var dir in av.fzr.domid) {
-      //console.log('dir', dir, '; domid', av.fzr.domid[dir]);
-      if (null != document.getElementById(av.fzr.domid[dir])) {
-        document.getElementById(av.fzr.domid[dir]).style.cursor = state;
-        // expect state = 'copy' or 'default'
-      }
-    }
-  }
-
   //When mouse button is released, return cursor to default values
   $(document).on('mouseup', function (evt) {
     'use strict';
     var target = '';
-    if (av.debug.mouse) console.log('in mouse up: evt', evt)
-    if (av.debug.mouse) console.log('av.mouseup; evt', evt.target.id, evt);
-    document.getElementById('organCanvas').style.cursor = 'default';
-    document.getElementById('gridCanvas').style.cursor = 'default';
-    document.getElementById('freezerDiv').style.cursor = 'default';
-    document.getElementById('trashCan').style.cursor = 'default';
-    document.getElementById('TrashCanImage').style.cursor = 'default';
-    document.getElementById('mainBC').style.cursor = 'default';
-    document.getElementById('organIcon').style.cursor = 'default';
-    document.getElementById('fzOrgan').style.cursor = 'default';
-    //console.log('fzr', av.fzr);
-    av.mouse.frzCurserSet('default');
+    if (av.debug.mouse) console.log('in mouseup target:', evt.target.id, '; event:', evt);
+    av.mouse.makeCursorDefault();
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
     av.mouse.Dn = false;

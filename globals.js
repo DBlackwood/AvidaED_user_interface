@@ -6,9 +6,9 @@
 var av = av || {};  //incase av already exists
 //av.debug flags
 av.debug = {};
-av.debug.root = true;  //statements that look for failiers when the code executes outside of functions
+av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
 av.debug.logic = false;  //av.debug statements that look for errors outlining logic functions
-av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
+av.debug.mouse = true;   //av.debug statements about non-dojo drag and drop
 av.debug.dnd = false;     //debu statements about dojo dnd
 av.debug.msg = false;     //messages to and from avida
 av.debug.trace = false;   //organism page

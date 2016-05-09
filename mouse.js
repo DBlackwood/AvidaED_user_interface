@@ -1,3 +1,100 @@
+//set cursor shape -----------------------------------------------------------------------------------------------------
+// Dad and kid are on the population page
+// Mom and Son are on the Individual Organism page
+av.mouse.frzCurserSet = function(state) {
+  'use strict';
+  for (var dir in av.fzr.domid) {
+    //console.log('dir', dir, '; domid', av.fzr.domid[dir]);
+    if (null != document.getElementById(av.fzr.domid[dir])) {
+      document.getElementById(av.fzr.domid[dir]).style.cursor = state;
+      // expect state = 'copy' or 'default'
+    }
+  }
+}
+
+av.mouse.otherCursorShape = function (shape) {
+  "use strict";
+  av.mouse.noDropList = ['mainBC'
+    , 'mapBC'
+    , 'mapBlock'
+    , 'popBC'
+    , 'popBot_splitter'
+    , 'populationBlock'
+    , 'scaleCanvas'
+    , 'trashCP'
+    , 'trashCP_splitter'
+    //Buttons
+    , 'populationButton'
+    , 'organismButton'
+    , 'analysisButton'
+    , 'newDishButton'
+    , 'runStopButton'
+    , 'freezeButton'
+  ];
+  var lngth = av.mouse.noDropList.length;
+  av.mouse.noDropShape = [];
+  for (var ii = 0; ii < lngth; ii++) {
+    av.mouse.noDropShape[ii] = 'default';
+  }
+  if ('default' === shape) {
+    for (var ii = 0; ii < lngth; ii++) {
+      document.getElementById(av.mouse.noDropList[ii]).style.cursor = av.mouse.noDropShape[ii];
+    }
+  } else {
+    for (var ii = 0; ii < lngth; ii++) {
+      document.getElementById(av.mouse.noDropList[ii]).style.cursor = shape;
+    }
+  }
+  // document.getElementById('mainBC').style.cursor = shape;
+}
+
+av.mouse.selectedDadMouseStyle = function () {
+  'use strict';
+  document.getElementById('gridCanvas').style.cursor = 'copy';
+  document.getElementById('organIcon').style.cursor = 'copy';
+  document.getElementById('TrashCanImage').style.cursor = 'copy';
+  av.mouse.otherCursorShape('no-drop');
+}
+
+//update data about a kid in the selecred organism to move = primarily genome and name
+av.mouse.selectedKidMouseStyle = function () {
+  'use strict';
+  document.getElementById('organIcon').style.cursor = 'copy';
+  document.getElementById('fzOrgan').style.cursor = 'copy';
+  document.getElementById('freezerDiv').style.cursor = 'copy';
+  document.getElementById('gridCanvas').style.cursor = 'copy';
+  av.mouse.frzCurserSet('copy');
+  //for (var dir in av.fzr.domid[dir]) {document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';}
+};
+
+av.mouse.sonCursorShape = function () {
+  "use strict";
+  document.getElementById('organIcon').style.cursor = 'copy';
+  document.getElementById('organCanvas').style.cursor = 'copy';
+  av.mouse.frzCurserSet('copy');
+  av.mouse.otherCursorShape('no-drop');
+};
+
+av.mouse.makeCursorDefault = function () {
+  "use strict";
+  document.getElementById('gridCanvas').style.cursor = 'default';
+  document.getElementById('freezerDiv').style.cursor = 'default';
+  document.getElementById('trashCan').style.cursor = 'default';
+  document.getElementById('TrashCanImage').style.cursor = 'default';
+  document.getElementById('mainBC').style.cursor = 'default';
+  document.getElementById('popBC').style.cursor = 'default';
+  document.getElementById('organCanvas').style.cursor = 'default';
+  document.getElementById('organIcon').style.cursor = 'default';
+  document.getElementById('fzOrgan').style.cursor = 'default';
+  //console.log('fzr', av.fzr);
+  av.mouse.frzCurserSet('pointer');
+  if (av.fzr.actConfig.actDomid) document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'pointer';
+  av.mouse.otherCursorShape('default');
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//is the mouse nearly in the same place??? not sure if in use
 av.mouse.nearly = function (aa, bb) {
   'use strict';
   var epsilon = 3;
@@ -29,18 +126,6 @@ av.mouse.findSelected = function (evt, grd) {
   av.grd.selectedRow = Math.floor(mouseY / av.grd.cellHt);
   av.grd.selectedNdx = av.grd.selectedRow*av.grd.cols + av.grd.selectedCol;
   if (av.debug.mouse) console.log('mx,y', mouseX, mouseY, '; selected Col, Row', av.grd.selectedCol, av.grd.selectedRow);
-}
-
-//update data about a kid in the selecred organism to move = primarily genome and name
-av.mouse.selectedKidMouseStyle = function () {
-  'use strict';
-  document.getElementById('organIcon').style.cursor = 'copy';
-  document.getElementById('fzOrgan').style.cursor = 'copy';
-  document.getElementById('freezerDiv').style.cursor = 'copy';
-  document.getElementById('gridCanvas').style.cursor = 'copy';
-  for (var dir in av.fzr.domid[dir]) {document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';}
-  av.grd.kidName = 'temporary';
-  av.grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
 }
 
 function offspringTrace(dnd, fio, fzr, gen) {
@@ -253,6 +338,56 @@ av.mouse.fromAncestorBoxRemove = function (removeName) {
   if (av.debug.mouse) console.log('nodeIndex', nodeIndex, domItems[nodeIndex]);
   dnd.ancestorBox.parent.removeChild(node);
   dnd.ancestorBox.sync();
+}
+
+//Key movement on grid
+av.mouse.arrowKeysOnGrid = function (event) {
+  'use strict';
+  if (av.grd.flagSelected) {
+    var moved = false;
+    switch (event.which) {
+      case 37: // left
+        if (0 < av.grd.selectedCol) {
+          av.grd.selectedCol = av.grd.selectedCol - 1;
+          moved = true;
+        }
+        break;
+      case 38: // up
+        if (0 < av.grd.selectedRow) {
+          av.grd.selectedRow = av.grd.selectedRow - 1;
+          moved = true;
+        }
+        break;
+      case 39: // right
+        if (av.grd.selectedCol < av.grd.cols - 1) {
+          av.grd.selectedCol++;
+          moved = true;
+        }
+        break;
+      case 40: // down
+        if (av.grd.selectedRow < av.grd.rows - 1) {
+          av.grd.selectedRow = av.grd.selectedRow + 1;
+          moved = true;
+        }
+        break;
+    }
+    event.preventDefault(); // prevent the default action (scroll / move caret)
+    av.grd.selectedNdx = av.grd.selectedRow * av.grd.cols + av.grd.selectedCol;
+    if (moved && 'prepping' != av.grd.runState) {  //look for decendents (kids)
+      //find out if there is a kid in that cell
+      //if which ancestor is not null then there is a 'kid' there.
+      if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+        av.grd.kidStatus = 'getgenome';
+        av.debug.log += '\n -ArrowKey used to pick kid cellID=' + av.grd.selectedNdx;
+        av.msg.doWebOrgDataByCell();
+        if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
+        dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
+        dijit.byId("mnCnOrganismTrace").attr("disabled", false);
+      }
+    }
+    //console.log('before call av.grd.drawGridSetupFn');
+    av.grd.drawGridSetupFn();
+  }
 }
 
 /* mouse websites

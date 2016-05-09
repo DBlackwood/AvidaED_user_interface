@@ -1,4 +1,4 @@
-av.mouse.organCanvasFn = function(evt) {
+av.mouse.downOrganCanvasFn = function(evt) {
   av.mouse.DnOrganPos = [evt.offsetX, evt.offsetY];
   av.mouse.Dn = true;
   av.mouse.Picked = '';
@@ -24,10 +24,7 @@ av.mouse.organCanvasFn = function(evt) {
         for (var dir in av.fzr.domid) {
           if ('g' == dir.substring(0, 1)) document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';
         }
-        document.getElementById('organIcon').style.cursor = 'copy';
-        document.getElementById('organCanvas').style.cursor = 'copy';
-        document.getElementById('mainBC').style.cursor = 'move';
-        av.mouse.frzCurserSet('copy');
+        av.mouse.sonCursorShape();
         av.mouse.Picked = "offspring";
         if (av.debug.ind) console.log('av.ind.dna', av.ind.dna);
       }
@@ -76,3 +73,4 @@ av.mouse.organCanvasFn = function(evt) {
     }
   }
 }
+
