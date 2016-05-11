@@ -72,7 +72,7 @@
     <input id="import" type="file" style = 'display:none' onchange="av.fio.importZipRead()" />
     <input type="hidden" value="mymail@gmail.com" id="mailto" />
       <span data-dojo-type="dijit/MenuBar" tabIndex="0">
-        <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon">
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="File" iconClass="dijitNoIcon" id="mnFile">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspace" label="Save Current Workspace"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFlSaveWorkspaceAs" label="Save Workspace Safari"></span>
@@ -82,7 +82,7 @@
             <span data-dojo-type="dijit/MenuItem" id='mnFlExportData' label="Export Data"></span>
           </span>
         </span>
-        <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon">
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Freezer" iconClass="dijitNoIcon" id="mnFreezer">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnFzConfig" label="Save Experiment Configuration"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnFzPopulation" label="Save Current Population"></span>
@@ -90,7 +90,7 @@
             <span data-dojo-type="dijit/MenuItem" id="mnFzOffspring" label="Save Offspring Organism"></span>
           </span>
         </span>
-        <span data-dojo-type="dijit/PopupMenuBarItem" label="Control">
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Control" id="mnControl">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnCnRun" label="Run"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnCnPause" label="Pause"></span>
@@ -99,7 +99,7 @@
             <span data-dojo-type="dijit/MenuItem" id="mnCnOffspringTrace" label="Put Offspring in Organism View"></span>
           </span>
         </span>
-        <span data-dojo-type="dijit/PopupMenuBarItem" label="Help">
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Help" id="mnHelp">
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnHpAbout" label="About"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnHpHardware" label="Ancestor and Hardware"></span>
@@ -115,7 +115,7 @@
             <div data-dojo-type="dijit/MenuSeparator"></div>
           </span>
         </span>
-        <span data-dojo-type="dijit/PopupMenuBarItem" label="Debug" style = 'visibility: visible'>
+        <span data-dojo-type="dijit/PopupMenuBarItem" label="Debug" id="mnDebug" style = 'hidden: none'> <!--visible/hidden-->
           <span data-dojo-type="dijit/Menu">
             <span data-dojo-type="dijit/MenuItem" id="mnDbThrowError" label="Throw Error"></span>
             <span data-dojo-type="dijit/MenuItem" id="mnDbThrowData" label="Send Data to console"></span>
@@ -130,13 +130,13 @@
         <span style="text-align: right"><label id="userMsgLabel" style="color: darkmagenta; text-align: right"></label></span>
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
-  <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
+  <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="leftCP"
        refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" doLayout="false" style="width:165px;">
-    <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true"
+    <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" id="mainButtonBC"
          style="min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
       <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" id="mainButtons"
            refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" doLayout="false" style="height:90px;overflow: auto">
-        <table style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
+        <table id="mainButtonTable" style="border-collapse:collapse;table-layout:auto;width:100%;height:auto;" border="0">
           <colgroup>
             <col></col>
             <col></col>
@@ -241,7 +241,7 @@
                      preload="false" id="selectOrganPane"
                      refreshOnShow="false" region="left" splitter="true" maxSize="Infinity" doLayout="false"
                      style="width:155px;">  <!-- was 152px -->
-                  <label>Selected Organism Type</label>
+                  <label id='SotLabel'>Selected Organism Type</label>
                   <table border="0"
                          style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
                     <tbody>
@@ -283,8 +283,8 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                      <td><label>Function</label></td>
-                      <td><label>Times Performed</label></td>
+                      <td><label id="sotFn">Function</label></td>
+                      <td><label id="sotTimes">Times Performed</label></td>
                     </tr>
                     <tr>
                       <td><label id="notLabel">not</label></td>
@@ -330,7 +330,7 @@
                      preload="false"
                      refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false"
                      id="popStatistics">
-                  <label>Population Statistics</label>
+                  <label id="popStat">Population Statistics</label>
                   <table border="0"
                          style="border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD">
                     <tbody>
@@ -364,8 +364,8 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                      <td><label>Function</label></td>
-                      <td><label># Organisms</label></td>
+                      <td><label id="psFn">Function</label></td>
+                      <td><label id="psNumOrg"># Organisms</label></td>
                     </tr>
                     <tr>
                       <td>
@@ -429,6 +429,7 @@
             <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false"
                  refreshOnShow="false" region="bottom" splitter="false" maxSize="Infinity" style="height: 1.1em;"
                  doLayout="false">
+              <label id="yaxisLabel">Y-axis</label>
               <select data-dojo-type="dijit/form/Select" id="yaxis" data-dojo-props="name: 'yyAxis'">
                 <option value="Average Fitness" selected="selected">Average Fitness</option>
                 <option value="Average Generation Length">Average Generation Length</option>

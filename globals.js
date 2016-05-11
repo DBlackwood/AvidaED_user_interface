@@ -58,6 +58,176 @@ function clearmouse(av) {
 }
 clearmouse(av);
 
+//list of dom elements on the Populsation page that need to have the mouse over shape/style changed for the drag n drop to look right
+av.mouse.notDndPopList = ['colorMode'
+  , 'leftCP'
+  , 'leftCP_splitter'
+  , 'mainBC'
+  , 'mapBC'
+  , 'mapBlock'
+  , 'popBC'
+  , 'popBot_splitter'
+  , 'popRight_splitter'
+  , 'populationBlock'
+  , 'scaleCanvas'
+  , 'selectOrganPane_splitter'
+  , 'trashCP'
+  , 'trashCP_splitter'
+  , 'gridHolder'
+  //menu Buttons
+  , 'mnFile'
+  , 'mnFreezer'
+  , 'mnControl'
+  , 'mnHelp'
+  , 'mnDebug'
+  , 'wsSavedMsg'
+  //Buttons
+  , 'mainButtonBC'
+  , 'mainButtons'
+  , 'mainButtonTable'
+  , 'PopSetupButton'
+  , 'PopStatsButton'
+  , 'populationButton'
+  , 'organismButton'
+  , 'analysisButton'
+  , 'newDishButton'
+  , 'runStopButton'
+  , 'freezeButton'
+  , 'rescaleLabel'
+  , 'ZoomSlide'
+  //statistics section
+  , 'SotLabel'
+  , 'nameLabel'
+  , 'SelectedColor'
+  , 'fitLabel'
+  , 'metabolicLabel'
+  , 'generateLabel'
+  , 'ageLabel'
+  , 'ancestorLabel'
+  , 'viableLabel'
+  , 'sotFn'
+  , 'sotTimes'
+  , 'notLabel'
+  , 'nanLabel'
+  , 'andLabel'
+  , 'ornLabel'
+  , 'oroLabel'
+  , 'antLabel'
+  , 'norLabel'
+  , 'xorLabel'
+  , 'equLabel'
+  , 'notTime'
+  , 'nanTime'
+  , 'andTime'
+  , 'ornTime'
+  , 'oroTime'
+  , 'antTime'
+  , 'norTime'
+  , 'xorTime'
+  , 'equTime'
+  , 'popStat'
+  , 'popSizeLabel'
+  , 'aFitLabel'
+  , 'aMetabolicLabel'
+  , 'aGestateLabel'
+  , 'aAgeLabel'
+  , 'psFn'
+  , 'psNumOrg'
+  , 'notButton'
+  , 'nanButton'
+  , 'andButton'
+  , 'ornButton'
+  , 'oroButton'
+  , 'antButton'
+  , 'norButton'
+  , 'xorButton'
+  , 'equButton'
+  , 'notPop'
+  , 'nanPop'
+  , 'andPop'
+  , 'ornPop'
+  , 'oroPop'
+  , 'antPop'
+  , 'norPop'
+  , 'xorPop'
+  , 'equPop'
+  // chart
+  , 'yaxis'
+  , 'yaxisLabel'
+];
+var lngth = av.mouse.notDndPopList.length;
+av.mouse.notDndPopShape = [];
+for (var ii = 0; ii < lngth; ii++) {
+  av.mouse.notDndPopShape[ii] = 'default';
+}
+
+//Ind is for individual organism page
+av.mouse.notDndIndList = ['colorMode'
+  , 'mainBC'
+  , 'mapBC'
+  , 'mapBlock'
+  , 'popBC'
+  , 'popBot_splitter'
+  , 'popRight_splitter'
+  , 'rightDetail_splitter'
+  , 'populationBlock'
+  , 'scaleCanvas'
+  , 'selectOrganPane_splitter'
+  , 'trashCP'
+  , 'trashCP_splitter'
+  , 'activeOrgan'
+  , 'organismBC'
+  , 'orgTop'
+  , 'organismCanvasHolder'
+  , 'organCanvas'
+  // Stats
+  , 'rightDetail'
+  , 'notOrg'
+  , 'nanOrg'
+  , 'andOrg'
+  , 'ornOrg'
+  , 'oroOrg'
+  , 'antOrg'
+  , 'norOrg'
+  , 'xorOrg'
+  , 'equOrg'
+  , 'notPerf'
+  , 'nanPerf'
+  , 'andPerf'
+  , 'ornPerf'
+  , 'oroPerf'
+  , 'antPerf'
+  , 'norPerf'
+  , 'xorPerf'
+  , 'equPerf'
+  , 'buffer'
+  , 'register'
+  , 'Astack'
+  , 'Bstack'
+  , 'output'
+  , 'InstructionDetail'
+  , 'ExecuteJust'
+  , 'ExecuteAbout'
+  //Buttons
+  , 'populationButton'
+  , 'organismButton'
+  , 'analysisButton'
+  , 'OrgSetting'
+  , 'OrgDetailsButton'
+  , 'cycleSlider'
+  , 'orgCycle'
+  , 'orgReset'
+  , 'orgBack'
+  , 'orgRun'
+  , 'orgForward'
+  , 'orgEnd'
+];
+var lngth = av.mouse.notDndIndList.length;
+av.mouse.notDndIndShape = [];
+for (var ii = 0; ii < lngth; ii++) {
+  av.mouse.notDndIndShape[ii] = 'default';
+}
+
 //initialize globals needed to hold Organism Trace Data
 var traceObj = {}; //global that holds the traceObject that was sent from Avida
 
@@ -159,18 +329,36 @@ av.ui.num = 0;   //tenporary holder for a number;
 av.ui.numTxt = '';
 av.msg.avidaReady = false;
 
-
+//----------------------------------------------- finding the browser and opperating system ----------------------------
+//only partially works due to sloppyness of window.navigator
 av.brs = {};  //browser and operating system data
-
+/*
 av.brs.isChromium = window.chrome;
-  av.brs.vendorName = window.navigator.vendor;
-  av.brs.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
-  av.brs.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
+av.brs.vendorName = window.navigator.vendor;
+av.brs.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
+av.brs.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
 if (av.brs.isChromium !== null && av.brs.isChromium !== undefined && av.brs.vendorName === "Google Inc." && av.brs.isOpera === false && av.brs.isIEedge === false) {
   av.brs.chrome = true;
 } else {
   av.brs.chrome = false; // not Google chrome
 }
+*/
+//http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+if ((!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0) av.brs.name='Opera 8.0+';
+else if (typeof InstallTrigger !== 'undefined') av.brs.name = 'Firefox 1.0+';
+else if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) av.brs.name = 'Safari 3+';
+else if (/*@cc_on!@*/false || !!document.documentMode) av.brs.name = 'Internet Explorer 6-11';
+else if (!isIE && !!window.StyleMedia) av.brs.name = 'Edge 20+';
+else if (!!window.chrome && !!window.chrome.webstore) av.brs.name = 'Chrome 1+';
+else if ((isChrome || isOpera) && !!window.CSS) av.brs.name = 'Blink';
+else av.brs.name = 'unknown';
+
+console.log('window.navigator',window.navigator);
+console.log('brs', av.brs);
+av.debug.log += '\n' + 'Browser info = ' + av.brs.name + ': ' + window.navigator.userAgent;
+console.log('browser info:', av.brs.name, ': ', window.navigator.userAgent);
+
+//----------------------------------------------------------------------------------------------------------------------
 
 av.utl = {};  // holds utility functions
 

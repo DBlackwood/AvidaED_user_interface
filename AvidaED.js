@@ -113,14 +113,11 @@ require([
   // * variables and functions that are independent of the dom
   // *
   /********************************************************************************************************************/
-  // Splash Screen code
+  // Splash Screen code stopped when ready message from Avida
   /********************************************************************************************************************/
-  /*
-   setTimeout(function(){
-   $('body').addClass('loaded');
-   $('h1').css('color','#222222');
-   }, 300);
-   */
+  //initiallize default mouse shapes
+  av.mouse.getOriginalShapes();
+
   /********************************************************************************************************************/
 
   if (av.debug.root) console.log('before dnd definitions');
@@ -487,6 +484,7 @@ require([
   //********************************************************************************************************************
 
   //https://bugsnag.com/blog/js-stacktracess
+  //http://blog.bugsnag.com/js-stacktraces
   window.onerror = function (message, file, line, col, error) {
     //console.log(message, ' from ', error.stack, '------------------');
     document.getElementById("runStopButton").innerHTML = "Run";  //av.msg.pause('now');
@@ -502,6 +500,11 @@ require([
     //av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
     av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
   }
+
+  window.addEventListener("error", function (evt) {
+    console.log('event listener', evt);
+  });
+
   //More usefull websites to catch errors
   // https://davidwalsh.name/javascript-stack-trace
   // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
@@ -1151,27 +1154,6 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
   //    mouse DND functions
   //--------------------------------------------------------------------------------------------------------------------
-
-  //http://maffelu.net/jquery-handle-left-click-right-click-and-double-click-at-the-same-time/
-  // I just had to handle a left-click, right-click and a dbl-click at the same time which turned
-  // out to be a bit tricky at first using just the mousedown function, but the solution was simple:
-  /*$("#Foo")
-   .click(function() //Left click
-   {
-   //Do something
-   })
-   .mousedown(function(e) //Right click
-   {
-   if(e.which == 3) //1: left, 2: middle, 3: right
-   {
-   //Do something
-   }
-   })
-   .dblclick(function() //Double click
-   {
-   //Do something
-   });
-   */
 
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
@@ -2024,7 +2006,7 @@ require([
   }
 
   av.ui.removeVerticalScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
-  av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
+  //av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
   av.ui.removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
   av.ui.removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
   av.ui.mainBoxSwap('populationBlock');
@@ -2120,4 +2102,25 @@ real time grapsh shift data over
 other
  http://www.flotcharts.org/flot/examples/
 
+ */
+
+//http://maffelu.net/jquery-handle-left-click-right-click-and-double-click-at-the-same-time/
+// I just had to handle a left-click, right-click and a dbl-click at the same time which turned
+// out to be a bit tricky at first using just the mousedown function, but the solution was simple:
+/*$("#Foo")
+ .click(function() //Left click
+ {
+ //Do something
+ })
+ .mousedown(function(e) //Right click
+ {
+ if(e.which == 3) //1: left, 2: middle, 3: right
+ {
+ //Do something
+ }
+ })
+ .dblclick(function() //Double click
+ {
+ //Do something
+ });
  */

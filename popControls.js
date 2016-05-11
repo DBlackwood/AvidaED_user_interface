@@ -95,7 +95,7 @@ av.ptd.popNewExState = function () {
   av.dnd.activeConfig.insertNodes(false, [{data: fname, type: ['c']}]);
   av.dnd.activeConfig.sync();
   var domId = Object.keys(av.dnd.activeConfig.map)[0];
-  av.fzr.actConfig.domID = domId;
+  av.fzr.actConfig.actDomid = domId;
   av.fzr.actConfig.name = fname;
   av.fzr.actConfig.type = 'c';
   av.fzr.actConfig._id = 'c0';

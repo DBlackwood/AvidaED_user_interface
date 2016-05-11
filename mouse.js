@@ -10,69 +10,83 @@ av.mouse.frzCurserSet = function(state) {
       // expect state = 'copy' or 'default'
     }
   }
-}
+};
 
-av.mouse.otherCursorShape = function (shape) {
+av.mouse.getOriginalShapes = function () {
   "use strict";
-  av.mouse.noDropList = ['mainBC'
-    , 'mapBC'
-    , 'mapBlock'
-    , 'popBC'
-    , 'popBot_splitter'
-    , 'populationBlock'
-    , 'scaleCanvas'
-    , 'trashCP'
-    , 'trashCP_splitter'
-    //Buttons
-    , 'populationButton'
-    , 'organismButton'
-    , 'analysisButton'
-    , 'newDishButton'
-    , 'runStopButton'
-    , 'freezeButton'
-  ];
-  var lngth = av.mouse.noDropList.length;
-  av.mouse.noDropShape = [];
+  var lngth = av.mouse.notDndPopList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    av.mouse.noDropShape[ii] = 'default';
+    console.log('domElements', av.mouse.notDndPopList[ii])
+    av.mouse.notDndPopShape[ii] = document.getElementById(av.mouse.notDndPopList[ii]).style.cursor;
+    console.log('domElement/Shape', av.mouse.notDndPopList[ii], av.mouse.notDndPopShape[ii]);
   }
+  var lngth = av.mouse.notDndIndList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    console.log('domElements', av.mouse.notDndIndList[ii])
+    av.mouse.notDndIndShape[ii] = document.getElementById(av.mouse.notDndIndList[ii]).style.cursor;
+    console.log('domElement/Shape', av.mouse.notDndIndList[ii], av.mouse.notDndIndShape[ii]);
+  }
+};
+
+av.mouse.notDndPopCursorShape = function (shape) {
+  "use strict";
+  var lngth = av.mouse.notDndPopList.length;
   if ('default' === shape) {
     for (var ii = 0; ii < lngth; ii++) {
-      document.getElementById(av.mouse.noDropList[ii]).style.cursor = av.mouse.noDropShape[ii];
+      document.getElementById(av.mouse.notDndPopList[ii]).style.cursor = av.mouse.notDndPopShape[ii];
     }
   } else {
     for (var ii = 0; ii < lngth; ii++) {
-      document.getElementById(av.mouse.noDropList[ii]).style.cursor = shape;
+      document.getElementById(av.mouse.notDndPopList[ii]).style.cursor = shape;
     }
   }
-  // document.getElementById('mainBC').style.cursor = shape;
-}
+};
+
+av.mouse.notDndIndCursorShape = function (shape) {
+  "use strict";
+  var lngth = av.mouse.notDndIndList.length;
+  if ('default' === shape) {
+    for (var ii = 0; ii < lngth; ii++) {
+      document.getElementById(av.mouse.notDndIndList[ii]).style.cursor = av.mouse.notDndIndShape[ii];
+    }
+  } else {
+    for (var ii = 0; ii < lngth; ii++) {
+      document.getElementById(av.mouse.notDndIndList[ii]).style.cursor = shape;
+    }
+  }
+};
 
 av.mouse.selectedDadMouseStyle = function () {
   'use strict';
+  console.log('in Dad');
   document.getElementById('gridCanvas').style.cursor = 'copy';
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('TrashCanImage').style.cursor = 'copy';
-  av.mouse.otherCursorShape('no-drop');
-}
+  av.mouse.notDndPopCursorShape('no-drop');
+  av.mouse.frzCurserSet('no-drop');
+  if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'no-drop';}
+};
 
 //update data about a kid in the selecred organism to move = primarily genome and name
 av.mouse.selectedKidMouseStyle = function () {
   'use strict';
+  console.log('in kid');
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('fzOrgan').style.cursor = 'copy';
   document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
   av.mouse.frzCurserSet('copy');
-  //for (var dir in av.fzr.domid[dir]) {document.getElementById(av.fzr.domid[dir]).style.cursor = 'copy';}
+  av.mouse.notDndPopCursorShape('no-drop');
+  if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'no-drop';}
 };
 
 av.mouse.sonCursorShape = function () {
   "use strict";
+  console.log('in son')
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('organCanvas').style.cursor = 'copy';
   av.mouse.frzCurserSet('copy');
-  av.mouse.otherCursorShape('no-drop');
+  av.mouse.notDndIndCursorShape('no-drop');
 };
 
 av.mouse.makeCursorDefault = function () {
@@ -88,8 +102,9 @@ av.mouse.makeCursorDefault = function () {
   document.getElementById('fzOrgan').style.cursor = 'default';
   //console.log('fzr', av.fzr);
   av.mouse.frzCurserSet('pointer');
-  if (av.fzr.actConfig.actDomid) document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'pointer';
-  av.mouse.otherCursorShape('default');
+  if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'pointer';}
+  av.mouse.notDndPopCursorShape('default');
+  av.mouse.notDndIndCursorShape('default');
 };
 
 //----------------------------------------------------------------------------------------------------------------------

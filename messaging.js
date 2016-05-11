@@ -158,10 +158,10 @@ av.msg.readMsg = function (ee) {
 av.msg.stepUpdate = function () {
   'use strict';
   setTimeout(function () {
-    av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + document.getElementById("runStopButton").innerHTML + '; previousUpdate'
+    av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + runStopButton.textContent + '; previousUpdate'
       + av.msg.previousUpdate  + '; popStatsupdate' + av.grd.popStatsMsg.update;
-    //console.log('stepUpdate', document.getElementById("runStopButton").innerHTML, '; previousUpdate', av.msg.previousUpdate, '; pop', av.grd.popStatsMsg.update);
-    if ("Pause" == document.getElementById("runStopButton").innerHTML) {
+    //console.log('stepUpdate', runStopButton.textContent, '; previousUpdate', av.msg.previousUpdate, '; pop', av.grd.popStatsMsg.update);
+    if ("Pause" == runStopButton.textContent) {
       av.msg.previousUpdate = av.grd.popStatsMsg.update;
       var request = {'type': 'stepUpdate'}
       av.aww.uiWorker.postMessage(request);
@@ -307,7 +307,7 @@ av.msg.doWebOrgDataByCell = function () {
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   av.msg.sendData();
-  //console.log('runStopButton',document.getElementById("runStopButton").textContent);
+  //console.log('runStopButton',runStopButton.textContent);
 }
 
 //fio.uiWorker function
@@ -450,25 +450,25 @@ av.msg.injectAncestors = function () {
 av.msg.updatePopStats = function (msg) {
   'use strict';
   var place = 2;
-  //document.getElementById("TimeLabel").textContent = msg.update.formatNum(0) + " updates";
+  //TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   av.grd.updateNum = msg.update;
-  document.getElementById("popSizeLabel").textContent = msg.organisms.formatNum(0);
-  document.getElementById("aFitLabel").textContent = msg.ave_fitness.formatNum(2);
+  popSizeLabel.textContent = msg.organisms.formatNum(0);
+  aFitLabel.textContent = msg.ave_fitness.formatNum(2);
   if (msg.ave_metabolic_rate > 1000) place = 0;
   else if (msg.ave_metabolic_rate > 100) place = 1;
-  document.getElementById("aMetabolicLabel").textContent = msg.ave_metabolic_rate.formatNum(place);
-  document.getElementById("aGestateLabel").textContent = msg.ave_gestation_time.formatNum(1);
-  document.getElementById("aAgeLabel").textContent = msg.ave_age.formatNum(2);
-  document.getElementById("notPop").textContent = msg.not;
-  document.getElementById("nanPop").textContent = msg.nand;  //these do not match
-  document.getElementById("andPop").textContent = msg.and;
-  document.getElementById("ornPop").textContent = msg.orn;
-  document.getElementById("oroPop").textContent = msg.or;
-  document.getElementById("antPop").textContent = msg.andn;
-  document.getElementById("norPop").textContent = msg.nor;
-  document.getElementById("xorPop").textContent = msg.xor;
-  document.getElementById("equPop").textContent = msg.equ;
+  aMetabolicLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
+  aGestateLabel.textContent = msg.ave_gestation_time.formatNum(1);
+  aAgeLabel.textContent = msg.ave_age.formatNum(2);
+  notPop.textContent = msg.not;
+  nanPop.textContent = msg.nand;  //these do not match
+  andPop.textContent = msg.and;
+  ornPop.textContent = msg.orn;
+  oroPop.textContent = msg.or;
+  antPop.textContent = msg.andn;
+  norPop.textContent = msg.nor;
+  xorPop.textContent = msg.xor;
+  equPop.textContent = msg.equ;
   //update graph arrays
   /*
   if (0 <= msg.update) {  //normal start to loop
@@ -527,78 +527,78 @@ av.grd.updateSelectedOrganismType = function (msg) {
   if (av.debug.msg) console.log('selected_msg', msg);
   if (msg.isEstimate) prefix = "est. ";
   else prefix = '';
-  document.getElementById("nameLabel").textContent = msg.genotypeName;
-  if (null === msg.fitness) document.getElementById("fitLabel").innerHTML = '-';
-  else document.getElementById("fitLabel").innerHTML = prefix + msg.fitness.formatNum(2);
-  if (null === msg.metabolism) document.getElementById("metabolicLabel").textContent = '-';
-  else document.getElementById("metabolicLabel").textContent = prefix + msg.metabolism.formatNum(2);
-  if (null === msg.gestation) document.getElementById("generateLabel").textContent = '-';
-  else  document.getElementById("generateLabel").textContent = prefix + msg.gestation.formatNum(2);
-  if (null == msg.age) document.getElementById("ageLabel").textContent = '-';
-    else document.getElementById("ageLabel").textContent = msg.age;
+  nameLabel.textContent = msg.genotypeName;
+  if (null === msg.fitness) fitLabel.textContent = '-';
+  else fitLabel.textContent = prefix + msg.fitness.formatNum(2);
+  if (null === msg.metabolism) metabolicLabel.textContent = '-';
+  else metabolicLabel.textContent = prefix + msg.metabolism.formatNum(2);
+  if (null === msg.gestation) generateLabel.textContent = '-';
+  else  generateLabel.textContent = prefix + msg.gestation.formatNum(2);
+  if (null == msg.age) ageLabel.textContent = '-';
+    else ageLabel.textContent = msg.age;
   if (null === msg.ancestor) {
     //console.log('av.grd.msg', av.grd.msg);
     if (av.debug.msg) console.log('msg.ancestor === null_______________________________________________________');
     if ('undefined' != typeof av.grd.msg.ancestor) {
       if (null === av.grd.msg.ancestor.data[av.grd.selectedNdx])
-        document.getElementById("ancestorLabel").textContent = '-';
-      else document.getElementById("ancestorLabel").textContent = av.parents.name[av.grd.msg.ancestor.data[av.grd.selectedNdx]];
+        ancestorLabel.textContent = '-';
+      else ancestorLabel.textContent = av.parents.name[av.grd.msg.ancestor.data[av.grd.selectedNdx]];
     }
-    else document.getElementById("ancestorLabel").textContent = '-';
+    else ancestorLabel.textContent = '-';
   }
-  //else document.getElementById("ancestorLabel").textContent = av.parents.name[msg.ancestor];
-  else document.getElementById("ancestorLabel").textContent = msg.ancestor;
+  //else ancestorLabel.textContent = av.parents.name[msg.ancestor];
+  else ancestorLabel.textContent = msg.ancestor;
   //add + or - to text of logic function
   if (null != msg.tasks) {
-    if (0 == msg.tasks.not) document.getElementById("notLabel").textContent = "not-";
-    else document.getElementById("notLabel").textContent = "not+";
-    if (0 == msg.tasks.nand) document.getElementById("nanLabel").textContent = "nan-";
-    else document.getElementById("nanLabel").textContent = "nan+";
-    if (0 == msg.tasks.and) document.getElementById("andLabel").textContent = "and-";
-    else document.getElementById("andLabel").textContent = "and+";
-    if (0 == msg.tasks.orn) document.getElementById("ornLabel").textContent = "orn-";
-    else document.getElementById("ornLabel").textContent = "orn+";
-    if (0 == msg.tasks.or) document.getElementById("oroLabel").textContent = "oro-";
-    else document.getElementById("oroLabel").textContent = "oro+";
-    if (0 == msg.tasks.andn) document.getElementById("antLabel").textContent = "ant-";
-    else document.getElementById("antLabel").textContent = "ant+";
-    if (0 == msg.tasks.nor) document.getElementById("norLabel").textContent = "nor-";
-    else document.getElementById("norLabel").textContent = "nor+";
-    if (0 == msg.tasks.xor) document.getElementById("xorLabel").textContent = "xor-";
-    else document.getElementById("xorLabel").textContent = "xor+";
-    if (0 == msg.tasks.equ) document.getElementById("equLabel").textContent = "equ-";
-    else document.getElementById("equLabel").textContent = "equ+";
+    if (0 == msg.tasks.not) notLabel.textContent = "not-";
+    else notLabel.textContent = "not+";
+    if (0 == msg.tasks.nand) nanLabel.textContent = "nan-";
+    else nanLabel.textContent = "nan+";
+    if (0 == msg.tasks.and) andLabel.textContent = "and-";
+    else andLabel.textContent = "and+";
+    if (0 == msg.tasks.orn) ornLabel.textContent = "orn-";
+    else ornLabel.textContent = "orn+";
+    if (0 == msg.tasks.or) oroLabel.textContent = "oro-";
+    else oroLabel.textContent = "oro+";
+    if (0 == msg.tasks.andn) antLabel.textContent = "ant-";
+    else antLabel.textContent = "ant+";
+    if (0 == msg.tasks.nor) norLabel.textContent = "nor-";
+    else norLabel.textContent = "nor+";
+    if (0 == msg.tasks.xor) xorLabel.textContent = "xor-";
+    else xorLabel.textContent = "xor+";
+    if (0 == msg.tasks.equ) equLabel.textContent = "equ-";
+    else equLabel.textContent = "equ+";
     //now put in the actual numbers
-    document.getElementById("notTime").textContent = msg.tasks.not;
-    document.getElementById("nanTime").textContent = msg.tasks.nand;
-    document.getElementById("andTime").textContent = msg.tasks.and;
-    document.getElementById("ornTime").textContent = msg.tasks.orn;
-    document.getElementById("oroTime").textContent = msg.tasks.or;
-    document.getElementById("antTime").textContent = msg.tasks.andn;
-    document.getElementById("norTime").textContent = msg.tasks.nor;
-    document.getElementById("xorTime").textContent = msg.tasks.xor;
-    document.getElementById("equTime").textContent = msg.tasks.equ;
+    notTime.textContent = msg.tasks.not;
+    nanTime.textContent = msg.tasks.nand;
+    andTime.textContent = msg.tasks.and;
+    ornTime.textContent = msg.tasks.orn;
+    oroTime.textContent = msg.tasks.or;
+    antTime.textContent = msg.tasks.andn;
+    norTime.textContent = msg.tasks.nor;
+    xorTime.textContent = msg.tasks.xor;
+    equTime.textContent = msg.tasks.equ;
   }
   else {
-    document.getElementById("notLabel").textContent = "not-";
-    document.getElementById("nanLabel").textContent = "nan-";
-    document.getElementById("andLabel").textContent = "and-";
-    document.getElementById("ornLabel").textContent = "orn-";
-    document.getElementById("oroLabel").textContent = "oro-";
-    document.getElementById("antLabel").textContent = "ant-";
-    document.getElementById("norLabel").textContent = "nor-";
-    document.getElementById("xorLabel").textContent = "xor-";
-    document.getElementById("equLabel").textContent = "equ-";
+    notLabel.textContent = "not-";
+    nanLabel.textContent = "nan-";
+    andLabel.textContent = "and-";
+    ornLabel.textContent = "orn-";
+    oroLabel.textContent = "oro-";
+    antLabel.textContent = "ant-";
+    norLabel.textContent = "nor-";
+    xorLabel.textContent = "xor-";
+    equLabel.textContent = "equ-";
 
-    document.getElementById("notTime").textContent = '-';
-    document.getElementById("nanTime").textContent = '-';
-    document.getElementById("andTime").textContent = '-';
-    document.getElementById("ornTime").textContent = '-';
-    document.getElementById("oroTime").textContent = '-';
-    document.getElementById("antTime").textContent = '-';
-    document.getElementById("norTime").textContent = '-';
-    document.getElementById("xorTime").textContent = '-';
-    document.getElementById("equTime").textContent = '-';
+    notTime.textContent = '-';
+    nanTime.textContent = '-';
+    andTime.textContent = '-';
+    ornTime.textContent = '-';
+    oroTime.textContent = '-';
+    antTime.textContent = '-';
+    norTime.textContent = '-';
+    xorTime.textContent = '-';
+    equTime.textContent = '-';
   }
   if (av.debug.msg) dnaLabel.textContent = wsa(",", wsa(",", msg.genome));
   if (av.debug.msg) viableLabel.textContent = 'Viable: ' + msg.isViable;

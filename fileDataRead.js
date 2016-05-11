@@ -37,10 +37,12 @@ av.fio.setActiveConfig = function(dndSection, name, type){
   av.dnd.activeConfig.insertNodes(false, [{data: name, type: [type]}]);
   av.dnd.activeConfig.sync();
   var mapItems = Object.keys(dndSection.map);
-  av.fzr.actConfig.fzDomid = mapItems[mapItems.length - 1];  //domid from active config. Not sure if needed.
+  av.fzr.actConfig.fzDomid = mapItems[mapItems.length - 1];  //domid from freezer. not sure if this is used.
+  mapItems = Object.keys(av.dnd.activeConfig.map);
+  av.fzr.actConfig.actDomid = mapItems[0];    //domid from active config.  this is used in changing cursor shape
   av.fzr.actConfig.name = name;
   av.fzr.actConfig.type = type;
-  return av.fzr.actConfig.domId;
+  return av.fzr.actConfig.actDomid;
 }
 
 av.frd.add2freezerFromFile = function (loadConfigFlag) {
@@ -101,7 +103,6 @@ av.fio.processFiles = function (loadConfigFlag){
         if ('c0/avida.cfg' == av.fio.anID) {av.frd.avidaCFG2form(av.fio.thisfile.asText());}
         if ('c0/environment.cfg' == av.fio.anID) {av.frd.environmentCFG2form(av.fio.thisfile.asText().trim());}
       }
-      //writeDxFile(av.fio.dxdb, av.fio.anID, av.fio.thisfile.asText().trim());
       av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
       break;
     default:
