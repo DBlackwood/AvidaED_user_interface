@@ -44,6 +44,7 @@ av.mouse.notDndPopCursorShape = function (shape) {
 
 av.mouse.notDndIndCursorShape = function (shape) {
   "use strict";
+  console.log('in av.mouse.notDndIndCursorShape');
   var lngth = av.mouse.notDndIndList.length;
   if ('default' === shape) {
     for (var ii = 0; ii < lngth; ii++) {

@@ -882,11 +882,11 @@ require([
     dijit.byId("mnCnPause").attr("disabled", true);
     dijit.byId("mnCnRun").attr("disabled", false);
     //console.log('pauseState; button=run');
-    document.getElementById("runStopButton").innerHTML = "Run";
+    document.getElementById("runStopButton").textContent = "Run";
   }
 
   av.ptd.makeRunState = function () {
-    document.getElementById("runStopButton").innerHTML = "Pause";
+    document.getElementById("runStopButton").textContent = "Pause";
     dijit.byId("mnCnPause").attr("disabled", false);
     dijit.byId("mnCnRun").attr("disabled", true);
   }
@@ -1781,16 +1781,16 @@ require([
     }
     else av.ind.didDivide = false;
   }
-  /* ****************************************************************/
-  /*             End of Canvas to draw genome and update details
-   /* ************************************************************** */
+  /* ******************************************************************************************************************/
+  /*                                 End of Canvas to draw genome and update details
+  /* **************************************************************************************************************** */
 
-  /* **** Controls bottum of organism page **************************/
+  /* ************************************** Controls bottum of organism page ******************************************/
   function outputUpdate(vol) {
     document.querySelector('#orgCycle').value = vol;
   }
 
-  dijit.byId("orgBack").on("Click", function () {
+  document.getElementById("orgBack").onclick = function () {
     av.debug.log += '\n -Button: orgBack';
     var ii = Number(document.getElementById("orgCycle").value);
     if (av.ind.cycleSlider.get("minimum") < av.ind.cycleSlider.get("value")) {
@@ -1799,9 +1799,9 @@ require([
       av.ind.cycle = ii;
       av.ind.updateOrgTrace()
     }
-  });
+  };
 
-  dijit.byId("orgForward").on("Click", function () {
+  document.getElementById("orgForward").onclick = function () {
     var ii = Number(document.getElementById("orgCycle").value);
     if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
       ii++;
@@ -1810,16 +1810,16 @@ require([
       if (av.debug.ind) console.log('ii', ii, '; gen', av.gen);
       av.ind.updateOrgTrace()
     }
-  });
+  };
 
-  dijit.byId("orgReset").on("Click", function () {
+  document.getElementById("orgReset").onclick = function () {
     av.debug.log += '\n -Button: orgReset';
     //dijit.byId("orgCycle").set("value", 0);
     //av.ind.cycle = 0;
     //av.ind.updateOrgTrace();
     //av.ind.orgStopFn()
     av.msg.doOrgTrace();
-  });
+  };
 
   av.ind.orgRunFn = function () {
     if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
@@ -1830,26 +1830,26 @@ require([
     else {
       av.ind.orgStopFn();
     }
-  }
+  };
 
-  dijit.byId("orgRun").on("Click", function () {
+  document.getElementById("orgRun").onclick = function () {
     av.debug.log += '\n -Button: orgRun';
-    if ("Run" == dijit.byId("orgRun").get("label")) {
-      dijit.byId("orgRun").set("label", "Stop");
+    if ("Run" == document.getElementById("orgRun").textContent) {
+      document.getElementById("orgRun").textContent = 'Stop';
       av.ind.update_timer = setInterval(av.ind.orgRunFn, 100);
     }
     else {
       av.ind.orgStopFn();
     }
-  });
+  };
 
-  dijit.byId("orgEnd").on("Click", function () {
+  document.getElementById("orgEnd").onclick = function () {
     av.debug.log += '\n -Button: orgEnd';
     dijit.byId("orgCycle").set("value", av.ind.cycleSlider.get("maximum"));
     av.ind.cycle = av.ind.cycleSlider.get("maximum");
     av.ind.updateOrgTrace();
     av.ind.orgStopFn()
-  });
+  };
 
   dijit.byId("orgCycle").on("Change", function (value) {
     av.ind.cycleSlider.set("value", value);

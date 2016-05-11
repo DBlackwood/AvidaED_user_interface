@@ -2,7 +2,7 @@ av.ind.orgStopFn = function () {
   if (av.ind.update_timer) {
     clearInterval(av.ind.update_timer);
   }
-  dijit.byId("orgRun").set("label", "Run");
+  document.getElementById("orgRun").textContent = 'Run';
 }
 
 av.ind.clearGen = function(gen) {

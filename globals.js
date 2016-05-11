@@ -163,6 +163,7 @@ for (var ii = 0; ii < lngth; ii++) {
 
 //Ind is for individual organism page
 av.mouse.notDndIndList = ['colorMode'
+  , 'leftCP_splitter'
   , 'mainBC'
   , 'mapBC'
   , 'mapBlock'
