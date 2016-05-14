@@ -601,10 +601,10 @@ av.grd.updateSelectedOrganismType = function (msg) {
     equTime.textContent = '-';
   }
   if (av.debug.msg) dnaLabel.textContent = wsa(",", wsa(",", msg.genome));
-  if (av.debug.msg) viableLabel.textContent = 'Viable: ' + msg.isViable;
-  else if (0 > msg.isViable) viableLabel.textContent = 'Viable: no';
-  else if (0 < msg.isViable) viableLabel.textContent = 'Viable: yes';
-  else viableLabel.textContent = 'Viable: unknown';
+  if (av.debug.msg) viableLabel.textContent = msg.isViable;
+  if (0 > msg.isViable) viableLabel.textContent = 'no';
+  else if (0 < msg.isViable) viableLabel.textContent = 'yes';
+  else viableLabel.textContent = 'unknown';
   av.msg.fillColorBlock(msg);
   if (av.debug.msg) console.log('Kidstatus', av.grd.kidStatus);
   if ('getgenome' == av.grd.kidStatus) {

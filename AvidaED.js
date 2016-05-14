@@ -68,7 +68,7 @@ require([
   "dojo/ready",
   "jquery",
   "jquery-ui",
-  "lib/Blob.js",
+  //"lib/Blob.js",
   "lib/jszip.min.js",
   "lib/FileSaver.js",
   "lib/jquery.fileDownload.js",
@@ -92,7 +92,8 @@ require([
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, //Wetland,
              ready, $, jqueryui,
-             Blob, JSZip, FileSaver, fileDownload) {
+             //Blob,
+             JSZip, FileSaver, fileDownload) {
   "use strict";
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
@@ -313,16 +314,47 @@ require([
   try {
     var isFileSaverSupported = !!new Blob;
   } catch (e) {
-    console.log('filesaver supported?', e);
+    console.log('----------------------------------------------------------filesaver supported?', e);
   }
+
+  //http://jsfiddle.net/B7nWs/
+  //works, no extra tab, but gets and error [Error] Failed to load resource: Frame load interrupted (0, line 0)
+/*  $(fileDownloadButton).click(function () {
+    $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
+      successCallback: function (url) {
+        alert('You just got a file download dialog or ribbon for this URL :' + url);
+      },
+      failCallback: function (html, url) {
+        alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
+        );
+      }});
+  });
+*/
+/*
+  $(fileDownloadButton).click(function () {
+   //works, but opens a new tab which is blank and gets left open; file named 'unknown'
+    //var a = document.createElement('a');
+    //a.href     = 'data:attachment/csv,' + av.debug.log;
+    //a.target   = '_blank';
+    //a.download = 'myFile.csv';
+    //document.body.appendChild(a);
+    //a.click();
+
+
+    // the statement pair below does not work in Safari. Opens tab with text data. does not save it.
+    // tab has randomvalue url name like blob:file:///705ac45f-ab49-40ac-ae9a-8b03797daeae
+    //http://stackoverflow.com/questions/18690450/how-to-generate-and-prompt-to-save-a-file-from-content-in-the-client-browser//var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    // saveAs(blob, "helloWorld.txt");
+
+    //works in safari - opens a new blank tab and leaves it open after saving file called "unknown"
+    //http://stackoverflow.com/questions/12802109/download-blobs-locally-using-safari
+    //window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log));
+  });
+*/
 
   $(fileDownloadButton).click(function () {
     //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
     //saveAs(blob, "hello world.txt");
-
-    var builder = new WebKitBlobBuilder();
-    builder.append(data);
-    var blob = builder.getBlob();
 
     if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
     if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
@@ -341,22 +373,26 @@ require([
     //var data = { x: 42, s: "hello, world", d: new Date() };
     //var json = JSON.stringify(data);
     //var blob = new Blob([json], {type: "octet/stream"});
-    //setTimeout(function () {
       var tmpUrl = window.URL.createObjectURL(blob);
-      console.log('inside timeout: timpURL=', tmpUrl);
-      //$.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
-      $.fileDownload(tmpUrl, {
-        successCallback: function (url) {
-          alert('You just got a file download dialog or ribbon for this URL :' + url);
-        },
-        failCallback: function (html, url) {
-          alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
-          );
-        }
-      });
+      console.log('tmpURL=', tmpUrl);
+      av.fio.writeSafari(tmpUrl);
+
       window.URL.revokeObjectURL(tmpUrl);
-    //}, 2000);  //number is time in msec for a delay
   });
+
+  av.fio.writeSafari = function (tmpUrl) {
+    //http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
+    $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
+      //$.fileDownload(tmpUrl, {
+      successCallback: function (url) {
+        alert('You just got a file download dialog or ribbon for this URL :' + url);
+      },
+      failCallback: function (html, url) {
+        alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
+        );
+      }
+    });
+  };
 
   // Save current workspace with a new name(mnFzSaveWorkspaceAs)
   document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
@@ -488,7 +524,7 @@ require([
   window.onerror = function (message, file, line, col, error) {
     //console.log(message, ' from ', error.stack, '------------------');
     document.getElementById("runStopButton").innerHTML = "Run";  //av.msg.pause('now');
-    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ', :' + col;
+    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ':' + col;
     //av.debug.errorEmailFn();
 
     //dijit.byId('sendLogDialog').set('title', 'javascrip error report');

@@ -31,6 +31,7 @@
   <script type="text/javascript" src="utilities.js"></script>
   <script type="text/javascript" src="AvidaED.js"></script>
 
+  <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
   <link rel='stylesheet' href='lib/jquery-ui/themes/smoothness/jquery-ui.css'>
   <style>@import 'themes/claro/document.css';
     @import 'themes/claro/claro.css';
@@ -159,7 +160,7 @@
           </tr>
           </tbody>
         </table>
-        <button id='fileDownloadButton'>Test</button>
+        <button id='fileDownloadButton'>Test fileDownloadButton</button>
         <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
         <input type='button' id='testButton' intermediateChanges='false' value='Color test'
                iconClass='dijitNoIcon'></button>
@@ -242,8 +243,7 @@
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
                   <label id='SotLabel'>Selected Organism Type</label>
-                  <table border='0'
-                         style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD'>
+                  <table class="t1">
                     <tbody>
                     <tr>
                       <td>Name: <label id='nameLabel'></label></td>
@@ -272,15 +272,15 @@
                       <td><label id='ancestorLabel'></label>
                       </td>
                     </tr>
-                    <tr><td><label id='viableLabel'></label></td></tr>
+                    <tr>
+                      <td>Viable:</td>
+                      <td><label id='viableLabel'></label></td>
+                    </tr>
                     </tbody>
                   </table>
                   <br/>
                   <table border='0' style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto;'>
-                    <colgroup>
-                      <col></col>
-                      <col></col>
-                    </colgroup>
+                    <colgroup><col></col><col></col></colgroup>
                     <tbody>
                     <tr>
                       <td><label id='sotFn'>Function</label></td>
@@ -358,10 +358,7 @@
                   </table>
                   <br/>
                   <table border='0' style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto;'>
-                    <colgroup>
-                      <col></col>
-                      <col></col>
-                    </colgroup>
+                    <colgroup><col></col><col></col></colgroup>
                     <tbody>
                     <tr>
                       <td><label id='psFn'>Function</label></td>
@@ -690,7 +687,7 @@
             <button id='orgBack'>Back</button>
             <button id='orgRun'>Run</button>
             <button id='orgForward'>Forward</button>
-            <button id='orgEnd'>End></button>
+            <button id='orgEnd'>End</button>
           </div>
         </div>
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'

@@ -349,7 +349,7 @@ if ((!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.inde
 else if (typeof InstallTrigger !== 'undefined') av.brs.name = 'Firefox 1.0+';
 else if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) av.brs.name = 'Safari 3+';
 else if (/*@cc_on!@*/false || !!document.documentMode) av.brs.name = 'Internet Explorer 6-11';
-else if (!isIE && !!window.StyleMedia) av.brs.name = 'Edge 20+';
+else if (!!window.StyleMedia) av.brs.name = 'Edge 20+';
 else if (!!window.chrome && !!window.chrome.webstore) av.brs.name = 'Chrome 1+';
 else if ((isChrome || isOpera) && !!window.CSS) av.brs.name = 'Blink';
 else av.brs.name = 'unknown';

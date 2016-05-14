@@ -240,5 +240,17 @@ button, input,
   margin: 1px
 }
 
-.claro
-
+table.t1 {
+  border-collapse: collapse;
+  border: 0;
+  table-layout: auto;
+  width: 100%;
+  height: auto;
+  background-color:#DDD;
+}
+.t1 th, .t1 td {
+  padding: 0px;
+}
+.t1 tr *:nth-child(1) {
+  text-align: right;
+}
