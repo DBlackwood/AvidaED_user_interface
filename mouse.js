@@ -16,15 +16,15 @@ av.mouse.getOriginalShapes = function () {
   "use strict";
   var lngth = av.mouse.notDndPopList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    console.log('domElements', av.mouse.notDndPopList[ii])
+    //console.log('domElements', av.mouse.notDndPopList[ii])
     av.mouse.notDndPopShape[ii] = document.getElementById(av.mouse.notDndPopList[ii]).style.cursor;
-    console.log('domElement/Shape', av.mouse.notDndPopList[ii], av.mouse.notDndPopShape[ii]);
+    //console.log('domElement/Shape', av.mouse.notDndPopList[ii], av.mouse.notDndPopShape[ii]);
   }
   var lngth = av.mouse.notDndIndList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    console.log('domElements', av.mouse.notDndIndList[ii])
+    //console.log('domElements', av.mouse.notDndIndList[ii])
     av.mouse.notDndIndShape[ii] = document.getElementById(av.mouse.notDndIndList[ii]).style.cursor;
-    console.log('domElement/Shape', av.mouse.notDndIndList[ii], av.mouse.notDndIndShape[ii]);
+    //console.log('domElement/Shape', av.mouse.notDndIndList[ii], av.mouse.notDndIndShape[ii]);
   }
 };
 

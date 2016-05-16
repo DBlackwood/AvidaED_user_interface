@@ -232,12 +232,21 @@ av.fio.fzSaveWorkspaceFn = function () {
 }
 
 av.fio.fzSaveCsvfn = function () {
-  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = prompt('Choose a name for your Workspace', av.fzr.actConfig.name+'@' + av.grd.popStatsMsg.update);
+  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = prompt('Choose a name for your csv file', av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update);
   if (0 === av.fio.csvFileName.length) av.fio.csvFileName = 'avidaDataRecorder.csv';
-  var end = av.fio.csvFileName.substring(av.fio.csvFileName.length-4);
+  var end = av.fio.csvFileName.substring(av.fio.csvFileName.length - 4);
   if ('.csv' != end) av.fio.userFname = av.fio.csvFileName + '.csv';
-  var blob = new Blob([av.fwt.csvStrg], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, av.fio.csvFileName);};
+
+  //window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log)); //also works, but creates odd file names.
+
+  var a = document.createElement('a');
+  a.href     = 'data:attachment/csv;charset=utf-8,' + encodeURI(av.fwt.csvStrg);
+  a.target   = '_blank';
+  a.download = av.fio.csvFileName;
+  document.body.appendChild(a);
+  a.click();
+
+}
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);

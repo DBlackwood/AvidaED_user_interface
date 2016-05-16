@@ -222,7 +222,6 @@ require([
     userMsgLabel.textContent = "Sorry, your browser does not support Web workers and Avida won't run";
   }
 
-
   //process message from web worker
   if (av.debug.root) console.log('before fio.uiWorker on message');
   av.aww.uiWorker.onmessage = function (ee) {
@@ -297,61 +296,30 @@ require([
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
-  // works in safari only in jsfiddle and the file is txt or pdf
-  /*
-  $(fileDownloadButton).click(function () {
-    $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
-      successCallback: function (url) {
-        alert('You just got a file download dialog or ribbon for this URL :' + url);
-      },
-      failCallback: function (html, url) {
-        alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
-        );
-      }});
-  });
-*/
-
   try {
     var isFileSaverSupported = !!new Blob;
   } catch (e) {
     console.log('----------------------------------------------------------filesaver supported?', e);
   }
 
-  //http://jsfiddle.net/B7nWs/
-  //works, no extra tab, but gets and error [Error] Failed to load resource: Frame load interrupted (0, line 0)
-/*  $(fileDownloadButton).click(function () {
-    $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
-      successCallback: function (url) {
-        alert('You just got a file download dialog or ribbon for this URL :' + url);
-      },
-      failCallback: function (html, url) {
-        alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
-        );
-      }});
+  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
+  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
+    av.debug.log += '\n -Button: mnFlSaveWorkspaceAs';
+    var suggest = 'avidaWS.avidaedworkspace.zip';
+    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
+    av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
+
+    //av.fio.fzSaveWorkspaceFn();
+  };
+
+  //Export csv data from current run.
+  dijit.byId("mnFlExportData").on("Click", function () {
+    'use strict';
+    av.debug.log += '\n -Button: mnFlExportData';
+    av.fwt.writeCSV();
   });
-*/
-/*
-  $(fileDownloadButton).click(function () {
-   //works, but opens a new tab which is blank and gets left open; file named 'unknown'
-    //var a = document.createElement('a');
-    //a.href     = 'data:attachment/csv,' + av.debug.log;
-    //a.target   = '_blank';
-    //a.download = 'myFile.csv';
-    //document.body.appendChild(a);
-    //a.click();
 
-
-    // the statement pair below does not work in Safari. Opens tab with text data. does not save it.
-    // tab has randomvalue url name like blob:file:///705ac45f-ab49-40ac-ae9a-8b03797daeae
-    //http://stackoverflow.com/questions/18690450/how-to-generate-and-prompt-to-save-a-file-from-content-in-the-client-browser//var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
-    // saveAs(blob, "helloWorld.txt");
-
-    //works in safari - opens a new blank tab and leaves it open after saving file called "unknown"
-    //http://stackoverflow.com/questions/12802109/download-blobs-locally-using-safari
-    //window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log));
-  });
-*/
-
+  //------------- Testing only need to delete later.--------------------
   $(fileDownloadButton).click(function () {
     //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
     //saveAs(blob, "hello world.txt");
@@ -374,125 +342,27 @@ require([
     //var json = JSON.stringify(data);
     //var blob = new Blob([json], {type: "octet/stream"});
       var tmpUrl = window.URL.createObjectURL(blob);
+      //var tmpUrl = window.URL.createObjectURL('some text');
       console.log('tmpURL=', tmpUrl);
-      av.fio.writeSafari(tmpUrl);
-
+      //av.fio.writeSafari(tmpUrl);
+    //downloadFile('test.txt', blob);
+    av.fwt.tryDown(blob);
       window.URL.revokeObjectURL(tmpUrl);
   });
 
-  av.fio.writeSafari = function (tmpUrl) {
-    //http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
-    $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
-      //$.fileDownload(tmpUrl, {
-      successCallback: function (url) {
-        alert('You just got a file download dialog or ribbon for this URL :' + url);
-      },
-      failCallback: function (html, url) {
-        alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
-        );
-      }
-    });
-  };
-
-  /*
-   Notes on saving files in Safari.
-   http://jsfiddle.net/B7nWs/  works on Safari in jsfiddle
-   works in avida-ED for PDF, but gives the following error
-   [Error] Failed to load resource: Frame load interrupted (0, line 0)
-
-   //**** works in safari – does not open blank tab. Callbacks do not work.
-   av.fio.writeSafari = function (tmpUrl) {
-   //http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
-   $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
-   //$.fileDownload(tmpUrl, {
-   successCallback: function (url) {
-   alert('You just got a file download dialog or ribbon for this URL :' + url);
-   },
-   failCallback: function (html, url) {
-   alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
-   );
-   }
-   });
-   };
-
-   //works in safari for pdf files
-   http://jqueryfiledownload.apphb.com
-
-   //works in safari - opens a new blank tab and leaves it open after saving file called "unknown"
-   //http://stackoverflow.com/questions/12802109/download-blobs-locally-using-safari
-   window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log));
-
-   http://stackoverflow.com/questions/23667074/javascriptwrite-a-string-with-multiple-lines-to-a-csv-file-for-downloading
-   https://adilapapaya.wordpress.com/2013/11/15/exporting-data-from-a-web-browser-to-a-csv-file-using-javascript/
-   http://jsfiddle.net/nkm2b/2/
-   $(fileDownloadButton).click(function () {
-   //works, but opens a new tab which is blank and gets left open; file named 'unknown'
-   var a = document.createElement('a');
-   a.href     = 'data:attachment/csv,' + av.debug.log;
-   a.target   = '_blank';
-   a.download = 'myFile.csv';
-   document.body.appendChild(a);
-   a.click();
-   });
-
-   //Does not work in safari
-   https://codepen.io/davidelrizzo/pen/cxsGb
-
-   // the statement pair below does not work in Safari. Opens tab with text data. does not save it.
-   // tab has randomvalue url name like blob:file:///705ac45f-ab49-40ac-ae9a-8b03797daeae
-   //http://stackoverflow.com/questions/18690450/how-to-generate-and-prompt-to-save-a-file-from-content-in-the-client-browser
-   var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
-   saveAs(blob, "helloWorld.txt");
-
-   //Does not work in Safari – opens tab with the string only
-   // http://stackoverflow.com/questions/13405129/javascript-create-and-save-file
-   var myCsv = "Col1,Col2,Col3\nval1,val2,val3";
-   window.open('data:text/csv;charset=utf-8,' + escape(myCsv));
-
-   //http://stackoverflow.com/questions/13405129/javascript-create-and-save-file
-   //does not work in chrome or safari I might not have it right
-   var a = document.getElementById("a");
-   var file = new Blob(['file text'], {type: 'text/plain'});
-   a.href = URL.createObjectURL(file);
-   a.download = 'filename.txt';
-
-   //works in chrome, but not in safari
-   function download(text, name, type) {
-   var a = document.createElement("a");
-   var file = new Blob([text], {type: type});
-   a.href = URL.createObjectURL(file);
-   a.download = name;
-   a.click();
-   }
-   download('file text', 'myfilename.txt', 'text/plain')
-
-   //Does not work in Safari
-   var aFileParts = ['<a id="a"><b id="b">hey!</b></a>'];
-   var oMyBlob = new Blob(aFileParts, {type : 'text/html'}); // the blob
-   window.open(URL.createObjectURL(oMyBlob));
-
-   //does not work in safari does work in chrome
-   http://thiscouldbebetter.neocities.org/texteditor.html
-
-   Places that say you cannot save non-text files from javascript in Safari
-   https://github.com/wenzhixin/bootstrap-table/issues/2187
-   */
-
-  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
-  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
-    av.debug.log += '\n -Button: mnFlSaveWorkspaceAs';
-    var suggest = 'avidaWS.avidaedworkspace.zip';
-    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
-    av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
-
-    //av.fio.fzSaveWorkspaceFn();
-  };
-
-  dijit.byId("mnFlExportData").on("Click", function () {
-    'use strict';
-    av.debug.log += '\n -Button: mnFlExportData';
-    av.fwt.writeCSV();
-  });
+  av.fwt.tryDown = function(blob) {
+    var ab = document.createElement('ab');
+    ab.href     = 'data:attachment/csv;charset=utf-8,' + encodeURI(blob);
+    ab.target   = '_blank';
+    ab.download = av.fio.csvFileName;
+    document.body.appendChild(ab);
+    ab.click();
+    setTimeout(function(){
+      document.body.removeChild(ab);
+      window.URL.revokeObjectURL(ab.href);
+    }, 100);
+  }
+  //------------- Testing only need to delete above later.--------------------
 
   if (av.debug.root) console.log('before Help drop down menu');
   //--------------------------------------------------------------------------------------------------------------------
@@ -670,7 +540,6 @@ require([
     dijit.byId("populationBlock").set("style", "display: none;");
     dijit.byId("organismBlock").set("style", "display: none;");
     dijit.byId("analysisBlock").set("style", "display: none;");
-    //dijit.byId("testBlock").set("style", "display: none;");       //take testBlock out completely later
     dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
     dijit.byId(showBlock).resize();
 
@@ -706,24 +575,7 @@ require([
     av.debug.log += '\n -Button: analysisButton';
     av.ui.mainBoxSwap("analysisBlock");
   };
-  //Take testBlock out completely later
-/*
-  document.getElementById("testButton").onclick = function () {
-    av.debug.log += '\n -Button: testButton';
-    av.ui.mainBoxSwap("testBlock");
-    if ('#00FF00' == chck.outlineColor) {
-      chck.outlineColor = '#00FFFF';
-    }
-    else if ('#00FFFF' == chck.outlineColor) {
-      chck.outlineColor = '#FFFFFF';
-    }
-    else {
-      chck.outlineColor = '#00FF00';
-    }
-    placeChips(chips, chck);
-    drawCheckerSetup(chck, chips);
-  };
-*/
+
   //********************************************************************************************************************
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************

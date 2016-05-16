@@ -285,3 +285,128 @@ av.fwt.writeCSV = function() {
   av.fio.fzSaveCsvfn();
 }
 
+/***********************************************************************************************************************
+                                  Notes about saving in Safari
+/***********************************************************************************************************************
+ Notes on saving files in Safari.
+ http://jsfiddle.net/B7nWs/  works on Safari in jsfiddle
+ works in avida-ED for PDF, but gives the following error
+ [Error] Failed to load resource: Frame load interrupted (0, line 0)
+ works in pdf file, but can’t seem to get with text I generate.
+
+ /works in safari – does not open blank tab. Callbacks do not work.
+ av.fio.writeSafari = function (tmpUrl) {
+    //http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
+$.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/0', {
+      //$.fileDownload(tmpUrl, {
+      successCallback: function (url) {
+        alert('You just got a file download dialog or ribbon for this URL :' + url);
+      },
+      failCallback: function (html, url) {
+        alert('Your file download just failed for this URL:' + url + '\r\n' + 'Here was the resulting error HTML: \r\n' + html
+        );
+      }
+    });
+  };
+
+//works in safari for pdf files
+http://jqueryfiledownload.apphb.com
+
+//works in safari - opens a new blank tab and leaves it open after saving file called "unknown"
+//http://stackoverflow.com/questions/12802109/download-blobs-locally-using-safari
+window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log));
+
+http://stackoverflow.com/questions/23667074/javascriptwrite-a-string-with-multiple-lines-to-a-csv-file-for-downloading
+https://adilapapaya.wordpress.com/2013/11/15/exporting-data-from-a-web-browser-to-a-csv-file-using-javascript/
+http://jsfiddle.net/nkm2b/2/
+$(fileDownloadButton).click(function () {
+ //works, but opens a new tab which is blank and gets left open; file named 'unknown'
+  var a = document.createElement('a');
+  a.href     = 'data:attachment/csv,' + av.fwt.csvStrg;
+  a.target   = '_blank';
+  a.download = 'myFile.csv';
+  document.body.appendChild(a);
+  a.click();
+});
+
+//Does not work in safari
+https://codepen.io/davidelrizzo/pen/cxsGb
+
+// the statement pair below does not work in Safari. Opens tab with text data. does not save it.
+// tab has randomvalue url name like blob:file:///705ac45f-ab49-40ac-ae9a-8b03797daeae
+//http://stackoverflow.com/questions/18690450/how-to-generate-and-prompt-to-save-a-file-from-content-in-the-client-browser
+ var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+ saveAs(blob, "helloWorld.txt");
+
+//Does not work in Safari – opens tab with the string only
+// http://stackoverflow.com/questions/13405129/javascript-create-and-save-file
+    var myCsv = "Col1,Col2,Col3\nval1,val2,val3";
+    window.open('data:text/csv;charset=utf-8,' + escape(myCsv));
+
+//http://stackoverflow.com/questions/13405129/javascript-create-and-save-file
+//does not work in chrome or safari I might not have it right
+    var a = document.getElementById("a");
+    var file = new Blob(['file text'], {type: 'text/plain'});
+    a.href = URL.createObjectURL(file);
+    a.download = 'filename.txt';
+
+//works in chrome, but not in safari
+function download(text, name, type) {
+    var a = document.createElement("a");
+    var file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    a.click();
+  }
+download('file text', 'myfilename.txt', 'text/plain')
+
+//Does not work in Safari
+var aFileParts = ['<a id="a"><b id="b">hey!</b></a>'];
+var oMyBlob = new Blob(aFileParts, {type : 'text/html'}); // the blob
+window.open(URL.createObjectURL(oMyBlob));
+
+//does not work in safari does work in chrome
+http://thiscouldbebetter.neocities.org/texteditor.html
+
+//does not work in Safari
+  var blob = new Blob([av.fwt.csvStrg], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, av.fio.csvFileName);};
+
+
+
+
+ // http://stackoverflow.com/questions/30694453/blob-createobjecturl-download-not-working-in-firefox-but-works-when-debugging
+ //Should work but I can get the right type for data
+ function downloadFile(filename, data) {
+
+    var a = document.createElement('a');
+    a.style = "display: none";
+    var blob = new Blob(data, {type: "application/octet-stream"});
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){
+      document.body.removeChild(a);    //does not remove blank tab
+      window.URL.revokeObjectURL(url);
+    }, 100);
+  }
+
+ //works in Firefox & safari. Lets you name the file in Firefox ,BUT
+ // looses the line feeds so does not work for sv file.
+ var a = document.createElement('a');
+ a.href = 'data:attachment/csv,' + av.fwt.csvStrg;
+ a.target = '_blank';
+ a.download = av.fio.csvFileName;
+ document.body.appendChild(a);
+ a.click();
+
+ Places that say you cannot save non-text files from javascript in Safari
+ https://github.com/wenzhixin/bootstrap-table/issues/2187
+ http://www.html5rocks.com/en/tutorials/file/filesystem/
+
+ ---------------------- look at
+ http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
+
+***********************************************************************************************************************/
