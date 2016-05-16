@@ -201,7 +201,7 @@ av.fio.fixFname = function() {
   }
 }
 
-av.fio.fzSaveWorkspaceFn = function () {
+av.fio.fzSaveWorkspaceAsFn = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
   if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
   var end = av.fio.userFname.substring(av.fio.userFname.length-4);
@@ -244,6 +244,7 @@ av.fio.fzSaveCsvfn = function () {
   a.target   = '_blank';
   a.download = av.fio.csvFileName;
   document.body.appendChild(a);
+  if ('Safari 3+' === av.brs.name) alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .csv. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
   a.click();
   setTimeout(function(){
     document.body.removeChild(a);   //does not remove blank tab
@@ -256,9 +257,9 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
   var end = av.fio.userFname.substring(av.fio.userFname.length-4);
   if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
-  console.log('end', end, '; userFname', av.fio.userFname);
+  //console.log('end', end, '; userFname', av.fio.userFname);
   var WSzip = new av.fio.JSZip();
-  console.log('number of files', av.utl.objectLength(av.fzr.file) );
+  //console.log('number of files', av.utl.objectLength(av.fzr.file) );
   var numFiles = 0;
   for (var fname in av.fzr.file) {
     WSzip.file('av.avidaedworkspace/'+fname, av.fzr.file[fname]);

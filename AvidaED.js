@@ -309,7 +309,7 @@ require([
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
     av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
 
-    //av.fio.fzSaveWorkspaceFn();
+    av.fio.fzSaveWorkspaceAsFn();
   };
 
   //Export csv data from current run.

@@ -281,7 +281,7 @@ av.fwt.writeCSV = function() {
   for (var ii = 0; ii < lngth; ii++) {
     av.fwt.csvStrg += '\n' + ii + ',' + av.ptd.aveFit[ii].formatNum(6) + ',' + av.ptd.aveGnl[ii].formatNum(6) + ',' + av.ptd.aveMet[ii].formatNum(6) + ',' + av.ptd.aveNum[ii];
   }
-  console.log(av.fwt.csvStrg);
+  //console.log(av.fwt.csvStrg);
   av.fio.fzSaveCsvfn();
 }
 
