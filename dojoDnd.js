@@ -70,8 +70,8 @@ av.dnd.landActiveConfig = function (pkg) {
   var domid = Object.keys(av.dnd.activeConfig.map)[0];
   pkg.target.map[domid].type[0] = 'b';
   av.dnd.activeConfig.sync();
-  console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
-  console.log('type', pkg.target.map[domid].type[0]);
+  //console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
+  //console.log('type', pkg.target.map[domid].type[0]);
 
   av.fzr.actConfig.actDomid = domid;
   av.fzr.actConfig.name = document.getElementById(domid).textContent;
@@ -88,9 +88,9 @@ av.dnd.landActiveConfig = function (pkg) {
   av.dnd.ancestorBox.sync();   //should be done after insertion or deletion
 
   av.parents.clearParentsFn();
-  console.log('before av.frd.updateSetup');
+  //console.log('before av.frd.updateSetup');
   av.frd.updateSetup();  //fileIO
-  console.log('after av.frd.updateSetup');
+  //console.log('after av.frd.updateSetup');
   if ('fzConfig' === pkg.source.node.id) {
     av.fzr.actConfig.type = 'c';
     av.fzr.actConfig.file['events.cfg'] = ' ';
@@ -176,7 +176,7 @@ av.dnd.landActiveConfig = function (pkg) {
     av.msg.sendData();
     //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }
-  console.log('fzr.activeCon', av.fzr.actConfig);
+  //console.log('fzr.activeCon', av.fzr.actConfig);
 }
 
 //Process when an Configuration is added to the Freezer

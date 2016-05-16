@@ -449,7 +449,6 @@ av.msg.injectAncestors = function () {
 //---------------------------------
 av.msg.updatePopStats = function (msg) {
   'use strict';
-  console.log('in updatePopStats');
   var place = 2;
   //TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   TimeLabel.textContent = msg.update.formatNum(0) + " updates";
@@ -466,7 +465,6 @@ av.msg.updatePopStats = function (msg) {
   //find out how many are not viable.
   var numNotViable = 0;
   var lngth = av.grd.msg.fitness.data.length;
-  console.log('lngth', av.grd.msg.fitness.data.length, lngth);
   for (var ii = 0; ii < lngth; ii++) {
     if (0 === av.grd.msg.fitness.data[ii]) {  //NOT viable
       numNotViable++;
