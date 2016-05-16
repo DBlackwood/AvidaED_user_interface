@@ -160,7 +160,7 @@
           </tr>
           </tbody>
         </table>
-        <button id='fileDownloadButton'>Test fileDownload</button>
+        <button id='fileDownloadButton'>test fileDownload</button>
         <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
         <input type='button' id='testButton' intermediateChanges='false' value='Color test'
                iconClass='dijitNoIcon'></button>
@@ -243,7 +243,7 @@
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
                   <label id='SotLabel'>Selected Organism Type</label>
-                  <table class="t1">
+                  <table class='top'>
                     <tbody>
                     <tr>
                       <td><canvas id='SelectedColor' width='15' height='15'></canvas>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</td>
@@ -262,7 +262,7 @@
                       <td><label id='generateLabel'></label></td>
                     </tr>
                     <tr>
-                      <td>Age:</td>
+                      <td>Age (update):</td>
                       <td><label id='ageLabel'></label></td>
                     </tr>
                     <tr>
@@ -329,11 +329,10 @@
                      refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'
                      id='popStatistics'>
                   <label id='popStat'>Population Statistics</label>
-                  <table border='0'
-                         style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD'>
+                  <table class='top'>
                     <tbody>
                     <tr>
-                      <td>Pop Size:</td>
+                      <td>Size (# of organisms):</td>
                       <td><label id='popSizeLabel'></label></td>
                     </tr>
                     <tr>
@@ -352,15 +351,22 @@
                       <td>Avg. Age (updates):</td>
                       <td><label id='aAgeLabel'></label></td>
                     </tr>
+                    <tr>
+                      <td># Ancestor(s) at start:</td>
+                      <td><label id='parentNumLabel'></label></td>
+                    </tr>
+                    <tr>
+                      <td># of viable organisms:</td>
+                      <td><label id='viableNumLabel'></label></td>
+                    </tr>
                     </tbody>
                   </table>
                   <br/>
                   <table border='0' style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto;'>
-                    <colgroup><col></col><col></col></colgroup>
                     <tbody>
                     <tr>
                       <td><label id='psFn'>Function</label></td>
-                      <td><label id='psNumOrg'># Organisms</label></td>
+                      <td><label id='psNumOrg'># of Organisms</label></td>
                     </tr>
                     <tr>
                       <td>

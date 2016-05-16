@@ -449,6 +449,7 @@ av.msg.injectAncestors = function () {
 //---------------------------------
 av.msg.updatePopStats = function (msg) {
   'use strict';
+  console.log('in updatePopStats');
   var place = 2;
   //TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   TimeLabel.textContent = msg.update.formatNum(0) + " updates";
@@ -460,6 +461,20 @@ av.msg.updatePopStats = function (msg) {
   aMetabolicLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
   aGestateLabel.textContent = msg.ave_gestation_time.formatNum(1);
   aAgeLabel.textContent = msg.ave_age.formatNum(2);
+  parentNumLabel.textContent = av.parents.name.length;
+
+  //find out how many are not viable.
+  var numNotViable = 0;
+  var lngth = av.grd.msg.fitness.data.length;
+  console.log('lngth', av.grd.msg.fitness.data.length, lngth);
+  for (var ii = 0; ii < lngth; ii++) {
+    if (0 === av.grd.msg.fitness.data[ii]) {  //NOT viable
+      numNotViable++;
+    }
+  }
+  var numViable = msg.organisms - numNotViable;
+  viableNumLabel.textContent = numViable.formatNum(0);
+
   notPop.textContent = msg.not;
   nanPop.textContent = msg.nand;  //these do not match
   andPop.textContent = msg.and;
@@ -605,6 +620,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
   if (0 > msg.isViable) viableLabel.textContent = 'no';
   else if (0 < msg.isViable) viableLabel.textContent = 'yes';
   else viableLabel.textContent = 'unknown';
+
   av.msg.fillColorBlock(msg);
   if (av.debug.msg) console.log('Kidstatus', av.grd.kidStatus);
   if ('getgenome' == av.grd.kidStatus) {

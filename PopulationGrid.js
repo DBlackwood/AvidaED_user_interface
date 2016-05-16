@@ -121,10 +121,13 @@ av.grd.drawKids = function () {  //Draw the children of parents
       yy = av.grd.marginY + av.grd.yOffset + rr * av.grd.cellHt;
       if (null === av.grd.fill[ii]) {
         //console.log('ii', ii, '; msg.ancestor.data[ii]',av.grd.msg.ancestor.data[ii]);
-        if ('-' === av.grd.msg.ancestor.data[ii]) av.grd.cntx.fillStyle = '#000';
+        if ('-' === av.grd.msg.ancestor.data[ii]) av.grd.cntx.fillStyle = '#000';  //not there
         else av.grd.cntx.fillStyle = '#888'; //not viable
       }
-      else if (0 == av.grd.fill[ii]) av.grd.cntx.fillStyle = av.color.defaultKidColor;
+      else if (0 == av.grd.fill[ii]) {
+        av.grd.cntx.fillStyle = av.color.defaultKidColor;
+        //console.log('default kid color');
+      }
       else {  //get_color0 = function(cmap, dx, d1, d2)
         av.grd.cntx.fillStyle = get_color0(av.grd.cmap, av.grd.fill[ii], 0, av.grd.fillmax);
         //console.log('fillStyle', get_color0(av.grd.cmap, av.grd.fill[ii], 0, av.grd.fillmax));
@@ -306,27 +309,6 @@ av.grd.findGridSize = function (){
     av.grd.xOffset = 0;
     av.grd.CanvasGrid.height = av.grd.sizeY;
     av.grd.yOffset = 0;
-
-  //Determine offset and size of canvas based on grid size relative to space size in that direction = old way with offsets
-  /*
-  if (av.grd.sizeX < av.grd.spaceX) {
-    av.grd.CanvasGrid.width = av.grd.spaceX;
-    av.grd.xOffset = (av.grd.spaceX - av.grd.sizeX) / 2;
-  }
-  else {
-    av.grd.CanvasGrid.width = av.grd.sizeX;
-    av.grd.xOffset = 0;
-  }
-  if (av.grd.sizeY < av.grd.spaceY) {
-    av.grd.CanvasGrid.height = av.grd.spaceY;
-    av.grd.yOffset = (av.grd.spaceY - av.grd.sizeY) / 2;
-  }
-  else {
-    av.grd.CanvasGrid.height = av.grd.sizeY;
-    av.grd.yOffset = 0;
-  }
-  //console.log('Xsize', av.grd.sizeX, '; Ysize', av.grd.sizeY, '; zoom=', av.grd.zoom);
-  */
 }
 av.grd.drawGridUpdate = function () {
   'use strict';
