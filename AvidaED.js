@@ -351,10 +351,10 @@ require([
   });
 
   av.fwt.tryDown = function(blob) {
-    var ab = document.createElement('ab');
-    ab.href     = 'data:attachment/csv;charset=utf-8,' + encodeURI(blob);
+    var ab = document.createElement('a');
+    ab.href     = 'data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log);
     ab.target   = '_blank';
-    ab.download = av.fio.csvFileName;
+    ab.download = 'testfile.txt';
     document.body.appendChild(ab);
     ab.click();
     setTimeout(function(){

@@ -160,7 +160,7 @@
           </tr>
           </tbody>
         </table>
-        <button id='fileDownloadButton'>Test fileDownloadButton</button>
+        <button id='fileDownloadButton'>Test fileDownload</button>
         <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
         <input type='button' id='testButton' intermediateChanges='false' value='Color test'
                iconClass='dijitNoIcon'></button>
@@ -1023,6 +1023,16 @@
   </div>
 </div>
 
+<div data-dojo-type='dijit/Dialog' data-dojo-id='saveCSVdialog'
+     title='write a file'>
+  <div class='dijitDialogPaneContentArea'>
+    The file name will be 'unknown' in safari
+  </div>
+  <div class='dijitDialogPaneActionBar'>
+    <button data-dojo-type='dijit/form/Button' type='button' data-dojo-props='onClick:function(){ab.hide();}'
+            id='saveCSVdialogCancel'>Cancel
+    </button>
+</div>
 
     <!--    <button data-dojo-type='dijit/form/Button' type='button' id='sendLogDialogSave'>Save</button>  -->
   </div>

@@ -245,7 +245,10 @@ av.fio.fzSaveCsvfn = function () {
   a.download = av.fio.csvFileName;
   document.body.appendChild(a);
   a.click();
-
+  setTimeout(function(){
+    document.body.removeChild(a);   //does not remove blank tab
+    window.URL.revokeObjectURL(a.href);
+  }, 100);
 }
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
