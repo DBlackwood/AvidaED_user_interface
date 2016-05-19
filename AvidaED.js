@@ -4,7 +4,7 @@
 //
 // Git commands used to push
 // git add .
-// git commit -m "comment about the change being pushed"
+// git commit -m 'comment about the change being pushed'
 // git push -u origin master
 //
 // [option]<alt>{go} to get library in the list for finder
@@ -21,85 +21,81 @@
 //
 define.amd.jQuery = true;
 require([
-  "dijit/dijit",
-  "dojo/parser",
-  "dojo/_base/declare",
-  "dojo/query",
-  "dojo/NodeList-traverse",
-  "maqetta/space",
-  "maqetta/AppStates",
-  "dijit/Dialog",
-  "dijit/layout/BorderContainer",
-  "dijit/layout/ContentPane",
-  "dijit/MenuBar",
-  "dijit/PopupMenuBarItem",
-  "dijit/MenuItem",
-  "dijit/Menu",
-  "dijit/form/Button",
-  "dijit/TitlePane",
-  "dojo/dnd/Source",
-  "dojo/dnd/Manager",
-  "dojo/dnd/Selector",
-  "dojo/dnd/Target",
-  "dojo/dom-geometry",
-  "dojo/dom-style",
-  "dojo/dom",
-  "dojo/aspect",
-  "dojo/on",
-  "dijit/registry",
-  "dijit/form/Select",
-  "dijit/form/HorizontalSlider",
-  "dijit/form/HorizontalRule",
-  "dijit/form/HorizontalRuleLabels",
-  "dijit/form/RadioButton",
-  "dijit/form/ToggleButton",
-  "dijit/form/NumberSpinner",
-  "dijit/form/ComboButton",
-  "dijit/form/DropDownButton",
-  "dijit/form/ComboBox",
-  "dijit/form/Textarea",
-  "dojox/charting/Chart",
-  "dojox/charting/axis2d/Default",
-  "dojox/charting/plot2d/Lines",
-  "dojox/charting/plot2d/Grid",
-  "dojox/charting/action2d/MouseZoomAndPan",
-//  "dojox/charting/Theme",
-//  "dojox/charting/themes/Wetland",
-  "dojo/ready",
-  "jquery",
-  "jquery-ui",
-  //"lib/Blob.js",
-  "lib/jszip.min.js",
-  "lib/FileSaver.js",
-  "lib/jquery.fileDownload.js",
-  "messaging.js",
-  "fileDataRead.js",
-  "fileDataWrite.js",
-  "fileIO.js",
-  "populationGrid.js",
-  "organismView.js",
+  'dijit/dijit',
+  'dojo/parser',
+  'dojo/_base/declare',
+  'dojo/query',
+  'dojo/NodeList-traverse',
+  'maqetta/space',
+  'maqetta/AppStates',
+  'dijit/Dialog',
+  'dijit/layout/BorderContainer',
+  'dijit/layout/ContentPane',
+  'dijit/MenuBar',
+  'dijit/PopupMenuBarItem',
+  'dijit/MenuItem',
+  'dijit/Menu',
+  'dijit/form/Button',
+  'dijit/TitlePane',
+  'dojo/dnd/Source',
+  'dojo/dnd/Manager',
+  'dojo/dnd/Selector',
+  'dojo/dnd/Target',
+  'dojo/dom-geometry',
+  'dojo/dom-style',
+  'dojo/dom',
+  'dojo/aspect',
+  'dojo/on',
+  'dijit/registry',
+  'dijit/form/Select',
+  'dijit/form/HorizontalSlider',
+  'dijit/form/HorizontalRule',
+  'dijit/form/HorizontalRuleLabels',
+  'dijit/form/RadioButton',
+  'dijit/form/ToggleButton',
+  'dijit/form/NumberSpinner',
+  'dijit/form/ComboButton',
+  'dijit/form/DropDownButton',
+  'dijit/form/ComboBox',
+  'dijit/form/Textarea',
+  'dojox/charting/Chart',
+  'dojox/charting/axis2d/Default',
+  'dojox/charting/plot2d/Lines',
+  'dojox/charting/plot2d/Grid',
+  'dojox/charting/action2d/MouseZoomAndPan',
+  'dojo/ready',
+  'jquery',
+  'jquery-ui',
+  //'lib/jquery.fileDownload.js',
+  'lib/jszip.min.js',
+  'lib/FileSaver.js',
+  'messaging.js',
+  'fileDataRead.js',
+  'fileDataWrite.js',
+  'fileIO.js',
+  'populationGrid.js',
+  'organismView.js',
   'dojoDnd.js',
   'popControls.js',
   'mouse.js',
   'mouseDown.js',
   //'restartAvida.js',
   //'diagnosticConsole.js',
-  "dojo/domReady!"
+  'dojo/domReady!'
 ], function (dijit, parser, declare, query, nodelistTraverse, space, AppStates, Dialog,
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan, //Wetland,
-             ready, $, jqueryui,
-             //Blob,
-             JSZip, FileSaver, fileDownload) {
-  "use strict";
+             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan,
+             ready, $, jqueryui, //fileDownload,
+             JSZip, FileSaver) {
+  'use strict';
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
     // console.log($.fn.jquery);
   } else {
-    console.log("Jquery ($) is not defined.");
+    console.log('Jquery ($) is not defined.');
   }
 
   parser.parse();
@@ -148,8 +144,8 @@ require([
   });
   /*  //kept only as an example of how to programatically add data to a dnd container
    av.dnd.fzWorld.insertNodes(false, [
-   {data: "m2w30u1000nand", type: ['w']},
-   {data: "m2w30u1000not", type: ['w']}
+   {data: 'm2w30u1000nand', type: ['w']},
+   {data: 'm2w30u1000not', type: ['w']}
    ]);
    */
 
@@ -186,21 +182,21 @@ require([
   // Initialize variables that depend on files loaded in requirement statement
   // -------------------------------------------------------------------------------------------------------------------
 
-  av.grd.popChart = new Chart("popChart");
+  av.grd.popChart = new Chart('popChart');
 
-  dijit.byId("mnCnPause").attr("disabled", true);
-  dijit.byId("mnFzOrganism").attr("disabled", true);
-  dijit.byId("mnFzOffspring").attr("disabled", true);
-  dijit.byId("mnFzPopulation").attr("disabled", true);
-  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
+  dijit.byId('mnCnPause').attr('disabled', true);
+  dijit.byId('mnFzOrganism').attr('disabled', true);
+  dijit.byId('mnFzOffspring').attr('disabled', true);
+  dijit.byId('mnFzPopulation').attr('disabled', true);
+  dijit.byId('mnCnOrganismTrace').attr('disabled', true);
 
   // for analyze page
   av.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
   av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
   av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
-  av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
-  av.anl.yRightTitle = dijit.byId("yRightSelect").value;
-  var anaChart = new Chart("analyzeChart");
+  av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
+  av.anl.yRightTitle = dijit.byId('yRightSelect').value;
+  var anaChart = new Chart('analyzeChart');
 
   //**************************************************************************************************
   //                web worker to talk to avida
@@ -209,7 +205,7 @@ require([
   //Avida as a web worker
   if (av.debug.root) console.log('before call avida');
   //console.log('typeof(av.aww.uiWorker', typeof(av.aww.uiWorker));
-  if (typeof(Worker) !== "undefined") {
+  if (typeof(Worker) !== 'undefined') {
     //console.log('Worker type is not undefined');
     if (null === av.aww.uiWorker) {
       av.aww.uiWorker = new Worker('avida.js');
@@ -241,7 +237,7 @@ require([
   // Menu Buttons handling
   //********************************************************************************************s************************
 
-  dijit.byId("mnFlOpenDefaultWS").on("Click", function () {
+  dijit.byId('mnFlOpenDefaultWS').on('Click', function () {
     'use strict';
     av.debug.log += '\n -Button: mnFlOpenDefaultWS';
     av.fio.useDefault = true;
@@ -251,47 +247,47 @@ require([
     }
   });
 
-  dijit.byId("sWSfSave").on("Click", function () {
+  dijit.byId('sWSfSave').on('Click', function () {
     av.debug.log += '\n -Button: sWSSave';
     console.log('before call save workspace');
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
     console.log('after call to save workspace');
   });
 
-  dijit.byId("sWSfOpen").on("Click", function () {
+  dijit.byId('sWSfOpen').on('Click', function () {
     av.debug.log += '\n -Button: sWSfOpen';
     sWSfDialog.hide();
     if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     else {
-      //document.getElementById("inputFile").click();  //to get user picked file
-      document.getElementById("putWS").click();  //to get user picked file
+      //document.getElementById('inputFile').click();  //to get user picked file
+      document.getElementById('putWS').click();  //to get user picked file
     }
   });
 
   // open and read user picked file
   //--------------------------------------------------------------------------------------------------------------------
 
-  dijit.byId("mnFlOpenWS").on("Click", function () {
+  dijit.byId('mnFlOpenWS').on('Click', function () {
     'use strict';
     av.debug.log += '\n -Button: mnFlOpenWS';
     av.fio.useDefault = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
-    //else document.getElementById("inputFile").click();
-    else document.getElementById("putWS").click();
+    //else document.getElementById('inputFile').click();
+    else document.getElementById('putWS').click();
   });
 
   //--------------------------------------------------------------------------------------------------------------------
 
-  dijit.byId("mnFlFzItem").on("Click", function () {
+  dijit.byId('mnFlFzItem').on('Click', function () {
     'use strict';
     av.debug.log += '\n -Button: mnFlFzItem';
     av.fio.useDefault = false;
-    document.getElementById("import").click();
+    document.getElementById('import').click();
   });
 
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
-  document.getElementById("mnFlSaveWorkspace").onclick = function () {
+  document.getElementById('mnFlSaveWorkspace').onclick = function () {
     av.debug.log += '\n -Button: mnFlSaveWorkspace';
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
@@ -303,7 +299,7 @@ require([
   }
 
   // Save current workspace with a new name(mnFzSaveWorkspaceAs)
-  document.getElementById("mnFlSaveWorkspaceAs").onclick = function () {
+  document.getElementById('mnFlSaveWorkspaceAs').onclick = function () {
     av.debug.log += '\n -Button: mnFlSaveWorkspaceAs';
     var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
@@ -313,7 +309,7 @@ require([
   };
 
   //Export csv data from current run.
-  dijit.byId("mnFlExportData").on("Click", function () {
+  dijit.byId('mnFlExportData').on('Click', function () {
     'use strict';
     av.debug.log += '\n -Button: mnFlExportData';
     av.fwt.writeCSV();
@@ -321,8 +317,8 @@ require([
 
   //------------- Testing only need to delete later.--------------------
   $(fileDownloadButton).click(function () {
-    //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
-    //saveAs(blob, "hello world.txt");
+    //var blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});
+    //saveAs(blob, 'hello world.txt');
 
     if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
     if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
@@ -336,11 +332,11 @@ require([
       WSzip.file('av.avidaedworkspace/' + fname, av.fzr.file[fname]);
       numFiles++;
     }
-    var blob = WSzip.generate({type: "blob"});
+    var blob = WSzip.generate({type: 'blob'});
     console.log('wrote blob');
-    //var data = { x: 42, s: "hello, world", d: new Date() };
+    //var data = { x: 42, s: 'hello, world', d: new Date() };
     //var json = JSON.stringify(data);
-    //var blob = new Blob([json], {type: "octet/stream"});
+    //var blob = new Blob([json], {type: 'octet/stream'});
       var tmpUrl = window.URL.createObjectURL(blob);
       //var tmpUrl = window.URL.createObjectURL('some text');
       console.log('tmpURL=', tmpUrl);
@@ -368,39 +364,39 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
   // Help Drop down menu buttons
   //--------------------------------------------------------------------------------------------------------------------
-  dijit.byId('mnHpAbout').on("Click", function () {
+  dijit.byId('mnHpAbout').on('Click', function () {
     av.debug.log += '\n -Button: mnHpAbout';
     mnHpAboutDialog.show();
   });
 
   av.ui.HardwareDialog = new Dialog({
-    title: "Avida : A Guided Tour of an Ancestor and its Hardware",
-    id: "HardwareDialog",
-    href: "cpu_tour.html"
+    title: 'Avida : A Guided Tour of an Ancestor and its Hardware',
+    id: 'HardwareDialog',
+    href: 'cpu_tour.html'
     //hide: function() {av.ui.HardwareDialog.destroy()}
-    //style: "width: 600px; height: 400px"
+    //style: 'width: 600px; height: 400px'
   });
 
   domStyle.set(av.ui.HardwareDialog.containerNode, {
     position: 'relative'
   });
 
-  dijit.byId('mnHpHardware').on("Click", function () {
+  dijit.byId('mnHpHardware').on('Click', function () {
     av.debug.log += '\n -Button: mnHpHardware';
     if (!av.ui.HardwareDialog) {
       av.ui.HardwareDialog = new Dialog({
-        title: "Avida : A Guided Tour of an Ancestor and its Hardware",
-        id: "HardwareDialog",
-        href: "cpu_tour.html"
+        title: 'Avida : A Guided Tour of an Ancestor and its Hardware',
+        id: 'HardwareDialog',
+        href: 'cpu_tour.html'
         //hide: function() {av.ui.HardwareDialog.destroy()}
-        //style: "width: 600px; height: 400px"
+        //style: 'width: 600px; height: 400px'
       });
     }
     //console.log(av.ui.HardwareDialog);
     av.ui.HardwareDialog.show();
   });
 
-  dijit.byId('mnHpProblem').on("Click", function () {
+  dijit.byId('mnHpProblem').on('Click', function () {
     av.debug.log += '\n -Button: mnHpProblem';
     //alert(av.debug.log);
     // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-Ed: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
@@ -417,23 +413,22 @@ require([
   });
 
   //http://stackoverflow.com/questions/7080269/javascript-before-leaving-the-page
-  dijit.byId('sendEmail').on("Click", function () {
+  dijit.byId('sendEmail').on('Click', function () {
     av.ui.sendEmailFlag = true;
     var link = 'mailto:' + av.fio.mailAddress +
-        //"?cc=CCaddress@example.com" +
-      "?subject=" + escape("Avida-Ed session log") +
-      "&body=" + escape(av.debug.log);
+        //'?cc=CCaddress@example.com' +
+      '?subject=' + escape('Avida-Ed session log') +
+      '&body=' + escape(av.debug.log);
     window.location.href = link;
     av.ui.sendEmailFlag = false;
   });
-
 
   //http://www.technicaladvices.com/2012/03/26/detecting-the-page-leave-event-in-javascript/
   //Cannot get custom message in Firefox (or Safari for now)
   window.onbeforeunload = function (event) {
     if (!av.ui.sendEmailFlag) {
       if ('no' === av.fzr.saveState || 'maybe' === av.fzr.saveState) {
-        return "Your workspace may have changed sine you last saved. Do you want to save first?";
+        return 'Your workspace may have changed sine you last saved. Do you want to save first?';
 
         //e.stopPropagation works in Firefox.
         if (event.stopPropagation) {
@@ -477,7 +472,7 @@ require([
   //http://blog.bugsnag.com/js-stacktraces
   window.onerror = function (message, file, line, col, error) {
     //console.log(message, ' from ', error.stack, '------------------');
-    document.getElementById("runStopButton").innerHTML = "Run";  //av.msg.pause('now');
+    document.getElementById('runStopButton').innerHTML = 'Run';  //av.msg.pause('now');
     av.debug.log += '\n' + message + ' from ' + file + ':' + line + ':' + col;
     //av.debug.errorEmailFn();
 
@@ -491,7 +486,7 @@ require([
     av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
   }
 
-  window.addEventListener("error", function (evt) {
+  window.addEventListener('error', function (evt) {
     console.log('event listener', evt);
   });
 
@@ -527,53 +522,53 @@ require([
     document.getElementById('organismBottom').style.height = av.ui.num + 'px';
   }
 
-  //The style display: none cannnot be used in the html during the initial load as the dijits won't work right
+  //The style display: 'none' cannnot be used in the html during the initial load as the dijits won't work right
   //visibility:hidden can be used, but it leaves the white space and just does not display dijits.
   //So all areas are loaded, then the mainBoxSwap is called to set display to none after the load on all but
   //the default option.
-  //av.ui.mainBoxSwap("organismBlock");
-  //av.ui.mainBoxSwap("populationBlock");  //commented out here as it is called near the end of this file
-  dijit.byId("setupBlock").set("style", "display: none;");
+  //av.ui.mainBoxSwap('organismBlock');
+  //av.ui.mainBoxSwap('populationBlock');  //commented out here as it is called near the end of this file
+  dijit.byId('setupBlock').set('style', 'display: none;');
 
   av.ui.mainBoxSwap = function (showBlock) {
     av.ui.page = showBlock;
-    dijit.byId("populationBlock").set("style", "display: none;");
-    dijit.byId("organismBlock").set("style", "display: none;");
-    dijit.byId("analysisBlock").set("style", "display: none;");
-    dijit.byId(showBlock).set("style", "display: block; visibility: visible;");
+    dijit.byId('populationBlock').set('style', 'display: none;');
+    dijit.byId('organismBlock').set('style', 'display: none;');
+    dijit.byId('analysisBlock').set('style', 'display: none;');
+    dijit.byId(showBlock).set('style', 'display: block; visibility: visible;');
     dijit.byId(showBlock).resize();
 
     //disable menu options. they will be enabled when relevant canvas is drawn
-    dijit.byId("mnFzOffspring").attr("disabled", true);
-    dijit.byId("mnCnOffspringTrace").attr("disabled", true);
+    dijit.byId('mnFzOffspring').attr('disabled', true);
+    dijit.byId('mnCnOffspringTrace').attr('disabled', true);
     //console.log('end of mainBoxSwap');
   };
 
   // Buttons that call MainBoxSwap
-  document.getElementById("populationButton").onclick = function () {
+  document.getElementById('populationButton').onclick = function () {
     av.debug.log += '\n -Button: populationButton';
     if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
-    av.ui.mainBoxSwap("populationBlock");
+    av.ui.mainBoxSwap('populationBlock');
   }
 
-  document.getElementById("organismButton").onclick = function () {
+  document.getElementById('organismButton').onclick = function () {
     av.debug.log += '\n -Button: organismButton';
-    av.ui.mainBoxSwap("organismBlock");
+    av.ui.mainBoxSwap('organismBlock');
     //console.log('after mainBoxSwap');
     organismCanvasHolderSize();
-    var height = ($("#rightDetail").innerHeight() - 395) / 2;
-    document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById("ExecuteAbout").style.height = height + "px";
-    document.getElementById("ExecuteJust").style.width = "100%";
-    document.getElementById("ExecuteAbout").style.width = "100%";
+    var height = ($('#rightDetail').innerHeight() - 395) / 2;
+    document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    document.getElementById('ExecuteAbout').style.height = height + 'px';
+    document.getElementById('ExecuteJust').style.width = '100%';
+    document.getElementById('ExecuteAbout').style.width = '100%';
     if (undefined != av.traceObj) {
       av.ind.updateOrgTrace();
     }
   };
 
-  document.getElementById("analysisButton").onclick = function () {
+  document.getElementById('analysisButton').onclick = function () {
     av.debug.log += '\n -Button: analysisButton';
-    av.ui.mainBoxSwap("analysisBlock");
+    av.ui.mainBoxSwap('analysisBlock');
   };
 
   //********************************************************************************************************************
@@ -582,47 +577,47 @@ require([
   if (av.debug.root) console.log('before Resize helpers');
   // called from script in html file as well as below
   av.ui.browserResizeEventHandler = function () {
-    if ("block" == domStyle.get("analysisBlock", "display")) {
+    if ('block' == domStyle.get('analysisBlock', 'display')) {
       av.anl.AnaChartFn();
     }
-    if ("block" == domStyle.get("populationBlock", "display")) {
+    if ('block' == domStyle.get('populationBlock', 'display')) {
       if (av.grd.notInDrawingGrid) {
         av.grd.popChartFn();
         //console.log('before call av.grd.drawGridSetupFn');
         av.grd.drawGridSetupFn();
       }
     }
-    if ("block" == domStyle.get("organismBlock", "display")) {
-      var rd = $("#rightDetail").innerHeight();
-      var height = ($("#rightDetail").innerHeight() - 395) / 2;  //was 375
-      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById("ExecuteAbout").style.height = height + "px";
-      document.getElementById("ExecuteJust").style.width = "100%";
-      document.getElementById("ExecuteAbout").style.width = "100%";
+    if ('block' == domStyle.get('organismBlock', 'display')) {
+      var rd = $('#rightDetail').innerHeight();
+      var height = ($('#rightDetail').innerHeight() - 395) / 2;  //was 375
+      document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById('ExecuteAbout').style.height = height + 'px';
+      document.getElementById('ExecuteJust').style.width = '100%';
+      document.getElementById('ExecuteAbout').style.width = '100%';
       //console.log('rightDetail', height, rd);
       av.ind.updateOrgTrace();
     }
   };
 
   ready(function () {
-    aspect.after(registry.byId("gridHolder"), "resize", function () {
+    aspect.after(registry.byId('gridHolder'), 'resize', function () {
       av.ui.browserResizeEventHandler();
     });
-    aspect.after(registry.byId("popChartHolder"), "resize", function () {
+    aspect.after(registry.byId('popChartHolder'), 'resize', function () {
       av.ui.browserResizeEventHandler();
     });
-    aspect.after(registry.byId("organismCanvasHolder"), "resize", function () {
+    aspect.after(registry.byId('organismCanvasHolder'), 'resize', function () {
       av.ui.browserResizeEventHandler();
     });
   });
 
   var popRightOldwidth = 0;
-  aspect.after(registry.byId("popRight"), "resize", function () {
-    if (registry.byId("popRight").domNode.style.width != popRightOldwidth) {
-      popRightOldwidth = registry.byId("popRight").domNode.style.width;
-      var str = registry.byId("popRight").domNode.style.width;
-      registry.byId("selectOrganPane").domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + "px"
-      registry.byId("mainBC").layout();
+  aspect.after(registry.byId('popRight'), 'resize', function () {
+    if (registry.byId('popRight').domNode.style.width != popRightOldwidth) {
+      popRightOldwidth = registry.byId('popRight').domNode.style.width;
+      var str = registry.byId('popRight').domNode.style.width;
+      registry.byId('selectOrganPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + 'px'
+      registry.byId('mainBC').layout();
     }
   });
 
@@ -637,7 +632,7 @@ require([
   // I don't think I would have written it this way had I known the single event handler would not work, but I had
   // created the dojodnd.js file before I realized that I needed separate event handelers with the conditional.
 
-  av.dnd.activeConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+  av.dnd.activeConfig.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     'use strict';
     //console.log('pkg.target', pkg.target);
     //console.log('pkg.target.s', pkg.target.selection);
@@ -651,8 +646,7 @@ require([
     }
   });
 
-  //This triggers now
-  av.dnd.fzConfig.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
+  av.dnd.fzConfig.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzConfig
     if ('fzConfig' === target.node.id) {
       av.ui.num = av.fzr.cNum;  //hold current cNum to see if it changes in av.dnd.landConfig
       av.dnd.landFzConfig(source, nodes, target);  //needed as part of call to contextMenu
@@ -660,19 +654,19 @@ require([
     }
   });
 
-  av.dnd.fzOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
+  av.dnd.fzOrgan.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of fzOrgan
     if ('fzOrgan' === target.node.id) {
       av.dnd.landFzOrgan(source, nodes, target);
     }
   });
 
-  av.dnd.ancestorBox.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
+  av.dnd.ancestorBox.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
       av.dnd.landAncestorBox(source, nodes, target);
     }
   });
 
-  av.dnd.gridCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
+  av.dnd.gridCanvas.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
       av.dnd.landGridCanvas(source, nodes, target);
       console.log('before call av.grd.drawGridSetupFn');
@@ -681,24 +675,24 @@ require([
     }
   });
 
-  av.dnd.organIcon.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
+  av.dnd.organIcon.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organIcon
     //setTimeout(null,1000);
     if ('organIcon' == target.node.id) {
       if (av.debug.dnd) console.log('landOrganIcon: s, t', source, target);
       av.dnd.landOrganIcon(source, nodes, target);
       //Change to Organism Page
-      av.ui.mainBoxSwap("organismBlock");
+      av.ui.mainBoxSwap('organismBlock');
       organismCanvasHolderSize();
-      var height = ($("#rightDetail").innerHeight() - 375) / 2;
-      document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById("ExecuteAbout").style.height = height + "px";
-      document.getElementById("ExecuteJust").style.width = "100%";
-      document.getElementById("ExecuteAbout").style.width = "100%";
+      var height = ($('#rightDetail').innerHeight() - 375) / 2;
+      document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      document.getElementById('ExecuteAbout').style.height = height + 'px';
+      document.getElementById('ExecuteJust').style.width = '100%';
+      document.getElementById('ExecuteAbout').style.width = '100%';
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
 
-  av.dnd.activeOrgan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
+  av.dnd.activeOrgan.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
       av.dnd.landActiveOrgan(source, nodes, target);
@@ -706,7 +700,7 @@ require([
     }
   });
 
-  av.dnd.organCanvas.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
+  av.dnd.organCanvas.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
       //av.debug.log += '\n -DnD_land: organCanvas';
       if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
@@ -715,7 +709,7 @@ require([
     }
   });
 
-  av.dnd.trashCan.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
+  av.dnd.trashCan.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of trashCan
     if ('trashCan' == target.node.id) {
       //av.debug.log += '\n -DnD_land: trashCan';
       var remove = {};
@@ -731,7 +725,7 @@ require([
     }
   });
 
-  av.dnd.analyzeChart.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
+  av.dnd.analyzeChart.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('analyzeChart' == target.node.id) {
       //av.debug.log += '\n -DnD_land: analyzeChart';
       if (av.debug.dnd) console.log('analyzeChart: s, t', source, target);
@@ -740,7 +734,7 @@ require([
     }
   });
 
-  av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
+  av.dnd.graphPop0.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
     if ('graphPop0' == target.node.id) {
       //av.debug.log += '\n -DnD_land: graphPop0';
       if (av.debug.dnd) console.log('graphPop0: s, t', source, target);
@@ -749,7 +743,7 @@ require([
     }
   });
 
-  av.dnd.graphPop1.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
+  av.dnd.graphPop1.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop1
     if ('graphPop1' == target.node.id) {
       //av.debug.log += '\n -DnD_land: graphPop1';
       if (av.debug.dnd) console.log('graphPop1: s, t', source, target);
@@ -758,7 +752,7 @@ require([
     }
   });
 
-  av.dnd.graphPop2.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
+  av.dnd.graphPop2.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop2
     if ('graphPop2' == target.node.id) {
       //av.debug.log += '\n -DnD_land: graphPop2';
       if (av.debug.dnd) console.log('graphPop2: s, t', source, target);
@@ -768,7 +762,7 @@ require([
   });
 
   //need to figure out active configuration and active world
-  av.dnd.fzWorld.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+  av.dnd.fzWorld.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     if ('fzWorld' == target.node.id) {
       //av.debug.log += '\n -DnD_land: fzWorld';
       var pkg = {};
@@ -784,7 +778,7 @@ require([
     }
   });
 
-  av.dnd.graphPop0.on("DndDrop", function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+  av.dnd.graphPop0.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
     // The code is here in case the dnd type is changed to 'source'
     switch (source.node.id) {
@@ -817,32 +811,32 @@ require([
 //----------------------------------------------------------------------------------------------------------------------
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
-  document.getElementById("PopSetupButton").onclick = function () {
+  document.getElementById('PopSetupButton').onclick = function () {
     av.ptd.popBoxSwap();   //in popControls.js
   };
 
-  // hides and shows the population and selected organsim data on right of population page with "Stats/mpa" button
+  // hides and shows the population and selected organsim data on right of population page with 'Stats/mpa' button
   av.ptd.popStatView = function () {
     if (av.ptd.popStatFlag) {
       av.debug.log += '\n -Button: PopStatsButton: start hidding stats';
       av.ptd.popStatFlag = false;
-      registry.byId("popRight").domNode.style.width = "1px";
-      registry.byId("mainBC").layout();
-      dijit.byId("popRight").set("style", "display: block; visibility: hidden;");
+      registry.byId('popRight').domNode.style.width = '1px';
+      registry.byId('mainBC').layout();
+      dijit.byId('popRight').set('style', 'display: block; visibility: hidden;');
 
     }
     else {
       av.debug.log += '\n -Button: PopStatsButton: start showing stats';
       av.ptd.popStatFlag = true;
-      registry.byId("selectOrganPane").domNode.style.width = "150px";
-      registry.byId("popRight").domNode.style.width = "395px";
-      registry.byId("mainBC").layout();
-      dijit.byId("popRight").set("style", "display: block; visibility: visible;");
+      registry.byId('selectOrganPane').domNode.style.width = '150px';
+      registry.byId('popRight').domNode.style.width = '395px';
+      registry.byId('mainBC').layout();
+      dijit.byId('popRight').set('style', 'display: block; visibility: visible;');
 
     }
   }
 
-  document.getElementById("PopStatsButton").onclick = function () {
+  document.getElementById('PopStatsButton').onclick = function () {
     av.ptd.popStatView()
   };
 
@@ -851,22 +845,22 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
 
   av.ptd.makePauseState = function () {
-    dijit.byId("mnCnPause").attr("disabled", true);
-    dijit.byId("mnCnRun").attr("disabled", false);
+    dijit.byId('mnCnPause').attr('disabled', true);
+    dijit.byId('mnCnRun').attr('disabled', false);
     //console.log('pauseState; button=run');
-    document.getElementById("runStopButton").textContent = "Run";
+    document.getElementById('runStopButton').textContent = 'Run';
   }
 
   av.ptd.makeRunState = function () {
-    document.getElementById("runStopButton").textContent = "Pause";
-    dijit.byId("mnCnPause").attr("disabled", false);
-    dijit.byId("mnCnRun").attr("disabled", true);
+    document.getElementById('runStopButton').textContent = 'Pause';
+    dijit.byId('mnCnPause').attr('disabled', false);
+    dijit.byId('mnCnRun').attr('disabled', true);
   }
 
   av.ptd.runPopFn = function () {
     //check for ancestor organism in configuration data
     var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
-    //console.log("namelist", namelist);
+    //console.log('namelist', namelist);
     if (1 > namelist.length) {
       //console.log('about to call av.ptd.makePauseState()');
       //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 740 \n';
@@ -893,11 +887,11 @@ require([
         if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
       }
 
-      if (dijit.byId("autoUpdateRadio").get('checked')) {
-        //av.msg.pause(dijit.byId("autoUpdateSpinner").get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
+      if (dijit.byId('autoUpdateRadio').get('checked')) {
+        //av.msg.pause(dijit.byId('autoUpdateSpinner').get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
         av.ui.autoStopFlag = true;
-        av.ui.autoStopValue = dijit.byId("autoUpdateSpinner").get('value');
-        //console.log('stop at ', dijit.byId("autoUpdateSpinner").get('value'));
+        av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
+        //console.log('stop at ', dijit.byId('autoUpdateSpinner').get('value'));
       }
 
       av.ptd.makeRunState();
@@ -907,7 +901,7 @@ require([
   }
 
   av.ptd.runStopFn = function () {
-    if ("Run" == document.getElementById("runStopButton").innerHTML) {
+    if ('Run' == document.getElementById('runStopButton').innerHTML) {
       av.ptd.makeRunState();
       av.ptd.runPopFn();
     } else {
@@ -915,17 +909,17 @@ require([
       //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
       av.ptd.makePauseState();
       //av.msg.doRunPause(av.fio);
-      //console.log("pop size ", av.ptd.aveNum);
+      //console.log('pop size ', av.ptd.aveNum);
     }
   };
 
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
-  document.getElementById("runStopButton").onclick = function () {
+  document.getElementById('runStopButton').onclick = function () {
     av.debug.log += '\n -Button: runStopButton';
     av.ptd.runStopFn();
   };
 
-  dijit.byId("mnCnPause").on("Click", function () {
+  dijit.byId('mnCnPause').on('Click', function () {
     av.debug.log += '\n -Button: mnCnPause';
     //console.log('about to call av.ptd.makePauseState()');
     av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 786 \n';
@@ -934,7 +928,7 @@ require([
   });
 
   //process run/Stop buttons as above but for drop down menu
-  dijit.byId("mnCnRun").on("Click", function () {
+  dijit.byId('mnCnRun').on('Click', function () {
     av.debug.log += '\n -Button: mnCnRun';
     av.ptd.makeRunState();
     av.ptd.runPopFn();
@@ -942,30 +936,30 @@ require([
 
   /******************************************* New Button and new Dialog **********************************************/
 
-  dijit.byId("newDiscard").on("Click", function () {
+  dijit.byId('newDiscard').on('Click', function () {
     av.debug.log += '\n -Button: newDiscard';
     newDialog.hide();
     av.msg.reset();
     //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
-    //console.log("newDiscard click");
+    //console.log('newDiscard click');
   });
 
-  dijit.byId("newSaveWorld").on("Click", function () {
+  dijit.byId('newSaveWorld').on('Click', function () {
     av.debug.log += '\n -Button: newSaveWorld';
     av.ptd.FrPopulationFn();
     newDialog.hide();
     av.msg.reset();
     //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
-    //console.log("newSave click");
+    //console.log('newSave click');
   });
 
-  dijit.byId("newSaveConfig").on("Click", function () {
+  dijit.byId('newSaveConfig').on('Click', function () {
     av.debug.log += '\n -Button: newSaveConfig';
     av.ptd.FrConfigFn();
     newDialog.hide();
     av.msg.reset();
     //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
-    //console.log("newSave click");
+    //console.log('newSave click');
   });
 
   function newButtonBoth() {
@@ -980,12 +974,12 @@ require([
     }
   }
 
-  document.getElementById("newDishButton").onclick = function () {
+  document.getElementById('newDishButton').onclick = function () {
     av.debug.log += '\n -Button: newDishButton';
     newButtonBoth();
   };
 
-  dijit.byId("mnNewpop").on("Click", function () {
+  dijit.byId('mnNewpop').on('Click', function () {
     av.debug.log += '\n -Button: mnNewpop';
     newButtonBoth();
   });
@@ -993,57 +987,57 @@ require([
   //**************************************      Freeze Button      *****************************************************
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.*/
-  document.getElementById("freezeButton").onclick = function () {
+  document.getElementById('freezeButton').onclick = function () {
     av.debug.log += '\n -Button: freezeButton';
     if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
     else {
       if (5 > av.msg.ByCellIDgenome.length) {
-        document.getElementById("FzOrgansimSpan").style.display = "none";
+        document.getElementById('FzOrgansimSpan').style.display = 'none';
       }  //block
-      else document.getElementById("FzOrgansimSpan").style.display = "inline";
+      else document.getElementById('FzOrgansimSpan').style.display = 'inline';
       fzDialog.show();
     }
   };
 
-  dijit.byId("FzConfigurationButton").on("Click", function () {
+  dijit.byId('FzConfigurationButton').on('Click', function () {
     av.debug.log += '\n -Button: FzConfigurationButton';
     fzDialog.hide();
     av.ptd.FrConfigFn();
   });
 
   //Drop down menu to save a configuration item
-  dijit.byId("mnFzConfig").on("Click", function () {
+  dijit.byId('mnFzConfig').on('Click', function () {
     av.debug.log += '\n -Button: mnFzConfig';
     av.ptd.FrConfigFn();
   });
 
   //
-  dijit.byId("FzOrganismButton").on("Click", function () {
+  dijit.byId('FzOrganismButton').on('Click', function () {
     av.debug.log += '\n -Button: FzOrganismButton';
     fzDialog.hide();
     av.ptd.FrOrganismFn('selected');
   });
 
   //button to freeze a population
-  dijit.byId("FzPopulationButton").on("Click", function () {
+  dijit.byId('FzPopulationButton').on('Click', function () {
     av.debug.log += '\n -Button: FzPopulationButton';
     fzDialog.hide();
     av.ptd.FrPopulationFn();
   });
 
-  dijit.byId("mnFzPopulation").on("Click", function () {
+  dijit.byId('mnFzPopulation').on('Click', function () {
     av.debug.log += '\n -Button: mnFzPopulation';
     av.ptd.FrPopulationFn();
   });
 
   //Buttons on drop down menu to save an organism
-  dijit.byId("mnFzOrganism").on("Click", function () {
+  dijit.byId('mnFzOrganism').on('Click', function () {
     av.debug.log += '\n -Button: mnFzOrganism';
     av.ptd.FrOrganismFn('selected')
   });
 
   //Buttons on drop down menu to save an offspring
-  dijit.byId("mnFzOffspring").on("Click", function () {
+  dijit.byId('mnFzOffspring').on('Click', function () {
     av.debug.log += '\n -Button: mnFzOffspring';
     av.ptd.FrOrganismFn('offspring')
   });
@@ -1060,7 +1054,7 @@ require([
 
     console.log('just killed webWorker');
 
-    if (typeof(Worker) !== "undefined") {
+    if (typeof(Worker) !== 'undefined') {
       if (null == av.aww.uiWorker) {
         av.aww.uiWorker = new Worker('avida.js');
         console.log('webworker recreated');
@@ -1071,33 +1065,33 @@ require([
       userMsgLabel.textContent = "Sorry, your browser does not support Web workers and Avida won't run";
     }
 
-    //need to "start new experiment"
+    //need to 'start new experiment'
     av.ptd.resetDishFn(false);  //do not send reset to avida; avida restarted
     restartAvidaDialog.hide();
   }
 
-  document.getElementById("restartAvidaNow").onclick = function () {
+  document.getElementById('restartAvidaNow').onclick = function () {
     av.debug.log += '\n -Button: restartAvidaNow';
     av.ui.restartAvida();
   }
 
-  document.getElementById("restartAvidaFrzConfig").onclick = function () {
+  document.getElementById('restartAvidaFrzConfig').onclick = function () {
     av.debug.log += '\n -Button: restartAvidaFzrConfig';
     av.ptd.FrConfigFn();
   }
 
   //test - delete later ------------------------------------------------------------------------------------------------
-  document.getElementById("mnDbRestartAvida").onclick = function () {
+  document.getElementById('mnDbRestartAvida').onclick = function () {
     av.debug.log += '\n -Button: mnDbRestartAvida';
     av.aww.restartAvidaFn();
   }
 
-  document.getElementById("mnDbDiagnostic").onclick = function () {
+  document.getElementById('mnDbDiagnostic').onclick = function () {
     av.debug.log += '\n -Button: mnDbDiagnostic';
     av.dcn.diagnosticConsoleFn();
   }
 
-  document.getElementById("mnDbThrowData").onclick = function () {
+  document.getElementById('mnDbThrowData').onclick = function () {
     'use strict';
     av.debug.log += '\n -Button: mnDbThrowData';
     console.log('av', av);
@@ -1113,12 +1107,12 @@ require([
     console.log('av.dnd.ancestorBox', av.dnd.ancestorBox);
   };
 
-  document.getElementById("mnDbThrowError").onclick = function () {
+  document.getElementById('mnDbThrowError').onclick = function () {
     'use strict';
     var george = fred;
   };
 
-  document.getElementById("mnDbLineLog").onclick = function () {
+  document.getElementById('mnDbLineLog').onclick = function () {
     'use strict';
     av.debug.log += '\n -----------------------------------------------------------------------------------------------\n';
   };
@@ -1180,25 +1174,25 @@ require([
             av.grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
             av.mouse.Picked = 'kid';
             if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
-            dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
-            dijit.byId("mnCnOrganismTrace").attr("disabled", false);
+            dijit.byId('mnFzOrganism').attr('disabled', false);  //When an organism is selected, then it can be save via the menu
+            dijit.byId('mnCnOrganismTrace').attr('disabled', false);
           }
           else {
-            dijit.byId("mnCnOrganismTrace").attr("disabled", true);
-            dijit.byId("mnFzOrganism").attr("disabled", true);  //kid not selected, then it cannot be save via the menu
+            dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+            dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
           }
         }
         else {
-          dijit.byId("mnCnOrganismTrace").attr("disabled", true);
-          dijit.byId("mnFzOrganism").attr("disabled", true);  //kid not selected, then it cannot be save via the menu
+          dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+          dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
         }
       }
     }
     else {
       av.grd.flagSelected = false;
       av.grd.selectedNdx = -1;
-      dijit.byId("mnCnOrganismTrace").attr("disabled", true);
-      dijit.byId("mnFzOrganism").attr("disabled", true);
+      dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+      dijit.byId('mnFzOrganism').attr('disabled', true);
     }
     //av.msg.doWebOrgDataByCell();   //was sending twice. I hope this is the right one to take out 2016 Feb 5
     //console.log('before call av.grd.drawGridSetupFn');
@@ -1215,7 +1209,7 @@ require([
    //if (av.debug.mouse) console.log('________________________________av.mousemove');
    if (!av.mouse.nearly([evt.offsetX, evt.offsetY], av.mouse.DnGridPos)) {
    //if (av.debug.mouse) console.log('________________________________');
-   //if (av.debug.mouse) console.log("gd draging");
+   //if (av.debug.mouse) console.log('gd draging');
    if (av.mouse.Dn) av.mouse.Drag = true;
    }
    $(document).off('av.mousemove', handler);
@@ -1234,7 +1228,7 @@ require([
 
     // --------- process if something picked to dnd ------------------
     if ('parent' == av.mouse.Picked) {
-      av.mouse.Picked = "";
+      av.mouse.Picked = '';
       av.mouse.ParentMouse(evt, av);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) {
         console.log('before call av.grd.drawGridSetupFn');
@@ -1242,13 +1236,13 @@ require([
       }
       else if ('organIcon' == evt.target.id) {
         //Change to Organism Page
-        av.ui.mainBoxSwap("organismBlock");
+        av.ui.mainBoxSwap('organismBlock');
         organismCanvasHolderSize();
-        var height = ($("#rightDetail").innerHeight() - 375) / 2;
-        document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-        document.getElementById("ExecuteAbout").style.height = height + "px";
-        document.getElementById("ExecuteJust").style.width = "100%";
-        document.getElementById("ExecuteAbout").style.width = "100%";
+        var height = ($('#rightDetail').innerHeight() - 375) / 2;
+        document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+        document.getElementById('ExecuteAbout').style.height = height + 'px';
+        document.getElementById('ExecuteJust').style.width = '100%';
+        document.getElementById('ExecuteAbout').style.width = '100%';
         if (av.debug.mouse) console.log('from parent', av.parent, '; fzr', av.fzr);
         av.debug.log += '\n -drag to Icon';
         av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -1256,21 +1250,21 @@ require([
     }
     else if ('offspring' == av.mouse.Picked) {
       target = av.mouse.offspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
-      av.mouse.Picked = "";
+      av.mouse.Picked = '';
     }
     else if ('kid' == av.mouse.Picked) {
-      av.mouse.Picked = "";
+      av.mouse.Picked = '';
       target = av.mouse.kidMouse(evt, av.dnd, av.fzr, av.grd);
       if (av.debug.mouse) console.log('kidMouse: target', target, '===============', evt.target.id);
       if ('organIcon' == evt.target.id) {
         //Change to Organism Page
-        av.ui.mainBoxSwap("organismBlock");
+        av.ui.mainBoxSwap('organismBlock');
         organismCanvasHolderSize();
-        var height = ($("#rightDetail").innerHeight() - 375) / 2;
-        document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-        document.getElementById("ExecuteAbout").style.height = height + "px";
-        document.getElementById("ExecuteJust").style.width = "100%";
-        document.getElementById("ExecuteAbout").style.width = "100%";
+        var height = ($('#rightDetail').innerHeight() - 375) / 2;
+        document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+        document.getElementById('ExecuteAbout').style.height = height + 'px';
+        document.getElementById('ExecuteJust').style.width = '100%';
+        document.getElementById('ExecuteAbout').style.width = '100%';
         av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
       /*      else if ('fzOrgan' == target) {
@@ -1278,7 +1272,7 @@ require([
        }
        */
     }
-    av.mouse.Picked = "";
+    av.mouse.Picked = '';
   });
 
   // *******************************************************************************************************************
@@ -1288,81 +1282,73 @@ require([
   // *******************************************************************************************************************
 
   //Set up canvas objects
-  av.grd.CanvasScale = document.getElementById("scaleCanvas");
-  av.grd.sCtx = av.grd.CanvasScale.getContext("2d");
+  av.grd.CanvasScale = document.getElementById('scaleCanvas');
+  av.grd.sCtx = av.grd.CanvasScale.getContext('2d');
   av.grd.CanvasGrid = document.getElementById('gridCanvas');
-  av.grd.cntx = av.grd.CanvasGrid.getContext("2d");
-  av.grd.CanvasSelected = document.getElementById('SelectedColor');
+  av.grd.cntx = av.grd.CanvasGrid.getContext('2d');
+  av.grd.CanvasSelected = document.getElementById('sotColor');
   av.grd.selCtx = av.grd.CanvasSelected.getContext('2d');
-  av.grd.SelectedWd = $('#SelectedColor').innerWidth();
-  av.grd.SelectedHt = $('#SelectedColor').innerHeight();
+  av.grd.SelectedWd = $('#sotColor').innerWidth();
+  av.grd.SelectedHt = $('#sotColor').innerHeight();
 
   av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
   av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientHeight / 2;
-  //av.grd.CanvasGrid.height = $("#gridHolder").innerHeight() - 16 - av.grd.CanvasScale.height;
+  //av.grd.CanvasGrid.height = $('#gridHolder').innerHeight() - 16 - av.grd.CanvasScale.height;
   av.grd.CanvasGrid.height = 15;
 
   //--------------------------------------------------------------------------------------------------------------------
   if (av.debug.root) console.log('before av.grd.drawGridSetupFn');
 
-//need to put a console.log before each call of drawGrdSetupFn to see why it gets called so much
-
   av.grd.drawGridSetupFn = function () {
     'use strict';
-    if ('populationBlock' === av.ui.page && 'Setup' === document.getElementById("PopSetupButton").textContent) {
-      av.grd.notInDrawingGrid = false;
-      if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
-        av.grd.setMapData();  //update color information for offpsring once run has started
-        av.grd.findLogicOutline();
-      }
-      //figure out scale or legend
-      av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
-      document.getElementById('popBot').style.height = '5px';
-      if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-        av.grd.drawLegend();
+    if ('populationBlock' === av.ui.page && 'Setup' === document.getElementById('PopSetupButton').textContent) {
+      if ('None' == dijit.byId('colorMode').value) {
+        if (av.grd.newlyNone) {
+          av.grd.newlyNone = false;
+          av.grd.cntx.fillStyle = av.color.dictColor['Black'];
+          av.grd.cntx.fillRect(1, 1, av.grd.CanvasGrid.width - 1, av.grd.CanvasGrid.height - 1);
+        }
       }
       else {
-        av.grd.gradientScale();
+        av.grd.newlyNone = true;
+        av.grd.notInDrawingGrid = false;
+        if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
+          av.grd.setMapData();  //update color information for offpsring once run has started
+          av.grd.findLogicOutline();
+        }
+        //figure out scale or legend
+        av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
+        document.getElementById('popBot').style.height = '5px';
+        if ('Ancestor Organism' == dijit.byId('colorMode').value) {
+          av.grd.drawLegend();
+        }
+        else {
+          av.grd.gradientScale();
+        }
+        //console.log('after drawing scale or legend. update=',av.grd.oldUpdate);
+
+        document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
+        dijit.byId('populationBlock').resize();
+
+        var gridHolderHt = document.getElementById('gridHolder').clientHeight;
+        av.ui.num = Math.floor(gridHolderHt / 4);
+
+        av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientWidth - 1;
+        av.grd.CanvasGrid.height = gridHolderHt - 2;
+        av.grd.spaceX = av.grd.CanvasGrid.width;
+        av.grd.spaceY = av.grd.CanvasGrid.height;
+
+        av.grd.findGridSize(av.grd, av.parents);
+        if (document.getElementById('gridHolder').scrollHeight == document.getElementById('gridHolder').clientHeight + 17) {
+          var numGH = document.getElementById('gridHolder').clientHeight;
+          av.grd.CanvasGrid.height = numGH - 6 - 17;
+          av.grd.findGridSize(av.grd, av.parents);     //in PopulationGrid.js
+        }
+        av.grd.drawGridUpdate();   //in PopulationGrid.js
+
+        rescaleLabel.textContent = av.grd.fillRescale;
+        av.grd.notInDrawingGrid = true;
       }
-      //console.log('after drawing scale or legend. update=',av.grd.oldUpdate);
-
-      document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
-      //av.ui.removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
-      dijit.byId('populationBlock').resize();
-      //console.log('popBot Ht scroll, client', document.getElementById('popBot').scrollHeight,document.getElementById('popBot').clientHeight);
-
-      var gridHolderHt = document.getElementById('gridHolder').clientHeight;
-      av.ui.num = Math.floor(gridHolderHt / 4);
-      //document.getElementById('gridVertSpacer').style.height = 0 + 'px';
-
-      av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientWidth - 1;
-      av.grd.CanvasGrid.height = gridHolderHt - 2;
-      av.grd.spaceX = av.grd.CanvasGrid.width;
-      av.grd.spaceY = av.grd.CanvasGrid.height;
-
-      av.grd.findGridSize(av.grd, av.parents);
-      if (document.getElementById('gridHolder').scrollHeight == document.getElementById('gridHolder').clientHeight + 17) {
-        var numGH = document.getElementById('gridHolder').clientHeight;
-        av.grd.CanvasGrid.height = numGH - 6 - 17;
-        av.grd.findGridSize(av.grd, av.parents);     //in PopulationGrid.js
-      }
-      av.grd.drawGridUpdate();   //in PopulationGrid.js
-
-      //draw grey rectangle as back ground  //temp delete next two lines later
-      //av.grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
-      //av.grd.cntx.fillRect(0, 0, av.grd.CanvasGrid.width, av.grd.CanvasGrid.height);
-      //delete above two lines later
-      rescaleLabel.textContent = av.grd.fillRescale;
-      av.grd.notInDrawingGrid = true;
-
-      /*
-       console.log('scaleDiv Wd scroll, client', document.getElementById('scaleDiv').scrollWidth,document.getElementById('scaleDiv').clientWidth);
-       console.log('gridControlTable Wd client', document.getElementById('gridControlTable').clientWidth);
-       console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-       console.log('gridHolderHt',gridHolderHt);
-       console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-       console.log('gridHolder Ht scroll, client', document.getElementById('gridHolder').scrollHeight,document.getElementById('gridHolder').clientHeight);
-       */
     }
   }
 
@@ -1373,8 +1359,8 @@ require([
   // *******************************************************************************************************************
 
   // Get color map data from Avida and draw
-  dijit.byId("colorMode").on("Change", function () {
-    var scaleType = dijit.byId("colorMode").value;
+  dijit.byId('colorMode').on('Change', function () {
+    var scaleType = dijit.byId('colorMode').value;
     //Redraw Grid;
     console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
@@ -1382,49 +1368,49 @@ require([
 
   // Zoom slide - display only not avida
   av.grd.ZoomSlide = new HorizontalSlider({
-    name: "ZoomSlide",
+    name: 'ZoomSlide',
     value: 1,
     minimum: 1,
     maximum: 10,
     intermediateChanges: true,
     discreteValues: 19,
-    style: "height: auto; width: 120px;float:right",
+    style: 'height: auto; width: 120px;float:right',
     onChange: function (value) {
       av.grd.zoom = value;
       //console.log('ZoomSlide', av.grd.zoom);
       console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
     }
-  }, "ZoomSlide");
+  }, 'ZoomSlide');
 
   av.grd.colorMap = 'Gnuplot2';
-  dijit.byId("mnGnuplot2").attr("disabled", true);
+  dijit.byId('mnGnuplot2').attr('disabled', true);
 
-  dijit.byId("mnViridis").on("Click", function () {
+  dijit.byId('mnViridis').on('Click', function () {
     av.debug.log += '\n -Button: mnViridis';
-    dijit.byId("mnCubehelix").attr("disabled", false);
-    dijit.byId("mnGnuplot2").attr("disabled", false);
-    dijit.byId("mnViridis").attr("disabled", true);
+    dijit.byId('mnCubehelix').attr('disabled', false);
+    dijit.byId('mnGnuplot2').attr('disabled', false);
+    dijit.byId('mnViridis').attr('disabled', true);
     av.grd.colorMap = 'Viridis';
     console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
-  dijit.byId("mnGnuplot2").on("Click", function () {
+  dijit.byId('mnGnuplot2').on('Click', function () {
     av.debug.log += '\n -Button: mnGnuplot2';
-    dijit.byId("mnCubehelix").attr("disabled", false);
-    dijit.byId("mnGnuplot2").attr("disabled", true);
-    dijit.byId("mnViridis").attr("disabled", false);
+    dijit.byId('mnCubehelix').attr('disabled', false);
+    dijit.byId('mnGnuplot2').attr('disabled', true);
+    dijit.byId('mnViridis').attr('disabled', false);
     av.grd.colorMap = 'Gnuplot2';
     console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
-  dijit.byId("mnCubehelix").on("Click", function () {
+  dijit.byId('mnCubehelix').on('Click', function () {
     av.debug.log += '\n -Button: mnCubehelix';
-    dijit.byId("mnCubehelix").attr("disabled", true);
-    dijit.byId("mnGnuplot2").attr("disabled", false);
-    dijit.byId("mnViridis").attr("disabled", false);
+    dijit.byId('mnCubehelix').attr('disabled', true);
+    dijit.byId('mnGnuplot2').attr('disabled', false);
+    dijit.byId('mnViridis').attr('disabled', false);
     av.grd.colorMap = 'Cubehelix';
     console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
@@ -1436,31 +1422,31 @@ require([
   // *******************************************************************************************************************
   if (av.debug.root) console.log('before logic buttons');
 
-  document.getElementById("notButton").onclick = function () {
+  document.getElementById('notButton').onclick = function () {
     av.ptd.bitToggle('notButton');
   } //av.ptd.bitToggle in popControls.js
-  document.getElementById("nanButton").onclick = function () {
+  document.getElementById('nanButton').onclick = function () {
     av.ptd.bitToggle('nanButton');
   }
-  document.getElementById("andButton").onclick = function () {
+  document.getElementById('andButton').onclick = function () {
     av.ptd.bitToggle('andButton');
   }
-  document.getElementById("ornButton").onclick = function () {
+  document.getElementById('ornButton').onclick = function () {
     av.ptd.bitToggle('ornButton');
   }
-  document.getElementById("oroButton").onclick = function () {
+  document.getElementById('oroButton').onclick = function () {
     av.ptd.bitToggle('oroButton');
   }
-  document.getElementById("antButton").onclick = function () {
+  document.getElementById('antButton').onclick = function () {
     av.ptd.bitToggle('antButton');
   }
-  document.getElementById("norButton").onclick = function () {
+  document.getElementById('norButton').onclick = function () {
     av.ptd.bitToggle('norButton');
   }
-  document.getElementById("xorButton").onclick = function () {
+  document.getElementById('xorButton').onclick = function () {
     av.ptd.bitToggle('xorButton');
   }
-  document.getElementById("equButton").onclick = function () {
+  document.getElementById('equButton').onclick = function () {
     av.ptd.bitToggle('equButton');
   }
 
@@ -1473,8 +1459,8 @@ require([
 
   // Chart control on population page
   //Set Y-axis title and choose the correct array to plot
-  dijit.byId("yaxis").on("Change", function () {
-    av.grd.ytitle = dijit.byId("yaxis").value;
+  dijit.byId('yaxis').on('Change', function () {
+    av.grd.ytitle = dijit.byId('yaxis').value;
     //need to get correct array to plot from freezer
     //console.log('changeyaxis popChartFn');
     av.grd.popChartFn();
@@ -1483,8 +1469,8 @@ require([
 //use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
 //this required the use of a theme, but I'm no longer using the theme. Could take 'Wetland' out of require statemet as long a this is not used
 //var myTheme = Wetland; // Or any other theme
-//myTheme.axis.majorTick.color = "#CCC";  //grey
-//myTheme.axis.minorTick.color = "red";
+//myTheme.axis.majorTick.color = '#CCC';  //grey
+//myTheme.axis.minorTick.color = 'red';
 
   //av.grd.popChartFn = function () {}
 
@@ -1493,49 +1479,52 @@ require([
     if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
       //console.log('chart update=', av.grd.popStatsMsg.update);
       av.debug.log += '\n - - Call popChartFn';
-      if ("Average Fitness" == dijit.byId("yaxis").value) {
+      if ('Average Fitness' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveFit;
         av.grd.popY2 = av.ptd.logFit;
       }
-      else if ("Average Generation Length" == dijit.byId("yaxis").value) {
+      else if ('Average Generation Length' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveGnl;
         av.grd.popY2 = av.ptd.logGnl;
       }
-      else if ("Average Metabolic Rate" == dijit.byId("yaxis").value) {
+      else if ('Average Metabolic Rate' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveMet;
         av.grd.popY2 = av.ptd.logMet;
       }
-      else if ("Number of Organisms" == dijit.byId("yaxis").value) {
+      else if ('Number of Organisms' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveNum;
         av.grd.popY2 = av.ptd.logNum;
-        console.log('logicNum', av.ptd.logNum);
+      }
+      else {
+        av.grd.popY = [0];
+        av.grd.popY2 = [0];
       }
       //console.log('popY after',av.grd.popY);
       //console.log('pop2 after', av.grd.popY2);
       //av.grd.popChart.setTheme(myTheme);
-      av.grd.popChart.addPlot("default", {type: "Lines"});
-      //av.grd.popChart.addPlot("grid",{type:"Grid",hMinorLines:false});  //if color not specified it uses tick color.
+      av.grd.popChart.addPlot('default', {type: 'Lines'});
+      //av.grd.popChart.addPlot('grid',{type:'Grid',hMinorLines:false});  //if color not specified it uses tick color.
       // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-      av.grd.popChart.addPlot("grid", {
-        type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
-        vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
+      av.grd.popChart.addPlot('grid', {
+        type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
+        vMajorLines: true, majorVLine: {color: '#CCC', width: 1}
       });
 
-      av.grd.popChart.addAxis("x", {
-        fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
-        titleFont: "normal normal normal 8pt Arial", font: "normal normal normal 8pt Arial"
+      av.grd.popChart.addAxis('x', {
+        fixLower: 'major', fixUpper: 'major', title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
+        titleFont: 'normal normal normal 8pt Arial', font: 'normal normal normal 8pt Arial'
       });
-      //av.grd.popChart.addAxis("y", {vertical: true, title: ytitle, titleFont: "normal normal normal 8pt Arial", titleOrientation: 'axis',
-      av.grd.popChart.addAxis("y", {
+      //av.grd.popChart.addAxis('y', {vertical: true, title: ytitle, titleFont: 'normal normal normal 8pt Arial', titleOrientation: 'axis',
+      av.grd.popChart.addAxis('y', {
         vertical: true,
-        fixLower: "major", fixUpper: "major", min: 0, font: "normal normal normal 8pt Arial", titleGap: 4,
+        fixLower: 'major', fixUpper: 'major', min: 0, font: 'normal normal normal 8pt Arial', titleGap: 4,
       });
-      //av.grd.popChart.addSeries("Series y", popY, {stroke: {color: "blue", width: 1}});
-      //av.grd.popChart.addSeries("Series y2", popY2, {stroke: {color: "red", width: 2}});
-      av.grd.popChart.addSeries("Series y", av.grd.popY, {plot: "default", stroke: {color: "blue", width: 1}});
-      av.grd.popChart.addSeries("Series y2", av.grd.popY2, {plot: "default", stroke: {color: "green", width: 1}});
-      av.grd.popChart.resize(domGeometry.position(document.getElementById("popChartHolder")).w - 10,
-        domGeometry.position(document.getElementById("popChartHolder")).h - 30);
+      //av.grd.popChart.addSeries('Series y', popY, {stroke: {color: 'blue', width: 1}});
+      //av.grd.popChart.addSeries('Series y2', popY2, {stroke: {color: 'red', width: 2}});
+      av.grd.popChart.addSeries('Series y', av.grd.popY, {plot: 'default', stroke: {color: 'blue', width: 1}});
+      av.grd.popChart.addSeries('Series y2', av.grd.popY2, {plot: 'default', stroke: {color: 'green', width: 1}});
+      av.grd.popChart.resize(domGeometry.position(document.getElementById('popChartHolder')).w - 10,
+        domGeometry.position(document.getElementById('popChartHolder')).h - 30);
       av.grd.popChart.render();
     }
   };
@@ -1543,13 +1532,13 @@ require([
   // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // **************************************************************************************************************** */
-  av.grd.gridWasCols = Number(document.getElementById("sizeCols").value);
-  av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
+  av.grd.gridWasCols = Number(document.getElementById('sizeCols').value);
+  av.grd.gridWasRows = Number(document.getElementById('sizeRows').value);
 
   function popSizeFn() {
-    var NewCols = Number(document.getElementById("sizeCols").value);
-    var NewRows = Number(document.getElementById("sizeRows").value);
-    document.getElementById("sizeCells").innerHTML = "is a total of " + NewCols * NewRows + " cells";
+    var NewCols = Number(document.getElementById('sizeCols').value);
+    var NewRows = Number(document.getElementById('sizeRows').value);
+    document.getElementById('sizeCells').innerHTML = 'is a total of ' + NewCols * NewRows + ' cells';
     //Linear scale the position for Ancestors added by hand;
     if (undefined != av.parents.handNdx) {
       var lngth = av.parents.handNdx.length;
@@ -1561,45 +1550,45 @@ require([
         //console.log('New cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
       }
     }
-    av.grd.gridWasCols = Number(document.getElementById("sizeCols").value);
-    av.grd.gridWasRows = Number(document.getElementById("sizeRows").value);
+    av.grd.gridWasCols = Number(document.getElementById('sizeCols').value);
+    av.grd.gridWasRows = Number(document.getElementById('sizeRows').value);
     //reset zoom power to 1
-    av.grd.ZoomSlide.set("value", 1);
+    av.grd.ZoomSlide.set('value', 1);
     av.parents.placeAncestors();
     //are any parents on the same cell?
     av.grd.cellConflict(NewCols, NewRows);
   }
 
-  dijit.byId("sizeCols").on("Change", popSizeFn);
-  dijit.byId("sizeRows").on("Change", popSizeFn);
+  dijit.byId('sizeCols').on('Change', popSizeFn);
+  dijit.byId('sizeRows').on('Change', popSizeFn);
 
   $(function slidemute() {
     /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
     /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
     /* so I multiplied by 100,000 to get 100.000% to come out even. */
-    //console.log("before defaultslide value");
+    //console.log('before defaultslide value');
     var muteSlideDefault = 109861.
     /* results in 2% as a default */
     var muteDefault = (Math.pow(Math.E, (muteSlideDefault / 100000)) - 1).toFixed(3)
-    var slides = $("#muteSlide").slider({
-      // range: "min",   /*causes the left side of the scroll bar to be grey */
+    var slides = $('#muteSlide').slider({
+      // range: 'min',   /*causes the left side of the scroll bar to be grey */
       value: muteSlideDefault,
       min: 0.0,
       max: 461512,
       slide: function (event, ui) {
-        //$( "#mRate" ).val( ui.value);  /*put slider value in the text above the slider */
-        $("#muteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3));
+        //$( '#mRate' ).val( ui.value);  /*put slider value in the text above the slider */
+        $('#muteInput').val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3));
         /*put the value in the text box */
       }
     });
     /* initialize */
-    //$( "#mRate" ).val( ($( "#muteSlide").slider( "value" )));  //used in testing nonlinear scale
-    $("#muteInput").val(muteDefault);
+    //$( '#mRate' ).val( ($( '#muteSlide').slider( 'value' )));  //used in testing nonlinear scale
+    $('#muteInput').val(muteDefault);
     /*update slide based on textbox */
-    $("#muteInput").change(function () {
-      slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
-      $("#mRate").val(100000 * Math.log(1 + (parseFloat(this.value))));
-      //console.log("in mute change");
+    $('#muteInput').change(function () {
+      slides.slider('value', 100000.0 * Math.log(1 + (parseFloat(this.value))));
+      $('#mRate').val(100000 * Math.log(1 + (parseFloat(this.value))));
+      //console.log('in mute change');
     });
   });
 
@@ -1614,9 +1603,9 @@ require([
   });
 
   dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function () {
-    av.debug.log += '\n -Spinner: autoUpdateSpinner=' + dijit.byId("autoUpdateSpinner").get('value');
-    av.ui.autoStopValue = dijit.byId("autoUpdateSpinner").get('value');
-    console.log('autoUpdateSpinner=', dijit.byId("autoUpdateSpinner").get('value'));
+    av.debug.log += '\n -Spinner: autoUpdateSpinner=' + dijit.byId('autoUpdateSpinner').get('value');
+    av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
+    console.log('autoUpdateSpinner=', dijit.byId('autoUpdateSpinner').get('value'));
   });
 
   /* *************************************************************** */
@@ -1626,30 +1615,30 @@ require([
 
   //process button to hide or show Organism detail panal.
   var DetailsFlag = true;
-  document.getElementById("OrgDetailsButton").onclick = function () {
+  document.getElementById('OrgDetailsButton').onclick = function () {
     av.debug.log += '\n -Button: OrgDetailsButton';
     if (DetailsFlag) {
       DetailsFlag = false;
-      dijit.byId("rightDetail").set("style", "display: none;");
-      registry.byId("rightDetail").domNode.style.width = "1px";
-      registry.byId("mainBC").layout();
+      dijit.byId('rightDetail').set('style', 'display: none;');
+      registry.byId('rightDetail').domNode.style.width = '1px';
+      registry.byId('mainBC').layout();
     }
     else {
       DetailsFlag = true;
-      dijit.byId("rightDetail").set("style", "display: block; visibility: visible;");
-      registry.byId("rightDetail").domNode.style.width = "180px";
-      registry.byId("mainBC").layout();
+      dijit.byId('rightDetail').set('style', 'display: block; visibility: visible;');
+      registry.byId('rightDetail').domNode.style.width = '180px';
+      registry.byId('mainBC').layout();
     }
   };
 
   //Opens Settings dialog box
-  document.getElementById("OrgSetting").onclick = function () {
+  document.getElementById('OrgSetting').onclick = function () {
     av.ind.settingsChanged = false;
     OrganSetupDialog.show();
   }
 
   //If settings were changed then this will request new data when the settings dialog box is closed.
-  OrganSetupDialog.connect(OrganSetupDialog, "hide", function (e) {
+  OrganSetupDialog.connect(OrganSetupDialog, 'hide', function (e) {
     if (av.ind.settingsChanged) av.msg.doOrgTrace();
   });
 
@@ -1657,34 +1646,34 @@ require([
     /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
     /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
     /* so I multiplied by 100,000 to get 100.000% to come out even. */
-    //console.log("before defaultslide value");
+    //console.log('before defaultslide value');
     var muteSlideDefault = 109861.
     /* results in 2% as a default */
     var muteDefault = (Math.pow(Math.E, (muteSlideDefault / 100000)) - 1).toFixed(3)
-    var slides = $("#orMuteSlide").slider({
-      // range: "min",   /*causes the left side of the scroll bar to be grey */
+    var slides = $('#orMuteSlide').slider({
+      // range: 'min',   /*causes the left side of the scroll bar to be grey */
       value: muteSlideDefault,
       min: 0.0,
       max: 461512,
       slide: function (event, ui) {
-        //$( "#orMRate" ).val( ui.value);  /*put slider value in the text near slider */
-        $("#orMuteInput").val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3));
+        //$( '#orMRate' ).val( ui.value);  /*put slider value in the text near slider */
+        $('#orMuteInput').val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3));
         /*put the value in the text box */
         av.ind.settingsChanged = true;
         if (av.debug.trace) console.log('orSlide changed', av.ind.settingsChanged)
       }
     });
     /* initialize */
-    //$( "#orMRate" ).val( ($( "#orMuteSlide").slider( "value" )));
-    //$( "#orMuteInput" ).val(muteDefault+"%");
-    $("#orMuteInput").val(muteDefault);
+    //$( '#orMRate' ).val( ($( '#orMuteSlide').slider( 'value' )));
+    //$( '#orMuteInput' ).val(muteDefault+'%');
+    $('#orMuteInput').val(muteDefault);
     /*update slide based on textbox */
-    $("#orMuteInput").change(function () {
-      slides.slider("value", 100000.0 * Math.log(1 + (parseFloat(this.value))));
+    $('#orMuteInput').change(function () {
+      slides.slider('value', 100000.0 * Math.log(1 + (parseFloat(this.value))));
       av.ind.settingsChanged = true;
       if (av.debug.trace) console.log('orMute changed', av.ind.settingsChanged)
-      //$( "#orMRate" ).val( 100000*Math.log(1+(parseFloat(this.value))) );
-      //console.log("in mute change");
+      //$( '#orMRate' ).val( 100000*Math.log(1+(parseFloat(this.value))) );
+      //console.log('in mute change');
     });
   });
 
@@ -1702,30 +1691,30 @@ require([
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
-  dijit.byId("mnCnOrganismTrace").on("Click", function () {
+  dijit.byId('mnCnOrganismTrace').on('Click', function () {
     av.debug.log += '\n -Button: mnCnOrganismTrace';
     av.mouse.traceSelected(av.dnd, av.fzr, av.grd);
-    av.ui.mainBoxSwap("organismBlock");
+    av.ui.mainBoxSwap('organismBlock');
     organismCanvasHolderSize();
-    var height = ($("#rightDetail").innerHeight() - 375) / 2;
-    document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById("ExecuteAbout").style.height = height + "px";
-    document.getElementById("ExecuteJust").style.width = "100%";
-    document.getElementById("ExecuteAbout").style.width = "100%";
+    var height = ($('#rightDetail').innerHeight() - 375) / 2;
+    document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    document.getElementById('ExecuteAbout').style.height = height + 'px';
+    document.getElementById('ExecuteJust').style.width = '100%';
+    document.getElementById('ExecuteAbout').style.width = '100%';
     av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
 
   //Put the offspring in the parent position on Organism Trace
-  dijit.byId("mnCnOffspringTrace").on("Click", function () {
+  dijit.byId('mnCnOffspringTrace').on('Click', function () {
     //Open Oranism view
     av.debug.log += '\n -Button: mnCnOffspringTrace';
-    av.ui.mainBoxSwap("organismBlock");
+    av.ui.mainBoxSwap('organismBlock');
     organismCanvasHolderSize();
-    var height = ($("#rightDetail").innerHeight() - 375) / 2;
-    document.getElementById("ExecuteJust").style.height = height + "px";  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById("ExecuteAbout").style.height = height + "px";
-    document.getElementById("ExecuteJust").style.width = "100%";
-    document.getElementById("ExecuteAbout").style.width = "100%";
+    var height = ($('#rightDetail').innerHeight() - 375) / 2;
+    document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    document.getElementById('ExecuteAbout').style.height = height + 'px';
+    document.getElementById('ExecuteJust').style.width = '100%';
+    document.getElementById('ExecuteAbout').style.width = '100%';
     offspringTrace(av.dnd, av.fio, av.fzr, av.gen);
   });
 
@@ -1736,8 +1725,8 @@ require([
   av.gen = av.ind.clearGen(av.gen);
   //set canvas size; called from many places
   function organismCanvasHolderSize() {
-    av.ind.OrgCanvas.width = $("#organismCanvasHolder").innerWidth() - 6;
-    av.ind.OrgCanvas.height = $("#organismCanvasHolder").innerHeight() - 12;
+    av.ind.OrgCanvas.width = $('#organismCanvasHolder').innerWidth() - 6;
+    av.ind.OrgCanvas.height = $('#organismCanvasHolder').innerHeight() - 12;
   }
 
   av.ind.updateOrgTrace = function () {
@@ -1762,31 +1751,31 @@ require([
     document.querySelector('#orgCycle').value = vol;
   }
 
-  document.getElementById("orgBack").onclick = function () {
+  document.getElementById('orgBack').onclick = function () {
     av.debug.log += '\n -Button: orgBack';
-    var ii = Number(document.getElementById("orgCycle").value);
-    if (av.ind.cycleSlider.get("minimum") < av.ind.cycleSlider.get("value")) {
+    var ii = Number(document.getElementById('orgCycle').value);
+    if (av.ind.cycleSlider.get('minimum') < av.ind.cycleSlider.get('value')) {
       ii--;
-      dijit.byId("orgCycle").set("value", ii);
+      dijit.byId('orgCycle').set('value', ii);
       av.ind.cycle = ii;
       av.ind.updateOrgTrace()
     }
   };
 
-  document.getElementById("orgForward").onclick = function () {
-    var ii = Number(document.getElementById("orgCycle").value);
-    if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
+  document.getElementById('orgForward').onclick = function () {
+    var ii = Number(document.getElementById('orgCycle').value);
+    if (av.ind.cycleSlider.get('maximum') > av.ind.cycleSlider.get('value')) {
       ii++;
-      dijit.byId("orgCycle").set("value", ii);
+      dijit.byId('orgCycle').set('value', ii);
       av.ind.cycle = ii;
       if (av.debug.ind) console.log('ii', ii, '; gen', av.gen);
       av.ind.updateOrgTrace()
     }
   };
 
-  document.getElementById("orgReset").onclick = function () {
+  document.getElementById('orgReset').onclick = function () {
     av.debug.log += '\n -Button: orgReset';
-    //dijit.byId("orgCycle").set("value", 0);
+    //dijit.byId('orgCycle').set('value', 0);
     //av.ind.cycle = 0;
     //av.ind.updateOrgTrace();
     //av.ind.orgStopFn()
@@ -1794,9 +1783,9 @@ require([
   };
 
   av.ind.orgRunFn = function () {
-    if (av.ind.cycleSlider.get("maximum") > av.ind.cycleSlider.get("value")) {
+    if (av.ind.cycleSlider.get('maximum') > av.ind.cycleSlider.get('value')) {
       av.ind.cycle++;
-      dijit.byId("orgCycle").set("value", av.ind.cycle);
+      dijit.byId('orgCycle').set('value', av.ind.cycle);
       av.ind.updateOrgTrace();
     }
     else {
@@ -1804,10 +1793,10 @@ require([
     }
   };
 
-  document.getElementById("orgRun").onclick = function () {
+  document.getElementById('orgRun').onclick = function () {
     av.debug.log += '\n -Button: orgRun';
-    if ("Run" == document.getElementById("orgRun").textContent) {
-      document.getElementById("orgRun").textContent = 'Stop';
+    if ('Run' == document.getElementById('orgRun').textContent) {
+      document.getElementById('orgRun').textContent = 'Stop';
       av.ind.update_timer = setInterval(av.ind.orgRunFn, 100);
     }
     else {
@@ -1815,16 +1804,16 @@ require([
     }
   };
 
-  document.getElementById("orgEnd").onclick = function () {
+  document.getElementById('orgEnd').onclick = function () {
     av.debug.log += '\n -Button: orgEnd';
-    dijit.byId("orgCycle").set("value", av.ind.cycleSlider.get("maximum"));
-    av.ind.cycle = av.ind.cycleSlider.get("maximum");
+    dijit.byId('orgCycle').set('value', av.ind.cycleSlider.get('maximum'));
+    av.ind.cycle = av.ind.cycleSlider.get('maximum');
     av.ind.updateOrgTrace();
     av.ind.orgStopFn()
   };
 
-  dijit.byId("orgCycle").on("Change", function (value) {
-    av.ind.cycleSlider.set("value", value);
+  dijit.byId('orgCycle').on('Change', function (value) {
+    av.ind.cycleSlider.set('value', value);
     av.ind.cycle = value;
     //console.log('orgCycle.change');
     av.ind.updateOrgTrace();
@@ -1832,62 +1821,62 @@ require([
 
   /* Organism Generation Length Slider */
   av.ind.cycleSlider = new HorizontalSlider({
-    name: "cycleSlider",
+    name: 'cycleSlider',
     value: 0,
     minimum: 0,
     maximum: 200,
     intermediateChanges: true,
     discreteValues: 201,
-    style: "width:100%;",
+    style: 'width:100%;',
     onChange: function (value) {
-      document.getElementById("orgCycle").value = value;
+      document.getElementById('orgCycle').value = value;
       av.ind.cycle = value;
       //console.log('cycleSlider');
       av.ind.updateOrgTrace();
     }
-  }, "cycleSlider");
+  }, 'cycleSlider');
 
   // **************************************************************************************************************** */
   //                                                Analysis Page
   // **************************************************************************************************************** */
 
   av.anl.AnaChartFn = function () {
-    anaChart.addPlot("default", {type: "Lines", hAxis: "x", vAxis: "y"});
-    anaChart.addPlot("other", {type: "Lines", hAxis: "x", vAxis: "right y"});
+    anaChart.addPlot('default', {type: 'Lines', hAxis: 'x', vAxis: 'y'});
+    anaChart.addPlot('other', {type: 'Lines', hAxis: 'x', vAxis: 'right y'});
     //grid line info on https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-    anaChart.addPlot("grid", {
-      type: Grid, hMajorLines: true, majorHLine: {color: "#CCC", width: 1},
-      vMajorLines: true, majorVLine: {color: "#CCC", width: 1}
+    anaChart.addPlot('grid', {
+      type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
+      vMajorLines: true, majorVLine: {color: '#CCC', width: 1}
     });
     if (av.debug.anl) console.log('add x axis');
-    anaChart.addAxis("x", {fixLower: "major", fixUpper: "major", title: 'Time (updates)', titleOrientation: 'away'});
-    anaChart.addAxis("y", {
+    anaChart.addAxis('x', {fixLower: 'major', fixUpper: 'major', title: 'Time (updates)', titleOrientation: 'away'});
+    anaChart.addAxis('y', {
       vertical: true,
-      fixLower: "major",
+      fixLower: 'major',
       title: av.anl.yLeftTitle,
       titleOrientation: 'axis',
-      fixUpper: "major",
+      fixUpper: 'major',
       min: 0
     });
-    //anaChart.addAxis("top x", {leftBottom: false});
-    anaChart.addAxis("right y", {vertical: true, leftBottom: false, min: 0, title: av.anl.yRightTitle});
-    anaChart.addSeries("Series 0a", av.anl.pop[0].left, {stroke: {color: av.anl.color[0], width: 2}});
-    anaChart.addSeries("Series 1a", av.anl.pop[1].left, {stroke: {color: av.anl.color[1], width: 2}});
-    anaChart.addSeries("Series 2a", av.anl.pop[2].left, {stroke: {color: av.anl.color[2], width: 2}});
-    anaChart.addSeries("Series 0b", av.anl.pop[0].right, {plot: "other", stroke: {color: av.anl.color[0], width: .3}});
-    anaChart.addSeries("Series 1b", av.anl.pop[1].right, {plot: "other", stroke: {color: av.anl.color[1], width: .3}});
-    anaChart.addSeries("Series 2b", av.anl.pop[2].right, {plot: "other", stroke: {color: av.anl.color[2], width: .3}});
-    var wdth = domGeometry.position(document.getElementById("chartHolder")).w - 10;
-    var ht = domGeometry.position(document.getElementById("chartHolder")).h - 15;
+    //anaChart.addAxis('top x', {leftBottom: false});
+    anaChart.addAxis('right y', {vertical: true, leftBottom: false, min: 0, title: av.anl.yRightTitle});
+    anaChart.addSeries('Series 0a', av.anl.pop[0].left, {stroke: {color: av.anl.color[0], width: 2}});
+    anaChart.addSeries('Series 1a', av.anl.pop[1].left, {stroke: {color: av.anl.color[1], width: 2}});
+    anaChart.addSeries('Series 2a', av.anl.pop[2].left, {stroke: {color: av.anl.color[2], width: 2}});
+    anaChart.addSeries('Series 0b', av.anl.pop[0].right, {plot: 'other', stroke: {color: av.anl.color[0], width: .3}});
+    anaChart.addSeries('Series 1b', av.anl.pop[1].right, {plot: 'other', stroke: {color: av.anl.color[1], width: .3}});
+    anaChart.addSeries('Series 2b', av.anl.pop[2].right, {plot: 'other', stroke: {color: av.anl.color[2], width: .3}});
+    var wdth = domGeometry.position(document.getElementById('chartHolder')).w - 10;
+    var ht = domGeometry.position(document.getElementById('chartHolder')).h - 15;
     if (av.debug.anl) console.log('before resize: w', wdth, '; h', ht);
     anaChart.resize(wdth, ht);
-    var dZoom = new MouseZoomAndPan(anaChart, "default");
+    var dZoom = new MouseZoomAndPan(anaChart, 'default');
     //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
     anaChart.render();
   };
 
   /* Chart buttons ****************************************/
-  document.getElementById("pop0delete").onclick = function () {
+  document.getElementById('pop0delete').onclick = function () {
     av.debug.log += '\n -Button: pop0delete';
     av.anl.pop[0].left = [];
     av.anl.pop[0].right = [];
@@ -1895,7 +1884,7 @@ require([
     av.anl.AnaChartFn();
     av.dnd.graphPop0.selectAll().deleteSelectedNodes();
   }
-  document.getElementById("pop1delete").onclick = function () {
+  document.getElementById('pop1delete').onclick = function () {
     av.debug.log += '\n -Button: pop1delete';
     av.anl.pop[1].left = [];
     av.anl.pop[1].right = [];
@@ -1903,7 +1892,7 @@ require([
     av.anl.AnaChartFn();
     av.dnd.graphPop1.selectAll().deleteSelectedNodes();
   }
-  document.getElementById("pop2delete").onclick = function () {
+  document.getElementById('pop2delete').onclick = function () {
     av.debug.log += '\n -Button: pop2delete';
     av.anl.pop[2].left = [];
     av.anl.pop[2].right = [];
@@ -1911,26 +1900,26 @@ require([
     av.anl.AnaChartFn();
     av.dnd.graphPop2.selectAll().deleteSelectedNodes();
   }
-  dijit.byId('pop0color').on("Change", function () {
+  dijit.byId('pop0color').on('Change', function () {
     Rav.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
     av.debug.log += '\n -Button: pop0color';
     av.anl.AnaChartFn();
   });
-  dijit.byId('pop1color').on("Change", function () {
+  dijit.byId('pop1color').on('Change', function () {
     av.debug.log += '\n -Button: pop1color';
     av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
     av.anl.AnaChartFn();
   });
-  dijit.byId('pop2color').on("Change", function () {
+  dijit.byId('pop2color').on('Change', function () {
     av.debug.log += '\n -Button: pop2color';
     av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
     av.anl.AnaChartFn();
   });
 
   //Set Y-axis title and choose the correct array to plot
-  dijit.byId("yLeftSelect").on("Change", function () {
+  dijit.byId('yLeftSelect').on('Change', function () {
     av.debug.log += '\n -Button: yLeftSelect';
-    av.anl.yLeftTitle = dijit.byId("yLeftSelect").value;
+    av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yLeftSelect', 'left')  //numbers are world landing spots
     av.anl.loadSelectedData(1, 'yLeftSelect', 'left')
@@ -1938,9 +1927,9 @@ require([
     av.anl.AnaChartFn();
   });
 
-  dijit.byId("yRightSelect").on("Change", function () {
+  dijit.byId('yRightSelect').on('Change', function () {
     av.debug.log += '\n -Button: yRightSelect';
-    av.anl.yRightTitle = dijit.byId("yRightSelect").value;
+    av.anl.yRightTitle = dijit.byId('yRightSelect').value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yRightSelect', 'right');
     av.anl.loadSelectedData(1, 'yRightSelect', 'right');
@@ -1954,6 +1943,20 @@ require([
 
   //used to set the height so the data just fits. Done because different monitor/browser combinations require a diffent height in pixels.
   //may need to take out as requires loading twice now.
+  
+  //setting row height to match on population page stats window
+  //http://www.tek-tips.com/viewthread.cfm?qid=891026
+  var popsBotTblRows = document.getElementById('popsBotTable').rows;
+  var sotBotTbl = document.getElementById('sotBotTable').rows;
+  var ht = sotBotTbl[2].offsetHeight;
+  for (var ii = 1; ii < popsBotTblRows.length; ii++) {
+    //sotBotTbl[ii].offsetHeight = popsBotTblRows[ii].offsetHeight;  //can only get values not put them.
+    console.log('sot rowHt=',sotBotTbl[ii].offsetHeight, '; PopsrowHt=',popsBotTblRows[ii].offsetHeight );
+  }
+
+  var newCss = '.botTable td {  line-height: ' + ht + 'px;  }';
+  av.ptd.setStyle(newCss);
+  //stylesheet.insertRule('.botTable td {  line-height: ' + ht + 'px;  }', 265);
 
   av.ui.removeVerticalScrollbar = function (scrollDiv, htChangeDiv, page) {
     //https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
@@ -1977,14 +1980,19 @@ require([
       document.getElementById(htChangeDiv).offsetHeight, document.getElementById(htChangeDiv).style.height);
   }
 
-  av.ui.removeVerticalScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
-  //av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
+  //av.ui.removeVerticalScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
+  av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
   av.ui.removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
   av.ui.removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
   av.ui.mainBoxSwap('populationBlock');
 
   av.grd.popChartFn();
   //av.grd.drawGridSetupFn(); //Draw initial background
+
+  //Safari 9 will not allow saving workspaces or freezer items.
+  if ('Safari 3+' === av.brs.name) {
+    userMsgLabel.textContent = 'Safari 9 does not allow saving workspace or freezer items. Please use Firefox or Chrome';
+  }
 
   // **************************************************************************************************************** */
   //                                          Useful Generic functions
@@ -2009,9 +2017,10 @@ require([
 
   //------- not in use = example
   //var hexColor = av.ui.invertHash(av.color.dictColor);
-  //var theColor = hexColor["#000000"];  //This should get 'Black'
-  //console.log("theColor=", theColor);
+  //var theColor = hexColor['#000000'];  //This should get 'Black'
+  //console.log('theColor=', theColor);
 
+  //--------------------------------------------------------------------------------------------------------------------
   //Notes on things I learned writing this code, that is not directly used in the code
   //use FileMerge to compare to versions of the same file on a Mac
   //js fiddle of dragging image to cavans and dragging it around http://jsfiddle.net/XU2a3/41/
@@ -2025,23 +2034,21 @@ require([
   //http://stackoverflow.com/questions/6042202/how-to-distinguish-av.mouse-click-and-drag
 
   //A method to get the data items in a dojo DND container in order
-  //av.dnd.fzConfig.on("DndDrop", function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
+  //av.dnd.fzConfig.on('DndDrop', function(source, nodes, copy, target){  //This triggers for every dnd drop, not just those of freezeConfigureNode
   //http://stackoverflow.com/questions/5837558/dojo-drag-and-drop-how-to-retrieve-order-of-items
   //var orderedDataItems = av.dnd.fzConfig.getAllNodes().map(function(node){
   //  return av.dnd.fzConfig.getItem(node.id).data;
   //});
-  //console.log("orderedDataItems", orderedDataItems);
+  //console.log('orderedDataItems', orderedDataItems);
   /*
   var matches = function (aa, bb) {
     if (aa[0] == bb[0] && aa[1] == bb[1]) return true;
     else return false;
   }
-
-
 });
 */
 
-// Web sites that looked use for for some task
+// Web sites that looked useful for some task
 /* Capture Close event
  http://stackoverflow.com/questions/1631959/how-to-capture-the-browser-window-close-event
  http://stackoverflow.com/questions/5712195/js-listen-when-child-window-is-closed
@@ -2079,7 +2086,7 @@ other
 //http://maffelu.net/jquery-handle-left-click-right-click-and-double-click-at-the-same-time/
 // I just had to handle a left-click, right-click and a dbl-click at the same time which turned
 // out to be a bit tricky at first using just the mousedown function, but the solution was simple:
-/*$("#Foo")
+/*$('#Foo')
  .click(function() //Left click
  {
  //Do something
@@ -2095,4 +2102,8 @@ other
  {
  //Do something
  });
+ */
+
+/*
+formating tables = http://www.the-art-of-web.com/html/table-markup/
  */

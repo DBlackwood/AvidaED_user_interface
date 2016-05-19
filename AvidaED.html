@@ -2,9 +2,9 @@
 <html>
 <head>
   <title>Avida-ED</title>
-  <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <script type="text/javascript" src="lib/dojo/dojo.js"
+  <meta charset='utf-8'/>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+  <script type='text/javascript' src='lib/dojo/dojo.js'
           data-dojo-config="'parseOnLoad':false,'async':true,
         'packages':[
         {'name':'gridx','location':'../gridx'},
@@ -25,13 +25,13 @@
           ['iPhone','',['../themes/iphone/iphone.css']],
           ['.*','',['../themes/iphone/iphone.css']
         ]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
-  <script type="text/javascript" src="globals.js"></script>
-  <script type="text/javascript" src="colormap.js"></script>
-  <script type="text/javascript" src="placeParent.js"></script>
-  <script type="text/javascript" src="utilities.js"></script>
-  <script type="text/javascript" src="AvidaED.js"></script>
+  <script type='text/javascript' src='globals.js'></script>
+  <script type='text/javascript' src='colormap.js'></script>
+  <script type='text/javascript' src='placeParent.js'></script>
+  <script type='text/javascript' src='utilities.js'></script>
+  <script type='text/javascript' src='AvidaED.js'></script>
 
-  <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
+  <link href='images/favicon.ico' rel='icon' type='image/x-icon' />
   <link rel='stylesheet' href='lib/jquery-ui/themes/smoothness/jquery-ui.css'>
   <style>@import 'themes/claro/document.css';
     @import 'themes/claro/claro.css';
@@ -116,13 +116,14 @@
             <div data-dojo-type='dijit/MenuSeparator'></div>
           </span>
         </span>
-        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'hidden: none'> <!--visible/hidden-->
+        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: visible'> <!--visible/hidden-->
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowError' label='Throw Error'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowData' label='Send Data to console'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbLineLog' label='Add Line to Session Log'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbDiagnostic' label='Open Diagnostic Console'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbRestartAvida' label='Restart Avida WebWorker'></span>
+            <span data-dojo-type='dijit/MenuItem' id='fileDownloadButton' label='test fileDownload'></span>
           </span>
         </span>
         |&nbsp;&nbsp;&nbsp;
@@ -160,11 +161,6 @@
           </tr>
           </tbody>
         </table>
-        <button id='fileDownloadButton'>test fileDownload</button>
-        <!-- Hide test button for now; Take out completely later; Rememer to remove TestBlock
-        <input type='button' id='testButton' intermediateChanges='false' value='Color test'
-               iconClass='dijitNoIcon'></button>
-        -->
       </div>
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
            refreshOnShow='false' region='bottom' splitter='true' maxSize='Infinity' doLayout='false'
@@ -243,42 +239,42 @@
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
                   <label id='SotLabel'>Selected Organism Type</label>
-                  <table class='top'>
+                  <div id='sotDivTable'>
+                  <table id='sotTopTable' class='topTable'>
                     <tbody>
                     <tr>
-                      <td><canvas id='SelectedColor' width='15' height='15'></canvas>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:</td>
                       <td><label id='nameLabel'></label></td>
+                      <td>=Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<canvas id='sotColor' width='10' height='10'></canvas></td>
                     </tr>
                     <tr>
-                      <td>Fitness:</td>
                       <td><label id='fitLabel'></label></td>
+                      <td>=Fitness</td>
                     </tr>
                     <tr>
-                      <td>Metabolic Rate:</td>
                       <td><label id='metabolicLabel'></label></td>
+                      <td>=Metabolic Rate</td>
                     </tr>
                     <tr>
-                      <td>Generation:</td>
                       <td><label id='generateLabel'></label></td>
+                      <td>=Generation</td>
                     </tr>
                     <tr>
-                      <td>Age (update):</td>
                       <td><label id='ageLabel'></label></td>
+                      <td>=Age (update)</td>
                     </tr>
                     <tr>
-                      <td>Ancestor:</td>
                       <td><label id='ancestorLabel'></label>
+                      <td>=Ancestor</td>
                       </td>
                     </tr>
                     <tr>
-                      <td>Viable:</td>
                       <td><label id='viableLabel'></label></td>
+                      <td>=Viable</td>
                     </tr>
                     </tbody>
                   </table>
-                  <br/>
-                  <table border='0' style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto;'>
-                    <colgroup><col></col><col></col></colgroup>
+                  </div>
+                  <table id='sotBotTable' class='botTable'>
                     <tbody>
                     <tr>
                       <td><label id='sotFn'>Function</label></td>
@@ -329,97 +325,78 @@
                      refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'
                      id='popStatistics'>
                   <label id='popStat'>Population Statistics</label>
-                  <table class='top'>
+                  <table id='popsTopTable' class='topTable'>
                     <tbody>
                     <tr>
-                      <td>Size (# of organisms):</td>
                       <td><label id='popSizeLabel'></label></td>
+                      <td>=Size (# of organisms)</td>
                     </tr>
                     <tr>
-                      <td>Avg. Fitness:</td>
                       <td><label id='aFitLabel'></label></td>
+                      <td>=Avg. Fitness</td>
                     </tr>
                     <tr>
-                      <td>Avg. Metabolic Rate:</td>
                       <td><label id='aMetabolicLabel'></label></td>
+                      <td>=Avg. Metabolic Rate</td>
                     </tr>
                     <tr>
-                      <td>Avg. Generation:</td>
                       <td><label id='aGestateLabel'></label></td>
+                      <td>=Avg. Generation</td>
                     </tr>
                     <tr>
-                      <td>Avg. Age (updates):</td>
                       <td><label id='aAgeLabel'></label></td>
+                      <td>=Avg. Age (updates)</td>
                     </tr>
                     <tr>
-                      <td># Ancestor(s) at start:</td>
                       <td><label id='parentNumLabel'></label></td>
+                      <td>=# Ancestor(s) at start</td>
                     </tr>
                     <tr>
-                      <td># of viable organisms:</td>
                       <td><label id='viableNumLabel'></label></td>
+                      <td>=# of viable organisms</td>
                     </tr>
                     </tbody>
                   </table>
-                  <br/>
-                  <table border='0' style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto;'>
+                  <table id='popsBotTable' class='botTable'>
                     <tbody>
                     <tr>
                       <td><label id='psFn'>Function</label></td>
                       <td><label id='psNumOrg'># of Organisms</label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='notButton' class='bitButtonOff'>not</button>
-                      </td>
-                      <td><label id='notPop'></label></td>
+                      <td><button id='notButton' class='bitButtonOff'>not</button>
+                      </td><td><label id='notPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='nanButton' class='bitButtonOff'>nan</button>
-                      </td>
+                      <td><button id='nanButton' class='bitButtonOff'>nan</button></td>
                       <td><label id='nanPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='andButton' class='bitButtonOff'>and</button>
-                      </td>
+                      <td><button id='andButton' class='bitButtonOff'>and</button></td>
                       <td><label id='andPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='ornButton' class='bitButtonOff'>orn</button>
-                      </td>
+                      <td><button id='ornButton' class='bitButtonOff'>orn</button></td>
                       <td><label id='ornPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='oroButton' class='bitButtonOff'>oro</button>
-                      </td>
+                      <td><button id='oroButton' class='bitButtonOff'>oro</button></td>
                       <td><label id='oroPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='antButton' class='bitButtonOff'>ant</button>
-                      </td>
+                      <td><button id='antButton' class='bitButtonOff'>ant</button></td>
                       <td><label id='antPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='norButton' class='bitButtonOff'>nor</button>
-                      </td>
+                      <td><button id='norButton' class='bitButtonOff'>nor</button></td>
                       <td><label id='norPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='xorButton' class='bitButtonOff'>xor</button>
-                      </td>
+                      <td><button id='xorButton' class='bitButtonOff'>xor</button></td>
                       <td><label id='xorPop'></label></td>
                     </tr>
                     <tr>
-                      <td>
-                        <button id='equButton' class='bitButtonOff'>equ</button>
-                      </td>
+                      <td><button id='equButton' class='bitButtonOff'>equ</button></td>
                       <td><label id='equPop'></label></td>
                     </tr>
                     </tbody>
@@ -436,6 +413,7 @@
                 <option value='Average Generation Length'>Average Generation Length</option>
                 <option value='Average Metabolic Rate'>Average Metabolic Rate</option>
                 <option value='Number of Organisms'>Number of Organisms</option>
+                <option value='None'>None</option>
               </select>
             </div>
             <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
@@ -476,6 +454,7 @@
                         <option value='Generation Length'>Generation Length</option>
                         <option value='Metabolic Rate'>Metabolic Rate</option>
                         <option value='Ancestor Organism'>Ancestor Organism</option>
+                        <option value='None'>None</option>
                       </select><br/>
                       <button id='newDishButton'>New</button>
                       <button id='runStopButton'>Run</button>
@@ -515,12 +494,12 @@
                 <input id='sizeCols' type='text' data-dojo-type='dijit/form/NumberTextBox' value=10 required='true' ;
                        data-dojo-props='constraints:{min:0, max:500,places:0},
                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid grid size."'
-                       style='width: 3em; height:1.8em'></button>
+                       style='width: 3em; height:1.8em'></input>
                 &nbsp; x &nbsp;
                 <input id='sizeRows' type='text' data-dojo-type='dijit/form/NumberTextBox' name='size'
                        required='true' value='2' data-dojo-props='constraints:{min:0, max:500,places:0},
                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid grid size."'
-                       style='width:4em; height:1.8em'/></button>
+                       style='width:4em; height:1.8em'/></input>
                 cells&nbsp;<span id='sizeCells'></span>
               </div>
               <div class='even'>
@@ -625,21 +604,29 @@
                        trim='false' uppercase='false' lowercase='false' propercase='false' invalidMessage='$_unset_$'
                        value='1000' data-dojo-props='smallDelta:100, constraints:{places:0}' style='width:80px'></button>
               </div>
+              <div class='even'>
+                test 1:
+                <input id='test1' value='20'
+                       style='width: 3em; height:1.8em' />
+                &nbsp;&nbsp;&nbsp;
+                test 2:
+                <input id='test2' style='width:4em; height:1.8em'/>
+                msecs<br />
+              </div>
               <span data-dojo-type='dijit/TitlePane' id='AdvancedSetup' title='Advanced Setup'
                     extractContent='false' preventCache='false' preload='false' refreshOnShow='false' duration='200'
                     open='false' style='min-width: 1px; width: 100%; height: auto;'>
                 <div class='even'>
-                  Time Slice:
-                  <input id='aveTimeSlice' type='text' data-dojo-type='dijit/form/NumberTextBox' value=30 required='true' ;
-                         data-dojo-props='constraints:{min:0, max:500,places:0},
-                    invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid time slice."'
-                         style='width: 3em; height:1.8em'></button>
-                  &nbsp; Update Delay: &nbsp;
+                  time Slice:
+                  <input id='avetimeSlice' value='20'
+                         style='width: 3em; height:1.8em' />
+                  &nbsp;&nbsp;&nbsp;
+                  Update Delay:
                   <input id='sleepDelay' type='text' data-dojo-type='dijit/form/NumberTextBox'
                          required='true' value='50' data-dojo-props='constraints:{min:0, max:5000,places:0},
                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid update Delay."'
-                         style='width:4em; height:1.8em'/></button>
-                  msecs
+                         style='width:4em; height:1.8em'/>
+                  msecs<br />
                 </div>
               </span>
             </form>
@@ -960,6 +947,15 @@
       <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='OrganDemoRadio'
              intermediateChanges='false' name='child' value='orgDemo' iconClass='dijitNoIcon'></button>
       <label id='OrganDemoLabel'>Demo (forces exact replay)</label>
+      <div class='even'>
+        test 3:
+        <input id='test3' value='20'
+               style='width: 3em; height:1.8em' />
+        &nbsp;&nbsp;&nbsp;
+        test 4:
+        <input id='test4' style='width:4em; height:1.8em'/>
+        msecs<br />
+      </div>
     </form>
   </div>
   <div class='dijitDialogPaneActionBar'>

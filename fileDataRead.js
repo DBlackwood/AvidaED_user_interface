@@ -46,7 +46,7 @@ av.fio.setActiveConfig = function(dndSection, name, type){
 }
 
 av.frd.add2freezerFromFile = function (loadConfigFlag) {
-  "use strict";
+  'use strict';
   var type = av.fio.anID.substr(0, 1);
   //console.log('av.fio.anID', av.fio.anID);
   var dir = wsb('/', av.fio.anID);
@@ -80,7 +80,7 @@ av.frd.add2freezerFromFile = function (loadConfigFlag) {
 }
 
 av.fio.processFiles = function (loadConfigFlag){
-  "use strict";
+  'use strict';
   var fileType = wsa('/', av.fio.anID);
   switch (fileType) {
     case 'entryname.txt':
@@ -115,7 +115,7 @@ av.fio.processFiles = function (loadConfigFlag){
 
 
 av.fio.processItemFiles = function (){
-  "use strict";
+  'use strict';
   switch (av.fio.anID) {
     case 'entryname.txt':
     case 'entrytype.txt':
@@ -254,8 +254,9 @@ av.frd.avidaCFG2form = function (fileStr){
     dijit.byId("experimentRadio").set('checked', false);
     dijit.byId("demoRadio").set('checked', true);
   }
-  dijit.byId("aveTimeSlice").set('value', dict.AVE_TIME_SLICE);
-  dijit.byId("sleepDelay").set('value', dict.SLEEP_DELAY);
+  //no longer in use; tiba delete later
+  //dijit.byId("aveTimeSlice").set('value', dict.AVE_TIME_SLICE);
+  //dijit.byId("sleepDelay").set('value', dict.SLEEP_DELAY);
 }
 
 //----------------------- section to put data from ancestors file into ancestorBox and placeparents auto ---------------

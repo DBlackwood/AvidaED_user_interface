@@ -71,7 +71,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
 
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.userPickZipRead = function () {
-    "use strict";
+    'use strict';
     av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
     //Clear each section of the freezer and active organism and ancestorBox
     av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
@@ -122,7 +122,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
 
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.importZipRead = function () {
-    "use strict";
+    'use strict';
     var inputWSfile = document.getElementById('import');
     var zipFileToLoad = inputWSfile.files[0];
     var fileReader = new FileReader();
@@ -272,7 +272,7 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
 
 //    wsSavedMsg.textcontent = 'Workspace: default  ';
 av.fzr.saveUpdateState = function (state) {
-  "use strict";
+  'use strict';
   av.fzr.saveState = state;
   if ('yes' === av.fzr.saveState) {
     wsSavedMsg.textContent = 'Workspace: is saved ';

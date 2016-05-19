@@ -127,7 +127,9 @@ av.msg.readMsg = function (ee) {
       case 'notification':
         if (av.debug.msg) console.log('avida:notify: ',msg.message);
         if (av.debug.msg) userMsgLabel.textContent = 'Avidia notification: ' + msg.message; //with splash screen no longer need ready message
-        // used to reverse the gif that is in the splash screen http://gifmaker.me/reverser/
+        // Worked on a better splash screen gif. Used licecap, an application on the Mac to record the gif.
+        // Then used http://gifmaker.me/reverser/ to make a gif in reverse time order. Then Wesley used gifsicle
+        // to combine the forward and reverse gif.
         $('#splash').remove(); //hides splace screen.
         break;
       case 'warning':
@@ -403,30 +405,6 @@ av.msg.pause = function(update) {
 }
 */
 
-av.msg.injectAncestors_old  = function (fio, parents) { //tiba delete
-  'use strict';
-  var request;
-  var lngth = av.parents.name.length;
-  for (var ii = 0; ii < lngth; ii++) {
-    request = {
-      'type': 'addEvent',
-      'name': 'injectSequence',
-      'start': 'now',   //was begin
-      'interval': 'once',
-      'args': [
-        av.parents.genome[ii],           //'wzcagcccccccccccccccccccccccccccccccccccczvfcaxgab',  //genome_sequence,
-        av.parents.AvidaNdx[ii], //cell_start,
-        -1, //cell_end,
-        -1, //default_merit,
-        ii, // lineage_label,  @ancestor
-        0 //neutral_metric
-      ]
-    }
-    av.aww.uiWorker.postMessage(request);
-    av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
-  }
-}
-
 av.msg.injectAncestors = function () {
   'use strict';
   var request;
@@ -641,7 +619,7 @@ av.msg.fillColorBlock = function (msg) {  //Draw the color block
         av.grd.selCtx.fillStyle = '#000'
       }
       else {
-        av.grd.selCtx.fillStyle = av.parents.color[av.grd.fill[av.grd.selectedNdx]]
+        av.grd.selCtx.fillStyle = av.parents.color[av.parents.name.indexOf(msg.ancestor)];
       }
     }
     else {

@@ -69,8 +69,9 @@ av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   else txt += 'BIRTH_METHOD 4 \n';   //anywhere randomly
   if (dijit.byId('experimentRadio').get('checked')) txt += 'RANDOM_SEED -1 \n';
   else txt += 'RANDOM_SEED 100\n';
-  txt += 'AVE_TIME_SLICE ' + dijit.byId('aveTimeSlice').get('value') + '\n';
-  txt += 'SLEEP_DELAY ' + dijit.byId('sleepDelay').get('value') + '\n';
+  //no longer in use; tiba delete later
+  //txt += 'AVE_TIME_SLICE ' + dijit.byId('aveTimeSlice').get('value') + '\n';
+  //txt += 'SLEEP_DELAY ' + dijit.byId('sleepDelay').get('value') + '\n';
   txt += '#include instset.cfg\n';
   txt += 'PRECALC_PHENOTYPE 1\n';
   txt += 'VERSION_ID 2.14.0 \n';
@@ -270,7 +271,7 @@ av.fwt.removeFzrItem = function(dir, type){
 }
 
 av.fwt.writeCSV = function() {
-  "use strict";
+  'use strict';
   //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
   //  '@default at update 141 Average Metabolic Rate,@default at update 141 Count of Organisms in the World';
   av.fwt.csvStrg = 'Update,' +  av.fzr.actConfig.name + ' at update ' + av.grd.popStatsMsg.update + ' Average Fitness,'

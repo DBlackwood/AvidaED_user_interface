@@ -420,3 +420,21 @@ av.ptd.writeHardDefault = function (av) {
   };
 }
 
+// should really be in a ui code section
+// http://stackoverflow.com/questions/7125453/modifying-css-class-property-values-on-the-fly-with-javascript-jquery
+av.ptd.setStyle = function (cssText) {
+  var sheet = document.createElement('style'), isIE = false;
+  sheet.type = 'text/css';
+  /* Optional */ window.customSheet = sheet;
+  (document.head || document.getElementsByTagName('head')[0]).appendChild(sheet);
+  try{sheet.cloneNode(false).appendChild(document.createTextNode(''));}
+  catch(err){isIE = true;}
+  var wrapper = isIE ? document.createElement('div') : sheet;
+  return (setStyle = function(cssText, node) {
+    if(!node || node.parentNode !== wrapper)
+      node = wrapper.appendChild(document.createTextNode(cssText));
+    else node.nodeValue = cssText;
+    if (isIE) sheet.styleSheet.cssText = wrapper.innerHTML;
+    return node;
+  })(cssText);
+}

@@ -98,7 +98,7 @@ av.mouse.notDndPopList = ['colorMode'
   //statistics section
   , 'SotLabel'
   , 'nameLabel'
-  , 'SelectedColor'
+  , 'sotColor'
   , 'fitLabel'
   , 'metabolicLabel'
   , 'generateLabel'
@@ -254,6 +254,7 @@ av.grd.popY = [];
 av.grd.popY2 = [];
 av.grd.ytitle = 'Average Fitness';
 av.grd.notInDrawingGrid = true;
+av.grd.newlyNone = true;
 
 av.grd.clearGrd = function () {
   av.grd.runState = 'prepping';  //'started'; 'world';

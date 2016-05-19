@@ -1,89 +1,41 @@
 Avida-ED-web List of files needed
 
-avida.js
-avida.mem.js
-AvidaED.css
-AvidaED.html
-AvidaED.js
-colormap.js
-cpu_tour.html
-default.avidaedworkspace.zip
-diagnosticConsol.js   //sub could come out 
-dojoDnd.js
-fileDataRead.js
-fileDataWrite.js
-fileIO.js
-globals.js
-index.html  //only a link to AvidaED.html
-messaging.js
-mouse.js
-organismView.js
-placeParent.js
-popControls.jsfi
-populationGrid.js
-restartAvida.js   // only a stub, could come out
-utilities.js
+av_ui
+  avida.js
+  avida.js.mem
+  AvidaED.css
+  AvidaED.html
+  AvidaED.js
+  colormap.js
+  cpu_tour.html
+  default.avidaedworkspace.zip
+  dojoDnd.js
+  fileDataRead.js
+  fileDataWrite.js
+  fileIO.js
+  globals.js
+  index.html
+  messaging.js
+  mouse.js
+  mouseDown.js
+  organismView.js
+  placeParent.js
+  popControls.js
+  populationGrid.js
+  restartAvida.js
+  utilities.js
 
 images
   avida-ed-analysis-icon.png
-  avida-ed-petri-dish.png
-  avidaGrid.gif
   avida-ed-ancestor-icon.png
-  avida-ed-populated-dish.png	cpu2.gif
-  avida-ed-dish-icon.png 
-  avida-ed-population-icon.png
+  avida-ed-dish-icon.png
   avida-ed-organism-icon.png
-  cdavida-ed-trash-icon.png
+  avida-ed-petri-dish.png
+  avida-ed-populated-dish.png
+  avida-ed-population-icon.png
+  avida-ed-trash-icon.png
+  avidaGrid.gif
+  cpu2.gif
+  favicon.ico
   
 lib
-  "dijit/dijit.js",
-  "dojo/parser.js",
-  "dojo/_base/declare.js",
-  "dojo/query.js",
-  "dojo/NodeList-traverse.js",
-  "maqetta/space.js",
-  "maqetta/AppStates.js",
-  "dijit/Dialog.js",
-  "dijit/layout/BorderContainer.js",
-  "dijit/layout/ContentPane.js",
-  "dijit/MenuBar.js",
-  "dijit/PopupMenuBarItem.js",
-  "dijit/MenuItem.js",
-  "dijit/Menu.js",
-  "dijit/form/Button.js",
-  "dijit/TitlePane.js",
-  "dojo/dnd/Source.js",
-  "dojo/dnd/Manager.js",
-  "dojo/dnd/Selector.js",
-  "dojo/dnd/Target.js",
-  "dojo/dom-geometry.js",
-  "dojo/dom-style.js",
-  "dojo/dom.js",
-  "dojo/aspect.js",
-  "dojo/on.js",
-  "dijit/registry.js",
-  "dijit/form/Select.js",
-  "dijit/form/HorizontalSlider.js",
-  "dijit/form/HorizontalRule.js",
-  "dijit/form/HorizontalRuleLabels.js",
-  "dijit/form/RadioButton.js",
-  "dijit/form/ToggleButton.js",
-  "dijit/form/NumberSpinner.js",
-  "dijit/form/ComboButton.js",
-  "dijit/form/DropDownButton.js",
-  "dijit/form/ComboBox.js",
-  "dijit/form/Textarea.js",
-  "dojox/charting/Chart.js",
-  "dojox/charting/axis2d/Default.js",
-  "dojox/charting/plot2d/Lines.js",
-  "dojox/charting/plot2d/Grid.js",
-  "dojox/charting/action2d/MouseZoomAndPan.js",
-  "dojox/charting/themes/Wetland.js",
-  "dojo/ready.js",
-  "jquery.js",
-  "jquery-ui.js",
-  "Blob.js",
-  "jszip.min.js",
-  "FileSaver.js",
-  "jquery.fileDownload.js",
-   domReady.js

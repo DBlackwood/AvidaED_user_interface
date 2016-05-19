@@ -14,15 +14,15 @@
  * But for your application suppose you want to tighten the padding
  * for buttons. Then, you might include the following style rule
  * in this file (assuming that you accept Maqetta's default where
- * id "myapp" is present on the BODY element, and assuming
- * that you are using the "claro" theme):
+ * id 'myapp' is present on the BODY element, and assuming
+ * that you are using the 'claro' theme):
  *
  * #myapp.claro .dijitButton .dijitButtonNode {
  *		padding:1px 3px 3px 3px;
  * }
  *
  * Because of CSS precedence rules (see [1]), the above style rule
- * (which begins with #myapp.claro) will "win the cascade" versus 
+ * (which begins with #myapp.claro) will 'win the cascade' versus
  * the style rule from the theme CSS file due to the use of the
  * ID select (#myapp), which has higher specificity than the class
  * selectors used throughout the Claro theme.
@@ -240,7 +240,7 @@ button, input,
   margin: 1px
 }
 
-table.top {
+table.topTable {
   border-collapse: collapse;
   border: 0;
   table-layout: auto;
@@ -248,22 +248,28 @@ table.top {
   height: auto;
   background-color:#DDD;
 }
-.top th, .top td {  padding: 0px;  }
-.top tr *:nth-child(1) {
+.topTable th, .top td {  padding: 0px;  }
+.topTable tr *:nth-child(1) {
   text-align: right;
   height: 1em;
 }
 
-table.bot {
+table.botTable {
   border-collapse: collapse;
-  border: 0;
   table-layout: auto;
+  border: 0;
   width: 100%;
   height: auto;
-  background-color:#DDD;
+  background-color:#FFF;
 }
-.bot th, .bot td {  padding: 0px;  }
-.bot tr *:nth-child(1) {
-  text-align: right;
-  height: 1em;
+ .botTable td {  line-height: 15px;  }   /* added in javascript */
+
+.botTable tr *:nth-child(2) {
+  text-align: left;
 }
+
+/*
+web pages about style sheets that are changed with javascript
+https://www.w3.org/wiki/Dynamic_style_-_manipulating_CSS_with_JavaScript
+http://www.shawnolson.net/a/503/altering_css_class_attributes_with_javascript.html  //confusing
+*/

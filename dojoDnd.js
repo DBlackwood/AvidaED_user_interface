@@ -38,7 +38,7 @@ av.dnd.getDomId = function (name, target){
   var nodeIndex = -1;
   var lngth = domItems.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (target.map[domItems[ii]].data == name) {
+    if (target.map[domItems[ii]].data === name) {
       nodeIndex = ii;
       break;
     }
@@ -46,6 +46,30 @@ av.dnd.getDomId = function (name, target){
   return domItems[nodeIndex];
 };
 
+av.dnd.nameNparent = function (name, number) {
+  var num = number + 1;
+  var aName = name + '-' + num.formatNum(0);
+  var newName;
+  if (0 <= av.parents.name.indexOf(aName)) {
+    newName = av.dnd.nameNparent(name, num);
+    console.log('aName', aName, '; num', num, 'newName', newName);
+  }
+  else { newName = aName; }
+  return newName;
+};
+
+av.dnd.nameParent = function(name) {
+  'use strict';
+  var theName;
+  //look for name in parent
+  if (0 <= av.parents.name.indexOf(name)) {
+    theName = av.dnd.nameNparent(name, 0);
+  }
+  else { theName = name; }
+  console.log('name', theName);
+  av.parents.name.push(theName);
+  return theName;
+}
 
 //----------------------------------------------- Configuration DnD ----------------------------------------------------
 //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
@@ -297,12 +321,16 @@ av.dnd.landAncestorBox = function (source, nodes, target) {
     av.parents.genome.push(av.fzr.file[dir+'/genome.seq']);
     var nn = av.parents.name.length;
     av.parents.autoNdx.push(nn);
-    av.parents.name.push(nodes[0].textContent);
+    var newName = av.dnd.nameParent(nodes[0].textContent);
+    var domIDs = Object.keys(av.dnd.ancestorBox.map);
+    var domID = domIDs[domIDs.length-1];
+    document.getElementById(domID).textContent = newName;
+    //console.log('item', domID, '; name', document.getElementById(domID).textContent, '; newName', newName, '; parent', av.parents.name);
     av.parents.howPlaced.push('auto');
     av.parents.domid.push(Object.keys(target.selection)[0]); //domid in ancestorBox used to remove if square in grid moved to trashcan
     //Find color of ancestor
     if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}
-    else { av.parents.color.push(av.color.defaultParentColor) }
+    else { av.parents.color.push(av.color.defaultParentColor); }
     av.parents.placeAncestors();
     if (av.debug.dnd) console.log('parents', av.parents.name[nn], av.parents.domid[nn], av.parents.genome[nn]);
   }
@@ -351,7 +379,7 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
     av.parents.genome.push(av.fzr.file[dir+'/genome.seq']);
     //find domId of parent as listed in av.dnd.ancestorBox
 
-    //Don't think I need domID withing ancestorBox
+    //Don't think I need domID within ancestorBox
     //var mapItems = Object.keys(av.dnd.ancestorBox.map);
     //av.parents.domid.push(mapItems[mapItems.length - 1]);
 

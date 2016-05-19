@@ -13,7 +13,7 @@ av.mouse.frzCurserSet = function(state) {
 };
 
 av.mouse.getOriginalShapes = function () {
-  "use strict";
+  'use strict';
   var lngth = av.mouse.notDndPopList.length;
   for (var ii = 0; ii < lngth; ii++) {
     //console.log('domElements', av.mouse.notDndPopList[ii])
@@ -29,7 +29,7 @@ av.mouse.getOriginalShapes = function () {
 };
 
 av.mouse.notDndPopCursorShape = function (shape) {
-  "use strict";
+  'use strict';
   var lngth = av.mouse.notDndPopList.length;
   if ('default' === shape) {
     for (var ii = 0; ii < lngth; ii++) {
@@ -43,7 +43,7 @@ av.mouse.notDndPopCursorShape = function (shape) {
 };
 
 av.mouse.notDndIndCursorShape = function (shape) {
-  "use strict";
+  'use strict';
   //console.log('in av.mouse.notDndIndCursorShape');
   var lngth = av.mouse.notDndIndList.length;
   if ('default' === shape) {
@@ -82,7 +82,7 @@ av.mouse.selectedKidMouseStyle = function () {
 };
 
 av.mouse.sonCursorShape = function () {
-  "use strict";
+  'use strict';
   console.log('in son')
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('organCanvas').style.cursor = 'copy';
@@ -91,7 +91,7 @@ av.mouse.sonCursorShape = function () {
 };
 
 av.mouse.makeCursorDefault = function () {
-  "use strict";
+  'use strict';
   document.getElementById('gridCanvas').style.cursor = 'default';
   document.getElementById('freezerDiv').style.cursor = 'default';
   document.getElementById('trashCan').style.cursor = 'default';
@@ -215,7 +215,7 @@ av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
 };
 
 av.mouse.traceSelected = function(dnd, fzr, grd) {
-  "use strict";
+  'use strict';
   dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   dnd.activeOrgan.sync();   //should be done after insertion or deletion
   //Put name of offspring in OrganCurrentNode

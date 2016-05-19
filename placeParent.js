@@ -321,6 +321,7 @@ av.parents.placeAncestors = function () {
           rr = Math.floor(ii / sqLength);
           av.parents.col[av.parents.autoNdx[ii]] = Math.floor(cols * (2 * cc + 1) / (2 * sqLength));
           av.parents.row[av.parents.autoNdx[ii]] = Math.floor(rows * (2 * rr + 1) / (2 * sqLength));
+          av.parents.AvidaNdx[av.parents.autoNdx[ii]] = av.parents.col[av.parents.autoNdx[ii]] + cols * av.parents.row[av.parents.autoNdx[ii]];
         }
         break;
     }
