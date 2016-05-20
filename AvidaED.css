@@ -131,8 +131,9 @@ button, input,
   border-radius: 5px;
   padding: 0px 00px 2px 0px;
   height: 15px;
-  width: 75px;
+  width: 50px;
   display: block;
+  text-align: center;
 }
 
 .bitButtonOn {
@@ -146,8 +147,9 @@ button, input,
   border-radius: 5px;
   padding: 0px 00px 2px 0px;
   height: 15px;
-  width: 75px;
+  width: 50px;   /* was 75 */
   display: block;
+  text-align: center;
 }
 
 .resourceButton {
@@ -264,6 +266,11 @@ table.botTable {
 }
  .botTable td {  line-height: 15px;  }   /* added in javascript */
 
+.botTable tr *:nth-child(1) {
+  align-items: right;
+  align-content: right;
+  text-align: center;
+}
 .botTable tr *:nth-child(2) {
   text-align: left;
 }
