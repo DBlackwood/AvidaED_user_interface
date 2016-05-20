@@ -575,6 +575,7 @@ require([
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
   if (av.debug.root) console.log('before Resize helpers');
+
   // called from script in html file as well as below
   av.ui.browserResizeEventHandler = function () {
     if ('block' == domStyle.get('analysisBlock', 'display')) {
@@ -582,6 +583,7 @@ require([
     }
     if ('block' == domStyle.get('populationBlock', 'display')) {
       if (av.grd.notInDrawingGrid) {
+        //av.ui.adjustPopRightSize();
         av.grd.popChartFn();
         //console.log('before call av.grd.drawGridSetupFn');
         av.grd.drawGridSetupFn();
@@ -611,15 +613,36 @@ require([
     });
   });
 
-  var popRightOldwidth = 0;
+  av.ui.popRightOldwidth = 0;
   aspect.after(registry.byId('popRight'), 'resize', function () {
-    if (registry.byId('popRight').domNode.style.width != popRightOldwidth) {
-      popRightOldwidth = registry.byId('popRight').domNode.style.width;
+    if (registry.byId('popRight').domNode.style.width != av.ui.popRightOldwidth) {
+      av.ui.popRightOldwidth = registry.byId('popRight').domNode.style.width;
       var str = registry.byId('popRight').domNode.style.width;
-      registry.byId('selectOrganPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + 'px'
+      registry.byId('sotPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + 'px'
       registry.byId('mainBC').layout();
     }
+    //console.log('popBot ====', document.getElementById('popBot').style.width); //need abotu 430 px for button arrangement to look good.
   });
+
+  //Adjust Statistics area width based on gridholder size and shape. gridholder should be roughly square
+  av.ui.adjustPopRightSize = function () {
+    av.ui.gridHolderWd = document.getElementById('gridHolder').clientWidth;
+    //console.log('av.ui.gridHolderWd', av.ui.gridHolderWd);
+    if (av.ui.pobBotWdMin < av.ui.gridHolderWd) {
+      av.ui.gridHolderXtra = av.ui.gridHolderWd - document.getElementById('gridHolder').clientHeight;
+      //console.log('av.ui.gridHolderXtra',av.ui.gridHolderXtra);
+      if (av.ui.gridHolderSideBuffer < av.ui.gridHolderXtra) {
+        av.ui.gridHolderWdNew = av.ui.gridHolderWd - av.ui.gridHolderXtra + av.ui.gridHolderSideBuffer;
+        //console.log('av.ui.gridHolderWdNew',av.ui.gridHolderWdNew);
+        if (430 > av.ui.gridHolderWdNew) av.ui.gridHolderWdNew = 430;
+        av.ui.popRightWdNew = document.getElementById('popRight').clientWidth + av.ui.gridHolderWd - av.ui.gridHolderWdNew;
+        //console.log('av.ui.popRightWd Old, New',document.getElementById('popRight').clientWidth, av.ui.popRightWdNew);
+        //av.ui.popRightWdNew = document.getElementById('popRight').clientWidth + av.ui.gridHolderXtra - av.ui.gridHolderSideBuffer;
+        document.getElementById('popRight').style.width = av.ui.popRightWdNew + 'px';
+      }
+    }
+    //console.log('popRight', document.getElementById('popRight').style.width);
+  };
 
   if (av.debug.root) console.log('before dnd triggers');
   //*******************************************************************************************************************
@@ -1941,7 +1964,11 @@ require([
   //Tasks that Need to be run when page is loaded but after chart is defined
   // **************************************************************************************************************** */
 
-  //used to set the height so the data just fits. Done because different monitor/browser combinations require a diffent height in pixels.
+  // ------------------------ Population Page Statistics tables --------------------------------------------------------
+
+  av.ui.adjustPopRightSize();
+
+  //used to set the height so the data just fits. Done because different monitor/browser combinations require a different height in pixels.
   //may need to take out as requires loading twice now.
   
   //setting row height to match on population page stats window

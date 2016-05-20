@@ -70,7 +70,7 @@ av.mouse.notDndPopList = ['colorMode'
   , 'popRight_splitter'
   , 'populationBlock'
   , 'scaleCanvas'
-  , 'selectOrganPane_splitter'
+  //, 'sotPane_splitter'
   , 'trashCP'
   , 'trashCP_splitter'
   , 'gridHolder'
@@ -173,7 +173,6 @@ av.mouse.notDndIndList = ['colorMode'
   , 'rightDetail_splitter'
   , 'populationBlock'
   , 'scaleCanvas'
-  , 'selectOrganPane_splitter'
   , 'trashCP'
   , 'trashCP_splitter'
   , 'activeOrgan'
@@ -325,6 +324,10 @@ av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';
 av.ui.autoStopFlag = false;
 av.ui.autoStopValue = 987654321;
+//used in adjusting size of areas on population page
+av.ui.gridHolderSideBuffer = 10;  
+av.ui.pobBotWdMin = 430;
+
 
 //not really ui, but not sure where to put them
 av.ui.num = 0;   //tenporary holder for a number;

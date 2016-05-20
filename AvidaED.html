@@ -222,12 +222,10 @@
         </div>
         <!-- contentpane for data about current status of the grid on the right - bigger pane on right in population page -->
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
-             id='popRight'
-             refreshOnShow='false' doLayout='true' region='right' splitter='true' maxSize='Infinity'
+             id='popRight' refreshOnShow='false' doLayout='true' region='right' splitter='true' maxSize='Infinity'
              style='width:395px;'>
-
           <div data-dojo-type='dijit/layout/BorderContainer' design='sidebar' persist='false' gutters='true'
-               style='min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;'>
+               style='min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;' id='popRightBC'>
             <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
                  id='popTopRight'
                  refreshOnShow='false' region='top' splitter='true' maxSize='Infinity' doLayout='false'
@@ -235,7 +233,7 @@
               <div data-dojo-type='dijit/layout/BorderContainer' design='sidebar' persist='false' gutters='true'
                    style='min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;'>
                 <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false'
-                     preload='false' id='selectOrganPane'
+                     preload='false' id='sotPane'
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
                   <label id='SotLabel'>Selected Organism Type</label>
@@ -243,33 +241,33 @@
                   <table id='sotTopTable' class='topTable'>
                     <tbody>
                     <tr>
+                      <td><canvas id='sotColor' width='10' height='10'></canvas>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:&nbsp;</td>
                       <td><label id='nameLabel'></label></td>
-                      <td>=Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<canvas id='sotColor' width='10' height='10'></canvas></td>
                     </tr>
                     <tr>
-                      <td><label id='fitLabel'></label></td>
-                      <td>=Fitness</td>
+                      <td>Fitness:&nbsp;</td>
+                      <td><label id='fitLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
                     </tr>
                     <tr>
-                      <td><label id='metabolicLabel'></label></td>
-                      <td>=Metabolic Rate</td>
+                      <td>Metabolic Rate:&nbsp;</td>
+                      <td><label id='metabolicLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
                     </tr>
                     <tr>
-                      <td><label id='generateLabel'></label></td>
-                      <td>=Generation</td>
+                      <td>Generation:&nbsp;</td>
+                      <td><label id='generateLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
                     </tr>
                     <tr>
-                      <td><label id='ageLabel'></label></td>
-                      <td>=Age (update)</td>
+                      <td>Age (update):&nbsp;</td>
+                      <td><label id='ageLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
                     </tr>
                     <tr>
-                      <td><label id='ancestorLabel'></label>
-                      <td>=Ancestor</td>
+                      <td>Ancestor:&nbsp;</td>
+                      <td><label id='ancestorLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                       </td>
                     </tr>
                     <tr>
-                      <td><label id='viableLabel'></label></td>
-                      <td>=Viable</td>
+                      <td>Viable:&nbsp;</td>
+                      <td><label id='viableLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
                     </tr>
                     </tbody>
                   </table>
@@ -328,32 +326,32 @@
                   <table id='popsTopTable' class='topTable'>
                     <tbody>
                     <tr>
+                      <td>Size (# of organisms):&nbsp;</td>
                       <td><label id='popSizeLabel'></label></td>
-                      <td>=Size (# of organisms)</td>
                     </tr>
                     <tr>
+                      <td>Avg. Fitness:&nbsp;</td>
                       <td><label id='aFitLabel'></label></td>
-                      <td>=Avg. Fitness</td>
                     </tr>
                     <tr>
+                      <td>Avg. Metabolic Rate:&nbsp;</td>
                       <td><label id='aMetabolicLabel'></label></td>
-                      <td>=Avg. Metabolic Rate</td>
                     </tr>
                     <tr>
+                      <td>Avg. Generation:&nbsp;</td>
                       <td><label id='aGestateLabel'></label></td>
-                      <td>=Avg. Generation</td>
                     </tr>
                     <tr>
+                      <td>Avg. Age (updates):&nbsp;</td>
                       <td><label id='aAgeLabel'></label></td>
-                      <td>=Avg. Age (updates)</td>
                     </tr>
                     <tr>
+                      <td># Ancestor(s) at start:&nbsp;</td>
                       <td><label id='parentNumLabel'></label></td>
-                      <td>=# Ancestor(s) at start</td>
                     </tr>
                     <tr>
+                      <td># of viable organisms:&nbsp;</td>
                       <td><label id='viableNumLabel'></label></td>
-                      <td>=# of viable organisms</td>
                     </tr>
                     </tbody>
                   </table>
@@ -474,11 +472,8 @@
               <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
                    refreshOnShow='false' doLayout='true' region='center' splitter='false' maxSize='Infinity'
                    id='gridHolder' style='background-color: #aaaaaa'>
-                <!--<div id='gridVertSpacer'></div>-->
-                <!--<div id='gridBoxDiv' style='overflow: auto; background-color: blue'>  <!--style='overflow: scroll'-->
                   <canvas data-dojo-type='dojo.dnd.Target' id='gridCanvas'
                           style='margin: auto; padding: 0; display: block; position: absolute; top: 0; bottom: 0; left: 0; right: 0;'></canvas>
-                <!--</div>-->
               </div>
             </div>
           </div>
