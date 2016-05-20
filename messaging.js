@@ -55,7 +55,7 @@ av.msg.readMsg = function (ee) {
         if (av.grd.oldUpdate != msg.update) {  //use only one = as one maybe number and the other string
           av.grd.oldUpdate = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
-          av.msg.sync('webPopulationStats-update:' + msg.update.toString());
+          //av.msg.sync('webPopulationStats-update:' + msg.update.toString());
           av.grd.popChartFn();
         }
         else {
@@ -74,26 +74,26 @@ av.msg.readMsg = function (ee) {
             dijit.byId("autoUpdateRadio").set('checked', false);
           }
           else {
-            av.debug.log += '\n - - update('+ av.grd.popStatsMsg.update +') < bar(' + av.ui.autoStopValue + ')';
+            //av.debug.log += '\n - - update('+ av.grd.popStatsMsg.update +') < bar(' + av.ui.autoStopValue + ')';
             av.msg.stepUpdate();
           }
         }
         else {
-          av.debug.log += '\n - - autoStopFlag=false; update:' + av.grd.popStatsMsg.update;
+          //av.debug.log += '\n - - autoStopFlag=false; update:' + av.grd.popStatsMsg.update;
           av.msg.stepUpdate();
         }
-        av.debug.log += '\n - - end webPopulation: update:' + av.grd.popStatsMsg.update;
+        //av.debug.log += '\n - - end webPopulation: update:' + av.grd.popStatsMsg.update;
         break;
       case 'webGridData':
         av.grd.msg = msg;
         stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
-        av.msg.sync('webGridData:' + msg.update.toString());
+        //av.msg.sync('webGridData:' + msg.update.toString());
         if ('populationBlock' === av.ui.page && 'map' === av.ui.subpage) {
-          av.debug.log += '\n -Call drawGridSetupFn';
+          //av.debug.log += '\n -Call drawGridSetupFn';
           av.grd.drawGridSetupFn();
         }
-        av.debug.log += '\n - - end webGridData: update:' + av.grd.msg.update;
+        //av.debug.log += '\n - - end webGridData: update:' + av.grd.msg.update;
         break;
       case 'webOrgDataByCellID':
         av.msg.ByCellIDgenome = msg.genome;
@@ -147,20 +147,23 @@ av.msg.readMsg = function (ee) {
   }
   else if ('response' === msg.type) {
     //console.log('msg.request.type', msg.request.type);
-    if ('sync' !== msg.request.type) {
-      av.debug.log += '\nAvida --> ui: type: response; request: sync; success:' + msg.request.success;
+    //av.debug.log += '\nAvida --> ui   msg.type=response\n' + av.utl.json2stringFn(msg);
+
+    if ('stepUpdate' == msg.request.type) {
+      av.debug.log += '\nAvida --> ui: type: response; request: stepUpdate; success:' + msg.success;
     }
-    else if ('stepUpdate' !== msg.request.type) {
-      av.debug.log += '\nAvida --> ui: type: response; request: stepUpdate; success:' + msg.request.success;
+    else {
+      av.debug.log += '\nAvida --> ui   msg.type=response\n' + av.utl.json2stringFn(msg);
     }
+
   }
-  else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg) + 'endelse';
+  else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg);
 };
 
 av.msg.stepUpdate = function () {
   'use strict';
   setTimeout(function () {
-    av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + runStopButton.textContent + '; previousUpdate'
+    //av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + runStopButton.textContent + '; previousUpdate'
       + av.msg.previousUpdate  + '; popStatsupdate' + av.grd.popStatsMsg.update;
     //console.log('stepUpdate', runStopButton.textContent, '; previousUpdate', av.msg.previousUpdate, '; pop', av.grd.popStatsMsg.update);
     if ("Pause" == runStopButton.textContent) {

@@ -1501,7 +1501,7 @@ require([
     'use strict';
     if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
       //console.log('chart update=', av.grd.popStatsMsg.update);
-      av.debug.log += '\n - - Call popChartFn';
+      //av.debug.log += '\n - - Call popChartFn';
       if ('Average Fitness' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveFit;
         av.grd.popY2 = av.ptd.logFit;
