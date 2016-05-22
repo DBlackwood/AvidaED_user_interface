@@ -431,16 +431,17 @@ av.msg.injectAncestors = function () {
 av.msg.updatePopStats = function (msg) {
   'use strict';
   var place = 2;
+  var vari = 2;
   //TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   av.grd.updateNum = msg.update;
   popSizeLabel.textContent = msg.organisms.formatNum(0);
-  aFitLabel.textContent = msg.ave_fitness.formatNum(2);
-  if (msg.ave_metabolic_rate > 1000) place = 0;
-  else if (msg.ave_metabolic_rate > 100) place = 1;
+  aFitLabel.textContent = msg.ave_fitness.formatNum(place);
+  //if (msg.ave_metabolic_rate > 1000) vari = 0;
+  //else if (msg.ave_metabolic_rate > 100) vari = 1;
   aMetabolicLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
-  aGestateLabel.textContent = msg.ave_gestation_time.formatNum(1);
-  aAgeLabel.textContent = msg.ave_age.formatNum(2);
+  aGestateLabel.textContent = msg.ave_gestation_time.formatNum(place);
+  aAgeLabel.textContent = msg.ave_age.formatNum(place);
   parentNumLabel.textContent = av.parents.name.length;
 
   //find out how many are not viable.

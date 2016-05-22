@@ -236,12 +236,12 @@
                      preload='false' id='sotPane'
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
-                  <label id='SotLabel'>Selected Organism Type</label>
-                  <div id='sotDivTable'>
-                  <table id='sotTopTable' class='topTable'>
+                  <div id='sotDivTable' style='background-color:#DDD;'>
+                    <div style='text-align:center; font-weight: bold'><label id='SotLabel'>Selected Organism Type</label></div>
+                  <table id='sotTopTable' class='topSotTable'>
                     <tbody>
                     <tr>
-                      <td><canvas id='sotColor' width='10' height='10'></canvas>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name:&nbsp;</td>
+                      <td>Name:&nbsp;<canvas id='sotColor' width='10' height='10'></canvas></td>
                       <td><label id='nameLabel'></label></td>
                     </tr>
                     <tr>
@@ -272,10 +272,10 @@
                     </tbody>
                   </table>
                   </div>
-                  <table id='sotBotTable' class='botTable'>
+                  <table id='sotBotTable' class='botSotTable'>
                     <tbody>
                     <tr>
-                      <td><label id='sotFn'>Function</label></td>
+                      <td><label id='sotFn'>Function&nbsp;</label></td>
                       <td><label id='sotTimes'>Times Performed</label></td>
                     </tr>
                     <tr>
@@ -322,12 +322,13 @@
                      preload='false'
                      refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'
                      id='popStatistics'>
-                  <label id='popStat'>Population Statistics</label>
-                  <table id='popsTopTable' class='topTable'>
+                  <div style='background-color: #DDD'>
+                  <div style='text-align:center; font-weight: bold'><label id='popStat'>Population Statistics</label></div>
+                  <table id='popsTopTable' class='topPopTable'>
                     <tbody>
                     <tr>
                       <td>Size (# of organisms):&nbsp;</td>
-                      <td><label id='popSizeLabel'></label></td>
+                      <td><label id='popSizeLabel'>&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td>Avg. Fitness:&nbsp;</td>
@@ -347,22 +348,23 @@
                     </tr>
                     <tr>
                       <td># Ancestor(s) at start:&nbsp;</td>
-                      <td><label id='parentNumLabel'></label></td>
+                      <td><label id='parentNumLabel'></label>&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td># of viable organisms:&nbsp;</td>
-                      <td><label id='viableNumLabel'></label></td>
+                      <td><label id='viableNumLabel'></label>&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     </tbody>
                   </table>
-                  <table id='popsBotTable' class='botTable'>
+                  </div>
+                  <table id='popsBotTable' class='popsBotTable'>
                     <tbody>
                     <tr>
-                      <td><label id='psFn'>Function</label></td>
+                      <td><label id='psFn'>Function&nbsp;</label></td>
                       <td><label id='psNumOrg'># of Organisms</label></td>
                     </tr>
                     <tr>
-                      <td><button id='notButton' class='bitButtonOff'>not</button>
+                      <td style="width:50px"><button id='notButton' class='bitButtonOff'>not</button>
                       </td><td><label id='notPop'></label></td>
                     </tr>
                     <tr>

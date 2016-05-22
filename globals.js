@@ -325,7 +325,7 @@ av.ui.subpage = 'map';
 av.ui.autoStopFlag = false;
 av.ui.autoStopValue = 987654321;
 //used in adjusting size of areas on population page
-av.ui.gridHolderSideBuffer = 10;  
+av.ui.gridHolderSideBuffer = 0;
 av.ui.pobBotWdMin = 430;
 
 
