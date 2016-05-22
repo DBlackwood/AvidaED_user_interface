@@ -618,12 +618,12 @@ require([
     if (registry.byId('popRight').domNode.style.width != av.ui.popRightOldwidth) {
       av.ui.popRightOldwidth = registry.byId('popRight').domNode.style.width;
       var str = registry.byId('popRight').domNode.style.width;
-      registry.byId('sotPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.45) + 'px'
+      registry.byId('sotPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.49) + 'px'
       registry.byId('mainBC').layout();
     }
     //console.log('popBot ====', document.getElementById('popBot').style.width); //need abotu 430 px for button arrangement to look good.
-    console.log('sot', document.getElementById('sotTopTable').style);
-    console.log('pop', document.getElementById('popsTopTable').style);
+    //console.log('sot', document.getElementById('sotTopTable').style);
+    //console.log('pop', document.getElementById('popsTopTable').style);
   });
 
   //Adjust Statistics area width based on gridholder size and shape. gridholder should be roughly square
