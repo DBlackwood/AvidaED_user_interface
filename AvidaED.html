@@ -236,38 +236,38 @@
                      preload='false' id='sotPane'
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
+                  <div style='text-align:center; font-weight: bold'><label id='SotLabel'>Selected Organism Type</label></div>
                   <div id='sotDivTable' style='background-color:#DDD;'>
-                    <div style='text-align:center; font-weight: bold'><label id='SotLabel'>Selected Organism Type</label></div>
                   <table id='sotTopTable' class='topSotTable'>
                     <tbody>
                     <tr>
-                      <td>Name:&nbsp;<canvas id='sotColor' width='10' height='10'></canvas></td>
-                      <td><label id='nameLabel'></label></td>
+                      <td><div class='noWrap'>Name:&nbsp;<canvas id='sotColor' width='10' height='10'></canvas></div></td>
+                      <td><div class='noWrap'><label id='nameLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Fitness:&nbsp;</td>
-                      <td><label id='fitLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                      <td><div class='noWrap'>Fitness:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='fitLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Metabolic Rate:&nbsp;</td>
-                      <td><label id='metabolicLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                      <td><div class='noWrap'>Metabolic Rate:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='metabolicLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Generation:&nbsp;</td>
-                      <td><label id='generateLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                      <td><div class='noWrap'>Generation:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='generateLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Age (update):&nbsp;</td>
-                      <td><label id='ageLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                      <td><div class='noWrap'>Age (update):&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='ageLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Ancestor:&nbsp;</td>
-                      <td><label id='ancestorLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                      </td>
+                      <td><div class='noWrap'>Ancestor:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='ancestorLabel'></label>
+                      </div></td>
                     </tr>
                     <tr>
-                      <td>Viable:&nbsp;</td>
-                      <td><label id='viableLabel'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                      <td><div class='noWrap'>Viable:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='viableLabel'></label></div></td>
                     </tr>
                     </tbody>
                   </table>
@@ -275,44 +275,44 @@
                   <table id='sotBotTable' class='botSotTable'>
                     <tbody>
                     <tr>
-                      <td><label id='sotFn'>Function&nbsp;</label></td>
-                      <td><label id='sotTimes'>Times Performed</label></td>
+                      <td><div class='noWrap'><label id='sotFn'>Function&nbsp;</label></div></td>
+                      <td><div class='noWrap'><label id='sotTimes'>Times Performed</label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='notLabel'>not</label></td>
-                      <td><label id='notTime'></label></td>
+                      <td><div class='noWrap'><label id='notLabel'>not</label></div></td>
+                      <td><div class='noWrap'><label id='notTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='nanLabel'>nan</label></td>
-                      <td><label id='nanTime'></label></td>
+                      <td><div class='noWrap'><label id='nanLabel'>nan</label></div></td>
+                      <td><div class='noWrap'><label id='nanTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='andLabel'>and</label></td>
-                      <td><label id='andTime'></label></td>
+                      <td><div class='noWrap'><label id='andLabel'>and</label></div></td>
+                      <td><div class='noWrap'><label id='andTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='ornLabel'>orn</label></td>
-                      <td><label id='ornTime'></label></td>
+                      <td><div class='noWrap'><label id='ornLabel'>orn</label></div></td>
+                      <td><div class='noWrap'><label id='ornTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='oroLabel'>oro</label></td>
-                      <td><label id='oroTime'></label></td>
+                      <td><div class='noWrap'><label id='oroLabel'>oro</label></div></td>
+                      <td><div class='noWrap'><label id='oroTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='antLabel'>ant</label></td>
-                      <td><label id='antTime'></label></td>
+                      <td><div class='noWrap'><label id='antLabel'>ant</label></div></td>
+                      <td><div class='noWrap'><label id='antTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='norLabel'>nor</label></td>
-                      <td><label id='norTime'></label></td>
+                      <td><div class='noWrap'><label id='norLabel'>nor</label></div></td>
+                      <td><div class='noWrap'><label id='norTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='xorLabel'>xor</label></td>
-                      <td><label id='xorTime'></label></td>
+                      <td><div class='noWrap'><label id='xorLabel'>xor</label></div></td>
+                      <td><div class='noWrap'><label id='xorTime'></label></div></td>
                     </tr>
                     <tr>
-                      <td><label id='equLabel'>equ</label></td>
-                      <td><label id='equTime'></label></td>
+                      <td><div class='noWrap'><label id='equLabel'>equ</label></div></td>
+                      <td><div class='noWrap'><label id='equTime'></label></div></td>
                     </tr>
                     </tbody>
                   </table>
@@ -322,37 +322,37 @@
                      preload='false'
                      refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'
                      id='popStatistics'>
-                  <div style='background-color: #DDD'>
                   <div style='text-align:center; font-weight: bold'><label id='popStat'>Population Statistics</label></div>
+                  <div style='background-color: #DDD'>
                   <table id='popsTopTable' class='topPopTable'>
                     <tbody>
                     <tr>
-                      <td>Size (# of organisms):&nbsp;</td>
-                      <td><label id='popSizeLabel'>&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;</td>
+                      <td><div class='noWrap'>Size (# of organisms):&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='popSizeLabel'>&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;</div></td>
                     </tr>
                     <tr>
-                      <td>Avg. Fitness:&nbsp;</td>
-                      <td><label id='aFitLabel'></label></td>
+                      <td><div class='noWrap'>Avg. Fitness:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='aFitLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Avg. Metabolic Rate:&nbsp;</td>
-                      <td><label id='aMetabolicLabel'></label></td>
+                      <td><div class='noWrap'>Avg. Metabolic Rate:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='aMetabolicLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Avg. Generation:&nbsp;</td>
-                      <td><label id='aGestateLabel'></label></td>
+                      <td><div class='noWrap'>Avg. Generation:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='aGestateLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td>Avg. Age (updates):&nbsp;</td>
-                      <td><label id='aAgeLabel'></label></td>
+                      <td><div class='noWrap'>Avg. Age (updates):&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='aAgeLabel'></label></div></td>
                     </tr>
                     <tr>
-                      <td># Ancestor(s) at start:&nbsp;</td>
-                      <td><label id='parentNumLabel'></label>&nbsp;&nbsp;&nbsp;</td>
+                      <td><div class='noWrap'># Ancestor(s) at start:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='parentNumLabel'></label>&nbsp;&nbsp;&nbsp;</div></td>
                     </tr>
                     <tr>
-                      <td># of viable organisms:&nbsp;</td>
-                      <td><label id='viableNumLabel'></label>&nbsp;&nbsp;&nbsp;</td>
+                      <td><div class='noWrap'># of viable organisms:&nbsp;</div></td>
+                      <td><div class='noWrap'><label id='viableNumLabel'></label>&nbsp;&nbsp;&nbsp;</div></td>
                     </tr>
                     </tbody>
                   </table>
@@ -360,44 +360,44 @@
                   <table id='popsBotTable' class='popsBotTable'>
                     <tbody>
                     <tr>
-                      <td><label id='psFn'>Function&nbsp;</label></td>
-                      <td><label id='psNumOrg'># of Organisms</label></td>
+                      <td><div class='noWrap'><label id='psFn'>Function&nbsp;</label></div></td>
+                      <td><div class='noWrap'><label id='psNumOrg'># of Organisms</label></div></td>
                     </tr>
                     <tr>
                       <td style="width:50px"><button id='notButton' class='bitButtonOff'>not</button>
-                      </td><td><label id='notPop'></label></td>
+                      </div></td><td><div class='noWrap'><label id='notPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='nanButton' class='bitButtonOff'>nan</button></td>
-                      <td><label id='nanPop'></label></td>
+                      <td><div class='noWrap'><button id='nanButton' class='bitButtonOff'>nan</button></div></td>
+                      <td><div class='noWrap'><label id='nanPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='andButton' class='bitButtonOff'>and</button></td>
-                      <td><label id='andPop'></label></td>
+                      <td><div class='noWrap'><button id='andButton' class='bitButtonOff'>and</button></div></td>
+                      <td><div class='noWrap'><label id='andPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='ornButton' class='bitButtonOff'>orn</button></td>
-                      <td><label id='ornPop'></label></td>
+                      <td><div class='noWrap'><button id='ornButton' class='bitButtonOff'>orn</button></div></td>
+                      <td><div class='noWrap'><label id='ornPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='oroButton' class='bitButtonOff'>oro</button></td>
-                      <td><label id='oroPop'></label></td>
+                      <td><div class='noWrap'><button id='oroButton' class='bitButtonOff'>oro</button></div></td>
+                      <td><div class='noWrap'><label id='oroPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='antButton' class='bitButtonOff'>ant</button></td>
-                      <td><label id='antPop'></label></td>
+                      <td><div class='noWrap'><button id='antButton' class='bitButtonOff'>ant</button></div></td>
+                      <td><div class='noWrap'><label id='antPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='norButton' class='bitButtonOff'>nor</button></td>
-                      <td><label id='norPop'></label></td>
+                      <td><div class='noWrap'><button id='norButton' class='bitButtonOff'>nor</button></div></td>
+                      <td><div class='noWrap'><label id='norPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='xorButton' class='bitButtonOff'>xor</button></td>
-                      <td><label id='xorPop'></label></td>
+                      <td><div class='noWrap'><button id='xorButton' class='bitButtonOff'>xor</button></div></td>
+                      <td><div class='noWrap'><label id='xorPop'></label></div></td>
                     </tr>
                     <tr>
-                      <td><button id='equButton' class='bitButtonOff'>equ</button></td>
-                      <td><label id='equPop'></label></td>
+                      <td><div class='noWrap'><button id='equButton' class='bitButtonOff'>equ</button></div></td>
+                      <td><div class='noWrap'><label id='equPop'></label></div></td>
                     </tr>
                     </tbody>
                   </table>

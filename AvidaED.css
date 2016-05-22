@@ -86,6 +86,10 @@ div.odd {
   clear: left;
 }
 
+.noWrap {
+  overflow: auto;
+}
+
 #muteSlide {
   float: left;
   background-color: yellow;
@@ -231,49 +235,44 @@ button, input,
   margin: 1px
 }
 
+
 table.topSotTable {
+  white-space: nowrap;
   border-collapse: collapse;
   margin: auto;
   border: 0;
   padding: 0;
   table-layout: auto;
   height: auto;
-  background-color:#DDD;
 }
 .topSotTable th, .top td {  padding: 0px;  }
 .topTable tr *:nth-child(1) {
   text-align: right;
   width: 200px;
 }
-.topSotTable tr:nth-child(even) {background: #CCC}
+.topSotTable tr:nth-child(odd) {background: #D6D6D6}
 
 table.topPopTable {
   border-collapse: collapse;
-  margin: auto;
   border: 0;
   padding: 0;
-  table-layout: auto;
-  height: auto;
+  white-space: nowrap;
 }
-.topPopTable th, .top td {  padding: 0px;  }
 .topPopTable tr *:nth-child(1) {
   text-align: right;
-  width: 140px;
 }
 .topPopTable tr *:nth-child(2) {
   text-align: right;
   font-family: monospace;
   font-size: larger;
-  width: 50px;
+  width: 20px;
 }
-.topPopTable tr:nth-child(odd) {background: #CdCdCd}
+.topPopTable tr:nth-child(odd) {background: #D4D4D4}
 
 table.botSotTable {
-  margin: auto;
   border: 0;
   padding: 0;
   border-collapse: collapse;
-  table-layout: auto;
 /*  width: 100%;  */
   background-color:#FFF;
 }
