@@ -236,13 +236,13 @@
                      preload='false' id='sotPane'
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
-                  <div style='text-align:center; font-weight: bold'><label id='SotLabel'>Selected Organism Type</label></div>
+                  <div style='text-align:left; font-weight: bold'><label id='SotLabel'>Selected Organism Type</label></div>
                   <div id='sotDivTable' style='background-color:#DDD;'>
                   <table id='sotTopTable' class='topSotTable'>
                     <tbody>
                     <tr>
                       <td><div class='sotL'>Name:&nbsp;<canvas id='sotColor' width='10' height='10'></canvas></div></td>
-                      <td colspan="2"><div class='noWrapR'><label id='nameLabel'></label></div></td>
+                      <td colspan='2'><div class='noWrapR'><label id='nameLabel'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='sotL'>Fitness:&nbsp;</div></td>
@@ -260,73 +260,84 @@
                       <td></td>
                     </tr>
                     <tr>
-                      <td><div id='tmp' class='sotL'>Age (update):&nbsp;</div></td>
+                      <td><div class='sotL'>Age (update):&nbsp;</div></td>
                       <td><div class='noWrapRn'><label id='ageLabel'></label>&nbsp;&nbsp;&nbsp;</div></td>
                       <td></td>
                     </tr>
                     <tr>
                       <td><div class='sotL'>Ancestor:&nbsp;</div></td>
-                      <td colspan="2"><div class='noWrapR'><label id='ancestorLabel'></label>
+                      <td colspan='2'><div class='noWrapR'><label id='ancestorLabel'></label>
                       </div></td>
                     </tr>
                     <tr>
                       <td><div class='sotL'>Viable:&nbsp;</div></td>
-                      <td colspan="2"><div class='noWrapR'><label id='viableLabel'></label></div></td>
+                      <td colspan='2'><div class='noWrapR'><label id='viableLabel'></label></div></td>
                     </tr>
                     </tbody>
                   </table>
                   </div>
+                  <div>
                   <table id='sotBotTable' class='botSotTable'>
                     <tbody>
                     <tr>
                       <th><div class='noWrapF'><label id='sotFn'>Function&nbsp;&nbsp;</label></div></th>
-                      <th><div class='noWrapN'><label id='sotTimes'>Times Performed</label></div></th>
+                      <th colspan='2'><div class='noWrapN'><label id='sotTimes'>Times Performed</label></div></th>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='notLabel'>not</label></div></td>
                       <td><div class='noWrap2'><label id='notTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='nanLabel'>nan</label></div></td>
                       <td><div class='noWrap2'><label id='nanTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='andLabel'>and</label></div></td>
                       <td><div class='noWrap2'><label id='andTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='ornLabel'>orn</label></div></td>
                       <td><div class='noWrap2'><label id='ornTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='oroLabel'>oro</label></div></td>
                       <td><div class='noWrap2'><label id='oroTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='antLabel'>ant</label></div></td>
                       <td><div class='noWrap2'><label id='antTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='norLabel'>nor</label></div></td>
                       <td><div class='noWrap2'><label id='norTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='xorLabel'>xor</label></div></td>
                       <td><div class='noWrap2'><label id='xorTime'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='equLabel'>equ</label></div></td>
                       <td><div class='noWrap2'><label id='equTime'></label></div></td>
+                      <td></td>
                     </tr>
                     </tbody>
                   </table>
                   <label id='dnaLabel'></label>
                 </div>
+                </div>
                 <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false'
                      preload='false'
                      refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'
                      id='popStatistics'>
-                  <div style='text-align:center; font-weight: bold'><label id='popStat'>Population Statistics</label></div>
+                  <div style='text-align:left; font-weight: bold'><label id='popStat'>Population Statistics</label></div>
                   <div style='background-color: #DDD'>
                   <table id='popsTopTable' class='topPopTable'>
                     <tbody>
@@ -361,23 +372,28 @@
                     </tbody>
                   </table>
                   </div>
+                  <div>
                   <table id='popsBotTable' class='popsBotTable'>
                     <tbody>
                     <tr>
                       <th><div class='noWrapF'><label id='psFn'>Function&nbsp;&nbsp;</label></div></th>
-                      <th><div class='noWrapN'><label id='psNumOrg'># of Organisms</label></div></th>
+                      <th colspan='2'><div class='noWrapN'><label id='psNumOrg'># of Organisms</label></div></th>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='notButton' class='bitButtonOff'>not</button></div></td>
                       <td><div class='noWrap2'><label id='notPop'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='nanButton' class='bitButtonOff'>nan</button></div></td>
                       <td><div class='noWrap2'><label id='nanPop'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='andButton' class='bitButtonOff'>and</button></div></td>
                       <td><div class='noWrap2'><label id='andPop'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='ornButton' class='bitButtonOff'>orn</button></div></td>
@@ -386,25 +402,31 @@
                     <tr>
                       <td><div class='noWrap1'><button id='oroButton' class='bitButtonOff'>oro</button></div></td>
                       <td><div class='noWrap2'><label id='oroPop'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='antButton' class='bitButtonOff'>ant</button></div></td>
                       <td><div class='noWrap2'><label id='antPop'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='norButton' class='bitButtonOff'>nor</button></div></td>
                       <td><div class='noWrap2'><label id='norPop'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='xorButton' class='bitButtonOff'>xor</button></div></td>
                       <td><div class='noWrap2'><label id='xorPop'></label></div></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='equButton' class='bitButtonOff'>equ</button></div></td>
                       <td><div class='noWrap2'><label id='equPop'></label></div></td>
+                      <td></td>
                     </tr>
                     </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
             </div>
