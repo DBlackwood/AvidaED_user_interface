@@ -89,24 +89,42 @@ div.odd {
 .noWrapF {
   text-align:center;
   font-weight: bold;
+  max-height: 15px;
 }
 
 .noWrapN {
   text-align:left;
   font-weight: bold;
+  max-height: 15px;
+}
+
+.sotL {
+  text-align:left;
+  max-height: 15px;
+  max-width: 99%;
+  overflow: hidden;
 }
 
 .noWrapRn {
   text-align:right;
+  max-height: 15px;
+  max-width: 99%;
+  overflow: hidden;
+  font-family: monospace;
+  font-size: 1.2em;
+
 }
 
 .noWrap1 {
   text-align:center;
+  max-height: 15px;
 }
 
 .noWrap2 {
   text-align:left;
+  max-height: 15px;
 }
+
 #muteSlide {
   float: left;
   background-color: yellow;

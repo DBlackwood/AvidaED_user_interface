@@ -624,6 +624,7 @@ require([
     //console.log('popBot ====', document.getElementById('popBot').style.width); //need abotu 430 px for button arrangement to look good.
     //console.log('sot', document.getElementById('sotTopTable').style);
     //console.log('pop', document.getElementById('popsTopTable').style);
+    console.log('nowrap',document.getElementById('tmp').clientWidth);
   });
 
   //Adjust Statistics area width based on gridholder size and shape. gridholder should be roughly square
