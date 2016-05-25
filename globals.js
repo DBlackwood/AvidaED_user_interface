@@ -335,28 +335,22 @@ av.ui.numTxt = '';
 av.msg.avidaReady = false;
 
 //----------------------------------------------- finding the browser and opperating system ----------------------------
-//only partially works due to sloppyness of window.navigator
-av.brs = {};  //browser and operating system data
-/*
-av.brs.isChromium = window.chrome;
-av.brs.vendorName = window.navigator.vendor;
-av.brs.isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
-av.brs.isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
-if (av.brs.isChromium !== null && av.brs.isChromium !== undefined && av.brs.vendorName === "Google Inc." && av.brs.isOpera === false && av.brs.isIEedge === false) {
-  av.brs.chrome = true;
-} else {
-  av.brs.chrome = false; // not Google chrome
-}
-*/
 //http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-if ((!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0) av.brs.name='Opera 8.0+';
-else if (typeof InstallTrigger !== 'undefined') av.brs.name = 'Firefox 1.0+';
-else if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) av.brs.name = 'Safari 3+';
-else if (/*@cc_on!@*/false || !!document.documentMode) av.brs.name = 'Internet Explorer 6-11';
-else if (!!window.StyleMedia) av.brs.name = 'Edge 20+';
-else if (!!window.chrome && !!window.chrome.webstore) av.brs.name = 'Chrome 1+';
-else if ((isChrome || isOpera) && !!window.CSS) av.brs.name = 'Blink';
-else av.brs.name = 'unknown';
+av.brs = {};  //browser and operating system data
+av.brs.isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+// Firefox 1.0+
+av.brs.isFirefox = typeof InstallTrigger !== 'undefined';
+// At least Safari 3+: "[object HTMLElementConstructor]"
+av.brs.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+// Internet Explorer 6-11
+av.brs.isIE = /*@cc_on!@*/false || !!document.documentMode;
+// Edge 20+
+av.brs.isEdge = !av.brs.isIE && !!window.StyleMedia;
+// Chrome 1+
+av.brs.isChrome = !!window.chrome && !!window.chrome.webstore;
+// Blink engine detection
+av.brs.isBlink = (av.brs.isChrome || av.brs.isOpera) && !!window.CSS;
+
 
 console.log('window.navigator',window.navigator);
 console.log('brs', av.brs);

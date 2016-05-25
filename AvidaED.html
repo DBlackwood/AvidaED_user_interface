@@ -76,9 +76,10 @@
         <span data-dojo-type='dijit/PopupMenuBarItem' label='File' iconClass='dijitNoIcon' id='mnFile'>
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnFlSaveWorkspace' label='Save Current Workspace'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnFlSaveWorkspaceAs' label='Save Workspace Safari'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFlSaveAs' label='Save Workspace As'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlOpenDefaultWS' label='Open Default Workspace'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlOpenWS' label='Open Workspace'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFlOpenB64' label='Open a b64 Workspace'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlFzItem' label='Import Freezer Item'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlExportData' label='Export Data'></span>
           </span>
@@ -114,9 +115,10 @@
               <span data-dojo-type='dijit/MenuItem' id='mnGnuplot2' label='Gnuplot2'></span>
             </div>
             <div data-dojo-type='dijit/MenuSeparator'></div>
+            <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>
           </span>
         </span>
-        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: visible'> <!--visible/hidden-->
+        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: hidden'> <!--visible/hidden-->
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowError' label='Throw Error'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowData' label='Send Data to console'></span>
@@ -124,6 +126,7 @@
             <span data-dojo-type='dijit/MenuItem' id='mnDbDiagnostic' label='Open Diagnostic Console'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbRestartAvida' label='Restart Avida WebWorker'></span>
             <span data-dojo-type='dijit/MenuItem' id='fileDownloadButton' label='test fileDownload'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnDbSaveTxt' label='save Txt'></span>
           </span>
         </span>
         |&nbsp;&nbsp;&nbsp;
@@ -236,8 +239,8 @@
                      preload='false' id='sotPane'
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:155px;'>  <!-- was 152px -->
-                  <div style='text-align:left; font-weight: bold'><label id='SotLabel'>Selected Organism Type</label></div>
-                  <div id='sotDivTable' style='background-color:#DDD;'>
+                  <div class='popStatsTitle'><label id='SotLabel'>Selected Organism Type</label></div>
+                  <div id='sotDivTable' class='popStatsTableSot'>
                   <table id='sotTopTable' class='topSotTable'>
                     <tbody>
                     <tr>
@@ -281,7 +284,8 @@
                     <tbody>
                     <tr>
                       <th><div class='noWrapF'><label id='sotFn'>Function&nbsp;&nbsp;</label></div></th>
-                      <th colspan='2'><div class='noWrapN'><label id='sotTimes'>Times Performed</label></div></th>
+                      <th colspan='2' style='min-width: 110px; background-color: #fff'>
+                        <div class='noWrapN'><label id='sotTimes'>Times Performed</label></div></th>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='notLabel'>not</label></div></td>
@@ -337,8 +341,8 @@
                      preload='false'
                      refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'
                      id='popStatistics'>
-                  <div style='text-align:left; font-weight: bold'><label id='popStat'>Population Statistics</label></div>
-                  <div style='background-color: #DDD'>
+                  <div class='popStatsTitle'><label id='popStat'>Population Statistics</label></div>
+                  <div class='popStatsTablePop'>
                   <table id='popsTopTable' class='topPopTable'>
                     <tbody>
                     <tr>
@@ -377,7 +381,8 @@
                     <tbody>
                     <tr>
                       <th><div class='noWrapF'><label id='psFn'>Function&nbsp;&nbsp;</label></div></th>
-                      <th colspan='2'><div class='noWrapN'><label id='psNumOrg'># of Organisms</label></div></th>
+                      <th colspan='2' style='min-width: 100px; background-color: #fff'>
+                        <div class='noWrapN'><label id='psNumOrg'># of Organisms</label></div></th>
                       <td></td>
                     </tr>
                     <tr>
@@ -873,23 +878,6 @@
         </div>
       </div>
     </div>
-    <!--
-    <div data-dojo-type='dijit/layout/ContentPane' title='Test' id='testBlock' extractContent='false'
-         preventCache='false' preload='false' refreshOnShow='false' closable='false'
-         style='height: 97%; visibility:hidden;'>
-      <div data-dojo-type='dijit/layout/BorderContainer' design='sidebar' persist='false' gutters='true'
-           style='min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;'>
-        <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
-             refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' style='width: 50px;'>
-          <!-- content like text and buttons -- >
-        </div>
-        <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
-             refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false' id='demoHolder'>
-          <!-- more content like a grid -- >
-        </div>
-      </div>
-    </div>
-    -->
   </div>
 </div>
 

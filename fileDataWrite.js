@@ -286,8 +286,9 @@ av.fwt.writeCSV = function() {
   av.fio.fzSaveCsvfn();
 }
 
+
 /***********************************************************************************************************************
-                                  Notes about saving in Safari
+                                  Notes about problems saving in Safari
 /***********************************************************************************************************************
  Notes on saving files in Safari.
  http://jsfiddle.net/B7nWs/  works on Safari in jsfiddle
@@ -321,7 +322,7 @@ http://stackoverflow.com/questions/23667074/javascriptwrite-a-string-with-multip
 https://adilapapaya.wordpress.com/2013/11/15/exporting-data-from-a-web-browser-to-a-csv-file-using-javascript/
 http://jsfiddle.net/nkm2b/2/
 $(fileDownloadButton).click(function () {
- //works, but opens a new tab which is blank and gets left open; file named 'unknown'
+ //works in Safari, but opens a new tab which is blank and gets left open; file named 'unknown'
   var a = document.createElement('a');
   a.href     = 'data:attachment/csv,' + av.fwt.csvStrg;
   a.target   = '_blank';
@@ -329,6 +330,26 @@ $(fileDownloadButton).click(function () {
   document.body.appendChild(a);
   a.click();
 });
+
+  //Did not work in Safari works in Firefox
+  var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+      var json = JSON.stringify(data),
+        blob = new Blob([json], {type: "octet/stream"}),
+        url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    };
+  }());
+
+  var data = { x: 42, s: "hello, world", d: new Date() },
+    fileName = "DianeFile.json";  //av.fio.userFname
+  saveData(data, fileName);
 
 //Does not work in safari
 https://codepen.io/davidelrizzo/pen/cxsGb
@@ -372,10 +393,7 @@ http://thiscouldbebetter.neocities.org/texteditor.html
 //does not work in Safari
   var blob = new Blob([av.fwt.csvStrg], {type: "text/plain;charset=utf-8"});
   saveAs(blob, av.fio.csvFileName);};
-
-
-
-
+ 
  // http://stackoverflow.com/questions/30694453/blob-createobjecturl-download-not-working-in-firefox-but-works-when-debugging
  //Should work but I can get the right type for data
  function downloadFile(filename, data) {
@@ -403,11 +421,78 @@ http://thiscouldbebetter.neocities.org/texteditor.html
  document.body.appendChild(a);
  a.click();
 
+ // saves in safari - opens blank tab an leaves it open
+ av.fwt.tryDown = function() {
+    var ab = document.createElement('a');
+    ab.href     = 'data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log);
+    ab.target   = '_blank';
+    ab.download = 'testfile.txt';
+    document.body.appendChild(ab);
+    ab.click();
+    setTimeout(function(){
+      document.body.removeChild(ab);
+      window.URL.revokeObjectURL(ab.href);
+    }, 100);
+  }
+
+ //window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log)); //also works, but creates odd file names.
+
+
  Places that say you cannot save non-text files from javascript in Safari
  https://github.com/wenzhixin/bootstrap-table/issues/2187
  http://www.html5rocks.com/en/tutorials/file/filesystem/
 
- ---------------------- look at
+ ---------------------- look at -- could not get to load in Safari
  http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
 
 ***********************************************************************************************************************/
+// http://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
+/*
+ function download(filename, text) {
+ var pom = document.createElement('a');
+ pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+ pom.setAttribute('download', filename);
+
+ if (document.createEvent) {
+ var event = document.createEvent('av.mouseEvents');
+ event.initEvent('click', true, true);
+ pom.dispatchEvent(event);
+ }
+ else {
+ pom.click();
+ }
+ }
+ */
+
+/*
+ //console.log("declaring window.downloadFile()");
+ // http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
+ window.downloadFile = function(sUrl) {
+
+ //If in Chrome or Safari - download via virtual link click
+ if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+ //Creating new link node.
+ var link = document.createElement('a');
+ link.href = sUrl;
+
+ if (link.download !== undefined){
+ //Set HTML5 download attribute. This will prevent file from opening if supported.
+ var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
+ link.download = fileName;
+ }
+
+ //Dispatching click event.
+ if (document.createEvent) {
+ var e = document.createEvent('av.mouseEvents');
+ e.initEvent('click' ,true ,true);
+ link.dispatchEvent(e);
+ return true;
+ }
+ }
+
+ // Force file download (whether supported by server).
+ var query = '?download';
+
+ window.open(sUrl + query);
+ }
+*/

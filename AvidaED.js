@@ -67,6 +67,7 @@ require([
   'jquery',
   'jquery-ui',
   //'lib/jquery.fileDownload.js',
+  //'lib/Blob',
   'lib/jszip.min.js',
   'lib/FileSaver.js',
   'messaging.js',
@@ -88,7 +89,7 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan,
-             ready, $, jqueryui, //fileDownload,
+             ready, $, jqueryui,  //fileDownload,  //Blob.js,
              JSZip, FileSaver) {
   'use strict';
   if (typeof $ != 'undefined') {
@@ -241,6 +242,7 @@ require([
     'use strict';
     av.debug.log += '\n -Button: mnFlOpenDefaultWS';
     av.fio.useDefault = true;
+    av.fio.isB54 = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     else {
       av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
@@ -271,6 +273,17 @@ require([
     'use strict';
     av.debug.log += '\n -Button: mnFlOpenWS';
     av.fio.useDefault = false;
+    av.fio.isB54 = false;
+    if ('no' === av.fzr.saveState) sWSfDialog.show();
+    //else document.getElementById('inputFile').click();
+    else document.getElementById('putWS').click();
+  });
+
+  dijit.byId('mnFlOpenB64').on('Click', function () {
+    'use strict';
+    av.debug.log += '\n -Button: mnFlOpenB64';
+    av.fio.useDefault = false;
+    av.fio.isB54 = true;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     //else document.getElementById('inputFile').click();
     else document.getElementById('putWS').click();
@@ -298,14 +311,13 @@ require([
     console.log('----------------------------------------------------------filesaver supported?', e);
   }
 
-  // Save current workspace with a new name(mnFzSaveWorkspaceAs)
-  document.getElementById('mnFlSaveWorkspaceAs').onclick = function () {
-    av.debug.log += '\n -Button: mnFlSaveWorkspaceAs';
+  // Save current workspace with a new name
+  document.getElementById('mnFlSaveAs').onclick = function () {
+    av.debug.log += '\n -Button: mnFlSaveSafari';
     var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
     av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
-
-    av.fio.fzSaveWorkspaceAsFn();
+    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
   };
 
   //Export csv data from current run.
@@ -316,6 +328,22 @@ require([
   });
 
   //------------- Testing only need to delete later.--------------------
+
+  document.getElementById('mnHpDebug').onclick = function () {
+    if ('visible' === document.getElementById('mnDebug').style.visibility) {
+      document.getElementById('mnDebug').style.visibility = 'hidden';
+    } else {
+      document.getElementById('mnDebug').style.visibility = 'visible';
+    }
+  };
+
+  //works saving text as an example -
+  document.getElementById('mnDbSaveTxt').onclick = function () {
+    av.fio.userFname = 'junk.txt';
+    //av.fio.saveTxt();
+    av.fio.saveJson();
+  };
+
   $(fileDownloadButton).click(function () {
     //var blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});
     //saveAs(blob, 'hello world.txt');
@@ -337,13 +365,11 @@ require([
     //var data = { x: 42, s: 'hello, world', d: new Date() };
     //var json = JSON.stringify(data);
     //var blob = new Blob([json], {type: 'octet/stream'});
-      var tmpUrl = window.URL.createObjectURL(blob);
-      //var tmpUrl = window.URL.createObjectURL('some text');
+    var tmpUrl = window.URL.createObjectURL(blob);
       console.log('tmpURL=', tmpUrl);
-      //av.fio.writeSafari(tmpUrl);
-    //downloadFile('test.txt', blob);
-    av.fwt.tryDown(blob);
-      window.URL.revokeObjectURL(tmpUrl);
+      av.fio.writeSafari(tmpUrl);
+      //window.URL.revokeObjectURL(tmpUrl);
+    //av.fwt.tryDown(blob);
   });
 
   av.fwt.tryDown = function(blob) {
@@ -600,6 +626,7 @@ require([
       av.ind.updateOrgTrace();
     }
   };
+  console.log('ht, wd', document.getElementById('mainBC').clientHeight,document.getElementById('splash').clientWidth);
 
   ready(function () {
     aspect.after(registry.byId('gridHolder'), 'resize', function () {
@@ -618,7 +645,7 @@ require([
     if (registry.byId('popRight').domNode.style.width != av.ui.popRightOldwidth) {
       av.ui.popRightOldwidth = registry.byId('popRight').domNode.style.width;
       var str = registry.byId('popRight').domNode.style.width;
-      registry.byId('sotPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.49) + 'px'
+      registry.byId('sotPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.51) + 'px'
       registry.byId('mainBC').layout();
     }
     //console.log('popBot ====', document.getElementById('popBot').style.width); //need abotu 430 px for button arrangement to look good.
@@ -2017,8 +2044,8 @@ require([
   //av.grd.drawGridSetupFn(); //Draw initial background
 
   //Safari 9 will not allow saving workspaces or freezer items.
-  if ('Safari 3+' === av.brs.name) {
-    userMsgLabel.textContent = 'Safari 9 does not allow saving workspace or freezer items. Please use Firefox or Chrome';
+  if (av.brs.isSafari) {
+    userMsgLabel.textContent = 'Safari 9 does not allow normal saving workspace or freezer items. Please use Firefox or Chrome';
   }
 
   // **************************************************************************************************************** */

@@ -464,6 +464,8 @@ function download(filename, text) {
   }
 }
 */
+
+/*
 //console.log("declaring window.downloadFile()");
 // http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
 window.downloadFile = function(sUrl) {

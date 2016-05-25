@@ -201,34 +201,32 @@ av.fio.fixFname = function() {
   }
 }
 
-av.fio.fzSaveWorkspaceAsFn = function () {
+av.fio.saveAs = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
   if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
   var end = av.fio.userFname.substring(av.fio.userFname.length-4);
   if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
   console.log('end', end, '; userFname', av.fio.userFname);
 
-  var saveData = (function () {
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-    return function (data, fileName) {
-      var json = JSON.stringify(data),
-        blob = new Blob([json], {type: "octet/stream"}),
-        url = window.URL.createObjectURL(blob);
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    };
-  }());
-
-  var data = { x: 42, s: "hello, world", d: new Date() },
-    fileName = "DianeFile.json";  //av.fio.userFname
-
-  saveData(data, fileName);
+  //Get zip file
+  
+  //Save zip file
 
   av.fzr.saveUpdateState('maybe');
+}
+
+av.fio.SaveUsingDomElement = function(aStr, fName, typeStr) {
+  "use strict";
+  var a = document.createElement('a');
+  a.href     = typeStr + encodeURI(aStr);
+  a.target   = '_blank';
+  a.download = fName;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){
+    document.body.removeChild(a);   //does not remove blank tab
+    window.URL.revokeObjectURL(a.href);
+  }, 100);
 }
 
 av.fio.fzSaveCsvfn = function () {
@@ -237,19 +235,34 @@ av.fio.fzSaveCsvfn = function () {
   var end = av.fio.csvFileName.substring(av.fio.csvFileName.length - 4);
   if ('.csv' != end) av.fio.userFname = av.fio.csvFileName + '.csv';
 
-  //window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log)); //also works, but creates odd file names.
+  var typeStrng = 'data:attachment/csv;charset=utf-8,';
+  console.log('brs', av.brs);
+  if (av.brs.isSafari) alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .csv. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
+  av.fio.SaveUsingDomElement(av.fwt.csvStrg, av.fio.csvFileName, typeStrng);
+}
 
-  var a = document.createElement('a');
-  a.href     = 'data:attachment/csv;charset=utf-8,' + encodeURI(av.fwt.csvStrg);
-  a.target   = '_blank';
-  a.download = av.fio.csvFileName;
-  document.body.appendChild(a);
-  if ('Safari 3+' === av.brs.name) alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .csv. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
-  a.click();
+av.fio.SaveInSafari = function (content, Fname) {
+  'use strict';
+  console.log('content', content.size, content);
+
+  //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
+  var base64data;
+  var reader = new window.FileReader();
+  reader.onloadend = function() {
+    base64data = btoa(reader.result);
+    //console.log(base64data );
+  };
+  //reader.readAsDataURL(content);
+  var source = reader.readAsBinaryString(content);
+
   setTimeout(function(){
-    document.body.removeChild(a);   //does not remove blank tab
-    window.URL.revokeObjectURL(a.href);
+  var theStr = base64data;
+  //console.log('theStr', theStr);
+  var typeStrng = 'data:attachment/b64;charset=utf-8,';
+  //var typeStrng = 'data:attachment/csv;charset=utf-8,';
+  av.fio.SaveUsingDomElement(theStr, av.fio.csvFileName + '.b64', typeStrng);
   }, 100);
+
 }
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
@@ -257,45 +270,70 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
   var end = av.fio.userFname.substring(av.fio.userFname.length-4);
   if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
+  var folderName = wsb(av.fio.userFname, '.zip');
   //console.log('end', end, '; userFname', av.fio.userFname);
+
+  //make zipfile as a blob
   var WSzip = new av.fio.JSZip();
   //console.log('number of files', av.utl.objectLength(av.fzr.file) );
   var numFiles = 0;
-  for (var fname in av.fzr.file) {
-    WSzip.file('av.avidaedworkspace/'+fname, av.fzr.file[fname]);
-    numFiles++;
+  if (av.fzr.file) {
+    for (var fname in av.fzr.file) {
+      WSzip.file(folderName + '.avidaedworkspace/' + fname, av.fzr.file[fname]);
+      numFiles++;
+    }
   }
   var content = WSzip.generate({type:"blob"});
-  var fsaver = saveAs(content, av.fio.userFname);
+  console.log('content', content.size, content);
+
+  console.log('brs', av.brs);
+  //if (av.brs.isSafari) {
+  if (true) {
+    alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .b64. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
+    av.fio.SaveInSafari(content, av.fio.userFname);
+  }
+  else var fsaver = saveAs(content, av.fio.userFname);
   av.fzr.saveUpdateState('maybe');
 };
 
 //    wsSavedMsg.textcontent = 'Workspace: default  ';
-av.fzr.saveUpdateState = function (state) {
+av.fzr.saveUpdateState = function (newSaveState) {
   'use strict';
-  av.fzr.saveState = state;
-  if ('yes' === av.fzr.saveState) {
-    wsSavedMsg.textContent = 'Workspace: is saved ';
-    document.getElementById("wsSavedMsg").style.color = 'green';
-  }
-  else if ('maybe' === av.fzr.saveState) {
-    wsSavedMsg.textContent = 'Workspace: maybe saved';
-    document.getElementById("wsSavedMsg").style.color = 'orangered';
-  }
-  else if ('no' === av.fzr.saveState) {
-    wsSavedMsg.textContent = 'Workspace: not saved';
-    document.getElementById("wsSavedMsg").style.color = 'red';
-  }
-  else if ('default' === av.fzr.saveState) {
-    wsSavedMsg.textContent = 'Workspace: default  ';
-    document.getElementById("wsSavedMsg").style.color = 'blue';
-  }
+  //console.log('oldState', av.fzr.saveState, '; newState', newSaveState);
+  if ('maybe' === newSaveState) {
+    //console.log('newSaveState', newSaveState)
+    if ('no' === av.fzr.saveState  ) {
+      //console.log('oldSaveState', av.fzr.saveState)
+      av.fzr.saveState = 'maybe';
+    }
+  } 
   else {
-    wsSavedMsg.textContent = 'Workspace: confused ';
-    document.getElementById("wsSavedMsg").style.color = 'deeppink';
+    //console.log('newSaveState', newSaveState, ' is not maybe');
+    av.fzr.saveState = newSaveState;
+  }
+  switch (av.fzr.saveState) {
+    case 'yes':
+      wsSavedMsg.textContent = 'Workspace: is saved ';
+      document.getElementById("wsSavedMsg").style.color = 'green';
+      break;
+    case 'maybe':
+      wsSavedMsg.textContent = 'Workspace: maybe saved';
+      document.getElementById("wsSavedMsg").style.color = 'orangered';
+      break;
+    case 'no':
+      wsSavedMsg.textContent = 'Workspace: not saved';
+      document.getElementById("wsSavedMsg").style.color = 'red';
+      break;
+    case 'default':
+      wsSavedMsg.textContent = 'Workspace: default  ';
+      document.getElementById("wsSavedMsg").style.color = 'blue';
+      break;
+    default:
+      wsSavedMsg.textContent = 'Workspace: confused ';
+      document.getElementById("wsSavedMsg").style.color = 'deeppink';
+      break;
   }
 }
-
 
 /* PouchDB websites
  http://pouchdb.com/api.html#database_information
@@ -367,3 +405,21 @@ av.fzr.saveUpdateState = function (state) {
 // usefule Dexie.db websites
 //https://github.com/dfahlander/Dexie.js/wiki/Best%20Practices
 
+/***********************************************************************************************************************
+ * Trying to get a string from binary so we can save that in Safari .
+ * So far it does not work in Safari, but looked like the idea worked in Firefox where we don't need it.
+ /***********************************************************************************************************************
+
+ //var theStr = btoa(content);  //does not work in either Firefox or Safari
+
+ http://stackoverflow.com/questions/18650168/convert-blob-to-base64
+ // Seems to work in Firefox, but not safari
+ var reader = new window.FileReader();
+ reader.readAsDataURL(content);
+ reader.onloadend = function() {
+    var base64data = reader.result;
+    console.log(base64data );
+  };
+ var source = reader.readAsBinaryString(content);
+
+ */

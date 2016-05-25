@@ -86,6 +86,24 @@ div.odd {
   clear: left;
 }
 
+div.popStatsTitle {
+  overflow: visible;
+  background-color:#ffffff;
+  min-width: 170px;
+  text-align:left;
+  font-weight: bold;
+}
+
+div.popStatsTableSot {
+  min-width: 169px;
+  background-color: #DDD;
+}
+
+div.popStatsTablePop {
+  min-width: 168px;
+  background-color: #DDD;
+}
+
 .noWrapF {
   text-align:center;
   font-weight: bold;
@@ -96,6 +114,8 @@ div.odd {
   text-align:left;
   font-weight: bold;
   max-height: 15px;
+  max-width: 99%;
+  overflow: hidden;
 }
 
 .sotL {
@@ -286,7 +306,7 @@ table.topSotTable {
   width: 40px;
 }
 
-.topSotTable tr:nth-child(odd) {background: #D9D9D9}
+.topSotTable tr:nth-child(odd) {background: #D7D7D7}
 
 table.topPopTable {
   border-collapse: collapse;
@@ -299,12 +319,12 @@ table.topPopTable {
   font-size: 1em;
 }
 .topPopTable tr *:nth-child(2) {
-  text-align: right;
+  text-align: left;
   font-family: monospace;
   font-size: 1.2em;
   width: 40px;
 }
-.topPopTable tr:nth-child(odd) {background: #D8D8D8}
+.topPopTable tr:nth-child(odd) {background: #D7D7D7}
 
 table.botSotTable {
   border: 0;
@@ -312,7 +332,7 @@ table.botSotTable {
   border-collapse: collapse;
 }
 
-.botSotTable tr:nth-child(even) {background: #EAEAEA}
+.botSotTable tr:nth-child(even) {background: #FAFAFA}
 
 .botSotTable th { font-weight: bold}
 .botSotTable td {  line-height: 15px;  }   /* added in javascript ??? */
@@ -332,8 +352,10 @@ table.popsBotTable {
   /*  width: 100%;  */
 }
 
-.popsBotTable tr:nth-child(even) {background: #EAEAEA}
-.popsBotTable th { font-weight: bold}
+.popsBotTable tr:nth-child(even) {background: #FAFAFA}
+.popsBotTable th {
+  font-weight: bold;
+}
 .popsBotTable td {  line-height: 15px;  }   /* added in javascript */
 
 .popsBotTable tr *:nth-child(1) {
