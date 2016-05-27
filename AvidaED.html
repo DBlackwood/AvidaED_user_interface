@@ -70,7 +70,7 @@
   <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
        refreshOnShow='false' region='top' splitter='false' maxSize='Infinity' doLayout='false' style='height:26px;'>
     <input id='putWS' type='file' style = 'display:none' onchange='av.fio.userPickZipRead()' />
-    <input id='import' type='file' style = 'display:none' onchange='av.fio.importZipRead()' />
+    <input id=importFzrItem type='file' style = 'display:none' onchange='av.fio.importZipRead()' />
     <input type='hidden' value='mymail@gmail.com' id='mailto' />
       <span data-dojo-type='dijit/MenuBar' tabIndex='0'>
         <span data-dojo-type='dijit/PopupMenuBarItem' label='File' iconClass='dijitNoIcon' id='mnFile'>
@@ -290,47 +290,47 @@
                     <tr>
                       <td><div class='noWrap1'><label id='notLabel'>not</label></div></td>
                       <td><div class='noWrap2'><label id='notTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='nanLabel'>nan</label></div></td>
                       <td><div class='noWrap2'><label id='nanTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='andLabel'>and</label></div></td>
                       <td><div class='noWrap2'><label id='andTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='ornLabel'>orn</label></div></td>
                       <td><div class='noWrap2'><label id='ornTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='oroLabel'>oro</label></div></td>
                       <td><div class='noWrap2'><label id='oroTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='antLabel'>ant</label></div></td>
                       <td><div class='noWrap2'><label id='antTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='norLabel'>nor</label></div></td>
                       <td><div class='noWrap2'><label id='norTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='xorLabel'>xor</label></div></td>
                       <td><div class='noWrap2'><label id='xorTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><label id='equLabel'>equ</label></div></td>
                       <td><div class='noWrap2'><label id='equTime'></label></div></td>
-                      <td></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     </tbody>
                   </table>
@@ -377,7 +377,7 @@
                   </table>
                   </div>
                   <div>
-                  <table id='popsBotTable' class='popsBotTable'>
+                  <table id='popsBotTable' class='botPopTable'>
                     <tbody>
                     <tr>
                       <th><div class='noWrapF'><label id='psFn'>Function&nbsp;&nbsp;</label></div></th>
@@ -387,47 +387,48 @@
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='notButton' class='bitButtonOff'>not</button></div></td>
-                      <td><div class='noWrap2'><label id='notPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='notPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='nanButton' class='bitButtonOff'>nan</button></div></td>
-                      <td><div class='noWrap2'><label id='nanPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='nanPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='andButton' class='bitButtonOff'>and</button></div></td>
-                      <td><div class='noWrap2'><label id='andPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='andPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='ornButton' class='bitButtonOff'>orn</button></div></td>
-                      <td><div class='noWrap2'><label id='ornPop'></label></div></td>
+                      <td><div class='noWrap2r'><label id='ornPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='oroButton' class='bitButtonOff'>oro</button></div></td>
-                      <td><div class='noWrap2'><label id='oroPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='oroPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='antButton' class='bitButtonOff'>ant</button></div></td>
-                      <td><div class='noWrap2'><label id='antPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='antPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='norButton' class='bitButtonOff'>nor</button></div></td>
-                      <td><div class='noWrap2'><label id='norPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='norPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='xorButton' class='bitButtonOff'>xor</button></div></td>
-                      <td><div class='noWrap2'><label id='xorPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='xorPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='equButton' class='bitButtonOff'>equ</button></div></td>
-                      <td><div class='noWrap2'><label id='equPop'></label></div></td>
-                      <td></td>
+                      <td><div class='noWrap2r'><label id='equPop'></label></div></td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
                     </tbody>
                   </table>
@@ -674,12 +675,14 @@
           <table style='border-collapse:collapse;table-layout:auto;width:100%;height:auto;' border='0'>
             <tbody>
             <tr style='valign: middle; line-height: 30px'>
-              <td>
+              <td style='width: 20px'>
                 <div class='lftmargin'><img src='images/avida-ed-ancestor-icon.png' style='height: 32px;'></img></div>
+              </td>
+              <td>
                 <div id='activeOrgan' class='popContainer'></div>
                 &nbsp;
               </td>
-              <td style='text-align: right;'>
+              <td style='text-align: right; min-width: 160px; background-color: #00a3ef'>
                 <button id='OrgSetting'>Settings</button>
                 &nbsp;
                 <button id='OrgDetailsButton'>Details</button>

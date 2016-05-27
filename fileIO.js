@@ -82,13 +82,20 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     av.dnd.fzWorld.sync();
 
     var inputWSfile = document.getElementById('putWS');
-    var zipFileToLoad = inputWSfile.files[0];
+    //var zipFileToLoad = inputWSfile.files[0];
+    //console.log('zipFileToLoad', zipFileToLoad);
+
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent)
     {
-      var zipFileLoaded = new av.fio.JSZip(fileLoadedEvent.target.result);
-      //var ulFilesContained = document.getElementById("ulFilesContained");
+      console.log('fileLoadedEvent',fileLoadedEvent);
+      console.log(fileLoadedEvent.target.result);
+      if (false) {  //need to convert from B64 format
+        var zip2unpack = atob(fileLoadedEvent.target.result);
+      }
+      else zip2unpack = fileLoadedEvent.target.result;
 
+      var zipFileLoaded = new av.fio.JSZip(zip2unpack);
       av.fio.zipPathRoot = null;
       for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
       {
@@ -117,13 +124,13 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       av.fzr.wNum++;
       av.fzr.saveUpdateState('yes');
     };
-    fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
+    //fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
 
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.importZipRead = function () {
     'use strict';
-    var inputWSfile = document.getElementById('import');
+    var inputWSfile = document.getElementById(importFzrItem);
     var zipFileToLoad = inputWSfile.files[0];
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent)

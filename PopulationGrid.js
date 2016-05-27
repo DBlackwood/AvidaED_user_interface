@@ -322,7 +322,7 @@ av.grd.drawGridUpdate = function () {
   var zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
   zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
 
-  console.log('ZoomSlide set zMax, expression', zMax, 2 * (zMax - 1) + 1);
+  //console.log('ZoomSlide set zMax, expression', zMax, 2 * (zMax - 1) + 1);
 //  av.grd.ZoomSlide.set("maximum", zMax);
   av.grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
 //  av.grd.ZoomSlide.set("maximum", 5);

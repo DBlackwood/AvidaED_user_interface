@@ -242,7 +242,7 @@ require([
     'use strict';
     av.debug.log += '\n -Button: mnFlOpenDefaultWS';
     av.fio.useDefault = true;
-    av.fio.isB54 = false;
+    av.fio.isB64 = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     else {
       av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
@@ -273,7 +273,7 @@ require([
     'use strict';
     av.debug.log += '\n -Button: mnFlOpenWS';
     av.fio.useDefault = false;
-    av.fio.isB54 = false;
+    av.fio.isB64 = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     //else document.getElementById('inputFile').click();
     else document.getElementById('putWS').click();
@@ -283,7 +283,7 @@ require([
     'use strict';
     av.debug.log += '\n -Button: mnFlOpenB64';
     av.fio.useDefault = false;
-    av.fio.isB54 = true;
+    av.fio.isB64 = true;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     //else document.getElementById('inputFile').click();
     else document.getElementById('putWS').click();
@@ -295,7 +295,7 @@ require([
     'use strict';
     av.debug.log += '\n -Button: mnFlFzItem';
     av.fio.useDefault = false;
-    document.getElementById('import').click();
+    document.getElementById(importFzrItem).click();
   });
 
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
@@ -332,8 +332,14 @@ require([
   document.getElementById('mnHpDebug').onclick = function () {
     if ('visible' === document.getElementById('mnDebug').style.visibility) {
       document.getElementById('mnDebug').style.visibility = 'hidden';
+      //document.getElementById('mnHpDebug').label = 'Show debug menu';
+      //document.getElementById('mnHpDebug').textContent = 'Show debug menu';
+      dijit.byId("mnHpDebug").set("label", 'Show debug menu');
+
     } else {
       document.getElementById('mnDebug').style.visibility = 'visible';
+      //document.getElementById('mnHpDebug').label = 'Hide debug menu';
+      dijit.byId("mnHpDebug").set("label", 'Hide debug menu');
     }
   };
 
@@ -513,7 +519,7 @@ require([
   }
 
   window.addEventListener('error', function (evt) {
-    console.log('event listener', evt);
+    //console.log('event listener', evt);
   });
 
   //More usefull websites to catch errors

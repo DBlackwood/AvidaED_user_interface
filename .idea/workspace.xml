@@ -2,14 +2,118 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c0/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c0/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c0/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c0/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c0/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c1/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c1/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c1/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c1/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c1/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c1/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c1/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c2/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c2/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c2/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c2/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c2/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c2/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c2/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c3/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c3/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c3/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c3/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c3/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c3/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c3/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c4/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c4/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c4/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c4/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c4/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c4/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c4/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c5/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c5/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c5/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c5/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c5/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c5/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/c5/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/g0/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/g0/genome.seq" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/g1/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/g1/genome.seq" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/g2/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/g2/genome.seq" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/clade.ssg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/detail.spop" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/tr0" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/tr1" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/tr2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/tr3" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w0/update" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/clade.ssg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/detail.spop" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/tr0" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/tr1" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/tr2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/tr3" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w1/update" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/clade.ssg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/detail.spop" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/tr0" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/tr1" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/tr2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/tr3" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w5/update" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/ancestors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/ancestors_manual" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/avida.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/clade.ssg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/detail.spop" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/entryname.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/environment.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/events.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/instset.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/tr0" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/tr1" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/tr2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/tr3" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/av.avidaedworkspace/w6/update" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/Blob.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jquery.fileDownload.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js.mem" afterPath="$PROJECT_DIR$/avida.js.mem" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.css" afterPath="$PROJECT_DIR$/AvidaED.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileDataRead.js" afterPath="$PROJECT_DIR$/fileDataRead.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileDataWrite.js" afterPath="$PROJECT_DIR$/fileDataWrite.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js" afterPath="$PROJECT_DIR$/avida.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileIO.js" afterPath="$PROJECT_DIR$/fileIO.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,7 +137,7 @@
       <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
+            <state relative-caret-position="5115">
               <caret line="343" column="0" selection-start-line="343" selection-start-column="0" selection-end-line="343" selection-end-column="15" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -42,21 +146,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AvidaED.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="90" column="26" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
+            <state relative-caret-position="292">
+              <caret line="270" column="0" selection-start-line="270" selection-start-column="0" selection-end-line="270" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="120" column="108" selection-start-line="120" selection-start-column="108" selection-end-line="120" selection-end-column="108" />
+            <state relative-caret-position="442">
+              <caret line="684" column="57" selection-start-line="684" selection-start-column="57" selection-end-line="684" selection-end-column="57" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -123,8 +227,8 @@
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#1;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#input#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -156,11 +260,21 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1395">
-              <caret line="647" column="115" selection-start-line="647" selection-start-column="115" selection-end-line="647" selection-end-column="115" />
+            <state relative-caret-position="417">
+              <caret line="521" column="6" selection-start-line="521" selection-start-column="6" selection-end-line="521" selection-end-column="6" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/messaging.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="523" column="19" selection-start-line="523" selection-start-column="19" selection-end-line="523" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -178,7 +292,7 @@
       <file leaf-file-name="fileDataWrite.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1997">
+            <state relative-caret-position="7125">
               <caret line="475" column="10" selection-start-line="475" selection-start-column="5" selection-end-line="475" selection-end-column="10" />
               <folding />
             </state>
@@ -188,7 +302,7 @@
       <file leaf-file-name="fileDataRead.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileDataRead.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="7005">
               <caret line="467" column="2" selection-start-line="467" selection-start-column="2" selection-end-line="467" selection-end-column="2" />
               <folding />
             </state>
@@ -198,21 +312,9 @@
       <file leaf-file-name="fileIO.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileIO.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="83" column="47" selection-start-line="83" selection-start-column="47" selection-end-line="83" selection-end-column="47" />
+            <state relative-caret-position="612">
+              <caret line="126" column="6" selection-start-line="126" selection-start-column="6" selection-end-line="126" selection-end-column="34" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utilities.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utilities.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="112" column="26" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="26" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -272,17 +374,17 @@
         <option value="$PROJECT_DIR$/placeParent.js" />
         <option value="$PROJECT_DIR$/dojoDnd.js" />
         <option value="$PROJECT_DIR$/mouse.js" />
-        <option value="$PROJECT_DIR$/populationGrid.js" />
-        <option value="$PROJECT_DIR$/messaging.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
         <option value="$PROJECT_DIR$/lib/jquery.fileDownload.js" />
         <option value="$PROJECT_DIR$/globals.js" />
         <option value="$PROJECT_DIR$/fileDataRead.js" />
         <option value="$PROJECT_DIR$/fileDataWrite.js" />
-        <option value="$PROJECT_DIR$/fileIO.js" />
+        <option value="$PROJECT_DIR$/messaging.js" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
-        <option value="$PROJECT_DIR$/AvidaED.css" />
+        <option value="$PROJECT_DIR$/populationGrid.js" />
+        <option value="$PROJECT_DIR$/fileIO.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
+        <option value="$PROJECT_DIR$/AvidaED.css" />
       </list>
     </option>
   </component>
@@ -323,6 +425,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -343,7 +446,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -437,18 +539,19 @@
       <workItem from="1463429990253" duration="59234000" />
       <workItem from="1463774846210" duration="4249000" />
       <workItem from="1463781641594" duration="55442000" />
-      <workItem from="1464104452137" duration="25502000" />
+      <workItem from="1464104452137" duration="28713000" />
+      <workItem from="1464208479194" duration="12580000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="151142000" />
+    <option name="totallyTimeSpent" value="166933000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="822" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22818312" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23104435" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37021858" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -744,13 +847,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/notUse/older/AvidaED_broken.js" />
-    <entry file="file://$PROJECT_DIR$/populationGrid.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4890">
-          <caret line="326" column="2" selection-start-line="326" selection-start-column="2" selection-end-line="326" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mouse.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -762,15 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="674">
           <caret line="366" column="104" selection-start-line="366" selection-start-column="104" selection-end-line="366" selection-end-column="104" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6675">
-          <caret line="445" column="0" selection-start-line="444" selection-start-column="0" selection-end-line="445" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -779,38 +866,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="472" column="4" selection-start-line="472" selection-start-column="4" selection-end-line="472" selection-end-column="4" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <marker date="1464032852000" expanded="true" signature="13604:13617" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/Unknown.txt" />
-    <entry file="file://$PROJECT_DIR$/popControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2730">
-          <caret line="185" column="35" selection-start-line="185" selection-start-column="35" selection-end-line="185" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="467" column="2" selection-start-line="467" selection-start-column="2" selection-end-line="467" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1997">
-          <caret line="475" column="10" selection-start-line="475" selection-start-column="5" selection-end-line="475" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utilities.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
@@ -825,21 +884,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileIO.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="83" column="47" selection-start-line="83" selection-start-column="47" selection-end-line="83" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/globals.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
+        <state relative-caret-position="5115">
           <caret line="343" column="0" selection-start-line="343" selection-start-column="0" selection-end-line="343" selection-end-column="15" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -847,28 +897,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AvidaED.css">
+    <entry file="file://$PROJECT_DIR$/popControls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="90" column="26" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
+        <state relative-caret-position="2730">
+          <caret line="185" column="35" selection-start-line="185" selection-start-column="35" selection-end-line="185" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7125">
+          <caret line="475" column="10" selection-start-line="475" selection-start-column="5" selection-end-line="475" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7005">
+          <caret line="467" column="2" selection-start-line="467" selection-start-column="2" selection-end-line="467" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="523" column="19" selection-start-line="523" selection-start-column="19" selection-end-line="523" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1395">
-          <caret line="647" column="115" selection-start-line="647" selection-start-column="115" selection-end-line="647" selection-end-column="115" />
+        <state relative-caret-position="417">
+          <caret line="521" column="6" selection-start-line="521" selection-start-column="6" selection-end-line="521" selection-end-column="6" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/populationGrid.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="479">
+          <caret line="324" column="4" selection-start-line="324" selection-start-column="4" selection-end-line="324" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileIO.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="126" column="6" selection-start-line="126" selection-start-column="6" selection-end-line="126" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="120" column="108" selection-start-line="120" selection-start-column="108" selection-end-line="120" selection-end-column="108" />
+        <state relative-caret-position="442">
+          <caret line="684" column="57" selection-start-line="684" selection-start-column="57" selection-end-line="684" selection-end-column="57" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -935,8 +1025,8 @@
             <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#1;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#input#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#1;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -961,6 +1051,14 @@
             <element signature="n#style#0;n#input#0;n#div#1;n#form#0;n#div#0;n#div#5;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#input#1;n#div#1;n#form#0;n#div#0;n#div#5;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AvidaED.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="270" column="0" selection-start-line="270" selection-start-column="0" selection-end-line="270" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

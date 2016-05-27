@@ -523,23 +523,23 @@ av.grd.updateSelectedOrganismType = function (msg) {
   if (msg.isEstimate) prefix = "est. ";
   else prefix = '';
   nameLabel.textContent = msg.genotypeName;
-  if (null === msg.fitness) fitLabel.textContent = '-';
+  if (null === msg.fitness) fitLabel.textContent = ' ';
   else fitLabel.textContent = prefix + msg.fitness.formatNum(2);
-  if (null === msg.metabolism) metabolicLabel.textContent = '-';
+  if (null === msg.metabolism) metabolicLabel.textContent = ' ';
   else metabolicLabel.textContent = prefix + msg.metabolism.formatNum(2);
-  if (null === msg.gestation) generateLabel.textContent = '-';
+  if (null === msg.gestation) generateLabel.textContent = ' ';
   else  generateLabel.textContent = prefix + msg.gestation.formatNum(2);
-  if (null == msg.age) ageLabel.textContent = '-';
+  if (null == msg.age) ageLabel.textContent = ' ';
     else ageLabel.textContent = msg.age;
   if (null === msg.ancestor) {
     //console.log('av.grd.msg', av.grd.msg);
     if (av.debug.msg) console.log('msg.ancestor === null_______________________________________________________');
     if ('undefined' != typeof av.grd.msg.ancestor) {
       if (null === av.grd.msg.ancestor.data[av.grd.selectedNdx])
-        ancestorLabel.textContent = '-';
+        ancestorLabel.textContent = ' ';
       else ancestorLabel.textContent = av.parents.name[av.grd.msg.ancestor.data[av.grd.selectedNdx]];
     }
-    else ancestorLabel.textContent = '-';
+    else ancestorLabel.textContent = ' ';
   }
   //else ancestorLabel.textContent = av.parents.name[msg.ancestor];
   else ancestorLabel.textContent = msg.ancestor;
