@@ -2006,6 +2006,10 @@ require([
   
   //setting row height to match on population page stats window
   //http://www.tek-tips.com/viewthread.cfm?qid=891026
+  /*
+  Trying to dynamically set row ht in case it was different on differnt screens/opperationg systems, browsers.
+  Never got it working
+
   var popsBotTblRows = document.getElementById('popsBotTable').rows;
   var sotBotTbl = document.getElementById('sotBotTable').rows;
   var ht = sotBotTbl[2].offsetHeight;
@@ -2017,9 +2021,12 @@ require([
   var newCss = '.botTable td {  line-height: ' + ht + 'px;  }';
   av.ptd.setStyle(newCss);
   //stylesheet.insertRule('.botTable td {  line-height: ' + ht + 'px;  }', 265);
+   */
 
-  av.ui.removeVerticalScrollbar = function (scrollDiv, htChangeDiv, page) {
+  av.ui.removeVerticalScrollbar = function (scrollDiv, htChangeDiv) {
     //https://tylercipriani.com/2014/07/12/crossbrowser-javascript-scrollbar-detection.html
+    var scrollSpace = 0;
+    if (0 <= window.jscd.os.indexOf('Win')) {scrollSpace = 17}
     //if the two heights are different then there is a scroll bar
     var ScrollDif = document.getElementById(scrollDiv).scrollHeight - document.getElementById(scrollDiv).clientHeight;
     var hasScrollbar = 0 < ScrollDif;
@@ -2029,7 +2036,7 @@ require([
 
     var divHt = document.getElementById(htChangeDiv).style.height.match(/\d/g);  //get 0-9 globally in the string  //http://stackoverflow.com/questions/10003683/javascript-get-number-from-string
     divHt = divHt.join(''); //converts array to string
-    var NewHt = Number(divHt) + 1 + ScrollDif;  //add the ht difference to the outer div that holds this one
+    var NewHt = Number(divHt) + 1 + + scrollSpace + ScrollDif;  //add the ht difference to the outer div that holds this one
     //line below is where the height of the div actually changes
     document.getElementById(htChangeDiv).style.height = NewHt + 'px';
 
@@ -2040,10 +2047,12 @@ require([
       document.getElementById(htChangeDiv).offsetHeight, document.getElementById(htChangeDiv).style.height);
   }
 
-  //av.ui.removeVerticalScrollbar('selectOrganPane', 'popTopRight', 'populationBlock');
-  av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight', 'populationBlock');
-  av.ui.removeVerticalScrollbar('popBot', 'popBot', 'populationBlock');
-  av.ui.removeVerticalScrollbar('popTop', 'popTop', 'populationBlock');
+  av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight');
+  av.ui.removeVerticalScrollbar('popBot', 'popBot');
+  av.ui.removeVerticalScrollbar('popTop', 'popTop');
+  console.log('index',window.jscd.os.indexOf('Win'));
+  if (0 <= window.jscd.os.indexOf('Win')) {console.log('found')}
+  console.log('all os', window.jscd.os);
   av.ui.mainBoxSwap('populationBlock');
 
   av.grd.popChartFn();

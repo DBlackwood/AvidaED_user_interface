@@ -72,6 +72,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.userPickZipRead = function () {
     'use strict';
+    console.log('in av.fio.userPickZipRead');
     av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
     //Clear each section of the freezer and active organism and ancestorBox
     av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
@@ -82,15 +83,15 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     av.dnd.fzWorld.sync();
 
     var inputWSfile = document.getElementById('putWS');
-    //var zipFileToLoad = inputWSfile.files[0];
-    //console.log('zipFileToLoad', zipFileToLoad);
+    var zipFileToLoad = inputWSfile.files[0];
+    console.log('zipFileToLoad', zipFileToLoad);
 
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent)
     {
       console.log('fileLoadedEvent',fileLoadedEvent);
-      console.log(fileLoadedEvent.target.result);
-      if (false) {  //need to convert from B64 format
+      console.log('result', fileLoadedEvent.target.result);
+      if (av.fio.isB64) {  //need to convert from B64 format
         var zip2unpack = atob(fileLoadedEvent.target.result);
       }
       else zip2unpack = fileLoadedEvent.target.result;
@@ -124,7 +125,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       av.fzr.wNum++;
       av.fzr.saveUpdateState('yes');
     };
-    //fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
+    fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
 
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
