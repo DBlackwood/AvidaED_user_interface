@@ -286,7 +286,7 @@ require([
     av.fio.isB64 = true;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     //else document.getElementById('inputFile').click();
-    else document.getElementById('putWS').click();
+    else document.getElementById('putWS').click();   // call av.fio.userPickZipRead()
   });
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -317,7 +317,9 @@ require([
     var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
     av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
-    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
+    if (null !== av.fio.userFname) {
+      av.fio.fzSaveCurrentWorkspaceFn();
+    }  //fileIO.js
   };
 
   //Export csv data from current run.
@@ -651,7 +653,7 @@ require([
     if (registry.byId('popRight').domNode.style.width != av.ui.popRightOldwidth) {
       av.ui.popRightOldwidth = registry.byId('popRight').domNode.style.width;
       var str = registry.byId('popRight').domNode.style.width;
-      registry.byId('sotPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.51) + 'px'
+      registry.byId('sotPane').domNode.style.width = Math.round((Number(str.substr(0, str.length - 2)) - 50) * 0.52) + 'px'
       registry.byId('mainBC').layout();
     }
     //console.log('popBot ====', document.getElementById('popBot').style.width); //need abotu 430 px for button arrangement to look good.
@@ -899,13 +901,6 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
   ///   Map Grid buttons - New  Run/Pause Freeze
   //--------------------------------------------------------------------------------------------------------------------
-
-  av.ptd.makePauseState = function () {
-    dijit.byId('mnCnPause').attr('disabled', true);
-    dijit.byId('mnCnRun').attr('disabled', false);
-    //console.log('pauseState; button=run');
-    document.getElementById('runStopButton').textContent = 'Run';
-  }
 
   av.ptd.makeRunState = function () {
     document.getElementById('runStopButton').textContent = 'Pause';
@@ -1522,18 +1517,16 @@ require([
     av.grd.popChartFn();
   });
 
-//use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
+// Can use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
 //this required the use of a theme, but I'm no longer using the theme. Could take 'Wetland' out of require statemet as long a this is not used
 //var myTheme = Wetland; // Or any other theme
 //myTheme.axis.majorTick.color = '#CCC';  //grey
 //myTheme.axis.minorTick.color = 'red';
 
-  //av.grd.popChartFn = function () {}
-
   av.grd.popChartFn = function () {
     'use strict';
     if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
-      //console.log('chart update=', av.grd.popStatsMsg.update);
+      console.log('chart update=', av.grd.popStatsMsg.update);
       //av.debug.log += '\n - - Call popChartFn';
       if ('Average Fitness' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveFit;
@@ -1552,15 +1545,13 @@ require([
         av.grd.popY2 = av.ptd.logNum;
       }
       else {
+        console.log('yaxis is None');
         av.grd.popY = [0];
         av.grd.popY2 = [0];
       }
-      //console.log('popY after',av.grd.popY);
-      //console.log('pop2 after', av.grd.popY2);
-      //av.grd.popChart.setTheme(myTheme);
+      console.log('popY after',av.grd.popY);
+      console.log('pop2 after', av.grd.popY2);
       av.grd.popChart.addPlot('default', {type: 'Lines'});
-      //av.grd.popChart.addPlot('grid',{type:'Grid',hMinorLines:false});  //if color not specified it uses tick color.
-      // grid info from https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
       av.grd.popChart.addPlot('grid', {
         type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
         vMajorLines: true, majorVLine: {color: '#CCC', width: 1}
@@ -1585,6 +1576,33 @@ require([
     }
   };
 
+  av.grd.popChartClear = function () {
+    'use strict';
+      av.grd.popY = [0];
+      av.grd.popY2 = [0];
+      av.grd.popChart.addPlot('default', {type: 'Lines'});
+      av.grd.popChart.addPlot('grid', {
+        type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
+        vMajorLines: true, majorVLine: {color: '#CCC', width: 1}
+      });
+
+      av.grd.popChart.addAxis('x', {
+        fixLower: 'major', fixUpper: 'major', title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
+        titleFont: 'normal normal normal 8pt Arial', font: 'normal normal normal 8pt Arial'
+      });
+      av.grd.popChart.addAxis('y', {
+        vertical: true,
+        fixLower: 'major', fixUpper: 'major', min: 0, font: 'normal normal normal 8pt Arial', titleGap: 4,
+      });
+      //av.grd.popChart.addSeries('Series y', popY, {stroke: {color: 'blue', width: 1}});
+      //av.grd.popChart.addSeries('Series y2', popY2, {stroke: {color: 'red', width: 2}});
+      av.grd.popChart.addSeries('Series y', av.grd.popY, {plot: 'default', stroke: {color: 'blue', width: 1}});
+      av.grd.popChart.addSeries('Series y2', av.grd.popY2, {plot: 'default', stroke: {color: 'green', width: 1}});
+      av.grd.popChart.resize(domGeometry.position(document.getElementById('popChartHolder')).w - 10,
+        domGeometry.position(document.getElementById('popChartHolder')).h - 30);
+      av.grd.popChart.render();
+  };
+  
   // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // **************************************************************************************************************** */
@@ -2050,9 +2068,9 @@ require([
   av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight');
   av.ui.removeVerticalScrollbar('popBot', 'popBot');
   av.ui.removeVerticalScrollbar('popTop', 'popTop');
-  console.log('index',window.jscd.os.indexOf('Win'));
+  if (av.debug.root) console.log('index',window.jscd.os.indexOf('Win'));
   if (0 <= window.jscd.os.indexOf('Win')) {console.log('found')}
-  console.log('all os', window.jscd.os);
+  if (av.debug.root) console.log('all os', window.jscd.os);
   av.ui.mainBoxSwap('populationBlock');
 
   av.grd.popChartFn();

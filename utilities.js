@@ -1,6 +1,20 @@
 // all instances of Math.floor were Math.trunc, but Internet Explorer does not support Math.trunc
 //----------------------------------------------------------------------------------------------------------------------
 //because IE does not understand var event = new Event('change'); in the file fileIO.js
+
+//----------------------------------------------------------------------------------------------------------------------
+//http://stackoverflow.com/questions/1295584/most-efficient-way-to-create-a-zero-filled-javascript-array
+av.utl.newFilledArray = function (length, val) {
+  var array = [];
+  var i = 0;
+  while (i < length) {
+    array[i++] = val;
+  }
+  return array;
+};
+
+
+//----------------------------------------------------------------------------------------------------------------------
 (function () {
   'use strict';
   function CustomEvent ( event, params ) {
@@ -82,14 +96,14 @@ var get_color1 = function(cmap, dx, d1, d2){
   var datacolorindex = Math.max(0,Math.min(cmap.length-1,Math.round(linmap(dx, d1, d2, 1, cmap.length-1))));
   var datacolor = cmap[datacolorindex];
   return datacolor;
-}
+};
 
 var get_color = function(cmap, dx, d1, d2, r1){
   'use strict';
   var datacolorindex = Math.max(0,Math.min(cmap.length-1,Math.round(linmap(dx, d1, d2, r1, cmap.length-1))));
   var datacolor = cmap[datacolorindex];
   return datacolor;
-}
+};
 
 //from http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
 //formats numbers with commas
@@ -222,18 +236,7 @@ av.utl.objectLength = function(object){
     }
     return length;
   }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//http://stackoverflow.com/questions/1295584/most-efficient-way-to-create-a-zero-filled-javascript-array
-av.utl.newFilledArray = function (length, val) {
-  var array = [];
-  var i = 0;
-  while (i < length) {
-    array[i++] = val;
-  }
-  return array;
-}
+};
 
 //----------------------------------------------------------------------------------------------------------------------
 //  Find browser and operating system
@@ -433,7 +436,8 @@ av.brs.str =
   'Cookies: ' + jscd.cookies + '\n' +
   'Screen Size: ' + jscd.screen + '\n\n' +
   'Full User Agent: ' + navigator.userAgent;
-console.log(av.brs.str);
+if (av.debug.root) console.log(av.brs.str);
+av.debug.log += '\n' + 'user info = ' + window.navigator.userAgent + ';  Screen Size: ' + jscd.screen;
 
 
 //**********************************************************************************************************************

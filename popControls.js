@@ -3,6 +3,13 @@
 // *********************************************************************************************************************
 // ptd = PeTri Dish
 
+av.ptd.makePauseState = function () {
+  dijit.byId('mnCnPause').attr('disabled', true);
+  dijit.byId('mnCnRun').attr('disabled', false);
+  //console.log('pauseState; button=run');
+  document.getElementById('runStopButton').textContent = 'Run';
+}
+
 // shifts the population page from Map (grid) view to setup parameters view and back again.
 av.ptd.popBoxSwap = function () {
   'use strict';
@@ -321,6 +328,7 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   // send reset to Avida adaptor
   //if (need2sendRest2avida) {av.msg.reset();} //Take this out if we only reset when avida resets After sending a request for reset.
 
+  console.log('in resetDishFn');
   av.msg.pause('now');
   av.ptd.makePauseState();
   av.grd.clearGrd();
@@ -363,7 +371,7 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   console.log('fzr.activeCon', av.fzr.actConfig);
 
   // re-write grid if that page is visible
-  av.grd.popChartFn();
+  av.grd.popChartClear();
   av.grd.drawGridSetupFn();
 }
 

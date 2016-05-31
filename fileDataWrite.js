@@ -496,3 +496,33 @@ http://thiscouldbebetter.neocities.org/texteditor.html
  window.open(sUrl + query);
  }
 */
+
+/**********************************************************************************************************************/
+/* OpenJSCAD.org  There is a github site for this. 
+
+Can apparently save files in Safari from javascript
+  Used some ideas from here and I can save a file that is the correct size, but I still cannot read it.
+
+  For saving look at:
+ generateOutputFileBlobUrl: function() {
+ if (OpenJsCad.isSafari()) {
+ //console.log("Trying download via DATA URI");
+ // convert BLOB to DATA URI
+ var blob = this.currentObjectToBlob();
+ var that = this;
+ var reader = new FileReader();
+ reader.onloadend = function() {
+ if (reader.result) {
+ that.hasOutputFile = true;
+ that.downloadOutputFileLink.href = reader.result;
+ that.downloadOutputFileLink.innerHTML = that.downloadLinkTextForCurrentObject();
+ var ext = that.selectedFormatInfo().extension;
+ that.downloadOutputFileLink.setAttribute("download","openjscad."+ext);
+ that.downloadOutputFileLink.setAttribute("target", "_blank");
+ that.enableItems();
+ }
+ };
+ reader.readAsDataURL(blob);
+
+  Still need to look at reading!
+  /********************************************************************************************************************/

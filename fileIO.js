@@ -87,7 +87,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     console.log('zipFileToLoad', zipFileToLoad);
 
     var fileReader = new FileReader();
-    fileReader.onload = function(fileLoadedEvent)
+    fileReader.onloadend = function(fileLoadedEvent)
     {
       console.log('fileLoadedEvent',fileLoadedEvent);
       console.log('result', fileLoadedEvent.target.result);
@@ -95,6 +95,8 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
         var zip2unpack = atob(fileLoadedEvent.target.result);
       }
       else zip2unpack = fileLoadedEvent.target.result;
+      console.log('zip2unpack', zip2unpack);
+      console.log('zip2unpack', zip2unpack.slice(0, 51));
 
       var zipFileLoaded = new av.fio.JSZip(zip2unpack);
       av.fio.zipPathRoot = null;
@@ -223,6 +225,18 @@ av.fio.saveAs = function () {
   av.fzr.saveUpdateState('maybe');
 }
 
+av.fio.fzSaveCsvfn = function () {
+  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = prompt('Choose a name for your csv file', av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update);
+  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = 'avidaDataRecorder.csv';
+  var end = av.fio.csvFileName.substring(av.fio.csvFileName.length - 4);
+  if ('.csv' != end) av.fio.userFname = av.fio.csvFileName + '.csv';
+
+  var typeStrng = 'data:attachment/csv;charset=utf-8,';
+  console.log('brs', av.brs);
+  if (av.brs.isSafari) alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .csv. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
+  av.fio.SaveUsingDomElement(av.fwt.csvStrg, av.fio.csvFileName, typeStrng);
+}
+
 av.fio.SaveUsingDomElement = function(aStr, fName, typeStr) {
   "use strict";
   var a = document.createElement('a');
@@ -237,22 +251,40 @@ av.fio.SaveUsingDomElement = function(aStr, fName, typeStr) {
   }, 100);
 }
 
-av.fio.fzSaveCsvfn = function () {
-  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = prompt('Choose a name for your csv file', av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update);
-  if (0 === av.fio.csvFileName.length) av.fio.csvFileName = 'avidaDataRecorder.csv';
-  var end = av.fio.csvFileName.substring(av.fio.csvFileName.length - 4);
-  if ('.csv' != end) av.fio.userFname = av.fio.csvFileName + '.csv';
-
-  var typeStrng = 'data:attachment/csv;charset=utf-8,';
-  console.log('brs', av.brs);
-  if (av.brs.isSafari) alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .csv. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
-  av.fio.SaveUsingDomElement(av.fwt.csvStrg, av.fio.csvFileName, typeStrng);
-}
-
-av.fio.SaveInSafari = function (content, Fname) {
+av.fio.SaveInSafari_doesNotWork = function (content, Fname) {
   'use strict';
   console.log('content', content.size, content);
+/*
+    //console.log("Trying download via DATA URI");
+    // convert BLOB to DATA URI
+    var blob = this.currentObjectToBlob();
+    var that = this;
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      if (reader.result) {
+        that.hasOutputFile = true;
+        that.downloadOutputFileLink.href = reader.result;
+        that.downloadOutputFileLink.innerHTML = that.downloadLinkTextForCurrentObject();
+        var ext = that.selectedFormatInfo().extension;
+        that.downloadOutputFileLink.setAttribute("download","openjscad."+ext);
+        that.downloadOutputFileLink.setAttribute("target", "_blank");
+        that.enableItems();
+      }
+    };
+    reader.readAsDataURL(blob);
+  return 1;
+  */
 
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    if (reader.result) {
+      var typestr = "data:attachment/zip;charset=utf-8,";
+      av.fio.SaveUsingDomElement(reader.result, Fname, typestr);
+    }
+  }
+  reader.readAsDataURL(content);
+
+  /*
   //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
   var base64data;
   var reader = new window.FileReader();
@@ -264,18 +296,70 @@ av.fio.SaveInSafari = function (content, Fname) {
   var source = reader.readAsBinaryString(content);
 
   setTimeout(function(){
-  var theStr = base64data;
-  //console.log('theStr', theStr);
-  var typeStrng = 'data:attachment/b64;charset=utf-8,';
-  //var typeStrng = 'data:attachment/csv;charset=utf-8,';
-  av.fio.SaveUsingDomElement(theStr, av.fio.csvFileName + '.b64', typeStrng);
+    var theStr = base64data;
+    //console.log('theStr', theStr);
+    var typeStrng = 'data:attachment/b64;charset=utf-8,';
+    //var typeStrng = 'data:attachment/csv;charset=utf-8,';
+    av.fio.SaveUsingDomElement(theStr, av.fio.csvFileName + '.b64', typeStrng);
   }, 100);
+  */
+}
 
+av.fio.SaveInSafari_worksSortOf = function (content, uFname) {
+  'use strict';
+  console.log('content', content.size, content);
+  //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
+  var base64data;
+  var reader = new window.FileReader();
+  reader.onloadend = function() {
+    base64data = btoa(reader.result);
+    //console.log(base64data );
+  };
+  //reader.readAsDataURL(content);
+  var source = reader.readAsBinaryString(content);
+
+  setTimeout(function(){
+    var theStr = base64data;
+    //console.log('theStr', theStr);
+    var typeStrng = 'data:attachment/b64;charset=utf-8,';
+    //var typeStrng = 'data:attachment/csv;charset=utf-8,';
+    av.fio.SaveUsingDomElement(theStr, uFname + '.b64', typeStrng);
+  }, 100);
+}
+
+av.fio.SaveInSafari = function (content, uFname) {
+  'use strict';
+  console.log('content', content.size, content);
+  //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
+
+  var reader = new FileReader();
+  //File reader is for some reason asynchronous
+  reader.onloadend = function () {
+    //items.setData(reader.result, "zip");
+  }
+  //This starts the conversion
+  //reader.readAsBinaryString(content);
+  //reader.readAsDataURL(content);
+  reader.readAsArrayBufferd(content);
+
+  setTimeout(function(){
+    var theStr = reader.result;
+    console.log('theStr', theStr);
+    var typeStrng = 'data:attachment/b64;charset=ISO-8859-1,';
+    //var typeStrng = 'data:attachment/csv;charset=utf-8,';
+    av.fio.SaveUsingDomElement(theStr, uFname + '.b64', typeStrng);
+  }, 100);
 }
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
-  if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
-  if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
+  'use strict';
+  console.log('defaultUserFname', av.fio.defaultUserFname);
+  if (null === av.fio.userFname) {
+    av.fio.userFname = av.fio.defaultUserFname;
+  }
+  else if (0 === av.fio.userFname.length) {
+    av.fio.userFname = av.fio.defaultUserFname;
+  }
   var end = av.fio.userFname.substring(av.fio.userFname.length-4);
   if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
   var folderName = wsb(av.fio.userFname, '.zip');
@@ -294,9 +378,9 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   var content = WSzip.generate({type:"blob"});
   console.log('content', content.size, content);
 
-  console.log('brs', av.brs);
-  //if (av.brs.isSafari) {
-  if (true) {
+  console.log('brs', av.brs.isSafari, '; userFname', av.fio.userFname);
+  if (av.brs.isSafari) {
+  //if (true) {
     alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .b64. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
     av.fio.SaveInSafari(content, av.fio.userFname);
   }
@@ -342,6 +426,59 @@ av.fzr.saveUpdateState = function (newSaveState) {
       break;
   }
 }
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+setTimeout(function() {
+
+  url = '//assets.codepen.io/images/codepen-logo.svg';
+  //downloadFile(url); // UNCOMMENT THIS LINE TO MAKE IT WORK
+
+}, 2000);
+
+// Source: http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
+window.downloadFile = function (sUrl) {
+
+  //iOS devices do not support downloading. We have to inform user about this.
+  if (/(iP)/g.test(navigator.userAgent)) {
+    //alert('Your device does not support files downloading. Please try again in desktop browser.');
+    window.open(sUrl, '_blank');
+    return false;
+  }
+
+  //If in Chrome or Safari - download via virtual link click
+  if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
+    //Creating new link node.
+    var link = document.createElement('a');
+    link.href = sUrl;
+    link.setAttribute('target','_blank');
+
+    if (link.download !== undefined) {
+      //Set HTML5 download attribute. This will prevent file from opening if supported.
+      var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
+      link.download = fileName;
+    }
+
+    //Dispatching click event.
+    if (document.createEvent) {
+      var e = document.createEvent('MouseEvents');
+      e.initEvent('click', true, true);
+      link.dispatchEvent(e);
+      return true;
+    }
+  }
+
+  // Force file download (whether supported by server).
+  if (sUrl.indexOf('?') === -1) {
+    sUrl += '?download';
+  }
+
+  window.open(sUrl, '_blank');
+  return true;
+}
+
+window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
 
 /* PouchDB websites
  http://pouchdb.com/api.html#database_information
