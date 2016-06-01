@@ -790,33 +790,35 @@ av.dnd.contextMenu = function(target, fzItemID) {
       }
     }
   }));
-  aMenu.addChild(new dijit.MenuItem({
-    label: "export",
-    onClick: function () {
-      av.debug.log += '\n -Button: export:' + document.getElementById(fzItemID).textContent;
-      var type;
-      var itemName = document.getElementById(fzItemID).textContent;
-      var zName = prompt(itemName + ' will be saved as ' + itemName + '.avidaedfreezeritem.zip', itemName + '.avidaedfreezeritem.zip');
-      if (zName) {
-        if (0 === zName.length) zName = itemName + '.avidaedfreezeritem.zip';  //.avidaedfreezeritem.zip is 23 characters
-        if ('.zip' != zName.substring(zName.length - 4)) zName = zName + '.zip';
-        dir = av.fzr.dir[fzItemID];
-        type = dir.substring(0,1);
-        var FIzip = new av.fio.JSZip();  //FreezerItemZip
-        FIzip.file('entrytype.txt', type);
-        if (av.debug.dnd) console.log('type', type);
-        for (var fname in av.fzr.file) {
-          //console.log('dir', dir, '; fname', fname);
-          if (dir == fname.substring(0, dir.length)) {
-            if (av.debug.dnd) console.log('export filename', fname.substring(dir.length + 1));
-            FIzip.file(fname.substring(dir.length + 1), av.fzr.file[fname]);
+  if (!av.brs.isSafari) {
+    aMenu.addChild(new dijit.MenuItem({
+      label: "export",
+      onClick: function () {
+        av.debug.log += '\n -Button: export:' + document.getElementById(fzItemID).textContent;
+        var type;
+        var itemName = document.getElementById(fzItemID).textContent;
+        var zName = prompt(itemName + ' will be saved as ' + itemName + '.avidaedfreezeritem.zip', itemName + '.avidaedfreezeritem.zip');
+        if (zName) {
+          if (0 === zName.length) zName = itemName + '.avidaedfreezeritem.zip';  //.avidaedfreezeritem.zip is 23 characters
+          if ('.zip' != zName.substring(zName.length - 4)) zName = zName + '.zip';
+          dir = av.fzr.dir[fzItemID];
+          type = dir.substring(0, 1);
+          var FIzip = new av.fio.JSZip();  //FreezerItemZip
+          FIzip.file('entrytype.txt', type);
+          if (av.debug.dnd) console.log('type', type);
+          for (var fname in av.fzr.file) {
+            //console.log('dir', dir, '; fname', fname);
+            if (dir == fname.substring(0, dir.length)) {
+              if (av.debug.dnd) console.log('export filename', fname.substring(dir.length + 1));
+              FIzip.file(fname.substring(dir.length + 1), av.fzr.file[fname]);
+            }
           }
+          var content = FIzip.generate({type: "blob"});
+          saveAs(content, zName);
         }
-        var content = FIzip.generate({type: "blob"});
-        saveAs(content, zName);
       }
-    }
-  }))
+    }))
+  }
 };
 
 /* ****************************************************************************************************************** */

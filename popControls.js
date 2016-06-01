@@ -162,12 +162,12 @@ av.ptd.popNewExState = function () {
   av.dnd.gridCanvas.sync();
 
   //Update data for Selected Organism Type
-  nameLabel.textContent = "-";
-  fitLabel.innerHTML = "-";
-  metabolicLabel.textContent = "-";
-  generateLabel.textContent = "-";
-  ageLabel.textContent = "-";
-  ancestorLabel.textContent = "-";
+  nameLabel.textContent = "";
+  fitLabel.innerHTML = "";
+  metabolicLabel.textContent = "";
+  generateLabel.textContent = "";
+  ageLabel.textContent = "";
+  ancestorLabel.textContent = "";
   notLabel.textContent = "not-";
   nanLabel.textContent = "nan-";
   andLabel.textContent = "and-";

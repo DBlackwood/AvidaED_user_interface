@@ -20,7 +20,7 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 
-av.debug.log = 'message and error log: version 2016_0506';
+av.debug.log = 'message and error log: version 2016_0601';
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};

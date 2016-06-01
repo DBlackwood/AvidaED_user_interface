@@ -311,9 +311,16 @@ require([
     console.log('----------------------------------------------------------filesaver supported?', e);
   }
 
+  if (av.brs.isSafari) {
+    dijit.byId('mnFlSaveWorkspace').attr('disabled', true);
+    dijit.byId('mnFlSaveAs').attr('disabled', true);
+    dijit.byId('mnFlSaveAs').attr('disabled', true);
+  }
+
+
   // Save current workspace with a new name
   document.getElementById('mnFlSaveAs').onclick = function () {
-    av.debug.log += '\n -Button: mnFlSaveSafari';
+    av.debug.log += '\n -Button: mnFlSaveAs';
     var suggest = 'avidaWS.avidaedworkspace.zip';
     if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
     av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
@@ -886,7 +893,7 @@ require([
     else {
       av.debug.log += '\n -Button: PopStatsButton: start showing stats';
       av.ptd.popStatFlag = true;
-      registry.byId('selectOrganPane').domNode.style.width = '150px';
+      registry.byId('sotPane').domNode.style.width = '150px';
       registry.byId('popRight').domNode.style.width = '395px';
       registry.byId('mainBC').layout();
       dijit.byId('popRight').set('style', 'display: block; visibility: visible;');
@@ -1245,8 +1252,6 @@ require([
       dijit.byId('mnCnOrganismTrace').attr('disabled', true);
       dijit.byId('mnFzOrganism').attr('disabled', true);
     }
-    //av.msg.doWebOrgDataByCell();   //was sending twice. I hope this is the right one to take out 2016 Feb 5
-    //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   }
 
@@ -1523,10 +1528,11 @@ require([
 //myTheme.axis.majorTick.color = '#CCC';  //grey
 //myTheme.axis.minorTick.color = 'red';
 
+
   av.grd.popChartFn = function () {
     'use strict';
     if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
-      console.log('chart update=', av.grd.popStatsMsg.update);
+      //console.log('chart update=', av.grd.popStatsMsg.update);
       //av.debug.log += '\n - - Call popChartFn';
       if ('Average Fitness' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveFit;
@@ -1549,8 +1555,9 @@ require([
         av.grd.popY = [0];
         av.grd.popY2 = [0];
       }
-      console.log('popY after',av.grd.popY);
-      console.log('pop2 after', av.grd.popY2);
+      //console.log('popY after',av.grd.popY);
+      //console.log('pop2 after', av.grd.popY2);
+      /*
       av.grd.popChart.addPlot('default', {type: 'Lines'});
       av.grd.popChart.addPlot('grid', {
         type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
@@ -1566,6 +1573,7 @@ require([
         vertical: true,
         fixLower: 'major', fixUpper: 'major', min: 0, font: 'normal normal normal 8pt Arial', titleGap: 4,
       });
+      */
       //av.grd.popChart.addSeries('Series y', popY, {stroke: {color: 'blue', width: 1}});
       //av.grd.popChart.addSeries('Series y2', popY2, {stroke: {color: 'red', width: 2}});
       av.grd.popChart.addSeries('Series y', av.grd.popY, {plot: 'default', stroke: {color: 'blue', width: 1}});
@@ -1602,7 +1610,8 @@ require([
         domGeometry.position(document.getElementById('popChartHolder')).h - 30);
       av.grd.popChart.render();
   };
-  
+  av.grd.popChartClear();
+
   // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // **************************************************************************************************************** */
@@ -2078,7 +2087,7 @@ require([
 
   //Safari 9 will not allow saving workspaces or freezer items.
   if (av.brs.isSafari) {
-    userMsgLabel.textContent = 'Safari 9 does not allow normal saving workspace or freezer items. Please use Firefox or Chrome';
+    userMsgLabel.textContent = 'Safari 9 does not allow saving a workspace or freezer items. Please use Firefox or Chrome';
   }
 
   // **************************************************************************************************************** */
