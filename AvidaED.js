@@ -295,7 +295,8 @@ require([
     'use strict';
     av.debug.log += '\n -Button: mnFlFzItem';
     av.fio.useDefault = false;
-    document.getElementById(importFzrItem).click();
+    //console.log('importFzrItem', importFzrItem);
+    document.getElementById('importFzrItem').click();
   });
 
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
@@ -896,6 +897,7 @@ require([
       registry.byId('sotPane').domNode.style.width = '150px';
       registry.byId('popRight').domNode.style.width = '395px';
       registry.byId('mainBC').layout();
+      av.ui.adjustPopRightSize();
       dijit.byId('popRight').set('style', 'display: block; visibility: visible;');
 
     }
@@ -2077,9 +2079,6 @@ require([
   av.ui.removeVerticalScrollbar('popStatistics', 'popTopRight');
   av.ui.removeVerticalScrollbar('popBot', 'popBot');
   av.ui.removeVerticalScrollbar('popTop', 'popTop');
-  if (av.debug.root) console.log('index',window.jscd.os.indexOf('Win'));
-  if (0 <= window.jscd.os.indexOf('Win')) {console.log('found')}
-  if (av.debug.root) console.log('all os', window.jscd.os);
   av.ui.mainBoxSwap('populationBlock');
 
   av.grd.popChartFn();

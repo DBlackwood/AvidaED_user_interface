@@ -133,7 +133,8 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.importZipRead = function () {
     'use strict';
-    var inputWSfile = document.getElementById(importFzrItem);
+    var inputWSfile = document.getElementById('importFzrItem');
+    console.log('inputWSfile', inputWSfile);
     var zipFileToLoad = inputWSfile.files[0];
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent)
@@ -409,11 +410,11 @@ av.fzr.saveUpdateState = function (newSaveState) {
       document.getElementById("wsSavedMsg").style.color = 'green';
       break;
     case 'maybe':
-      wsSavedMsg.textContent = 'Workspace: maybe saved';
+      wsSavedMsg.textContent = 'Workspace: might be saved';
       document.getElementById("wsSavedMsg").style.color = 'orangered';
       break;
     case 'no':
-      wsSavedMsg.textContent = 'Workspace: not saved';
+      wsSavedMsg.textContent = 'Workspace: is not saved';
       document.getElementById("wsSavedMsg").style.color = 'red';
       break;
     case 'default':
