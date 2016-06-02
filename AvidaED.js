@@ -276,7 +276,7 @@ require([
     av.fio.isB64 = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
     //else document.getElementById('inputFile').click();
-    else document.getElementById('putWS').click();
+    else document.getElementById('putWS').click();  // calls av.fio.userPickZipRead
   });
 
   dijit.byId('mnFlOpenB64').on('Click', function () {

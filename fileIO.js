@@ -2,6 +2,7 @@
 // cwd = current working directory
 // saved = where files are put to save to user workspace
 
+//---------------------------------- Call to selecct the Default workspace ---------------------------------------------
 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
 //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
 av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
@@ -69,6 +70,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
   av.fzr.saveUpdateState('default');
 };
 
+  //------------------------------ call to read in a user selected Workspace -------------------------------------------
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.userPickZipRead = function () {
     'use strict';
@@ -130,6 +132,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
 
+  //------------------------------- call to import a freezer item ------------------------------------------------------
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.importZipRead = function () {
     'use strict';
@@ -169,7 +172,9 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       av.fio.fixFname();
       if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
     };
-    fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
+    fileReader.readAsArrayBuffer(zipFileToLoad);  //calls the function above
+    av.fzr.saveUpdateState('no');
+
   }
 
 av.fio.fixFname = function() {
@@ -212,20 +217,7 @@ av.fio.fixFname = function() {
   }
 }
 
-av.fio.saveAs = function () {
-  if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
-  if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
-  var end = av.fio.userFname.substring(av.fio.userFname.length-4);
-  if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
-  console.log('end', end, '; userFname', av.fio.userFname);
-
-  //Get zip file
-  
-  //Save zip file
-
-  av.fzr.saveUpdateState('maybe');
-}
-
+//----------------------------------------- Save datarecorder info to a csv file ---------------------------------------
 av.fio.fzSaveCsvfn = function () {
   if (0 === av.fio.csvFileName.length) av.fio.csvFileName = prompt('Choose a name for your csv file', av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update);
   if (0 === av.fio.csvFileName.length) av.fio.csvFileName = 'avidaDataRecorder.csv';
@@ -255,26 +247,6 @@ av.fio.SaveUsingDomElement = function(aStr, fName, typeStr) {
 av.fio.SaveInSafari_doesNotWork = function (content, Fname) {
   'use strict';
   console.log('content', content.size, content);
-/*
-    //console.log("Trying download via DATA URI");
-    // convert BLOB to DATA URI
-    var blob = this.currentObjectToBlob();
-    var that = this;
-    var reader = new FileReader();
-    reader.onloadend = function() {
-      if (reader.result) {
-        that.hasOutputFile = true;
-        that.downloadOutputFileLink.href = reader.result;
-        that.downloadOutputFileLink.innerHTML = that.downloadLinkTextForCurrentObject();
-        var ext = that.selectedFormatInfo().extension;
-        that.downloadOutputFileLink.setAttribute("download","openjscad."+ext);
-        that.downloadOutputFileLink.setAttribute("target", "_blank");
-        that.enableItems();
-      }
-    };
-    reader.readAsDataURL(blob);
-  return 1;
-  */
 
   var reader = new FileReader();
   reader.onloadend = function() {
@@ -381,11 +353,13 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
 
   console.log('brs', av.brs.isSafari, '; userFname', av.fio.userFname);
   if (av.brs.isSafari) {
-  //if (true) {
     alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .b64. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
     av.fio.SaveInSafari(content, av.fio.userFname);
   }
-  else var fsaver = saveAs(content, av.fio.userFname);
+  else {
+    var fsaver = saveAs(content, av.fio.userFname);
+    console.log('file saved via saveAs');
+  }
   av.fzr.saveUpdateState('maybe');
 };
 
@@ -395,7 +369,7 @@ av.fzr.saveUpdateState = function (newSaveState) {
   //console.log('oldState', av.fzr.saveState, '; newState', newSaveState);
   if ('maybe' === newSaveState) {
     //console.log('newSaveState', newSaveState)
-    if ('no' === av.fzr.saveState  ) {
+    if ('no' === av.fzr.saveState) {
       //console.log('oldSaveState', av.fzr.saveState)
       av.fzr.saveState = 'maybe';
     }

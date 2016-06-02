@@ -251,6 +251,7 @@ av.ptd.FrOrganismFn = function (trigger) {
     av.fzr.file['g' + av.fzr.gNum + '/entryname.txt'] = fzName;
     av.fzr.gNum++;
     av.dnd.contextMenu(av.dnd.fzOrgan, domid);
+    av.fzr.saveUpdateState('no');
   }
 }
 
@@ -271,6 +272,7 @@ av.ptd.FrConfigFn = function () {
       av.fzr.cNum++;
       //Create context menu for right-click on this item
       av.dnd.contextMenu(av.dnd.fzConfig, domid);
+      av.fzr.saveUpdateState('no');
     }
   }
 }
@@ -296,6 +298,7 @@ av.ptd.FrPopulationFn = function () {
       av.fzr.wNum++;
       //Create context menu for right-click on this item
       av.dnd.contextMenu(av.dnd.fzWorld, domid);
+      av.fzr.saveUpdateState('no');
     }
   }
 }

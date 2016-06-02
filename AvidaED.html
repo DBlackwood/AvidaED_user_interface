@@ -635,18 +635,9 @@
                        trim='false' uppercase='false' lowercase='false' propercase='false' invalidMessage='$_unset_$'
                        value='1000' data-dojo-props='smallDelta:100, constraints:{places:0}' style='width:80px'></button>
               </div>
-              <div class='even'>
-                test 1:
-                <input id='test1' value='20'
-                       style='width: 3em; height:1.8em' />
-                &nbsp;&nbsp;&nbsp;
-                test 2:
-                <input id='test2' style='width:4em; height:1.8em'/>
-                msecs<br />
-              </div>
               <span data-dojo-type='dijit/TitlePane' id='AdvancedSetup' title='Advanced Setup'
                     extractContent='false' preventCache='false' preload='false' refreshOnShow='false' duration='200'
-                    open='false' style='min-width: 1px; width: 100%; height: auto;'>
+                    open='false' style='min-width: 1px; width: 100%; height: auto; visibility: hidden'>
                 <div class='even'>
                   time Slice:
                   <input id='avetimeSlice' value='20'
@@ -662,7 +653,7 @@
               </span>
             </form>
           </div>
-          <!-- </span> -->
+          <!-- </span> ?????? -->
         </div>
       </div>
     </div>
@@ -886,7 +877,7 @@
   </div>
 </div>
 
-<!-- Dialog boxes --------------------------------------- -->
+<!--------------------------------------------------------- Dialog boxes ---------------------------------------------->
 <!----- Save WSfile Dialog box -------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sWSfDialog' title='The freezer has changed since last saved in a workspace'>
   <div class='dijitDialogPaneContentArea'>
@@ -901,7 +892,7 @@
   </div>
 </div>
 
-<!-- Freezer Dialog -->
+<!--------------------------------------------------- Freezer Dialog -------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='fzDialog' title='What would you like to save to the freezer?'>
   <div class='dijitDialogPaneContentArea'>
     <p>Configuration saves the experiment settings only.</p>
@@ -936,7 +927,7 @@
   </div>
 </div>
 
-<!-- Single Organism Replication Settings Dialog Box -->
+<!----------------------------- Single Organism Replication Settings Dialog Box --------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='OrganSetupDialog' title='Settings for single organism replication'>
   <div class='dijitDialogPaneContentArea'>
     <form id='OrganRepeatForm'>
@@ -963,22 +954,13 @@
       <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='OrganDemoRadio'
              intermediateChanges='false' name='child' value='orgDemo' iconClass='dijitNoIcon'></button>
       <label id='OrganDemoLabel'>Demo (forces exact replay)</label>
-      <div class='even'>
-        test 3:
-        <input id='test3' value='20'
-               style='width: 3em; height:1.8em' />
-        &nbsp;&nbsp;&nbsp;
-        test 4:
-        <input id='test4' style='width:4em; height:1.8em'/>
-        msecs<br />
-      </div>
     </form>
   </div>
   <div class='dijitDialogPaneActionBar'>
   </div>
 </div>
 
-<!-- Need Ancestor Dialog -->
+<!------------------------------------------ Need Ancestor Dialog ----------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='NeedAncestorDialog'
      title='Unable to resume experiment; there is no start organism in the petri dish.'>
   <div class='dijitDialogPaneContentArea'>
@@ -992,7 +974,7 @@
   </div>
 </div>
 
-<!-- Help About Dialog -->
+<!------------------------------------------ Help About Dialog -------------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnHpAboutDialog'
      title='Avida-Ed: Emscripten with javascript version: Alpha Test 2016 Jan 20'>
   <div class='dijitDialogPaneContentArea'>
@@ -1006,7 +988,7 @@
   </div>
 </div>
 
-<!-- restart Avida Dialog -->
+<!---------------------------------------- Restart Avida with in same browser Session (Does not work ------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='restartAvidaDialog'
      title='There has been a fatal error in Avida'>
   <div class='dijitDialogPaneContentArea'>
@@ -1019,6 +1001,7 @@
   </div>
 </div>
 
+<!------------------------------------- Send Log Data via e-mail client  ---------------------------------------------->
 <!-- Saving session log when no e-mail client present -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sendLogDialog'
      title='Avida-Ed Problem Report - help us make Avida-Ed better'>
@@ -1041,6 +1024,7 @@
   </div>
 </div>
 
+<!-------------------------------------- Save time recorder data to a csv file ---------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='saveCSVdialog'
      title='write a file'>
   <div class='dijitDialogPaneContentArea'>
@@ -1051,13 +1035,12 @@
             id='saveCSVdialogCancel'>Cancel
     </button>
 </div>
-
-    <!--    <button data-dojo-type='dijit/form/Button' type='button' id='sendLogDialogSave'>Save</button>  -->
+   <!--    <button data-dojo-type='dijit/form/Button' type='button' id='sendLogDialogSave'>Save</button>  -->
   </div>
 </div>
 
 
-<!-- closing the file -->
+<!------------------------------------------ closing the file --------------------------------------------------------->
 
 </body>
 </html>
