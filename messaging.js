@@ -131,6 +131,7 @@ av.msg.readMsg = function (ee) {
         // Then used http://gifmaker.me/reverser/ to make a gif in reverse time order. Then Wesley used gifsicle
         // to combine the forward and reverse gif.
         $('#splash').remove(); //hides splace screen.
+        av.ui.loadOK = true;
         break;
       case 'warning':
         userMsgLabel.textContent = 'Avida warning at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);

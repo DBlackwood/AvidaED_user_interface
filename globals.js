@@ -8,7 +8,7 @@ var av = av || {};  //incase av already exists
 av.debug = {};
 av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
 av.debug.logic = false;  //av.debug statements that look for errors outlining logic functions
-av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
+av.debug.mouse = true;   //av.debug statements about non-dojo drag and drop
 av.debug.dnd = false;     //debu statements about dojo dnd
 av.debug.msg = false;     //messages to and from avida
 av.debug.trace = false;   //organism page
@@ -272,9 +272,9 @@ av.grd.clearGrd = function () {
   av.grd.out = [];   // deals with the color of the grid outline
   av.grd.fillmax = 0;    // max value for grid scale for the gradient color
   av.grd.msg = {};
-  av.grd.mxFit = 0.4;   //store maximum fitness during an experiment
-  av.grd.mxGest = 400;  //store maximum Generation Length during an experiment
-  av.grd.mxRate = 40;  //store maximum metabolic rate during an experiment
+  av.grd.mxFit = 0.8;   //store maximum fitness during an experiment
+  av.grd.mxGest = 800;  //store maximum Generation Length during an experiment
+  av.grd.mxRate = 80;  //store maximum metabolic rate during an experiment
 
   av.grd.mxFit = 0;   //store maximum fitness during an experiment
   av.grd.mxGest = 0;  //store maximum Generation Length during an experiment
@@ -296,14 +296,14 @@ av.grd.clearGrd = function () {
   av.grd.oldUpdate = -10;
   av.ptd.autoPauseUpdate = 1000;
 
-  av.ptd.aveFit = [];  //ave is for all avidians.
-  av.ptd.logFit = [];  //log is for avidians that performm logic functions
-  av.ptd.aveGnl = [];  //generation length - used to be Generation Length
-  av.ptd.logGnl = [];
-  av.ptd.aveMet = [];
-  av.ptd.logMet = [];
-  av.ptd.aveNum = [];
-  av.ptd.logNum = [];
+  av.ptd.aveFit = [0];  //ave is for all avidians.
+  av.ptd.logFit = [0];  //log is for avidians that performm logic functions
+  av.ptd.aveGnl = [0];  //generation length - used to be Generation Length
+  av.ptd.logGnl = [0];
+  av.ptd.aveMet = [0];
+  av.ptd.logMet = [0];
+  av.ptd.aveNum = [0];
+  av.ptd.logNum = [0];
   av.ptd.allOff = true;
 
   av.msg.ByCellIDgenome = '';        //Holdes the genome which is needed to freeze a cell.
@@ -333,6 +333,10 @@ av.ui.pobBotWdMin = 430;
 av.ui.num = 0;   //tenporary holder for a number;
 av.ui.numTxt = '';
 av.msg.avidaReady = false;
+av.ui.loadOK = false;
+setTimeout(function () {
+  if (!av.ui.loadOK) {alert('Avida-ED failed to load, please try re-loading');}
+}, 121000);
 
 //----------------------------------------------- finding the browser and opperating system ----------------------------
 //http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -437,6 +441,17 @@ av.fzr.clearMainFzrFn = function () {
   av.fzr.cNum = 0;  //value of the next configured dish (config) number
   av.fzr.gNum = 0;  //value of the next organism (genome) number
   av.fzr.wNum = 0;  //value of the next world (populated dish) number
+
+  //Clear each section of the freezer and active organism and ancestorBox
+  av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+  av.dnd.fzConfig.sync();   //should be done after insertion or deletion
+  av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
+  av.dnd.fzOrgan.sync();
+  av.dnd.fzWorld.selectAll().deleteSelectedNodes();
+  av.dnd.fzWorld.sync();
+  av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
+  av.dnd.ancestorBox.sync();
+  
   av.fzr.saveUpdateState('yes');
 };
 

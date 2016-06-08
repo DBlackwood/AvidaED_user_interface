@@ -14,6 +14,7 @@ av.grd.backgroundSquares = function () {
   }
 }
 
+//Sets scale and puts the user selected data type in the grid array. Rob wants the scale to be different at the beginning of a run 
 av.grd.setMapData = function () {
   'use strict';
   if (undefined != av.grd.msg.fitness) {

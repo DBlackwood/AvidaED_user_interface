@@ -71,6 +71,7 @@
        refreshOnShow='false' region='top' splitter='false' maxSize='Infinity' doLayout='false' style='height:26px;'>
     <input id='putWS' type='file' style = 'display:none' onchange='av.fio.userPickZipRead()' />
     <input id='importFzrItem' type='file' style = 'display:none' onchange='av.fio.importZipRead()' />
+
     <input type='hidden' value='mymail@gmail.com' id='mailto' />
       <span data-dojo-type='dijit/MenuBar' tabIndex='0'>
         <span data-dojo-type='dijit/PopupMenuBarItem' label='File' iconClass='dijitNoIcon' id='mnFile'>
@@ -552,7 +553,7 @@
                 <div class='ancestorContainer' id='ancestorBox'></div>
               </div>
               <div class='even'>
-                Place Offspring:
+                Place Offspring:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='childParentRadio'
                        intermediateChanges='false'
                        iconClass='dijitNoIcon' name='child' value='nearParent'></button>
@@ -612,11 +613,11 @@
                 </table>
               </div>
               <div class='even'>
-                <label id='label_31'>Repeatability Mode:</label>
+                <label id='label_31'>Repeatability Mode:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='experimentRadio'
                        intermediateChanges='false' iconClass='dijitNoIcon' name='repeat'
-                       value='experimental'></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label id='experimentLabel'>Experimental</label>
+                       value='experimental'></button>
+                <label id='experimentLabel'>Experimental</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='demoRadio' checked
                        intermediateChanges='false' iconClass='dijitNoIcon' name='repeat' value='demo'></button>
                 <label id='demoLabel'>Demo</label>
@@ -957,6 +958,9 @@
     </form>
   </div>
   <div class='dijitDialogPaneActionBar'>
+    <button data-dojo-type='dijit/form/Button' type='button' data-dojo-props='onClick:function(){OrganSetupDialog.hide();}' id='indDone'>
+      Done
+    </button>
   </div>
 </div>
 
@@ -976,7 +980,7 @@
 
 <!------------------------------------------ Help About Dialog -------------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnHpAboutDialog'
-     title='Avida-Ed: Emscripten with javascript version: Alpha Test 2016 Jan 20'>
+     title='Avida-Ed: Emscripten with javascript version: Beta Test Version 2016 June 2orgrrrrr'>
   <div class='dijitDialogPaneContentArea'>
     <p>for more information go to <a href='http://avida-ed.msu.edu' target='_blank'>Avida-ED at MSU</a></p>
   </div>

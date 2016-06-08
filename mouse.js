@@ -59,7 +59,7 @@ av.mouse.notDndIndCursorShape = function (shape) {
 
 av.mouse.selectedDadMouseStyle = function () {
   'use strict';
-  console.log('in Dad');
+  //console.log('in Dad');
   document.getElementById('gridCanvas').style.cursor = 'copy';
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('TrashCanImage').style.cursor = 'copy';

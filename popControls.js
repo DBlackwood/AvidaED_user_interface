@@ -13,27 +13,27 @@ av.ptd.makePauseState = function () {
 // shifts the population page from Map (grid) view to setup parameters view and back again.
 av.ptd.popBoxSwap = function () {
   'use strict';
-  if ("Map" == document.getElementById("PopSetupButton").innerHTML) {
+  if ('Map' == document.getElementById('PopSetupButton').innerHTML) {
     av.debug.log += '\n -Button: PopSetupButton became Setup';
     document.getElementById('mapBlock').style.display = 'block';
-    document.getElementById("PopSetupButton").textContent = "Setup";
-    dijit.byId("setupBlock").set("style", "display: none");
+    document.getElementById('PopSetupButton').textContent = 'Setup';
+    dijit.byId('setupBlock').set('style', 'display: none');
 
     av.grd.cellConflict(av.grd.cols, av.grd.rows);
     av.grd.drawGridSetupFn();
     av.ui.subpage = 'map';
-    //var height = $("#mapBlock").innerHeight() - 6;
-    //dijit.byId("mapBlock").set("style", "display: block; height: " + height + "px");
-    //dijit.byId("mapBlock").set("style", "display: block;");
-    //dijit.byId("mapBC").set("style", "height: " + height + "px");
+    //var height = $('#mapBlock').innerHeight() - 6;
+    //dijit.byId('mapBlock').set('style', 'display: block; height: ' + height + 'px');
+    //dijit.byId('mapBlock').set('style', 'display: block;');
+    //dijit.byId('mapBC').set('style', 'height: ' + height + 'px');
   } else {
     av.debug.log += '\n -Button: PopSetupButton became Map';
     document.getElementById('mapBlock').style.display = 'none'
-    document.getElementById("PopSetupButton").textContent = "Map";
-    dijit.byId("setupBlock").set("style", "display: block;");
+    document.getElementById('PopSetupButton').textContent = 'Map';
+    dijit.byId('setupBlock').set('style', 'display: block;');
 
     av.ui.subpage = 'setup';
-    //dijit.byId("mapBlock").set("style", "display: none;");
+    //dijit.byId('mapBlock').set('style', 'display: none;');
   }
 }
 
@@ -50,13 +50,13 @@ av.ptd.popWorldStateUi = function () {
   delete av.dnd.activeConfig.accept['w'];
   av.dnd.fzWorld.accept['w'] = 1;
   av.dnd.fzWorld.accept['b'] = 1;
-  dijit.byId("sizeCols").attr("disabled", true);
-  dijit.byId("sizeRows").attr("disabled", true);
-  dijit.byId("experimentRadio").attr("disabled", true);
-  dijit.byId("demoRadio").attr("disabled", true);
+  dijit.byId('sizeCols').attr('disabled', true);
+  dijit.byId('sizeRows').attr('disabled', true);
+  dijit.byId('experimentRadio').attr('disabled', true);
+  dijit.byId('demoRadio').attr('disabled', true);
 
   //there will be a population so it can now be frozen.
-  dijit.byId("mnFzPopulation").attr("disabled", false);
+  dijit.byId('mnFzPopulation').attr('disabled', false);
 }
 
 av.ptd.popRunningStateUi = function () {
@@ -72,32 +72,32 @@ av.ptd.popRunningStateUi = function () {
   delete av.dnd.activeConfig.accept['w'];
   av.dnd.fzWorld.accept['w'] = 1;
   av.dnd.fzWorld.accept['b'] = 1;
-  $("#muteSlide").slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
-  dijit.byId("sizeCols").attr("disabled", true);
-  dijit.byId("sizeRows").attr("disabled", true);
-  dijit.byId("muteInput").attr("disabled", true);
-  dijit.byId("childParentRadio").attr("disabled", true);
-  dijit.byId("childRandomRadio").attr("disabled", true);
-  dijit.byId("notose").attr("disabled", true);
-  dijit.byId("nanose").attr("disabled", true);
-  dijit.byId("andose").attr("disabled", true);
-  dijit.byId("ornose").attr("disabled", true);
-  dijit.byId("orose").attr("disabled", true);
-  dijit.byId("andnose").attr("disabled", true);
-  dijit.byId("norose").attr("disabled", true);
-  dijit.byId("xorose").attr("disabled", true);
-  dijit.byId("equose").attr("disabled", true);
-  dijit.byId("experimentRadio").attr("disabled", true);
-  dijit.byId("demoRadio").attr("disabled", true);
+  $('#muteSlide').slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
+  dijit.byId('sizeCols').attr('disabled', true);
+  dijit.byId('sizeRows').attr('disabled', true);
+  dijit.byId('muteInput').attr('disabled', true);
+  dijit.byId('childParentRadio').attr('disabled', true);
+  dijit.byId('childRandomRadio').attr('disabled', true);
+  dijit.byId('notose').attr('disabled', true);
+  dijit.byId('nanose').attr('disabled', true);
+  dijit.byId('andose').attr('disabled', true);
+  dijit.byId('ornose').attr('disabled', true);
+  dijit.byId('orose').attr('disabled', true);
+  dijit.byId('andnose').attr('disabled', true);
+  dijit.byId('norose').attr('disabled', true);
+  dijit.byId('xorose').attr('disabled', true);
+  dijit.byId('equose').attr('disabled', true);
+  dijit.byId('experimentRadio').attr('disabled', true);
+  dijit.byId('demoRadio').attr('disabled', true);
 
   //there will be a population so it can now be frozen.
-  dijit.byId("mnFzPopulation").attr("disabled", false);
+  dijit.byId('mnFzPopulation').attr('disabled', false);
 }
 
 av.ptd.popNewExState = function () {
   'use strict';
   //set configuation to default
-  var fname = "@default";
+  var fname = '@default';
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();
   av.dnd.activeConfig.insertNodes(false, [{data: fname, type: ['c']}]);
   av.dnd.activeConfig.sync();
@@ -117,31 +117,31 @@ av.ptd.popNewExState = function () {
   av.dnd.ancestorBox.isSource = true;
   av.dnd.ancestorBox.copyOnly = true;
   av.dnd.activeConfig.isSource = true;
-  $("#muteSlide").slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
-  dijit.byId("sizeCols").attr("disabled", false);
-  dijit.byId("sizeRows").attr("disabled", false);
-  dijit.byId("muteInput").attr("disabled", false);
-  dijit.byId("childParentRadio").attr("disabled", false);
-  dijit.byId("childRandomRadio").attr("disabled", false);
-  dijit.byId("notose").attr("disabled", false);
-  dijit.byId("nanose").attr("disabled", false);
-  dijit.byId("andose").attr("disabled", false);
-  dijit.byId("ornose").attr("disabled", false);
-  dijit.byId("orose").attr("disabled", false);
-  dijit.byId("andnose").attr("disabled", false);
-  dijit.byId("norose").attr("disabled", false);
-  dijit.byId("xorose").attr("disabled", false);
-  dijit.byId("equose").attr("disabled", false);
-  dijit.byId("experimentRadio").attr("disabled", false);
-  dijit.byId("demoRadio").attr("disabled", false);
+  $('#muteSlide').slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
+  dijit.byId('sizeCols').attr('disabled', false);
+  dijit.byId('sizeRows').attr('disabled', false);
+  dijit.byId('muteInput').attr('disabled', false);
+  dijit.byId('childParentRadio').attr('disabled', false);
+  dijit.byId('childRandomRadio').attr('disabled', false);
+  dijit.byId('notose').attr('disabled', false);
+  dijit.byId('nanose').attr('disabled', false);
+  dijit.byId('andose').attr('disabled', false);
+  dijit.byId('ornose').attr('disabled', false);
+  dijit.byId('orose').attr('disabled', false);
+  dijit.byId('andnose').attr('disabled', false);
+  dijit.byId('norose').attr('disabled', false);
+  dijit.byId('xorose').attr('disabled', false);
+  dijit.byId('equose').attr('disabled', false);
+  dijit.byId('experimentRadio').attr('disabled', false);
+  dijit.byId('demoRadio').attr('disabled', false);
 
   //reset Ancestor Color stack
   //av.parents.Colors = av.color.parentColorList.slice();   //delete this later
   av.parents.Colors.reverse();
   //set run/stop and drop down menu to the 'stopped' state
-  dijit.byId("mnCnPause").attr("disabled", true);
-  dijit.byId("mnCnRun").attr("disabled", false);
-  document.getElementById("runStopButton").innerHTML = "Run";
+  dijit.byId('mnCnPause').attr('disabled', true);
+  dijit.byId('mnCnRun').attr('disabled', false);
+  document.getElementById('runStopButton').innerHTML = 'Run';
   //console.log('pauseState; button=run in av.ptd.popNewExState');
 
   //clear the time series graphs
@@ -162,30 +162,33 @@ av.ptd.popNewExState = function () {
   av.dnd.gridCanvas.sync();
 
   //Update data for Selected Organism Type
-  nameLabel.textContent = "";
-  fitLabel.innerHTML = "";
-  metabolicLabel.textContent = "";
-  generateLabel.textContent = "";
-  ageLabel.textContent = "";
-  ancestorLabel.textContent = "";
-  notLabel.textContent = "not-";
-  nanLabel.textContent = "nan-";
-  andLabel.textContent = "and-";
-  ornLabel.textContent = "orn-";
-  oroLabel.textContent = "oro-";
-  antLabel.textContent = "ant-";
-  norLabel.textContent = "nor-";
-  xorLabel.textContent = "xor-";
-  equLabel.textContent = "equ-";
-  notTime.textContent = "0";
-  nanTime.textContent = "0";
-  andTime.textContent = "0";
-  ornTime.textContent = "0";
-  oroTime.textContent = "0";
-  antTime.textContent = "0";
-  norTime.textContent = "0";
-  xorTime.textContent = "0";
-  equTime.textContent = "0";
+  av.grd.selCtx.fillStyle = '#D7D7D7';
+  av.grd.selCtx.fillRect(0, 0, av.grd.SelectedWd, av.grd.SelectedHt);
+  nameLabel.textContent = '';
+  fitLabel.innerHTML = '';
+  metabolicLabel.textContent = '';
+  generateLabel.textContent = '';
+  ageLabel.textContent = '';
+  ancestorLabel.textContent = '';
+  viableLabel.textContent = '';
+  notLabel.textContent = 'not-';
+  nanLabel.textContent = 'nan-';
+  andLabel.textContent = 'and-';
+  ornLabel.textContent = 'orn-';
+  oroLabel.textContent = 'oro-';
+  antLabel.textContent = 'ant-';
+  norLabel.textContent = 'nor-';
+  xorLabel.textContent = 'xor-';
+  equLabel.textContent = 'equ-';
+  notTime.textContent = '0';
+  nanTime.textContent = '0';
+  andTime.textContent = '0';
+  ornTime.textContent = '0';
+  oroTime.textContent = '0';
+  antTime.textContent = '0';
+  norTime.textContent = '0';
+  xorTime.textContent = '0';
+  equTime.textContent = '0';
   
   //Population Statistics
   popSizeLabel.textContent = '';
@@ -205,8 +208,8 @@ av.ptd.popNewExState = function () {
   xorPop.textContent = '';
   equPop.textContent = '';
   av.grd.flagSelected = false;
-  dijit.byId("mnFzOrganism").attr("disabled", true);
-  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
+  dijit.byId('mnFzOrganism').attr('disabled', true);
+  dijit.byId('mnCnOrganismTrace').attr('disabled', true);
 }
 
 av.ptd.reset = function () {
@@ -220,20 +223,20 @@ av.ptd.reset = function () {
 av.ptd.FrOrganismFn = function (trigger) {
   'use strict';
   var fzName = 'new';
-  var parentName = "";
+  var parentName = '';
   var gene;
   if ('selected' == trigger) {
-    fzName = prompt("Please name the selected organism", av.grd.kidName);
+    fzName = prompt('Please name the selected organism', av.grd.kidName);
     gene = av.grd.kidGenome;
   }
   else if ('offspring' == trigger) {
     //get name from parent
     parentName = document.getElementById(Object.keys(av.dnd.activeOrgan.map)[0]).textContent;
-    fzName = prompt("Please name the offspring", parentName + '_Offspring');
+    fzName = prompt('Please name the offspring', parentName + '_Offspring');
     gene = '0,heads_default,' + av.ind.dna[1];
   }
   else {
-    fzName = prompt("Please name the organism", "newOrganism");
+    fzName = prompt('Please name the organism', 'newOrganism');
     console.log('source unknwon', trigger);
   }
   fzName = av.dnd.getUniqueName(fzName, av.dnd.fzOrgan);
@@ -257,7 +260,7 @@ av.ptd.FrOrganismFn = function (trigger) {
 
 av.ptd.FrConfigFn = function () {
   'use strict';
-  var fzName = prompt("Please name the new configuration", "newConfig");
+  var fzName = prompt('Please name the new configuration', 'newConfig');
   if (fzName) {
     //var namelist = dojo.query('> .dojoDndItem', 'fzConfig');  console.log('namelist', namelist); not in use, but does show another way to get data
     fzName = av.dnd.getUniqueName(fzName, av.dnd.fzConfig);
@@ -283,7 +286,7 @@ av.ptd.FrPopulationFn = function () {
   av.msg.exportExpr('w' + av.fzr.wNum);
   av.msg.sendData();
   var popName = av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update.formatNum(0);  // need update here star
-  var fzName = prompt("Please name the new population", popName);
+  var fzName = prompt('Please name the new population', popName);
   if (fzName) {
     fzName = av.dnd.getUniqueName(fzName, av.dnd.fzWorld);
     if (null != fzName) {
@@ -337,8 +340,8 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   av.grd.clearGrd();
 
   av.grd.runState = 'prepping';
-  dijit.byId("mnCnOrganismTrace").attr("disabled", true);
-  dijit.byId("mnFzOrganism").attr("disabled", true);
+  dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+  dijit.byId('mnFzOrganism').attr('disabled', true);
   //Enable the options on the Setup page
   av.ptd.popNewExState();
   //Clear grid settings
@@ -366,9 +369,9 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];}
 
     //Clear options that are not in the config files
-  dijit.byId("manualUpdateRadio").set('checked', true);
-  dijit.byId("autoUpdateRadio").set('checked', false);
-  dijit.byId("autoUpdateSpinner").set('value', av.ptd.autoPauseUpdate);
+  dijit.byId('manualUpdateRadio').set('checked', true);
+  dijit.byId('autoUpdateRadio').set('checked', false);
+  dijit.byId('autoUpdateSpinner').set('value', av.ptd.autoPauseUpdate);
 
   av.ptd.clearLogicButtons();
   console.log('fzr.activeCon', av.fzr.actConfig);
@@ -395,42 +398,42 @@ av.ptd.clearLogicButtons = function() {
 //and read the returned JSON string.
 av.ptd.writeHardDefault = function (av) {
   'use strict';
-  dijit.byId("sizeCols").set('value', av.dft.sizeCols);
-  dijit.byId("sizeRows").set('value', av.dft.sizeRows);
+  dijit.byId('sizeCols').set('value', av.dft.sizeCols);
+  dijit.byId('sizeRows').set('value', av.dft.sizeRows);
   if ('childParentRadio'==av.dft.child) {
-    dijit.byId("childParentRadio").set('checked', true);
-    dijit.byId("childRandomRadio").set('checked', false);
+    dijit.byId('childParentRadio').set('checked', true);
+    dijit.byId('childRandomRadio').set('checked', false);
   }
   else {
-    dijit.byId("childParentRadio").set('checked', false);
-    dijit.byId("childRandomRadio").set('checked', true);
+    dijit.byId('childParentRadio').set('checked', false);
+    dijit.byId('childRandomRadio').set('checked', true);
   }
-  dijit.byId("notose").set('checked', av.dft.notose);
-  dijit.byId("nanose").set('checked', av.dft.nanose);
-  dijit.byId("andose").set('checked', av.dft.andose);
-  dijit.byId("ornose").set('checked', av.dft.ornose);
-  dijit.byId("orose").set('checked', av.dft.orose);
-  dijit.byId("andnose").set('checked', av.dft.andnose);
-  dijit.byId("norose").set('checked', av.dft.norose);
-  dijit.byId("xorose").set('checked', av.dft.xorose);
-  dijit.byId("equose").set('checked', av.dft.equose);
-  dijit.byId("experimentRadio").set('checked', true);
-  dijit.byId("manualUpdateRadio").set('checked', true);
+  dijit.byId('notose').set('checked', av.dft.notose);
+  dijit.byId('nanose').set('checked', av.dft.nanose);
+  dijit.byId('andose').set('checked', av.dft.andose);
+  dijit.byId('ornose').set('checked', av.dft.ornose);
+  dijit.byId('orose').set('checked', av.dft.orose);
+  dijit.byId('andnose').set('checked', av.dft.andnose);
+  dijit.byId('norose').set('checked', av.dft.norose);
+  dijit.byId('xorose').set('checked', av.dft.xorose);
+  dijit.byId('equose').set('checked', av.dft.equose);
+  dijit.byId('experimentRadio').set('checked', true);
+  dijit.byId('manualUpdateRadio').set('checked', true);
   if ('experimentRadio'==av.dft.repeat) {
-    dijit.byId("experimentRadio").set('checked', true);
-    dijit.byId("demoRadio").set('checked', false);
+    dijit.byId('experimentRadio').set('checked', true);
+    dijit.byId('demoRadio').set('checked', false);
   }
   else {
-    dijit.byId("experimentRadio").set('checked', false);
-    dijit.byId("demoRadio").set('checked', true);
+    dijit.byId('experimentRadio').set('checked', false);
+    dijit.byId('demoRadio').set('checked', true);
   }
   if ('manualUpdateRadio'==av.dft.pauseType) {
-    dijit.byId("manualUpdateRadio").set('checked', true);
-    dijit.byId("autoUpdateRadio").set('checked', false);
+    dijit.byId('manualUpdateRadio').set('checked', true);
+    dijit.byId('autoUpdateRadio').set('checked', false);
   }
   else {
-    dijit.byId("manualUpdateRadio").set('checked', false);
-    dijit.byId("autoUpdateRadio").set('checked', true);
+    dijit.byId('manualUpdateRadio').set('checked', false);
+    dijit.byId('autoUpdateRadio').set('checked', true);
   };
 }
 

@@ -75,59 +75,61 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
   av.fio.userPickZipRead = function () {
     'use strict';
     console.log('in av.fio.userPickZipRead');
-    av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
-    //Clear each section of the freezer and active organism and ancestorBox
-    av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-    av.dnd.fzConfig.sync();   //should be done after insertion or deletion
-    av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
-    av.dnd.fzOrgan.sync();
-    av.dnd.fzWorld.selectAll().deleteSelectedNodes();
-    av.dnd.fzWorld.sync();
+    var inputWSfile, zipFileToLoad, fileReader, zip2unpack, zipFileLoaded, nameOfFileContainedInZipFile;
 
-    var inputWSfile = document.getElementById('putWS');
-    var zipFileToLoad = inputWSfile.files[0];
-    console.log('zipFileToLoad', zipFileToLoad);
+    try {
+      inputWSfile = document.getElementById('putWS');
+      zipFileToLoad = inputWSfile.files[0];
+      console.log('zipFileToLoad', zipFileToLoad);
+      fileReader = new FileReader();
+    }
+    catch(err) {console.log('Get file', err);}
 
-    var fileReader = new FileReader();
     fileReader.onloadend = function(fileLoadedEvent)
     {
-      console.log('fileLoadedEvent',fileLoadedEvent);
-      console.log('result', fileLoadedEvent.target.result);
-      if (av.fio.isB64) {  //need to convert from B64 format
-        var zip2unpack = atob(fileLoadedEvent.target.result);
-      }
-      else zip2unpack = fileLoadedEvent.target.result;
-      console.log('zip2unpack', zip2unpack);
-      console.log('zip2unpack', zip2unpack.slice(0, 51));
+      try {
+        console.log('fileLoadedEvent', fileLoadedEvent);
+        console.log('result', fileLoadedEvent.target.result);
+        zip2unpack = fileLoadedEvent.target.result;
+        console.log('zip2unpack', zip2unpack);
 
-      var zipFileLoaded = new av.fio.JSZip(zip2unpack);
-      av.fio.zipPathRoot = null;
-      for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
-      {
-        var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
-        /*Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
-         This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
-         */
-        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
-        if (null === av.fio.zipPathRoot) {
-          if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
-            av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
+        zipFileLoaded = new av.fio.JSZip(zip2unpack);
+        av.fio.zipPathRoot = null;
+        av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
+
+        for (nameOfFileContainedInZipFile in zipFileLoaded.files) {
+          var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
+          /*Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
+           This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
+           */
+          //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+          if (null === av.fio.zipPathRoot) {
+            if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
+              av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
+            }
+            else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
+              av.fio.zipPathRoot = '';
+            }
           }
-          else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {av.fio.zipPathRoot='';}
+          av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
+          av.fio.fName = nameOfFileContainedInZipFile;
+          if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot + '/', av.fio.fName);
+          else av.fio.anID = av.fio.fName;
+          //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+          //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+          if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
         }
-        av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
-        av.fio.fName = nameOfFileContainedInZipFile;
-        if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
-        else av.fio.anID = av.fio.fName;
-        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
-        //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
-        if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
+        if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
+        av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
+        av.fzr.gNum++;
+        av.fzr.wNum++;
+        av.fzr.saveUpdateState('yes');
       }
-      if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
-      av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
-      av.fzr.gNum++;
-      av.fzr.wNum++;
-      av.fzr.saveUpdateState('yes');
+      catch (error) {
+        av.debug.log += '\n' + error;
+        alert('Unable to extract an Avida Workspace, please check the file and try again. If you continue to have trouble, use "Report Problem" in the help menu');
+        //console.log(error);
+      }
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
   }
@@ -148,11 +150,11 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
       {
         var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
-        //Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
+        //Mac generated freezerItems have the string '.avidaedfreezeritem/' before the files for each freezerItem.
         //This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
 
         //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
-        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
+        console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
         if (null === av.fio.zipPathRoot) {
           if (0 < nameOfFileContainedInZipFile.indexOf('avidaedfreezeritem') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
             av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
@@ -162,26 +164,28 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
         av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
         av.fio.fName = nameOfFileContainedInZipFile;
 
+        console.log('zipPathRoot',av.fio.zipPathRoot, '; fName', av.fio.fName);
         if (2 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot+'/', av.fio.fName);
         else av.fio.anID = av.fio.fName;
-        //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
-        //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
-        //console.log('-------------------------------------------------------------------------------------------------');
+        console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+        console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+        console.log('-------------------------------------------------------------------------------------------------');
         if (2 < av.fio.fName.length) av.fio.processItemFiles();  //do not load configfile
       }
+      console.log('freezer', av.fzr);
       av.fio.fixFname();
       if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //calls the function above
     av.fzr.saveUpdateState('no');
-
   }
 
 av.fio.fixFname = function() {
   'use strict';
   var domid, name, type, dir;
-  if (null === av.fzr.item['entryname.txt']) { name = wsb('.', av.fio.zipPathRoot); }
-  else { name = av.fzr.item['entryname.txt'].trim(); }
+  if (av.fzr.item['entryname.txt']) { name = av.fzr.item['entryname.txt'].trim(); }
+  else { name = wsb('.', av.fio.zipPathRoot); }
+  console.log('name', name, '; zipPathRoot', av.fio.zipPathRoot);
 
   if (av.fzr.item['entrytype.txt']) {
     type = av.fzr.item['entrytype.txt'].trim();
@@ -309,11 +313,11 @@ av.fio.SaveInSafari = function (content, uFname) {
   //File reader is for some reason asynchronous
   reader.onloadend = function () {
     //items.setData(reader.result, "zip");
-  }
+  };
   //This starts the conversion
   //reader.readAsBinaryString(content);
   //reader.readAsDataURL(content);
-  reader.readAsArrayBufferd(content);
+  reader.readAsArrayBuffer(content);
 
   setTimeout(function(){
     var theStr = reader.result;
@@ -353,8 +357,9 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
 
   console.log('brs', av.brs.isSafari, '; userFname', av.fio.userFname);
   if (av.brs.isSafari) {
-    alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .b64. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
-    av.fio.SaveInSafari(content, av.fio.userFname);
+    //The lines below call a function that almost works.
+    //alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .b64. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
+    //av.fio.SaveInSafari(content, av.fio.userFname);
   }
   else {
     var fsaver = saveAs(content, av.fio.userFname);

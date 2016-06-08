@@ -274,7 +274,7 @@ require([
     av.debug.log += '\n -Button: mnFlOpenWS';
     av.fio.useDefault = false;
     av.fio.isB64 = false;
-    if ('no' === av.fzr.saveState) sWSfDialog.show();
+    if ('no' === av.fzr.saveState) sWSfDialog.show();   //Need to change to include might be saved tiba fix
     //else document.getElementById('inputFile').click();
     else document.getElementById('putWS').click();  // calls av.fio.userPickZipRead
   });
@@ -302,8 +302,10 @@ require([
   // ----------------------- Save Workspace ----------------------------------------------------------------------------
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById('mnFlSaveWorkspace').onclick = function () {
-    av.debug.log += '\n -Button: mnFlSaveWorkspace';
-    av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
+    if (!av.brs.isSafari) {
+      av.debug.log += '\n -Button: mnFlSaveWorkspace';
+      av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
+    }
   };
 
   try {
@@ -312,22 +314,17 @@ require([
     console.log('----------------------------------------------------------filesaver supported?', e);
   }
 
-  if (av.brs.isSafari) {
-    dijit.byId('mnFlSaveWorkspace').attr('disabled', true);
-    dijit.byId('mnFlSaveAs').attr('disabled', true);
-    dijit.byId('mnFlSaveAs').attr('disabled', true);
-  }
-
-
   // Save current workspace with a new name
   document.getElementById('mnFlSaveAs').onclick = function () {
-    av.debug.log += '\n -Button: mnFlSaveAs';
-    var suggest = 'avidaWS.avidaedworkspace.zip';
-    if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
-    av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
-    if (null !== av.fio.userFname) {
-      av.fio.fzSaveCurrentWorkspaceFn();
-    }  //fileIO.js
+    if (!av.brs.isSafari) {
+      av.debug.log += '\n -Button: mnFlSaveAs';
+      var suggest = 'avidaWS.avidaedworkspace.zip';
+      if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
+      av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
+      if (null !== av.fio.userFname) {
+        av.fio.fzSaveCurrentWorkspaceFn();
+      }  //fileIO.js
+    }
   };
 
   //Export csv data from current run.
@@ -1525,7 +1522,7 @@ require([
   });
 
 // Can use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
-//this required the use of a theme, but I'm no longer using the theme. Could take 'Wetland' out of require statemet as long a this is not used
+//this required the use of a theme, but I'm no longer using the theme. Took 'Wetland' out of require statemet as long a this is not used
 //var myTheme = Wetland; // Or any other theme
 //myTheme.axis.majorTick.color = '#CCC';  //grey
 //myTheme.axis.minorTick.color = 'red';
@@ -1553,7 +1550,6 @@ require([
         av.grd.popY2 = av.ptd.logNum;
       }
       else {
-        console.log('yaxis is None');
         av.grd.popY = [0];
         av.grd.popY2 = [0];
       }
@@ -2087,7 +2083,11 @@ require([
   //Safari 9 will not allow saving workspaces or freezer items.
   if (av.brs.isSafari) {
     userMsgLabel.textContent = 'Safari 9 does not allow saving a workspace or freezer items. Please use Firefox or Chrome';
+    dijit.byId('mnFlSaveWorkspace').attr('disabled', true);
+    dijit.byId('mnFlSaveWorkspace').attr('disabled', true);
+    dijit.byId('mnFlSaveAs').attr('disabled', true);
   }
+
 
   // **************************************************************************************************************** */
   //                                          Useful Generic functions
