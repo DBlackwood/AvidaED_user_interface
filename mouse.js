@@ -16,13 +16,13 @@ av.mouse.getOriginalShapes = function () {
   'use strict';
   var lngth = av.mouse.notDndPopList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    console.log('domElements', av.mouse.notDndPopList[ii])
+    //console.log('domElements', av.mouse.notDndPopList[ii])
     av.mouse.notDndPopShape[ii] = document.getElementById(av.mouse.notDndPopList[ii]).style.cursor;
     //console.log('domElement/Shape', av.mouse.notDndPopList[ii], av.mouse.notDndPopShape[ii]);
   }
   var lngth = av.mouse.notDndIndList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    console.log('domElements', av.mouse.notDndIndList[ii])
+    //console.log('domElements', av.mouse.notDndIndList[ii])
     av.mouse.notDndIndShape[ii] = document.getElementById(av.mouse.notDndIndList[ii]).style.cursor;
     //console.log('domElement/Shape', av.mouse.notDndIndList[ii], av.mouse.notDndIndShape[ii]);
   }
@@ -71,11 +71,17 @@ av.mouse.selectedDadMouseStyle = function () {
 //update data about a kid in the selecred organism to move = primarily genome and name
 av.mouse.selectedKidMouseStyle = function () {
   'use strict';
-  console.log('in kid');
+  //console.log('in kid');
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('fzOrgan').style.cursor = 'copy';
   document.getElementById('freezerDiv').style.cursor = 'copy';
   document.getElementById('gridCanvas').style.cursor = 'copy';
+  document.getElementById('configFzr').style.cursor = 'copy';
+  document.getElementById('configFzr_pane').style.cursor = 'copy';
+  document.getElementById('organismsFzr').style.cursor = 'copy';
+  document.getElementById('organismsFzr_pane').style.cursor = 'copy';
+  document.getElementById('worldFzr').style.cursor = 'copy';
+  document.getElementById('worldFzr_pane').style.cursor = 'copy';
   av.mouse.frzCurserSet('copy');
   av.mouse.notDndPopCursorShape('no-drop');
   if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'no-drop';}
@@ -83,7 +89,7 @@ av.mouse.selectedKidMouseStyle = function () {
 
 av.mouse.sonCursorShape = function () {
   'use strict';
-  console.log('in son')
+  //console.log('in son')
   document.getElementById('organIcon').style.cursor = 'copy';
   document.getElementById('organCanvas').style.cursor = 'copy';
   av.mouse.frzCurserSet('copy');

@@ -51,7 +51,7 @@ av.mouse.downOrganCanvasFn = function(evt) {
     var instructionNum = ith + 1;
     if ('instruction' == av.mouse.Picked) {
       if (isRightMB) {  //right click on instruction. allow replacement letter.
-        console.log('right click');
+        //console.log('right click');
         evt.preventDefault();  //supposed to prevent default right click menu - does not work
         return false;         //supposed to prevent default right click menu - does not work
       }

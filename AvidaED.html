@@ -178,19 +178,19 @@
            refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false' id='freezerDiv'>
         Freezer
         <span data-dojo-type='dijit/TitlePane' title='Configured Dishes' extractContent='false' preventCache='false'
-              preload='false' refreshOnShow='false' duration='200' open='true'
+              preload='false' refreshOnShow='false' duration='200' open='true' id='configFzr'
               style='min-width: 1px; width: 100%; height: auto; overflow: auto'>
           <div id='fzConfig' class='container'></div>
         </span>
         <div id='OrganFreezer'>
           <span data-dojo-type='dijit/TitlePane' title='Organisms' extractContent='false' preventCache='false'
-                preload='false' refreshOnShow='false' duration='200' open='true' id='OrganismsFzr'
+                preload='false' refreshOnShow='false' duration='200' open='true' id='organismsFzr'
                 style='min-width: 1px; width: 100%; height: auto; overflow: auto'>
             <div id='fzOrgan' class='container'></div>
           </span>
         </div>
         <span data-dojo-type='dijit/TitlePane' title='Populated Dishes' extractContent='false' preventCache='false'
-              preload='false' refreshOnShow='false' duration='200' open='true'
+              preload='false' refreshOnShow='false' duration='200' open='true' id='worldFzr'
               style='min-width: 1px; width: 100%; height: auto; overflow: auto'>
           <div id='fzWorld' class='container' jsId='freezePopDish'></div>
         </span>
@@ -623,7 +623,7 @@
                 <label id='demoLabel'>Demo</label>
               </div>
               <div class='odd'>
-                <label>Pause Run:</label>
+                <label>Pause Run:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='manualUpdateRadio'
                        intermediateChanges='false' iconClass='dijitNoIcon' name='pauseType' checked
                        value='manual'></button>

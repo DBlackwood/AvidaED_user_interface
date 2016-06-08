@@ -237,7 +237,7 @@ av.ptd.FrOrganismFn = function (trigger) {
   }
   else {
     fzName = prompt('Please name the organism', 'newOrganism');
-    console.log('source unknwon', trigger);
+    //console.log('source unknwon', trigger);
   }
   fzName = av.dnd.getUniqueName(fzName, av.dnd.fzOrgan);
   if (null != fzName) {
@@ -324,7 +324,7 @@ av.ptd.bitToggle = function (button) {
     av.ptd.logMet[ii] = null;
     av.ptd.logNum[ii] = null;
   }
-  console.log('in av.ptd.bitToggle');
+  //console.log('in av.ptd.bitToggle');
   av.grd.drawGridSetupFn();
 }
 
@@ -334,7 +334,7 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   // send reset to Avida adaptor
   //if (need2sendRest2avida) {av.msg.reset();} //Take this out if we only reset when avida resets After sending a request for reset.
 
-  console.log('in resetDishFn');
+  //console.log('in resetDishFn');
   av.msg.pause('now');
   av.ptd.makePauseState();
   av.grd.clearGrd();
@@ -374,7 +374,7 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   dijit.byId('autoUpdateSpinner').set('value', av.ptd.autoPauseUpdate);
 
   av.ptd.clearLogicButtons();
-  console.log('fzr.activeCon', av.fzr.actConfig);
+  //console.log('fzr.activeCon', av.fzr.actConfig);
 
   // re-write grid if that page is visible
   av.grd.popChartClear();

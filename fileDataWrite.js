@@ -135,7 +135,7 @@ av.fwt.makeFzrTRfile = function (path, data) {
 av.fwt.makeFzrTimeRecorder = function (fname, data) {
   var text='';
   var lngth = data.length-1;
-  console.log('lngth', lngth);
+  //console.log('lngth', lngth);
   for (ii=0; ii < lngth; ii++) {
     text += ii + ':' + data[ii] + ',';
   }
@@ -186,7 +186,7 @@ av.fwt.makeFzrWorld = function (num) {
 
 av.fwt.popExpWrite = function (msg) {
   'use strict';
-  console.log('exportExpr', msg);
+  //console.log('exportExpr', msg);
   //assume last world for now.
   var lngth = msg.files.length;
   for (var ii = 0; ii < lngth; ii++) {

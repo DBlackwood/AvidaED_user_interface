@@ -52,7 +52,7 @@ av.dnd.nameNparent = function (name, number) {
   var newName;
   if (0 <= av.parents.name.indexOf(aName)) {
     newName = av.dnd.nameNparent(name, num);
-    console.log('aName', aName, '; num', num, 'newName', newName);
+    //console.log('aName', aName, '; num', num, 'newName', newName);
   }
   else { newName = aName; }
   return newName;
@@ -66,7 +66,7 @@ av.dnd.nameParent = function(name) {
     theName = av.dnd.nameNparent(name, 0);
   }
   else { theName = name; }
-  console.log('name', theName);
+  //console.log('name', theName);
   av.parents.name.push(theName);
   return theName;
 }
@@ -208,8 +208,8 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   'use strict';
   if (av.debug.dnd) console.log('av.dnd.landFzConfig: fzr', av.fzr);
   var domid = Object.keys(target.selection)[0];
-  console.log('domID', domid, target);
-  console.log('fzConfig', av.dnd.fzConfig);
+  //console.log('domID', domid, target);
+  //console.log('fzConfig', av.dnd.fzConfig);
   var oldName = nodes[0].textContent;
   var dishCon = prompt("Please name your dish configuration", oldName + '_1');
   if (dishCon) {
@@ -219,8 +219,8 @@ av.dnd.landFzConfig = function (source, nodes, target) {
       document.getElementById(domid).textContent = configName;
       target.map[domid].data = configName;
       target.map[domid].type[0] = 'c';
-      console.log('data', target.map[domid].data, target.map[domid]);
-      console.log('type', target.map[domid].type[0]);
+      //console.log('data', target.map[domid].data, target.map[domid]);
+      //console.log('type', target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
       var domID = av.dnd.getDomId(configName, target);
@@ -500,8 +500,8 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
       document.getElementById(domid).textContent = WorldName;
       pkg.target.map[domid].data = WorldName;
       pkg.target.map[domid].type[0] = 'w';
-      console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
-      console.log('type', pkg.target.map[domid].type[0]);
+      //console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
+      //console.log('type', pkg.target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
       var domID = av.dnd.getDomId(WorldName, pkg.target);
@@ -594,7 +594,7 @@ av.dnd.landTrashCan = function (source, nodes, target) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 av.anl.loadWorldData = function (worldNum, dir) {
-  console.log('loadWorldData: WoldNum:', worldNum, '; dir', dir);
+  //console.log('loadWorldData: WoldNum:', worldNum, '; dir', dir);
   av.fzr.pop[worldNum].fit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
   av.fzr.pop[worldNum].ges = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
   av.fzr.pop[worldNum].met = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
@@ -758,7 +758,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
           document.getElementById(fzItemID).textContent = fzName;
           document.getElementById(fzItemID).data = fzName;
           target.map[fzItemID].data = fzName;
-          console.log(".data=", target.map[fzItemID].data);
+          //console.log(".data=", target.map[fzItemID].data);
           //update freezer structure
           dir = av.fzr.dir[fzItemID];
           av.fzr.file[dir+'/entryname.txt']=fzName;

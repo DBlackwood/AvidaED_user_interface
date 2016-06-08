@@ -173,7 +173,7 @@ av.parents.placeAncestors = function () {
         }
         break;
       case 9:
-        console.log('case9');
+        //console.log('case9');
         lngth = av.parents.autoNdx.length;
         for (ii = 0; ii < lngth; ii++) {
           if (ii < 3) {

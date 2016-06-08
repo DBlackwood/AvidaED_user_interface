@@ -8,7 +8,7 @@ var av = av || {};  //incase av already exists
 av.debug = {};
 av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
 av.debug.logic = false;  //av.debug statements that look for errors outlining logic functions
-av.debug.mouse = true;   //av.debug statements about non-dojo drag and drop
+av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
 av.debug.dnd = false;     //debu statements about dojo dnd
 av.debug.msg = false;     //messages to and from avida
 av.debug.trace = false;   //organism page
@@ -70,10 +70,12 @@ av.mouse.notDndPopList = ['colorMode'
   , 'popRight_splitter'
   , 'populationBlock'
   , 'scaleCanvas'
-  //, 'sotPane_splitter'
+  , 'popTopRight_splitter'
+  , 'sotPane_splitter'
   , 'trashCP'
   , 'trashCP_splitter'
   , 'gridHolder'
+  , 'freezerDiv'
   //menu Buttons
   , 'mnFile'
   , 'mnFreezer'
@@ -82,6 +84,7 @@ av.mouse.notDndPopList = ['colorMode'
   , 'mnDebug'
   , 'wsSavedMsg'
   //Buttons
+  , 'mainButtons_splitter'
   , 'mainButtonBC'
   , 'mainButtons'
   , 'mainButtonTable'
@@ -209,6 +212,7 @@ av.mouse.notDndIndList = ['colorMode'
   , 'ExecuteJust'
   , 'ExecuteAbout'
   //Buttons
+  , 'mainButtons_splitter'
   , 'populationButton'
   , 'organismButton'
   , 'analysisButton'

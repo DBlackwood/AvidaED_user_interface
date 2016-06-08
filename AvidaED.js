@@ -251,9 +251,9 @@ require([
 
   dijit.byId('sWSfSave').on('Click', function () {
     av.debug.log += '\n -Button: sWSSave';
-    console.log('before call save workspace');
+    //console.log('before call save workspace');
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
-    console.log('after call to save workspace');
+    //console.log('after call to save workspace');
   });
 
   dijit.byId('sWSfOpen').on('Click', function () {
@@ -365,21 +365,21 @@ require([
     if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
     var end = av.fio.userFname.substring(av.fio.userFname.length - 4);
     if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
-    console.log('end', end, '; userFname', av.fio.userFname);
+    //console.log('end', end, '; userFname', av.fio.userFname);
     var WSzip = new av.fio.JSZip();
-    console.log('number of files', av.utl.objectLength(av.fzr.file));
+    //console.log('number of files', av.utl.objectLength(av.fzr.file));
     var numFiles = 0;
     for (var fname in av.fzr.file) {
       WSzip.file('av.avidaedworkspace/' + fname, av.fzr.file[fname]);
       numFiles++;
     }
     var blob = WSzip.generate({type: 'blob'});
-    console.log('wrote blob');
+    //console.log('wrote blob');
     //var data = { x: 42, s: 'hello, world', d: new Date() };
     //var json = JSON.stringify(data);
     //var blob = new Blob([json], {type: 'octet/stream'});
     var tmpUrl = window.URL.createObjectURL(blob);
-      console.log('tmpURL=', tmpUrl);
+      //console.log('tmpURL=', tmpUrl);
       av.fio.writeSafari(tmpUrl);
       //window.URL.revokeObjectURL(tmpUrl);
     //av.fwt.tryDown(blob);
@@ -639,7 +639,7 @@ require([
       av.ind.updateOrgTrace();
     }
   };
-  console.log('ht, wd', document.getElementById('mainBC').clientHeight,document.getElementById('splash').clientWidth);
+  //console.log('ht, wd', document.getElementById('mainBC').clientHeight,document.getElementById('splash').clientWidth);
 
   ready(function () {
     aspect.after(registry.byId('gridHolder'), 'resize', function () {
@@ -732,7 +732,7 @@ require([
   av.dnd.gridCanvas.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
       av.dnd.landGridCanvas(source, nodes, target);
-      console.log('before call av.grd.drawGridSetupFn');
+      //console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
       //console.log('in gridCanvas.on');
     }
@@ -1109,12 +1109,12 @@ require([
     av.aww.uiWorker.terminate();
     av.aww.uiWorker = null;
 
-    console.log('just killed webWorker');
+    //console.log('just killed webWorker');
 
     if (typeof(Worker) !== 'undefined') {
       if (null == av.aww.uiWorker) {
         av.aww.uiWorker = new Worker('avida.js');
-        console.log('webworker recreated');
+        //console.log('webworker recreated');
         av.debug.log += '\nui --> Avida:  ui killed avida webworker and started a new webworker'
       }
     }
@@ -1276,6 +1276,7 @@ require([
     'use strict';
     var target = '';
     if (av.debug.mouse) console.log('in mouseup target:', evt.target.id, '; event:', evt);
+    //console.log('in mouseup target:', evt.target.id, '; event:', evt);
     av.mouse.makeCursorDefault();
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
@@ -1286,7 +1287,7 @@ require([
       av.mouse.Picked = '';
       av.mouse.ParentMouse(evt, av);
       if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) {
-        console.log('before call av.grd.drawGridSetupFn');
+        //console.log('before call av.grd.drawGridSetupFn');
         av.grd.drawGridSetupFn();
       }
       else if ('organIcon' == evt.target.id) {
@@ -1397,9 +1398,9 @@ require([
         if (document.getElementById('gridHolder').scrollHeight == document.getElementById('gridHolder').clientHeight + 17) {
           var numGH = document.getElementById('gridHolder').clientHeight;
           av.grd.CanvasGrid.height = numGH - 6 - 17;
-          av.grd.findGridSize(av.grd, av.parents);     //in PopulationGrid.js
+          av.grd.findGridSize(av.grd, av.parents);     //in populationGrid.js
         }
-        av.grd.drawGridUpdate();   //in PopulationGrid.js
+        av.grd.drawGridUpdate();   //in populationGrid.js
 
         rescaleLabel.textContent = av.grd.fillRescale;
         av.grd.notInDrawingGrid = true;
@@ -1407,7 +1408,7 @@ require([
     }
   }
 
-  // The rest of grid canvas drawing code is in PopulationGrid.js
+  // The rest of grid canvas drawing code is in populationGrid.js
 
   // *******************************************************************************************************************
   //        Color Map Color Mode and Zoom Slide Controls
@@ -1417,7 +1418,7 @@ require([
   dijit.byId('colorMode').on('Change', function () {
     var scaleType = dijit.byId('colorMode').value;
     //Redraw Grid;
-    console.log('before call av.grd.drawGridSetupFn');
+    //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1433,7 +1434,7 @@ require([
     onChange: function (value) {
       av.grd.zoom = value;
       //console.log('ZoomSlide', av.grd.zoom);
-      console.log('before call av.grd.drawGridSetupFn');
+      //console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
     }
   }, 'ZoomSlide');
@@ -1447,7 +1448,7 @@ require([
     dijit.byId('mnGnuplot2').attr('disabled', false);
     dijit.byId('mnViridis').attr('disabled', true);
     av.grd.colorMap = 'Viridis';
-    console.log('before call av.grd.drawGridSetupFn');
+    //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1457,7 +1458,7 @@ require([
     dijit.byId('mnGnuplot2').attr('disabled', true);
     dijit.byId('mnViridis').attr('disabled', false);
     av.grd.colorMap = 'Gnuplot2';
-    console.log('before call av.grd.drawGridSetupFn');
+    //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
   });
 
@@ -1467,7 +1468,7 @@ require([
     dijit.byId('mnGnuplot2').attr('disabled', false);
     dijit.byId('mnViridis').attr('disabled', false);
     av.grd.colorMap = 'Cubehelix';
-    console.log('before call av.grd.drawGridSetupFn');
+    //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
     av.debug.log += '\n -Button: mnCubehelix pressed';
   });
@@ -1531,6 +1532,7 @@ require([
   av.grd.popChartFn = function () {
     'use strict';
     if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
+      //console.log('in popChartFn');
       //console.log('chart update=', av.grd.popStatsMsg.update);
       //av.debug.log += '\n - - Call popChartFn';
       if ('Average Fitness' == dijit.byId('yaxis').value) {
@@ -1576,16 +1578,19 @@ require([
       //av.grd.popChart.addSeries('Series y2', popY2, {stroke: {color: 'red', width: 2}});
       av.grd.popChart.addSeries('Series y', av.grd.popY, {plot: 'default', stroke: {color: 'blue', width: 1}});
       av.grd.popChart.addSeries('Series y2', av.grd.popY2, {plot: 'default', stroke: {color: 'green', width: 1}});
-      av.grd.popChart.resize(domGeometry.position(document.getElementById('popChartHolder')).w - 10,
-        domGeometry.position(document.getElementById('popChartHolder')).h - 30);
+      //av.grd.popChart.resize(domGeometry.position(document.getElementById('popChartHolder')).w - 10,
+      //  domGeometry.position(document.getElementById('popChartHolder')).h - 30);
+      av.grd.popChart.resize(document.getElementById('popChartHolder').clientWidth - 1,
+        document.getElementById('popChartHolder').clientHeight - 4);
       av.grd.popChart.render();
     }
   };
 
   av.grd.popChartClear = function () {
     'use strict';
-      av.grd.popY = [0];
-      av.grd.popY2 = [0];
+    //console.log('in popChartClear');
+      av.grd.popY = [0,0];
+      av.grd.popY2 = [0,0];
       av.grd.popChart.addPlot('default', {type: 'Lines'});
       av.grd.popChart.addPlot('grid', {
         type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
@@ -1604,8 +1609,9 @@ require([
       //av.grd.popChart.addSeries('Series y2', popY2, {stroke: {color: 'red', width: 2}});
       av.grd.popChart.addSeries('Series y', av.grd.popY, {plot: 'default', stroke: {color: 'blue', width: 1}});
       av.grd.popChart.addSeries('Series y2', av.grd.popY2, {plot: 'default', stroke: {color: 'green', width: 1}});
-      av.grd.popChart.resize(domGeometry.position(document.getElementById('popChartHolder')).w - 10,
-        domGeometry.position(document.getElementById('popChartHolder')).h - 30);
+      av.grd.popChart.resize(document.getElementById('popChartHolder').clientWidth - 20,
+        document.getElementById('popChartHolder').clientHeight*2/3-5);
+
       av.grd.popChart.render();
   };
   av.grd.popChartClear();
@@ -1686,7 +1692,7 @@ require([
   dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function () {
     av.debug.log += '\n -Spinner: autoUpdateSpinner=' + dijit.byId('autoUpdateSpinner').get('value');
     av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
-    console.log('autoUpdateSpinner=', dijit.byId('autoUpdateSpinner').get('value'));
+    //console.log('autoUpdateSpinner=', dijit.byId('autoUpdateSpinner').get('value'));
   });
 
   /* *************************************************************** */

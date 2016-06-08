@@ -59,7 +59,7 @@ av.msg.readMsg = function (ee) {
           av.grd.popChartFn();
         }
         else {
-          console.log('Repeat so webPopulationStats and chart not redrawn');
+          //console.log('Repeat so webPopulationStats and chart not redrawn');
           av.debug.log += '\n -     Repeat so webPopulationStats and chart not redrawn; update=', av.grd.oldUpdate;
         }
 
@@ -115,7 +115,7 @@ av.msg.readMsg = function (ee) {
     switch (msg.level) {
       case 'error':
         userMsgLabel.textContent = 'Avida error at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);
-        console.log('type:userFeedback; level:error');
+        //console.log('type:userFeedback; level:error');
         if (msg.isFatal) {
           //kill and restart avida worker
           restartAvidaDialog.show();
