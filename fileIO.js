@@ -85,6 +85,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     }
     catch(err) {
       alert('Unable to open file. Please check the file and try again or contact avida-ed-development@googlegroups.com for help');
+      av.debug.log += '\nworkspace fileReader error:' + err;
     }
 
     fileReader.onloadend = function(fileLoadedEvent)
@@ -128,9 +129,8 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
         av.fzr.saveUpdateState('yes');
       }
       catch (error) {
-        av.debug.log += '\n' + error;
+        av.debug.log += '\nworkspace jsZip error:' + error;
         alert('Unable to extract an Avida Workspace Zip file, please check the file and try again. If you continue to have trouble, use "Report Problem" in the help menu');
-        //console.log(error);
       }
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
@@ -149,6 +149,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     }
     catch(err) {
       alert('Unable to open Freezer Item file. Please check the file and try again or contact avida-ed-development@googlegroups.com for help');
+      av.debug.log += '\nfreezerItem fileReader error:' + err;
     }
     fileReader.onload = function(fileLoadedEvent) {
       var fileContainedInZipFile, zipFileLoaded;
@@ -188,6 +189,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       }
       catch (error) {
         alert('Unable to extract an Avida Freezer Item Zip file, please check the file and try again. If you continue to have trouble, use "Report Problem" in the help menu');
+        av.debug.log += '\nfreezerItem jsZip error:' + err;
       }
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //calls the function above
