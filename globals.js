@@ -20,7 +20,7 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 
-av.debug.log = 'message and error log: version 2016_0601';
+av.debug.log = 'message and error log: version 2016_0609';
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
@@ -300,14 +300,14 @@ av.grd.clearGrd = function () {
   av.grd.oldUpdate = -10;
   av.ptd.autoPauseUpdate = 1000;
 
-  av.ptd.aveFit = [0];  //ave is for all avidians.
-  av.ptd.logFit = [0];  //log is for avidians that performm logic functions
-  av.ptd.aveGnl = [0];  //generation length - used to be Generation Length
-  av.ptd.logGnl = [0];
-  av.ptd.aveMet = [0];
-  av.ptd.logMet = [0];
-  av.ptd.aveNum = [0];
-  av.ptd.logNum = [0];
+  av.ptd.aveFit = [];  //ave is for all avidians.
+  av.ptd.logFit = [];  //log is for avidians that performm logic functions
+  av.ptd.aveGnl = [];  //generation length - used to be Generation Length
+  av.ptd.logGnl = [];
+  av.ptd.aveMet = [];
+  av.ptd.logMet = [];
+  av.ptd.aveNum = [];
+  av.ptd.logNum = [];
   av.ptd.allOff = true;
 
   av.msg.ByCellIDgenome = '';        //Holdes the genome which is needed to freeze a cell.

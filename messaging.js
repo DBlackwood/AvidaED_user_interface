@@ -443,7 +443,9 @@ av.msg.updatePopStats = function (msg) {
   aMetabolicLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
   aGestateLabel.textContent = msg.ave_gestation_time.formatNum(place);
   aAgeLabel.textContent = msg.ave_age.formatNum(place);
-  parentNumLabel.textContent = av.parents.name.length;
+  //parentNumLabel.textContent = av.parents.name.length;
+  parentNumLabel.textContent = av.ptd.logNum[Number(msg.update)-1];
+  //console.log('update', msg.update, '; logNum[update]',av.ptd.logNum[Number(msg.update)-1], '; logNum', av.ptd.logNum);
 
   //find out how many are not viable.
   var numNotViable = 0;
