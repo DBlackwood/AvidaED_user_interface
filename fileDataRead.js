@@ -370,6 +370,7 @@ av.fio.handAncestorLoad = function(fileStr) {
     av.parents.genome[nn] = stuff.gen[kk];
     av.parents.col[nn] = stuff.col[kk];
     av.parents.row[nn] = stuff.row[kk];
+    av.parents.injected[nn] = false;
     av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(dijit.byId("sizeCols").get('value'));
     //av.parents.AvidaNdx[av.parents.autoNdx[ii]] = av.parents.col[av.parents.autoNdx[ii]] + cols * av.parents.row[av.parents.autoNdx[ii]];
     if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], '; domid', av.parents.domid[nn], '; gen', av.parents.genome[nn]);
@@ -405,6 +406,7 @@ av.fio.cladeSSG2parents = function (fileStr) {
   var lngth = list.length;
   for (var ii = lngth-1; 0 <= ii; ii--) {
     av.parents.name[ii] = list[ii];
+    av.parents.injected[ii] = false;
     //console.log('Dads', list[ii]);
     av.dnd.ancestorBox.insertNodes(false, [{data: av.parents.name[ii], type: ['g']}]);
     // need to find the domid of the ancestor in ancestorBox. The line below is not correct. ???? !!!!! tiba

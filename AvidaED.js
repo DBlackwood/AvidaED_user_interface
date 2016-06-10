@@ -319,7 +319,9 @@ require([
     if (!av.brs.isSafari) {
       av.debug.log += '\n -Button: mnFlSaveAs';
       var suggest = 'avidaWS.avidaedworkspace.zip';
-      if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
+      if (av.fio.userFname) {
+        if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
+      }
       av.fio.userFname = prompt('Choose a new name for your Workspace now', suggest);
       if (null !== av.fio.userFname) {
         av.fio.fzSaveCurrentWorkspaceFn();
@@ -915,6 +917,7 @@ require([
   }
 
   av.ptd.runPopFn = function () {
+    //console.log('runPopFn runState', av.grd.runState);
     //check for ancestor organism in configuration data
     var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
     //console.log('namelist', namelist);
@@ -934,6 +937,9 @@ require([
         }
         else {
           av.msg.importWorldExpr();
+          //console.log('parents.injected', av.parents.injected);
+          //av.debug.log += '\nstart importWorld running-----------------------------------------\n'
+          av.msg.injectAncestors();
         }
 
         //change ui parameters for the correct state when the avida population has started running

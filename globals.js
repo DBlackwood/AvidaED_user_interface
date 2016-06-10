@@ -20,7 +20,7 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 
-av.debug.log = 'message and error log: version 2016_0609';
+av.debug.log = 'message and error log: version 2016_0610';
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
@@ -390,6 +390,7 @@ av.parents = {};
 //Clear parents/Ancestors
 av.parents.clearParentsFn = function () {
   av.parents.name = [];
+  av.parents.injected = [];   //Has it been injeccted?
   av.parents.genome = [];
   av.parents.color = [];
   av.parents.col = [];

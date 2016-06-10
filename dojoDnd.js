@@ -153,6 +153,7 @@ av.dnd.landActiveConfig = function (pkg) {
       if (-1 < ndx) {
         av.parents.genome[kk] = autoList.gen[ndx];
         av.parents.howPlaced[kk] = 'auto';
+        av.parents.injected[kk] = true;
         av.parents.autoNdx.push(kk);
         autoList.nam.splice(ndx,1);
         autoList.gen.splice(ndx,1);
@@ -164,6 +165,7 @@ av.dnd.landActiveConfig = function (pkg) {
           av.parents.col[kk] = handList.col[ndx];
           av.parents.row[kk] = handList.row[ndx];
           av.parents.howPlaced[kk] = 'hand';
+          av.parents.injected[kk] = true;
           av.parents.handNdx.push(kk);
           handList.nam.splice(ndx,1);
           handList.gen.splice(ndx,1);
@@ -200,7 +202,7 @@ av.dnd.landActiveConfig = function (pkg) {
     av.msg.sendData();
     //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }
-  //console.log('fzr.activeCon', av.fzr.actConfig);
+  else console.log('fzr.activeCon - something strange happened', av.fzr.actConfig);
 }
 
 //Process when an Configuration is added to the Freezer
@@ -321,6 +323,7 @@ av.dnd.landAncestorBox = function (source, nodes, target) {
     av.parents.genome.push(av.fzr.file[dir+'/genome.seq']);
     var nn = av.parents.name.length;
     av.parents.autoNdx.push(nn);
+    av.parents.injected.push(false);
     var newName = av.dnd.nameParent(nodes[0].textContent);
     var domIDs = Object.keys(av.dnd.ancestorBox.map);
     var domID = domIDs[domIDs.length-1];
@@ -372,6 +375,7 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
     nn = av.parents.name.length;
     av.parents.handNdx.push(nn);
     av.parents.howPlaced[nn] = 'hand';
+    av.parents.injected[nn] = false;
     av.parents.name[nn] = nodes[0].textContent;
     var domId = Object.keys(source.selection)[0];
     if (av.debug.dnd) console.log('av.dnd.landGridCanvas; domId', domId, '; av.fzr.genome', av.fzr.genome);

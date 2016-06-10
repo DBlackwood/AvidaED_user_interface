@@ -247,8 +247,8 @@ av.msg.importWorldExpr = function () {
     'triggerType': 'immediate',
     'amend': 'true',
     'files': [
-//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
-//      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
+      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
   //console.log('in importWorldExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
@@ -414,17 +414,23 @@ av.msg.injectAncestors = function () {
   var request;
   var lngth = av.parents.name.length;
   for (var ii = 0; ii < lngth; ii++) {
-    request = {
-      'type': 'addEvent',
-      'name': 'webInjectSequence',
-      'start': 'begin',   //was begin
-      'interval': 'once',
-      'genome': av.parents.genome[ii],
-      'start_cell_id': av.parents.AvidaNdx[ii],
-      'clade_name': av.parents.name[ii]
+    //console.log('parents.injected', av.parents.injected[ii]);
+    if (!av.parents.injected[ii]) {
+      request = {
+        'type': 'addEvent',
+        'name': 'webInjectSequence',
+        'start': 'begin',   //was begin
+        'interval': 'once',
+        'genome': av.parents.genome[ii],
+        'start_cell_id': av.parents.AvidaNdx[ii],
+        'clade_name': av.parents.name[ii]
+      }
+      av.aww.uiWorker.postMessage(request);
+      av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+      //console.log('log', av.utl.json2stringFn(request));
+      av.parents.injected[ii] = true;
+      //console.log('parents.injected', av.parents.injected[ii]);
     }
-    av.aww.uiWorker.postMessage(request);
-    av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
   }
 }
 
