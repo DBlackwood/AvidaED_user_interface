@@ -52,8 +52,8 @@ av.ptd.popWorldStateUi = function () {
   av.dnd.fzWorld.accept['b'] = 1;
   dijit.byId('sizeCols').attr('disabled', true);
   dijit.byId('sizeRows').attr('disabled', true);
-  dijit.byId('experimentRadio').attr('disabled', true);
-  dijit.byId('demoRadio').attr('disabled', true);
+  //dijit.byId('experimentRadio').attr('disabled', true);
+  //dijit.byId('demoRadio').attr('disabled', true);
 
   //there will be a population so it can now be frozen.
   dijit.byId('mnFzPopulation').attr('disabled', false);
