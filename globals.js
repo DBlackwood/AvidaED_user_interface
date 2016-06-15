@@ -20,8 +20,6 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 
-av.debug.log = 'message and error log: version 2016_0610';
-
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
 av.dft.sizeCols = 60;
@@ -324,6 +322,9 @@ av.grd.clearGrd();
 // so use the below updated condition
 
 av.ui = {};  //user interface functions and variables
+av.ui.version = '2016_0615';
+av.debug.log = 'message and error log: version ' + av.ui.version;
+
 av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';
 av.ui.autoStopFlag = false;

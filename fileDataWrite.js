@@ -79,6 +79,15 @@ av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
 }
 
+av.fwt.makeFzrConfigTxt = function (idStr, actConfig) {
+  'use strict';
+  var txt = 'update ';
+  if (dijit.byId('experimentRadio').get('checked')) txt += 'RANDOM_SEED -1 \n';
+  txt += dijit.byId('autoUpdateSpinner').get('value') + '\n';
+  if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}
+  else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
+}
+
 av.fwt.makeFzrEnvironmentCfg = function (idStr, actConfig) {
   'use strict';
   var txt = '';

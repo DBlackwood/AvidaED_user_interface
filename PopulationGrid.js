@@ -72,16 +72,18 @@ av.grd.drawParent = function () {
   if (undefined != av.parents.col) {
     var lngth = av.parents.col.length;
     for (var ii = 0; ii < lngth; ii++) {
-      var xx = av.grd.marginX + av.grd.xOffset + av.parents.col[ii] * av.grd.cellWd;
-      var yy = av.grd.marginY + av.grd.yOffset + av.parents.row[ii] * av.grd.cellHt;
-      if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-        av.grd.cntx.fillStyle = av.parents.color[ii];
+      if (!av.parents.injected[ii]) {
+        var xx = av.grd.marginX + av.grd.xOffset + av.parents.col[ii] * av.grd.cellWd;
+        var yy = av.grd.marginY + av.grd.yOffset + av.parents.row[ii] * av.grd.cellHt;
+        if ("Ancestor Organism" == dijit.byId("colorMode").value) {
+          av.grd.cntx.fillStyle = av.parents.color[ii];
+        }
+        else {
+          av.grd.cntx.fillStyle = av.color.defaultParentColor;
+        }
+        av.grd.cntx.fillRect(xx, yy, av.grd.cellWd - 1, av.grd.cellHt - 1);
+        //console.log('x, y, wd, Ht', xx, yy, av.grd.cellWd, av.grd.cellHt);
       }
-      else {
-        av.grd.cntx.fillStyle = av.color.defaultParentColor;
-      }
-      av.grd.cntx.fillRect(xx, yy, av.grd.cellWd - 1, av.grd.cellHt - 1);
-      //console.log('x, y, wd, Ht', xx, yy, av.grd.cellWd, av.grd.cellHt);
     }
   }
 }
@@ -199,6 +201,8 @@ av.grd.findLogicOutline = function () {
 
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (av.debug.logic) console.log('setLogic', av.grd.out);
+  //console.log('update',av.grd.updateNum, '; setLogic', av.grd.out);
+  //if (0 <= av.grd.msg.update) av.grd.updateLogicAve();  //this is done in update population stats right now
 }
 
 av.grd.cellConflict = function (NewCols, NewRows) {
@@ -338,6 +342,7 @@ av.grd.drawGridUpdate = function () {
   }
   else {
     av.grd.drawKids();
+    av.grd.drawParent();
   }
   //Draw Selected as one of the last items to draw
   if (av.grd.flagSelected) { av.grd.drawSelected() }

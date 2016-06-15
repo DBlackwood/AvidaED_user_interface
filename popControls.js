@@ -207,6 +207,13 @@ av.ptd.popNewExState = function () {
   norPop.textContent = '';
   xorPop.textContent = '';
   equPop.textContent = '';
+  
+  numLog.textContent = '';
+  logTit1.textContent = '';
+  logTit2.textContent = '';
+  logTit3.textContent = '';
+  logTit4.textContent = '';
+  logTit5.textContent = '';
   av.grd.flagSelected = false;
   dijit.byId('mnFzOrganism').attr('disabled', true);
   dijit.byId('mnCnOrganismTrace').attr('disabled', true);
@@ -326,6 +333,7 @@ av.ptd.bitToggle = function (button) {
   }
   //console.log('in av.ptd.bitToggle');
   av.grd.drawGridSetupFn();
+  av.grd.popChartFn();
 }
 
 //reset values

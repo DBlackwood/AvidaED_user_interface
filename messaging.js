@@ -48,7 +48,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webPopulationStats':
         av.grd.popStatsMsg = msg;
-        stub = 'name: ' + msg.name.toString() + '; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
+        stub = 'name: webPopulationStats; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
              + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
              + '; Met:' + msg.ave_metabolic_rate.formatNum(2) + '; Num:' + msg.organisms.formatNum(2);
         av.debug.log += '\nAvida --> ui:  ' + stub;
@@ -86,7 +86,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'webGridData':
         av.grd.msg = msg;
-        stub = 'name: ' + msg.name.toString() + '; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
+        stub = 'name: name: webGridData; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         //av.msg.sync('webGridData:' + msg.update.toString());
         if ('populationBlock' === av.ui.page && 'map' === av.ui.subpage) {
@@ -98,7 +98,7 @@ av.msg.readMsg = function (ee) {
       case 'webOrgDataByCellID':
         av.msg.ByCellIDgenome = msg.genome;
         av.grd.updateSelectedOrganismType(msg);  //in messaging
-        stub = 'name: ' + msg.name.toString() + '; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
+        stub = 'name: webOrgDataByCellID; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         //console.log('Avida --> ui webOrgDataByCellID', msg);
         break;
@@ -439,18 +439,23 @@ av.msg.updatePopStats = function (msg) {
   'use strict';
   var place = 2;
   var vari = 2;
-  //TimeLabel.textContent = msg.update.formatNum(0) + " updates";
+  //update graph arrays
+  if (0 <= msg.update) {  //normal start to loop
+    av.ptd.aveFit.push(msg.ave_fitness);
+    av.ptd.aveGnl.push(msg.ave_gestation_time);
+    av.ptd.aveMet.push(msg.ave_metabolic_rate);
+    av.ptd.aveNum.push(msg.organisms);
+    av.grd.updateLogicAve(msg);  //for graph data  switch to run with grid data since the data is from the grid data
+  }
   TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   av.grd.updateNum = msg.update;
   popSizeLabel.textContent = msg.organisms.formatNum(0);
   aFitLabel.textContent = msg.ave_fitness.formatNum(place);
-  //if (msg.ave_metabolic_rate > 1000) vari = 0;
-  //else if (msg.ave_metabolic_rate > 100) vari = 1;
   aMetabolicLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
   aGestateLabel.textContent = msg.ave_gestation_time.formatNum(place);
   aAgeLabel.textContent = msg.ave_age.formatNum(place);
-  //parentNumLabel.textContent = av.parents.name.length;
-  parentNumLabel.textContent = av.ptd.logNum[Number(msg.update)-1];
+
+  parentNumLabel.textContent = av.parents.name.length;
   //console.log('update', msg.update, '; logNum[update]',av.ptd.logNum[Number(msg.update)-1], '; logNum', av.ptd.logNum);
 
   //find out how many are not viable.
@@ -473,26 +478,26 @@ av.msg.updatePopStats = function (msg) {
   norPop.textContent = msg.nor;
   xorPop.textContent = msg.xor;
   equPop.textContent = msg.equ;
-  //update graph arrays
-  /*
-  if (0 <= msg.update) {  //normal start to loop
-    av.ptd.aveFit[msg.update] = msg.ave_fitness;
-    av.ptd.aveGnl[msg.update] = msg.ave_gestation_time;
-    av.ptd.aveMet[msg.update] = msg.ave_metabolic_rate;
-    av.ptd.aveNum[msg.update] = msg.organisms;
-    updateLogicAve(msg);  //for graph data
+
+  if (av.ptd.allOff) {
+    logTit1.textContent = '';
+    logTit2.textContent = '';
+    logTit3.textContent = '';
+    logTit4.textContent = '';
+    logTit5.textContent = '';
   }
-*/
-  if (0 <= msg.update) {  //normal start to loop
-    av.ptd.aveFit.push(msg.ave_fitness);
-    av.ptd.aveGnl.push(msg.ave_gestation_time);
-    av.ptd.aveMet.push(msg.ave_metabolic_rate);
-    av.ptd.aveNum.push(msg.organisms);
-    updateLogicAve(msg);  //for graph data
+  else {
+    logTit1.textContent = 'Number';
+    logTit2.textContent = 'Performing';
+    logTit3.textContent = 'All';
+    logTit4.textContent = 'Selected';
+    logTit5.textContent = 'Functions';
   }
+  numLog.textContent = av.ptd.logNum[Number(msg.update)];
+
 }
 
-updateLogicAve = function (msg){
+av.grd.updateLogicAve = function (msg){
   'use strict';
   if (av.ptd.allOff) {
     av.ptd.logFit[msg.update] = null;

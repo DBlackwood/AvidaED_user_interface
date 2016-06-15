@@ -140,6 +140,12 @@ div.popStatsTablePop {
   max-height: 15px;
 }
 
+.noWrapTitle {
+  text-align:center;
+  font-weight: bold;
+  max-height: 15px;
+}
+
 #muteSlide {
   float: left;
   background-color: yellow;
