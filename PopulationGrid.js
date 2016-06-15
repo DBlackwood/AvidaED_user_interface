@@ -321,15 +321,16 @@ av.grd.drawGridUpdate = function () {
   av.grd.cellWd = ((av.grd.sizeX - av.grd.marginX) / av.grd.cols);
   av.grd.cellHt = ((av.grd.sizeY - av.grd.marginY) / av.grd.rows);
 
-  //Find a reasonable maximum zoom for this grid and screen space
+  //Find a reasonable maximum zoom for this grid and screen space for av.grd.ZoomSlide
+  /*
   var zMaxCells = Math.floor(av.grd.spaceCells / 25);  // at least 10 cells   was trunc
   var zMaxWide = Math.floor(10 / av.grd.spaceCellWd);  // at least 10 pixels  was trunc
   var zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
   zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
-
+*/
   //console.log('ZoomSlide set zMax, expression', zMax, 2 * (zMax - 1) + 1);
 //  av.grd.ZoomSlide.set("maximum", zMax);
-  av.grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 1);
+  //av.grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 3);
 //  av.grd.ZoomSlide.set("maximum", 5);
 
 

@@ -1435,7 +1435,7 @@ require([
     minimum: 1,
     maximum: 10,
     intermediateChanges: true,
-    discreteValues: 19,
+    discreteValues: 10,
     style: 'height: auto; width: 120px;float:right',
     onChange: function (value) {
       av.grd.zoom = value;
