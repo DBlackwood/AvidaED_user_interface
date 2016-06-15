@@ -202,7 +202,7 @@ av.grd.findLogicOutline = function () {
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (av.debug.logic) console.log('setLogic', av.grd.out);
   //console.log('update',av.grd.updateNum, '; setLogic', av.grd.out);
-  //if (0 <= av.grd.msg.update) av.grd.updateLogicAve();  //this is done in update population stats right now
+  //if (0 <= av.grd.msg.update) av.grd.updateLogicFn();  //this is done in update population stats right now
 }
 
 av.grd.cellConflict = function (NewCols, NewRows) {

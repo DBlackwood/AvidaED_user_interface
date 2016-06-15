@@ -445,7 +445,7 @@ av.msg.updatePopStats = function (msg) {
     av.ptd.aveGnl.push(msg.ave_gestation_time);
     av.ptd.aveMet.push(msg.ave_metabolic_rate);
     av.ptd.aveNum.push(msg.organisms);
-    av.grd.updateLogicAve(msg);  //for graph data  switch to run with grid data since the data is from the grid data
+    av.grd.updateLogicFn(msg.update);  //for graph data  switch to run with grid data since the data is from the grid data
   }
   TimeLabel.textContent = msg.update.formatNum(0) + " updates";
   av.grd.updateNum = msg.update;
@@ -478,7 +478,38 @@ av.msg.updatePopStats = function (msg) {
   norPop.textContent = msg.nor;
   xorPop.textContent = msg.xor;
   equPop.textContent = msg.equ;
+}
 
+av.grd.updateLogicFn = function (mUpdate){
+  'use strict';
+  if (av.ptd.allOff) {
+    av.ptd.logFit[mUpdate] = null;
+    av.ptd.logGnl[mUpdate] = null;
+    av.ptd.logMet[mUpdate] = null;
+    av.ptd.logNum[mUpdate] = null;
+  }
+  else {
+    av.ptd.logFit[mUpdate] = 0;
+    av.ptd.logGnl[mUpdate] = 0;
+    av.ptd.logMet[mUpdate] = 0;
+    av.ptd.logNum[mUpdate] = 0;
+    //console.log('out_', av.grd.out );
+    //console.log('gest', av.grd.msg.gestation.data);
+    var lngth = av.grd.out.length;
+    for (var ii=0; ii < lngth; ii++){
+      if (0 < av.grd.out[ii]) {
+        av.ptd.logFit[mUpdate] += av.grd.msg.fitness.data[ii];
+        av.ptd.logGnl[mUpdate] += av.grd.msg.gestation.data[ii];
+        av.ptd.logMet[mUpdate] += av.grd.msg.metabolism.data[ii];
+        av.ptd.logNum[mUpdate]++;
+      }
+    }
+    if (0 < av.ptd.logNum[mUpdate]) {
+      av.ptd.logFit[mUpdate] = av.ptd.logFit[mUpdate]/av.ptd.logNum[mUpdate];
+      av.ptd.logGnl[mUpdate] = av.ptd.logGnl[mUpdate]/av.ptd.logNum[mUpdate];
+      av.ptd.logMet[mUpdate] = av.ptd.logMet[mUpdate]/av.ptd.logNum[mUpdate];
+    }
+  }
   if (av.ptd.allOff) {
     logTit1.textContent = '';
     logTit2.textContent = '';
@@ -493,40 +524,7 @@ av.msg.updatePopStats = function (msg) {
     logTit4.textContent = 'Selected';
     logTit5.textContent = 'Functions';
   }
-  numLog.textContent = av.ptd.logNum[Number(msg.update)];
-
-}
-
-av.grd.updateLogicAve = function (msg){
-  'use strict';
-  if (av.ptd.allOff) {
-    av.ptd.logFit[msg.update] = null;
-    av.ptd.logGnl[msg.update] = null;
-    av.ptd.logMet[msg.update] = null;
-    av.ptd.logNum[msg.update] = null;
-  }
-  else {
-    av.ptd.logFit[msg.update] = 0;
-    av.ptd.logGnl[msg.update] = 0;
-    av.ptd.logMet[msg.update] = 0;
-    av.ptd.logNum[msg.update] = 0;
-    //console.log('out_', av.grd.out );
-    //console.log('gest', av.grd.msg.gestation.data);
-    var lngth = av.grd.out.length;
-    for (var ii=0; ii < lngth; ii++){
-      if (0 < av.grd.out[ii]) {
-        av.ptd.logFit[msg.update] += av.grd.msg.fitness.data[ii];
-        av.ptd.logGnl[msg.update] += av.grd.msg.gestation.data[ii];
-        av.ptd.logMet[msg.update] += av.grd.msg.metabolism.data[ii];
-        av.ptd.logNum[msg.update]++;
-      }
-    }
-    if (0 < av.ptd.logNum[msg.update]) {
-      av.ptd.logFit[msg.update] = av.ptd.logFit[msg.update]/av.ptd.logNum[msg.update];
-      av.ptd.logGnl[msg.update] = av.ptd.logGnl[msg.update]/av.ptd.logNum[msg.update];
-      av.ptd.logMet[msg.update] = av.ptd.logMet[msg.update]/av.ptd.logNum[msg.update];
-    }
-  }
+  numLog.textContent = av.ptd.logNum[Number(mUpdate)];
 }
 
 //writes out data for WebOrgDataByCellID

@@ -334,6 +334,7 @@ av.ptd.bitToggle = function (button) {
   //console.log('in av.ptd.bitToggle');
   av.grd.drawGridSetupFn();
   av.grd.popChartFn();
+  av.grd.updateLogicFn(av.grd.popStatsMsg.update);
 }
 
 //reset values
