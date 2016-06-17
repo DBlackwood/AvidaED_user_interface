@@ -34,7 +34,7 @@ av.dnd.getDomId = function (name, target){
 av.dnd.getUniqueName = function(name, target) {
   'use strict';
   var namelist = dojo.query('> .dojoDndItem', target.node.id);
-  console.log('u namelist', namelist);
+  //console.log('u namelist', namelist);
   var unique = true;
   var lngth = namelist.length;
   while (unique) {
@@ -61,6 +61,16 @@ av.dnd.makeNameList = function (target) {
   return listNames;
 }
 
+av.dnd.preTransferNameList = function(target, name) {
+  "use strict";
+  var listFull = av.dnd.makeNameList(target);
+  var ndx = listFull.indexOf(name);
+  console.log('name', name, '; index', ndx, '; listFull',listFull);
+  listFull.splice(ndx,1);
+  console.log('listFull', listFull);
+  return listFull;
+}
+
 av.dnd.nameNfrzItem = function (namelist, name, number) {
   var num = number + 1;
   var aName = name + '_' + num.formatNum(0);
@@ -77,9 +87,9 @@ av.dnd.namefzrItem = function(name, namelist) {
   'use strict';
   var theName;
   //look for name in freezer section
-  //console.log('nameList',namelist, '; index', namelist.indexOf(name));
+  console.log('name', name, '; index', namelist.indexOf(name), '; nameList',namelist);
   if (0 <= namelist.indexOf(name)) {
-    theName = av.dnd.nameNfrzItem(namelist, name, 0);
+    theName = av.dnd.nameNfrzItem(namelist, name, 1);
   }
   else { theName = name; }
   //console.log('name', theName);
@@ -123,7 +133,7 @@ av.dnd.nameParent = function(name) {
   var theName;
   //look for name in parent
   if (0 <= av.parents.name.indexOf(name)) {
-    theName = av.dnd.nameNparent(name, 0);
+    theName = av.dnd.nameNparent(name, 1);
   }
   else { theName = name; }
   //console.log('name', theName);
@@ -272,8 +282,8 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   var domid = Object.keys(target.selection)[0];
   //console.log('domID', domid, target);
   //console.log('fzConfig', av.dnd.fzConfig);
-  var nameArray = av.dnd.makeNameList(target);
   var oldName = nodes[0].textContent;
+  var nameArray = av.dnd.preTransferNameList(target, oldName);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
   var configurationName = prompt("Please name your dish configuration", sName);
   if (configurationName) {
@@ -318,8 +328,9 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   var gen;
   var domid = Object.keys(target.selection)[0];
   if (av.debug.dnd) console.log('domid', domid);
-  var nameArray = av.dnd.makeNameList(target);
   var oldName = nodes[0].textContent;
+  var nameArray = av.dnd.preTransferNameList(target, oldName);
+  console.log('name', oldName, '; array',  nameArray);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
   var avidian = prompt("Please name your avidian", sName);
   if (avidian) {
@@ -567,8 +578,8 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   if (av.debug.dnd) console.log('landFzPopDish: fzr', av.fzr);
   var domid = Object.keys(pkg.target.selection)[0];
 
-  var nameArray = av.dnd.makeNameList(pkg.target);
   var oldName = pkg.nodes[0].textContent;
+  var nameArray = av.dnd.preTransferNameList(target, oldName);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
   var worldName = prompt("Please name your populated dish", sName);
   if (worldName) {
