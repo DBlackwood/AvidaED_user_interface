@@ -59,7 +59,6 @@ av.dnd.makeNameList = function (target) {
     listNames[ii] = namelist[ii].textContent;
   }
   return listNames;
-
 }
 
 av.dnd.nameNfrzItem = function (namelist, name, number) {
@@ -426,8 +425,15 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
   //check to see if in the grid part of the canvas
   if (av.parents.col[nn] >= 0 && av.parents.col[nn] < av.grd.cols && av.parents.row[nn] >= 0 && av.parents.row[nn] < av.grd.rows) {
     av.parents.AvidaNdx[nn] = av.parents.row[nn] * av.grd.cols + av.parents.col[nn];
+
+    //Start setting up for getting data for parents structure
+    nn = av.parents.name.length;  // get index into parents
+    var newName = av.dnd.nameParent(nodes[0].textContent);
+    //av.parents.name[nn] = nodes[0].textContent;
+
     //Add organism to av.dnd.ancestorBox in settings.
     av.dnd.fzOrgan.forInSelectedItems(function (item, id) {
+      item.data = newName;
       if (av.debug.dnd) console.log('selected: item', item, '; id', id);
       av.dnd.ancestorBox.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
       if (av.debug.dnd) console.log('av.dnd.gridCanvas.map', av.dnd.gridCanvas.map);
@@ -438,11 +444,9 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
     av.parents.domid.push(domIDs[domIDs.length-1]);
 
     //update parents structure
-    nn = av.parents.name.length;
     av.parents.handNdx.push(nn);
     av.parents.howPlaced[nn] = 'hand';
     av.parents.injected[nn] = false;
-    av.parents.name[nn] = nodes[0].textContent;
     var domId = Object.keys(source.selection)[0];
     if (av.debug.dnd) console.log('av.dnd.landGridCanvas; domId', domId, '; av.fzr.genome', av.fzr.genome);
     var dir = av.fzr.dir[domId];
