@@ -916,66 +916,6 @@ require([
     dijit.byId('mnCnRun').attr('disabled', true);
   }
 
-  av.ptd.runPopFn = function () {
-    //console.log('runPopFn runState', av.grd.runState);
-    //check for ancestor organism in configuration data
-    var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
-    //console.log('namelist', namelist);
-    if (1 > namelist.length) {
-      //console.log('about to call av.ptd.makePauseState()');
-      //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 740 \n';
-      av.ptd.makePauseState();
-      NeedAncestorDialog.show();
-    }
-    else { // setup for a new run by sending config data to avida
-      if ('started' !== av.grd.runState) {
-        //collect setup data to send to avida.  Order matters. Files must be created first. Then files must be sent before some other stuff.
-        av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
-        if ('prepping' === av.grd.runState) {
-          av.msg.importConfigExpr();
-          av.msg.injectAncestors();
-        }
-        else {
-          av.msg.importWorldExpr();
-          //console.log('parents.injected', av.parents.injected);
-          //av.debug.log += '\nstart importWorld running-----------------------------------------\n'
-          av.msg.injectAncestors();
-        }
-
-        //change ui parameters for the correct state when the avida population has started running
-        av.ptd.popRunningStateUi();  //av.grd.runState now == 'started'
-
-        av.msg.requestGridData();
-        av.msg.requestPopStats();
-        if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
-      }
-
-      if (dijit.byId('autoUpdateRadio').get('checked')) {
-        //av.msg.pause(dijit.byId('autoUpdateSpinner').get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
-        av.ui.autoStopFlag = true;
-        av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
-        //console.log('stop at ', dijit.byId('autoUpdateSpinner').get('value'));
-      }
-
-      av.ptd.makeRunState();
-      av.msg.stepUpdate();   //av.msg.doRunPause(av.fio);
-    }
-    //update screen based on data from C++
-  }
-
-  av.ptd.runStopFn = function () {
-    if ('Run' == document.getElementById('runStopButton').innerHTML) {
-      av.ptd.makeRunState();
-      av.ptd.runPopFn();
-    } else {
-      //console.log('about to call av.ptd.makePauseState()');
-      //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
-      av.ptd.makePauseState();
-      //av.msg.doRunPause(av.fio);
-      //console.log('pop size ', av.ptd.aveNum);
-    }
-  };
-
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById('runStopButton').onclick = function () {
     av.debug.log += '\n -Button: runStopButton';

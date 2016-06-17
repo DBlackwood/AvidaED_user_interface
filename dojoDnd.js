@@ -13,9 +13,28 @@ av.dnd.getAllItems = function (source) {
   return items;
 }
 
+av.dnd.getDomId = function (name, target){
+  'use strict';
+  //Now find which node has the new content so it can get a context menu.
+  var domItems = Object.keys(target.map);
+  var nodeIndex = -1;
+  var lngth = domItems.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    if (target.map[domItems[ii]].data === name) {
+      nodeIndex = ii;
+      break;
+    }
+  }
+  return domItems[nodeIndex];
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                           Name for freezer item
+
 av.dnd.getUniqueName = function(name, target) {
   'use strict';
   var namelist = dojo.query('> .dojoDndItem', target.node.id);
+  console.log('u namelist', namelist);
   var unique = true;
   var lngth = namelist.length;
   while (unique) {
@@ -31,20 +50,62 @@ av.dnd.getUniqueName = function(name, target) {
   return name;
 };
 
-av.dnd.getDomId = function (name, target){
+av.dnd.makeNameList = function (target) {
   'use strict';
-  //Now find which node has the new content so it can get a context menu.
-  var domItems = Object.keys(target.map);
-  var nodeIndex = -1;
-  var lngth = domItems.length;
+  var namelist = dojo.query('> .dojoDndItem', target.node.id);
+  var lngth = namelist.length;
+  var listNames = [];
   for (var ii = 0; ii < lngth; ii++) {
-    if (target.map[domItems[ii]].data === name) {
-      nodeIndex = ii;
-      break;
+    listNames[ii] = namelist[ii].textContent;
+  }
+  return listNames;
+
+}
+
+av.dnd.nameNfrzItem = function (namelist, name, number) {
+  var num = number + 1;
+  var aName = name + '_' + num.formatNum(0);
+  var newName;
+  if (0 <= namelist.indexOf(aName)) {
+    newName = av.dnd.nameNfrzItem(namelist, name, num);
+    //console.log('aName', aName, '; num', num, 'newName', newName);
+  }
+  else { newName = aName; }
+  return newName;
+};
+
+av.dnd.namefzrItem = function(name, namelist) {
+  'use strict';
+  var theName;
+  //look for name in freezer section
+  //console.log('nameList',namelist, '; index', namelist.indexOf(name));
+  if (0 <= namelist.indexOf(name)) {
+    theName = av.dnd.nameNfrzItem(namelist, name, 0);
+  }
+  else { theName = name; }
+  //console.log('name', theName);
+  return theName;
+}
+
+av.dnd.getUniqueFzrName = function(name, namelist) {
+  'use strict';
+  var unique = true;
+  var suggestName;
+  var lngth = namelist.length;
+  //console.log('namelist', namelist);
+  while (unique) {
+    unique = false;
+    if (0 <= namelist.indexOf(name)) {
+      suggestName = av.dnd.namefzrItem(name, namelist);
+      name = prompt("Please give your item a unique name ", suggestName)
+      unique = true;
     }
   }
-  return domItems[nodeIndex];
+  return name;
 };
+
+//----------------------------------------------------------------------------------------------------------------------
+// rename Parent
 
 av.dnd.nameNparent = function (name, number) {
   var num = number + 1;
@@ -212,10 +273,12 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   var domid = Object.keys(target.selection)[0];
   //console.log('domID', domid, target);
   //console.log('fzConfig', av.dnd.fzConfig);
+  var nameArray = av.dnd.makeNameList(target);
   var oldName = nodes[0].textContent;
-  var dishCon = prompt("Please name your dish configuration", oldName + '_1');
-  if (dishCon) {
-    var configName = av.dnd.getUniqueName(dishCon, target);
+  var sName = av.dnd.namefzrItem(oldName, nameArray);
+  var configurationName = prompt("Please name your dish configuration", sName);
+  if (configurationName) {
+    var configName = av.dnd.getUniqueFzrName(configurationName, nameArray);
     if (null != configName) {
       av.debug.log += '\n -DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + '; --> ' + configName;
       document.getElementById(domid).textContent = configName;
@@ -250,15 +313,18 @@ av.dnd.landFzConfig = function (source, nodes, target) {
 }
 
 //----------------------------------------------------Organsim dnd------------------------------------------------------
-//When something is added to the Organism Freezer ------------------
+//When something is added to the Organism Freezer 
 av.dnd.landFzOrgan = function (source, nodes, target) {
   'use strict';
   var gen;
   var domid = Object.keys(target.selection)[0];
   if (av.debug.dnd) console.log('domid', domid);
-  var avidian = prompt("Please name your avidian", document.getElementById(domid).textContent + "_1");
+  var nameArray = av.dnd.makeNameList(target);
+  var oldName = nodes[0].textContent;
+  var sName = av.dnd.namefzrItem(oldName, nameArray);
+  var avidian = prompt("Please name your avidian", sName);
   if (avidian) {
-    var avName = av.dnd.getUniqueName(avidian, target);
+    var avName = av.dnd.getUniqueFzrName(avidian, nameArray);
     if (null != avName) {  //give dom item new avName name
       av.debug.log += '\n -DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + '; --> ' + avName;
       document.getElementById(domid).textContent = avName;
@@ -496,19 +562,23 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   'use strict';
   if (av.debug.dnd) console.log('landFzPopDish: fzr', av.fzr);
   var domid = Object.keys(pkg.target.selection)[0];
-  var worldName = prompt("Please name your populated dish", pkg.nodes[0].textContent + "@"+ av.grd.popStatsMsg.update.formatNum(0));
+
+  var nameArray = av.dnd.makeNameList(pkg.target);
+  var oldName = pkg.nodes[0].textContent;
+  var sName = av.dnd.namefzrItem(oldName, nameArray);
+  var worldName = prompt("Please name your populated dish", sName);
   if (worldName) {
-    var WorldName = av.dnd.getUniqueName(worldName, pkg.target);
-    if (null != WorldName) {
-      av.debug.log += '\n -DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent + ' --> ' + WorldName;
-      document.getElementById(domid).textContent = WorldName;
-      pkg.target.map[domid].data = WorldName;
+    var nameWorld = av.dnd.getUniqueFzrName(worldName, nameArray);
+    if (null != nameWorld) {  
+      av.debug.log += '\n -DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent + ' --> ' + nameWorld;
+      document.getElementById(domid).textContent = nameWorld;
+      pkg.target.map[domid].data = nameWorld;
       pkg.target.map[domid].type[0] = 'w';
       //console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
       //console.log('type', pkg.target.map[domid].type[0]);
 
       //Now find which node has the new content so it can get a context menu.
-      var domID = av.dnd.getDomId(WorldName, pkg.target);
+      var domID = av.dnd.getDomId(nameWorld, pkg.target);
       av.fzr.dir[domID] = 'w'+ av.fzr.wNum;
       av.fzr.domid['w'+ av.fzr.wNum] = domID;
 
