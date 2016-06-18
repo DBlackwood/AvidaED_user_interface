@@ -40,9 +40,9 @@ av.dnd.getUniqueName = function(name, target) {
   while (unique) {
     unique = false;
     for (var ii = 0; ii < lngth;  ii++) {
-      //if (av.debug.dnd) console.log ("name ", namelist[ii].innerHTML);
+      //if (av.debug.dnd) console.log ('name ', namelist[ii].innerHTML);
       if (name == namelist[ii].textContent) {
-        name = prompt("Please give your item a unique name ", name + "_1")
+        name = prompt('Please give your item a unique name ', name + '_1')
         unique = true;
       }
     }
@@ -62,7 +62,7 @@ av.dnd.makeNameList = function (target) {
 }
 
 av.dnd.preTransferNameList = function(target, name) {
-  "use strict";
+  'use strict';
   var listFull = av.dnd.makeNameList(target);
   var ndx = listFull.indexOf(name);
   console.log('name', name, '; index', ndx, '; listFull',listFull);
@@ -106,7 +106,7 @@ av.dnd.getUniqueFzrName = function(name, namelist) {
     unique = false;
     if (0 <= namelist.indexOf(name)) {
       suggestName = av.dnd.namefzrItem(name, namelist);
-      name = prompt("Please give your item a unique name ", suggestName)
+      name = prompt('Please give your item a unique name ', suggestName)
       unique = true;
     }
   }
@@ -246,7 +246,7 @@ av.dnd.landActiveConfig = function (pkg) {
       }
     }
     av.parents.placeAncestors();
-    //run status is no longer 'new' it is "world"
+    //run status is no longer 'new' it is 'world'
     av.ptd.popWorldStateUi();
 
     //Load Time Recorder Data.
@@ -285,7 +285,7 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   var oldName = nodes[0].textContent;
   var nameArray = av.dnd.preTransferNameList(target, oldName);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
-  var configurationName = prompt("Please name your dish configuration", sName);
+  var configurationName = prompt('Please name your dish configuration', sName);
   if (configurationName) {
     var configName = av.dnd.getUniqueFzrName(configurationName, nameArray);
     if (null != configName) {
@@ -322,7 +322,7 @@ av.dnd.landFzConfig = function (source, nodes, target) {
 }
 
 //----------------------------------------------------Organsim dnd------------------------------------------------------
-//When something is added to the Organism Freezer 
+//When something is added to the Organism Freezer
 av.dnd.landFzOrgan = function (source, nodes, target) {
   'use strict';
   var gen;
@@ -332,7 +332,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   var nameArray = av.dnd.preTransferNameList(target, oldName);
   console.log('name', oldName, '; array',  nameArray);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
-  var avidian = prompt("Please name your avidian", sName);
+  var avidian = prompt('Please name your avidian', sName);
   if (avidian) {
     var avName = av.dnd.getUniqueFzrName(avidian, nameArray);
     if (null != avName) {  //give dom item new avName name
@@ -477,7 +477,7 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
   //In all cases remove the ancestor from the gridCanvas so we only keep them in the av.dnd.ancestorBox.
   av.dnd.gridCanvas.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.gridCanvas.sync();
-  if (av.debug.dnd) console.log("parents", av.parents);
+  if (av.debug.dnd) console.log('parents', av.parents);
 }
 
 av.dnd.updateFromFzrOrganism = function () {
@@ -542,7 +542,7 @@ av.dnd.landActiveOrgan = function (source, nodes, target) {
       av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid pkg.source.
       av.dnd.activeOrgan.sync();
     });
-    //if (av.debug.dnd) console.log("av.dnd.activeOrgan.map=", av.dnd.activeOrgan.map);
+    //if (av.debug.dnd) console.log('av.dnd.activeOrgan.map=', av.dnd.activeOrgan.map);
   }
   av.dnd.updateFromFzrOrganism();
 }
@@ -579,12 +579,12 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   var domid = Object.keys(pkg.target.selection)[0];
 
   var oldName = pkg.nodes[0].textContent;
-  var nameArray = av.dnd.preTransferNameList(target, oldName);
+  var nameArray = av.dnd.preTransferNameList(pkg.target, oldName);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
-  var worldName = prompt("Please name your populated dish", sName);
+  var worldName = prompt('Please name your populated dish', sName);
   if (worldName) {
     var nameWorld = av.dnd.getUniqueFzrName(worldName, nameArray);
-    if (null != nameWorld) {  
+    if (null != nameWorld) {
       av.debug.log += '\n -DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent + ' --> ' + nameWorld;
       document.getElementById(domid).textContent = nameWorld;
       pkg.target.map[domid].data = nameWorld;
@@ -618,16 +618,16 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
 };
 
     //ways to get information about the Dnd containers
-    //console.log("pkg.nodes[0].id, pkg.target.node.id = ", pkg.nodes[0].id, pkg.target.node.id);
+    //console.log('pkg.nodes[0].id, pkg.target.node.id = ', pkg.nodes[0].id, pkg.target.node.id);
     //console.log(Object.keys(pkg.target.selection)[0]);
-    //console.log("map: ", pkg.target.map);
-    //console.log("id: ", pkg.target.node.id);
-    //console.log("textContent: ", pkg.nodes[0].textContent);
-    //console.log("pkg.nodes[0].id: ", pkg.nodes[0].id);
-    //console.log("pkg.target.selection: ",pkg.target.selection);
-    //console.log("pkg.target.selection: ",Object.keys(pkg.target.selection)[0]);
+    //console.log('map: ', pkg.target.map);
+    //console.log('id: ', pkg.target.node.id);
+    //console.log('textContent: ', pkg.nodes[0].textContent);
+    //console.log('pkg.nodes[0].id: ', pkg.nodes[0].id);
+    //console.log('pkg.target.selection: ',pkg.target.selection);
+    //console.log('pkg.target.selection: ',Object.keys(pkg.target.selection)[0]);
     //console.log(document.getElementById(Object.keys(pkg.target.selection)[0]).innerHTML)
-    //console.log("allnodes: ",pkg.target.getAllNodes());
+    //console.log('allnodes: ',pkg.target.getAllNodes());
 
 // Process av.dnd.trashCan ---------------------------------------------------
 av.dnd.landTrashCan = function (source, nodes, target) {
@@ -813,7 +813,7 @@ av.dnd.landgraphPop2 = function (dnd, source, nodes, target) {
       av.dnd.graphPop2.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
     });
     av.dnd.graphPop2.sync();
-    //if (av.debug.dnd) console.log("graphPop2.map=", graphPop2.map);
+    //if (av.debug.dnd) console.log('graphPop2.map=', graphPop2.map);
   }
   var fzdomid = Object.keys(source.selection)[0];
   var dir = av.fzr.dir[fzdomid];
@@ -825,21 +825,21 @@ av.dnd.landgraphPop2 = function (dnd, source, nodes, target) {
 /* ********************************************************************** */
 /* Right Click Context Menu Freezer ************************************* */
 /* ********************************************************************** */
-//used to re-name freezer items after they are created--------------
+//used to re-name freezer items after they are created----------------
 //http://jsfiddle.net/bEurr/10/
 av.dnd.contextMenu = function(target, fzItemID) {
   'use strict';
   var fzSection = target.node.id;
   var dir;
-  if (av.debug.dnd) console.log("contextMenu; target.node.id=",target.node.id);
-  if (av.debug.dnd) console.log("contextMenu; fzItemID=",fzItemID, " fzSection=", fzSection);
+  if (av.debug.dnd) console.log('contextMenu; target.node.id=',target.node.id);
+  if (av.debug.dnd) console.log('contextMenu; fzItemID=',fzItemID, ' fzSection=', fzSection);
   if (av.debug.dnd) console.log('contextMenu: fzr', av.fzr);
   var aMenu = new dijit.Menu({targetNodeIds: [fzItemID]});
   aMenu.addChild(new dijit.MenuItem({
-    label: "Rename",
+    label: 'Rename',
     onClick: function () {
   av.debug.log += '\n -Button: Rname:' + document.getElementById(fzItemID).textContent;
-      var fzName = prompt("Please rename freezer item", document.getElementById(fzItemID).textContent);
+      var fzName = prompt('Please rename freezer item', document.getElementById(fzItemID).textContent);
       if (fzName) {
         fzName = av.dnd.getUniqueName(fzName, target);
         if (null != fzName) {
@@ -847,7 +847,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
           document.getElementById(fzItemID).textContent = fzName;
           document.getElementById(fzItemID).data = fzName;
           target.map[fzItemID].data = fzName;
-          //console.log(".data=", target.map[fzItemID].data);
+          //console.log('.data=', target.map[fzItemID].data);
           //update freezer structure
           dir = av.fzr.dir[fzItemID];
           av.fzr.file[dir+'/entryname.txt']=fzName;
@@ -857,10 +857,10 @@ av.dnd.contextMenu = function(target, fzItemID) {
     }
   }));
   aMenu.addChild(new dijit.MenuItem({
-    label: "delete",
+    label: 'delete',
     onClick: function () {
       av.debug.log += '\n -Button: delete:' + document.getElementById(fzItemID).textContent;
-      var sure = confirm("Do you want to delete " + document.getElementById(fzItemID).textContent);
+      var sure = confirm('Do you want to delete ' + document.getElementById(fzItemID).textContent);
       if (sure) {
         dir = av.fzr.dir[fzItemID];
         av.fzr.file[dir+'/entryname.txt'];
@@ -881,7 +881,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
   }));
   if (!av.brs.isSafari) {
     aMenu.addChild(new dijit.MenuItem({
-      label: "export",
+      label: 'export',
       onClick: function () {
         av.debug.log += '\n -Button: export:' + document.getElementById(fzItemID).textContent;
         var type;
@@ -902,7 +902,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
               FIzip.file(fname.substring(dir.length + 1), av.fzr.file[fname]);
             }
           }
-          var content = FIzip.generate({type: "blob"});
+          var content = FIzip.generate({type: 'blob'});
           saveAs(content, zName);
         }
       }
@@ -932,5 +932,5 @@ Looking at DND move https://dojotoolkit.org/reference-guide/1.10/dojo/dnd/Moveab
 //I'm keeping the following commented out code that would update the .textContent specifically.
 //var currentItem = Object.keys(av.dnd.activeConfig.map)[0];
 //var freezeItem = Object.keys(av.dnd.fzConfig.selection)[0];
-//if (av.debug.dnd) console.log("currentI", currentItem, " freezeI", freezeItem);
+//if (av.debug.dnd) console.log('currentI', currentItem, ' freezeI', freezeItem);
 //document.getElementById(currentItem).textContent = document.getElementById(freezeItem).textContent;

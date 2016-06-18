@@ -322,8 +322,8 @@ av.grd.clearGrd();
 // so use the below updated condition
 
 av.ui = {};  //user interface functions and variables
-av.ui.version = '2016_0615';
-av.debug.log = 'message and error log: version ' + av.ui.version;
+av.ui.version = '2016_0617';
+av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';
