@@ -63,7 +63,7 @@ av.msg.readMsg = function (ee) {
           av.debug.log += '\n -     Repeat so webPopulationStats and chart not redrawn; update=', av.grd.oldUpdate;
         }
 
-        //Is there another update
+        //Is there another update? ---------------------
         //console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
         if (av.ui.autoStopFlag) {
           if (av.ui.autoStopValue <= av.grd.popStatsMsg.update) {
@@ -525,6 +525,12 @@ av.grd.updateLogicFn = function (mUpdate){
     logTit5.textContent = 'Functions';
   }
   numLog.textContent = av.ptd.logNum[Number(mUpdate)];
+  /*
+  if (av.ptd.logFit[mUpdate]) {
+    console.log('update', mUpdate, '; Num', av.ptd.logNum[mUpdate], '; Fit', av.ptd.logFit[mUpdate].formatNum(0),
+      '; Gnl', av.ptd.logGnl[mUpdate].formatNum(0), '; Met', av.ptd.logMet[mUpdate].formatNum(0));
+  }
+  */
 }
 
 //writes out data for WebOrgDataByCellID

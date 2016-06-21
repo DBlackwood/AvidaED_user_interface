@@ -65,9 +65,9 @@ av.dnd.preTransferNameList = function(target, name) {
   'use strict';
   var listFull = av.dnd.makeNameList(target);
   var ndx = listFull.indexOf(name);
-  console.log('name', name, '; index', ndx, '; listFull',listFull);
-  listFull.splice(ndx,1);
-  console.log('listFull', listFull);
+  //console.log('name', name, '; index', ndx, '; listFull',listFull);
+  if (-1 < ndx) listFull.splice(ndx,1);
+  //console.log('listFull', listFull);
   return listFull;
 }
 
@@ -87,7 +87,7 @@ av.dnd.namefzrItem = function(name, namelist) {
   'use strict';
   var theName;
   //look for name in freezer section
-  console.log('name', name, '; index', namelist.indexOf(name), '; nameList',namelist);
+  //console.log('name', name, '; index', namelist.indexOf(name), '; nameList',namelist);
   if (0 <= namelist.indexOf(name)) {
     theName = av.dnd.nameNfrzItem(namelist, name, 1);
   }
@@ -328,6 +328,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   var gen;
   var domid = Object.keys(target.selection)[0];
   if (av.debug.dnd) console.log('domid', domid);
+  //console.log('target', target, '; fzrOrgan', av.dnd.fzOrgan);
   var oldName = nodes[0].textContent;
   var nameArray = av.dnd.preTransferNameList(target, oldName);
   console.log('name', oldName, '; array',  nameArray);

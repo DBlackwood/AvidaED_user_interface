@@ -1137,7 +1137,7 @@ require([
     av.mouse.downGridCanvasFn(evt)  });
 
   av.mouse.downGridCanvasFn = function (evt) {
-  av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
+    av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
     av.mouse.Dn = true;
     // Select if it is in the grid
     av.mouse.findSelected(evt, av.grd);
@@ -1222,7 +1222,7 @@ require([
     'use strict';
     var target = '';
     if (av.debug.mouse) console.log('in mouseup target:', evt.target.id, '; event:', evt);
-    //console.log('in mouseup target:', evt.target.id, '; event:', evt);
+    console.log('in mouseup target:', evt.target.id, '; event:', evt);
     av.mouse.makeCursorDefault();
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);

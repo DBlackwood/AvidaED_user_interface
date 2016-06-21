@@ -260,16 +260,21 @@ av.mouse.kidMouse = function (evt, dnd, fzr, grd){
         target = 'fzOrgan';
         if (av.debug.mouse) console.log('freezerDiv');
         //make sure there is a name.
-        var avidian = prompt("Please name your avidian", av.grd.kidName);
+
+        var nameArray = av.dnd.makeNameList(av.dnd.fzOrgan);
+        //console.log('name', av.grd.kidName, '; array',  nameArray);
+        var sName = av.dnd.namefzrItem(av.grd.kidName, nameArray);
+        console.log('sName', sName);
+        var avidian = prompt('Please name your avidian', sName);
         if (avidian) {
-          av.debug.log += '\n -froze kid=' + avidian;
-          avidian = av.dnd.getUniqueName(avidian, dnd.fzOrgan);
-          if (null != avidian) {  //add to Freezer
-            dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
+          var avName = av.dnd.getUniqueFzrName(avidian, nameArray);
+          if (null != avName) {  //give dom item new avName name
+            av.debug.log += '\n -froze kid=' + avName;
+            dnd.fzOrgan.insertNodes(false, [{data: avName, type: ['g']}]);
             dnd.fzOrgan.sync();
             var mapItems = Object.keys(dnd.fzOrgan.map);
             var gdir =  'g' + av.fzr.gNum;
-            av.fzr.file[gdir + '/entryname.txt'] = avidian;
+            av.fzr.file[gdir + '/entryname.txt'] = avName;
             av.fzr.dir[mapItems[mapItems.length - 1]] = gdir;
             av.fzr.domid[gdir] = mapItems[mapItems.length - 1];
             //av.fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.grd.kidGenome;
