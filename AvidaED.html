@@ -523,9 +523,15 @@
           <div data-dojo-type='dijit/layout/ContentPane' title='SetupBlock' id='setupBlock' extractContent='false'
                preventCache='false' preload='false' refreshOnShow='false' doLayout='true' selected='true'
                closable='false' style='overflow: scroll'>
-            <form id='setupForm'>
+            <div id='setupForm'>
+              <div class = 'odd'>
+                Quantity (between 0 and 100):
+                <input type="number" name="quantity" min="0" max="100">
+              </div>
+              <div class = 'even'>
               <label>Environmental Settings</label>
-
+              Number : <input type="text" name="quantity" id="quantity"  style='width: 3em; height:1.8em'/>&nbsp;<span id="errmsg"></span>
+              </div>
               <div style='height: 19px;' class='odd'>
                 Dish Size:
                 <input id='sizeCols' type='text' data-dojo-type='dijit/form/NumberTextBox' value=10 required='true' ;

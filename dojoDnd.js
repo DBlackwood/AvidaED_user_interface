@@ -331,7 +331,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   //console.log('target', target, '; fzrOrgan', av.dnd.fzOrgan);
   var oldName = nodes[0].textContent;
   var nameArray = av.dnd.preTransferNameList(target, oldName);
-  console.log('name', oldName, '; array',  nameArray);
+  //console.log('name', oldName, '; array',  nameArray);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
   var avidian = prompt('Please name your avidian', sName);
   if (avidian) {

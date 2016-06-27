@@ -1251,7 +1251,7 @@ require([
       }
     }
     else if ('offspring' == av.mouse.Picked) {
-      target = av.mouse.offspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
+      var target = av.mouse.offspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
       av.mouse.Picked = '';
     }
     else if ('kid' == av.mouse.Picked) {
@@ -1565,6 +1565,17 @@ require([
   // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // **************************************************************************************************************** */
+
+  $("#quantity").keypress(function (e) {
+    //if the letter is not digit then display error and don't type anything
+    console.log(e.which, e);
+    if (e.which != 8 && e.which != 0 && (e.which < 46 || e.which > 57)) {
+      //display error message
+      $("#errmsg").html("Numbers Only").show().fadeOut("slow");
+      return false;
+    }
+  });
+
   av.grd.gridWasCols = Number(document.getElementById('sizeCols').value);
   av.grd.gridWasRows = Number(document.getElementById('sizeRows').value);
 
