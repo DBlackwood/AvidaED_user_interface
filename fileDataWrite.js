@@ -214,14 +214,6 @@ av.fwt.popExpWrite = function (msg) {
   //console.log('fzr', av.fzr.file);
 }
 
-// never called. Not in use as of 2016_029
-av.fwt.makeFzrOrgan = function () {
-  'use strict';
-  var ndx = av.fzr.genome.length-1;  //write the last one created
-  av.fwt.makeEmDxFile(av.fzr.genome[ndx]._id+'/entryname.txt', av.fzr.genome[ndx].name);  //took fzr out
-  av.fwt.makeEmDxFile(av.fzr.genome[ndx]._id+'/genome.seq', av.fzr.genome[ndx].genome);
-}
-
 av.fwt.removeFzrConfig = function(dir) {
   'use strict';
   av.fwt.deleteFzrFile(dir+'/ancestors');

@@ -18,13 +18,16 @@ av.grd.backgroundSquares = function () {
 av.grd.setMapData = function () {
   'use strict';
   if (undefined != av.grd.msg.fitness) {
+    //console.log('av.grd.msg', av.grd.msg);
+    //console.log('av.grd.mxFit', av.grd.mxFit, '; av.grd.msg.fitness.maxVal', av.grd.msg.fitness.maxVal, '; limit',
+    //  (1 - av.grd.rescaleTolerance) * av.grd.mxFit);
     if (av.grd.mxFit < av.grd.msg.fitness.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxFit > av.grd.msg.fitness.maxVal) {
       av.grd.mxFit = av.grd.mxFit + ((1 + av.grd.rescaleTolerance) * av.grd.msg.fitness.maxVal - av.grd.mxFit) / av.grd.rescaleTimeConstant;
       av.grd.reScaleFit = 'rescaling';
     }
     else av.grd.reScaleFit = '';
-    if (av.grd.mxGest < av.grd.msg.gestation.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxGest > av.grd.msg.gestation.maxVal) {
-      av.grd.mxGest = av.grd.mxGest + ((1 + av.grd.rescaleTolerance) * av.grd.msg.gestation.maxVal - av.grd.mxGest) / av.grd.rescaleTimeConstant;
+    if (av.grd.mxGen < av.grd.msg.gestation.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxGen > av.grd.msg.gestation.maxVal) {
+      av.grd.mxGen = av.grd.mxGen + ((1 + av.grd.rescaleTolerance) * av.grd.msg.gestation.maxVal - av.grd.mxGen) / av.grd.rescaleTimeConstant;
       av.grd.reScaleGest = 'rescaling';
     }
     else av.grd.reScaleGest = '';
@@ -42,7 +45,7 @@ av.grd.setMapData = function () {
         break;
       case 'Generation Length':
         av.grd.fill = av.grd.msg.gestation.data;
-        av.grd.fillmax = av.grd.mxGest;
+        av.grd.fillmax = av.grd.mxGen;
         av.grd.fillmin = av.grd.msg.gestation.minVal;
         av.grd.fillRescale = av.grd.reScaleGest;
         break;
@@ -321,19 +324,20 @@ av.grd.drawGridUpdate = function () {
   av.grd.cellWd = ((av.grd.sizeX - av.grd.marginX) / av.grd.cols);
   av.grd.cellHt = ((av.grd.sizeY - av.grd.marginY) / av.grd.rows);
 
-  //Find a reasonable maximum zoom for this grid and screen space for av.grd.ZoomSlide
+  //Find a reasonable maximum zoom for this grid and screen space for av.grd.zoomSlide
   /*
   var zMaxCells = Math.floor(av.grd.spaceCells / 25);  // at least 10 cells   was trunc
   var zMaxWide = Math.floor(10 / av.grd.spaceCellWd);  // at least 10 pixels  was trunc
   var zMax = ((zMaxCells > zMaxWide) ? zMaxCells : zMaxWide); //Max of two methods
   zMax = ((zMax > 2) ? zMax : 2); //max zoom power of at least 2x
 */
-  //console.log('ZoomSlide set zMax, expression', zMax, 2 * (zMax - 1) + 1);
-//  av.grd.ZoomSlide.set("maximum", zMax);
-  //av.grd.ZoomSlide.set("discreteValues", 2 * (zMax - 1) + 3);
-//  av.grd.ZoomSlide.set("maximum", 5);
+  //console.log('zoomSlide set zMax, expression', zMax, 2 * (zMax - 1) + 1);
+//  av.grd.zoomSlide.set("maximum", zMax);
+  //av.grd.zoomSlide.set("discreteValues", 2 * (zMax - 1) + 3);
+//  av.grd.zoomSlide.set("maximum", 5);
 
-
+  //console.log('min', av.grd.zoomSlide.get('minimum'), '; max', av.grd.zoomSlide.get('maximum'), '; discrete',
+  //    av.grd.zoomSlide.get('discreteValues'), '; value', av.grd.zoomSlide.get('value'));
   //console.log("Cells, pixels, zMax, zoom", zMaxCells, zMaxWide, zMax, av.grd.zoom);
 
   av.grd.drawGridBackground();

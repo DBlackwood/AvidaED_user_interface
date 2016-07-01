@@ -6,8 +6,16 @@
 av.ptd.makePauseState = function () {
   dijit.byId('mnCnPause').attr('disabled', true);
   dijit.byId('mnCnRun').attr('disabled', false);
+  dijit.byId('mnCnOne').attr('disabled', false);
   //console.log('pauseState; button=run');
   document.getElementById('runStopButton').textContent = 'Run';
+}
+
+av.ptd.makeRunState = function () {
+  document.getElementById('runStopButton').textContent = 'Pause';
+  dijit.byId('mnCnPause').attr('disabled', false);
+  dijit.byId('mnCnRun').attr('disabled', true);
+  dijit.byId('mnCnOne').attr('disabled', true);
 }
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.

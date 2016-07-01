@@ -58,7 +58,7 @@
 <!-- http://stackoverflow.com/questions/20828799/creating-a-splash-page-in-html5 -->
 <div id='splash' style='display:block; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A'>
   <div align='center'>
-    <h1 style='color:whitesmoke'>Avida-ED public Beta version 2016_0617 is loading . . .</h1>
+    <h1 style='color:whitesmoke'>Avida-ED public Beta version 2016_0627 is loading . . .</h1>
     <img src='images/avidaGrid.gif' />
   </div>
 </div>
@@ -78,8 +78,10 @@
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnFlSaveWorkspace' label='Save Current Workspace'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlSaveAs' label='Save Workspace As'></span>
+            <div data-dojo-type='dijit/MenuSeparator'></div>
             <span data-dojo-type='dijit/MenuItem' id='mnFlOpenDefaultWS' label='Open Default Workspace'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlOpenWS' label='Open Workspace'></span>
+            <div data-dojo-type='dijit/MenuSeparator'></div>
             <span data-dojo-type='dijit/MenuItem' id='mnFlFzItem' label='Import Freezer Item'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlExportData' label='Export Data'></span>
           </span>
@@ -96,6 +98,7 @@
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnCnRun' label='Run'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnPause' label='Pause'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnCnOne' label='Do one update'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnNewpop' label='Start New Experiment'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnOrganismTrace' label='Put Selected Organism in Organism View'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnOffspringTrace' label='Put Offspring in Organism View'></span>
@@ -500,9 +503,9 @@
                       <button id='runStopButton'>Run</button>
                       <button id='freezeButton'>Freeze</button>
                     </td>
-                    <td>
+                    <td style='text-align: right'>
                       <label id='rescaleLabel'> </label><br />
-                      <div id='ZoomSlide' style='height: auto; width: 120px;float:right'>
+                      <div id='zoomSlide'>
                         <!--<div data-dojo-type='dijit/form/HorizontalRule' container='bottomDecoration' style='height: 5px;'></div>-->
                         <!--<ol data-dojo-type='dijit/form/HorizontalRuleLabels' container='bottomDecoration' labels='1x,20x' style='height: 20px;'>-->
                       </div>
@@ -523,15 +526,9 @@
           <div data-dojo-type='dijit/layout/ContentPane' title='SetupBlock' id='setupBlock' extractContent='false'
                preventCache='false' preload='false' refreshOnShow='false' doLayout='true' selected='true'
                closable='false' style='overflow: scroll'>
-            <div id='setupForm'>
-              <div class = 'odd'>
-                Quantity (between 0 and 100):
-                <input type="number" name="quantity" min="0" max="100">
-              </div>
-              <div class = 'even'>
+            <form id='setupForm'>
               <label>Environmental Settings</label>
-              Number : <input type="text" name="quantity" id="quantity"  style='width: 3em; height:1.8em'/>&nbsp;<span id="errmsg"></span>
-              </div>
+
               <div style='height: 19px;' class='odd'>
                 Dish Size:
                 <input id='sizeCols' type='text' data-dojo-type='dijit/form/NumberTextBox' value=10 required='true' ;
@@ -991,7 +988,7 @@
 
 <!------------------------------------------ Help About Dialog -------------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnHpAboutDialog'
-     title='Avida-Ed: Emscripten with javascript version: Beta Test 2016_0617'>
+     title='Avida-Ed: Emscripten with javascript version: Beta Test 2016_0627'>
   <div class='dijitDialogPaneContentArea'>
     <p>for more information go to <a href='http://avida-ed.msu.edu' target='_blank'>Avida-ED at MSU</a></p>
   </div>

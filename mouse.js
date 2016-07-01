@@ -68,7 +68,7 @@ av.mouse.selectedDadMouseStyle = function () {
   if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'no-drop';}
 };
 
-//update data about a kid in the selecred organism to move = primarily genome and name
+//update data about a kid in the selected organism to move = primarily genome and name
 av.mouse.selectedKidMouseStyle = function () {
   'use strict';
   //console.log('in kid');
@@ -193,11 +193,17 @@ av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
       if (undefined == parentID) parent = 'noParentName';
       else parent = document.getElementById(parentID).textContent;
       //make sure there is a name.
-      var avidian = prompt("Please name your avidian", parent + '_offspring');
+      var oldname = parent + '_offspring';
+
+      var nameArray = av.dnd.makeNameList(av.dnd.fzOrgan);
+      //console.log('name', oldname, '; array',  nameArray);
+      var sName = av.dnd.namefzrItem(oldname, nameArray);
+      console.log('sName', sName);
+      var avidian = prompt('Please name your avidian', sName);
       if (avidian) {
-        av.debug.log += '\n -move to organism freezer';
-        avidian = av.dnd.getUniqueName(avidian, dnd.fzOrgan);
+        avidian = av.dnd.getUniqueFzrName(avidian, nameArray);
         if (null != avidian) {  //add to Freezer
+          av.debug.log += '\n -move offspring, ' + avidian + ', to organism freezer';
           dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
           dnd.fzOrgan.sync();
           //find domId of parent as listed in dnd.fzOrgan
@@ -256,7 +262,7 @@ av.mouse.kidMouse = function (evt, dnd, fzr, grd){
         }
       }
       if (found || 'freezerDiv' == evt.target.id) {
-        av.debug.log += '\n -move to freezer';
+        av.debug.log += '\n -move from grid to freezer';
         target = 'fzOrgan';
         if (av.debug.mouse) console.log('freezerDiv');
         //make sure there is a name.

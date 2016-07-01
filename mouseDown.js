@@ -16,8 +16,10 @@ av.mouse.downOrganCanvasFn = function(evt) {
   else if ("button" in e)  // IE, Opera
     isRightMB = evt.button == 2;
 
-
-  if (av.traceObj) {
+  if (av.traceObj) console.log('av.traceObj', av.traceObj);
+  if (av.traceObj && [] !== av.traceObj) {
+    console.log('av.traceObj', av.traceObj);
+    av.mouse.Picked = 'not offspring';
     if (av.ind.didDivide) {  //offpsring exists
       distance = Math.sqrt(Math.pow(evt.offsetX - av.ind.cx[1], 2) + Math.pow(evt.offsetY - av.ind.cy[1], 2));
       if (25 > distance) {

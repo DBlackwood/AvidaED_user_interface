@@ -909,13 +909,7 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
   ///   Map Grid buttons - New  Run/Pause Freeze
   //--------------------------------------------------------------------------------------------------------------------
-
-  av.ptd.makeRunState = function () {
-    document.getElementById('runStopButton').textContent = 'Pause';
-    dijit.byId('mnCnPause').attr('disabled', false);
-    dijit.byId('mnCnRun').attr('disabled', true);
-  }
-
+  
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById('runStopButton').onclick = function () {
     av.debug.log += '\n -Button: runStopButton';
@@ -933,6 +927,14 @@ require([
   //process run/Stop buttons as above but for drop down menu
   dijit.byId('mnCnRun').on('Click', function () {
     av.debug.log += '\n -Button: mnCnRun';
+    av.ptd.makeRunState();
+    av.ptd.runPopFn();
+  });
+
+  //process run/Stop buttons as above but for drop down menu
+  dijit.byId('mnCnOne').on('Click', function () {
+    av.debug.log += '\n -Button: mnCnOne';
+    av.ui.oneUpdateFlag = true;
     av.ptd.makeRunState();
     av.ptd.runPopFn();
   });
@@ -1251,7 +1253,7 @@ require([
       }
     }
     else if ('offspring' == av.mouse.Picked) {
-      var target = av.mouse.offspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
+      target = av.mouse.offspringMouse(evt, av.dnd, av.fio, av.fzr, av.gen);
       av.mouse.Picked = '';
     }
     else if ('kid' == av.mouse.Picked) {
@@ -1369,21 +1371,21 @@ require([
   });
 
   // Zoom slide - display only not avida
-  av.grd.ZoomSlide = new HorizontalSlider({
-    name: 'ZoomSlide',
+  av.grd.zoomSlide = new HorizontalSlider({
+    name: 'zoomSlide',
     value: 1,
     minimum: 1,
     maximum: 10,
     intermediateChanges: true,
     discreteValues: 10,
-    style: 'height: auto; width: 120px;float:right',
+    style: 'height: auto; width: 80px;float:right',
     onChange: function (value) {
       av.grd.zoom = value;
-      //console.log('ZoomSlide', av.grd.zoom);
+      //console.log('zoomSlide', av.grd.zoom);
       //console.log('before call av.grd.drawGridSetupFn');
       av.grd.drawGridSetupFn();
     }
-  }, 'ZoomSlide');
+  }, 'zoomSlide');
 
   av.grd.colorMap = 'Gnuplot2';
   dijit.byId('mnGnuplot2').attr('disabled', true);
@@ -1565,17 +1567,6 @@ require([
   // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // **************************************************************************************************************** */
-
-  $("#quantity").keypress(function (e) {
-    //if the letter is not digit then display error and don't type anything
-    console.log(e.which, e);
-    if (e.which != 8 && e.which != 0 && (e.which < 46 || e.which > 57)) {
-      //display error message
-      $("#errmsg").html("Numbers Only").show().fadeOut("slow");
-      return false;
-    }
-  });
-
   av.grd.gridWasCols = Number(document.getElementById('sizeCols').value);
   av.grd.gridWasRows = Number(document.getElementById('sizeRows').value);
 
@@ -1597,7 +1588,7 @@ require([
     av.grd.gridWasCols = Number(document.getElementById('sizeCols').value);
     av.grd.gridWasRows = Number(document.getElementById('sizeRows').value);
     //reset zoom power to 1
-    av.grd.ZoomSlide.set('value', 1);
+    av.grd.zoomSlide.set('value', 1);
     av.parents.placeAncestors();
     //are any parents on the same cell?
     av.grd.cellConflict(NewCols, NewRows);
@@ -1945,7 +1936,7 @@ require([
     av.dnd.graphPop2.selectAll().deleteSelectedNodes();
   }
   dijit.byId('pop0color').on('Change', function () {
-    Rav.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
+    av.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
     av.debug.log += '\n -Button: pop0color';
     av.anl.AnaChartFn();
   });

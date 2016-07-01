@@ -62,26 +62,8 @@ av.msg.readMsg = function (ee) {
           //console.log('Repeat so webPopulationStats and chart not redrawn');
           av.debug.log += '\n -     Repeat so webPopulationStats and chart not redrawn; update=', av.grd.oldUpdate;
         }
-
         //Is there another update? ---------------------
-        //console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
-        if (av.ui.autoStopFlag) {
-          if (av.ui.autoStopValue <= av.grd.popStatsMsg.update) {
-            //make pause state
-            av.ptd.makePauseState();
-            av.ui.autoStopFlag = false;
-            dijit.byId("manualUpdateRadio").set('checked', true);
-            dijit.byId("autoUpdateRadio").set('checked', false);
-          }
-          else {
-            //av.debug.log += '\n - - update('+ av.grd.popStatsMsg.update +') < bar(' + av.ui.autoStopValue + ')';
-            av.msg.stepUpdate();
-          }
-        }
-        else {
-          //av.debug.log += '\n - - autoStopFlag=false; update:' + av.grd.popStatsMsg.update;
-          av.msg.stepUpdate();
-        }
+        av.msg.check4anotherUpdate();
         //av.debug.log += '\n - - end webPopulation: update:' + av.grd.popStatsMsg.update;
         break;
       case 'webGridData':
@@ -160,6 +142,35 @@ av.msg.readMsg = function (ee) {
   }
   else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg);
 };
+
+av.msg.check4anotherUpdate = function () {
+  "use strict";
+  //console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
+  if (av.ui.autoStopFlag) {
+    if (av.ui.autoStopValue <= av.grd.popStatsMsg.update) {
+      //make pause state
+      av.ptd.makePauseState();
+      av.ui.autoStopFlag = false;
+      dijit.byId("manualUpdateRadio").set('checked', true);
+      dijit.byId("autoUpdateRadio").set('checked', false);
+      if (av.ui.oneUpdateFlag) av.ui.oneUpdateFlag = false;
+    }
+    else {
+      if (av.ui.oneUpdateFlag) {
+        av.ui.oneUpdateFlag = false;
+        av.ptd.makePauseState();
+      }
+      else {av.msg.stepUpdate();}
+    }
+  }
+  else {
+    if (av.ui.oneUpdateFlag) {
+      av.ui.oneUpdateFlag = false;
+      av.ptd.makePauseState();
+    }
+    else {av.msg.stepUpdate();}
+  }
+}
 
 av.msg.stepUpdate = function () {
   'use strict';
@@ -275,27 +286,31 @@ av.msg.exportExpr = function (popName) {
 //fio.uiWorker function
 av.msg.doOrgTrace = function () {
   'use strict';
-  if (av.debug.msg) console.log('doOrgTrace: fzr', av.fzr);
-  var seed = 100 * Math.random();
-  if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0; }
-  else {seed = -1};
-  var request = {
-    'type': 'addEvent',
-    'name': 'webOrgTraceBySequence',
-    'triggerType': 'immediate',
-    'args': [
-      //'0,heads_default,' + av.fzr.actOrgan.genome,                                  //genome string
-      av.fzr.actOrgan.genome,                                  //genome string
-      dijit.byId("orMuteInput").get('value')/100,     // point mutation rate
-      seed                                            //seed where 0 = random; >0 to replay that number
-    ]
-  };
-  if (av.debug.msg) console.log('trace', request);
-  if (av.debug.msg) console.log('doOrgTrace', request);
-  if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
-  av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
-  av.msg.sendData();
+  if (av.fzr.actOrgan.genome) {
+    console.log('in send webOrgTraceBySequence; av.fzr.actOrgan.genome', av.fzr.actOrgan.genome.length, av.fzr.actOrgan.genome);
+    if ( 50 < av.fzr.actOrgan.genome.length) {
+      if (av.debug.msg) console.log('doOrgTrace: fzr', av.fzr);
+      var seed = 100 * Math.random();
+      if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0;}
+      else {seed = -1}
+      var request = {
+        'type': 'addEvent',
+        'name': 'webOrgTraceBySequence',
+        'triggerType': 'immediate',
+        'args': [
+          //'0,heads_default,' + av.fzr.actOrgan.genome,                                  //genome string
+          av.fzr.actOrgan.genome,                                  //genome string
+          dijit.byId("orMuteInput").get('value') / 100,     // point mutation rate
+          seed                                            //seed where 0 = random; >0 to replay that number
+        ]
+      };
+      if (av.debug.msg) console.log('doOrgTrace', request);
+      if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
+      av.aww.uiWorker.postMessage(request);
+      av.debug.log += '\nui --> Avida \n' + av.utl.json2stringFn(request);
+      av.msg.sendData();
+    }
+  }
 }
 
 //request data from Avida to update SelectedOrganismType
