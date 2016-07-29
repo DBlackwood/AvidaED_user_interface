@@ -101,7 +101,6 @@ av.mouse.notDndPopList = ['colorMode'
   , 'trashCP_splitter'
   , 'gridHolder'
   //freezer
-  , 'freezerDiv'
   , 'fzOrgan'
   , 'freezerDiv'
   , 'configFzr'

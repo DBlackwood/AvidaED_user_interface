@@ -222,7 +222,7 @@ av.mouse.kidMouse = function (evt, dnd, fzr, grd){
           }
         }
       }
-      if (found || 'freezerDiv' == evt.target.id) {
+      if (found) {
         target = 'fzOrgan';
         av.mouse.freezeTheKid();
       }
