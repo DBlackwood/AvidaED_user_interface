@@ -579,7 +579,7 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   if (av.debug.dnd) console.log('landFzPopDish: fzr', av.fzr);
   var domid = Object.keys(pkg.target.selection)[0];
 
-  var oldName = pkg.nodes[0].textContent;
+  var oldName = pkg.nodes[0].textContent + '@' + av.grd.popStatsMsg.update.formatNum(0);
   var nameArray = av.dnd.preTransferNameList(pkg.target, oldName);
   var sName = av.dnd.namefzrItem(oldName, nameArray);
   var worldName = prompt('Please name your populated dish', sName);

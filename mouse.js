@@ -1,6 +1,20 @@
 //set cursor shape -----------------------------------------------------------------------------------------------------
 // Dad and kid are on the population page
 // Mom and Son are on the Individual Organism page
+
+//get domID list for freezer; just organism section
+av.mouse.frzOrgCurserSet = function(state) {
+  'use strict';
+  for (var dir in av.fzr.domid) {
+    //console.log('dir', dir, '; domid', av.fzr.domid[dir]);
+    if (null != document.getElementById(av.fzr.domid[dir]) && 'g' === dir[0]) {
+      document.getElementById(av.fzr.domid[dir]).style.cursor = state;
+      // expect state = 'copy' or 'default'
+    }
+  }
+};
+
+//this does all entries in freezer.
 av.mouse.frzCurserSet = function(state) {
   'use strict';
   for (var dir in av.fzr.domid) {
@@ -12,106 +26,49 @@ av.mouse.frzCurserSet = function(state) {
   }
 };
 
-av.mouse.getOriginalShapes = function () {
-  'use strict';
-  var lngth = av.mouse.notDndPopList.length;
-  for (var ii = 0; ii < lngth; ii++) {
-    //console.log('domElements', av.mouse.notDndPopList[ii])
-    av.mouse.notDndPopShape[ii] = document.getElementById(av.mouse.notDndPopList[ii]).style.cursor;
-    //console.log('domElement/Shape', av.mouse.notDndPopList[ii], av.mouse.notDndPopShape[ii]);
+av.mouse.setCursorStyle = function (shape, nodeList) {
+  "use strict";
+  //console.log(nodeList);
+  var lnght = nodeList.length;
+  for (var ii = 0; ii < lnght; ii++) {
+    //console.log(nodeList[ii]);
+    document.getElementById(nodeList[ii]).style.cursor = shape;
   }
-  var lngth = av.mouse.notDndIndList.length;
-  for (var ii = 0; ii < lngth; ii++) {
-    //console.log('domElements', av.mouse.notDndIndList[ii])
-    av.mouse.notDndIndShape[ii] = document.getElementById(av.mouse.notDndIndList[ii]).style.cursor;
-    //console.log('domElement/Shape', av.mouse.notDndIndList[ii], av.mouse.notDndIndShape[ii]);
-  }
-};
-
-av.mouse.notDndPopCursorShape = function (shape) {
-  'use strict';
-  var lngth = av.mouse.notDndPopList.length;
-  if ('default' === shape) {
-    for (var ii = 0; ii < lngth; ii++) {
-      document.getElementById(av.mouse.notDndPopList[ii]).style.cursor = av.mouse.notDndPopShape[ii];
-    }
-  } else {
-    for (var ii = 0; ii < lngth; ii++) {
-      document.getElementById(av.mouse.notDndPopList[ii]).style.cursor = shape;
-    }
-  }
-};
-
-av.mouse.notDndIndCursorShape = function (shape) {
-  'use strict';
-  //console.log('in av.mouse.notDndIndCursorShape');
-  var lngth = av.mouse.notDndIndList.length;
-  if ('default' === shape) {
-    for (var ii = 0; ii < lngth; ii++) {
-      document.getElementById(av.mouse.notDndIndList[ii]).style.cursor = av.mouse.notDndIndShape[ii];
-    }
-  } else {
-    for (var ii = 0; ii < lngth; ii++) {
-      document.getElementById(av.mouse.notDndIndList[ii]).style.cursor = shape;
-    }
-  }
-};
+}
 
 av.mouse.selectedDadMouseStyle = function () {
   'use strict';
   //console.log('in Dad');
-  document.getElementById('gridCanvas').style.cursor = 'copy';
-  document.getElementById('organIcon').style.cursor = 'copy';
-  document.getElementById('TrashCanImage').style.cursor = 'copy';
-  av.mouse.notDndPopCursorShape('no-drop');
+  av.mouse.setCursorStyle('no-drop', av.mouse.notDndPopList);
   av.mouse.frzCurserSet('no-drop');
+  av.mouse.setCursorStyle('copy', av.mouse.dadTarget);
   if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'no-drop';}
 };
 
 //update data about a kid in the selected organism to move = primarily genome and name
 av.mouse.selectedKidMouseStyle = function () {
   'use strict';
-  //console.log('in kid');
-  document.getElementById('organIcon').style.cursor = 'copy';
-  document.getElementById('fzOrgan').style.cursor = 'copy';
-  document.getElementById('freezerDiv').style.cursor = 'copy';
-  document.getElementById('gridCanvas').style.cursor = 'copy';
-  document.getElementById('configFzr').style.cursor = 'copy';
-  document.getElementById('configFzr_pane').style.cursor = 'copy';
-  document.getElementById('organismsFzr').style.cursor = 'copy';
-  document.getElementById('organismsFzr_pane').style.cursor = 'copy';
-  document.getElementById('worldFzr').style.cursor = 'copy';
-  document.getElementById('worldFzr_pane').style.cursor = 'copy';
-  av.mouse.frzCurserSet('copy');
-  av.mouse.notDndPopCursorShape('no-drop');
+  av.mouse.setCursorStyle('no-drop', av.mouse.notDndPopList);
+  av.mouse.setCursorStyle('copy', av.mouse.kidTarget);
+  av.mouse.frzOrgCurserSet('copy');
   if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'no-drop';}
 };
 
 av.mouse.sonCursorShape = function () {
   'use strict';
   //console.log('in son')
-  document.getElementById('organIcon').style.cursor = 'copy';
-  document.getElementById('organCanvas').style.cursor = 'copy';
-  av.mouse.frzCurserSet('copy');
-  av.mouse.notDndIndCursorShape('no-drop');
+  av.mouse.setCursorStyle('no-drop', av.mouse.notDndIndList);
+  av.mouse.setCursorStyle('copy', av.mouse.sonTarget);
+  av.mouse.frzOrgCurserSet('copy');
 };
 
 av.mouse.makeCursorDefault = function () {
   'use strict';
-  document.getElementById('gridCanvas').style.cursor = 'default';
-  document.getElementById('freezerDiv').style.cursor = 'default';
-  document.getElementById('trashCan').style.cursor = 'default';
-  document.getElementById('TrashCanImage').style.cursor = 'default';
-  document.getElementById('mainBC').style.cursor = 'default';
-  document.getElementById('popBC').style.cursor = 'default';
-  document.getElementById('organCanvas').style.cursor = 'default';
-  document.getElementById('organIcon').style.cursor = 'default';
-  document.getElementById('fzOrgan').style.cursor = 'default';
-  //console.log('fzr', av.fzr);
-  av.mouse.frzCurserSet('pointer');
+  av.mouse.frzCurserSet('default');  //pointer
   if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'pointer';}
-  av.mouse.notDndPopCursorShape('default');
-  av.mouse.notDndIndCursorShape('default');
+  av.mouse.setCursorStyle('default', av.mouse.dndTarget);
+  av.mouse.setCursorStyle('default', av.mouse.notDndPopList);
+  av.mouse.setCursorStyle('default', av.mouse.notDndIndList);
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -254,51 +211,60 @@ av.mouse.kidMouse = function (evt, dnd, fzr, grd){
     else { // look for target in the freezer
       var found = false;
       if (av.debug.mouse) console.log('target.id',evt.target.id, '; av.fzr.domid', av.fzr.domid);
-      for (var dir in av.fzr.domid) {
-        //console.log('dir', dir);
-        if ((av.fzr.domid[dir] == evt.target.id) && ('g'==dir.substring(0,1)) ) {
-          found = true;
-          break;
+      //note below index of 0 indicates gridCanvas and if the target is canvas it should not be frozen
+      if (0 < av.mouse.kidTarget.indexOf(evt.target.id)) {found = true;}
+      else {
+        for (var dir in av.fzr.domid) {
+          //console.log('dir', dir);
+          if ((av.fzr.domid[dir] == evt.target.id) && ('g' == dir.substring(0, 1))) {
+            found = true;
+            break;
+          }
         }
       }
       if (found || 'freezerDiv' == evt.target.id) {
-        av.debug.log += '\n -move from grid to freezer';
         target = 'fzOrgan';
-        if (av.debug.mouse) console.log('freezerDiv');
-        //make sure there is a name.
-
-        var nameArray = av.dnd.makeNameList(av.dnd.fzOrgan);
-        //console.log('name', av.grd.kidName, '; array',  nameArray);
-        var sName = av.dnd.namefzrItem(av.grd.kidName, nameArray);
-        console.log('sName', sName);
-        var avidian = prompt('Please name your avidian', sName);
-        if (avidian) {
-          var avName = av.dnd.getUniqueFzrName(avidian, nameArray);
-          if (null != avName) {  //give dom item new avName name
-            av.debug.log += '\n -froze kid=' + avName;
-            dnd.fzOrgan.insertNodes(false, [{data: avName, type: ['g']}]);
-            dnd.fzOrgan.sync();
-            var mapItems = Object.keys(dnd.fzOrgan.map);
-            var gdir =  'g' + av.fzr.gNum;
-            av.fzr.file[gdir + '/entryname.txt'] = avName;
-            av.fzr.dir[mapItems[mapItems.length - 1]] = gdir;
-            av.fzr.domid[gdir] = mapItems[mapItems.length - 1];
-            //av.fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.grd.kidGenome;
-            av.fzr.file[gdir + '/genome.seq'] = av.grd.kidGenome;
-            av.fzr.gNum++;
-            av.fzr.saveUpdateState('no');
-            if (av.debug.mouse) console.log('fzOrgan', dnd.fzOrgan);
-            if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
-            //create a right mouse-click context menu for the item just created.
-            av.dnd.contextMenu(dnd.fzOrgan, av.fzr.domid[gdir]);
-            av.fzr.saveUpdateState('no');
-          }
-        }
+        av.mouse.freezeTheKid();
       }
     }
   }
   else console.log('Kid->OrganismIcon: genome too short ', av.grd.kidGenome);
   return target;
+};
+
+av.mouse.freezeTheKid = function () {
+  "use strict";
+  av.debug.log += '\n -move from grid to freezer';
+  if (av.debug.mouse) console.log('freezerDiv');
+  //make sure there is a name.
+
+  var nameArray = av.dnd.makeNameList(av.dnd.fzOrgan);
+  //console.log('name', av.grd.kidName, '; array',  nameArray);
+  var sName = av.dnd.namefzrItem(av.grd.kidName, nameArray);
+  console.log('sName', sName);
+  var avidian = prompt('Please name your avidian', sName);
+  if (avidian) {
+    var avName = av.dnd.getUniqueFzrName(avidian, nameArray);
+    if (null != avName) {  //give dom item new avName name
+      av.debug.log += '\n -froze kid=' + avName;
+      av.dnd.fzOrgan.insertNodes(false, [{data: avName, type: ['g']}]);
+      av.dnd.fzOrgan.sync();
+      var mapItems = Object.keys(av.dnd.fzOrgan.map);
+      var gdir =  'g' + av.fzr.gNum;
+      av.fzr.file[gdir + '/entryname.txt'] = avName;
+      av.fzr.dir[mapItems[mapItems.length - 1]] = gdir;
+      av.fzr.domid[gdir] = mapItems[mapItems.length - 1];
+      //av.fzr.file[gdir + '/genome.seq'] = '0,heads_default,' + av.grd.kidGenome;
+      av.fzr.file[gdir + '/genome.seq'] = av.grd.kidGenome;
+      av.fzr.gNum++;
+      av.fzr.saveUpdateState('no');
+      if (av.debug.mouse) console.log('fzOrgan', av.dnd.fzOrgan);
+      if (av.debug.mouse) console.log('Kid-->Snow: dir',gdir, '; fzr', fzr);
+      //create a right mouse-click context menu for the item just created.
+      av.dnd.contextMenu(av.dnd.fzOrgan, av.fzr.domid[gdir]);
+      av.fzr.saveUpdateState('no');
+    }
+  }
 }
 
 av.mouse.ParentMouse = function (evt, av) {
@@ -329,7 +295,7 @@ av.mouse.ParentMouse = function (evt, av) {
     }
   }  // close on canvas
   //-------------------------------------------- av.dnd.trashCan
-  else if ('TrashCanImage' == evt.target.id) {
+  else if ('trashCanImage' == evt.target.id) {
     if (av.debug.mouse) console.log('parent->trashCan', evt);
     if (av.debug.mouse) console.log('av.mouse.ParentNdx', av.mouse.ParentNdx, '; domid', av.parents.domid[av.mouse.ParentNdx]);
     if (av.debug.mouse) console.log('ancestorBox', av.dnd.ancestorBox);
@@ -422,6 +388,57 @@ av.mouse.arrowKeysOnGrid = function (event) {
     av.grd.drawGridSetupFn();
   }
 }
+
+//No longer in use delete later
+/*
+av.mouse.getOriginalShapes = function () {
+  'use strict';
+  var lngth = av.mouse.notDndPopList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    //console.log('domElements', av.mouse.notDndPopList[ii])
+    av.mouse.notDndPopShape[ii] = document.getElementById(av.mouse.notDndPopList[ii]).style.cursor;
+    console.log('domElement/Shape', av.mouse.notDndPopList[ii], av.mouse.notDndPopShape[ii]);
+  }
+  var lngth = av.mouse.notDndIndList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    //console.log('domElements', av.mouse.notDndIndList[ii])
+    av.mouse.notDndIndShape[ii] = document.getElementById(av.mouse.notDndIndList[ii]).style.cursor;
+    console.log('domElement/Shape', av.mouse.notDndIndList[ii], av.mouse.notDndIndShape[ii]);
+  }
+};
+
+av.mouse.notDndPopCursorShape = function (shape) {
+  'use strict';
+  var lngth = av.mouse.notDndPopList.length;
+  if ('default' === shape) {
+    for (var ii = 0; ii < lngth; ii++) {
+      document.getElementById(av.mouse.notDndPopList[ii]).style.cursor = av.mouse.notDndPopShape[ii];
+    }
+  } else {
+    for (var ii = 0; ii < lngth; ii++) {
+      document.getElementById(av.mouse.notDndPopList[ii]).style.cursor = shape;
+    }
+  }
+};
+
+ av.mouse.notDndIndCursorShape = function (shape) {
+ 'use strict';
+ //console.log('in av.mouse.notDndIndCursorShape');
+ var lngth = av.mouse.notDndIndList.length;
+ if ('default' === shape) {
+ for (var ii = 0; ii < lngth; ii++) {
+ document.getElementById(av.mouse.notDndIndList[ii]).style.cursor = av.mouse.notDndIndShape[ii];
+ }
+ } else {
+ for (var ii = 0; ii < lngth; ii++) {
+ document.getElementById(av.mouse.notDndIndList[ii]).style.cursor = shape;
+ }
+ }
+ };
+ */
+
+
+
 
 /* mouse websites
  mouse clicks

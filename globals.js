@@ -56,8 +56,34 @@ function clearmouse(av) {
 }
 clearmouse(av);
 
-//list of dom elements on the Populsation page that need to have the mouse over shape/style changed for the drag n drop to look right
+//offspring on grid
+av.mouse.kidTarget = ['gridCanvas'   //canvas must be first in the list for conditional to work in av.mouse.kidMouse
+  , 'organIcon'
+  , 'fzOrgan'
+  , 'organismsFzr'
+  , 'organismsFzr_pane'
+];
+
+//parent on grid
+av.mouse.dadTarget = ['organIcon'
+  , 'gridCanvas'
+  , 'trashCanImage'
+];
+
+//offspring on Organism View
+av.mouse.sonTarget = ['organIcon'
+  , 'OrganCanvas'
+];
+
+av.mouse.dndTarget = ['organIcon'
+  , 'organCanvas'
+  , 'gridCanvas'
+  , 'trashCanImage'
+];
+
+//list of dom elements on the Population page that need to have the mouse over shape/style changed for the drag n drop to look right
 av.mouse.notDndPopList = ['colorMode'
+  , 'TimeLabel'
   , 'leftCP'
   , 'leftCP_splitter'
   , 'mainBC'
@@ -71,9 +97,19 @@ av.mouse.notDndPopList = ['colorMode'
   , 'popTopRight_splitter'
   , 'sotPane_splitter'
   , 'trashCP'
+  , 'trashCan'
   , 'trashCP_splitter'
   , 'gridHolder'
+  //freezer
   , 'freezerDiv'
+  , 'fzOrgan'
+  , 'freezerDiv'
+  , 'configFzr'
+  , 'configFzr_pane'
+  , 'organismsFzr'
+  , 'organismsFzr_pane'
+  , 'worldFzr'
+  , 'worldFzr_pane'
   //menu Buttons
   , 'mnFile'
   , 'mnFreezer'
@@ -86,8 +122,8 @@ av.mouse.notDndPopList = ['colorMode'
   , 'mainButtonBC'
   , 'mainButtons'
   , 'mainButtonTable'
-  , 'PopSetupButton'
-  , 'PopStatsButton'
+  , 'popSetupButton'
+  , 'popStatsButton'
   , 'populationButton'
   , 'organismButton'
   , 'analysisButton'
@@ -97,7 +133,7 @@ av.mouse.notDndPopList = ['colorMode'
   , 'rescaleLabel'
   , 'zoomSlide'
   //statistics section
-  , 'SotLabel'
+  , 'sotLabel'
   , 'nameLabel'
   , 'sotColor'
   , 'fitLabel'

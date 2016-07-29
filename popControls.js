@@ -21,10 +21,10 @@ av.ptd.makeRunState = function () {
 // shifts the population page from Map (grid) view to setup parameters view and back again.
 av.ptd.popBoxSwap = function () {
   'use strict';
-  if ('Map' == document.getElementById('PopSetupButton').innerHTML) {
-    av.debug.log += '\n -Button: PopSetupButton became Setup';
+  if ('Map' == document.getElementById('popSetupButton').innerHTML) {
+    av.debug.log += '\n -Button: popSetupButton became Setup';
     document.getElementById('mapBlock').style.display = 'block';
-    document.getElementById('PopSetupButton').textContent = 'Setup';
+    document.getElementById('popSetupButton').textContent = 'Setup';
     dijit.byId('setupBlock').set('style', 'display: none');
 
     av.grd.cellConflict(av.grd.cols, av.grd.rows);
@@ -35,9 +35,9 @@ av.ptd.popBoxSwap = function () {
     //dijit.byId('mapBlock').set('style', 'display: block;');
     //dijit.byId('mapBC').set('style', 'height: ' + height + 'px');
   } else {
-    av.debug.log += '\n -Button: PopSetupButton became Map';
+    av.debug.log += '\n -Button: popSetupButton became Map';
     document.getElementById('mapBlock').style.display = 'none'
-    document.getElementById('PopSetupButton').textContent = 'Map';
+    document.getElementById('popSetupButton').textContent = 'Map';
     dijit.byId('setupBlock').set('style', 'display: block;');
 
     av.ui.subpage = 'setup';

@@ -112,6 +112,7 @@
             <span data-dojo-type='dijit/MenuItem' id='mnHpHardware' label='Ancestor and Hardware'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpDownload'><a href='index.html' target='_blank'>Download Avida-ED</a></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpProblem' label='Report Problem(s)'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>
             <div style='display: none'>
               <div data-dojo-type='dijit/MenuSeparator'></div>
               <div data-dojo-type='dijit/PopupMenuItem'>
@@ -123,9 +124,7 @@
                   <div data-dojo-type='dijit/MenuSeparator'></div>
                 </span>
               </div>
-            <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>
             </div>
-      <!--      <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>  -->
           </span>
         </span>
         <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: hidden'> <!--visible/hidden-->
@@ -147,16 +146,12 @@
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false' id='leftCP'
-       refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false' style='width:165px;'>
+       refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false' style='width:165px;' id='leftCP'>
     <div data-dojo-type='dijit/layout/BorderContainer' design='sidebar' persist='false' gutters='true' id='mainButtonBC'
          style='min-width: 1px; min-height: 1px; z-index: 0; width: 100%; height: 100%;'>
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false' id='mainButtons'
            refreshOnShow='false' region='top' splitter='true' maxSize='Infinity' doLayout='false' style='height:90px;overflow: auto'>
         <table id='mainButtonTable' style='border-collapse:collapse;table-layout:auto;width:100%;height:auto;' border='0'>
-          <colgroup>
-            <col></col>
-            <col></col>
-          </colgroup>
           <tbody>
           <tr>
             <td><img src='images/avida-ed-population-icon.png' style='width: 32px; height: 32px;'></img></td>
@@ -179,7 +174,7 @@
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
            refreshOnShow='false' region='bottom' splitter='true' maxSize='Infinity' doLayout='false'
            style='height:35px;overflow: auto' id='trashCP'>
-        <span id='trashCan' class='container'><img id='TrashCanImage' src='images/avida-ed-trash-icon.png' style='width: 32px;'></img></span>
+        <span id='trashCan' class='container'><img id='trashCanImage' src='images/avida-ed-trash-icon.png' style='width: 32px;'></img></span>
       </div>
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
            refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false' id='freezerDiv'>
@@ -227,8 +222,8 @@
               </td>
               <td><label id='altMsgLabel'></label></td>
               <td style='text-align: right;'>
-                <button id='PopSetupButton'>Setup</button>
-                <button id='PopStatsButton'>Stats</button>
+                <button id='popSetupButton'>Setup</button>
+                <button id='popStatsButton'>Stats</button>
               </td>
             </tr>
             </tbody>
@@ -249,7 +244,7 @@
                      preload='false' id='sotPane'
                      refreshOnShow='false' region='left' splitter='true' maxSize='Infinity' doLayout='false'
                      style='width:175px;'>  <!-- was 152px -->
-                  <div class='popStatsTitle'><label id='SotLabel'>Selected Organism Type</label></div>
+                  <div class='popStatsTitle'><label id='sotLabel'>Selected Organism Type</label></div>
                   <div id='sotDivTable' class='popStatsTableSot'>
                   <table id='sotTopTable' class='topSotTable'>
                     <tbody>
@@ -532,12 +527,12 @@
               <div style='height: 19px;' class='odd'>
                 Dish Size:
                 <input id='sizeCols' type='text' data-dojo-type='dijit/form/NumberTextBox' value=10 required='true' ;
-                       data-dojo-props='constraints:{min:0, max:500,places:0},
+                       data-dojo-props='constraints:{min:0, max:100,places:0},
                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid grid size."'
                        style='width: 3em; height:1.8em'></input>
                 &nbsp; x &nbsp;
                 <input id='sizeRows' type='text' data-dojo-type='dijit/form/NumberTextBox' name='size'
-                       required='true' value='2' data-dojo-props='constraints:{min:0, max:500,places:0},
+                       required='true' value='2' data-dojo-props='constraints:{min:0, max:100,places:0},
                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid grid size."'
                        style='width:4em; height:1.8em'/></input>
                 cells&nbsp;<span id='sizeCells'></span>

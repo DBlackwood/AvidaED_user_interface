@@ -114,7 +114,7 @@ require([
   // Splash Screen code stopped when ready message from Avida
   /********************************************************************************************************************/
   //initiallize default mouse shapes
-  av.mouse.getOriginalShapes();
+  //av.mouse.getOriginalShapes(); only gets empty strings
 
   /********************************************************************************************************************/
 
@@ -876,14 +876,14 @@ require([
 //----------------------------------------------------------------------------------------------------------------------
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
-  document.getElementById('PopSetupButton').onclick = function () {
+  document.getElementById('popSetupButton').onclick = function () {
     av.ptd.popBoxSwap();   //in popControls.js
   };
 
   // hides and shows the population and selected organsim data on right of population page with 'Stats/mpa' button
   av.ptd.popStatView = function () {
     if (av.ptd.popStatFlag) {
-      av.debug.log += '\n -Button: PopStatsButton: start hidding stats';
+      av.debug.log += '\n -Button: popStatsButton: start hidding stats';
       av.ptd.popStatFlag = false;
       registry.byId('popRight').domNode.style.width = '1px';
       registry.byId('mainBC').layout();
@@ -891,7 +891,7 @@ require([
 
     }
     else {
-      av.debug.log += '\n -Button: PopStatsButton: start showing stats';
+      av.debug.log += '\n -Button: popStatsButton: start showing stats';
       av.ptd.popStatFlag = true;
       registry.byId('sotPane').domNode.style.width = '150px';
       registry.byId('popRight').domNode.style.width = '395px';
@@ -902,7 +902,7 @@ require([
     }
   }
 
-  document.getElementById('PopStatsButton').onclick = function () {
+  document.getElementById('popStatsButton').onclick = function () {
     av.ptd.popStatView()
   };
 
@@ -1171,7 +1171,13 @@ require([
         //if ancestor not null then there is a 'kid' there.
         //if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
         if (av.grd.msg.ancestor) {
-          if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+          console.log('SelectedNdx', av.grd.selectedNdx, '; ancestor', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
+          if ('-' == av.grd.msg.ancestor.data[av.grd.selectedNdx] || '-' == av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+            dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+            dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
+          }
+          else {
+            if (av.debug.mouse) console.log('kid found');
             av.grd.kidStatus = 'getgenome';
             av.msg.doWebOrgDataByCell();
             av.mouse.selectedKidMouseStyle();
@@ -1181,10 +1187,6 @@ require([
             if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
             dijit.byId('mnFzOrganism').attr('disabled', false);  //When an organism is selected, then it can be save via the menu
             dijit.byId('mnCnOrganismTrace').attr('disabled', false);
-          }
-          else {
-            dijit.byId('mnCnOrganismTrace').attr('disabled', true);
-            dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
           }
         }
         else {
@@ -1234,7 +1236,7 @@ require([
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = '';
       av.mouse.ParentMouse(evt, av);
-      if ('gridCanvas' == evt.target.id || 'TrashCanImage' == evt.target.id) {
+      if ('gridCanvas' == evt.target.id || 'trashCanImage' == evt.target.id) {
         //console.log('before call av.grd.drawGridSetupFn');
         av.grd.drawGridSetupFn();
       }
@@ -1305,7 +1307,7 @@ require([
 
   av.grd.drawGridSetupFn = function () {
     'use strict';
-    if ('populationBlock' === av.ui.page && 'Setup' === document.getElementById('PopSetupButton').textContent) {
+    if ('populationBlock' === av.ui.page && 'Setup' === document.getElementById('popSetupButton').textContent) {
       if ('None' == dijit.byId('colorMode').value) {
         if (av.grd.newlyNone) {
           av.grd.newlyNone = false;
