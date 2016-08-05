@@ -26,8 +26,8 @@ av.grd.setMapData = function () {
       av.grd.reScaleFit = 'rescaling';
     }
     else av.grd.reScaleFit = '';
-    if (av.grd.mxGen < av.grd.msg.gestation.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxGen > av.grd.msg.gestation.maxVal) {
-      av.grd.mxGen = av.grd.mxGen + ((1 + av.grd.rescaleTolerance) * av.grd.msg.gestation.maxVal - av.grd.mxGen) / av.grd.rescaleTimeConstant;
+    if (av.grd.mxCost < av.grd.msg.gestation.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxCost > av.grd.msg.gestation.maxVal) {
+      av.grd.mxCost = av.grd.mxCost + ((1 + av.grd.rescaleTolerance) * av.grd.msg.gestation.maxVal - av.grd.mxCost) / av.grd.rescaleTimeConstant;
       av.grd.reScaleGest = 'rescaling';
     }
     else av.grd.reScaleGest = '';
@@ -43,13 +43,13 @@ av.grd.setMapData = function () {
         av.grd.fillmin = av.grd.msg.fitness.minVal;
         av.grd.fillRescale = av.grd.reScaleFit;
         break;
-      case 'Generation Length':
+      case 'Offspring Cost':
         av.grd.fill = av.grd.msg.gestation.data;
-        av.grd.fillmax = av.grd.mxGen;
+        av.grd.fillmax = av.grd.mxCost;
         av.grd.fillmin = av.grd.msg.gestation.minVal;
         av.grd.fillRescale = av.grd.reScaleGest;
         break;
-      case 'Metabolic Rate':
+      case 'Energy Acq. Rate':
         av.grd.fill = av.grd.msg.metabolism.data;
         av.grd.fillmax = av.grd.mxRate;
         av.grd.fillmin = av.grd.msg.metabolism.minVal;

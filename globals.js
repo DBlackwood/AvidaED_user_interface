@@ -140,8 +140,8 @@ av.mouse.notDndPopList = ['colorMode'
   , 'nameLabel'
   , 'sotColor'
   , 'fitLabel'
-  , 'metabolicLabel'
-  , 'generateLabel'
+  , 'energyAcqRateLabel'
+  , 'offspringCostLabel'
   , 'ageLabel'
   , 'ancestorLabel'
   , 'viableLabel'
@@ -168,8 +168,8 @@ av.mouse.notDndPopList = ['colorMode'
   , 'popStat'
   , 'popSizeLabel'
   , 'aFitLabel'
-  , 'aMetabolicLabel'
-  , 'aGestateLabel'
+  , 'aEnergyAcqRateLabel'
+  , 'aOffspringCostLabel'
   , 'aAgeLabel'
   , 'psFn'
   , 'psNumOrg'
@@ -315,8 +315,8 @@ av.grd.clearGrd = function () {
   av.grd.fillmax = 0;    // max value for grid scale for the gradient color
   av.grd.msg = {};
   av.grd.mxFit = 0.5;   //store maximum fitness during an experiment
-  av.grd.mxGen = 380;  //store maximum Generation Length during an experiment
-  av.grd.mxRate = 80;  //store maximum metabolic rate during an experiment
+  av.grd.mxCost = 380;  //store maximum Offspring Cost during an experiment
+  av.grd.mxRate = 80;  //store maximum Energy Acq. Rate during an experiment
 
   av.grd.rescaleTolerance = 0.1;
   av.grd.rescaleTimeConstant = 10;
@@ -336,10 +336,10 @@ av.grd.clearGrd = function () {
 
   av.ptd.aveFit = [];  //ave is for all avidians.
   av.ptd.logFit = [];  //log is for avidians that performm logic functions
-  av.ptd.aveGnl = [];  //generation length - used to be Generation Length
-  av.ptd.logGnl = [];
-  av.ptd.aveMet = [];
-  av.ptd.logMet = [];
+  av.ptd.aveCst = [];  //Offspring Cost - used to be Offspring Cost
+  av.ptd.logCst = [];
+  av.ptd.aveEar = [];
+  av.ptd.logEar = [];
   av.ptd.aveNum = [];
   av.ptd.logNum = [];
   av.ptd.allOff = true;
@@ -359,7 +359,7 @@ av.grd.clearGrd();
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_0627';
+av.ui.version = '2016_0805';
 av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';

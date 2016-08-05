@@ -186,8 +186,8 @@ av.fwt.makeFzrWorld = function (num) {
   av.fwt.makeFzrAncestorAuto('w'+num, em);
   av.fwt.makeFzrAncestorHand('w'+num, em);
   av.fwt.makeFzrTRfile('w'+num+'/tr0', av.ptd.aveFit);
-  av.fwt.makeFzrTRfile('w'+num+'/tr1', av.ptd.aveGnl);
-  av.fwt.makeFzrTRfile('w'+num+'/tr2', av.ptd.aveMet);
+  av.fwt.makeFzrTRfile('w'+num+'/tr1', av.ptd.aveCst);
+  av.fwt.makeFzrTRfile('w'+num+'/tr2', av.ptd.aveEar);
   av.fwt.makeFzrTRfile('w'+num+'/tr3', av.ptd.aveNum);
   av.fwt.makeFzrFile('w'+num + '/update', av.grd.updateNum.toString() );
   //there are more files needed to talk to Matt, tiba
@@ -274,14 +274,14 @@ av.fwt.removeFzrItem = function(dir, type){
 av.fwt.writeCSV = function() {
   'use strict';
   //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
-  //  '@default at update 141 Average Metabolic Rate,@default at update 141 Count of Organisms in the World';
+  //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
   av.fwt.csvStrg = 'Update,' +  av.fzr.actConfig.name + ' at update ' + av.grd.popStatsMsg.update + ' Average Fitness,'
-    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Generation Length,'
-    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Metabolic Rate,'
+    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Offspring Cost,'
+    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Energy Acq. Rate,'
     + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Count of Organisms in the World';
   var lngth = av.ptd.aveFit.length;
   for (var ii = 0; ii < lngth; ii++) {
-    av.fwt.csvStrg += '\n' + ii + ',' + av.ptd.aveFit[ii].formatNum(6) + ',' + av.ptd.aveGnl[ii].formatNum(6) + ',' + av.ptd.aveMet[ii].formatNum(6) + ',' + av.ptd.aveNum[ii];
+    av.fwt.csvStrg += '\n' + ii + ',' + av.ptd.aveFit[ii].formatNum(6) + ',' + av.ptd.aveCst[ii].formatNum(6) + ',' + av.ptd.aveEar[ii].formatNum(6) + ',' + av.ptd.aveNum[ii];
   }
   //console.log(av.fwt.csvStrg);
   av.fio.fzSaveCsvfn();

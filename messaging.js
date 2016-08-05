@@ -457,8 +457,8 @@ av.msg.updatePopStats = function (msg) {
   //update graph arrays
   if (0 <= msg.update) {  //normal start to loop
     av.ptd.aveFit.push(msg.ave_fitness);
-    av.ptd.aveGnl.push(msg.ave_gestation_time);
-    av.ptd.aveMet.push(msg.ave_metabolic_rate);
+    av.ptd.aveCst.push(msg.ave_gestation_time);
+    av.ptd.aveEar.push(msg.ave_metabolic_rate);
     av.ptd.aveNum.push(msg.organisms);
     av.grd.updateLogicFn(msg.update);  //for graph data  switch to run with grid data since the data is from the grid data
   }
@@ -466,8 +466,8 @@ av.msg.updatePopStats = function (msg) {
   av.grd.updateNum = msg.update;
   popSizeLabel.textContent = msg.organisms.formatNum(0);
   aFitLabel.textContent = msg.ave_fitness.formatNum(place);
-  aMetabolicLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
-  aGestateLabel.textContent = msg.ave_gestation_time.formatNum(place);
+  aEnergyAcqRateLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
+  aOffspringCostLabel.textContent = msg.ave_gestation_time.formatNum(place);
   aAgeLabel.textContent = msg.ave_age.formatNum(place);
 
   parentNumLabel.textContent = av.parents.name.length;
@@ -499,14 +499,14 @@ av.grd.updateLogicFn = function (mUpdate){
   'use strict';
   if (av.ptd.allOff) {
     av.ptd.logFit[mUpdate] = null;
-    av.ptd.logGnl[mUpdate] = null;
-    av.ptd.logMet[mUpdate] = null;
+    av.ptd.logCst[mUpdate] = null;
+    av.ptd.logEar[mUpdate] = null;
     av.ptd.logNum[mUpdate] = null;
   }
   else {
     av.ptd.logFit[mUpdate] = 0;
-    av.ptd.logGnl[mUpdate] = 0;
-    av.ptd.logMet[mUpdate] = 0;
+    av.ptd.logCst[mUpdate] = 0;
+    av.ptd.logEar[mUpdate] = 0;
     av.ptd.logNum[mUpdate] = 0;
     //console.log('out_', av.grd.out );
     //console.log('gest', av.grd.msg.gestation.data);
@@ -514,15 +514,15 @@ av.grd.updateLogicFn = function (mUpdate){
     for (var ii=0; ii < lngth; ii++){
       if (0 < av.grd.out[ii]) {
         av.ptd.logFit[mUpdate] += av.grd.msg.fitness.data[ii];
-        av.ptd.logGnl[mUpdate] += av.grd.msg.gestation.data[ii];
-        av.ptd.logMet[mUpdate] += av.grd.msg.metabolism.data[ii];
+        av.ptd.logCst[mUpdate] += av.grd.msg.gestation.data[ii];
+        av.ptd.logEar[mUpdate] += av.grd.msg.metabolism.data[ii];
         av.ptd.logNum[mUpdate]++;
       }
     }
     if (0 < av.ptd.logNum[mUpdate]) {
       av.ptd.logFit[mUpdate] = av.ptd.logFit[mUpdate]/av.ptd.logNum[mUpdate];
-      av.ptd.logGnl[mUpdate] = av.ptd.logGnl[mUpdate]/av.ptd.logNum[mUpdate];
-      av.ptd.logMet[mUpdate] = av.ptd.logMet[mUpdate]/av.ptd.logNum[mUpdate];
+      av.ptd.logCst[mUpdate] = av.ptd.logCst[mUpdate]/av.ptd.logNum[mUpdate];
+      av.ptd.logEar[mUpdate] = av.ptd.logEar[mUpdate]/av.ptd.logNum[mUpdate];
     }
   }
   if (av.ptd.allOff) {
@@ -543,7 +543,7 @@ av.grd.updateLogicFn = function (mUpdate){
   /*
   if (av.ptd.logFit[mUpdate]) {
     console.log('update', mUpdate, '; Num', av.ptd.logNum[mUpdate], '; Fit', av.ptd.logFit[mUpdate].formatNum(0),
-      '; Gnl', av.ptd.logGnl[mUpdate].formatNum(0), '; Met', av.ptd.logMet[mUpdate].formatNum(0));
+      '; Gnl', av.ptd.logCst[mUpdate].formatNum(0), '; Met', av.ptd.logEar[mUpdate].formatNum(0));
   }
   */
 }
@@ -558,10 +558,10 @@ av.grd.updateSelectedOrganismType = function (msg) {
   nameLabel.textContent = msg.genotypeName;
   if (null === msg.fitness) fitLabel.textContent = ' ';
   else fitLabel.textContent = prefix + msg.fitness.formatNum(2);
-  if (null === msg.metabolism) metabolicLabel.textContent = ' ';
-  else metabolicLabel.textContent = prefix + msg.metabolism.formatNum(2);
-  if (null === msg.gestation) generateLabel.textContent = ' ';
-  else  generateLabel.textContent = prefix + msg.gestation.formatNum(2);
+  if (null === msg.metabolism) energyAcqRateLabel.textContent = ' ';
+  else energyAcqRateLabel.textContent = prefix + msg.metabolism.formatNum(2);
+  if (null === msg.gestation) offspringCostLabel.textContent = ' ';
+  else  offspringCostLabel.textContent = prefix + msg.gestation.formatNum(2);
   if (null == msg.age) ageLabel.textContent = ' ';
     else ageLabel.textContent = msg.age;
   if (null === msg.ancestor) {

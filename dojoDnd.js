@@ -252,18 +252,18 @@ av.dnd.landActiveConfig = function (pkg) {
     //Load Time Recorder Data.
     dir = av.fzr.actConfig.dir;
     av.ptd.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
-    av.ptd.aveGnl = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
-    av.ptd.aveMet = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
+    av.ptd.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
+    av.ptd.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
     av.ptd.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
     var lngth = av.ptd.aveFit.length;
     av.ptd.logFit = av.utl.newFilledArray(lngth, null);
-    av.ptd.logGnl = av.utl.newFilledArray(lngth, null);
-    av.ptd.logMet = av.utl.newFilledArray(lngth, null);
+    av.ptd.logCst = av.utl.newFilledArray(lngth, null);
+    av.ptd.logEar = av.utl.newFilledArray(lngth, null);
     av.ptd.logNum = av.utl.newFilledArray(lngth, null);
     //console.log('tr length=', av.ptd.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
     //console.log('aveFit', av.ptd.aveFit);
-    //console.log('aveGnl', av.ptd.aveGnl);
-    //console.log('aveMet', av.ptd.aveMet);
+    //console.log('aveCst', av.ptd.aveCst);
+    //console.log('aveEar', av.ptd.aveEar);
     //console.log('aveNum', av.ptd.aveNum);
 
     //send message to Avida
@@ -711,10 +711,10 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
     case 'Average Fitness':
       av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].fit;
       break;
-    case 'Average Generation Length':
+    case 'Average Offspring Cost':
       av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].ges;
       break;
-    case 'Average Metabolic Rate':
+    case 'Average Energy Acq. Rate':
       av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].met;
       break;
     case 'Number of Organisms':

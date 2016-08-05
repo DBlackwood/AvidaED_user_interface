@@ -155,10 +155,10 @@ av.ptd.popNewExState = function () {
   //clear the time series graphs
   av.ptd.aveFit = [];
   av.ptd.logFit = [];
-  av.ptd.aveGnl = [];
-  av.ptd.logGnl = [];
-  av.ptd.aveMet = [];
-  av.ptd.logMet = [];
+  av.ptd.aveCst = [];
+  av.ptd.logCst = [];
+  av.ptd.aveEar = [];
+  av.ptd.logEar = [];
   av.ptd.aveNum = [];
   av.ptd.logNum = [];
 
@@ -174,8 +174,8 @@ av.ptd.popNewExState = function () {
   av.grd.selCtx.fillRect(0, 0, av.grd.SelectedWd, av.grd.SelectedHt);
   nameLabel.textContent = '';
   fitLabel.innerHTML = '';
-  metabolicLabel.textContent = '';
-  generateLabel.textContent = '';
+  energyAcqRateLabel.textContent = '';
+  offspringCostLabel.textContent = '';
   ageLabel.textContent = '';
   ancestorLabel.textContent = '';
   viableLabel.textContent = '';
@@ -201,8 +201,8 @@ av.ptd.popNewExState = function () {
   //Population Statistics
   popSizeLabel.textContent = '';
   aFitLabel.textContent = '';
-  aMetabolicLabel.textContent = '';
-  aGestateLabel.textContent = '';
+  aEnergyAcqRateLabel.textContent = '';
+  aOffspringCostLabel.textContent = '';
   aAgeLabel.textContent = '';
   parentNumLabel.textContent = '';
   viableNumLabel.textContent = '';
@@ -393,8 +393,8 @@ av.ptd.bitToggle = function (button) {
   var lngth = av.ptd.aveFit.length;
   for (ii=0; ii < lngth; ii++){
     av.ptd.logFit[ii] = null;
-    av.ptd.logGnl[ii] = null;
-    av.ptd.logMet[ii] = null;
+    av.ptd.logCst[ii] = null;
+    av.ptd.logEar[ii] = null;
     av.ptd.logNum[ii] = null;
   }
   //console.log('in av.ptd.bitToggle');

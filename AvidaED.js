@@ -1489,13 +1489,13 @@ require([
         av.grd.popY = av.ptd.aveFit;
         av.grd.popY2 = av.ptd.logFit;
       }
-      else if ('Average Generation Length' == dijit.byId('yaxis').value) {
-        av.grd.popY = av.ptd.aveGnl;
-        av.grd.popY2 = av.ptd.logGnl;
+      else if ('Average Offspring Cost' == dijit.byId('yaxis').value) {
+        av.grd.popY = av.ptd.aveCst;
+        av.grd.popY2 = av.ptd.logCst;
       }
-      else if ('Average Metabolic Rate' == dijit.byId('yaxis').value) {
-        av.grd.popY = av.ptd.aveMet;
-        av.grd.popY2 = av.ptd.logMet;
+      else if ('Average Energy Acq. Rate' == dijit.byId('yaxis').value) {
+        av.grd.popY = av.ptd.aveEar;
+        av.grd.popY2 = av.ptd.logEar;
       }
       else if ('Number of Organisms' == dijit.byId('yaxis').value) {
         av.grd.popY = av.ptd.aveNum;
@@ -1856,7 +1856,7 @@ require([
     av.ind.updateOrgTrace();
   });
 
-  /* Organism Generation Length Slider */
+  /* Organism Offspring Cost Slider */
   av.ind.cycleSlider = new HorizontalSlider({
     name: 'cycleSlider',
     value: 0,
