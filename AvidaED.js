@@ -768,8 +768,8 @@ require([
   av.dnd.organCanvas.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of organCanvas
     if ('organCanvas' == target.node.id) {
       //av.debug.log += '\n -DnD_land: organCanvas';
-      if (av.debug.dnd) console.log('landOrganCanvas: s, t', source, target);
-      av.dnd.landOrganCanvas(source, nodes, target);
+      if (av.debug.dnd) console.log('landorganCanvas: s, t', source, target);
+      av.dnd.landorganCanvas(source, nodes, target);
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
@@ -1226,7 +1226,7 @@ require([
     'use strict';
     var target = '';
     if (av.debug.mouse) console.log('in mouseup target:', evt.target.id, '; event:', evt);
-    console.log('in mouseup target:', evt.target.id, '; event:', evt);
+    console.log('in mouseup target:', evt.target.id);
     av.mouse.makeCursorDefault();
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);

@@ -511,6 +511,7 @@ av.dnd.landOrganIcon = function (source, nodes, target) {
       av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
       av.dnd.activeOrgan.sync();
     });
+    av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
   }
   if ('fzOrgan' === source.node.id) { av.dnd.updateFromFzrOrganism(); }
   else if ('ancestorBox' === source.node.id) {
@@ -541,16 +542,17 @@ av.dnd.landActiveOrgan = function (source, nodes, target) {
     //get the data for the new organism
     av.dnd.fzOrgan.forInSelectedItems(function (item, id) {
       av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid pkg.source.
-      av.dnd.activeOrgan.sync();
     });
+    av.dnd.activeOrgan.sync();
+    av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
     //if (av.debug.dnd) console.log('av.dnd.activeOrgan.map=', av.dnd.activeOrgan.map);
   }
   av.dnd.updateFromFzrOrganism();
 }
 
-//The variable OrganCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
+//The variable organCanvas with the html tag organismCanvas will Not hold the organism. Anything dropped on the OrganismCanvas
 //will be put in av.dnd.activeOrgan.
-av.dnd.landOrganCanvas = function (source, nodes, target) {
+av.dnd.landorganCanvas = function (source, nodes, target) {
   'use strict';
   av.debug.log += '\n -DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
   //Clear current to put the new organism in there.
@@ -568,6 +570,7 @@ av.dnd.landOrganCanvas = function (source, nodes, target) {
     av.dnd.activeOrgan.insertNodes(false, [item]);          //assign the node that is selected from the only valid source.
   });
   av.dnd.activeOrgan.sync();
+  av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
 
   if ('fzOrgan' == source.node.id) av.dnd.updateFromFzrOrganism();
 }

@@ -68,11 +68,15 @@ av.mouse.kidTarget = ['gridCanvas'   //canvas must be first in the list for cond
 av.mouse.dadTarget = ['organIcon'
   , 'gridCanvas'
   , 'trashCanImage'
+  , 'activeOrgan'
 ];
 
 //offspring on Organism View
 av.mouse.sonTarget = ['organIcon'
-  , 'OrganCanvas'
+  , 'organCanvas'
+  , 'activeOrgan'
+  , 'actOrgImg'
+  , 'activeOrgImg'
 ];
 
 av.mouse.dndTarget = ['organIcon'
@@ -209,9 +213,10 @@ av.mouse.notDndIndList = ['colorMode'
   , 'rightDetail_splitter'
   , 'populationBlock'
   , 'scaleCanvas'
+  , 'freezerDiv'
   , 'trashCP'
+  , 'trashCan'
   , 'trashCP_splitter'
-  , 'activeOrgan'
   , 'organismBC'
   , 'orgTop'
   , 'organismCanvasHolder'

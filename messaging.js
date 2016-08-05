@@ -287,7 +287,7 @@ av.msg.exportExpr = function (popName) {
 av.msg.doOrgTrace = function () {
   'use strict';
   if (av.fzr.actOrgan.genome) {
-    console.log('in send webOrgTraceBySequence; av.fzr.actOrgan.genome', av.fzr.actOrgan.genome.length, av.fzr.actOrgan.genome);
+    //console.log('in send webOrgTraceBySequence; av.fzr.actOrgan.genome', av.fzr.actOrgan.genome.length, av.fzr.actOrgan.genome);
     if ( 50 < av.fzr.actOrgan.genome.length) {
       if (av.debug.msg) console.log('doOrgTrace: fzr', av.fzr);
       var seed = 100 * Math.random();

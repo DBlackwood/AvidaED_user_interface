@@ -58,14 +58,18 @@ av.mouse.sonCursorShape = function () {
   'use strict';
   //console.log('in son')
   av.mouse.setCursorStyle('no-drop', av.mouse.notDndIndList);
+  av.mouse.frzCurserSet('no-drop');
   av.mouse.setCursorStyle('copy', av.mouse.sonTarget);
   av.mouse.frzOrgCurserSet('copy');
+  console.log('av.fzr.actOrgan.actDomid', av.fzr.actOrgan.actDomid, '; Object.keys(av.dnd.activeOrgan.map)[0]', Object.keys(av.dnd.activeOrgan.map)[0]);
+  if (1 < av.fzr.actOrgan.actDomid.length) {document.getElementById(av.fzr.actOrgan.actDomid).style.cursor = 'copy';}
 };
 
 av.mouse.makeCursorDefault = function () {
   'use strict';
   av.mouse.frzCurserSet('default');  //pointer
   if (1 < av.fzr.actConfig.actDomid.length) {document.getElementById(av.fzr.actConfig.actDomid).style.cursor = 'pointer';}
+  if (1 < av.fzr.actOrgan.actDomid.length) {document.getElementById(av.fzr.actOrgan.actDomid).style.cursor = 'pointer';}
   av.mouse.setCursorStyle('default', av.mouse.dndTarget);
   av.mouse.setCursorStyle('default', av.mouse.notDndPopList);
   av.mouse.setCursorStyle('default', av.mouse.notDndIndList);
@@ -109,21 +113,22 @@ av.mouse.findSelected = function (evt, grd) {
 
 function offspringTrace(dnd, fio, fzr, gen) {
   'use strict';
-  //Get name of parent that is in OrganCurrentNode
+  //Get name of Mom that is in OrganCurrentNode
   var parent;
-  var parentID = Object.keys(dnd.activeOrgan.map)[0];
+  var parentID = Object.keys(av.dnd.activeOrgan.map)[0];
   if (av.debug.mouse) console.log('parentID', parentID);
   if (undefined == parentID) parent = '';
   else parent = document.getElementById(parentID).textContent;
-  dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
-  dnd.activeOrgan.sync();   //should be done after insertion or deletion
+  av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
+  av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
   //Put name of offspring in OrganCurrentNode
-  dnd.activeOrgan.insertNodes(false, [{data: parent + "_offspring", type: ["g"]}]);
-  dnd.activeOrgan.sync();
+  av.dnd.activeOrgan.insertNodes(false, [{data: parent + "_offspring", type: ["g"]}]);
+  av.dnd.activeOrgan.sync();
+  av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
 
   av.fzr.actOrgan.name = parent + "_offspring";
   av.fzr.actOrgan.genome = '0,heads_default,' + av.ind.dna[av.ind.son];  //this should be the full genome when the offspring is complete.
-  av.fzr.actOrgan.domId = Object.keys(dnd.activeOrgan.map)[0];
+  av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
   if (av.debug.mouse) console.log('av.fzr.actOrgan', av.fzr.actOrgan);
   //get genome from offspring data //needs work!!
   av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -132,7 +137,8 @@ function offspringTrace(dnd, fio, fzr, gen) {
 av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
   'use strict';
   var target = '';
-  if ('organIcon' == evt.target.id) {
+  //console.log('av.fzr.actOrgan.actDomid', av.fzr.actOrgan.actDomid);
+  if ('organIcon' == evt.target.id || 'actOrgImg' == evt.target.id || av.fzr.actOrgan.actDomid == evt.target.id ) {
     offspringTrace(dnd, fio, fzr, gen);
     av.debug.log += '\n -move to organsimIcon';
     target = 'organIcon';
@@ -140,7 +146,7 @@ av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
   else { // look for target in the freezer
     var found = false;
     for (var dir in av.fzr.domid) {if (av.fzr.domid[dir] == evt.target.id) {found=true; break;}}
-    if (found || 'freezerDiv' == evt.target.id) {
+    if (found) {
       target  = 'fzOrgan';
       //create a new freezer item
       if (av.debug.mouse) console.log('offSpring->freezerDiv');
@@ -315,10 +321,12 @@ av.mouse.ParentMouse = function (evt, av) {
     //Put name of offspring in av.dnd.activeOrganism
     av.dnd.activeOrgan.insertNodes(false, [{data: av.parents.name[av.mouse.ParentNdx], type: ['g']}]);
     av.dnd.activeOrgan.sync();
+    av.fzr.actOrgan.actDomid = Object.keys(av.dnd.activeOrgan.map)[0];
+
     //genome data should be in av.parents.genome[av.mouse.ParentNdx];
     av.fzr.actOrgan.genome = av.parents.genome[av.mouse.ParentNdx];
     av.fzr.actOrgan.name = av.parents.name[av.mouse.ParentNdx];
-    av.fzr.actOrgan.domId = av.parents.domid[av.mouse.ParentNdx];
+    av.fzr.actOrgan.fzDomid = av.parents.domid[av.mouse.ParentNdx];
   }
 }
 
