@@ -109,8 +109,9 @@
             <span data-dojo-type='dijit/MenuItem' id='mnHpAbout' label='About'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpManual'>
               <a href='images/Avida-ED_UserManualv3.0.pdf' target='_blank'>Quick Start Manual</a></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnHpHardware' label='Ancestor and Hardware'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnHpInfo'><a href='http://avida-ed.msu.edu/' target='_blank'>more info about Avida-ED</a></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnHpHardware'>
+              <a href='cpu_tour.html' target='_blank'>Ancestor and Hardware</a></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnHpInfo'><a href='http://Avida-ED.msu.edu/' target='_blank'>more info about Avida-ED</a></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpProblem' label='Report Problem(s)'></span>
             <div style='display: none'>
             <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>
@@ -154,17 +155,17 @@
         <table id='mainButtonTable' style='border-collapse:collapse;table-layout:auto;width:100%;height:auto;' border='0'>
           <tbody>
           <tr>
-            <td><img src='images/avida-ed-population-icon.png' style='width: 32px; height: 32px;'></img></td>
+            <td><img src='images/Avida-ED-population-icon.png' style='width: 32px; height: 32px;'></img></td>
             <td><input type='button' id='populationButton' intermediateChanges='false'
                      value='Population' iconClass='dijitNoIcon'></button></td>
           </tr>
           <tr>
-            <td><img src='images/avida-ed-organism-icon.png' style='width: 32px; height: 32px;' id='organIcon' /></td>
+            <td><img src='images/Avida-ED-organism-icon.png' style='width: 32px; height: 32px;' id='organIcon' /></td>
             <td><input type='button' id='organismButton' intermediateChanges='false'
                        value='Organism' iconClass='dijitNoIcon' /></td>
           </tr>
           <tr>
-            <td><img src='images/avida-ed-analysis-icon.png' style='width: 32px; height: 32px;'></img></td>
+            <td><img src='images/Avida-ED-analysis-icon.png' style='width: 32px; height: 32px;'></img></td>
             <td><input type='button' id='analysisButton' intermediateChanges='false'
                        value='Analysis' iconClass='dijitNoIcon'></button></td>
           </tr>
@@ -174,7 +175,7 @@
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
            refreshOnShow='false' region='bottom' splitter='true' maxSize='Infinity' doLayout='false'
            style='height:35px;overflow: auto' id='trashCP'>
-        <span id='trashCan' class='container'><img id='trashCanImage' src='images/avida-ed-trash-icon.png' style='width: 32px;'></img></span>
+        <span id='trashCan' class='container'><img id='trashCanImage' src='images/Avida-ED-trash-icon.png' style='width: 32px;'></img></span>
       </div>
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
            refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false' id='freezerDiv'>
@@ -217,7 +218,7 @@
             <tbody>
             <tr style='vertical-align: middle; line-height: 25px'>
               <td style='vertical-align: top;'>
-                <div class='lftmargin'><img src='images/avida-ed-dish-icon.png'></img></div>
+                <div class='lftmargin'><img src='images/Avida-ED-dish-icon.png'></img></div>
                 <div id='activeConfig' class='popContainer'></div>
               </td>
               <td><label id='altMsgLabel'></label></td>
@@ -674,7 +675,7 @@
             <tr style='valign: middle; line-height: 30px'>
               <td style='width: 20px'>
                 <div class='lftmargin' id='activeOrgImg'>
-                  <img src='images/avida-ed-ancestor-icon.png' style='height: 32px;' id='actOrgImg'></img>
+                  <img src='images/Avida-ED-ancestor-icon.png' style='height: 32px;' id='actOrgImg'></img>
                 </div>
               </td>
               <td>
@@ -727,12 +728,12 @@
               <td>Times Performed</td>
             </tr>
             <tr>
-              <td><label id='notOrg'>0 not+</label></td>
-              <td><label id='notPerf'>1</label></td>
+              <td><label id='notOrg'>0 not-</label></td>
+              <td><label id='notPerf'>0</label></td>
             </tr>
             <tr>
-              <td><label id='nanOrg'>1 nan+</label></td>
-              <td><label id='nanPerf'>2</label></td>
+              <td><label id='nanOrg'>1 nan-</label></td>
+              <td><label id='nanPerf'>0</label></td>
             </tr>
             <tr>
               <td><label id='andOrg'>2 and-</label></td>
@@ -752,8 +753,8 @@
               <td><label id='antPerf'>0</label></td>
             </tr>
             <tr>
-              <td><label id='norOrg'>6 nor+</label></td>
-              <td><label id='norPerf'>1</label></td>
+              <td><label id='norOrg'>6 nor-</label></td>
+              <td><label id='norPerf'>0</label></td>
             </tr>
             <tr>
               <td><label id='xorOrg'>7 xor-</label></td>
@@ -985,18 +986,20 @@
 
 <!------------------------------------------ Help About Dialog -------------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnHpAboutDialog'
-     title='Avida-Ed: Emscripten with javascript version: Beta Test 2016_0805'>
+     title='Avida-ED: Emscripten with javascript version: Beta Test 2016_0805'>
   <div class='dijitDialogPaneContentArea' align='center'>
-    <img src='images/avida-ED-logo.png' />
-    <p>An educational artificial life plaeform developed at Michigan State University for learing evolution and the
-    nature of science using digital organisms.</p>
-    <p>Developed under NSF Grant #0341484 and<br />
-       Cooperative Agreement DBI-093945</p>
-    <p>for more information go to <a href='http://avida-ed.msu.edu' target='_blank'>Avida-ED at MSU</a></p>
-    <textarea>
+    <img src='images/Avida-ED-logo.png' />
+    <p>An educational artificial life plateform developed at Michigan State University for <br />
+      learning evolution and the nature of science using digital organisms.</p>
+    <p>Developed under NSF Grant #0341484,<br />
+       Cooperative Agreement DBI-093945 and <br />
+       Howard Hughes Medical Institute HHMI #52008102
+    </p><br />
+    <p>for more information go to <a href='http://Avida-ED.msu.edu' target='_blank'>Avida-ED at MSU</a></p>
+    <textarea rows='10' cols='100'>
       Avida-ED (avida/apps/viewer-macos)
 
-Copyright 2010-2012 Michigan State University. All rights reserved.
+Copyright 2010-2016 Michigan State University. All rights reserved.
 http://avida.devosoft.org/viewer-macos
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -1010,7 +1013,7 @@ THIS SOFTWARE IS PROVIDED BY MICHIGAN STATE UNIVERSITY AND CONTRIBUTORS "AS IS" 
 
 Avida (avida-core and viewer libraries)
 
-Copyright 1999-2012 Michigan State University. All rights reserved.
+Copyright 1999-2016 Michigan State University. All rights reserved.
 Copyright 1993-2003 California Institute of Technology.
 
 Avida is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License or (at your option) any later version.
@@ -1287,7 +1290,7 @@ If the Library as you received it specifies that a proxy can decide whether futu
 
 Apto C++ Library
 
-Copyright 2011-2012 David Michael Bryson. All rights reserved.
+Copyright 2011-2016 David Michael Bryson. All rights reserved.
 http://programerror.com/software/apto
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -1338,7 +1341,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <!------------------------------------- Send Log Data via e-mail client  ---------------------------------------------->
 <!-- Saving session log when no e-mail client present -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sendLogDialog'
-     title='Avida-Ed Problem Report - help us make Avida-Ed better'>
+     title='Avida-ED Problem Report - help us make Avida-ED better'>
   <div class='dijitDialogPaneContentArea'>
     <p id='sendLogPara'>
       Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.

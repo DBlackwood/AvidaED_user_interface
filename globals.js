@@ -22,8 +22,8 @@ av.debug.userMsg  = false; //Show avida messages on screen
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
-av.dft.sizeCols = 60;
-av.dft.sizeRows = 60;
+av.dft.sizeCols = 30;
+av.dft.sizeRows = 30;
 av.dft.muteInput = 2;   //percent
 av.dft.child = 'childParentRadio';  //alternate = childRandomRadio
 av.dft.nearParent = true;
@@ -419,7 +419,7 @@ av.fio.defaultUserFname = 'avidaWS.avidaedworkspace.zip';
 av.fio.userFname = av.fio.defaultUserFname;
 av.fio.csvFileName = 'avidaDataRecorder.csv';
 av.fio.useDefault = true;
-av.fio.mailAddress = 'avida-ed-development@googlegroups.com';  //'mailto:diane.blackwood@gmail.com'
+av.fio.mailAddress = 'Avida-ED-development@googlegroups.com';  //'mailto:diane.blackwood@gmail.com'
 
 av.dnd = {};  //details in AvidiaEd.js as it access the DOM
 

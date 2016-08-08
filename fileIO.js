@@ -84,7 +84,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       fileReader = new FileReader();
     }
     catch(err) {
-      alert('Unable to open file. Please check the file and try again or contact avida-ed-development@googlegroups.com for help');
+      alert('Unable to open file. Please check the file and try again or contact Avida-ED-development@googlegroups.com for help');
       av.debug.log += '\nworkspace fileReader error:' + err;
     }
 
@@ -148,7 +148,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       fileReader = new FileReader();
     }
     catch(err) {
-      alert('Unable to open Freezer Item file. Please check the file and try again or contact avida-ed-development@googlegroups.com for help');
+      alert('Unable to open Freezer Item file. Please check the file and try again or contact Avida-ED-development@googlegroups.com for help');
       av.debug.log += '\nfreezerItem fileReader error:' + err;
     }
     fileReader.onload = function(fileLoadedEvent) {

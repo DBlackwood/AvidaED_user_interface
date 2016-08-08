@@ -293,7 +293,7 @@ av.fwt.writeCSV = function() {
 /***********************************************************************************************************************
  Notes on saving files in Safari.
  http://jsfiddle.net/B7nWs/  works on Safari in jsfiddle
- works in avida-ED for PDF, but gives the following error
+ works in Avida-ED for PDF, but gives the following error
  [Error] Failed to load resource: Frame load interrupted (0, line 0)
  works in pdf file, but can’t seem to get with text I generate.
 

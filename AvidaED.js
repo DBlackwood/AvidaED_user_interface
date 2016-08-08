@@ -17,7 +17,12 @@
 // to get to mac files on parallels
 // net use z: \\Mac\Home
 //
-// Path in TX for Filezilla /var/www/vhosts/bwng/public_html/projects/avida-ED
+// Path in TX for Filezilla /var/www/vhosts/bwng/public_html/projects/Avida-ED
+//
+// for things on Darwin (dream weaver site)
+// ssh -l diane darwin.beacon.msu.edu/html
+// var/sites/avida-ed.msu.edu
+// emacs home.html
 //
 define.amd.jQuery = true;
 require([
@@ -102,7 +107,7 @@ require([
   parser.parse();
 
   /********************************************************************************************************************/
-  // * The files at the end of the require list contain code specific to avida-ED.
+  // * The files at the end of the require list contain code specific to Avida-ED.
   // * The functions they contain can access the dom. They cannot access functions defined anywhere
   // * else in the project. This has resulted in some code split between AvidaED.js and the various
   // * other files.
@@ -410,6 +415,7 @@ require([
     mnHpAboutDialog.show();
   });
 
+  /*  //tiba delete later
   av.ui.HardwareDialog = new Dialog({
     title: 'Avida : A Guided Tour of an Ancestor and its Hardware',
     id: 'HardwareDialog',
@@ -436,13 +442,13 @@ require([
     //console.log(av.ui.HardwareDialog);
     av.ui.HardwareDialog.show();
   });
-
+*/
   dijit.byId('mnHpProblem').on('Click', function () {
     av.debug.log += '\n -Button: mnHpProblem';
     //alert(av.debug.log);
-    // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-Ed: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
+    // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-ED: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
     document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log;
-    //dijit.byId('sendLogDialog').set('value', 'Avida-Ed problem report');
+    //dijit.byId('sendLogDialog').set('value', 'Avida-ED problem report');
     document.getElementById('sendLogPara').textContent =
       'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
 
@@ -458,7 +464,7 @@ require([
     av.ui.sendEmailFlag = true;
     var link = 'mailto:' + av.fio.mailAddress +
         //'?cc=CCaddress@example.com' +
-      '?subject=' + escape('Avida-Ed session log') +
+      '?subject=' + escape('Avida-ED session log') +
       '&body=' + escape(av.debug.log);
     window.location.href = link;
     av.ui.sendEmailFlag = false;
