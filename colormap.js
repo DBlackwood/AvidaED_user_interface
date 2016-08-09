@@ -851,20 +851,20 @@ av.color.cubehelixCmap = [  //djb version
     //http://www.vischeck.com/vischeck/vischeckImage.php
 av.color.parentColorList = [  //http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
      'rgb(  0, 109, 219)' //1  blue              website #7
-    ,'rgb(255, 255,   0)' //2  yellow            website #15 modified was 255, 255, 109
-    ,'rgb(  0, 146, 146)' //3  medium blue green website #3
+   ,'rgb(156,  10,  10)' //9  red brown         website #11 modified was 146,   0,   0
     ,'rgb(255, 109, 182)' //4  pink              website #4
     ,'rgb(156,  82,  10)' //5  brown             website #12 modified was 146, 73, 0
-    ,'#FEB6DB'            //6  lt pink           used digital color meter to match #5 on website lt pink
+   ,'rgb( 93,  20, 166)' //15 purple            website #6 modified was 73,   0, 146
     ,'#DB6D00'            //7  orange brown      used digital color meter to match #5 on website;
     ,'rgb(182, 109, 255)' //8 lavender          website #8
-    ,'rgb(156,  10,  10)' //9  red brown         website #11 modified was 146,   0,   0
-    ,'rgb(  0,  93,  93)' //10 dark blue-green   website #2 modified was 0, 73, 73
+   ,'rgb(  0, 146, 146)' //3  medium blue green website #3
+   ,'rgb(255, 255,   100)' //2  yellow            website #15 modified was 255, 255, 109
     ,'rgb(255, 182, 119)' //11 pale orange       website #5 but does not look pink
-    ,'rgb(182, 219, 255)' //12 pale blue         website #10
-    ,'rgb(200, 190,   0)' //13 dark yellow       website #13 modified was 219, 209, 0
-    ,'rgb(109, 182, 255)' //14  lt blue           website #9
-    ,'rgb( 93,  20, 166)' //15 purple            website #6 modified was 73,   0, 146
+    ,'rgb(220, 190,   0)' //13 dark yellow       website #13 modified was 219, 209, 0
+   ,'rgb(  0,  93,  93)' //10 dark blue-green   website #2 modified was 0, 73, 73
+   ,'#FEB6DB'            //6  lt pink           used digital color meter to match #5 on website lt pink
+   ,'rgb(109, 182, 255)' //14  lt blue           website #9
+   ,'rgb(182, 219, 255)' //12 pale blue         website #10
     ,'rgb( 0,  195,   0)' //16 green             website #14 modied was 36, 255,  36
 
     ,'rgb(179,   0, 255)'  // 17 magenta
@@ -943,93 +943,94 @@ av.color.outColor = [
 av.color.chipColors = av.color.parentColorList.slice();
 
 av.color.dictColor =  {};
-    av.color.dictColor["Red"] = "#FF0000";
-    //av.color.dictColor["Red"] = "rgb(255, 0, 0);";  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
-    av.color.dictColor["Green"] = "#00FF00";
-    av.color.dictColor["Blue"] = "#0000FF";
-    av.color.dictColor["Magenta"] = "#FF00FF";
-    av.color.dictColor["Cyan"] = "#00FFFF";
-    av.color.dictColor["Yellow"] = "#FFFF00";
-    av.color.dictColor["Purple"] = "#8800FF";
-    av.color.dictColor["Orange"] = "#FFAA00";
-    av.color.dictColor["Black"] = "#000000";
-    av.color.dictColor["ltGrey"] = "#CCCCCC";
-    av.color.dictColor["White"] = '#FFFFFF';
+    av.color.dictColor['Red'] = '#FF0000';
+    //av.color.dictColor['Red'] = 'rgb(255, 0, 0);';  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
+    av.color.dictColor['Green'] = '#00FF00';
+    av.color.dictColor['Blue'] = '#0000FF';
+    av.color.dictColor['Magenta'] = '#FF00FF';
+    av.color.dictColor['Cyan'] = '#00FFFF';
+    av.color.dictColor['Yellow'] = '#FFFF00';
+    av.color.dictColor['Purple'] = '#8800FF';
+    av.color.dictColor['Orange'] = '#FFAA00';
+    av.color.dictColor['Black'] = '#000000';
+    av.color.dictColor['ltGrey'] = '#CCCCCC';
+    av.color.dictColor['White'] = '#FFFFFF';
 
     //Dictionarys
 av.color.letterColor = {};
-    av.color.letterColor["a"] = "#F9CC65"; //color Meter
-    av.color.letterColor["b"] = "#EFC461"; //color Meter
-    av.color.letterColor["c"] = "#E5BC5D"; //color Meter
-    av.color.letterColor["d"] = "#59FF71"; //color Meter
-    av.color.letterColor["e"] = "#55FF6D"; //color Meter
-    av.color.letterColor["f"] = "#52F768"; //color Meter
-    av.color.letterColor["g"] = "#BBFF5C"; //color Meter
-    av.color.letterColor["h"] = "#B4FF59"; //color Meter
-    av.color.letterColor["i"] = "#ACF655"; //color Meter
-    av.color.letterColor["j"] = "#A5EC51"; //color Meter
-    av.color.letterColor["k"] = "#6EFFEB"; //color Meter
-    av.color.letterColor["l"] = "#69FAE2"; //color Meter
-    av.color.letterColor["m"] = "#65F0D8"; //color Meter
-    av.color.letterColor["n"] = "#61E5CF"; //color Meter
-    av.color.letterColor["o"] = "#7B8FFF"; //color Meter
-    av.color.letterColor["p"] = "#7B8FFF"; //color Meter
-    av.color.letterColor["q"] = "#7084EA"; //color Meter
-    av.color.letterColor["r"] = "#6C7EE1"; //color Meter
-    av.color.letterColor["s"] = "#5CDBC5"; //color Meter
-    av.color.letterColor["t"] = "#58D1BC"; //color Meter
-    av.color.letterColor["u"] = "#53C6B3"; //color Meter
-    av.color.letterColor["v"] = "#FF26EE"; //color Meter
-    av.color.letterColor["x"] = "#ED24DB"; //color Meter
-    av.color.letterColor["w"] = "#F725E5"; //color Meter
-    av.color.letterColor["y"] = "#AE2CFF"; //color Meter
-    av.color.letterColor["z"] = "#9DE14E"; //color Meter
+    av.color.letterColor['a'] = '#F9CC65'; //color Meter
+    av.color.letterColor['b'] = '#EFC461'; //color Meter
+    av.color.letterColor['c'] = '#E5BC5D'; //color Meter
+    av.color.letterColor['d'] = '#59FF71'; //color Meter
+    av.color.letterColor['e'] = '#55FF6D'; //color Meter
+    av.color.letterColor['f'] = '#52F768'; //color Meter
+    av.color.letterColor['g'] = '#BBFF5C'; //color Meter
+    av.color.letterColor['h'] = '#B4FF59'; //color Meter
+    av.color.letterColor['i'] = '#ACF655'; //color Meter
+    av.color.letterColor['j'] = '#A5EC51'; //color Meter
+    av.color.letterColor['k'] = '#6EFFEB'; //color Meter
+    av.color.letterColor['l'] = '#69FAE2'; //color Meter
+    av.color.letterColor['m'] = '#65F0D8'; //color Meter
+    av.color.letterColor['n'] = '#61E5CF'; //color Meter
+    av.color.letterColor['o'] = '#7B8FFF'; //color Meter
+    av.color.letterColor['p'] = '#7B8FFF'; //color Meter
+    av.color.letterColor['q'] = '#7084EA'; //color Meter
+    av.color.letterColor['r'] = '#6C7EE1'; //color Meter
+    av.color.letterColor['s'] = '#5CDBC5'; //color Meter
+    av.color.letterColor['t'] = '#58D1BC'; //color Meter
+    av.color.letterColor['u'] = '#53C6B3'; //color Meter
+    av.color.letterColor['v'] = '#FF26EE'; //color Meter
+    av.color.letterColor['x'] = '#ED24DB'; //color Meter
+    av.color.letterColor['w'] = '#F725E5'; //color Meter
+    av.color.letterColor['y'] = '#AE2CFF'; //color Meter
+    av.color.letterColor['z'] = '#9DE14E'; //color Meter
 
 av.color.orgColorCodes = {};
-    av.color.orgColorCodes["mutate_old"] = "#00FF00"; //color Meter green
-    av.color.orgColorCodes["mutate"] = "#000000"; //color black
-    av.color.orgColorCodes["start"] = "#5300FF"; //color Meter blue - I don't think this is used.
-    av.color.orgColorCodes["headFill_old"] = "#777777"; //color Meter grey
-    av.color.orgColorCodes["headFill"] = "#AAAAAA"; //lighter grey
-    av.color.orgColorCodes["WRITE"] = "#FA0022"; //color Meter  red
-    av.color.orgColorCodes["READ"] = "#5300FF"; //color Meter  blue
-    av.color.orgColorCodes["FLOW"] = "#00FF00"; //color Meter  green
-    av.color.orgColorCodes["IP"] = "#000000"; //color Meter  black
-    av.color.orgColorCodes["outline"] = "#666666"; //grey
-    av.color.orgColorCodes["0"] = "#BBBBFF"; //lt blue
-    av.color.orgColorCodes["1"] = "#F5FF00"; //color Meter yellow
+    av.color.orgColorCodes['mutate_old'] = '#00FF00'; //color Meter green
+    av.color.orgColorCodes['mutate'] = '#000000'; //color black
+    av.color.orgColorCodes['start'] = '#5300FF'; //color Meter blue - I don't think this is used.
+    //av.color.orgColorCodes['headFill_old'] = '#777777'; //color Meter grey
+    //av.color.orgColorCodes['headFill'] = '#AAAAAA'; //lighter grey
+    av.color.orgColorCodes['headFill'] = '#DDDDDD'; //off white
+    av.color.orgColorCodes['WRITE'] = '#FA0022'; //color Meter  red
+    av.color.orgColorCodes['READ'] = '#5300FF'; //color Meter  blue
+    av.color.orgColorCodes['FLOW'] = '#006400'; //color Meter  green  #1b991c
+    av.color.orgColorCodes['IP'] = '#000000'; //color Meter  black
+    av.color.orgColorCodes['outline'] = '#666666'; //grey
+    av.color.orgColorCodes['0'] = '#BBBBFF'; //lt blue
+    av.color.orgColorCodes['1'] = '#F5FF00'; //color Meter yellow
 av.color.headCodes = {};
-    av.color.headCodes["READ"] = "R";
-    av.color.headCodes["WRITE"] = "W";
-    av.color.headCodes["FLOW"] = "F";
-    av.color.headCodes["IP"] = "I";
+    av.color.headCodes['READ'] = 'R';
+    av.color.headCodes['WRITE'] = 'W';
+    av.color.headCodes['FLOW'] = 'F';
+    av.color.headCodes['IP'] = 'I';
 av.color.InstDescribe = {};
-    av.color.InstDescribe["a"]="nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    av.color.InstDescribe["b"]="nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    av.color.InstDescribe["c"]="nop-C is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.";
-    av.color.InstDescribe["d"]="if-n-equ: This instruction compares the BX register to its complement. If they are not equal, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If they are equal, that next instruction is skipped.";
-    av.color.InstDescribe["e"]="if-less: This instruction compares the BX register to its complement. If BX is the lesser of the pair, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If it is greater or equal, then that next instruction is skipped.";
-    av.color.InstDescribe["f"]="if-label: This instruction reads in the template that follows it, and tests if its complement template was the most recent series of instructions copied. If so, it executed the next instruction, otherwise it skips it. This instruction is commonly used for an organism to determine when it has finished producing its offspring.";
-    av.color.InstDescribe["g"]="mov-head: This instruction will cause the IP to jump to the position in memory of the flow-head.";
-    av.color.InstDescribe["h"]="jmp-head: This instruction will read in the value of the CX register, and the move the IP by that fixed amount through the organism's memory.";
-    av.color.InstDescribe["i"]="get-head: This instruction will copy the position of the IP into the CX register.";
-    av.color.InstDescribe["j"]="set-flow: This instruction moves the flow-head to the memory position denoted in the CX register.";
-    av.color.InstDescribe["k"]="shift-r: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the right by one. In effect, it divides the value stored in the register by two, rounding down.";
-    av.color.InstDescribe["l"]="shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.";
-    av.color.InstDescribe["m"]="inc: This instruction reads in the content of the BX register and increments it by one.";
-    av.color.InstDescribe["n"]="dec: This instruction reads in the content of the BX register and decrements it by one.";
-    av.color.InstDescribe["o"]="pop: This instruction removes the top element from the active stack, and places it into the BX register.";
-    av.color.InstDescribe["p"]="push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.";
-    av.color.InstDescribe["q"]="swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.";
-    av.color.InstDescribe["r"]="swap: This instruction swaps the contents of the BX register with its complement.";
-    av.color.InstDescribe["s"]="add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.";
-    av.color.InstDescribe["t"]="sub: This instruction reads in the contents of the BX and CX registers and subtracts CX from BX (respectively). The result of this operation is then placed in the BX register.";
-    av.color.InstDescribe["u"]="nand: This instruction reads in the contents of the BX and CX registers (each of which are 32-bit numbers) and performs a bitwise nand operation on them. The result of this operation is placed in the BX register. Note that this is the only logic operation provided in the basic avida instruction set.";
-    av.color.InstDescribe["v"]="h-copy: This instruction reads the contents of the organism's memory at the position of the read-head, and copy that to the position of the write-head. If a non-zero copy mutation rate is set, a test will be made based on this probability to determine if a mutation occurs. If so, a random instruction (chosen from the full set with equal probability) will be placed at the write-head instead.";
-    av.color.InstDescribe["w"]="h-alloc: This instruction allocates additional memory for the organism up to the maximum it is allowed to use for its offspring.";
-    av.color.InstDescribe["x"]="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
-    av.color.InstDescribe["y"]="IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.";
-    av.color.InstDescribe["z"]="h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.";
+    av.color.InstDescribe['a']='nop-A is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.';
+    av.color.InstDescribe['b']='nop-B is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.';
+    av.color.InstDescribe['c']='nop-C is a no-operation instruction, and will not do anything when executed. It can, however, modify the behavior of the instruction preceding it (by changing the CPU component that it affects; see also nop-register notation and nop-head notation) or act as part of a template to denote positions in the genome.';
+    av.color.InstDescribe['d']='if-n-equ: This instruction compares the BX register to its complement. If they are not equal, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If they are equal, that next instruction is skipped.';
+    av.color.InstDescribe['e']='if-less: This instruction compares the BX register to its complement. If BX is the lesser of the pair, the next instruction (after a modifying no-operation instruction, if one is present) is executed. If it is greater or equal, then that next instruction is skipped.';
+    av.color.InstDescribe['f']='if-label: This instruction reads in the template that follows it, and tests if its complement template was the most recent series of instructions copied. If so, it executed the next instruction, otherwise it skips it. This instruction is commonly used for an organism to determine when it has finished producing its offspring.';
+    av.color.InstDescribe['g']='mov-head: This instruction will cause the IP to jump to the position in memory of the flow-head.';
+    av.color.InstDescribe['h']="jmp-head: This instruction will read in the value of the CX register, and the move the IP by that fixed amount through the organism's memory.";
+    av.color.InstDescribe['i']='get-head: This instruction will copy the position of the IP into the CX register.';
+    av.color.InstDescribe['j']='set-flow: This instruction moves the flow-head to the memory position denoted in the CX register.';
+    av.color.InstDescribe['k']='shift-r: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the right by one. In effect, it divides the value stored in the register by two, rounding down.';
+    av.color.InstDescribe['l']='shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.';
+    av.color.InstDescribe['m']='inc: This instruction reads in the content of the BX register and increments it by one.';
+    av.color.InstDescribe['n']='dec: This instruction reads in the content of the BX register and decrements it by one.';
+    av.color.InstDescribe['o']='pop: This instruction removes the top element from the active stack, and places it into the BX register.';
+    av.color.InstDescribe['p']='push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.';
+    av.color.InstDescribe['q']='swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.';
+    av.color.InstDescribe['r']='swap: This instruction swaps the contents of the BX register with its complement.';
+    av.color.InstDescribe['s']='add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.';
+    av.color.InstDescribe['t']='sub: This instruction reads in the contents of the BX and CX registers and subtracts CX from BX (respectively). The result of this operation is then placed in the BX register.';
+    av.color.InstDescribe['u']='nand: This instruction reads in the contents of the BX and CX registers (each of which are 32-bit numbers) and performs a bitwise nand operation on them. The result of this operation is placed in the BX register. Note that this is the only logic operation provided in the basic avida instruction set.';
+    av.color.InstDescribe['v']="h-copy: This instruction reads the contents of the organism's memory at the position of the read-head, and copy that to the position of the write-head. If a non-zero copy mutation rate is set, a test will be made based on this probability to determine if a mutation occurs. If so, a random instruction (chosen from the full set with equal probability) will be placed at the write-head instead.";
+    av.color.InstDescribe['w']='h-alloc: This instruction allocates additional memory for the organism up to the maximum it is allowed to use for its offspring.';
+    av.color.InstDescribe['x']="h-divide: This instruction is used for an organism to divide off a finished offspring. The original organism keeps the state of its memory up until the read-head. The offspring's memory is initialized to everything between the read-head and the write-head. All memory past the write-head is removed entirely.";
+    av.color.InstDescribe['y']='IO: This is the input/output instruction. It takes the contents of the BX register and outputs it, checking it for any tasks that may have been performed. It will then place a new input into BX.';
+    av.color.InstDescribe['z']='h-search: This instruction will read in the template the follows it, and find the location of a complement template in the code. The BX register will be set to the distance to the complement from the current position of the instruction-pointer, and the CX register will be set to the size of the template. The flow-head will also be placed at the beginning of the complement template. If no template follows, both BX and CX will be set to zero, and the flow-head will be placed on the instruction immediately following the h-search.';
 
 // -------------------------------------------------------- Not in use -------------------------------------------------
 av.color.notNuse = {};

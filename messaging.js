@@ -467,8 +467,9 @@ av.msg.updatePopStats = function (msg) {
   popSizeLabel.textContent = msg.organisms.formatNum(0);
   aFitLabel.textContent = msg.ave_fitness.formatNum(place);
   aEnergyAcqRateLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
-  aOffspringCostLabel.textContent = msg.ave_gestation_time.formatNum(place);
-  aAgeLabel.textContent = msg.ave_age.formatNum(place);
+  if (0 < msg.ave_gestation_time) {aOffspringCostLabel.textContent = msg.ave_gestation_time.formatNum(place);}
+  else {aOffspringCostLabel.textContent = 'non-viable';}
+    aAgeLabel.textContent = msg.ave_age.formatNum(place);
 
   parentNumLabel.textContent = av.parents.name.length;
   //console.log('update', msg.update, '; logNum[update]',av.ptd.logNum[Number(msg.update)-1], '; logNum', av.ptd.logNum);
@@ -561,7 +562,8 @@ av.grd.updateSelectedOrganismType = function (msg) {
   if (null === msg.metabolism) energyAcqRateLabel.textContent = ' ';
   else energyAcqRateLabel.textContent = prefix + msg.metabolism.formatNum(2);
   if (null === msg.gestation) offspringCostLabel.textContent = ' ';
-  else  offspringCostLabel.textContent = prefix + msg.gestation.formatNum(2);
+  else if (0 < msg.gestation) {offspringCostLabel.textContent = prefix + msg.gestation.formatNum(2);}
+  else {offspringCostLabel.textContent = 'non-viable';}
   if (null == msg.age) ageLabel.textContent = ' ';
     else ageLabel.textContent = msg.age;
   if (null === msg.ancestor) {

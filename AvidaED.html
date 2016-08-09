@@ -69,7 +69,7 @@
   <!-- contentPane for top that contains main menu -->
   <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
        refreshOnShow='false' region='top' splitter='false' maxSize='Infinity' doLayout='false' style='height:26px;'>
-    <input id='putWS' type='file' style = 'display:none' onchange='av.fio.userPickZipRead()' />
+    <input id='putWS' type='file' style = 'display:none; background-color: ' onchange='av.fio.userPickZipRead()' />
     <input id='importFzrItem' type='file' style = 'display:none' onchange='av.fio.importZipRead()' />
 
     <input type='hidden' value='mymail@gmail.com' id='mailto' />
@@ -1344,10 +1344,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      title='Avida-ED Problem Report - help us make Avida-ED better'>
   <div class='dijitDialogPaneContentArea'>
     <p id='sendLogPara'>
-      Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.
+      Please describe the problem and put that at the beginning of the e-mail along with the session log from the text
+      area seeen below.
     </p>
     <p>
-      Please send the text below to the address in the first line. Either copy and paste
+      Please send the text below to 'Avida-ED-development@googlegroups.com'. Either copy and paste
       selected text or click on the send e-mail button.
     </p>
     <br />
