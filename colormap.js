@@ -850,21 +850,21 @@ av.color.cubehelixCmap = [  //djb version
     //http://www.color-blindness.com/coblis-color-blindness-simulator/
     //http://www.vischeck.com/vischeck/vischeckImage.php
 av.color.parentColorList = [  //http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
-     'rgb(  0, 109, 219)' //1  blue              website #7
-   ,'rgb(156,  10,  10)' //9  red brown         website #11 modified was 146,   0,   0
-    ,'rgb(255, 109, 182)' //4  pink              website #4
-    ,'rgb(156,  82,  10)' //5  brown             website #12 modified was 146, 73, 0
-   ,'rgb( 93,  20, 166)' //15 purple            website #6 modified was 73,   0, 146
-    ,'#DB6D00'            //7  orange brown      used digital color meter to match #5 on website;
-    ,'rgb(182, 109, 255)' //8 lavender          website #8
-   ,'rgb(  0, 146, 146)' //3  medium blue green website #3
-   ,'rgb(255, 255,   100)' //2  yellow            website #15 modified was 255, 255, 109
-    ,'rgb(255, 182, 119)' //11 pale orange       website #5 but does not look pink
-    ,'rgb(220, 190,   0)' //13 dark yellow       website #13 modified was 219, 209, 0
-   ,'rgb(  0,  93,  93)' //10 dark blue-green   website #2 modified was 0, 73, 73
-   ,'#FEB6DB'            //6  lt pink           used digital color meter to match #5 on website lt pink
-   ,'rgb(109, 182, 255)' //14  lt blue           website #9
-   ,'rgb(182, 219, 255)' //12 pale blue         website #10
+     'rgb(  0, 146, 146)' //8  medium blue green website #3
+    ,'rgb(182, 219, 255)' //12 pale blue         website #10
+    ,'rgb(  0, 109, 219)' //1  blue              website #7
+    ,'rgb(156,  10,  10)' //2  red brown         website #11 modified was 146,   0,   0
+    ,'rgb(255, 109, 182)' //3  pink              website #4
+    ,'#DB6D00'            //6  orange brown      used digital color meter to match #5 on website;
+    ,'rgb(182, 109, 255)' //7 lavender          website #8
+    ,'rgb(156,  82,  10)' //4  brown             website #12 modified was 146, 73, 0
+    ,'rgb( 93,  20, 166)' //5  purple            website #6 modified was 73,   0, 146
+    ,'rgb(  0,  93,  93)' //12 dark blue-green   website #2 modified was 0, 73, 73
+    ,'rgb(255, 255, 100)' //9  yellow            website #15 modified was 255, 255, 109
+    ,'rgb(255, 182, 119)' //10 pale orange       website #5 but does not look pink
+    ,'rgb(220, 190,   0)' //11 dark yellow       website #13 modified was 219, 209, 0
+    ,'#FEB6DB'            //6  lt pink           used digital color meter to match #5 on website lt pink
+    ,'rgb(109, 182, 255)' //14  lt blue           website #9
     ,'rgb( 0,  195,   0)' //16 green             website #14 modied was 36, 255,  36
 
     ,'rgb(179,   0, 255)'  // 17 magenta

@@ -14,6 +14,10 @@ av.grd.backgroundSquares = function () {
   }
 }
 
+/*
+
+ */
+
 //Sets scale and puts the user selected data type in the grid array. Rob wants the scale to be different at the beginning of a run 
 av.grd.setMapData = function () {
   'use strict';
@@ -21,7 +25,7 @@ av.grd.setMapData = function () {
     //console.log('av.grd.msg', av.grd.msg);
     //console.log('av.grd.mxFit', av.grd.mxFit, '; av.grd.msg.fitness.maxVal', av.grd.msg.fitness.maxVal, '; limit',
     //  (1 - av.grd.rescaleTolerance) * av.grd.mxFit);
-    if (av.grd.mxFit < av.grd.msg.fitness.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxFit > av.grd.msg.fitness.maxVal) {
+    if (av.grd.mxFit < av.grd.msg.fitness.maxVal || ( av.grd.updateNum >3000 && (1 - av.grd.rescaleTolerance) * av.grd.mxFit > av.grd.msg.fitness.maxVal) ) {
       av.grd.mxFit = av.grd.mxFit + ((1 + av.grd.rescaleTolerance) * av.grd.msg.fitness.maxVal - av.grd.mxFit) / av.grd.rescaleTimeConstant;
       av.grd.reScaleFit = 'rescaling';
     }
@@ -31,11 +35,12 @@ av.grd.setMapData = function () {
       av.grd.reScaleGest = 'rescaling';
     }
     else av.grd.reScaleGest = '';
-    if (av.grd.mxRate < av.grd.msg.metabolism.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxRate > av.grd.msg.metabolism.maxVal) {
+    if (av.grd.mxRate < av.grd.msg.metabolism.maxVal || ( av.grd.updateNum >1000 && (1 - av.grd.rescaleTolerance) * av.grd.mxRate > av.grd.msg.metabolism.maxVal)) {
       av.grd.mxRate = av.grd.mxRate + ((1 + av.grd.rescaleTolerance) * av.grd.msg.metabolism.maxVal - av.grd.mxRate) / av.grd.rescaleTimeConstant;
       av.grd.reScaleRate = 'rescaling';
     }
     else av.grd.reScaleRate = '';
+
     switch (dijit.byId("colorMode").value) {
       case 'Fitness':
         av.grd.fill = av.grd.msg.fitness.data;

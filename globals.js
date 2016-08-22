@@ -314,7 +314,7 @@ av.grd.clearGrd = function () {
   av.grd.out = [];   // deals with the color of the grid outline
   av.grd.fillmax = 0;    // max value for grid scale for the gradient color
   av.grd.msg = {};
-  av.grd.mxFit = 0.5;   //store maximum fitness during an experiment
+  av.grd.mxFit = 1.0;   //store maximum fitness during an experiment
   av.grd.mxCost = 380;  //store maximum Offspring Cost during an experiment
   av.grd.mxRate = 80;  //store maximum Energy Acq. Rate during an experiment
 
@@ -359,7 +359,7 @@ av.grd.clearGrd();
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_0805';
+av.ui.version = '2016_0809';
 av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';

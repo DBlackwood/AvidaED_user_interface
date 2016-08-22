@@ -52,7 +52,7 @@ av.msg.readMsg = function (ee) {
              + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
              + '; Met:' + msg.ave_metabolic_rate.formatNum(2) + '; Num:' + msg.organisms.formatNum(2);
         av.debug.log += '\nAvida --> ui:  ' + stub;
-        if (av.grd.oldUpdate != msg.update) {  //use only one = as one maybe number and the other string
+        if (av.grd.oldUpdate != msg.update && 0 <= msg.update) {  //use only one = as one maybe number and the other string
           av.grd.oldUpdate = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
           //av.msg.sync('webPopulationStats-update:' + msg.update.toString());
@@ -114,6 +114,7 @@ av.msg.readMsg = function (ee) {
         // to combine the forward and reverse gif.
         $('#splash').remove(); //hides splace screen.
         av.ui.loadOK = true;
+        
         break;
       case 'warning':
         userMsgLabel.textContent = 'Avida warning at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);
