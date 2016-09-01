@@ -359,7 +359,7 @@ av.grd.clearGrd();
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_0809';
+av.ui.version = '2016_0901';
 av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';

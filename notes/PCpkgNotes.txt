@@ -1,0 +1,65 @@
+I made a Windows installer for Avida-ED.
+
+Steps taken:
+
+Cloned av_ui project from GitHub.
+
+Created "avServer.py" file. This is a program that uses the CherryPy web
+microframework to establish a standalone web server on the host machine
+using port 8080. The CherryPy instance is launched in a thread. A
+5-second delay allows for load time of the CherryPy instance. A call to
+webbrowser.open() will launch the Avida-ED local URL
+(http://localhost:8080/AvidaED.html) in the user's default browser. The
+application is portable; avServer.py uses os.getcwd() to obtain the
+current working directory and will statically serve files from it.
+
+Used cx_freeze to create an executable version of avserver.py.
+
+python path\to\cxfreeze avServer.py --target-dir dist
+
+Created a directory to combine the executable and Avida-ED files,
+"av_ui_file". This puts the executable and its supporting files in the
+root of the av_ui files.
+
+Used Inno Setup to create a Windows installer. This results in an
+executable setup file less than 29 MB in size.
+
+Uploaded the Windows installer to the bwng.us site.
+
+Altered the index.html file in the avida-ed directory to also link the
+Windows installer file, and display the MD5 hash of the file.
+
+
+Changes to the Avida-ED program will require running through these steps
+again. While this is not a huge effort, it is something additional to do.
+
+I would recommend incorporating the avServer.py file in the GitHub
+project. While the Windows installer is, of course, useful only to
+Windows users, the avServer.py file should work cross-platform.
+cx_freeze could be employed to create Mac OS X and Linux versions of a
+standalone executable to serve Avida-ED locally on each of those systems.
+
+========================
+First time on new machine (PC or parallels)
+
+Install AnacondaPython  https://www.continuum.io/downloads
+
+Open Anaconda prompt  (start menu - Anaconda - cmd prompt
+ - >conda update conda
+ -    proceed ([y]/n)?
+ - >easy_install cx_freeze
+ 
+Get Inno Setup (use webbrowser)
+   http://jrsoftware.org/isdl.php
+    - get most recent stable release for windows)
+    - get QuickStart Pack with unicode (Innosetup-qsp-5.5.9-unicode.exe)
+    - double click on file in windows explorer to run install executable
+    
+========================
+Making a new version 
+
+Make a copy of av_ui using get clone (or just copy)
+ - work in the copy as it will make alot of intermediate files that I
+   don't want in the main repository. 
+   
+   

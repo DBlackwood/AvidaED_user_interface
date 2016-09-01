@@ -133,7 +133,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
         alert('Unable to extract an Avida Workspace Zip file, please check the file and try again. If you continue to have trouble, use "Report Problem" in the help menu');
       }
     };
-    fileReader.readAsArrayBuffer(zipFileToLoad);  //not sure what this does; was in the example.
+    fileReader.readAsArrayBuffer(zipFileToLoad);  //
   }
 
   //------------------------------- call to import a freezer item ------------------------------------------------------
