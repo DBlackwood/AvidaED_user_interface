@@ -526,7 +526,7 @@ av.pch.clearPopChrt = function () {
     autosize: false,
     width: 300,
     height: 200,
-    margin: { l: 35, r: 5, b:40, t: 2},   //l was 85 to show all-functions
+    margin: { l: 35, r: 2, b:40, t: 2},   //l was 85 to show all-functions
     showlegend: false,
     xaxis: {
       title: 'Time (updates)',
