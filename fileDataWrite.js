@@ -79,6 +79,18 @@ av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
 }
 
+av.fwt.makeFzrPauseRunAt = function (idStr, actConfig) {
+  'use strict';
+  var txt = dijit.byId('autoUpdateSpinner').get('value').toString();
+  // Is auto Update Radio button checked?
+  if (dijit.byId('manualUpdateRadio').get('checked')) {  //manually pause population
+    txt = '-1';   //Manual Update
+  }
+  if (actConfig) {av.fwt.makeActConfigFile('pauseRunAt.txt', txt);}
+  else {av.fwt.makeFzrFile(idStr+'/pauseRunAt.txt', txt);}
+}
+
+/* Delete later tiba
 av.fwt.makeFzrConfigTxt = function (idStr, actConfig) {
   'use strict';
   var txt = 'update ';
@@ -87,7 +99,7 @@ av.fwt.makeFzrConfigTxt = function (idStr, actConfig) {
   if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
 }
-
+*/
 av.fwt.makeFzrEnvironmentCfg = function (idStr, actConfig) {
   'use strict';
   var txt = '';
@@ -173,6 +185,7 @@ av.fwt.makeFzrConfig = function (num) {
   av.fwt.makeFzrInstsetCfg('c'+num);
   av.fwt.makeFzrAncestorAuto('c'+num, em);
   av.fwt.makeFzrAncestorHand('c'+num, em);
+  av.fwt.makeFzrPauseRunAt('c'+num, em);
 }
 
 av.fwt.makeFzrWorld = function (num) {
@@ -185,10 +198,10 @@ av.fwt.makeFzrWorld = function (num) {
   av.fwt.makeFzrInstsetCfg('w'+num);
   av.fwt.makeFzrAncestorAuto('w'+num, em);
   av.fwt.makeFzrAncestorHand('w'+num, em);
-  av.fwt.makeFzrTRfile('w'+num+'/tr0', av.ptd.aveFit);
-  av.fwt.makeFzrTRfile('w'+num+'/tr1', av.ptd.aveCst);
-  av.fwt.makeFzrTRfile('w'+num+'/tr2', av.ptd.aveEar);
-  av.fwt.makeFzrTRfile('w'+num+'/tr3', av.ptd.aveNum);
+  av.fwt.makeFzrTRfile('w'+num+'/tr0', av.pch.aveFit);
+  av.fwt.makeFzrTRfile('w'+num+'/tr1', av.pch.aveCst);
+  av.fwt.makeFzrTRfile('w'+num+'/tr2', av.pch.aveEar);
+  av.fwt.makeFzrTRfile('w'+num+'/tr3', av.pch.aveNum);
   av.fwt.makeFzrFile('w'+num + '/update', av.grd.updateNum.toString() );
   //there are more files needed to talk to Matt, tiba
 }
@@ -279,9 +292,9 @@ av.fwt.writeCSV = function() {
     + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Offspring Cost,'
     + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Energy Acq. Rate,'
     + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Count of Organisms in the World';
-  var lngth = av.ptd.aveFit.length;
+  var lngth = av.pch.aveFit.length;
   for (var ii = 0; ii < lngth; ii++) {
-    av.fwt.csvStrg += '\n' + ii + ',' + av.ptd.aveFit[ii].formatNum(6) + ',' + av.ptd.aveCst[ii].formatNum(6) + ',' + av.ptd.aveEar[ii].formatNum(6) + ',' + av.ptd.aveNum[ii];
+    av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii].formatNum(6) + ',' + av.pch.aveCst[ii].formatNum(6) + ',' + av.pch.aveEar[ii].formatNum(6) + ',' + av.pch.aveNum[ii];
   }
   //console.log(av.fwt.csvStrg);
   av.fio.fzSaveCsvfn();
@@ -315,7 +328,7 @@ $.fileDownload('http://jqueryfiledownload.apphb.com/FileDownload/DownloadReport/
 //works in safari for pdf files
 http://jqueryfiledownload.apphb.com
 
-//works in safari - opens a new blank tab and leaves it open after saving file called "unknown"
+//works in safari - opens a new blank tab and leaves it open after saving file called 'unknown'
 //http://stackoverflow.com/questions/12802109/download-blobs-locally-using-safari
 window.open('data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log));
 
@@ -334,12 +347,12 @@ $(fileDownloadButton).click(function () {
 
   //Did not work in Safari works in Firefox
   var saveData = (function () {
-    var a = document.createElement("a");
+    var a = document.createElement('a');
     document.body.appendChild(a);
-    a.style = "display: none";
+    a.style = 'display: none';
     return function (data, fileName) {
       var json = JSON.stringify(data),
-        blob = new Blob([json], {type: "octet/stream"}),
+        blob = new Blob([json], {type: 'octet/stream'}),
         url = window.URL.createObjectURL(blob);
       a.href = url;
       a.download = fileName;
@@ -348,8 +361,8 @@ $(fileDownloadButton).click(function () {
     };
   }());
 
-  var data = { x: 42, s: "hello, world", d: new Date() },
-    fileName = "DianeFile.json";  //av.fio.userFname
+  var data = { x: 42, s: 'hello, world', d: new Date() },
+    fileName = 'DianeFile.json';  //av.fio.userFname
   saveData(data, fileName);
 
 //Does not work in safari
@@ -358,24 +371,24 @@ https://codepen.io/davidelrizzo/pen/cxsGb
 // the statement pair below does not work in Safari. Opens tab with text data. does not save it.
 // tab has randomvalue url name like blob:file:///705ac45f-ab49-40ac-ae9a-8b03797daeae
 //http://stackoverflow.com/questions/18690450/how-to-generate-and-prompt-to-save-a-file-from-content-in-the-client-browser
- var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
- saveAs(blob, "helloWorld.txt");
+ var blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});
+ saveAs(blob, 'helloWorld.txt');
 
 //Does not work in Safari – opens tab with the string only
 // http://stackoverflow.com/questions/13405129/javascript-create-and-save-file
-    var myCsv = "Col1,Col2,Col3\nval1,val2,val3";
+    var myCsv = 'Col1,Col2,Col3\nval1,val2,val3';
     window.open('data:text/csv;charset=utf-8,' + escape(myCsv));
 
 //http://stackoverflow.com/questions/13405129/javascript-create-and-save-file
 //does not work in chrome or safari I might not have it right
-    var a = document.getElementById("a");
+    var a = document.getElementById('a');
     var file = new Blob(['file text'], {type: 'text/plain'});
     a.href = URL.createObjectURL(file);
     a.download = 'filename.txt';
 
 //works in chrome, but not in safari
 function download(text, name, type) {
-    var a = document.createElement("a");
+    var a = document.createElement('a');
     var file = new Blob([text], {type: type});
     a.href = URL.createObjectURL(file);
     a.download = name;
@@ -384,7 +397,7 @@ function download(text, name, type) {
 download('file text', 'myfilename.txt', 'text/plain')
 
 //Does not work in Safari
-var aFileParts = ['<a id="a"><b id="b">hey!</b></a>'];
+var aFileParts = ['<a id='a'><b id='b'>hey!</b></a>'];
 var oMyBlob = new Blob(aFileParts, {type : 'text/html'}); // the blob
 window.open(URL.createObjectURL(oMyBlob));
 
@@ -392,7 +405,7 @@ window.open(URL.createObjectURL(oMyBlob));
 http://thiscouldbebetter.neocities.org/texteditor.html
 
 //does not work in Safari
-  var blob = new Blob([av.fwt.csvStrg], {type: "text/plain;charset=utf-8"});
+  var blob = new Blob([av.fwt.csvStrg], {type: 'text/plain;charset=utf-8'});
   saveAs(blob, av.fio.csvFileName);};
  
  // http://stackoverflow.com/questions/30694453/blob-createobjecturl-download-not-working-in-firefox-but-works-when-debugging
@@ -400,8 +413,8 @@ http://thiscouldbebetter.neocities.org/texteditor.html
  function downloadFile(filename, data) {
 
     var a = document.createElement('a');
-    a.style = "display: none";
-    var blob = new Blob(data, {type: "application/octet-stream"});
+    a.style = 'display: none';
+    var blob = new Blob(data, {type: 'application/octet-stream'});
     var url = window.URL.createObjectURL(blob);
     a.href = url;
     a.download = filename;
@@ -466,7 +479,7 @@ http://thiscouldbebetter.neocities.org/texteditor.html
  */
 
 /*
- //console.log("declaring window.downloadFile()");
+ //console.log('declaring window.downloadFile()');
  // http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
  window.downloadFile = function(sUrl) {
 
@@ -507,7 +520,7 @@ Can apparently save files in Safari from javascript
   For saving look at:
  generateOutputFileBlobUrl: function() {
  if (OpenJsCad.isSafari()) {
- //console.log("Trying download via DATA URI");
+ //console.log('Trying download via DATA URI');
  // convert BLOB to DATA URI
  var blob = this.currentObjectToBlob();
  var that = this;
@@ -518,8 +531,8 @@ Can apparently save files in Safari from javascript
  that.downloadOutputFileLink.href = reader.result;
  that.downloadOutputFileLink.innerHTML = that.downloadLinkTextForCurrentObject();
  var ext = that.selectedFormatInfo().extension;
- that.downloadOutputFileLink.setAttribute("download","openjscad."+ext);
- that.downloadOutputFileLink.setAttribute("target", "_blank");
+ that.downloadOutputFileLink.setAttribute('download','openjscad.'+ext);
+ that.downloadOutputFileLink.setAttribute('target', '_blank');
  that.enableItems();
  }
  };

@@ -25,8 +25,8 @@
           ['iPhone','',['../themes/iphone/iphone.css']],
           ['.*','',['../themes/iphone/iphone.css']
         ]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
-  <script type='text/javascript' src='globals.js'></script>
   <script type='text/javascript' src='colormap.js'></script>
+  <script type='text/javascript' src='globals.js'></script>
   <script type='text/javascript' src='placeParent.js'></script>
   <script type='text/javascript' src='utilities.js'></script>
   <script type='text/javascript' src='AvidaED.js'></script>
@@ -58,7 +58,7 @@
 <!-- http://stackoverflow.com/questions/20828799/creating-a-splash-page-in-html5 -->
 <div id='splash' style='display:block; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A'>
   <div align='center'>
-    <h1 style='color:whitesmoke'>Avida-ED public Beta version 2016_0901 is loading . . .</h1>
+    <h1 style='color:whitesmoke'>Avida-ED public Beta version 2016_1019 is loading . . .</h1>
     <img src='images/avida-ed-icon.png' /><br />
     <img src='images/avidaGrid.gif' />
   </div>
@@ -70,7 +70,7 @@
   <!-- contentPane for top that contains main menu -->
   <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
        refreshOnShow='false' region='top' splitter='false' maxSize='Infinity' doLayout='false' style='height:26px;'>
-    <input id='putWS' type='file' style = 'display:none; background-color: ' onchange='av.fio.userPickZipRead()' />
+    <input id='putWS' type='file' style = 'display:none;' onchange='av.fio.userPickZipRead()' />
     <input id='importFzrItem' type='file' style = 'display:none' onchange='av.fio.importZipRead()' />
 
     <input type='hidden' value='mymail@gmail.com' id='mailto' />
@@ -85,6 +85,7 @@
             <div data-dojo-type='dijit/MenuSeparator'></div>
             <span data-dojo-type='dijit/MenuItem' id='mnFlFzItem' label='Import Freezer Item'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlExportData' label='Export Data'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFlExportGraph' label='Export Graphics'></span>
           </span>
         </span>
         <span data-dojo-type='dijit/PopupMenuBarItem' label='Freezer' iconClass='dijitNoIcon' id='mnFreezer'>
@@ -114,8 +115,8 @@
               <a href='cpu_tour.html' target='_blank'>Ancestor and Hardware</a></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpInfo'><a href='http://Avida-ED.msu.edu/' target='_blank'>more info about Avida-ED</a></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpProblem' label='Report Problem(s)'></span>
-            <div style='display: none'>
             <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>
+            <div style='display: none'>
               <div data-dojo-type='dijit/MenuSeparator'></div>
               <div data-dojo-type='dijit/PopupMenuItem'>
                 <span>Color Gradient</span>
@@ -426,12 +427,12 @@
                     <tr>
                       <td><div class='noWrap1'><button id='norButton' class='bitButtonOff'>nor</button></div></td>
                       <td><div class='noWrap2r'><label id='norPop'></label></div></td>
-                      <td><div style='text-align: center'><label id='numLog' /></div></td>
+                      <td><div class='noWrapTitle'><label id='logTit6' /></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='xorButton' class='bitButtonOff'>xor</button></div></td>
                       <td><div class='noWrap2r'><label id='xorPop'></label></div></td>
-                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                      <td><div style='text-align: center'><label id='numLog' /></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='equButton' class='bitButtonOff'>equ</button></div></td>
@@ -445,7 +446,7 @@
               </div>
             </div>
             <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
-                 refreshOnShow='false' region='bottom' splitter='false' maxSize='Infinity' style='height: 1.1em;'
+                 refreshOnShow='false' region='bottom' splitter='false' maxSize='Infinity' style='height: 1.4em;'
                  doLayout='false'>
               <label id='yaxisLabel'>Y-axis</label>
               <select data-dojo-type='dijit/form/Select' id='yaxis' data-dojo-props='name: "yyAxis"'>
@@ -458,7 +459,7 @@
             </div>
             <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
                  refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'
-                 id='popChartHolder'>
+                 id='popChrtHolder'>
               <div id='popChart'></div>
             </div>
           </div>
@@ -706,11 +707,11 @@
                    style='width:3em; height:1.8em'/>
           </div>
           <div style='text-align:center'>
-            <button id='orgReset'>Reset</button>
-            <button id='orgBack'>Back</button>
-            <button id='orgRun'>Run</button>
-            <button id='orgForward'>Forward</button>
-            <button id='orgEnd'>End</button>
+            <button id='orgReset' disabled>Reset</button>
+            <button id='orgBack' disabled>Back</button>
+            <button id='orgRun' disabled>Run</button>
+            <button id='orgForward' disabled>Forward</button>
+            <button id='orgEnd' disabled>End</button>
           </div>
         </div>
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
@@ -816,11 +817,12 @@
                 <option value='Red' selected='selected'>Red</option>
                 <option value='Blue'>Blue</option>
                 <option value='Green'>Green</option>
+                <option value='Yellow'>Yellow</option>
+                <option value='Orange'>Orange</option>
+                <option value='Purple'>Purple</option>
                 <option value='Cyan'>Cyan</option>
                 <option value='Magenta'>Magenta</option>
-                <option value='Purple'>Purple</option>
-                <option value='Orange'>Orange</option>
-                <option value='Yellow'>Yellow</option>
+                <option value='Black'>Black</option>
               </select>
 
               <div id='graphPop0' class='popContainer'></div>
@@ -830,13 +832,14 @@
               </div>
               <select data-dojo-type='dijit/form/Select' id='pop1color' data-dojo-props='name: "color"' class='fltLeft'>
                 <option value='Red'>Red</option>
-                <option value='Blue'>Blue</option>
-                <option value='Green' selected='selected'>Green</option>
+                <option value='Blue' selected='selected'>Blue</option>
+                <option value='Green'>Green</option>
+                <option value='Yellow'>Yellow</option>
+                <option value='Orange'>Orange</option>
+                <option value='Purple'>Purple</option>
                 <option value='Cyan'>Cyan</option>
                 <option value='Magenta'>Magenta</option>
-                <option value='Purple'>Purple</option>
-                <option value='Orange'>Orange</option>
-                <option value='Yellow'>Yellow</option>
+                <option value='Black'>Black</option>
               </select>
 
               <div id='graphPop1' class='popContainer'></div>
@@ -844,13 +847,14 @@
                 <button id='pop2delete'>X</button>
                 <select data-dojo-type='dijit/form/Select' id='pop2color' data-dojo-props='name: "color"'>
                   <option value='Red'>Red</option>
-                  <option value='Blue' selected='selected'>Blue</option>
+                  <option value='Blue'>Blue</option>
                   <option value='Green'>Green</option>
+                  <option value='Yellow'>Yellow</option>
+                  <option value='Orange'>Orange</option>
+                  <option value='Purple'>Purple</option>
                   <option value='Cyan'>Cyan</option>
                   <option value='Magenta'>Magenta</option>
-                  <option value='Purple'>Purple</option>
-                  <option value='Orange'>Orange</option>
-                  <option value='Yellow'>Yellow</option>
+                  <option value='Black' selected='selected'>Black</option>
                 </select>
               </div>
               <div id='graphPop2' class='popContainer'></div>
@@ -876,9 +880,10 @@
           </div>
         </div>
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
-             id='chartHolder' refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'>
-          <div id='analyzeChart'></div>
-          <div id='slideHolder'></div>
+             id='anaChrtHolder' refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'>
+          <div id='anlDndChart' style='height: 100%; width: 100%'>
+            <div id='anlChrtSpace' style='height: 100%; width: 100%'></div>
+          </div>
         </div>
       </div>
     </div>
@@ -886,7 +891,7 @@
 </div>
 
 <!--------------------------------------------------------- Dialog boxes ---------------------------------------------->
-<!----- Save WSfile Dialog box -------->
+<!----------------------------------------- Save WSfile Dialog box ---------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sWSfDialog' title='The freezer has changed since last saved in a workspace'>
   <div class='dijitDialogPaneContentArea'>
     <p>Would you like to save before loading another workspace?</p>
@@ -897,6 +902,29 @@
     </button>
     <button data-dojo-type='dijit/form/Button' type='button' id='sWSfSave'>Save current workspace</button>
     <button data-dojo-type='dijit/form/Button' type='button' id='sWSfOpen'>Open workspace</button>
+  </div>
+</div>
+
+<!-------------------------------- Save mnFlExportGraph Dialog box ---------------------------------------------------->
+<div data-dojo-type='dijit/Dialog' data-dojo-id='mnFlExportGraphDialog'
+     title='Expoert Graphics has not been implemented - for now:'>
+  <div class='dijitDialogPaneContentArea'>
+    <h3>For Mac users</h3>
+    <p>Press the combination [command][shift][4] and use your cursor to select the part of the screen desired.
+      A png file will be saved to the desktop with a name of the form: <br />
+      Screen Shot 2016-10-11 at 3.34.36 PM.png
+    </p>
+    <h3>For PC users</h3>
+    <p>
+      Use Snipping Tool: It is in the Accessories Folder or you can Type "Snip" in the 'search programs and files'
+      field once your hit the 'start button'. Hold and drag the cursor around the area you want to capture. SnippingTool
+      will then allow you to save as a png, gif, jpg or single file html.
+    </p>
+  </div>
+  <div class='dijitDialogPaneActionBar'>
+    <button data-dojo-type='dijit/form/Button' type='button'  id='mnFlExportGraphCancel'
+            data-dojo-props='onClick:function(){mnFlExportGraphDialog.hide();}'>Close Dialog
+    </button>
   </div>
 </div>
 
@@ -918,7 +946,7 @@
   </div>
 </div>
 
-<!-- New button Dialog -->
+<!------------------------------------------------ New button Dialog -------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='newDialog'
      title='Would you like to save or discard the current petri dish before starting a new experiment?'>
   <div class='dijitDialogPaneContentArea'>
@@ -987,16 +1015,19 @@
 
 <!------------------------------------------ Help About Dialog -------------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnHpAboutDialog'
-     title='Avida-ED: Emscripten with javascript version: Beta Test 2016_0901'>
+     title='Avida-ED: written in javascript with Avida in C++ via Emscripten'>
   <div class='dijitDialogPaneContentArea' align='center'>
     <img src='images/Avida-ED-logo.png' />
     <p>An educational artificial life plateform developed at Michigan State University for <br />
       learning evolution and the nature of science using digital organisms.</p>
+    <br />
+    <strong>Avida-ED 3.0 Public Beta Version 2016_1019</strong><br />
+    <strong>2008-2016<br />http://avida-ed.msu.edu/</strong><br />
+    <br />
     <p>Developed under NSF Grant #0341484,<br />
        Cooperative Agreement DBI-093945 and <br />
        Howard Hughes Medical Institute HHMI #52008102
     </p><br />
-    <p>for more information go to <a href='http://Avida-ED.msu.edu' target='_blank'>Avida-ED at MSU</a></p>
     <textarea rows='10' cols='100'>
       Avida-ED (avida/apps/viewer-macos)
 
@@ -1336,6 +1367,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   <div class='dijitDialogPaneActionBar'>
     <button id='restartAvidaFrzConfig'>Freeze configuration</button>
     <button id='restartAvidaNow'>Restart Avida (maintains current workspace)</button>
+  </div>
+</div>
+
+<!---------------------------------------- Suggesting restart if not loaded after a time delay  ----------------------->
+<div data-dojo-type='dijit/Dialog' data-dojo-id='appReloadDialog'
+     title='Avida-ED failed to load'>
+  <div class='dijitDialogPaneContentArea'>
+    <p>Please try re-loading<br />
+      Use your browser's reload function
+    </p>
+  </div>
+  <div class='dijitDialogPaneActionBar'>
+    <button data-dojo-type='dijit/form/Button' type='button' data-dojo-props='onClick:function(){appReloadDialog.hide();}'
+            id='appReloadCancel'>close this dialong
+    </button>
   </div>
 </div>
 

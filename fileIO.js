@@ -189,7 +189,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       }
       catch (error) {
         alert('Unable to extract an Avida Freezer Item Zip file, please check the file and try again. If you continue to have trouble, use "Report Problem" in the help menu');
-        av.debug.log += '\nfreezerItem jsZip error:' + err;
+        av.debug.log += '\nfreezerItem jsZip error:' + error;
       }
     };
     fileReader.readAsArrayBuffer(zipFileToLoad);  //calls the function above

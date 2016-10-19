@@ -251,20 +251,20 @@ av.dnd.landActiveConfig = function (pkg) {
 
     //Load Time Recorder Data.
     dir = av.fzr.actConfig.dir;
-    av.ptd.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
-    av.ptd.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
-    av.ptd.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
-    av.ptd.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
-    var lngth = av.ptd.aveFit.length;
-    av.ptd.logFit = av.utl.newFilledArray(lngth, null);
-    av.ptd.logCst = av.utl.newFilledArray(lngth, null);
-    av.ptd.logEar = av.utl.newFilledArray(lngth, null);
-    av.ptd.logNum = av.utl.newFilledArray(lngth, null);
-    //console.log('tr length=', av.ptd.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
-    //console.log('aveFit', av.ptd.aveFit);
-    //console.log('aveCst', av.ptd.aveCst);
-    //console.log('aveEar', av.ptd.aveEar);
-    //console.log('aveNum', av.ptd.aveNum);
+    av.pch.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
+    av.pch.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
+    av.pch.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
+    av.pch.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
+    var lngth = av.pch.aveFit.length;
+    av.pch.logFit = av.utl.newFilledArray(lngth, null);
+    av.pch.logCst = av.utl.newFilledArray(lngth, null);
+    av.pch.logEar = av.utl.newFilledArray(lngth, null);
+    av.pch.logNum = av.utl.newFilledArray(lngth, null);
+    //console.log('tr length=', av.pch.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
+    //console.log('aveFit', av.pch.aveFit);
+    //console.log('aveCst', av.pch.aveCst);
+    //console.log('aveEar', av.pch.aveEar);
+    //console.log('aveNum', av.pch.aveNum);
 
     //send message to Avida
     av.msg.importPopExpr();
@@ -721,9 +721,17 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
       av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].num;
       break;
   }
+  var begin = av.anl.xx.length;
+  var end = av.fzr.pop[worldNum].fit.length;
+  //console.log('begin=', begin, '; end=', end);
+  if (av.anl.xx.length < av.fzr.pop[worldNum].fit.length) {
+    for (ii = begin; ii< end; ii++) {
+      av.anl.xx[ii] = ii;
+    }
+  }
 };
 
-av.dnd.landanalyzeChart = function (dnd, source, nodes, target) {
+av.dnd.landAnlDndChart = function (dnd, source, nodes, target) {
   'use strict';
   av.debug.log += '\n -DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
   var items = av.dnd.getAllItems(av.dnd.graphPop0);
@@ -737,8 +745,8 @@ av.dnd.landanalyzeChart = function (dnd, source, nodes, target) {
     }
   }
   //in all cases no population name is stored in the graph div
-  av.dnd.analyzeChart.selectAll().deleteSelectedNodes();  //clear items
-  av.dnd.analyzeChart.sync();   //should be done after insertion or deletion
+  av.dnd.anlDndChart.selectAll().deleteSelectedNodes();  //clear items
+  av.dnd.anlDndChart.sync();   //should be done after insertion or deletion
 }
 
 av.dnd.putNslot = function (Num, source) {

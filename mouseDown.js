@@ -51,6 +51,7 @@ av.mouse.downOrganCanvasFn = function(evt) {
       }
     }
     var instructionNum = ith + 1;
+    var flagIndx = hh*50 + instructionNum;
     if ('instruction' == av.mouse.Picked) {
       if (isRightMB) {  //right click on instruction. allow replacement letter.
         //console.log('right click');
@@ -63,14 +64,23 @@ av.mouse.downOrganCanvasFn = function(evt) {
         if (av.debug.mouse) console.log('ith, gn', ith, hh, '; rotate', av.ind.rotate[hh], '; xy', labX, labY);
         av.ind.ctx.beginPath();
         av.ind.ctx.arc(labX, labY, 1.1 * av.ind.smallR, 0, 2 * Math.PI);
-        av.ind.ctx.fillStyle = av.color.dictColor['White'];  //use if av.ind.dna is a string
+        av.ind.ctx.fillStyle = av.color.names['White'];  //use if av.ind.dna is a string
         av.ind.ctx.fill();   //required to render fill
         //draw number;
-        av.ind.ctx.fillStyle = av.color.dictColor["Black"];
-        av.ind.ctx.font = av.ind.fontsize + "px Arial";
-        var txtW = av.ind.ctx.measureText(instructionNum).width;  //use if av.ind.dna is a string
-        //txtW = av.ind.ctx.measureText(av.ind.dna[gg][ith]).width;     //use if av.ind.dna is an array
-        av.ind.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.ind.smallR / 2);  //use if av.ind.dna is a string
+        //console.log('instructionNum=', instructionNum, '; hh=', hh, '; flagIndx=', flagIndx);
+        //console.log('labeled=', av.ind.labeled);
+        if (av.ind.labeled[flagIndx]) {
+          av.ind.labeled[flagIndx] = false;
+          //av.ind.ctx.fillStyle = av.color.names['White'];
+        }
+        else {
+          av.ind.labeled[flagIndx] = true;
+          av.ind.ctx.fillStyle = av.color.names['Black'];
+          av.ind.ctx.font = av.ind.fontsize + "px Arial";
+          var txtW = av.ind.ctx.measureText(instructionNum).width;  //use if av.ind.dna is a string
+          //txtW = av.ind.ctx.measureText(av.ind.dna[gg][ith]).width;     //use if av.ind.dna is an array
+          av.ind.ctx.fillText(instructionNum, labX - txtW / 2, labY + av.ind.smallR / 2);  //use if av.ind.dna is a string
+        }
       }
     }
   }

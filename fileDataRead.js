@@ -55,7 +55,7 @@ av.frd.add2freezerFromFile = function (loadConfigFlag) {
   //console.log('av.fio.thisfile.asText()', av.fio.thisfile.asText());
   //console.log('av.fio.thisfile', av.fio.thisfile);
   if (null == av.fio.thisfile.asText()) { name = av.fio.anID; }
-  else { name = wsb("\n", av.fio.thisfile.asText()); }
+  else { name = wsb('\n', av.fio.thisfile.asText()); }
 
   //if (av.debug.fio) console.log('type ', type, '; dir', dir, '; num', num);
   switch (type) {
@@ -94,6 +94,7 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'events.cfg':
     case 'genome.seq':
     case 'instset.cfg':
+    case 'pauseRunAt.txt':
     case 'tr0':
     case 'tr1':
     case 'tr2':
@@ -153,6 +154,8 @@ av.frd.updateSetup = function () {
   av.frd.avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
   av.frd.environmentCFG2form(doctext);
+  doctext = av.fzr.file[dir + '/pauseRunAt.txt'];
+  av.frd.pauseRunAtTXT2form(doctext);
 }
 
 //----------------------- section to put data from environment.cfg into setup form of population page ------------------
@@ -177,7 +180,7 @@ av.frd.environmentCFGparse = function (filestr) {
   'use strict';
   var rslt = {};
   var lineobj;
-  var lines = filestr.split("\n");
+  var lines = filestr.split('\n');
   var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (3 < lines[ii].length) {
@@ -192,16 +195,17 @@ av.frd.environmentCFGparse = function (filestr) {
 av.frd.environmentCFG2form = function (fileStr) {
   'use strict';
   var dict = av.frd.environmentCFGparse(fileStr);
-  dijit.byId("notose").set('checked', dict.NOT);
-  dijit.byId("nanose").set('checked', dict.NAND);
-  dijit.byId("andose").set('checked', dict.AND);
-  dijit.byId("ornose").set('checked', dict.ORN);
-  dijit.byId("orose").set('checked', dict.OR);
-  dijit.byId("andnose").set('checked', dict.ANDN);
-  dijit.byId("norose").set('checked', dict.NOR);
-  dijit.byId("xorose").set('checked', dict.XOR);
-  dijit.byId("equose").set('checked', dict.EQU);
+  dijit.byId('notose').set('checked', dict.NOT);
+  dijit.byId('nanose').set('checked', dict.NAND);
+  dijit.byId('andose').set('checked', dict.AND);
+  dijit.byId('ornose').set('checked', dict.ORN);
+  dijit.byId('orose').set('checked', dict.OR);
+  dijit.byId('andnose').set('checked', dict.ANDN);
+  dijit.byId('norose').set('checked', dict.NOR);
+  dijit.byId('xorose').set('checked', dict.XOR);
+  dijit.byId('equose').set('checked', dict.EQU);
 }
+
 //----------------------------- section to put data from avida.cfg into setup form of population page ------------------
 //makes a dictionary entry out of line if the key and value are the first two items.
 av.frd.avidaCFGlineParse = function(instr){
@@ -218,7 +222,7 @@ av.frd.avidaCFGlineParse = function(instr){
 av.frd.avidaCFGparse = function (filestr) {
   'use strict';
   var rslt = {};
-  var lines = filestr.split("\n");
+  var lines = filestr.split('\n');
   var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
     var lineobj = av.frd.avidaCFGlineParse(lines[ii]);
@@ -231,32 +235,48 @@ av.frd.avidaCFGparse = function (filestr) {
 av.frd.avidaCFG2form = function (fileStr){
   'use strict';
   var dict = av.frd.avidaCFGparse(fileStr);
-  dijit.byId("sizeCols").set('value', dict.WORLD_X);
-  dijit.byId("sizeRows").set('value', dict.WORLD_Y);
-  document.getElementById("muteInput").value = dict.COPY_MUT_PROB*100;
+  dijit.byId('sizeCols').set('value', dict.WORLD_X);
+  dijit.byId('sizeRows').set('value', dict.WORLD_Y);
+  document.getElementById('muteInput').value = dict.COPY_MUT_PROB*100;
   //var event = new Event('change');
   var event = new window.CustomEvent('change');
-  document.getElementById("muteInput").dispatchEvent(event);
+  document.getElementById('muteInput').dispatchEvent(event);
   if (0==dict.BIRTH_METHOD) {
-    dijit.byId("childParentRadio").set('checked', true);
-    dijit.byId("childRandomRadio").set('checked', false);
+    dijit.byId('childParentRadio').set('checked', true);
+    dijit.byId('childRandomRadio').set('checked', false);
   }
   else {
-    dijit.byId("childParentRadio").set('checked', false);
-    dijit.byId("childRandomRadio").set('checked', true);
+    dijit.byId('childParentRadio').set('checked', false);
+    dijit.byId('childRandomRadio').set('checked', true);
   }
 
   if (-1 == dict.RANDOM_SEED) {
-    dijit.byId("experimentRadio").set('checked', true);
-    dijit.byId("demoRadio").set('checked', false);
+    dijit.byId('experimentRadio').set('checked', true);
+    dijit.byId('demoRadio').set('checked', false);
   }
   else {
-    dijit.byId("experimentRadio").set('checked', false);
-    dijit.byId("demoRadio").set('checked', true);
+    dijit.byId('experimentRadio').set('checked', false);
+    dijit.byId('demoRadio').set('checked', true);
   }
   //no longer in use; tiba delete later
-  //dijit.byId("aveTimeSlice").set('value', dict.AVE_TIME_SLICE);
-  //dijit.byId("sleepDelay").set('value', dict.SLEEP_DELAY);
+  //dijit.byId('aveTimeSlice').set('value', dict.AVE_TIME_SLICE);
+  //dijit.byId('sleepDelay').set('value', dict.SLEEP_DELAY);
+}
+
+// puts data from the av.frd.pauseRun.txt file into the setup form for the population page
+av.frd.pauseRunAtTXT2form = function (fileStr) {
+  'use strict';
+  var update = parseInt(fileStr);
+  if (0 < update) {
+    dijit.byId('manualUpdateRadio').set('checked', false);
+    dijit.byId('autoUpdateRadio').set('checked', true);
+    dijit.byId('autoUpdateSpinner').set('value', update);
+  }
+  else {
+    dijit.byId('manualUpdateRadio').set('checked', true);
+    dijit.byId('autoUpdateRadio').set('checked', false);
+    dijit.byId('autoUpdateSpinner').set('value', '1000');
+  }
 }
 
 //----------------------- section to put data from ancestors file into ancestorBox and placeparents auto ---------------
@@ -268,7 +288,7 @@ av.fio.autoAncestorParse = function (filestr) {
   rslt.nam = [];
   rslt.gen = [];
   var lineobj, gen, name;
-  var lines = filestr.split("\n");
+  var lines = filestr.split('\n');
   var kk = 0;
   var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
@@ -324,7 +344,7 @@ av.fio.handAncestorParse = function (filestr) {
   rslt.row = [];
   var lineobj, gen, xx, yy;
   var pair = [];
-  var lines = filestr.split("\n");
+  var lines = filestr.split('\n');
   var lngth = lines.length;
   var kk = 0;
   for (var ii = 0; ii < lngth; ii++) {
@@ -371,7 +391,7 @@ av.fio.handAncestorLoad = function(fileStr) {
     av.parents.col[nn] = stuff.col[kk];
     av.parents.row[nn] = stuff.row[kk];
     av.parents.injected[nn] = false;
-    av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(dijit.byId("sizeCols").get('value'));
+    av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(dijit.byId('sizeCols').get('value'));
     //av.parents.AvidaNdx[av.parents.autoNdx[ii]] = av.parents.col[av.parents.autoNdx[ii]] + cols * av.parents.row[av.parents.autoNdx[ii]];
     if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], '; domid', av.parents.domid[nn], '; gen', av.parents.genome[nn]);
   }
@@ -385,7 +405,7 @@ av.frd.cladeSSGparse = function (filestr) {
   'use strict';
   var rslt = [];
   var lineobj, cfgary, name;
-  var lines = filestr.split("\n");
+  var lines = filestr.split('\n');
   var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (1 < lines[ii].length) {
@@ -468,7 +488,7 @@ function download(filename, text) {
 */
 
 /*
-//console.log("declaring window.downloadFile()");
+//console.log('declaring window.downloadFile()');
 // http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
 window.downloadFile = function(sUrl) {
 

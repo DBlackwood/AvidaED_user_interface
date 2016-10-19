@@ -29,8 +29,8 @@ av.msg.readMsg = function (ee) {
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
       case 'runPause':
-        if (true != msg["Success"]) {
-          if (av.debug.msg) console.log("Error: ", msg);  // msg failed
+        if (true != msg['Success']) {
+          if (av.debug.msg) console.log('Error: ', msg);  // msg failed
           av.ptd.runStopFn();  //flip state back since the message failed to get to Avida
         }
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
@@ -40,9 +40,9 @@ av.msg.readMsg = function (ee) {
         av.traceObj = msg.snapshots;
         //console.log('av.traceObj', av.traceObj);
         av.ind.cycle = 0;
-        dijit.byId("orgCycle").set("value", 0);
-        av.ind.cycleSlider.set("maximum", av.traceObj.length - 1);
-        av.ind.cycleSlider.set("discreteValues", av.traceObj.length);
+        dijit.byId('orgCycle').set('value', 0);
+        av.ind.cycleSlider.set('maximum', av.traceObj.length - 1);
+        av.ind.cycleSlider.set('discreteValues', av.traceObj.length);
         av.ind.updateOrgTrace();
         av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
         break;
@@ -71,10 +71,7 @@ av.msg.readMsg = function (ee) {
         stub = 'name: name: webGridData; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
         av.debug.log += '\nAvida --> ui:  ' + stub;
         //av.msg.sync('webGridData:' + msg.update.toString());
-        if ('populationBlock' === av.ui.page && 'map' === av.ui.subpage) {
-          //av.debug.log += '\n -Call drawGridSetupFn';
-          av.grd.drawGridSetupFn();
-        }
+        av.grd.drawGridSetupFn();  //needs to be called always as some calculations need to happen even if nothing is displayed (for logic data)
         //av.debug.log += '\n - - end webGridData: update:' + av.grd.msg.update;
         break;
       case 'webOrgDataByCellID':
@@ -113,8 +110,10 @@ av.msg.readMsg = function (ee) {
         // Then used http://gifmaker.me/reverser/ to make a gif in reverse time order. Then Wesley used gifsicle
         // to combine the forward and reverse gif.
         $('#splash').remove(); //hides splace screen.
+        appReloadDialog.hide();
         av.ui.loadOK = true;
-        
+        if (av.debug.msg) console.log('before calling av.grd.popChartInit');
+        av.grd.popChartInit();
         break;
       case 'warning':
         userMsgLabel.textContent = 'Avida warning at ' + av.grd.oldUpdate.toString() + ' is ' + av.utl.json2oneLine(msg);
@@ -145,15 +144,15 @@ av.msg.readMsg = function (ee) {
 };
 
 av.msg.check4anotherUpdate = function () {
-  "use strict";
+  'use strict';
   //console.log('newUpdate? stopflag=', av.ui.autoStopFlag, '; bar=', av.ui.autoStopValue, '; update=',av.grd.popStatsMsg.update);
   if (av.ui.autoStopFlag) {
     if (av.ui.autoStopValue <= av.grd.popStatsMsg.update) {
       //make pause state
       av.ptd.makePauseState();
       av.ui.autoStopFlag = false;
-      dijit.byId("manualUpdateRadio").set('checked', true);
-      dijit.byId("autoUpdateRadio").set('checked', false);
+      dijit.byId('manualUpdateRadio').set('checked', true);
+      dijit.byId('autoUpdateRadio').set('checked', false);
       if (av.ui.oneUpdateFlag) av.ui.oneUpdateFlag = false;
     }
     else {
@@ -177,9 +176,9 @@ av.msg.stepUpdate = function () {
   'use strict';
   setTimeout(function () {
     //av.debug.log += '\n - - Update data: stepUpdate: stopRun:' + runStopButton.textContent + '; previousUpdate'
-      + av.msg.previousUpdate  + '; popStatsupdate' + av.grd.popStatsMsg.update;
+    //  + av.msg.previousUpdate  + '; popStatsupdate' + av.grd.popStatsMsg.update;
     //console.log('stepUpdate', runStopButton.textContent, '; previousUpdate', av.msg.previousUpdate, '; pop', av.grd.popStatsMsg.update);
-    if ("Pause" == runStopButton.textContent) {
+    if ('Pause' == runStopButton.textContent) {
       av.msg.previousUpdate = av.grd.popStatsMsg.update;
       var request = {'type': 'stepUpdate'}
       av.aww.uiWorker.postMessage(request);
@@ -292,7 +291,7 @@ av.msg.doOrgTrace = function () {
     if ( 50 < av.fzr.actOrgan.genome.length) {
       if (av.debug.msg) console.log('doOrgTrace: fzr', av.fzr);
       var seed = 100 * Math.random();
-      if (dijit.byId("OrganDemoRadio").get('checked', true)) {seed = 0;}
+      if (dijit.byId('OrganDemoRadio').get('checked', true)) {seed = 0;}
       else {seed = -1}
       var request = {
         'type': 'addEvent',
@@ -301,7 +300,7 @@ av.msg.doOrgTrace = function () {
         'args': [
           //'0,heads_default,' + av.fzr.actOrgan.genome,                                  //genome string
           av.fzr.actOrgan.genome,                                  //genome string
-          dijit.byId("orMuteInput").get('value') / 100,     // point mutation rate
+          dijit.byId('orMuteInput').get('value') / 100,     // point mutation rate
           seed                                            //seed where 0 = random; >0 to replay that number
         ]
       };
@@ -457,13 +456,20 @@ av.msg.updatePopStats = function (msg) {
   var vari = 2;
   //update graph arrays
   if (0 <= msg.update) {  //normal start to loop
-    av.ptd.aveFit.push(msg.ave_fitness);
-    av.ptd.aveCst.push(msg.ave_gestation_time);
-    av.ptd.aveEar.push(msg.ave_metabolic_rate);
-    av.ptd.aveNum.push(msg.organisms);
-    av.grd.updateLogicFn(msg.update);  //for graph data  switch to run with grid data since the data is from the grid data
+    av.pch.aveFit[msg.update] = msg.ave_fitness;
+    av.pch.aveCst[msg.update] = msg.ave_gestation_time;
+    av.pch.aveEar[msg.update] = msg.ave_metabolic_rate;
+    av.pch.aveNum[msg.update] = msg.organisms;
+    av.pch.xx[msg.update] = msg.update;
+
+    if (av.pch.aveFit[msg.update] > av.pch.aveMaxFit) av.pch.aveMaxFit = av.pch.aveFit[msg.update];
+    if (av.pch.aveCst[msg.update] > av.pch.aveMaxCst) av.pch.aveMaxCst = av.pch.aveCst[msg.update];
+    if (av.pch.aveEar[msg.update] > av.pch.aveMaxEar) av.pch.aveMaxEar = av.pch.aveEar[msg.update];
+    if (av.pch.aveNum[msg.update] > av.pch.aveMaxNum) av.pch.aveMaxNum = av.pch.aveNum[msg.update];
+
+    av.ptd.updateLogicFn(msg.update);  //for graph data  switch to run with grid data since the data is from the grid data
   }
-  TimeLabel.textContent = msg.update.formatNum(0) + " updates";
+  TimeLabel.textContent = msg.update.formatNum(0) + ' updates';
   av.grd.updateNum = msg.update;
   popSizeLabel.textContent = msg.organisms.formatNum(0);
   aFitLabel.textContent = msg.ave_fitness.formatNum(place);
@@ -473,7 +479,7 @@ av.msg.updatePopStats = function (msg) {
     aAgeLabel.textContent = msg.ave_age.formatNum(place);
 
   parentNumLabel.textContent = av.parents.name.length;
-  //console.log('update', msg.update, '; logNum[update]',av.ptd.logNum[Number(msg.update)-1], '; logNum', av.ptd.logNum);
+  //console.log('update', msg.update, '; logNum[update]',av.pch.logNum[Number(msg.update)-1], '; logNum', av.pch.logNum);
 
   //find out how many are not viable.
   var numNotViable = 0;
@@ -497,55 +503,70 @@ av.msg.updatePopStats = function (msg) {
   equPop.textContent = msg.equ;
 }
 
-av.grd.updateLogicFn = function (mUpdate){
+av.ptd.updateLogicFn = function (mUpdate){
   'use strict';
-  if (av.ptd.allOff) {
-    av.ptd.logFit[mUpdate] = null;
-    av.ptd.logCst[mUpdate] = null;
-    av.ptd.logEar[mUpdate] = null;
-    av.ptd.logNum[mUpdate] = null;
-  }
-  else {
-    av.ptd.logFit[mUpdate] = 0;
-    av.ptd.logCst[mUpdate] = 0;
-    av.ptd.logEar[mUpdate] = 0;
-    av.ptd.logNum[mUpdate] = 0;
-    //console.log('out_', av.grd.out );
-    //console.log('gest', av.grd.msg.gestation.data);
-    var lngth = av.grd.out.length;
-    for (var ii=0; ii < lngth; ii++){
-      if (0 < av.grd.out[ii]) {
-        av.ptd.logFit[mUpdate] += av.grd.msg.fitness.data[ii];
-        av.ptd.logCst[mUpdate] += av.grd.msg.gestation.data[ii];
-        av.ptd.logEar[mUpdate] += av.grd.msg.metabolism.data[ii];
-        av.ptd.logNum[mUpdate]++;
-      }
-    }
-    if (0 < av.ptd.logNum[mUpdate]) {
-      av.ptd.logFit[mUpdate] = av.ptd.logFit[mUpdate]/av.ptd.logNum[mUpdate];
-      av.ptd.logCst[mUpdate] = av.ptd.logCst[mUpdate]/av.ptd.logNum[mUpdate];
-      av.ptd.logEar[mUpdate] = av.ptd.logEar[mUpdate]/av.ptd.logNum[mUpdate];
-    }
-  }
-  if (av.ptd.allOff) {
-    logTit1.textContent = '';
+  av.pch.logFitFnd = 0;
+  av.pch.logCstFnd = 0;
+  av.pch.logEarFnd = 0;
+  av.pch.logNumFnd = 0;
+
+  if (av.ptd.allOff) {    logTit1.textContent = '';
     logTit2.textContent = '';
     logTit3.textContent = '';
     logTit4.textContent = '';
     logTit5.textContent = '';
+    logTit6.textContent = '';
+    numLog.textContent = '';
+    av.pch.logMaxFit = 0;
+    av.pch.logMaxCst = 0;
+    av.pch.logMaxEar = 0;
+    av.pch.logMaxNum = 0;
+    av.pch.logFit[mUpdate] = null;
+    av.pch.logCst[mUpdate] = null;
+    av.pch.logEar[mUpdate] = null;
+    av.pch.logNum[mUpdate] = null;
   }
   else {
     logTit1.textContent = 'Number';
     logTit2.textContent = 'Performing';
     logTit3.textContent = 'All';
     logTit4.textContent = 'Selected';
-    logTit5.textContent = 'Functions';
+    logTit5.textContent = 'Logic';
+    logTit6.textContent = 'Functions';
+
+    //console.log('out_', av.grd.logicOutline );
+    //console.log('gest', av.grd.msg.gestation.data);
+
+    var lngth =  av.grd.msg.fitness.data.length;
+    for (var ii=0; ii < lngth; ii++){
+      if (0 < av.grd.logicOutline[ii]) {
+        av.pch.logFitFnd += av.grd.msg.fitness.data[ii];
+        av.pch.logCstFnd += av.grd.msg.gestation.data[ii];
+        av.pch.logEarFnd += av.grd.msg.metabolism.data[ii];
+        av.pch.logNumFnd++;
+      }
+    }
+    if (0 < av.pch.logNumFnd) {
+      av.pch.logFitFnd = av.pch.logFitFnd/av.pch.logNumFnd;
+      av.pch.logCstFnd = av.pch.logCstFnd/av.pch.logNumFnd;
+      av.pch.logEarFnd = av.pch.logEarFnd/av.pch.logNumFnd;
+      numLog.textContent = av.pch.logNumFnd;
+    }
+    av.pch.logFit[mUpdate] = av.pch.logFitFnd;
+    av.pch.logCst[mUpdate] = av.pch.logCstFnd;
+    av.pch.logEar[mUpdate] = av.pch.logEarFnd;
+    av.pch.logNum[mUpdate] = av.pch.logNumFnd;
   }
-  numLog.textContent = av.ptd.logNum[Number(mUpdate)];
+
+  if (av.pch.logFit[mUpdate] > av.pch.logMaxFit) av.pch.logMaxFit = av.pch.logFit[mUpdate];
+  if (av.pch.logCst[mUpdate] > av.pch.logMaxCst) av.pch.logMaxCst = av.pch.logCst[mUpdate];
+  if (av.pch.logEar[mUpdate] > av.pch.logMaxEar) av.pch.logMaxEar = av.pch.logEar[mUpdate];
+  if (av.pch.logNum[mUpdate] > av.pch.logMaxNum) av.pch.logMaxNum = av.pch.logNum[mUpdate];
+
   /*
-  if (av.ptd.logFit[mUpdate]) {
-    console.log('update', mUpdate, '; Num', av.ptd.logNum[mUpdate], '; Fit', av.ptd.logFit[mUpdate].formatNum(0),
-      '; Gnl', av.ptd.logCst[mUpdate].formatNum(0), '; Met', av.ptd.logEar[mUpdate].formatNum(0));
+  if (av.pch.logFit[mUpdate]) {
+    console.log('update', mUpdate, '; Num', av.pch.logNum[mUpdate], '; Fit', av.pch.logFit[mUpdate].formatNum(0),
+      '; Gnl', av.pch.logCst[mUpdate].formatNum(0), '; Met', av.pch.logEar[mUpdate].formatNum(0));
   }
   */
 }
@@ -555,7 +576,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
   'use strict';
   var prefix = '';
   if (av.debug.msg) console.log('selected_msg', msg);
-  if (msg.isEstimate) prefix = "est. ";
+  if (msg.isEstimate) prefix = 'est. ';
   else prefix = '';
   nameLabel.textContent = msg.genotypeName;
   if (null === msg.fitness) fitLabel.textContent = ' ';
@@ -581,24 +602,24 @@ av.grd.updateSelectedOrganismType = function (msg) {
   else ancestorLabel.textContent = msg.ancestor;
   //add + or - to text of logic function
   if (null != msg.tasks) {
-    if (0 == msg.tasks.not) notLabel.textContent = "not-";
-    else notLabel.textContent = "not+";
-    if (0 == msg.tasks.nand) nanLabel.textContent = "nan-";
-    else nanLabel.textContent = "nan+";
-    if (0 == msg.tasks.and) andLabel.textContent = "and-";
-    else andLabel.textContent = "and+";
-    if (0 == msg.tasks.orn) ornLabel.textContent = "orn-";
-    else ornLabel.textContent = "orn+";
-    if (0 == msg.tasks.or) oroLabel.textContent = "oro-";
-    else oroLabel.textContent = "oro+";
-    if (0 == msg.tasks.andn) antLabel.textContent = "ant-";
-    else antLabel.textContent = "ant+";
-    if (0 == msg.tasks.nor) norLabel.textContent = "nor-";
-    else norLabel.textContent = "nor+";
-    if (0 == msg.tasks.xor) xorLabel.textContent = "xor-";
-    else xorLabel.textContent = "xor+";
-    if (0 == msg.tasks.equ) equLabel.textContent = "equ-";
-    else equLabel.textContent = "equ+";
+    if (0 == msg.tasks.not) notLabel.textContent = 'not-';
+    else notLabel.textContent = 'not+';
+    if (0 == msg.tasks.nand) nanLabel.textContent = 'nan-';
+    else nanLabel.textContent = 'nan+';
+    if (0 == msg.tasks.and) andLabel.textContent = 'and-';
+    else andLabel.textContent = 'and+';
+    if (0 == msg.tasks.orn) ornLabel.textContent = 'orn-';
+    else ornLabel.textContent = 'orn+';
+    if (0 == msg.tasks.or) oroLabel.textContent = 'oro-';
+    else oroLabel.textContent = 'oro+';
+    if (0 == msg.tasks.andn) antLabel.textContent = 'ant-';
+    else antLabel.textContent = 'ant+';
+    if (0 == msg.tasks.nor) norLabel.textContent = 'nor-';
+    else norLabel.textContent = 'nor+';
+    if (0 == msg.tasks.xor) xorLabel.textContent = 'xor-';
+    else xorLabel.textContent = 'xor+';
+    if (0 == msg.tasks.equ) equLabel.textContent = 'equ-';
+    else equLabel.textContent = 'equ+';
     //now put in the actual numbers
     notTime.textContent = msg.tasks.not;
     nanTime.textContent = msg.tasks.nand;
@@ -611,15 +632,15 @@ av.grd.updateSelectedOrganismType = function (msg) {
     equTime.textContent = msg.tasks.equ;
   }
   else {
-    notLabel.textContent = "not-";
-    nanLabel.textContent = "nan-";
-    andLabel.textContent = "and-";
-    ornLabel.textContent = "orn-";
-    oroLabel.textContent = "oro-";
-    antLabel.textContent = "ant-";
-    norLabel.textContent = "nor-";
-    xorLabel.textContent = "xor-";
-    equLabel.textContent = "equ-";
+    notLabel.textContent = 'not-';
+    nanLabel.textContent = 'nan-';
+    andLabel.textContent = 'and-';
+    ornLabel.textContent = 'orn-';
+    oroLabel.textContent = 'oro-';
+    antLabel.textContent = 'ant-';
+    norLabel.textContent = 'nor-';
+    xorLabel.textContent = 'xor-';
+    equLabel.textContent = 'equ-';
 
     notTime.textContent = '-';
     nanTime.textContent = '-';
@@ -631,7 +652,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
     xorTime.textContent = '-';
     equTime.textContent = '-';
   }
-  if (av.debug.msg) dnaLabel.textContent = wsa(",", wsa(",", msg.genome));
+  if (av.debug.msg) dnaLabel.textContent = wsa(',', wsa(',', msg.genome));
   if (av.debug.msg) viableLabel.textContent = msg.isViable;
   if (0 > msg.isViable) viableLabel.textContent = 'no';
   else if (0 < msg.isViable) viableLabel.textContent = 'yes';
@@ -641,11 +662,11 @@ av.grd.updateSelectedOrganismType = function (msg) {
   if (av.debug.msg) console.log('Kidstatus', av.grd.kidStatus);
   if ('getgenome' == av.grd.kidStatus) {
     if (av.debug.msg) console.log('in kidStatus');
-    av.grd.kidStatus = "havegenome";
+    av.grd.kidStatus = 'havegenome';
     av.grd.kidName = msg.genotypeName;
     av.grd.kidGenome = msg.genome;
     if (av.debug.msg) console.log('genome',av.grd.kidGenome, '-------------------');
-    dijit.byId("mnCnOrganismTrace").attr("disabled", false);
+    dijit.byId('mnCnOrganismTrace').attr('disabled', false);
   }
 }
 
@@ -654,7 +675,7 @@ av.msg.fillColorBlock = function (msg) {  //Draw the color block
     if (av.debug.msg) console.log('in fillColorBlock');
     //if (av.debug.msg) console.log('ndx', av.grd.selectedNdx, '; msg.ancestor.data[ndx]',av.grd.msg.ancestor.data[av.grd.selectedNdx]);
     if (av.debug.msg) console.log('av.grd.fill[av.grd.selectedNdx]',av.grd.fill[av.grd.selectedNdx]);
-    if ("Ancestor Organism" == dijit.byId("colorMode").value) {
+    if ('Ancestor Organism' == dijit.byId('colorMode').value) {
       if (null === av.grd.fill[av.grd.selectedNdx]) {
         av.grd.selCtx.fillStyle = '#000'
       }

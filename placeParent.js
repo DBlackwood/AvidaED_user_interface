@@ -481,8 +481,8 @@ function drawArc1(gen, spot1, spot2, rep){
   var xx1, yy1, xx2, yy2, xxc, yyc;
   ctx.lineWidth = 1;
   if (0 < spot2 - spot1) {
-    ctx.strokeStyle = av.color.dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
-  } else { ctx.strokeStyle = av.color.dictColor["Red"];}
+    ctx.strokeStyle = av.color.names["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+  } else { ctx.strokeStyle = av.color.names["Red"];}
   ctx.beginPath();
   xx1 = av.ind.cx[0] + av.ind.tanR*Math.cos(spot1*2*Math.PI/av.ind.size[0]); //Draw line from Spot1
   yy1 = av.ind.cy[0] + av.ind.tanR*Math.sin(spot1*2*Math.PI/av.ind.size[0]);

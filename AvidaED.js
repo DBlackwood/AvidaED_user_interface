@@ -71,6 +71,8 @@ require([
   'dojo/ready',
   'jquery',
   'jquery-ui',
+  //'lib/plotly-latest.min.js',
+  'lib/plotly.js',
   //'lib/jquery.fileDownload.js',
   //'lib/Blob',
   'lib/jszip.min.js',
@@ -94,7 +96,7 @@ require([
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan,
-             ready, $, jqueryui,  //fileDownload,  //Blob.js,
+             ready, $, jqueryui, Plotly, //fileDownload,  //Blob.js,
              JSZip, FileSaver) {
   'use strict';
   if (typeof $ != 'undefined') {
@@ -118,10 +120,43 @@ require([
   /********************************************************************************************************************/
   // Splash Screen code stopped when ready message from Avida
   /********************************************************************************************************************/
+  setTimeout(function () {
+    if (!av.ui.loadOK) {
+      //alert('Avida-ED failed to load, please try re-loading');
+      appReloadDialog.show();
+    }
+  }, 121000);
+
   //initiallize default mouse shapes
   //av.mouse.getOriginalShapes(); only gets empty strings
 
   /********************************************************************************************************************/
+
+  // -------------------------------------------------------------------------------------------------------------------
+  // Initialize variables that depend on files loaded in requirement statement
+  // -------------------------------------------------------------------------------------------------------------------
+
+  dijit.byId('mnCnPause').attr('disabled', true);
+  dijit.byId('mnFzOrganism').attr('disabled', true);
+  dijit.byId('mnFzOffspring').attr('disabled', true);
+  dijit.byId('mnFzPopulation').attr('disabled', true);
+  dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+
+  // for analyze page
+  av.anl.color[0] = av.color.names[dijit.byId('pop0color').value];
+  av.anl.color[1] = av.color.names[dijit.byId('pop1color').value];
+  av.anl.color[2] = av.color.names[dijit.byId('pop2color').value];
+  av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
+  av.anl.yRightTitle = dijit.byId('yRightSelect').value;
+
+  av.dom.load = function () {
+    av.dom.popChart = document.getElementById('popChart');  //easier handle for div with chart
+    av.dom.popChrtHolder = document.getElementById('popChrtHolder');
+    av.dom.anlChrtSpace = document.getElementById('anlChrtSpace');  //easier handle for div with chart
+    av.dom.anlDndChart = document.getElementById('anlDndChart');
+    av.dom.anaChrtHolder = document.getElementById('anaChrtHolder');
+  };
+  av.dom.load();
 
   if (av.debug.root) console.log('before dnd definitions');
   /********************************************************************************************************************/
@@ -177,32 +212,12 @@ require([
   });
   av.dnd.organCanvas = new dndSource('organCanvas', {accept: ['g'], singular: true, selfAccept: false});
   //Targets only accept object, source can do both
-  av.dnd.analyzeChart = new dndTarget('analyzeChart', {accept: ['w'], singular: true});
+  av.dnd.anlDndChart = new dndTarget('anlDndChart', {accept: ['w'], singular: true});
   av.dnd.graphPop0 = new dndTarget('graphPop0', {accept: ['w'], singular: true});
   av.dnd.graphPop1 = new dndTarget('graphPop1', {accept: ['w'], singular: true});
   av.dnd.graphPop2 = new dndTarget('graphPop2', {accept: ['w'], singular: true});
 
   av.parents.clearParentsFn();
-
-  // -------------------------------------------------------------------------------------------------------------------
-  // Initialize variables that depend on files loaded in requirement statement
-  // -------------------------------------------------------------------------------------------------------------------
-
-  av.grd.popChart = new Chart('popChart');
-
-  dijit.byId('mnCnPause').attr('disabled', true);
-  dijit.byId('mnFzOrganism').attr('disabled', true);
-  dijit.byId('mnFzOffspring').attr('disabled', true);
-  dijit.byId('mnFzPopulation').attr('disabled', true);
-  dijit.byId('mnCnOrganismTrace').attr('disabled', true);
-
-  // for analyze page
-  av.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
-  av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
-  av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
-  av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
-  av.anl.yRightTitle = dijit.byId('yRightSelect').value;
-  var anaChart = new Chart('analyzeChart');
 
   //**************************************************************************************************
   //                web worker to talk to avida
@@ -341,6 +356,13 @@ require([
     av.fwt.writeCSV();
   });
 
+  //Export csv data from current run.
+  dijit.byId('mnFlExportGraph').on('Click', function () {
+    'use strict';
+    av.debug.log += '\n -Button: mnFlExportGraph';
+    mnFlExportGraphDialog.show();
+  });
+
   //------------- Testing only need to delete later.--------------------
 
   document.getElementById('mnHpDebug').onclick = function () {
@@ -348,12 +370,12 @@ require([
       document.getElementById('mnDebug').style.visibility = 'hidden';
       //document.getElementById('mnHpDebug').label = 'Show debug menu';
       //document.getElementById('mnHpDebug').textContent = 'Show debug menu';
-      dijit.byId("mnHpDebug").set("label", 'Show debug menu');
+      dijit.byId('mnHpDebug').set('label', 'Show debug menu');
 
     } else {
       document.getElementById('mnDebug').style.visibility = 'visible';
       //document.getElementById('mnHpDebug').label = 'Hide debug menu';
-      dijit.byId("mnHpDebug").set("label", 'Hide debug menu');
+      dijit.byId('mnHpDebug').set('label', 'Hide debug menu');
     }
   };
 
@@ -653,8 +675,12 @@ require([
     aspect.after(registry.byId('gridHolder'), 'resize', function () {
       av.ui.browserResizeEventHandler();
     });
-    aspect.after(registry.byId('popChartHolder'), 'resize', function () {
+    aspect.after(registry.byId('anaChrtHolder'), 'resize', function () {
+      av.anl.divSize('ready resize');
+    });
+    aspect.after(registry.byId('popChrtHolder'), 'resize', function () {
       av.ui.browserResizeEventHandler();
+      av.pch.divSize('ready resize');
     });
     aspect.after(registry.byId('organismCanvasHolder'), 'resize', function () {
       av.ui.browserResizeEventHandler();
@@ -796,11 +822,11 @@ require([
     }
   });
 
-  av.dnd.analyzeChart.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
-    if ('analyzeChart' == target.node.id) {
-      //av.debug.log += '\n -DnD_land: analyzeChart';
-      if (av.debug.dnd) console.log('analyzeChart: s, t', source, target);
-      av.dnd.landanalyzeChart(av.dnd, source, nodes, target);
+  av.dnd.anlDndChart.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of graphPop0
+    if ('anlDndChart' == target.node.id) {
+      //av.debug.log += '\n -DnD_land: anlDndChart';
+      if (av.debug.dnd) console.log('anlDndChart: s, t', source, target);
+      av.dnd.landAnlDndChart(av.dnd, source, nodes, target);
       av.anl.AnaChartFn();
     }
   });
@@ -1232,7 +1258,7 @@ require([
     'use strict';
     var target = '';
     if (av.debug.mouse) console.log('in mouseup target:', evt.target.id, '; event:', evt);
-    console.log('in mouseup target:', evt.target.id);
+    if (av.debug.mouse) console.log('in mouseup target:', evt.target.id);
     av.mouse.makeCursorDefault();
     av.mouse.UpGridPos = [evt.offsetX, evt.offsetY];
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
@@ -1313,20 +1339,28 @@ require([
 
   av.grd.drawGridSetupFn = function () {
     'use strict';
+    if (undefined != av.grd.msg) {
+      if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
+        //av.grd.setMapData();  //update color information for offpsring once run has started only if screen visable.
+        av.grd.findLogicOutline();
+      }
+    }
     if ('populationBlock' === av.ui.page && 'Setup' === document.getElementById('popSetupButton').textContent) {
       if ('None' == dijit.byId('colorMode').value) {
         if (av.grd.newlyNone) {
           av.grd.newlyNone = false;
-          av.grd.cntx.fillStyle = av.color.dictColor['Black'];
+          av.grd.cntx.fillStyle = av.color.names['Black'];
           av.grd.cntx.fillRect(1, 1, av.grd.CanvasGrid.width - 1, av.grd.CanvasGrid.height - 1);
         }
       }
       else {
         av.grd.newlyNone = true;
         av.grd.notInDrawingGrid = false;
-        if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
-          av.grd.setMapData();  //update color information for offpsring once run has started
-          av.grd.findLogicOutline();
+        if (undefined != av.grd.msg) {
+          if ('prepping' != av.grd.runState && undefined != av.grd.msg.fitness) {
+            av.grd.setMapData();  //update color information for offpsring once run has started
+            //av.grd.findLogicOutline(); //needs to be done for all updates
+          }
         }
         //figure out scale or legend
         av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
@@ -1355,6 +1389,7 @@ require([
           var numGH = document.getElementById('gridHolder').clientHeight;
           av.grd.CanvasGrid.height = numGH - 6 - 17;
           av.grd.findGridSize(av.grd, av.parents);     //in populationGrid.js
+          consold.log('inside DrawGridSetupFn in odd if statement ----------------------------------')
         }
         av.grd.drawGridUpdate();   //in populationGrid.js
 
@@ -1460,14 +1495,11 @@ require([
   }
   document.getElementById('equButton').onclick = function () {
     av.ptd.bitToggle('equButton');
-  }
+  };
 
   // -------------------------------------------------------------------------------------------------------------------
   //                    Population Chart   ; pop chart; popchart
   // -------------------------------------------------------------------------------------------------------------------
-  // tried moving this whole section to another file:
-  //   dijit.byId lines need to be in this file.
-  //   some of the chart definition lines need to be in this file.
 
   // Chart control on population page
   //Set Y-axis title and choose the correct array to plot
@@ -1478,99 +1510,171 @@ require([
     av.grd.popChartFn();
   });
 
-// Can use theme to change grid color based on tick color http://stackoverflow.com/questions/6461617/change-the-color-of-grid-plot-dojo
-//this required the use of a theme, but I'm no longer using the theme. Took 'Wetland' out of require statemet as long a this is not used
-//var myTheme = Wetland; // Or any other theme
-//myTheme.axis.majorTick.color = '#CCC';  //grey
-//myTheme.axis.minorTick.color = 'red';
+  av.pch.divSize = function(from) {
+    if (av.debug.plotly) console.log('in av.pch.divSize from ', from);
+    av.pch.ht = av.dom.popChrtHolder.clientHeight - 3;
+    av.pch.wd = av.dom.popChrtHolder.clientWidth - 3;
+    av.dom.popChrtHolder.style.height = av.dom.popChrtHolder.clientHeight;
+    av.dom.popChart.style.height = av.pch.ht + 'px';
+    av.dom.popChart.style.width = av.pch.wd + 'px';
+    av.pch.layout.height = av.pch.ht;
+    av.pch.layout.width = av.pch.wd;
+  }
 
+  // initialize needs to be in AvidaED.js
+  av.grd.popChartInit = function () {
+    av.pch.clearPopChrt();
+    av.pch.divSize('av.grd.popChartInit');
+    var popData = av.pch.data;
+
+    //Plotly.purge(av.dom.popChart);
+    if (undefined == av.dom.popChart.data) {
+      if (av.debug.plotly) console.log('before plotly.plot in popChartInit');
+      Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
+      if (av.debug.plotly) console.log('before plotly.plot in poChartInit');
+    }
+    else {
+      //av.pch.update = {
+      //  xaxis: {range: [0, 10]}, yaxis: {range: [0, 1]},
+      //  width: av.pch.wd,
+      //  height: av.pch.ht
+      //};
+      av.pch.update = {
+        autorange: true,
+        width: av.pch.wd,
+        height: av.pch.ht
+      };
+
+      if (av.debug.plotly) console.log('popData', popData);
+      //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
+      Plotly.deleteTraces(av.dom.popChart, [0, 1]);
+      if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
+      Plotly.relayout(av.dom.popChart, av.pch.update);
+    }
+    if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
+    if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
+
+    //console.log('layout.ht, wd =', av.dom.popChart.layout.height, av.dom.popChart.layout.width);
+  }
 
   av.grd.popChartFn = function () {
     'use strict';
-    if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.ptd.logFit[1]) {
-      //console.log('in popChartFn');
-      //console.log('chart update=', av.grd.popStatsMsg.update);
-      //av.debug.log += '\n - - Call popChartFn';
-      if ('Average Fitness' == dijit.byId('yaxis').value) {
-        av.grd.popY = av.ptd.aveFit;
-        av.grd.popY2 = av.ptd.logFit;
+
+    //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.pch.logFit[1]) {
+    if ('none' === dijit.byId('yaxis').value) {
+      if (undefined !== av.dom.popChart.data) {
+        console.log('before purge in popChartFn');
+        Plotly.deleteTraces(av.dom.popChart, [0, 1]);
+        //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
+        console.log('after purge in popChartFn');
+      }
+    }
+    else {
+      av.debug.log += '\n - - Call popChartFn';
+      av.pch.divSize('av.grd.popChartFn');
+
+      if (dijit.byId('yaxis').value === av.pch.yValue) av.pch.yChange = false;
+      else {
+        av.pch.yChange = true;
+        av.pch.yValue = dijit.byId('yaxis').value;
+      }
+      if ('Average Fitness' === dijit.byId('yaxis').value) {
+        av.pch.popY = av.pch.aveFit;
+        av.pch.logY = av.pch.logFit;
+        av.pch.maxY = (av.pch.aveMaxFit > av.pch.logMaxFit) ? av.pch.aveMaxFit : av.pch.logMaxFit;
+        //console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
+        //console.log('logFit', av.pch.logFit);
       }
       else if ('Average Offspring Cost' == dijit.byId('yaxis').value) {
-        av.grd.popY = av.ptd.aveCst;
-        av.grd.popY2 = av.ptd.logCst;
+        av.pch.popY = av.pch.aveCst;
+        av.pch.logY = av.pch.logCst;
+        av.pch.maxY = (av.pch.aveMaxCst > av.pch.logMaxCst) ? av.pch.aveMaxCst : av.pch.logMaxCst;
       }
       else if ('Average Energy Acq. Rate' == dijit.byId('yaxis').value) {
-        av.grd.popY = av.ptd.aveEar;
-        av.grd.popY2 = av.ptd.logEar;
+        av.pch.popY = av.pch.aveEar;
+        av.pch.logY = av.pch.logEar;
+        av.pch.maxY = (av.pch.aveMaxEar > av.pch.logMaxEar) ? av.pch.aveMaxEar : av.pch.logMaxEar;
       }
       else if ('Number of Organisms' == dijit.byId('yaxis').value) {
-        av.grd.popY = av.ptd.aveNum;
-        av.grd.popY2 = av.ptd.logNum;
+        av.pch.popY = av.pch.aveNum;
+        av.pch.logY = av.pch.logNum;
+        av.pch.maxY = (av.pch.aveMaxNum > av.pch.aveMaxNum) ? av.pch.aveMaxNum : av.pch.aveMaxNum;
       }
       else {
-        av.grd.popY = [0];
-        av.grd.popY2 = [0];
+        av.pch.yValue = 'none';
+        av.pch.popY = [];
+        av.pch.logY = [];
+        av.pch.maxY = 0.1;
       }
-      //console.log('popY after',av.grd.popY);
-      //console.log('pop2 after', av.grd.popY2);
-      /*
-      av.grd.popChart.addPlot('default', {type: 'Lines'});
-      av.grd.popChart.addPlot('grid', {
-        type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
-        vMajorLines: true, majorVLine: {color: '#CCC', width: 1}
-      });
+      //console.log('xx   after', av.pch.xx);
+      //console.log('popY after', av.pch.logY);
+      //console.log('maxY', av.pch.maxY);
+      //console.log('logY after', av.pch.logY);
 
-      av.grd.popChart.addAxis('x', {
-        fixLower: 'major', fixUpper: 'major', title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
-        titleFont: 'normal normal normal 8pt Arial', font: 'normal normal normal 8pt Arial'
-      });
-      //av.grd.popChart.addAxis('y', {vertical: true, title: ytitle, titleFont: 'normal normal normal 8pt Arial', titleOrientation: 'axis',
-      av.grd.popChart.addAxis('y', {
-        vertical: true,
-        fixLower: 'major', fixUpper: 'major', min: 0, font: 'normal normal normal 8pt Arial', titleGap: 4,
-      });
-      */
-      //av.grd.popChart.addSeries('Series y', popY, {stroke: {color: 'blue', width: 1}});
-      //av.grd.popChart.addSeries('Series y2', popY2, {stroke: {color: 'red', width: 2}});
-      av.grd.popChart.addSeries('Series y', av.grd.popY, {plot: 'default', stroke: {color: 'blue', width: 1}});
-      av.grd.popChart.addSeries('Series y2', av.grd.popY2, {plot: 'default', stroke: {color: 'green', width: 1}});
-      //av.grd.popChart.resize(domGeometry.position(document.getElementById('popChartHolder')).w - 10,
-      //  domGeometry.position(document.getElementById('popChartHolder')).h - 30);
-      av.grd.popChart.resize(document.getElementById('popChartHolder').clientWidth - 1,
-        document.getElementById('popChartHolder').clientHeight - 4);
-      av.grd.popChart.render();
+      //av.pch.trace0 = {x:av.pch.xx, y:av.pch.popY, type:'scatter', mode: 'lines'};
+      //av.pch.trace1 = {x:av.pch.xx, y:av.pch.logY, type:'scatter', mode: 'lines'};
+      av.pch.trace0.x = av.pch.xx;
+      av.pch.trace0.y = av.pch.popY;
+      av.pch.trace1.x = av.pch.xx;
+      av.pch.trace1.y = av.pch.logY;
+      //console.log('trace0',av.pch.trace0);
+      //console.log('trace1',av.pch.trace1);
+
+      //var popData = [av.pch.trace0];
+      var popData = [av.pch.trace0, av.pch.trace1];
+
+      //if (av.pch.yChange) {
+      if (false) {
+        av.pch.yChange = false;
+        av.pch.layout.width = av.pch.wd;
+        av.pch.layout.height = av.pch.ht;
+        console.log('before purge in update grid chart');
+        Plotly.purge(av.dom.popChart);
+        console.log('after purge in update grid chart');
+        Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
+        //Plotly.plot('popChart', popData, av.pch.layout);
+        console.log('purge chart.popData=', av.dom.popChart.data);
+        //console.log('purge chart.layout=', av.dom.popChart.layout);
+      }
+      else {
+        //av.pch.update = {
+        //  xaxis: {range: [0, av.pch.popY.length + 1]}, yaxis: {range: [0, 1.1 * av.pch.maxY]},
+        //  width: av.pch.wd,
+        //  height: av.pch.ht
+        //};
+        av.pch.update = {
+          autorange: true,
+          width: av.pch.wd,
+          height: av.pch.ht
+        };
+        //av.pch.update = {xaxis: {range: [0, av.pch.popY.length+1]}, yaxis: {range: [0, av.pch.maxY]}};
+
+        //console.log('before relayout in update grid chart');
+        if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
+
+        if (0 == av.dom.popChart.data.length) {
+          if (av.debug.plotly) console.log('before plot');
+          Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
+          if (av.debug.plotly) console.log('after plot');
+        }
+        else {
+          Plotly.relayout(av.dom.popChart, av.pch.update);
+          //console.log('after relayout in update grid chart');
+          if (av.debug.plotly) console.log('popData', popData);
+          Plotly.animate('popChart', {popData});
+          if (av.debug.plotly) console.log('after animate in update grid chart');
+        }
+        if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
+        if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
+      }
     }
-  };
+  }
 
   av.grd.popChartClear = function () {
     'use strict';
     //console.log('in popChartClear');
-      av.grd.popY = [0,0];
-      av.grd.popY2 = [0,0];
-      av.grd.popChart.addPlot('default', {type: 'Lines'});
-      av.grd.popChart.addPlot('grid', {
-        type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
-        vMajorLines: true, majorVLine: {color: '#CCC', width: 1}
-      });
-
-      av.grd.popChart.addAxis('x', {
-        fixLower: 'major', fixUpper: 'major', title: 'Time (updates)', titleOrientation: 'away', titleGap: 2,
-        titleFont: 'normal normal normal 8pt Arial', font: 'normal normal normal 8pt Arial'
-      });
-      av.grd.popChart.addAxis('y', {
-        vertical: true,
-        fixLower: 'major', fixUpper: 'major', min: 0, font: 'normal normal normal 8pt Arial', titleGap: 4,
-      });
-      //av.grd.popChart.addSeries('Series y', popY, {stroke: {color: 'blue', width: 1}});
-      //av.grd.popChart.addSeries('Series y2', popY2, {stroke: {color: 'red', width: 2}});
-      av.grd.popChart.addSeries('Series y', av.grd.popY, {plot: 'default', stroke: {color: 'blue', width: 1}});
-      av.grd.popChart.addSeries('Series y2', av.grd.popY2, {plot: 'default', stroke: {color: 'green', width: 1}});
-      av.grd.popChart.resize(document.getElementById('popChartHolder').clientWidth - 20,
-        document.getElementById('popChartHolder').clientHeight*2/3-5);
-
-      av.grd.popChart.render();
   };
-  av.grd.popChartClear();
+  //av.grd.popChartClear();
 
   // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
@@ -1781,7 +1885,7 @@ require([
     //if (undefined == av.traceObj[av.ind.cycle]) console.log('its undefined');
     if (!(undefined == av.traceObj || {} == av.traceObj || undefined == av.traceObj[av.ind.cycle])) {
       av.ind.didDivide = av.traceObj[av.ind.cycle].didDivide; //update global version of didDivide
-      updateOrganTrace(av.traceObj, av.gen);
+      av.ind.updateOrganTrace(av.traceObj, av.gen);
     }
     else av.ind.didDivide = false;
   }
@@ -1867,9 +1971,10 @@ require([
     name: 'cycleSlider',
     value: 0,
     minimum: 0,
-    maximum: 200,
+    maximum: 2,
+    diabled: true,
     intermediateChanges: true,
-    discreteValues: 201,
+    discreteValues: 3,
     style: 'width:100%;',
     onChange: function (value) {
       document.getElementById('orgCycle').value = value;
@@ -1883,40 +1988,99 @@ require([
   //                                                Analysis Page
   // **************************************************************************************************************** */
 
-  av.anl.AnaChartFn = function () {
-    anaChart.addPlot('default', {type: 'Lines', hAxis: 'x', vAxis: 'y'});
-    anaChart.addPlot('other', {type: 'Lines', hAxis: 'x', vAxis: 'right y'});
-    //grid line info on https://dojotoolkit.org/reference-guide/1.10/dojox/charting.html
-    anaChart.addPlot('grid', {
-      type: Grid, hMajorLines: true, majorHLine: {color: '#CCC', width: 1},
-      vMajorLines: true, majorVLine: {color: '#CCC', width: 1}
-    });
-    if (av.debug.anl) console.log('add x axis');
-    anaChart.addAxis('x', {fixLower: 'major', fixUpper: 'major', title: 'Time (updates)', titleOrientation: 'away'});
-    anaChart.addAxis('y', {
-      vertical: true,
-      fixLower: 'major',
-      title: av.anl.yLeftTitle,
-      titleOrientation: 'axis',
-      fixUpper: 'major',
-      min: 0
-    });
-    //anaChart.addAxis('top x', {leftBottom: false});
-    anaChart.addAxis('right y', {vertical: true, leftBottom: false, min: 0, title: av.anl.yRightTitle});
-    anaChart.addSeries('Series 0a', av.anl.pop[0].left, {stroke: {color: av.anl.color[0], width: 2}});
-    anaChart.addSeries('Series 1a', av.anl.pop[1].left, {stroke: {color: av.anl.color[1], width: 2}});
-    anaChart.addSeries('Series 2a', av.anl.pop[2].left, {stroke: {color: av.anl.color[2], width: 2}});
-    anaChart.addSeries('Series 0b', av.anl.pop[0].right, {plot: 'other', stroke: {color: av.anl.color[0], width: .3}});
-    anaChart.addSeries('Series 1b', av.anl.pop[1].right, {plot: 'other', stroke: {color: av.anl.color[1], width: .3}});
-    anaChart.addSeries('Series 2b', av.anl.pop[2].right, {plot: 'other', stroke: {color: av.anl.color[2], width: .3}});
-    var wdth = domGeometry.position(document.getElementById('chartHolder')).w - 10;
-    var ht = domGeometry.position(document.getElementById('chartHolder')).h - 15;
-    if (av.debug.anl) console.log('before resize: w', wdth, '; h', ht);
-    anaChart.resize(wdth, ht);
-    var dZoom = new MouseZoomAndPan(anaChart, 'default');
-    //https://www.sitepen.com/blog/2012/11/09/dojo-charting-zooming-scrolling-and-panning/  a different zoom method using a window.
-    anaChart.render();
+  av.anl.divSize = function(from) {
+    //console.log(from,'anaChrtHolder Ht client scroll ', av.dom.anaChrtHolder.clientHeight, av.dom.anaChrtHolder.scrollHeight);
+    //console.log(from,'anlDndChart Ht client scroll', av.dom.anlDndChart.clientHeight, av.dom.anlDndChart.scrollHeight);
+    //console.log(from,'anlChrtSpace Ht client scroll', av.dom.anlChrtSpace.clientHeight, av.dom.anlChrtSpace.scrollHeight);
+
+    av.anl.ht = av.dom.anaChrtHolder.clientHeight - 3;
+    av.anl.wd = av.dom.anaChrtHolder.clientWidth - 3;
+    av.dom.anaChrtHolder.style.height = av.dom.anaChrtHolder.clientHeight + 'px';
+    av.dom.anlChrtSpace.style.height = av.anl.ht + 'px';
+    av.dom.anlChrtSpace.style.width = av.anl.wd + 'px';
+    av.anl.layout.height = av.anl.ht;
+    av.anl.layout.width = av.anl.wd;
+  }
+
+  // initialize needs to be in AvidaED.js
+  av.anl.anaChartInit = function () {
+    av.anl.divSize('anaChartInit');
+
+    if (undefined !== av.dom.anlChrtSpace.data) {
+      if (av.debug.plotly) console.log('before purge in init');
+      Plotly.purge(av.dom.anlChrtSpace);
+      if (av.debug.plotly) console.log('after purge in init');
+    }
+    //Comment out the next three lines later
+    var anaData = av.anl.data;
+    if (av.debug.plotly) console.log('anlChrtPlotly in av.anl.anaChartInit');
+    Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
+    if (av.debug.plotly) console.log('after plot in av.anl.anaChartInit');
+
+    //console.log('layout=', av.dom.anlChrtSpace.layout);
+
   };
+  av.anl.anaChartInit();
+
+  av.anl.AnaChartFn = function () {
+    'use strict';
+    //console.log('start av.anl.AnaChartFn-----------------------------------');
+    //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.anl.logFit[1]) {
+    if ('none' === dijit.byId('yLeftSelect').value && 'none' === dijit.byId('yRightSelect').value) {
+      if (av.debug.plotly) console.log('both axis set to none');
+      if (undefined !== av.dom.anlChrtSpace.data) {
+        console.log('before purge in anaChartFn');
+        Plotly.purge(av.dom.anlChrtSpace);
+        console.log('after purge in anaChartFn');
+      }
+    }
+    else {
+      if (av.debug.plotly) console.log('in anlChrtSpaceFn');
+      av.debug.log += '\n - - Call anlChrtSpaceFn';
+
+      av.anl.trace0.x = av.anl.xx.slice(0,av.anl.pop[0].left.length);
+      av.anl.trace1.x = av.anl.xx.slice(0,av.anl.pop[0].right.length);
+      av.anl.trace2.x = av.anl.xx.slice(1,av.anl.pop[1].left.length);
+      av.anl.trace3.x = av.anl.xx.slice(1,av.anl.pop[1].right.length);
+      av.anl.trace4.x = av.anl.xx.slice(2,av.anl.pop[2].left.length);
+      av.anl.trace5.x = av.anl.xx.slice(2,av.anl.pop[2].right.length);
+      av.anl.trace0.y = av.anl.pop[0].left;
+      av.anl.trace1.y = av.anl.pop[0].right;
+      av.anl.trace2.y = av.anl.pop[1].left;
+      av.anl.trace3.y = av.anl.pop[1].right;
+      av.anl.trace4.y = av.anl.pop[2].left;
+      av.anl.trace5.y = av.anl.pop[2].right;
+      av.anl.trace0.line.color = av.anl.color[0];
+      av.anl.trace1.line.color = av.anl.color[0];
+      av.anl.trace2.line.color = av.anl.color[1];
+      av.anl.trace3.line.color = av.anl.color[1];
+      av.anl.trace4.line.color = av.anl.color[2];
+      av.anl.trace5.line.color = av.anl.color[2];
+      av.anl.trace0.name = dijit.byId('yLeftSelect').value;
+      av.anl.trace1.name = dijit.byId('yRightSelect').value;
+      av.anl.trace2.name = dijit.byId('yLeftSelect').value;
+      av.anl.trace3.name = dijit.byId('yRightSelect').value;
+      av.anl.trace4.name = dijit.byId('yLeftSelect').value;
+      av.anl.trace5.name = dijit.byId('yRightSelect').value;
+      var anaData = [av.anl.trace0, av.anl.trace1, av.anl.trace2, av.anl.trace3, av.anl.trace4, av.anl.trace5];
+
+      if (av.debug.plotly) console.log('av.anl.xx', av.anl.xx);
+      if (av.debug.plotly) console.log('trace0',av.anl.trace0);
+
+      av.anl.divSize('anaChartInit');
+      av.anl.layout.height = av.anl.ht;
+      av.anl.layout.width = av.anl.wd;
+      av.anl.layout.yaxis.title = dijit.byId('yLeftSelect').value;
+      av.anl.layout.yaxis2.title = dijit.byId('yRightSelect').value;
+      if (av.debug.plotly) console.log('before purge in update');
+      Plotly.purge(av.dom.anlChrtSpace);
+      if (av.debug.plotly) console.log('after plot anlChrtSpace');
+      Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
+      if (av.debug.plotly) console.log('after plot anlChrtSpace');
+      //console.log('purge chart.anaData=', av.dom.anlChrtSpace.data);
+      //console.log('purge chart.layout=', av.dom.anlChrtSpace.layout);
+    }
+  }
 
   /* Chart buttons ****************************************/
   document.getElementById('pop0delete').onclick = function () {
@@ -1944,18 +2108,18 @@ require([
     av.dnd.graphPop2.selectAll().deleteSelectedNodes();
   }
   dijit.byId('pop0color').on('Change', function () {
-    av.anl.color[0] = av.color.dictColor[dijit.byId('pop0color').value];
+    av.anl.color[0] = av.color.names[dijit.byId('pop0color').value];
     av.debug.log += '\n -Button: pop0color';
     av.anl.AnaChartFn();
   });
   dijit.byId('pop1color').on('Change', function () {
     av.debug.log += '\n -Button: pop1color';
-    av.anl.color[1] = av.color.dictColor[dijit.byId('pop1color').value];
+    av.anl.color[1] = av.color.names[dijit.byId('pop1color').value];
     av.anl.AnaChartFn();
   });
   dijit.byId('pop2color').on('Change', function () {
     av.debug.log += '\n -Button: pop2color';
-    av.anl.color[2] = av.color.dictColor[dijit.byId('pop2color').value];
+    av.anl.color[2] = av.color.names[dijit.byId('pop2color').value];
     av.anl.AnaChartFn();
   });
 
@@ -1964,9 +2128,9 @@ require([
     av.debug.log += '\n -Button: yLeftSelect';
     av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
     //need to get correct array to plot from freezer
-    av.anl.loadSelectedData(0, 'yLeftSelect', 'left')  //numbers are world landing spots
-    av.anl.loadSelectedData(1, 'yLeftSelect', 'left')
-    av.anl.loadSelectedData(2, 'yLeftSelect', 'left')
+    av.anl.loadSelectedData(0, 'yLeftSelect', 'left');  //numbers are world landing spots
+    av.anl.loadSelectedData(1, 'yLeftSelect', 'left');
+    av.anl.loadSelectedData(2, 'yLeftSelect', 'left');
     av.anl.AnaChartFn();
   });
 
@@ -2039,7 +2203,7 @@ require([
   av.ui.removeVerticalScrollbar('popTop', 'popTop');
   av.ui.mainBoxSwap('populationBlock');
 
-  av.grd.popChartFn();
+  //av.grd.popChartFn();
   //av.grd.drawGridSetupFn(); //Draw initial background
 
   //Safari 9 will not allow saving workspaces or freezer items.
@@ -2073,7 +2237,7 @@ require([
   });
 
   //------- not in use = example
-  //var hexColor = av.ui.invertHash(av.color.dictColor);
+  //var hexColor = av.ui.invertHash(av.color.names);
   //var theColor = hexColor['#000000'];  //This should get 'Black'
   //console.log('theColor=', theColor);
 

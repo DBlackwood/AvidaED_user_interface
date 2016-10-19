@@ -1,8 +1,13 @@
+// one global to hold them all.
+//http://stackoverflow.com/questions/5150124/splitting-a-javascript-namespace-into-multiple-files
+var av = av || {};  //incase av already exists
+
 //Definition of Viridis and other dictionaries or color data sets
 av.color = {};
 
 av.color.defaultParentColor = 'rgb(200, 200, 200)';
 av.color.defaultKidColor = 'rgb(130, 130, 130)';
+//av.color.defaultKidColor = 'rgb(0, 130, 0)';
 
 av.color.ViridisCmap = [
 //   'rgb(34, 1, 42)'
@@ -846,6 +851,35 @@ av.color.cubehelixCmap = [  //djb version
 , 'rgb(255, 255, 255)'*/
   ];
 
+av.color.parentColorNames = [
+  'A blue'    //1               website #7
+  ,'B yellow'  //2            website #15 modified was 255, 255, 109
+  ,'C medium blue green' // website #3
+  ,'D pink'    //4              website #4
+  ,'E brown'   //5             website #12 modified was 146, 73, 0
+  ,'F lt pink' //6           used digital color meter to match #5 on website lt pink
+  ,'G orange brown' //7      used digital color meter to match #5 on website;
+  ,'H lavender'  //8          website #8
+  ,'I red brown' //9         website #11 modified was 146,   0,   0
+  ,'J dark blue-green' //10   website #2 modified was 0, 73, 73
+  ,'K pale orange' //11       website #5 but does not look pink
+  ,'L pale blue' //12         website #10
+  ,'M dark yellow' //13       website #13 modified was 219, 209, 0
+  ,'N lt blue'   //14           website #9
+  ,'O purple' //15            website #6 modified was 73,   0, 146
+  ,'P green' //16             website #14 modied was 36, 255,  36
+  ,'Q magenta' //17
+  ,'R pale yellow' //18
+  ,'S red'  //19
+  ,'T blue-green'  //20
+  ,'U dark blue'  //21
+  ,'V hot pink'  //22
+  ,'W sky blue'  //23
+  ,'X red-orange'  //24
+  ,'Y dark grey'  //25
+  ,'Z bright light blue'  //26
+  ,'2 grey'   //27
+];
 
     //http://www.color-blindness.com/coblis-color-blindness-simulator/
     //http://www.vischeck.com/vischeck/vischeckImage.php
@@ -880,81 +914,22 @@ av.color.parentColorList = [  //http://www.somersault1824.com/tips-for-designing
     ,'rgb(187, 187, 187)'  // 27 dark grey
     ];
 
-av.color.parentColorNames = [
-    'A blue'    //1               website #7
-   ,'B yellow'  //2            website #15 modified was 255, 255, 109
-   ,'C medium blue green' // website #3
-   ,'D pink'    //4              website #4
-   ,'E brown'   //5             website #12 modified was 146, 73, 0
-   ,'F lt pink' //6           used digital color meter to match #5 on website lt pink
-   ,'G orange brown' //7      used digital color meter to match #5 on website;
-   ,'H lavender'  //8          website #8
-   ,'I red brown' //9         website #11 modified was 146,   0,   0
-   ,'J dark blue-green' //10   website #2 modified was 0, 73, 73
-   ,'K pale orange' //11       website #5 but does not look pink
-   ,'L pale blue' //12         website #10
-   ,'M dark yellow' //13       website #13 modified was 219, 209, 0
-   ,'N lt blue'   //14           website #9
-   ,'O purple' //15            website #6 modified was 73,   0, 146
-   ,'P green' //16             website #14 modied was 36, 255,  36
-   ,'Q magenta' //17
-   ,'R pale yellow' //18
-   ,'S red'  //19
-   ,'T blue-green'  //20
-   ,'U dark blue'  //21
-   ,'V hot pink'  //22
-   ,'W sky blue'  //23
-   ,'X red-orange'  //24
-   ,'Y dark grey'  //25
-   ,'Z bright light blue'  //26
-   ,'2 grey'   //27
-];
-
-av.color.outColor = [
-  '#00FF00' //'A blue' //               website #7
-  ,'#00FF00'//,'B yellow'  //            website #15 modified was 255, 255, 109
-  ,'#00FF00'//,'C medium blue green' // website #3
-  ,'#00FF00'//,'D pink' //              website #4
-  ,'#00FF00'//,'E brown' //             website #12 modified was 146, 73, 0
-  ,'#00FF00'//,'F lt pink' //           used digital color meter to match #5 on website lt pink
-  ,'#00FF00'//,'G orange brown' //      used digital color meter to match #5 on website;
-  ,'#00FF00'//,'H red brown' //         website #11 modified was 146,   0,   0
-  ,'#00FF00'//,'I lt blue' //           website #9
-  ,'#00FF00'//,'J lavender' //          website #8
-  ,'#00FF00'///,'K pale orange' //       website #5 but does not look pink
-  ,'#00FF00'//,'L pale blue' //         website #10
-  ,'#00FF00'//,'M dark blue-green' //   website #2 modified was 0, 73, 73
-  ,'#00FF00'//,'N dark yellow' //       website #13 modified was 219, 209, 0
-  ,'#00FF00'//,'O purple' //            website #6 modified was 73,   0, 146
-  ,'#00FF00'//,'P green' //             website #14 modied was 36, 255,  36
-  ,'#00FF00'//,'Q magenta' //
-  ,'#00FF00'//,'R pale yellow' //
-  ,'#00FF00'//,'S red'
-  ,'#00FF00'//,'T blue-green'
-  ,'#00FF00'//,'U dark blue'
-  ,'#00FF00'//,'V hot pink'
-  ,'#00FF00'//,'W sky blue'
-  ,'#00FF00'//,'X red-orange'
-  ,'#00FF00'//,'Y dark grey'
-  ,'#00FF00'//,'Z bright light blue'
-  ,'#00FF00'//,'2 grey'
-];
-
 av.color.chipColors = av.color.parentColorList.slice();
 
-av.color.dictColor =  {};
-    av.color.dictColor['Red'] = '#FF0000';
-    //av.color.dictColor['Red'] = 'rgb(255, 0, 0);';  //only some browsers support rgb http://www.w3schools.com/cssref/css_colors_legal.asp
-    av.color.dictColor['Green'] = '#00FF00';
-    av.color.dictColor['Blue'] = '#0000FF';
-    av.color.dictColor['Magenta'] = '#FF00FF';
-    av.color.dictColor['Cyan'] = '#00FFFF';
-    av.color.dictColor['Yellow'] = '#FFFF00';
-    av.color.dictColor['Purple'] = '#8800FF';
-    av.color.dictColor['Orange'] = '#FFAA00';
-    av.color.dictColor['Black'] = '#000000';
-    av.color.dictColor['ltGrey'] = '#CCCCCC';
-    av.color.dictColor['White'] = '#FFFFFF';
+av.color.names =  {};
+    av.color.names['Red'] = 'rgb(156,  10,  10)';     //'#FF0000'; using one that is more color blind friendly
+    av.color.names['Green'] = 'rgb(  0,  93,  93)';   //'#00FF00'; using one that is more color blind friendly
+    av.color.names['Blue'] = 'rgb(  0, 109, 219)';    //'#0000FF'; using one that is more color blind friendly
+    av.color.names['Yellow'] = 'rgb(220, 190,   0)';  //'#FFFF00'; using one that is more color blind friendly
+    av.color.names['Purple'] = 'rgb( 93,  20, 166)';  //'#8800FF'; using one that is more color blind friendly
+    av.color.names['Orange'] = '#DB6D00';     //'#FFAA00'; used digital color meter to get color blind friendly
+    av.color.names['Pink'] = 'rgb(255, 109, 182)';    //using one that is more color blind friendly
+    av.color.names['LtGreen'] = 'rgb( 0,  195,   0)';    //using one that is more color blind friendly
+    av.color.names['Magenta'] = '#FF00FF';
+    av.color.names['Cyan'] = '#00FFFF';
+    av.color.names['Black'] = '#000000';
+    av.color.names['ltGrey'] = '#CCCCCC';
+    av.color.names['White'] = '#FFFFFF';
 
     //Dictionarys
 av.color.letterColor = {};
@@ -1019,8 +994,8 @@ av.color.InstDescribe = {};
     av.color.InstDescribe['l']='shift-l: This instruction reads in the contents of the BX register, and shifts all of the bits in that register to the left by one, placing a zero as the new rightmost bit, and truncating any bits beyond the 32 maximum. For values that require fewer than 32 bits, it effectively multiplies that value by two.';
     av.color.InstDescribe['m']='inc: This instruction reads in the content of the BX register and increments it by one.';
     av.color.InstDescribe['n']='dec: This instruction reads in the content of the BX register and decrements it by one.';
-    av.color.InstDescribe['o']='pop: This instruction removes the top element from the active stack, and places it into the BX register.';
-    av.color.InstDescribe['p']='push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.';
+    av.color.InstDescribe['o']='push: This instruction reads in the contents of the BX register, and places it as a new entry at the top of the active stack. The BX register itself remains unchanged.';
+    av.color.InstDescribe['p']='pop: This instruction removes the top element from the active stack, and places it into the BX register.';
     av.color.InstDescribe['q']='swap-stk: This instruction toggles the active stack in the CPU. All other instructions that use a stack will always use the active one.';
     av.color.InstDescribe['r']='swap: This instruction swaps the contents of the BX register with its complement.';
     av.color.InstDescribe['s']='add: This instruction reads in the contents of the BX and CX registers and sums them together. The result of this operation is then placed in the BX register.';

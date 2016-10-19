@@ -117,14 +117,14 @@ function DrawTimeline(obj, gen) {
   }
   //Draw horizontal line
   av.ind.ctx.lineWidth = 1;
-  av.ind.ctx.strokeStyle = av.color.dictColor["Black"];
+  av.ind.ctx.strokeStyle = av.color.names["Black"];
   av.ind.ctx.beginPath();
   av.ind.ctx.moveTo(startX, lineY);
   av.ind.ctx.lineTo(endX, lineY);
   av.ind.ctx.stroke();
   //Draw upTicks for indicating when logic functions complete
   av.ind.ctx.font = "12px Arial";
-  av.ind.ctx.fillStyle = av.color.dictColor["Black"];
+  av.ind.ctx.fillStyle = av.color.names["Black"];
   var lngth = upNum.length;
   for (var ii = 0; ii < lngth; ii++) {
     upTickX[ii] = startX + length * upNdx[ii] / numCycles;
@@ -149,7 +149,7 @@ function DrawTimeline(obj, gen) {
   //Draw red circle indicating current av.ind.cycle
   av.ind.ctx.beginPath();
   dnTickX = startX + av.ind.cycle * length / numCycles;
-  av.ind.ctx.fillStyle = av.color.dictColor["Red"];
+  av.ind.ctx.fillStyle = av.color.names["Red"];
   av.ind.ctx.arc(dnTickX, lineY, radius, 0, 2 * Math.PI);
   av.ind.ctx.fill();
 }
@@ -185,7 +185,7 @@ av.ind.drawBitStr = function(context, row, bitStr) {
     if (0 == Math.fmod(ii, 4)) {
       context.beginPath();
       context.lineWidth = 1;
-      context.strokeStyle = av.color.dictColor["Black"];
+      context.strokeStyle = av.color.names["Black"];
       context.moveTo(xx, yy);
       context.lineTo(xx, yy + recHeight);
       context.stroke();
@@ -234,7 +234,7 @@ function genomeCircle(gen, gg, obj) { //gg is generation
       }
     }
     //Draw letter inside circle
-    av.ind.ctx.fillStyle = av.color.dictColor["Black"];
+    av.ind.ctx.fillStyle = av.color.names["Black"];
     av.ind.ctx.font = av.ind.fontsize + "px Arial";
     txtW = av.ind.ctx.measureText(av.ind.dna[gg].substr(ii, 1)).width;  //use if av.ind.dna is a string
     //txtW = av.ind.ctx.measureText(av.ind.dna[gg][ii]).width;     //use if av.ind.dna is an array
@@ -277,9 +277,9 @@ function drawArc2(gen, spot1, spot2, rep) { //draw an arc
   var xx1, yy1, xx2, yy2, xc1, yc1, xc2, yc2;
   av.ind.ctx.lineWidth = 1;
   if (spot2 >= spot1) {
-    av.ind.ctx.strokeStyle = av.color.dictColor["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
+    av.ind.ctx.strokeStyle = av.color.names["Black"];  //set the line to a color which can also be a gradient see http://www.w3schools.com/canvas/canvas_clock_face.asp
   } else {
-    av.ind.ctx.strokeStyle = av.color.dictColor["Red"];
+    av.ind.ctx.strokeStyle = av.color.names["Red"];
   }
   av.ind.ctx.beginPath();
   xx1 = av.ind.cx[av.ind.mom] + av.ind.tanR * Math.cos(spot1 * 2 * Math.PI / av.ind.size[av.ind.mom]); //Draw line from Spot1
@@ -308,16 +308,31 @@ function drawIcon(gen) {
   drw.onload = function () {   //image size(width, height) from http://stackoverflow.com/questions/5173796/html5-get-image-dimension
     av.ind.ctx.drawImage(drw, av.ind.cx[av.ind.son] - drw.width / 2, av.ind.cy[av.ind.son] - drw.height / 2);
   }
-  av.ind.ctx.fillStyle = av.color.dictColor["black"];
+  av.ind.ctx.fillStyle = av.color.names["black"];
   av.ind.ctx.font = av.ind.fontsize + "px Arial";
   var txtWd = av.ind.ctx.measureText(txt).width;
   av.ind.ctx.fillText(txt, av.ind.cx[av.ind.son] - txtWd / 2, av.ind.cy[av.ind.son] + drw.height);
 }
 
+
+av.ind.organTraceButtonInable = function () {
+  'use strict';
+  document.getElementById('orgReset').disabled = false;
+  document.getElementById('orgBack').disabled = false;
+  document.getElementById('orgRun').disabled = false;
+  document.getElementById('orgForward').disabled = false;
+  document.getElementById('orgEnd').disabled = false;
+  dijit.byId('orgCycle').attr('disabled', false);
+}
+
+
 //*****************************************************************/
 //main function to update the Organism Trace on the Organism Page
-function updateOrganTrace(obj, gen) {
+av.ind.updateOrganTrace = function (obj, gen) {
   'use strict';
+  for (ii=0; ii <101; ii++) { av.ind.labeled[ii] = false}  //reset lable flags
+  //inable buttons if disabled.
+  if (true === document.getElementById('orgRun').disabled) av.ind.organTraceButtonInable();
   //Find size and content of each genome.
   var lngth = obj[av.ind.cycle].memSpace.length;
   for (var ii = 0; ii < lngth; ii++) {

@@ -153,14 +153,14 @@ av.ptd.popNewExState = function () {
   //console.log('pauseState; button=run in av.ptd.popNewExState');
 
   //clear the time series graphs
-  av.ptd.aveFit = [];
-  av.ptd.logFit = [];
-  av.ptd.aveCst = [];
-  av.ptd.logCst = [];
-  av.ptd.aveEar = [];
-  av.ptd.logEar = [];
-  av.ptd.aveNum = [];
-  av.ptd.logNum = [];
+  av.pch.aveFit = [];
+  av.pch.logFit = [];
+  av.pch.aveCst = [];
+  av.pch.logCst = [];
+  av.pch.aveEar = [];
+  av.pch.logEar = [];
+  av.pch.aveNum = [];
+  av.pch.logNum = [];
 
   TimeLabel.textContent = 0;
   //av.frd.avidaCFG2form(fileStr);
@@ -284,7 +284,7 @@ av.ptd.runStopFn = function () {
     //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 772 \n';
     av.ptd.makePauseState();
     //av.msg.doRunPause(av.fio);
-    //console.log('pop size ', av.ptd.aveNum);
+    //console.log('pop size ', av.pch.aveNum);
   }
 };
 
@@ -390,17 +390,17 @@ av.ptd.bitToggle = function (button) {
     document.getElementById(button).value = 'on';
     document.getElementById(button).className = 'bitButtonOn';
   }
-  var lngth = av.ptd.aveFit.length;
+  var lngth = av.pch.aveFit.length;
   for (ii=0; ii < lngth; ii++){
-    av.ptd.logFit[ii] = null;
-    av.ptd.logCst[ii] = null;
-    av.ptd.logEar[ii] = null;
-    av.ptd.logNum[ii] = null;
+    av.pch.logFit[ii] = null;
+    av.pch.logCst[ii] = null;
+    av.pch.logEar[ii] = null;
+    av.pch.logNum[ii] = null;
   }
   //console.log('in av.ptd.bitToggle');
   av.grd.drawGridSetupFn();
   av.grd.popChartFn();
-  av.grd.updateLogicFn(av.grd.popStatsMsg.update);
+  av.ptd.updateLogicFn(av.grd.popStatsMsg.update);
 }
 
 //reset values
@@ -413,7 +413,8 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   av.msg.pause('now');
   av.ptd.makePauseState();
   av.grd.clearGrd();
-
+  console.log('before calling av.grd.popChartInit');
+  av.grd.popChartInit();
   av.grd.runState = 'prepping';
   dijit.byId('mnCnOrganismTrace').attr('disabled', true);
   dijit.byId('mnFzOrganism').attr('disabled', true);

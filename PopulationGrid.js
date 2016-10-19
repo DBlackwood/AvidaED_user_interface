@@ -15,7 +15,7 @@ av.grd.backgroundSquares = function () {
 }
 
 /*
-
+s  scale set based on ancestor organsim as of 2016 summer
  */
 
 //Sets scale and puts the user selected data type in the grid array. Rob wants the scale to be different at the beginning of a run 
@@ -32,6 +32,7 @@ av.grd.setMapData = function () {
     else av.grd.reScaleFit = '';
     if (av.grd.mxCost < av.grd.msg.gestation.maxVal || (1 - av.grd.rescaleTolerance) * av.grd.mxCost > av.grd.msg.gestation.maxVal) {
       av.grd.mxCost = av.grd.mxCost + ((1 + av.grd.rescaleTolerance) * av.grd.msg.gestation.maxVal - av.grd.mxCost) / av.grd.rescaleTimeConstant;
+      if (1000 < av.grd.mxCost) av.grd.mxCost = 1000;
       av.grd.reScaleGest = 'rescaling';
     }
     else av.grd.reScaleGest = '';
@@ -102,11 +103,11 @@ av.grd.drawKids = function () {  //Draw the children of parents
   'use strict';
   var cc, ii, rr, xx, yy, lngth, ndx;
   //console.log('mode', dijit.byId("colorMode").value, '; fill', av.grd.fill);
+  lngth = av.grd.fill.length;
   if ("Ancestor Organism" == dijit.byId("colorMode").value) {
-    lngth = av.grd.fill.length;
     for (ii = 0; ii < lngth; ii++) {
       cc = ii % av.grd.cols;
-      rr = Math.floor(ii / av.grd.cols);       //was trunc
+      rr = Math.floor(ii / av.grd.cols);       //floor was trunc
       xx = av.grd.marginX + av.grd.xOffset + cc * av.grd.cellWd;
       yy = av.grd.marginY + av.grd.yOffset + rr * av.grd.cellHt;
       if (null === av.grd.fill[ii]) {
@@ -124,7 +125,6 @@ av.grd.drawKids = function () {  //Draw the children of parents
     }
   }
   else {
-    lngth = av.grd.fill.length;
     for (ii = 0; ii <  lngth; ii++) {
       cc = ii % av.grd.cols;
       rr = Math.floor(ii / av.grd.cols);     //was trunc
@@ -133,11 +133,18 @@ av.grd.drawKids = function () {  //Draw the children of parents
       if (null === av.grd.fill[ii]) {
         //console.log('ii', ii, '; msg.ancestor.data[ii]',av.grd.msg.ancestor.data[ii]);
         if ('-' === av.grd.msg.ancestor.data[ii]) av.grd.cntx.fillStyle = '#000';  //not there
-        else av.grd.cntx.fillStyle = '#888'; //not viable
+        else {
+          av.grd.cntx.fillStyle = '#0B0';
+          console.log('fill[', ii, '] = ', av.grd.fill[ii], 'ancestor != -');
+        } //not viable
       }
       else if (0 == av.grd.fill[ii]) {
+        //console.log('fill[', ii, '] = ', av.grd.fill[ii], 'default kid color');
         av.grd.cntx.fillStyle = av.color.defaultKidColor;
-        //console.log('default kid color');
+      }
+      else if (0 > av.grd.fill[ii] || ('Offspring Cost' == dijit.byId("colorMode").value && 999 < av.grd.fill[ii])) {
+        console.log('fill[', ii, '] = ', av.grd.fill[ii], 'fill out of bounds');
+        av.grd.cntx.fillStyle = '#090';
       }
       else {  //get_color0 = function(cmap, dx, d1, d2)
         av.grd.cntx.fillStyle = get_color0(av.grd.cmap, av.grd.fill[ii], 0, av.grd.fillmax);
@@ -156,61 +163,61 @@ av.grd.findLogicOutline = function () {
   //console.log('not',av.grd.msg.not.data);
   lngth = av.grd.msg.not.data.length;
   for (ii = 0; ii < lngth; ii++) {
-    av.grd.out[ii] = 1;
+    av.grd.logicOutline[ii] = 1;
   }
   if ('on' == document.getElementById('notButton').value) {
     lngth = av.grd.msg.not.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.not.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.not.data[ii];}
     av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('nanButton').value) {
     lngth = av.grd.msg.nand.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nand.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.nand.data[ii];}
     av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('andButton').value) {
     lngth = av.grd.msg.and.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.and.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.and.data[ii];}
     av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('ornButton').value) {
     lngth = av.grd.msg.orn.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.orn.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.orn.data[ii];}
     av.ptd.allOff = false;
     if (av.debug.logic) console.log('orn', av.grd.msg.orn.data);
   }
   if ('on' == document.getElementById('oroButton').value) {
     lngth = av.grd.msg.or.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.or.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.or.data[ii];}
     av.ptd.allOff = false;
     if (av.debug.logic) console.log('or', av.grd.msg.or.data);
   }
   if ('on' == document.getElementById('antButton').value) {
     lngth = av.grd.msg.andn.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.andn.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.andn.data[ii];}
     av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('norButton').value) {
     lngth = av.grd.msg.nor.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.nor.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.nor.data[ii];}
     av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('xorButton').value) {
     lngth = av.grd.msg.xor.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.xor.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.xor.data[ii];}
     av.ptd.allOff = false;
   }
   if ('on' == document.getElementById('equButton').value) {
     lngth = av.grd.msg.equ.data.length;
-    for (ii = 0; ii < lngth; ii++) {av.grd.out[ii] = av.grd.out[ii] * av.grd.msg.equ.data[ii];}
+    for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.equ.data[ii];}
     av.ptd.allOff = false;
   }
-  if (av.ptd.allOff) {for (ii = 0; ii < av.grd.msg.not.data.length; ii++) { av.grd.out[ii] = 0 } }
+  if (av.ptd.allOff) {for (ii = 0; ii < av.grd.msg.not.data.length; ii++) { av.grd.logicOutline[ii] = 0 } }
 
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
-  if (av.debug.logic) console.log('setLogic', av.grd.out);
-  //console.log('update',av.grd.updateNum, '; setLogic', av.grd.out);
-  //if (0 <= av.grd.msg.update) av.grd.updateLogicFn();  //this is done in update population stats right now
+  if (av.debug.logic) console.log('setLogic', av.grd.logicOutline);
+  //console.log('update',av.grd.updateNum, '; setLogic', av.grd.logicOutline);
+  //if (0 <= av.grd.msg.update) av.ptd.updateLogicFn();  //this is done in update population stats right now
 }
 
 av.grd.cellConflict = function (NewCols, NewRows) {
@@ -248,17 +255,17 @@ av.grd.cellConflict = function (NewCols, NewRows) {
 
 av.grd.DrawLogicSelected = function () {
   'use strict';
-  //console.log('DrawLogic', av.grd.out);
+  //console.log('DrawLogic', av.grd.logicOutline);
   var cc, rr, xx, yy;
   var inner = 0.08 * av.grd.cellWd; //how far inside the square to put the outline.
   var thick = 0.1 * av.grd.cellWd; //thickness of line to draw
   if (1 > inner) inner = 1;
   if (1 > thick) thick = 1;
   //console.log('=========================')
-  //console.log('logic', av.grd.out);
-  var lngth = av.grd.out.length;
+  //console.log('logic', av.grd.logicOutline);
+  var lngth = av.grd.logicOutline.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (0 != av.grd.out[ii]) {
+    if (0 != av.grd.logicOutline[ii]) {
       cc = ii % av.grd.cols;
       rr = Math.floor(ii / av.grd.cols);  //was trunc
       xx = av.grd.marginX + av.grd.xOffset + cc * av.grd.cellWd + inner;
@@ -365,11 +372,11 @@ av.grd.drawGridBackground = function () {
   av.grd.cntx.setTransform(1, 0, 0, 1, 0, 0);
   av.grd.cntx.clearRect(0, 0, av.grd.CanvasGrid.width, av.grd.CanvasGrid.height); //to clear canvas see http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
   //draw grey rectangle as back ground
-  av.grd.cntx.fillStyle = av.color.dictColor['ltGrey'];
+  av.grd.cntx.fillStyle = av.color.names['ltGrey'];
   av.grd.cntx.fillRect(0, 0, av.grd.CanvasGrid.width, av.grd.CanvasGrid.height);
 
   //av.grd.cntx.translate(av.grd.xOffset, av.grd.yOffset);
-  av.grd.cntx.fillStyle = av.color.dictColor['Black'];
+  av.grd.cntx.fillStyle = av.color.names['Black'];
   av.grd.cntx.fillRect(av.grd.xOffset, av.grd.yOffset, av.grd.sizeX, av.grd.sizeY);
 
   av.grd.backgroundSquares();
@@ -410,7 +417,7 @@ av.grd.drawLegend = function () {
   }
   //set canvas height based on space needed
   av.grd.CanvasScale.height = RowHt * legendRows;
-  av.grd.sCtx.fillStyle = av.color.dictColor["ltGrey"];
+  av.grd.sCtx.fillStyle = av.color.names["ltGrey"];
   av.grd.sCtx.fillRect(0, 0, av.grd.CanvasScale.width, av.grd.CanvasScale.height);
   var colWide = (av.grd.CanvasScale.width - leftPad) / legendCols
   var col = 0;
@@ -435,7 +442,7 @@ av.grd.gradientScale = function () {
   'use strict';
   //console.log('gradientScale')
   av.grd.CanvasScale.height = 30;
-  av.grd.sCtx.fillStyle = av.color.dictColor["ltGrey"];
+  av.grd.sCtx.fillStyle = av.color.names["ltGrey"];
   av.grd.sCtx.fillRect(0, 0, av.grd.CanvasScale.width, av.grd.CanvasScale.height);
   var xStart = 15;
   var xEnd = av.grd.CanvasScale.width - 2.5 * xStart;

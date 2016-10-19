@@ -2,8 +2,6 @@
 // Defaults and Constants
 // one global to hold them all.
 
-//http://stackoverflow.com/questions/5150124/splitting-a-javascript-namespace-into-multiple-files
-var av = av || {};  //incase av already exists
 //av.debug flags
 av.debug = {};
 av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
@@ -19,6 +17,7 @@ av.debug.fio = false; // file io
 av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
+av.debug.plotly = false;  //both popChart and analysis
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
@@ -277,78 +276,14 @@ var traceObj = {}; //global that holds the traceObject that was sent from Avida
 av.ind = {};
 av.ind.cycle = 0;
 av.ind.update_timer = null;
+av.ind.labeled = [];
+for (ii=0; ii <101; ii++) { av.ind.labeled[ii] = false}
 
 av.aww = {}; //avida web worker
 av.dcn = {}; //diagnostic console
 
 av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
 av.msg.uiReqestedReset = false;
-
-av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
-av.ptd.popStatFlag = true;  //flag that determines if the stats panel is visible.
-
-av.grd = {};         //data about the grid canvas
-av.grd.popStatsMsg = {}
-
-// initialize data for chart on population page
-av.grd.popY = [];
-av.grd.popY2 = [];
-av.grd.ytitle = 'Average Fitness';
-av.grd.notInDrawingGrid = true;
-av.grd.newlyNone = true;
-
-av.grd.clearGrd = function () {
-  av.grd.runState = 'prepping';  //'started'; 'world';
-  av.grd.updateNum = 0;
-  av.grd.selectedNdx = -1;
-  av.grd.cols = 0;    //Number of columns in the grid
-  av.grd.rows = 0;    //Number of rows in the grid
-  av.grd.sizeX = 0;  //size of canvas in pixels
-  av.grd.sizeY = 0;  //size of canvas in pixels
-  av.grd.boxX = 0;   //size based zoom
-  av.grd.boxY = 0;   //size based zoom
-  av.grd.flagSelected = false; //is a cell selected
-  av.grd.zoom = 1;     //magnification for zooming.
-  //structure for colors in the grid
-  av.grd.fill = [];  //deals with color to fill a grid cell
-  av.grd.out = [];   // deals with the color of the grid outline
-  av.grd.fillmax = 0;    // max value for grid scale for the gradient color
-  av.grd.msg = {};
-  av.grd.mxFit = 1.0;   //store maximum fitness during an experiment
-  av.grd.mxCost = 380;  //store maximum Offspring Cost during an experiment
-  av.grd.mxRate = 80;  //store maximum Energy Acq. Rate during an experiment
-
-  av.grd.rescaleTolerance = 0.1;
-  av.grd.rescaleTimeConstant = 10;
-  av.grd.SelectedColor = '#ffffff';
-  av.grd.LogicColor = '#00ff00';
-  av.grd.kidStatus = '';
-
-  av.grd.legendPad = 10;   //padding on left so it is not right at edge of canvas
-  av.grd.colorWide = 13;   //width and heigth of color square
-  av.grd.RowHt = 20;       //height of each row of text
-  av.grd.leftpad = 10;     //padding to allow space between each column of text in the legend
-  av.grd.marginX = 1;  //width of black line between the cells
-  av.grd.marginY = 1;  //width of black line between the cells
-
-  av.grd.oldUpdate = -10;
-  av.ptd.autoPauseUpdate = 1000;
-
-  av.ptd.aveFit = [];  //ave is for all avidians.
-  av.ptd.logFit = [];  //log is for avidians that performm logic functions
-  av.ptd.aveCst = [];  //Offspring Cost - used to be Offspring Cost
-  av.ptd.logCst = [];
-  av.ptd.aveEar = [];
-  av.ptd.logEar = [];
-  av.ptd.aveNum = [];
-  av.ptd.logNum = [];
-  av.ptd.allOff = true;
-
-  av.msg.ByCellIDgenome = '';        //Holdes the genome which is needed to freeze a cell.
-  av.msg.previousUpdate = -10;
-  av.grd.popStatsMsg.update = -5;
-}
-av.grd.clearGrd();
 
 //http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
 // please note,
@@ -359,7 +294,7 @@ av.grd.clearGrd();
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_0901';
+av.ui.version = '2016_1019';
 av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';
@@ -375,10 +310,7 @@ av.ui.pobBotWdMin = 430;
 av.ui.num = 0;   //tenporary holder for a number;
 av.ui.numTxt = '';
 av.msg.avidaReady = false;
-av.ui.loadOK = false;
-setTimeout(function () {
-  if (!av.ui.loadOK) {alert('Avida-ED failed to load, please try re-loading');}
-}, 121000);
+av.ui.loadOK = false;  //av.ui.loadOK is set true when the application has been loaded.
 
 //----------------------------------------------- finding the browser and opperating system ----------------------------
 //http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -494,16 +426,269 @@ av.fzr.clearMainFzrFn = function () {
   av.dnd.fzWorld.sync();
   av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
   av.dnd.ancestorBox.sync();
-  
+
   av.fzr.saveUpdateState('yes');
 };
 
-av.anl = {};  //Analysis page functions and data
-av.anl.color = [];   //holds the three colors for the three populations
-av.anl.pop = [];
-for (var ii=0; ii<3; ii++) {
-  av.anl.pop[ii] = {};
-  av.anl.pop[ii].left = [];
-  av.anl.pop[ii].right = [];
-}
+av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
+av.pch = {};   // related to the chart on the population page
+av.ptd.popStatFlag = true;  //flag that determines if the stats panel is visible.
 
+av.grd = {};         //data about the grid canvas
+av.grd.popStatsMsg = {};
+av.dom = {};
+
+// initialize data for chart on population page
+av.grd.ytitle = 'Average Fitness';
+av.grd.notInDrawingGrid = true;
+av.grd.newlyNone = true;
+
+av.grd.clearGrd = function () {
+  av.grd.runState = 'prepping';  //'started'; 'world';
+  av.grd.updateNum = 0;
+  av.grd.selectedNdx = -1;
+  av.grd.cols = 0;    //Number of columns in the grid
+  av.grd.rows = 0;    //Number of rows in the grid
+  av.grd.sizeX = 0;  //size of canvas in pixels
+  av.grd.sizeY = 0;  //size of canvas in pixels
+  av.grd.boxX = 0;   //size based zoom
+  av.grd.boxY = 0;   //size based zoom
+  av.grd.flagSelected = false; //is a cell selected
+  av.grd.zoom = 1;     //magnification for zooming.
+  //structure for colors in the grid
+  av.grd.fill = [];  //deals with color to fill a grid cell
+  av.grd.logicOutline = [];   // deals with the color of the grid outline
+  av.grd.fillmax = 0;    // max value for grid scale for the gradient color
+  av.grd.msg = {};
+  av.grd.mxFit = 1.0;   //store maximum fitness during an experiment
+  av.grd.mxCost = 380;  //store maximum Offspring Cost during an experiment
+  av.grd.mxRate = 80;  //store maximum Energy Acq. Rate during an experiment
+
+  av.grd.rescaleTolerance = 0.1;
+  av.grd.rescaleTimeConstant = 10;
+  av.grd.SelectedColor = '#ffffff';
+  av.grd.LogicColor = '#00ff00';
+  av.grd.kidStatus = '';
+
+  av.grd.legendPad = 10;   //padding on left so it is not right at edge of canvas
+  av.grd.colorWide = 13;   //width and heigth of color square
+  av.grd.RowHt = 20;       //height of each row of text
+  av.grd.leftpad = 10;     //padding to allow space between each column of text in the legend
+  av.grd.marginX = 1;  //width of black line between the cells
+  av.grd.marginY = 1;  //width of black line between the cells
+
+  av.grd.oldUpdate = -10;
+  av.ptd.autoPauseUpdate = 1000;
+
+  av.msg.ByCellIDgenome = '';        //Holdes the genome which is needed to freeze a cell.
+  av.msg.previousUpdate = -10;
+  av.grd.popStatsMsg.update = -5;
+  av.ptd.allOff = true;
+};
+av.grd.clearGrd();
+
+av.pch.clearPopChrt = function () {
+  av.pch.yValue = 'new';
+  av.pch.yChange = 'false';
+  av.pch.popY = [];
+  av.pch.logY = [];
+  av.pch.xx = [];
+  av.pch.aveFit = [0];  //ave is for all avidians.
+  av.pch.logFit = [0];  //log is for avidians that performm logic functions
+  av.pch.aveCst = [0];  //Offspring Cost - used to be Offspring Cost
+  av.pch.logCst = [0];
+  av.pch.aveEar = [0];
+  av.pch.logEar = [0];
+  av.pch.aveNum = [0];
+  av.pch.logNum = [0];
+  av.pch.aveMaxFit = 0.1;
+  av.pch.aveMaxCst = 0.1;
+  av.pch.aveMaxEar = 0.1;
+  av.pch.aveMaxNum = 0.1;
+  av.pch.logMaxFit = 0;
+  av.pch.logMaxCst = 0;
+  av.pch.logMaxEar = 0;
+  av.pch.logMaxNum = 0;
+
+  av.pch.maxX = 10;
+  av.pch.maxY = 1;
+  av.pch.trace0 = {
+    x:av.pch.xx, y:av.pch.popY, type:'scatter', mode: 'lines', name: 'Population',
+    line: {color: 'rgb(2, 2, 2)', width: 1 }
+  };
+  av.pch.trace1 = {
+    x:av.pch.xx, y:av.pch.logY, type:'scatter', mode: 'lines', name: 'Function Subset',
+    //line: {color: 'rgb(0, 255, 0)', width: 1 }
+    line: {color: '#00FF00', width: 1 }
+  };
+  av.pch.data = [av.pch.trace0, av.pch.trace1];
+  av.pch.layout = {
+    autosize: false,
+    width: 300,
+    height: 200,
+    margin: { l: 35, r: 5, b:40, t: 2},   //l was 85 to show all-functions
+    showlegend: false,
+    xaxis: {
+      title: 'Time (updates)',
+      rangemode: 'tozero',
+      autorange: true,
+      //range: [0, 10],
+      showgrid: true,
+      zeroline: true,
+      showline: true,
+      autotick: true,
+      ticks: '',
+      showticklabels: true
+    },
+    yaxis: {
+      rangemode: 'tozero',
+      autorange: true,
+      //srange: [0, 1],
+      showgrid: true,
+      zeroline: true,
+      showline: true,
+      autotick: true,
+      ticks: '',
+      showticklabels: true
+    }
+  };
+    // Plotly configuration including that of the modebar
+    // https://plot.ly/javascript/configuration-options/#hide-the-modebar-with-plotly.js
+    av.pch.widg = {                // https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js
+    autosizable: true              // plot will respect layout.autosize=true and infer its container size
+    ,fillFrame: false              // if we DO autosize, do we fill the container or the screen?
+    ,frameMargins: 0               // if we DO autosize, set the frame margins in percents of plot
+    ,sizescrollZoom: true          // mousewheel or two-finger scroll zooms the plot
+    ,doubleClick: 'reset+autosize' // double click interaction (false, 'reset', 'autosize' or 'reset+autosize')
+    ,showTips: true                // new users see some hints about interactivity
+    ,showLink: false               // link to edit image of graph - this is an edit link outside of the modebar
+    ,sendData: true                // if we show a link, does it contain data or just link to a plotly file?
+    ,staticPlot: false             // no interactivity, for export or image generation
+    ,displaylogo: false            // hides plotly logo
+    ,doubleClick: 'reset+autosize'
+    ,displayModeBar: false       // display the mode bar (true, false, or 'hover')
+    ,modeBarButtonsToRemove: [     // https://github.com/plotly/plotly.js/blob/master/src/components/modebar/buttons.js
+      'toImage'           //makes png file
+      ,'sendDataToCloud'  //sends data to plotly web editor workspace
+      ,'zoom2d'           //zoom to a box defined with cursor
+      //,'pan2d'            //pan
+      ,'select2d'         //this one does not seem to turn anything on/off
+      ,'lasso2d'          //this one does not seem to turn anything on/off
+      ,'zoomIn2d'           //zoom in
+      ,'zoomOut2d'          //zoom out
+      //,'autoScale2d'
+      ,'resetScale2d'
+        , 'hoverClosestCartesian'  //shows values as an (x,y) pair
+        , 'hoverCompareCartesian'   //shows values (x at x axis) (y near y value)
+    ]
+  };
+};
+av.pch.clearPopChrt();
+
+  av.anl = {};  //Analysis page functions and data
+  av.anl.color = [];   //holds the three colors for the three populations
+  av.anl.pop = [];
+
+av.anl.clearChart = function () {
+  for (var ii = 0; ii < 3; ii++) {
+    av.anl.pop[ii] = {};
+    av.anl.pop[ii].left = [];
+    av.anl.pop[ii].right = [];
+  }
+  av.anl.xx = [];
+  //av.anl.xx = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  //av.anl.pop[0].left = [1, 3, 2, 5, 4, 7, 6];
+  //av.anl.pop[0].right = [3, 5, 4, 7, 6, 9, 8, 11, 10];
+
+  av.anl.trace0 = {
+    x: av.anl.xx.slice(0,av.anl.pop[0].left.length), y: av.anl.pop[0].left, type: 'scatter', mode: 'lines', name: 'tr0',
+    line: {color: av.color.names['Red'], width: 3}
+  };
+  av.anl.trace1 = {
+    x: av.anl.xx.slice(0,av.anl.pop[0].right.length), y: av.anl.pop[0].right, type: 'scatter', mode: 'lines', name: 'tr1', yaxis: 'y2',
+    line: {color: av.color.names['Red'], width: 1}
+  };
+  av.anl.trace2 = {
+    x: av.anl.xx.slice(0,av.anl.pop[1].left.length), y: av.anl.pop[1].left, type: 'scatter', mode: 'lines', name: 'tr2',
+    line: {color: av.color.names['Blue'], width: 3}
+  };
+  av.anl.trace3 = {
+    x: av.anl.xx.slice(0,av.anl.pop[1].right.length), y: av.anl.pop[1].right, type: 'scatter', mode: 'lines', name: 'tr1', yaxis: 'y2',
+    line: {color: av.color.names['Blue'], width: 1}
+  };
+  av.anl.trace4 = {
+    x: av.anl.xx.slice(0,av.anl.pop[2].left.length), y: av.anl.pop[2].left, type: 'scatter', mode: 'lines', name: 'tr4',
+    line: {color: av.color.names['Black'], width: 3}
+  };
+  av.anl.trace5 = {
+    x: av.anl.xx.slice(0,av.anl.pop[2].right.length), y: av.anl.pop[2].right, type: 'scatter', mode: 'lines', name: 'tr1', yaxis: 'y2',
+    line: {color: av.color.names['Black'], width: 1}
+  };
+
+  av.anl.data = [av.anl.trace0, av.anl.trace1, av.anl.trace2, av.anl.trace3, av.anl.trace4, av.anl.trace5];
+  //av.anl.data = [av.anl.trace0, av.anl.trace1];
+  av.anl.layout = {
+    autosize: false,
+    margin: {l: 55, r: 55, b: 40, t: 10},   //l was 85 to show all-functions when y=0 not shown
+    showlegend: false,
+    xaxis: {
+      title: 'Time (updates)',
+      rangemode: 'tozero',
+      autorange: true,
+      showgrid: true,
+      zeroline: true,
+      showline: true,
+      autotick: true,
+      ticks: '',
+      showticklabels: true
+    },
+    yaxis: {
+      rangemode: 'tozero',
+      autorange: true,
+      showgrid: true,
+      zeroline: true,
+      showline: true,
+      autotick: true,
+      ticks: '',
+      showticklabels: true
+    },
+    yaxis2: {
+      //title: 'yaxis2 title',
+      titlefont: {color: 'rgb(148, 103, 189)'},
+      tickfont: {color: 'rgb(148, 103, 189)'},
+      overlaying: 'y',
+      side: 'right'
+    }
+  };
+  // Plotly configuration including that of the modebar
+  // https://plot.ly/javascript/configuration-options/#hide-the-modebar-with-plotly.js
+  av.anl.widg = {                // https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js
+    autosizable: true              // plot will respect layout.autosize=true and infer its container size
+    , fillFrame: false              // if we DO autosize, do we fill the container or the screen?
+    , frameMargins: 0               // if we DO autosize, set the frame margins in percents of plot
+    , sizescrollZoom: true          // mousewheel or two-finger scroll zooms the plot
+    , doubleClick: 'reset+autosize' // double click interaction (false, 'reset', 'autosize' or 'reset+autosize')
+    , showTips: true                // new users see some hints about interactivity
+    , showLink: false               // link to edit image of graph - this is an edit link outside of the modebar
+    , sendData: true                // if we show a link, does it contain data or just link to a plotly file?
+    , staticPlot: false             // no interactivity, for export or image generation
+    , displaylogo: false            // hides plotly logo
+    , doubleClick: 'reset+autosize'
+    , displayModeBar: 'hover'       // display the mode bar (true, false, or 'hover')
+    , modeBarButtonsToRemove: [     // https://github.com/plotly/plotly.js/blob/master/src/components/modebar/buttons.js
+       'toImage'           //makes png file
+      ,'sendDataToCloud'  //sends data to plotly web editor workspace
+      //,'zoom2d'           //zoom to a box defined with cursor
+      //,'pan2d'            //pan
+      //,'select2d'         //this one does not seem to turn anything on/off
+      //,'lasso2d'          //this one does not seem to turn anything on/off
+      , 'zoomIn2d'           //zoom in
+      , 'zoomOut2d'          //zoom out
+      //, 'autoScale2d'
+      , 'resetScale2d'
+      , 'hoverClosestCartesian'  //shows values as an (x,y) pair
+      , 'hoverCompareCartesian'   //shows values (x at x axis) (y near y value)
+    ]
+  }
+}
+  av.anl.clearChart();
