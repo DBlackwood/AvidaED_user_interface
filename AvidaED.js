@@ -77,6 +77,7 @@ require([
   //'lib/Blob',
   'lib/jszip.min.js',
   'lib/FileSaver.js',
+  //'avida-messages.js',
   'messaging.js',
   'fileDataRead.js',
   'fileDataWrite.js',
@@ -2056,12 +2057,14 @@ require([
       av.anl.trace3.line.color = av.anl.color[1];
       av.anl.trace4.line.color = av.anl.color[2];
       av.anl.trace5.line.color = av.anl.color[2];
-      av.anl.trace0.name = dijit.byId('yLeftSelect').value;
-      av.anl.trace1.name = dijit.byId('yRightSelect').value;
-      av.anl.trace2.name = dijit.byId('yLeftSelect').value;
-      av.anl.trace3.name = dijit.byId('yRightSelect').value;
-      av.anl.trace4.name = dijit.byId('yLeftSelect').value;
-      av.anl.trace5.name = dijit.byId('yRightSelect').value;
+      av.anl.trace0.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop0').value;
+      av.anl.trace1.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop0').value;
+      av.anl.trace2.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop1').value;
+      av.anl.trace3.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop1').value;
+      av.anl.trace4.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop2').value;
+      av.anl.trace5.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop2').value;
+
+
       var anaData = [av.anl.trace0, av.anl.trace1, av.anl.trace2, av.anl.trace3, av.anl.trace4, av.anl.trace5];
 
       if (av.debug.plotly) console.log('av.anl.xx', av.anl.xx);

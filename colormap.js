@@ -930,7 +930,7 @@ av.color.names =  {};
     av.color.names['Black'] = '#000000';
     av.color.names['ltGrey'] = '#CCCCCC';
     av.color.names['White'] = '#FFFFFF';
-
+ 
     //Dictionarys
 av.color.letterColor = {};
     av.color.letterColor['a'] = '#F9CC65'; //color Meter

@@ -588,6 +588,11 @@ av.pch.clearPopChrt();
   av.anl = {};  //Analysis page functions and data
   av.anl.color = [];   //holds the three colors for the three populations
   av.anl.pop = [];
+  av.anl.abbreviate = {};
+    av.anl.abbreviate['Average Fitness'] = 'Fitness';
+    av.anl.abbreviate['Average Offspring Cost'] = 'Cost';
+    av.anl.abbreviate['Average Energy Acq. Rate'] = 'EAR';
+    av.anl.abbreviate['Number of Organisms'] = 'Num';
 
 av.anl.clearChart = function () {
   for (var ii = 0; ii < 3; ii++) {
