@@ -501,6 +501,7 @@ av.pch.clearPopChrt = function () {
   av.pch.logEar = [0];
   av.pch.aveNum = [0];
   av.pch.logNum = [0];
+  av.pch.aveVia = [0];
   av.pch.aveMaxFit = 0.1;
   av.pch.aveMaxCst = 0.1;
   av.pch.aveMaxEar = 0.1;

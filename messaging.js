@@ -461,6 +461,7 @@ av.msg.updatePopStats = function (msg) {
     av.pch.aveEar[msg.update] = msg.ave_metabolic_rate;
     av.pch.aveNum[msg.update] = msg.organisms;
     av.pch.xx[msg.update] = msg.update;
+    //aveVia assigned after it is calculated. see below
 
     if (av.pch.aveFit[msg.update] > av.pch.aveMaxFit) av.pch.aveMaxFit = av.pch.aveFit[msg.update];
     if (av.pch.aveCst[msg.update] > av.pch.aveMaxCst) av.pch.aveMaxCst = av.pch.aveCst[msg.update];
@@ -491,8 +492,9 @@ av.msg.updatePopStats = function (msg) {
   }
   var numViable = msg.organisms - numNotViable;
   viableNumLabel.textContent = numViable.formatNum(0);
+  av.pch.aveVia[msg.update] = numViable;
 
-  notPop.textContent = msg.not;
+    notPop.textContent = msg.not;
   nanPop.textContent = msg.nand;  //these do not match
   andPop.textContent = msg.and;
   ornPop.textContent = msg.orn;

@@ -867,6 +867,7 @@
                 <option value='Average Offspring Cost'>Average Offspring Cost</option>
                 <option value='Average Energy Acq. Rate'>Average Energy Acq. Rate</option>
                 <option value='Number of Organisms'>Number of Organisms</option>
+                <option value='Number Viable'>Number Viable</option>
               </select> Thicker line; left y-axis
               <br></br>
               <select data-dojo-type='dijit/form/Select' id='yRightSelect' data-dojo-props='name: "yyaxis"'>
@@ -875,14 +876,15 @@
                 <option value='Average Offspring Cost' selected='selected'>Average Offspring Cost</option>
                 <option value='Average Energy Acq. Rate'>Average Energy Acq. Rate</option>
                 <option value='Number of Organisms'>Number of Organisms</option>
+                <option value='Number Viable'>Number Viable</option>
               </select> Thinner line; right y-axis
             </div>
           </div>
         </div>
-        <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
+        <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false' style='background-color: greenyellow'
              id='anaChrtHolder' refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'>
-          <div id='anlDndChart' style='height: 100%; width: 100%'>
-            <div id='anlChrtSpace' style='height: 100%; width: 100%'></div>
+          <div id='anlDndChart' style='height: 100%; width: 100%; background-color: lightskyblue'>
+            <div id='anlChrtSpace' style='height: 100%; width: 100%; background-color: lightpink'></div>
           </div>
         </div>
       </div>

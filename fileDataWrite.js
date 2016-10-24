@@ -202,6 +202,7 @@ av.fwt.makeFzrWorld = function (num) {
   av.fwt.makeFzrTRfile('w'+num+'/tr1', av.pch.aveCst);
   av.fwt.makeFzrTRfile('w'+num+'/tr2', av.pch.aveEar);
   av.fwt.makeFzrTRfile('w'+num+'/tr3', av.pch.aveNum);
+  av.fwt.makeFzrTRfile('w'+num+'/tr4', av.pch.aveVia);
   av.fwt.makeFzrFile('w'+num + '/update', av.grd.updateNum.toString() );
   //there are more files needed to talk to Matt, tiba
 }
@@ -286,15 +287,50 @@ av.fwt.removeFzrItem = function(dir, type){
 
 av.fwt.writeCSV = function() {
   'use strict';
-  //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
-  //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
-  av.fwt.csvStrg = 'Update,' +  av.fzr.actConfig.name + ' at update ' + av.grd.popStatsMsg.update + ' Average Fitness,'
-    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Offspring Cost,'
-    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Average Energy Acq. Rate,'
-    + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Count of Organisms in the World';
-  var lngth = av.pch.aveFit.length;
-  for (var ii = 0; ii < lngth; ii++) {
-    av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii].formatNum(6) + ',' + av.pch.aveCst[ii].formatNum(6) + ',' + av.pch.aveEar[ii].formatNum(6) + ',' + av.pch.aveNum[ii];
+  if ('populationBlock' === av.ui.page) {
+    //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
+    //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
+    av.fwt.csvStrg = 'Update,' + av.fzr.actConfig.name + ' at update ' + av.grd.popStatsMsg.update + ' Ave Fitness,'
+      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Ave Offspring Cost,'
+      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Ave Energy Acq. Rate,'
+      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Pop Size,'
+      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Viable Size';
+    var lngth = av.pch.aveFit.length;
+    for (var ii = 0; ii < lngth; ii++) {
+      av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii].formatNum(6) + ',' + av.pch.aveCst[ii].formatNum(6) + ','
+        + av.pch.aveEar[ii].formatNum(6) + ',' + av.pch.aveNum[ii] + ','
+        + av.pch.aveVia[ii].formatNum(0);
+    }
+    //string completed
+  }
+  else if ('analysisBlock' === av.ui.page) {
+    var longest = 0;
+    av.fwt.csvStrg = 'Update';
+    for (var ii = 0; ii < 3; ii++) {
+      if (0 < document.getElementById('graphPop' + ii).textContent.length) {
+        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Ave Fitness'
+        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Ave Offspring Cost'
+        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Ave Energy Acq. Rate'
+        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Pop Size'
+        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Viable Size';
+        if (longest < av.fzr.pop[ii].fit.length) longest = av.fzr.pop[ii].fit.length;
+      }
+    }
+    for (var ii = 0; ii < longest; ii++) {
+      av.fwt.csvStrg += '\n' + ii + ',';
+      for (var jj = 0; jj < 3; jj++)
+      if (0 < document.getElementById('graphPop' + jj).textContent.length) {
+        if (ii < av.fzr.pop[jj].fit.length) {
+          //console.log('jj=', jj, '; ii=', ii);
+          av.fwt.csvStrg += ', ' + av.fzr.pop[jj].fit[ii].formatNum(6)
+                          + ', ' + av.fzr.pop[jj].ges[ii].formatNum(6)
+                          + ', ' + av.fzr.pop[jj].met[ii].formatNum(6)
+                          + ', ' + av.fzr.pop[jj].num[ii]
+                          + ', ' + av.fzr.pop[jj].via[ii];
+        }
+        else av.fwt.csvStrg += ', , , , , ';
+      }
+    }
   }
   //console.log(av.fwt.csvStrg);
   av.fio.fzSaveCsvfn();

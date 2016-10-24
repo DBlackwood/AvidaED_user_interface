@@ -251,10 +251,12 @@ av.dnd.landActiveConfig = function (pkg) {
 
     //Load Time Recorder Data.
     dir = av.fzr.actConfig.dir;
+    console.log('dir', dir);
     av.pch.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
     av.pch.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
     av.pch.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
     av.pch.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
+    av.pch.aveVia = av.fio.tr2chart(av.fzr.file[dir + '/tr4']);
     var lngth = av.pch.aveFit.length;
     av.pch.logFit = av.utl.newFilledArray(lngth, null);
     av.pch.logCst = av.utl.newFilledArray(lngth, null);
@@ -687,11 +689,12 @@ av.dnd.landTrashCan = function (source, nodes, target) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 av.anl.loadWorldData = function (worldNum, dir) {
-  //console.log('loadWorldData: WoldNum:', worldNum, '; dir', dir);
+  console.log('loadWorldData: WoldNum:', worldNum, '; dir', dir);
   av.fzr.pop[worldNum].fit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
   av.fzr.pop[worldNum].ges = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
   av.fzr.pop[worldNum].met = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
   av.fzr.pop[worldNum].num = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
+  av.fzr.pop[worldNum].via = av.fio.tr2chart(av.fzr.file[dir + '/tr4']);
 };
 
 av.anl.clearWorldData = function (worldNum){
@@ -700,6 +703,7 @@ av.anl.clearWorldData = function (worldNum){
   av.fzr.pop[worldNum].ges = [];
   av.fzr.pop[worldNum].met = [];
   av.fzr.pop[worldNum].num = [];
+  av.fzr.pop[worldNum].via = [];
 }
 
 av.anl.loadSelectedData = function (worldNum, axisSide, side) {
@@ -719,6 +723,9 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
       break;
     case 'Number of Organisms':
       av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].num;
+      break;
+    case 'Number Viable':
+      av.anl.pop[worldNum][side] = av.fzr.pop[worldNum].via;
       break;
   }
   var begin = av.anl.xx.length;

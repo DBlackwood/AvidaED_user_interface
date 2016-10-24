@@ -99,6 +99,7 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'tr1':
     case 'tr2':
     case 'tr3':
+    case 'tr4':
     case 'update':
       if (loadConfigFlag) {
         if ('c0/avida.cfg' == av.fio.anID) {av.frd.avidaCFG2form(av.fio.thisfile.asText());}
@@ -133,6 +134,7 @@ av.fio.processItemFiles = function (){
     case 'tr1':
     case 'tr2':
     case 'tr3':
+    case 'tr4':
     case 'update':
       av.fzr.item[av.fio.anID] = av.fio.thisfile.asText().trim();
       break;
@@ -464,7 +466,8 @@ av.frd.tr2chartParse = function (filestr) {
 // puts data from the environment.cfg into the setup form for the Analysis Page
 av.fio.tr2chart = function (fileStr) {
   'use strict';
-  var data = av.frd.tr2chartParse(fileStr);
+  var data = [];
+  if (undefined !== fileStr) { data = av.frd.tr2chartParse(fileStr); }
   return data;
 }
 

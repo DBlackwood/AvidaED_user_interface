@@ -153,9 +153,13 @@ require([
   av.dom.load = function () {
     av.dom.popChart = document.getElementById('popChart');  //easier handle for div with chart
     av.dom.popChrtHolder = document.getElementById('popChrtHolder');
-    av.dom.anlChrtSpace = document.getElementById('anlChrtSpace');  //easier handle for div with chart
+    //av.dom.anlChrtSpace = document.getElementById('anlChrtSpace');  //easier handle for div with chart
+    av.dom.anlChrtSpace = document.getElementById('anlDndChart');  //easier handle for div with chart
     av.dom.anlDndChart = document.getElementById('anlDndChart');
     av.dom.anaChrtHolder = document.getElementById('anaChrtHolder');
+    av.dom.graphPop0 = document.getElementById('graphPop0');
+    av.dom.graphPop1 = document.getElementById('graphPop1');
+    av.dom.graphPop2 = document.getElementById('graphPop2');
   };
   av.dom.load();
 
@@ -645,6 +649,33 @@ require([
   // Resize window helpers -------------------------------------------
   //********************************************************************************************************************
   if (av.debug.root) console.log('before Resize helpers');
+
+  av.pch.divSize = function(from) {
+    if (av.debug.plotly) console.log('in av.pch.divSize from ', from);
+    av.pch.ht = av.dom.popChrtHolder.clientHeight - 3;
+    av.pch.wd = av.dom.popChrtHolder.clientWidth - 3;
+    av.dom.popChrtHolder.style.height = av.dom.popChrtHolder.clientHeight;
+    av.dom.popChart.style.height = av.pch.ht + 'px';
+    av.dom.popChart.style.width = av.pch.wd + 'px';
+    av.pch.layout.height = av.pch.ht;
+    av.pch.layout.width = av.pch.wd;
+  };
+
+  av.anl.divSize = function(from) {
+    //console.log(from,'anaChrtHolder Ht client scroll ', av.dom.anaChrtHolder.clientHeight, av.dom.anaChrtHolder.scrollHeight);
+    //console.log(from,'anlDndChart Ht client scroll', av.dom.anlDndChart.clientHeight, av.dom.anlDndChart.scrollHeight);
+    //console.log(from,'anlChrtSpace Ht client scroll', av.dom.anlChrtSpace.clientHeight, av.dom.anlChrtSpace.scrollHeight);
+
+    if (av.debug.plotly) console.log('in av.anl.divSize from ', from);
+    av.anl.ht = av.dom.anaChrtHolder.clientHeight - 1;
+    av.anl.wd = av.dom.anaChrtHolder.clientWidth - 1;
+    av.dom.anaChrtHolder.style.height = av.anl.ht + 'px';
+    av.anl.ht = av.dom.anaChrtHolder.clientHeight - 6;
+    av.dom.anlChrtSpace.style.height = av.anl.ht + 'px';
+    av.dom.anlChrtSpace.style.width = av.anl.wd + 'px';
+    av.anl.layout.height = av.anl.ht;
+    av.anl.layout.width = av.anl.wd;
+  };
 
   // called from script in html file as well as below
   av.ui.browserResizeEventHandler = function () {
@@ -1511,17 +1542,6 @@ require([
     av.grd.popChartFn();
   });
 
-  av.pch.divSize = function(from) {
-    if (av.debug.plotly) console.log('in av.pch.divSize from ', from);
-    av.pch.ht = av.dom.popChrtHolder.clientHeight - 3;
-    av.pch.wd = av.dom.popChrtHolder.clientWidth - 3;
-    av.dom.popChrtHolder.style.height = av.dom.popChrtHolder.clientHeight;
-    av.dom.popChart.style.height = av.pch.ht + 'px';
-    av.dom.popChart.style.width = av.pch.wd + 'px';
-    av.pch.layout.height = av.pch.ht;
-    av.pch.layout.width = av.pch.wd;
-  }
-
   // initialize needs to be in AvidaED.js
   av.grd.popChartInit = function () {
     av.pch.clearPopChrt();
@@ -1989,20 +2009,6 @@ require([
   //                                                Analysis Page
   // **************************************************************************************************************** */
 
-  av.anl.divSize = function(from) {
-    //console.log(from,'anaChrtHolder Ht client scroll ', av.dom.anaChrtHolder.clientHeight, av.dom.anaChrtHolder.scrollHeight);
-    //console.log(from,'anlDndChart Ht client scroll', av.dom.anlDndChart.clientHeight, av.dom.anlDndChart.scrollHeight);
-    //console.log(from,'anlChrtSpace Ht client scroll', av.dom.anlChrtSpace.clientHeight, av.dom.anlChrtSpace.scrollHeight);
-
-    av.anl.ht = av.dom.anaChrtHolder.clientHeight - 3;
-    av.anl.wd = av.dom.anaChrtHolder.clientWidth - 3;
-    av.dom.anaChrtHolder.style.height = av.dom.anaChrtHolder.clientHeight + 'px';
-    av.dom.anlChrtSpace.style.height = av.anl.ht + 'px';
-    av.dom.anlChrtSpace.style.width = av.anl.wd + 'px';
-    av.anl.layout.height = av.anl.ht;
-    av.anl.layout.width = av.anl.wd;
-  }
-
   // initialize needs to be in AvidaED.js
   av.anl.anaChartInit = function () {
     av.anl.divSize('anaChartInit');
@@ -2015,7 +2021,8 @@ require([
     //Comment out the next three lines later
     var anaData = av.anl.data;
     if (av.debug.plotly) console.log('anlChrtPlotly in av.anl.anaChartInit');
-    Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
+    //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
+    Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
     if (av.debug.plotly) console.log('after plot in av.anl.anaChartInit');
 
     //console.log('layout=', av.dom.anlChrtSpace.layout);
@@ -2036,15 +2043,15 @@ require([
       }
     }
     else {
-      if (av.debug.plotly) console.log('in anlChrtSpaceFn');
-      av.debug.log += '\n - - Call anlChrtSpaceFn';
+      if (av.debug.plotly) console.log('in AnaChartFn');
+      av.debug.log += '\n - - Call AnaChartFn';
 
       av.anl.trace0.x = av.anl.xx.slice(0,av.anl.pop[0].left.length);
       av.anl.trace1.x = av.anl.xx.slice(0,av.anl.pop[0].right.length);
-      av.anl.trace2.x = av.anl.xx.slice(1,av.anl.pop[1].left.length);
-      av.anl.trace3.x = av.anl.xx.slice(1,av.anl.pop[1].right.length);
-      av.anl.trace4.x = av.anl.xx.slice(2,av.anl.pop[2].left.length);
-      av.anl.trace5.x = av.anl.xx.slice(2,av.anl.pop[2].right.length);
+      av.anl.trace2.x = av.anl.xx.slice(0,av.anl.pop[1].left.length);
+      av.anl.trace3.x = av.anl.xx.slice(0,av.anl.pop[1].right.length);
+      av.anl.trace4.x = av.anl.xx.slice(0,av.anl.pop[2].left.length);
+      av.anl.trace5.x = av.anl.xx.slice(0,av.anl.pop[2].right.length);
       av.anl.trace0.y = av.anl.pop[0].left;
       av.anl.trace1.y = av.anl.pop[0].right;
       av.anl.trace2.y = av.anl.pop[1].left;
@@ -2057,13 +2064,12 @@ require([
       av.anl.trace3.line.color = av.anl.color[1];
       av.anl.trace4.line.color = av.anl.color[2];
       av.anl.trace5.line.color = av.anl.color[2];
-      av.anl.trace0.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop0').value;
-      av.anl.trace1.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop0').value;
-      av.anl.trace2.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop1').value;
-      av.anl.trace3.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop1').value;
-      av.anl.trace4.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop2').value;
-      av.anl.trace5.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop2').value;
-
+      av.anl.trace0.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop0').textContent;
+      av.anl.trace1.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop0').textContent;
+      av.anl.trace2.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop1').textContent;
+      av.anl.trace3.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop1').textContent;
+      av.anl.trace4.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop2').textContent;
+      av.anl.trace5.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop2').textContent;
 
       var anaData = [av.anl.trace0, av.anl.trace1, av.anl.trace2, av.anl.trace3, av.anl.trace4, av.anl.trace5];
 
@@ -2078,7 +2084,8 @@ require([
       if (av.debug.plotly) console.log('before purge in update');
       Plotly.purge(av.dom.anlChrtSpace);
       if (av.debug.plotly) console.log('after plot anlChrtSpace');
-      Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
+      //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
+      Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
       if (av.debug.plotly) console.log('after plot anlChrtSpace');
       //console.log('purge chart.anaData=', av.dom.anlChrtSpace.data);
       //console.log('purge chart.layout=', av.dom.anlChrtSpace.layout);
