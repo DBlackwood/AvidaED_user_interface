@@ -294,7 +294,7 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_1019';
+av.ui.version = '2016_1025';
 av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';
@@ -590,6 +590,7 @@ av.pch.clearPopChrt();
   av.anl = {};  //Analysis page functions and data
   av.anl.color = [];   //holds the three colors for the three populations
   av.anl.pop = [];
+  av.anl.hasPopData = [];
   av.anl.abbreviate = {};
     av.anl.abbreviate['Average Fitness'] = 'Fitness';
     av.anl.abbreviate['Average Offspring Cost'] = 'Cost';
@@ -601,6 +602,8 @@ av.anl.clearChart = function () {
     av.anl.pop[ii] = {};
     av.anl.pop[ii].left = [];
     av.anl.pop[ii].right = [];
+    av.anl.hasPopData[ii] = false;
+
   }
   av.anl.xx = [];
   //av.anl.xx = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];

@@ -1549,7 +1549,6 @@ require([
     av.pch.divSize('av.grd.popChartInit');
     var popData = av.pch.data;
 
-    //Plotly.purge(av.dom.popChart);
     if (undefined == av.dom.popChart.data) {
       if (av.debug.plotly) console.log('before plotly.plot in popChartInit');
       Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
@@ -1575,124 +1574,129 @@ require([
     }
     if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
     if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
-
+    av.dom.popChart.style.visibility='hidden';
     //console.log('layout.ht, wd =', av.dom.popChart.layout.height, av.dom.popChart.layout.width);
   }
 
   av.grd.popChartFn = function () {
     'use strict';
-
-    //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.pch.logFit[1]) {
-    if ('none' === dijit.byId('yaxis').value) {
-      if (undefined !== av.dom.popChart.data) {
-        console.log('before purge in popChartFn');
-        Plotly.deleteTraces(av.dom.popChart, [0, 1]);
-        //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
-        console.log('after purge in popChartFn');
-      }
+    if ('started' !== av.grd.runState) {
+      av.dom.popChart.style.visibility = 'hidden';
     }
     else {
-      av.debug.log += '\n - - Call popChartFn';
-      av.pch.divSize('av.grd.popChartFn');
-
-      if (dijit.byId('yaxis').value === av.pch.yValue) av.pch.yChange = false;
-      else {
-        av.pch.yChange = true;
-        av.pch.yValue = dijit.byId('yaxis').value;
-      }
-      if ('Average Fitness' === dijit.byId('yaxis').value) {
-        av.pch.popY = av.pch.aveFit;
-        av.pch.logY = av.pch.logFit;
-        av.pch.maxY = (av.pch.aveMaxFit > av.pch.logMaxFit) ? av.pch.aveMaxFit : av.pch.logMaxFit;
-        //console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
-        //console.log('logFit', av.pch.logFit);
-      }
-      else if ('Average Offspring Cost' == dijit.byId('yaxis').value) {
-        av.pch.popY = av.pch.aveCst;
-        av.pch.logY = av.pch.logCst;
-        av.pch.maxY = (av.pch.aveMaxCst > av.pch.logMaxCst) ? av.pch.aveMaxCst : av.pch.logMaxCst;
-      }
-      else if ('Average Energy Acq. Rate' == dijit.byId('yaxis').value) {
-        av.pch.popY = av.pch.aveEar;
-        av.pch.logY = av.pch.logEar;
-        av.pch.maxY = (av.pch.aveMaxEar > av.pch.logMaxEar) ? av.pch.aveMaxEar : av.pch.logMaxEar;
-      }
-      else if ('Number of Organisms' == dijit.byId('yaxis').value) {
-        av.pch.popY = av.pch.aveNum;
-        av.pch.logY = av.pch.logNum;
-        av.pch.maxY = (av.pch.aveMaxNum > av.pch.aveMaxNum) ? av.pch.aveMaxNum : av.pch.aveMaxNum;
-      }
-      else {
-        av.pch.yValue = 'none';
-        av.pch.popY = [];
-        av.pch.logY = [];
-        av.pch.maxY = 0.1;
-      }
-      //console.log('xx   after', av.pch.xx);
-      //console.log('popY after', av.pch.logY);
-      //console.log('maxY', av.pch.maxY);
-      //console.log('logY after', av.pch.logY);
-
-      //av.pch.trace0 = {x:av.pch.xx, y:av.pch.popY, type:'scatter', mode: 'lines'};
-      //av.pch.trace1 = {x:av.pch.xx, y:av.pch.logY, type:'scatter', mode: 'lines'};
-      av.pch.trace0.x = av.pch.xx;
-      av.pch.trace0.y = av.pch.popY;
-      av.pch.trace1.x = av.pch.xx;
-      av.pch.trace1.y = av.pch.logY;
-      //console.log('trace0',av.pch.trace0);
-      //console.log('trace1',av.pch.trace1);
-
-      //var popData = [av.pch.trace0];
-      var popData = [av.pch.trace0, av.pch.trace1];
-
-      //if (av.pch.yChange) {
-      if (false) {
-        av.pch.yChange = false;
-        av.pch.layout.width = av.pch.wd;
-        av.pch.layout.height = av.pch.ht;
-        console.log('before purge in update grid chart');
-        Plotly.purge(av.dom.popChart);
-        console.log('after purge in update grid chart');
-        Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
-        //Plotly.plot('popChart', popData, av.pch.layout);
-        console.log('purge chart.popData=', av.dom.popChart.data);
-        //console.log('purge chart.layout=', av.dom.popChart.layout);
-      }
-      else {
-        //av.pch.update = {
-        //  xaxis: {range: [0, av.pch.popY.length + 1]}, yaxis: {range: [0, 1.1 * av.pch.maxY]},
-        //  width: av.pch.wd,
-        //  height: av.pch.ht
-        //};
-        av.pch.update = {
-          autorange: true,
-          width: av.pch.wd,
-          height: av.pch.ht
-        };
-        //av.pch.update = {xaxis: {range: [0, av.pch.popY.length+1]}, yaxis: {range: [0, av.pch.maxY]}};
-
-        //console.log('before relayout in update grid chart');
-        if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
-
-        if (undefined == av.dom.popChart.data) {
-          if (av.debug.plotly) console.log('before plot');
-          Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
-          if (av.debug.plotly) console.log('after plot');
+      av.dom.popChart.style.visibility = 'visible';
+      //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.pch.logFit[1]) {
+      if ('none' === dijit.byId('yaxis').value) {
+        if (undefined !== av.dom.popChart.data) {
+          console.log('before purge in popChartFn');
+          Plotly.deleteTraces(av.dom.popChart, [0, 1]);
+          //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
+          console.log('after purge in popChartFn');
         }
-        else if (0 == av.dom.popChart.data.length) {
-          if (av.debug.plotly) console.log('before plot');
-          Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
-          if (av.debug.plotly) console.log('after plot');
+      }
+      else {
+        av.debug.log += '\n - - Call popChartFn';
+        av.pch.divSize('av.grd.popChartFn');
+
+        if (dijit.byId('yaxis').value === av.pch.yValue) av.pch.yChange = false;
+        else {
+          av.pch.yChange = true;
+          av.pch.yValue = dijit.byId('yaxis').value;
+        }
+        if ('Average Fitness' === dijit.byId('yaxis').value) {
+          av.pch.popY = av.pch.aveFit;
+          av.pch.logY = av.pch.logFit;
+          av.pch.maxY = (av.pch.aveMaxFit > av.pch.logMaxFit) ? av.pch.aveMaxFit : av.pch.logMaxFit;
+          //console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
+          //console.log('logFit', av.pch.logFit);
+        }
+        else if ('Average Offspring Cost' == dijit.byId('yaxis').value) {
+          av.pch.popY = av.pch.aveCst;
+          av.pch.logY = av.pch.logCst;
+          av.pch.maxY = (av.pch.aveMaxCst > av.pch.logMaxCst) ? av.pch.aveMaxCst : av.pch.logMaxCst;
+        }
+        else if ('Average Energy Acq. Rate' == dijit.byId('yaxis').value) {
+          av.pch.popY = av.pch.aveEar;
+          av.pch.logY = av.pch.logEar;
+          av.pch.maxY = (av.pch.aveMaxEar > av.pch.logMaxEar) ? av.pch.aveMaxEar : av.pch.logMaxEar;
+        }
+        else if ('Number of Organisms' == dijit.byId('yaxis').value) {
+          av.pch.popY = av.pch.aveNum;
+          av.pch.logY = av.pch.logNum;
+          av.pch.maxY = (av.pch.aveMaxNum > av.pch.aveMaxNum) ? av.pch.aveMaxNum : av.pch.aveMaxNum;
         }
         else {
-          Plotly.relayout(av.dom.popChart, av.pch.update);
-          //console.log('after relayout in update grid chart');
-          if (av.debug.plotly) console.log('popData', popData);
-          Plotly.animate('popChart', {popData});
-          if (av.debug.plotly) console.log('after animate in update grid chart');
+          av.pch.yValue = 'none';
+          av.pch.popY = [];
+          av.pch.logY = [];
+          av.pch.maxY = 0.1;
         }
-        if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
-        if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
+        //console.log('xx   after', av.pch.xx);
+        //console.log('popY after', av.pch.logY);
+        //console.log('maxY', av.pch.maxY);
+        //console.log('logY after', av.pch.logY);
+
+        //av.pch.trace0 = {x:av.pch.xx, y:av.pch.popY, type:'scatter', mode: 'lines'};
+        //av.pch.trace1 = {x:av.pch.xx, y:av.pch.logY, type:'scatter', mode: 'lines'};
+        av.pch.trace0.x = av.pch.xx;
+        av.pch.trace0.y = av.pch.popY;
+        av.pch.trace1.x = av.pch.xx;
+        av.pch.trace1.y = av.pch.logY;
+        //console.log('trace0',av.pch.trace0);
+        //console.log('trace1',av.pch.trace1);
+
+        //var popData = [av.pch.trace0];
+        var popData = [av.pch.trace0, av.pch.trace1];
+
+        //if (av.pch.yChange) {
+        if (false) {
+          av.pch.yChange = false;
+          av.pch.layout.width = av.pch.wd;
+          av.pch.layout.height = av.pch.ht;
+          console.log('before purge in update grid chart');
+          Plotly.purge(av.dom.popChart);
+          console.log('after purge in update grid chart');
+          Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
+          //Plotly.plot('popChart', popData, av.pch.layout);
+          console.log('purge chart.popData=', av.dom.popChart.data);
+          //console.log('purge chart.layout=', av.dom.popChart.layout);
+        }
+        else {
+          //av.pch.update = {
+          //  xaxis: {range: [0, av.pch.popY.length + 1]}, yaxis: {range: [0, 1.1 * av.pch.maxY]},
+          //  width: av.pch.wd,
+          //  height: av.pch.ht
+          //};
+          av.pch.update = {
+            autorange: true,
+            width: av.pch.wd,
+            height: av.pch.ht
+          };
+          //av.pch.update = {xaxis: {range: [0, av.pch.popY.length+1]}, yaxis: {range: [0, av.pch.maxY]}};
+
+          //console.log('before relayout in update grid chart');
+          if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
+
+          if (undefined == av.dom.popChart.data) {
+            if (av.debug.plotly) console.log('before plot');
+            Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
+            if (av.debug.plotly) console.log('after plot');
+          }
+          else if (0 == av.dom.popChart.data.length) {
+            if (av.debug.plotly) console.log('before plot');
+            Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
+            if (av.debug.plotly) console.log('after plot');
+          }
+          else {
+            Plotly.relayout(av.dom.popChart, av.pch.update);
+            //console.log('after relayout in update grid chart');
+            if (av.debug.plotly) console.log('popData', popData);
+            Plotly.animate('popChart', {popData});
+            if (av.debug.plotly) console.log('after animate in update grid chart');
+          }
+          if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
+          if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
+        }
       }
     }
   };
@@ -2032,97 +2036,108 @@ require([
     if (av.debug.plotly) console.log('after plot in av.anl.anaChartInit');
 
     //console.log('layout=', av.dom.anlChrtSpace.layout);
-
+    av.dom.anlChrtSpace.style.visibility ='hidden';
   };
   av.anl.anaChartInit();
 
   av.anl.AnaChartFn = function () {
     'use strict';
-    dijit.byId('analysisBlock').resize();
-    //console.log('start av.anl.AnaChartFn-----------------------------------');
-    //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.anl.logFit[1]) {
-    if ('none' === dijit.byId('yLeftSelect').value && 'none' === dijit.byId('yRightSelect').value) {
-      if (av.debug.plotly) console.log('both axis set to none');
-      if (undefined !== av.dom.anlChrtSpace.data) {
-        console.log('before purge in anaChartFn');
-        Plotly.purge(av.dom.anlChrtSpace);
-        console.log('after purge in anaChartFn');
-      }
+    var hasData = false;
+    for (var ii=0; ii < 3; ii++) {
+      if (0 < document.getElementById('graphPop'+ii).textContent.length) hasData = true;
     }
+    if (!hasData) av.dom.anlChrtSpace.style.visibility ='hidden';
     else {
-      if (av.debug.plotly) console.log('in AnaChartFn');
-      av.debug.log += '\n - - Call AnaChartFn';
+      av.dom.anlChrtSpace.style.visibility = 'visible';
+      dijit.byId('analysisBlock').resize();
+      //console.log('start av.anl.AnaChartFn-----------------------------------');
+      //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.anl.logFit[1]) {
+      if ('none' === dijit.byId('yLeftSelect').value && 'none' === dijit.byId('yRightSelect').value) {
+        if (av.debug.plotly) console.log('both axis set to none');
+        if (undefined !== av.dom.anlChrtSpace.data) {
+          console.log('before purge in anaChartFn');
+          Plotly.purge(av.dom.anlChrtSpace);
+          console.log('after purge in anaChartFn');
+        }
+      }
+      else {
+        if (av.debug.plotly) console.log('in AnaChartFn');
+        av.debug.log += '\n - - Call AnaChartFn';
 
-      av.anl.trace0.x = av.anl.xx.slice(0,av.anl.pop[0].left.length);
-      av.anl.trace1.x = av.anl.xx.slice(0,av.anl.pop[0].right.length);
-      av.anl.trace2.x = av.anl.xx.slice(0,av.anl.pop[1].left.length);
-      av.anl.trace3.x = av.anl.xx.slice(0,av.anl.pop[1].right.length);
-      av.anl.trace4.x = av.anl.xx.slice(0,av.anl.pop[2].left.length);
-      av.anl.trace5.x = av.anl.xx.slice(0,av.anl.pop[2].right.length);
-      av.anl.trace0.y = av.anl.pop[0].left;
-      av.anl.trace1.y = av.anl.pop[0].right;
-      av.anl.trace2.y = av.anl.pop[1].left;
-      av.anl.trace3.y = av.anl.pop[1].right;
-      av.anl.trace4.y = av.anl.pop[2].left;
-      av.anl.trace5.y = av.anl.pop[2].right;
-      av.anl.trace0.line.color = av.anl.color[0];
-      av.anl.trace1.line.color = av.anl.color[0];
-      av.anl.trace2.line.color = av.anl.color[1];
-      av.anl.trace3.line.color = av.anl.color[1];
-      av.anl.trace4.line.color = av.anl.color[2];
-      av.anl.trace5.line.color = av.anl.color[2];
-      av.anl.trace0.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop0').textContent;
-      av.anl.trace1.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop0').textContent;
-      av.anl.trace2.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop1').textContent;
-      av.anl.trace3.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop1').textContent;
-      av.anl.trace4.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value]+'-'+document.getElementById('graphPop2').textContent;
-      av.anl.trace5.name = av.anl.abbreviate[dijit.byId('yRightSelect').value]+'-'+document.getElementById('graphPop2').textContent;
+        av.anl.trace0.x = av.anl.xx.slice(0, av.anl.pop[0].left.length);
+        av.anl.trace1.x = av.anl.xx.slice(0, av.anl.pop[0].right.length);
+        av.anl.trace2.x = av.anl.xx.slice(0, av.anl.pop[1].left.length);
+        av.anl.trace3.x = av.anl.xx.slice(0, av.anl.pop[1].right.length);
+        av.anl.trace4.x = av.anl.xx.slice(0, av.anl.pop[2].left.length);
+        av.anl.trace5.x = av.anl.xx.slice(0, av.anl.pop[2].right.length);
+        av.anl.trace0.y = av.anl.pop[0].left;
+        av.anl.trace1.y = av.anl.pop[0].right;
+        av.anl.trace2.y = av.anl.pop[1].left;
+        av.anl.trace3.y = av.anl.pop[1].right;
+        av.anl.trace4.y = av.anl.pop[2].left;
+        av.anl.trace5.y = av.anl.pop[2].right;
+        av.anl.trace0.line.color = av.anl.color[0];
+        av.anl.trace1.line.color = av.anl.color[0];
+        av.anl.trace2.line.color = av.anl.color[1];
+        av.anl.trace3.line.color = av.anl.color[1];
+        av.anl.trace4.line.color = av.anl.color[2];
+        av.anl.trace5.line.color = av.anl.color[2];
+        av.anl.trace0.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value] + '-' + document.getElementById('graphPop0').textContent;
+        av.anl.trace1.name = av.anl.abbreviate[dijit.byId('yRightSelect').value] + '-' + document.getElementById('graphPop0').textContent;
+        av.anl.trace2.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value] + '-' + document.getElementById('graphPop1').textContent;
+        av.anl.trace3.name = av.anl.abbreviate[dijit.byId('yRightSelect').value] + '-' + document.getElementById('graphPop1').textContent;
+        av.anl.trace4.name = av.anl.abbreviate[dijit.byId('yLeftSelect').value] + '-' + document.getElementById('graphPop2').textContent;
+        av.anl.trace5.name = av.anl.abbreviate[dijit.byId('yRightSelect').value] + '-' + document.getElementById('graphPop2').textContent;
 
-      var anaData = [av.anl.trace0, av.anl.trace1, av.anl.trace2, av.anl.trace3, av.anl.trace4, av.anl.trace5];
+        var anaData = [av.anl.trace0, av.anl.trace1, av.anl.trace2, av.anl.trace3, av.anl.trace4, av.anl.trace5];
 
-      if (av.debug.plotly) console.log('av.anl.xx', av.anl.xx);
-      if (av.debug.plotly) console.log('trace0',av.anl.trace0);
+        if (av.debug.plotly) console.log('av.anl.xx', av.anl.xx);
+        if (av.debug.plotly) console.log('trace0', av.anl.trace0);
 
-      av.anl.divSize('anaChartInit');
-      av.anl.layout.height = av.anl.ht;
-      av.anl.layout.width = av.anl.wd;
-      av.anl.layout.yaxis.title = dijit.byId('yLeftSelect').value;
-      av.anl.layout.yaxis2.title = dijit.byId('yRightSelect').value;
-      if (av.debug.plotly) console.log('before purge in update');
-      Plotly.purge(av.dom.anlChrtSpace);
-      if (av.debug.plotly) console.log('after plot anlChrtSpace');
-      //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
-      Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
-      if (av.debug.plotly) console.log('after plot anlChrtSpace');
-      //console.log('purge chart.anaData=', av.dom.anlChrtSpace.data);
-      //console.log('purge chart.layout=', av.dom.anlChrtSpace.layout);
+        av.anl.divSize('anaChartInit');
+        av.anl.layout.height = av.anl.ht;
+        av.anl.layout.width = av.anl.wd;
+        av.anl.layout.yaxis.title = dijit.byId('yLeftSelect').value;
+        av.anl.layout.yaxis2.title = dijit.byId('yRightSelect').value;
+        if (av.debug.plotly) console.log('before purge in update');
+        Plotly.purge(av.dom.anlChrtSpace);
+        if (av.debug.plotly) console.log('after plot anlChrtSpace');
+        //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
+        Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
+        if (av.debug.plotly) console.log('after plot anlChrtSpace');
+        //console.log('purge chart.anaData=', av.dom.anlChrtSpace.data);
+        //console.log('purge chart.layout=', av.dom.anlChrtSpace.layout);
+      }
     }
   }
 
   /* Chart buttons ****************************************/
   document.getElementById('pop0delete').onclick = function () {
     av.debug.log += '\n -Button: pop0delete';
+    av.anl.hasPopData[0] = false;
     av.anl.pop[0].left = [];
     av.anl.pop[0].right = [];
     av.anl.clearWorldData(0);
-    av.anl.AnaChartFn();
     av.dnd.graphPop0.selectAll().deleteSelectedNodes();
+    av.anl.AnaChartFn();
   }
   document.getElementById('pop1delete').onclick = function () {
     av.debug.log += '\n -Button: pop1delete';
+    av.anl.hasPopData[1] = false;
     av.anl.pop[1].left = [];
     av.anl.pop[1].right = [];
     av.anl.clearWorldData(1);
-    av.anl.AnaChartFn();
     av.dnd.graphPop1.selectAll().deleteSelectedNodes();
+    av.anl.AnaChartFn();
   }
   document.getElementById('pop2delete').onclick = function () {
     av.debug.log += '\n -Button: pop2delete';
+    av.anl.hasPopData[2] = false;
     av.anl.pop[2].left = [];
     av.anl.pop[2].right = [];
     av.anl.clearWorldData(2);
-    av.anl.AnaChartFn();
     av.dnd.graphPop2.selectAll().deleteSelectedNodes();
+    av.anl.AnaChartFn();
   }
   dijit.byId('pop0color').on('Change', function () {
     av.anl.color[0] = av.color.names[dijit.byId('pop0color').value];
