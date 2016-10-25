@@ -304,7 +304,7 @@ function drawIcon(gen) {
   'use strict';
   var txt = "Offspring Genome";
   var drw = new Image();
-  drw.src = "images/avida-ed-ancestor-icon.png";
+  drw.src = "images/Avida-ED-ancestor-icon.png";
   drw.onload = function () {   //image size(width, height) from http://stackoverflow.com/questions/5173796/html5-get-image-dimension
     av.ind.ctx.drawImage(drw, av.ind.cx[av.ind.son] - drw.width / 2, av.ind.cy[av.ind.son] - drw.height / 2);
   }

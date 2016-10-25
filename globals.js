@@ -401,6 +401,7 @@ av.fzr.clearFzrFn = function () {
     av.fzr.pop[ii].ges = [];
     av.fzr.pop[ii].met = [];
     av.fzr.pop[ii].num = [];
+    av.fzr.pop[ii].via = [];
   }
   av.fzr.saveUpdateState('yes');
 };

@@ -413,7 +413,7 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   av.msg.pause('now');
   av.ptd.makePauseState();
   av.grd.clearGrd();
-  console.log('before calling av.grd.popChartInit');
+  if (av.debug.grid) console.log('before calling av.grd.popChartInit');
   av.grd.popChartInit();
   av.grd.runState = 'prepping';
   dijit.byId('mnCnOrganismTrace').attr('disabled', true);

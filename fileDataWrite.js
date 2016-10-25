@@ -290,16 +290,17 @@ av.fwt.writeCSV = function() {
   if ('populationBlock' === av.ui.page) {
     //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
     //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
-    av.fwt.csvStrg = 'Update,' + av.fzr.actConfig.name + ' at update ' + av.grd.popStatsMsg.update + ' Ave Fitness,'
-      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Ave Offspring Cost,'
-      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Ave Energy Acq. Rate,'
-      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Pop Size,'
-      + av.fzr.actConfig.name + 'at update ' + av.grd.popStatsMsg.update + ' Viable Size';
+    av.fwt.csvStrg = 'Update,'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Fitness",'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Offspring Cost",'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Energy Acq. Rate",'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Pop Size",'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Viable Size"';
     var lngth = av.pch.aveFit.length;
     for (var ii = 0; ii < lngth; ii++) {
-      av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii].formatNum(6) + ',' + av.pch.aveCst[ii].formatNum(6) + ','
-        + av.pch.aveEar[ii].formatNum(6) + ',' + av.pch.aveNum[ii] + ','
-        + av.pch.aveVia[ii].formatNum(0);
+      av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii] + ',' + av.pch.aveCst[ii] + ','
+        + av.pch.aveEar[ii] + ',' + av.pch.aveNum[ii] + ','
+        + av.pch.aveVia[ii];
     }
     //string completed
   }
@@ -308,23 +309,22 @@ av.fwt.writeCSV = function() {
     av.fwt.csvStrg = 'Update';
     for (var ii = 0; ii < 3; ii++) {
       if (0 < document.getElementById('graphPop' + ii).textContent.length) {
-        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Ave Fitness'
-        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Ave Offspring Cost'
-        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Ave Energy Acq. Rate'
-        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Pop Size'
-        av.fwt.csvStrg += ', ' + document.getElementById('graphPop' + ii).textContent + ' Viable Size';
+        av.fwt.csvStrg += ', "' + document.getElementById('graphPop' + ii).textContent + ' Ave Fitness' + '"'
+        av.fwt.csvStrg += ', "' + document.getElementById('graphPop' + ii).textContent + ' Ave Offspring Cost' + '"'
+        av.fwt.csvStrg += ', "' + document.getElementById('graphPop' + ii).textContent + ' Ave Energy Acq. Rate' + '"'
+        av.fwt.csvStrg += ', "' + document.getElementById('graphPop' + ii).textContent + ' Pop Size' + '"'
+        av.fwt.csvStrg += ', "' + document.getElementById('graphPop' + ii).textContent + ' Viable Size' + '"';
         if (longest < av.fzr.pop[ii].fit.length) longest = av.fzr.pop[ii].fit.length;
       }
     }
     for (var ii = 0; ii < longest; ii++) {
-      av.fwt.csvStrg += '\n' + ii + ',';
+      av.fwt.csvStrg += '\n' + ii;
       for (var jj = 0; jj < 3; jj++)
       if (0 < document.getElementById('graphPop' + jj).textContent.length) {
         if (ii < av.fzr.pop[jj].fit.length) {
-          //console.log('jj=', jj, '; ii=', ii);
-          av.fwt.csvStrg += ', ' + av.fzr.pop[jj].fit[ii].formatNum(6)
-                          + ', ' + av.fzr.pop[jj].ges[ii].formatNum(6)
-                          + ', ' + av.fzr.pop[jj].met[ii].formatNum(6)
+          av.fwt.csvStrg += ', ' + av.fzr.pop[jj].fit[ii]
+                          + ', ' + av.fzr.pop[jj].ges[ii]
+                          + ', ' + av.fzr.pop[jj].met[ii]
                           + ', ' + av.fzr.pop[jj].num[ii]
                           + ', ' + av.fzr.pop[jj].via[ii];
         }

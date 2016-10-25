@@ -26,7 +26,7 @@ executable setup file less than 29 MB in size.
 
 Uploaded the Windows installer to the bwng.us site.
 
-Altered the index.html file in the avida-ed directory to also link the
+Altered the index.html file in the Avida-ED directory to also link the
 Windows installer file, and display the MD5 hash of the file.
 
 

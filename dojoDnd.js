@@ -689,7 +689,7 @@ av.dnd.landTrashCan = function (source, nodes, target) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 av.anl.loadWorldData = function (worldNum, dir) {
-  console.log('loadWorldData: WoldNum:', worldNum, '; dir', dir);
+  if (av.debug.dnd) console.log('loadWorldData: WoldNum:', worldNum, '; dir', dir);
   av.fzr.pop[worldNum].fit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
   av.fzr.pop[worldNum].ges = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
   av.fzr.pop[worldNum].met = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
@@ -706,6 +706,7 @@ av.anl.clearWorldData = function (worldNum){
   av.fzr.pop[worldNum].via = [];
 }
 
+//worldNum is a number 0-2 of the population loaded into analysis page
 av.anl.loadSelectedData = function (worldNum, axisSide, side) {
   'use strict';
   switch(dijit.byId(axisSide).value) {

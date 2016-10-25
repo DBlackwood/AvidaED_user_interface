@@ -21,7 +21,7 @@
 //
 // for things on Darwin (dream weaver site)
 // ssh -l diane darwin.beacon.msu.edu/html
-// var/sites/avida-ed.msu.edu
+// var/sites/Avida-ED.msu.edu
 // emacs home.html
 //
 define.amd.jQuery = true;
@@ -643,6 +643,7 @@ require([
   document.getElementById('analysisButton').onclick = function () {
     av.debug.log += '\n -Button: analysisButton';
     av.ui.mainBoxSwap('analysisBlock');
+    av.anl.AnaChartFn();
   };
 
   //********************************************************************************************************************
@@ -1673,7 +1674,12 @@ require([
         //console.log('before relayout in update grid chart');
         if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
 
-        if (0 == av.dom.popChart.data.length) {
+        if (undefined == av.dom.popChart.data) {
+          if (av.debug.plotly) console.log('before plot');
+          Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
+          if (av.debug.plotly) console.log('after plot');
+        }
+        else if (0 == av.dom.popChart.data.length) {
           if (av.debug.plotly) console.log('before plot');
           Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
           if (av.debug.plotly) console.log('after plot');
@@ -1689,7 +1695,7 @@ require([
         if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
       }
     }
-  }
+  };
 
   av.grd.popChartClear = function () {
     'use strict';
@@ -2032,6 +2038,7 @@ require([
 
   av.anl.AnaChartFn = function () {
     'use strict';
+    dijit.byId('analysisBlock').resize();
     //console.log('start av.anl.AnaChartFn-----------------------------------');
     //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.anl.logFit[1]) {
     if ('none' === dijit.byId('yLeftSelect').value && 'none' === dijit.byId('yRightSelect').value) {

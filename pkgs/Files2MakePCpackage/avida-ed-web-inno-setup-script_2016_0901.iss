@@ -4,7 +4,7 @@
 #define MyAppName "Avida-ED Web Windows Self-Hosted"
 #define MyAppVersion "3.0 beta 2016_0901"
 #define MyAppPublisher "BEACON Lab, Michigan State University"
-#define MyAppURL "http://avida-ed.msu.edu/"
+#define MyAppURL "http://Avida-ED.msu.edu/"
 #define MyAppExeName "avServer.exe"
 
 [Setup]
@@ -20,9 +20,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName=c:\avida-ed-web\{#MyAppName}
+DefaultDirName=c:\Avida-ED-web\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=avida-ed-web-setup
+OutputBaseFilename=Avida-ED-web-setup
 Compression=lzma
 SolidCompression=yes
 
