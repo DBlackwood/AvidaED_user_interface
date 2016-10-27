@@ -6,16 +6,23 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
 //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
 av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
+  if (av.debug.fio) console.log('zipFileName', zipFileName, '; loadConfigFlag=', loadConfigFlag);
   'use strict';
   if (loadConfigFlag) av.fzr.clearFzrFn();
   else av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
   //Clear each section of the freezer and active organism and ancestorBox
+  if (av.debug.fio) console.log('before  av.dnd.fzConfig.selectAll');
   av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-  av.dnd.fzConfig.sync();   //should be done after insertion or deletion
+  if (av.debug.fio) console.log('before av.dnd.fzConfig.sync');
+  av.dnd.fzConfig.sync('');   //should be done after insertion or deletion
+  if (av.debug.fio) console.log('before av.dnd.fzOrgan.selectAll');
   av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
+  if (av.debug.fio) console.log('before av.dnd.fzOrgan.sync');
   av.dnd.fzOrgan.sync();
+  if (av.debug.fio) console.log('before av.dnd.fzWorld.selectAll');
   av.dnd.fzWorld.selectAll().deleteSelectedNodes();
   av.dnd.fzWorld.sync();
+  if (av.debug.fio) console.log('after av.dnd.fzWorld.selectAll');
   //Change loading a workspace will change the freezer, but not parents or configuration
 /*  av.parents.clearParentsFn();  //globals.js
   av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
@@ -28,12 +35,12 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
   oReq.responseType = "arraybuffer";
   oReq.onload = function (oEvent) {
     var arybuf = oReq.response;
-    //console.log("have ziptest.zip", arybuf);
+    if (av.debug.fio) console.log("have ziptest.zip", arybuf);
     // do something to extract it
     av.fio.zipfile = new av.fio.JSZip();
-    //console.log("loading arybuf");
+    if (av.debug.fio) console.log("loading arybuf");
     av.fio.zipfile.load(arybuf, {base64: false});
-    //console.log("arybuf loaded");
+    if (av.debug.fio) console.log("arybuf loaded");
     //console.log('before call procesfiles');
     av.fio.zipPathRoot = null;
     for (var nameOfFileContainedInZipFile in av.fio.zipfile.files) {
@@ -41,6 +48,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
        This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
        */
       //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+      if (av.debug.fio) console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
       if (null === av.fio.zipPathRoot) {
         if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
           av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
@@ -80,7 +88,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     try {
       inputWSfile = document.getElementById('putWS');
       zipFileToLoad = inputWSfile.files[0];
-      //console.log('zipFileToLoad', zipFileToLoad);
+      console.log('zipFileToLoad', zipFileToLoad);
       fileReader = new FileReader();
     }
     catch(err) {
@@ -88,13 +96,14 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       av.debug.log += '\nworkspace fileReader error:' + err;
     }
 
+
     fileReader.onloadend = function(fileLoadedEvent)
     {
       try {
-        //console.log('fileLoadedEvent', fileLoadedEvent);
-        //console.log('result', fileLoadedEvent.target.result);
+        console.log('fileLoadedEvent', fileLoadedEvent);
+        console.log('result', fileLoadedEvent.target.result);
         zip2unpack = fileLoadedEvent.target.result;
-        //console.log('zip2unpack', zip2unpack);
+        console.log('zip2unpack', zip2unpack);
 
         zipFileLoaded = new av.fio.JSZip(zip2unpack);
         av.fio.zipPathRoot = null;
@@ -102,10 +111,11 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
 
         for (nameOfFileContainedInZipFile in zipFileLoaded.files) {
           var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
-          /*Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
-           This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
-           */
+          //Mac generated workspaces have the string '.avidaedworkspace/' before the folders for each freezerItem.
+          // This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
+          //
           //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+          console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
           if (null === av.fio.zipPathRoot) {
             if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
               av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
@@ -118,8 +128,8 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           av.fio.fName = nameOfFileContainedInZipFile;
           if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot + '/', av.fio.fName);
           else av.fio.anID = av.fio.fName;
-          //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
-          //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+          console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+          console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
           if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
         }
         if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();

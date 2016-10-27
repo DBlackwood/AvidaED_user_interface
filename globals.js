@@ -410,6 +410,7 @@ av.fzr.saveState = 'default';
 
 av.fzr.clearMainFzrFn = function () {
   'use strict';
+  if (av.debug.root) console.log('in ClearMainFzrFn');
   av.fzr.dir = {};
   av.fzr.domid = {};
   av.fzr.file = {};
@@ -419,16 +420,26 @@ av.fzr.clearMainFzrFn = function () {
   av.fzr.wNum = 0;  //value of the next world (populated dish) number
 
   //Clear each section of the freezer and active organism and ancestorBox
+  if (av.debug.root) console.log('before av.dnd.fzConfig.selectAll');
   av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
+  if (av.debug.root) console.log('before av.dnd.fzConfig.sync');
   av.dnd.fzConfig.sync();   //should be done after insertion or deletion
+  if (av.debug.root) console.log('before av.dnd.fzOrgan.selectAll');
   av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
+  if (av.debug.root) console.log('before av.dnd.fzOrgan.sync');
   av.dnd.fzOrgan.sync();
+  if (av.debug.root) console.log('before av.dnd.fzWorld.selectAll');
   av.dnd.fzWorld.selectAll().deleteSelectedNodes();
+  if (av.debug.root) console.log('before av.dnd.fzWorld.sync');
   av.dnd.fzWorld.sync();
+  if (av.debug.root) console.log('before av.dnd.ancestorBox.selectAll');
   av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
+  if (av.debug.root) console.log('before av.dnd.ancestorBox.sync');
   av.dnd.ancestorBox.sync();
 
+  if (av.debug.root) console.log('before av.fzr.saveUpdateState');
   av.fzr.saveUpdateState('yes');
+  if (av.debug.root) console.log('end of ClearMainFzrFn');
 };
 
 av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)

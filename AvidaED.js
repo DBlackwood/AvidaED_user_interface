@@ -268,7 +268,7 @@ require([
     av.debug.log += '\n -Button: mnFlOpenDefaultWS';
     av.fio.useDefault = true;
     av.fio.isB64 = false;
-    if ('no' === av.fzr.saveState) sWSfDialog.show();
+    if ('no' === av.fzr.saveState) sWSfDialog.show();  //Save WSfile Dialog box
     else {
       av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
     }
@@ -283,8 +283,10 @@ require([
 
   dijit.byId('sWSfOpen').on('Click', function () {
     av.debug.log += '\n -Button: sWSfOpen';
-    sWSfDialog.hide();
-    if (av.fio.useDefault) av.fio.readZipWS(av.fio.defaultFname, false);  //false = do not load config file
+    sWSfDialog.hide(sWSfDialog.hide);
+    if (av.fio.useDefault) {
+      av.fio.readZipWS(av.fio.defaultFname, false);
+    }  //false = do not load config file
     else {
       //document.getElementById('inputFile').click();  //to get user picked file
       document.getElementById('putWS').click();  //to get user picked file
@@ -1580,7 +1582,7 @@ require([
 
   av.grd.popChartFn = function () {
     'use strict';
-    if ('started' !== av.grd.runState) {
+    if ('prepping' === av.grd.runState) {   //values can be prepping, started, or world
       av.dom.popChart.style.visibility = 'hidden';
     }
     else {
@@ -1607,7 +1609,8 @@ require([
           av.pch.popY = av.pch.aveFit;
           av.pch.logY = av.pch.logFit;
           av.pch.maxY = (av.pch.aveMaxFit > av.pch.logMaxFit) ? av.pch.aveMaxFit : av.pch.logMaxFit;
-          //console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
+          console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
+          console.log('aveFit', av.pch.aveFit);
           //console.log('logFit', av.pch.logFit);
         }
         else if ('Average Offspring Cost' == dijit.byId('yaxis').value) {

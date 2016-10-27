@@ -257,11 +257,14 @@ av.dnd.landActiveConfig = function (pkg) {
     av.pch.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
     av.pch.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
     av.pch.aveVia = av.fio.tr2chart(av.fzr.file[dir + '/tr4']);
-    var lngth = av.pch.aveFit.length;
+    av.pch.xx = [];
+    console.log('av.pch.aveFit', av.pch.aveFit);
+    lngth = av.pch.aveFit.length;
     av.pch.logFit = av.utl.newFilledArray(lngth, null);
     av.pch.logCst = av.utl.newFilledArray(lngth, null);
     av.pch.logEar = av.utl.newFilledArray(lngth, null);
     av.pch.logNum = av.utl.newFilledArray(lngth, null);
+    for (var ii = 0; ii < lngth; ii++) av.pch.xx[ii] = ii;
     //console.log('tr length=', av.pch.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
     //console.log('aveFit', av.pch.aveFit);
     //console.log('aveCst', av.pch.aveCst);
@@ -272,6 +275,7 @@ av.dnd.landActiveConfig = function (pkg) {
     av.msg.importPopExpr();
     av.msg.requestGridData();
     av.msg.sendData();
+    av.grd.popChartFn();
     //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }
   else console.log('fzr.activeCon - something strange happened', av.fzr.actConfig);
@@ -651,18 +655,21 @@ av.dnd.landTrashCan = function (source, nodes, target) {
     if (av.debug.dnd) console.log('fzOrgan->trash; nodes[0]',nodes[0]);
     if (av.debug.dnd) console.log('fzOrgan->trash; source.parent',source.parent);
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+    source.sync();
     av.fzr.saveUpdateState('no');
   }
   else if ('fzConfig' == source.node.id && '@default' != nodes[0].textContent) {
     remove.domid = Object.keys(av.dnd.fzConfig.selection)[0];
     remove.type = 'c';
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+    source.sync();
     av.fzr.saveUpdateState('no');
   }
   else if ('fzWorld' == source.node.id && '@example' != nodes[0].textContent) {
     remove.domid = Object.keys(av.dnd.fzWorld.selection)[0];
     remove.type = 'w';
     source.parent.removeChild(nodes[0]);       //http://stackoverflow.com/questions/1812148/dojo-dnd-move-node-programmatically
+    source.sync();
     av.fzr.saveUpdateState('no');
   }
   // Delete from Ancestor Box no longer allowed items from ancestor box require ancestor (parent) handling.
