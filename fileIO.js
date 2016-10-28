@@ -101,11 +101,10 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     {
       try {
         console.log('fileLoadedEvent', fileLoadedEvent);
-        console.log('result', fileLoadedEvent.target.result);
         zip2unpack = fileLoadedEvent.target.result;
-        console.log('zip2unpack', zip2unpack);
 
         zipFileLoaded = new av.fio.JSZip(zip2unpack);
+        console.log('zipFileLoaded', zipFileLoaded);
         av.fio.zipPathRoot = null;
         av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
 
@@ -128,8 +127,8 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           av.fio.fName = nameOfFileContainedInZipFile;
           if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot + '/', av.fio.fName);
           else av.fio.anID = av.fio.fName;
-          console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
-          console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+          //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+          //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
           if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
         }
         if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
@@ -356,7 +355,7 @@ av.fio.SaveInSafari = function (content, uFname) {
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
   'use strict';
-  //console.log('defaultUserFname', av.fio.defaultUserFname);
+  console.log('defaultUserFname', av.fio.defaultUserFname);
   if (null === av.fio.userFname) {
     av.fio.userFname = av.fio.defaultUserFname;
   }
@@ -365,8 +364,9 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   }
   var end = av.fio.userFname.substring(av.fio.userFname.length-4);
   if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
-  var folderName = wsb(av.fio.userFname, '.zip');
-  //console.log('end', end, '; userFname', av.fio.userFname);
+  console.log('userName=', av.fio.userFname);
+  var folderName = wsb('.zip', av.fio.userFname);
+  console.log('end', end, '; userFname', av.fio.userFname, '; folderName', folderName);
 
   //make zipfile as a blob
   var WSzip = new av.fio.JSZip();
