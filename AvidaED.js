@@ -1609,8 +1609,8 @@ require([
           av.pch.popY = av.pch.aveFit;
           av.pch.logY = av.pch.logFit;
           av.pch.maxY = (av.pch.aveMaxFit > av.pch.logMaxFit) ? av.pch.aveMaxFit : av.pch.logMaxFit;
-          console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
-          console.log('aveFit', av.pch.aveFit);
+          //console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
+          //console.log('aveFit', av.pch.aveFit);
           //console.log('logFit', av.pch.logFit);
         }
         else if ('Average Offspring Cost' == dijit.byId('yaxis').value) {

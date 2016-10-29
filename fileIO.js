@@ -82,6 +82,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
   //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
   av.fio.userPickZipRead = function () {
     'use strict';
+    av.fzr.usrFileLoaded = false;
     //console.log('in av.fio.userPickZipRead');
     var inputWSfile, zipFileToLoad, fileReader, zip2unpack, zipFileLoaded, nameOfFileContainedInZipFile;
 
@@ -116,7 +117,8 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
           console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
           if (null === av.fio.zipPathRoot) {
-            if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
+            //if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
+            if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
               av.fio.zipPathRoot = wsb('/', nameOfFileContainedInZipFile);
             }
             else if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
@@ -125,24 +127,33 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           }
           av.fio.thisfile = zipFileLoaded.files[nameOfFileContainedInZipFile];
           av.fio.fName = nameOfFileContainedInZipFile;
-          if (10 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot + '/', av.fio.fName);
+          if (0 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot + '/', av.fio.fName);
           else av.fio.anID = av.fio.fName;
           //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
           //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
-          if (3 < av.fio.fName.length) av.fio.processFiles(false);  //do not load configfile
+          if (3 < av.fio.fName.length) {
+            console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID);
+            av.fio.processFiles(false);  //load files
+          }
         }
+        console.log('av.fzr.file', av.fzr);
+        console.log('cNum=',av.fzr.cNum, '; gNum=', av.fzr.gNum, '; wNum', av.fzr.wNum);
         if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
         av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
         av.fzr.gNum++;
         av.fzr.wNum++;
         av.fzr.saveUpdateState('yes');
+        console.log('av.fzr.usrFileLoaded', av.fzr.usrFileLoaded);
+        if (!av.fzr.usrFileLoaded) alert('It appears that the zip file was not an Avida-ED Workspace. '
+          + 'Please choose another file or load the default workspace. '
+          + 'If you continue to have propblem, ask your instructor or write Avida-ED-development@googlegroups.com');
       }
       catch (error) {
         av.debug.log += '\nworkspace jsZip error:' + error;
         alert('Unable to extract an Avida Workspace Zip file, please check the file and try again. If you continue to have trouble, use "Report Problem" in the help menu');
       }
     };
-    fileReader.readAsArrayBuffer(zipFileToLoad);  //
+    fileReader.readAsArrayBuffer(zipFileToLoad);  //calls function that reads the zip file
   }
 
   //------------------------------- call to import a freezer item ------------------------------------------------------

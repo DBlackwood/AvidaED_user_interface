@@ -85,6 +85,7 @@ av.fio.processFiles = function (loadConfigFlag){
   switch (fileType) {
     case 'entryname.txt':
       av.frd.add2freezerFromFile(loadConfigFlag);
+      av.fzr.usrFileLoaded = true;
     case 'ancestors':
     case 'ancestors_manual':
     case 'avida.cfg':
