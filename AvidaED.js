@@ -63,11 +63,11 @@ require([
   'dijit/form/DropDownButton',
   'dijit/form/ComboBox',
   'dijit/form/Textarea',
-  'dojox/charting/Chart',
-  'dojox/charting/axis2d/Default',
-  'dojox/charting/plot2d/Lines',
-  'dojox/charting/plot2d/Grid',
-  'dojox/charting/action2d/MouseZoomAndPan',
+  //'dojox/charting/Chart',
+  //'dojox/charting/axis2d/Default',
+  //'dojox/charting/plot2d/Lines',
+  //'dojox/charting/plot2d/Grid',
+  //'dojox/charting/action2d/MouseZoomAndPan',
   'dojo/ready',
   'jquery',
   'jquery-ui',
@@ -96,7 +96,7 @@ require([
              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
              aspect, on, registry, Select,
              HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
-             DropDownButton, ComboBox, Textarea, Chart, Default, Lines, Grid, MouseZoomAndPan,
+             DropDownButton, ComboBox, Textarea, //Chart, Default, Lines, Grid, MouseZoomAndPan,
              ready, $, jqueryui, Plotly, //fileDownload,  //Blob.js,
              JSZip, FileSaver) {
   'use strict';
@@ -236,7 +236,7 @@ require([
     if (null === av.aww.uiWorker) {
       av.aww.uiWorker = new Worker('avida.js');
       //console.log('webworker created');
-      av.debug.log += '\nui --> Avida:  av.aww.uiWorker was null, started a new webworker';
+      av.debug.log += '\nui ==> Avida:  av.aww.uiWorker was null, started a new webworker';
     }
     else console.log('av.aww.uiWorker is not null');
   }
