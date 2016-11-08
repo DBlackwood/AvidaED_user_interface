@@ -180,7 +180,8 @@ av.msg.stepUpdate = function () {
       av.msg.previousUpdate = av.grd.popStatsMsg.update;
       var request = {'type': 'stepUpdate'}
       av.aww.uiWorker.postMessage(request);
-      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
+      //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
+      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + JSON.stringify(request);
     }
   }, 1);  //number is time in msec for a delay
 }
@@ -214,7 +215,8 @@ av.msg.importConfigExpr = function () {
   if (av.debug.msg) console.log('importExpr', request);
   av.aww.uiWorker.postMessage(request);
   //av.debug.log += '\nui --> Avida: importConfigExpr \n' + av.utl.json2stringFn(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 av.msg.importPopExpr = function () {
@@ -244,7 +246,8 @@ av.msg.importPopExpr = function () {
   if (av.debug.msg) console.log('importExpr', request);
   av.aww.uiWorker.postMessage(request);
   //av.debug.log += '\nui --> Avida: inportPopExpr \n' + av.utl.json2stringFn(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 av.msg.importWorldExpr = function () {
@@ -270,7 +273,8 @@ av.msg.importWorldExpr = function () {
   if (av.debug.msg) console.log('importExpr', request);
   av.aww.uiWorker.postMessage(request);
   //av.debug.log += '\nui --> Avida: importWorldExpr \n' + av.utl.json2stringFn(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 av.msg.exportExpr = function (popName) {
@@ -283,7 +287,8 @@ av.msg.exportExpr = function (popName) {
   }
   av.aww.uiWorker.postMessage(request);
   //av.debug.log += '\nui --> Avida: freezeWorldExpr \n' + av.utl.json2stringFn(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 //fio.uiWorker function
@@ -310,7 +315,8 @@ av.msg.doOrgTrace = function () {
       if (av.debug.msg) console.log('doOrgTrace', request);
       if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
       av.aww.uiWorker.postMessage(request);
-      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+      //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
       av.msg.sendData();
     }
   }
@@ -329,7 +335,8 @@ av.msg.doWebOrgDataByCell = function () {
     'args': av.grd.selectedNdx
   }
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
   av.msg.sendData();
   //console.log('runStopButton',runStopButton.textContent);
 }
@@ -344,7 +351,7 @@ av.msg.requestPopStats = function () {
     'interval': 1
   }
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 av.msg.sync = function (trigger) {
@@ -369,7 +376,7 @@ av.msg.requestGridData = function () {
     'interval': 1
   }
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 av.msg.sendData = function () {}
@@ -379,7 +386,7 @@ av.msg.sendData_real = function () {
   var request;
   request = {'type': 'sendData'};
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 //sends message to worker to tell Avida to run/pause as a toggle.
@@ -395,7 +402,7 @@ av.msg.doRunPause = function () {
       'triggerType': 'immediate'
     };
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 */
 
@@ -410,7 +417,7 @@ av.msg.reset = function () {
   };
   if (av.debug.userMsg) userMsgLabel.textContent = 'ui-->Avida: reset requested';
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 
 //Not used when handshaking is used.
@@ -423,7 +430,7 @@ av.msg.pause = function(update) {
     'start': update
   };
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 */
 
@@ -444,7 +451,7 @@ av.msg.injectAncestors = function () {
         'clade_name': av.parents.name[ii]
       }
       av.aww.uiWorker.postMessage(request);
-      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
       //console.log('log', av.utl.json2stringFn(request));
       av.parents.injected[ii] = true;
       //console.log('parents.injected', av.parents.injected[ii]);
@@ -712,7 +719,7 @@ function doDbReady(fio) {
     'type': 'dbReady'
   };
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
+  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + JSON.stringify(request);
 }
 */
 /* web pages related to killing re-starting a web-worker

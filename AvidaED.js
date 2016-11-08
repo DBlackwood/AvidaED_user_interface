@@ -1578,7 +1578,7 @@ require([
     if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
     av.dom.popChart.style.visibility='hidden';
     //console.log('layout.ht, wd =', av.dom.popChart.layout.height, av.dom.popChart.layout.width);
-  }
+  };
 
   av.grd.popChartFn = function () {
     'use strict';
@@ -1587,7 +1587,6 @@ require([
     }
     else {
       av.dom.popChart.style.visibility = 'visible';
-      //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.pch.logFit[1]) {
       if ('none' === dijit.byId('yaxis').value) {
         if (undefined !== av.dom.popChart.data) {
           console.log('before purge in popChartFn');
@@ -1691,10 +1690,14 @@ require([
             if (av.debug.plotly) console.log('after plot');
           }
           else {
+            console.log('trace0', av.pch.trace0);
+            //Plotly.restyle(graphDiv, update, [1, 2]);
+            Plotly.restyle(av.dom.popChart, av.pch.trace0, [0]);
+            //Plotly.restyle(av.dom.popChart, av.pch.trace1, [1]);
             Plotly.relayout(av.dom.popChart, av.pch.update);
             //console.log('after relayout in update grid chart');
             if (av.debug.plotly) console.log('popData', popData);
-            Plotly.animate('popChart', {popData});
+            //Plotly.animate('popChart', {popData});
             if (av.debug.plotly) console.log('after animate in update grid chart');
           }
           if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
