@@ -165,11 +165,6 @@ div.popStatsTablePop {
 
 button {display:inline;}
 
-button, input,
-.dijitToggleButton {
-  height: 21px;
-}
-
 .bitButtonOff {
   background-color: #fff;
   color: #000;

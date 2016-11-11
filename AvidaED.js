@@ -57,7 +57,7 @@ require([
   'dijit/form/HorizontalRule',
   'dijit/form/HorizontalRuleLabels',
   'dijit/form/RadioButton',
-  'dijit/form/ToggleButton',
+  //'dijit/form/ToggleButton',
   'dijit/form/NumberSpinner',
   'dijit/form/ComboButton',
   'dijit/form/DropDownButton',
@@ -95,7 +95,7 @@ require([
              BorderContainer, ContentPane, MenuBar, PopupMenuBarItem, MenuItem, Menu,
              Button, TitlePane, dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom,
              aspect, on, registry, Select,
-             HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, ToggleButton, NumberSpinner, ComboButton,
+             HorizontalSlider, HorizontalRule, HorizontalRuleLabels, RadioButton, NumberSpinner, ComboButton,
              DropDownButton, ComboBox, Textarea, //Chart, Default, Lines, Grid, MouseZoomAndPan,
              ready, $, jqueryui, Plotly, //fileDownload,  //Blob.js,
              JSZip, FileSaver) {
@@ -1651,6 +1651,8 @@ require([
 
         //var popData = [av.pch.trace0];
         var popData = [av.pch.trace0, av.pch.trace1];
+        var rstl0 = {x: [av.pch.xx], y: [av.pch.popY]};
+        var rstl1 = {x: [av.pch.xx], y: [av.pch.logY]};
 
         //if (av.pch.yChange) {
         if (false) {
@@ -1692,15 +1694,25 @@ require([
             if (av.debug.plotly) console.log('after plot');
           }
           else {
-            //console.log('trace0', av.pch.trace0);
-            //Plotly.restyle(graphDiv, update, [1, 2]);
-            //Plotly.restyle(av.dom.popChart, av.pch.trace0, [0]);
-            //Plotly.restyle(av.dom.popChart, av.pch.trace1, [1]);
-            Plotly.relayout(av.dom.popChart, av.pch.update);
-            console.log('after relayout in update grid chart');
-            if (av.debug.plotly) console.log('popData', popData);
-            Plotly.aminate('popChart', {popData});
-            if (av.debug.plotly) console.log('after animate in update grid chart');
+            if (av.brs.isChrome) {
+              Plotly.restyle('popChart', rstl0, [0]);
+              Plotly.restyle('popChart', rstl1, [1]);
+              Plotly.relayout(av.dom.popChart, av.pch.update);
+            }
+            else {
+              //console.log('trace0', av.pch.trace0);
+              //Plotly.restyle(graphDiv, update, [1, 2]);
+              //Plotly.restyle(av.dom.popChart, av.pch.trace0, [0]);
+              //Plotly.restyle(av.dom.popChart, av.pch.trace1, [1]);
+              Plotly.relayout(av.dom.popChart, av.pch.update);
+              //console.log('after relayout in update grid chart');
+              if (av.debug.plotly) console.log('popData', popData);
+              //Plotly.animate('popChart', {popData});
+              Plotly.aminate('popChart', {popData});
+              //Plotly.aminate('popChart', popData);
+              //av.pch.Plotly.aminate('popChart', {popData});
+              if (av.debug.plotly) console.log('after animate in update grid chart');
+            }
           }
           if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
           if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);

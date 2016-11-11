@@ -522,7 +522,7 @@ av.ptd.updateLogicFn = function (mUpdate){
   av.pch.logEarFnd = 0;
   av.pch.logNumFnd = 0;
 
-  console.log('av.ptd.allOff',av.ptd.allOff);
+  //console.log('av.ptd.allOff',av.ptd.allOff);
   if (av.ptd.allOff) {    logTit1.textContent = '';
     logTit2.textContent = '';
     logTit3.textContent = '';
