@@ -212,13 +212,13 @@ av.grd.findLogicOutline = function () {
     for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.equ.data[ii];}
     av.ptd.allOff = false;
   }
-  if (av.ptd.allOff) {for (ii = 0; ii < av.grd.msg.not.data.length; ii++) { av.grd.logicOutline[ii] = 0 } }
+  if (av.ptd.allOff) {for (ii = 0; ii < av.grd.msg.not.data.length; ii++) { av.grd.logicOutline[ii] = 0; } }
 
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
   if (av.debug.logic) console.log('setLogic', av.grd.logicOutline);
   //console.log('update',av.grd.updateNum, '; setLogic', av.grd.logicOutline);
   //if (0 <= av.grd.msg.update) av.ptd.updateLogicFn();  //this is done in update population stats right now
-}
+};
 
 av.grd.cellConflict = function (NewCols, NewRows) {
   'use strict';

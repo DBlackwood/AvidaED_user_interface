@@ -255,6 +255,8 @@ require([
   // ********************************************************************************************************************
   av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
   av.fio.FileSaver = FileSaver;
+  av.pch.Plotly = Plotly;
+  av.pch.Plotly.aminate = Plotly.animate;
 
   av.fio.readZipWS(av.fio.defaultFname, true);
   //av.fio.loadDefaultConfig();
@@ -1690,14 +1692,14 @@ require([
             if (av.debug.plotly) console.log('after plot');
           }
           else {
-            console.log('trace0', av.pch.trace0);
+            //console.log('trace0', av.pch.trace0);
             //Plotly.restyle(graphDiv, update, [1, 2]);
-            Plotly.restyle(av.dom.popChart, av.pch.trace0, [0]);
+            //Plotly.restyle(av.dom.popChart, av.pch.trace0, [0]);
             //Plotly.restyle(av.dom.popChart, av.pch.trace1, [1]);
             Plotly.relayout(av.dom.popChart, av.pch.update);
-            //console.log('after relayout in update grid chart');
+            console.log('after relayout in update grid chart');
             if (av.debug.plotly) console.log('popData', popData);
-            //Plotly.animate('popChart', {popData});
+            Plotly.aminate('popChart', {popData});
             if (av.debug.plotly) console.log('after animate in update grid chart');
           }
           if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
