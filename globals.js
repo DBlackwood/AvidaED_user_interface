@@ -294,7 +294,7 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_1025';
+av.ui.version = '2016_1111';
 av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';

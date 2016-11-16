@@ -168,18 +168,25 @@ var flexsplit = function (instr) {
 };
 
 //**********************************************************************************************************************
+av.utl.jsonStringify = function(jStr) {
+  'use strict'
+  var str0 = JSON.stringify(jStr, null, 2);
+  var str1 = str0.replace(/\\n/g, "\n") + '~|~';
+  return str1;
+}
+
 // JSon to string
 av.utl.json2stringFn = function (jStr) {
   'use strict';
   var rstr = '';
   for (var ndx in jStr) {
     if ('object' === typeof jStr[ndx]) {
-      rstr += ndx + ': \n';
+      rstr += '..' + ndx + ': \n';
       if ('snapshots' != ndx) {
         var iiStuff = jStr[ndx];
         for (var ii in iiStuff) {
           if ('object' === typeof iiStuff[ii]) {
-            rstr += ii + ': \n';
+            rstr += '__' + ii + ': \n';
             var jjStuff = iiStuff[ii];
             for (var jj in jjStuff) {
               rstr += '    ' + jj + ': ' + jjStuff[jj] + '\n';
@@ -189,7 +196,7 @@ av.utl.json2stringFn = function (jStr) {
         }
       }
     }
-    else rstr += ndx + ':' + jStr[ndx] + '\n';
+    else rstr += '  ' + ndx + ':' + jStr[ndx] + '\n';
   }
   return rstr + '~|~';
 }
