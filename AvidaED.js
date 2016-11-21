@@ -1598,7 +1598,7 @@ require([
         }
       }
       else {
-        av.debug.log += '\n - - Call popChartFn';
+        //av.debug.log += '\n - - Call popChartFn';
         av.pch.divSize('av.grd.popChartFn');
 
         if (dijit.byId('yaxis').value === av.pch.yValue) av.pch.yChange = false;

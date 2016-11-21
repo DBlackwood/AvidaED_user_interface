@@ -171,7 +171,7 @@ var flexsplit = function (instr) {
 av.utl.jsonStringify = function(jStr) {
   'use strict'
   var str0 = JSON.stringify(jStr, null, 2);
-  var str1 = str0.replace(/\\n/g, "\n") + '~|~';
+  var str1 = '~|~' + str0.replace(/\\n/g, "\n") + '~|~';
   return str1;
 }
 
@@ -198,7 +198,7 @@ av.utl.json2stringFn = function (jStr) {
     }
     else rstr += '  ' + ndx + ':' + jStr[ndx] + '\n';
   }
-  return rstr + '~|~';
+  return rstr + '~.~';
 }
 
 //**********************************************************************************************************************
