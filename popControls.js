@@ -22,7 +22,7 @@ av.ptd.makeRunState = function () {
 av.ptd.popBoxSwap = function () {
   'use strict';
   if ('Map' == document.getElementById('popSetupButton').innerHTML) {
-    av.debug.log += '\n -Button: popSetupButton became Setup';
+    av.debug.log += '\n--User: Button: popSetupButton became Setup';
     document.getElementById('mapBlock').style.display = 'block';
     document.getElementById('popSetupButton').textContent = 'Setup';
     dijit.byId('setupBlock').set('style', 'display: none');
@@ -35,7 +35,7 @@ av.ptd.popBoxSwap = function () {
     //dijit.byId('mapBlock').set('style', 'display: block;');
     //dijit.byId('mapBC').set('style', 'height: ' + height + 'px');
   } else {
-    av.debug.log += '\n -Button: popSetupButton became Map';
+    av.debug.log += '\n--User: Button: popSetupButton became Map';
     document.getElementById('mapBlock').style.display = 'none'
     document.getElementById('popSetupButton').textContent = 'Map';
     dijit.byId('setupBlock').set('style', 'display: block;');
@@ -235,7 +235,6 @@ av.ptd.runPopFn = function () {
   //console.log('namelist', namelist);
   if (1 > namelist.length) {
     //console.log('about to call av.ptd.makePauseState()');
-    //av.debug.log += 'about to call av.ptd.makePauseState() in AvidaEd.js line 740 \n';
     av.ptd.makePauseState();
     NeedAncestorDialog.show();
   }
@@ -381,7 +380,7 @@ av.ptd.FrPopulationFn = function () {
 
 av.ptd.bitToggle = function (button) {
   'use strict';
-  av.debug.log += '\n -Button: ' + button;
+  av.debug.log += '\n--User: Button: ' + button;
   if ('on' == document.getElementById(button).value) {
     document.getElementById(button).value = 'off';
     document.getElementById(button).className = 'bitButtonOff';

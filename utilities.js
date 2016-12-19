@@ -175,6 +175,14 @@ av.utl.jsonStringify = function(jStr) {
   return str1;
 }
 
+
+av.utl.jsonStringifyOneLine = function(jStr) {
+  'use strict'
+  var str0 = JSON.stringify(jStr);
+  var str1 = '~|~' + str0 + '~|~';
+  return str1;
+}
+
 // JSon to string
 av.utl.json2stringFn = function (jStr) {
   'use strict';

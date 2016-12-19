@@ -80,7 +80,7 @@ av.msg.readMsg = function (ee) {
         //console.log('Avida --> ui webOrgDataByCellID', msg);
         break;
       default:
-        if (av.debug.msg) console.log('____________UnknownRequest: ', msg);
+        if (av.debug.msg) {console.log('____________UnknownRequest: ', msg);}
         av.debug.log += '\nAvida --> ui in default in messaging on line 69 \n' + av.utl.json2stringFn(msg);
         break;
     }
@@ -128,8 +128,6 @@ av.msg.readMsg = function (ee) {
   }
   else if ('response' === msg.type) {
     //console.log('msg.request.type', msg.request.type);
-    //av.debug.log += '\nAvida --> ui   msg.type=response\n' + av.utl.json2stringFn(msg);
-
     if ('stepUpdate' == msg.request.type) {
       av.debug.log += '\nAvida --> ui: type: response; request: stepUpdate; success:' + msg.success;
     }
@@ -180,8 +178,7 @@ av.msg.stepUpdate = function () {
       av.msg.previousUpdate = av.grd.popStatsMsg.update;
       var request = {'type': 'stepUpdate'}
       av.aww.uiWorker.postMessage(request);
-      //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.json2stringFn(request);
-      av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.jsonStringify(request);
+      av.debug.log += '\n\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; ' + av.utl.jsonStringifyOneLine(request);
     }
   }, 1);  //number is time in msec for a delay
 }
@@ -214,8 +211,6 @@ av.msg.importConfigExpr = function () {
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.aww.uiWorker.postMessage(request);
-  //av.debug.log += '\nui --> Avida: importConfigExpr \n' + av.utl.json2stringFn(request);
-  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
   av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importConfigExpr';
 }
 
@@ -245,8 +240,6 @@ av.msg.importPopExpr = function () {
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.aww.uiWorker.postMessage(request);
-  //av.debug.log += '\nui --> Avida: inportPopExpr \n' + av.utl.json2stringFn(request);
-  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
   av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importPopExpr';
 }
 
@@ -272,8 +265,6 @@ av.msg.importWorldExpr = function () {
   }
   if (av.debug.msg) console.log('importExpr', request);
   av.aww.uiWorker.postMessage(request);
-  //av.debug.log += '\nui --> Avida: importWorldExpr \n' + av.utl.json2stringFn(request);
-  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
   av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importWorldExpr';
 }
 
@@ -286,8 +277,6 @@ av.msg.exportExpr = function (popName) {
     'triggerType': 'immediate'
   }
   av.aww.uiWorker.postMessage(request);
-  //av.debug.log += '\nui --> Avida: freezeWorldExpr \n' + av.utl.json2stringFn(request);
-  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
   av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
 }
 
@@ -315,7 +304,6 @@ av.msg.doOrgTrace = function () {
       if (av.debug.msg) console.log('doOrgTrace', request);
       if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
       av.aww.uiWorker.postMessage(request);
-      //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
       av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
       av.msg.sendData();
     }
@@ -335,7 +323,6 @@ av.msg.doWebOrgDataByCell = function () {
     'args': av.grd.selectedNdx
   }
   av.aww.uiWorker.postMessage(request);
-  //av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.json2stringFn(request);
   av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
   av.msg.sendData();
   //console.log('runStopButton',runStopButton.textContent);
@@ -402,7 +389,6 @@ av.msg.doRunPause = function () {
       'triggerType': 'immediate'
     };
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
 }
 */
 
@@ -430,7 +416,6 @@ av.msg.pause = function(update) {
     'start': update
   };
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
 }
 */
 
@@ -724,7 +709,6 @@ function doDbReady(fio) {
     'type': 'dbReady'
   };
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\nui --> Avida: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
 }
 */
 /* web pages related to killing re-starting a web-worker

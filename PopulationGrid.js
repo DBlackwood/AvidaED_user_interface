@@ -184,13 +184,13 @@ av.grd.findLogicOutline = function () {
     lngth = av.grd.msg.orn.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.orn.data[ii];}
     av.ptd.allOff = false;
-    if (av.debug.logic) console.log('orn', av.grd.msg.orn.data);
+    if (av.debug.bool) console.log('orn', av.grd.msg.orn.data);
   }
   if ('on' == document.getElementById('oroButton').value) {
     lngth = av.grd.msg.or.data.length;
     for (ii = 0; ii < lngth; ii++) {av.grd.logicOutline[ii] = av.grd.logicOutline[ii] * av.grd.msg.or.data[ii];}
     av.ptd.allOff = false;
-    if (av.debug.logic) console.log('or', av.grd.msg.or.data);
+    if (av.debug.bool) console.log('or', av.grd.msg.or.data);
   }
   if ('on' == document.getElementById('antButton').value) {
     lngth = av.grd.msg.andn.data.length;
@@ -215,7 +215,7 @@ av.grd.findLogicOutline = function () {
   if (av.ptd.allOff) {for (ii = 0; ii < av.grd.msg.not.data.length; ii++) { av.grd.logicOutline[ii] = 0; } }
 
   //console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
-  if (av.debug.logic) console.log('setLogic', av.grd.logicOutline);
+  if (av.debug.bool) console.log('setLogic', av.grd.logicOutline);
   //console.log('update',av.grd.updateNum, '; setLogic', av.grd.logicOutline);
   //if (0 <= av.grd.msg.update) av.ptd.updateLogicFn();  //this is done in update population stats right now
 };

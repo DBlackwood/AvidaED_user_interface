@@ -32,7 +32,7 @@ av.mouse.downOrganCanvasFn = function(evt) {
       }
     }
     if ('offspring' != av.mouse.Picked) {
-      av.debug.log += '\n -Click on Offspring';
+      av.debug.log += '\n--User: Click on Offspring';
       if (av.debug.ind) {
       }
       var lngth = av.traceObj[av.ind.cycle].memSpace.length;
