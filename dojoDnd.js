@@ -251,14 +251,14 @@ av.dnd.landActiveConfig = function (pkg) {
 
     //Load Time Recorder Data.
     dir = av.fzr.actConfig.dir;
-    console.log('dir', dir);
+    //console.log('dir', dir);
     av.pch.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
     av.pch.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
     av.pch.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
     av.pch.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
     av.pch.aveVia = av.fio.tr2chart(av.fzr.file[dir + '/tr4']);
     av.pch.xx = [];
-    console.log('av.pch.aveFit', av.pch.aveFit);
+    //console.log('av.pch.aveFit', av.pch.aveFit);
     lngth = av.pch.aveFit.length;
     av.pch.logFit = av.utl.newFilledArray(lngth, null);
     av.pch.logCst = av.utl.newFilledArray(lngth, null);

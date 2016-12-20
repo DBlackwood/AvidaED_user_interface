@@ -294,7 +294,7 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_1111';
+av.ui.version = '2016_1220';
 av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';
@@ -329,6 +329,50 @@ av.brs.isChrome = !!window.chrome && !!window.chrome.webstore;
 // Blink engine detection
 av.brs.isBlink = (av.brs.isChrome || av.brs.isOpera) && !!window.CSS;
 
+//----------------------------------------------------------------------------------------------------------------------
+av.brs.found = 0;
+if (av.brs.isOpera) {
+  av.debug.log += '\nBrowser is Opera';
+  av.brs.found++;
+  av.brs.browser = 'Opera';
+  av.debug.log += '\nBrowser is Opera';
+}
+if (av.brs.isFirefox) {
+  av.brs.found++;
+  av.brs.browser = 'Firefox';
+  av.debug.log += '\nBrowser is Firefox';
+}
+if (av.brs.isSafari) {
+  av.brs.found++;
+  av.brs.browser = 'Safari';
+  av.debug.log += '\nBrowser is Safarli';
+}
+if (av.brs.isIE) {
+  av.brs.found++;
+  av.brs.browser = 'IE';
+  av.debug.log += '\nBrowser is IE';
+}
+if (av.brs.isEdge) {
+  av.brs.found++;
+  av.brs.browser = 'Edge';
+  av.debug.log += '\nBrowser is Edge';
+}
+if (av.brs.isChrome) {
+  av.brs.found++;
+  av.brs.browser = 'Chrome';
+  av.debug.log += '\nBrowser is Chrome';
+}
+if (av.brs.isBlink) {
+  av.brs.found++;
+  av.brs.browser = 'Blink';
+  av.debug.log += '\nBrowser is Blink';
+}
+if (0 === av.brs.found) {
+  av.brs.browser = 'not found';
+  av.debug.log += '\nBrowser is not found';
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 //console.log('window.navigator',window.navigator);
 if (av.debug.root) console.log('brs', av.brs);
