@@ -446,6 +446,11 @@ require([
     mnHpAboutDialog.show();
   });
 
+  dijit.byId('mnAeAbout').on('Click', function () {
+    av.debug.log += '\n--User: Button: mnAeAbout';
+    mnHpAboutDialog.show();
+  });
+
   /*  //tiba delete later
   av.ui.HardwareDialog = new Dialog({
     title: 'Avida : A Guided Tour of an Ancestor and its Hardware',
