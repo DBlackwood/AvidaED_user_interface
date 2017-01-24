@@ -18,6 +18,15 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 av.debug.plotly = false;  //both popChart and analysis
+av.debug.usr = true; //working on log for user actions.
+
+av.debug.addUser = function(addStr, comment) {
+  "use strict";
+  var note = comment === undefined ? '' : ' ~.~ ' + comment;
+  av.debug.log += '\n--usr: ' + addStr + note;
+  if (av.debug.usr) console.log('usr: ' + addStr + note);
+}
+
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
@@ -294,8 +303,8 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2016_1220';
-av.debug.log = 'message and error log: version Beta Test ' + av.ui.version;
+av.ui.version = '2017_0123';
+av.debug.log = 'hed: message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';
@@ -332,44 +341,44 @@ av.brs.isBlink = (av.brs.isChrome || av.brs.isOpera) && !!window.CSS;
 //----------------------------------------------------------------------------------------------------------------------
 av.brs.found = 0;
 if (av.brs.isOpera) {
-  av.debug.log += '\nBrowser is Opera';
+  av.debug.log += '\n     Browser is Opera';
   av.brs.found++;
   av.brs.browser = 'Opera';
-  av.debug.log += '\nBrowser is Opera';
+  av.debug.log += '\n     Browser is Opera';
 }
 if (av.brs.isFirefox) {
   av.brs.found++;
   av.brs.browser = 'Firefox';
-  av.debug.log += '\nBrowser is Firefox';
+  av.debug.log += '\n     Browser is Firefox';
 }
 if (av.brs.isSafari) {
   av.brs.found++;
   av.brs.browser = 'Safari';
-  av.debug.log += '\nBrowser is Safarli';
+  av.debug.log += '\n     Browser is Safarli';
 }
 if (av.brs.isIE) {
   av.brs.found++;
   av.brs.browser = 'IE';
-  av.debug.log += '\nBrowser is IE';
+  av.debug.log += '\n     Browser is IE';
 }
 if (av.brs.isEdge) {
   av.brs.found++;
   av.brs.browser = 'Edge';
-  av.debug.log += '\nBrowser is Edge';
+  av.debug.log += '\n     Browser is Edge';
 }
 if (av.brs.isChrome) {
   av.brs.found++;
   av.brs.browser = 'Chrome';
-  av.debug.log += '\nBrowser is Chrome';
+  av.debug.log += '\n     Browser is Chrome';
 }
 if (av.brs.isBlink) {
   av.brs.found++;
   av.brs.browser = 'Blink';
-  av.debug.log += '\nBrowser is Blink';
+  av.debug.log += '\n     Browser is Blink';
 }
 if (0 === av.brs.found) {
   av.brs.browser = 'not found';
-  av.debug.log += '\nBrowser is not found';
+  av.debug.log += '\n     Browser is not found';
 }
 
 //----------------------------------------------------------------------------------------------------------------------

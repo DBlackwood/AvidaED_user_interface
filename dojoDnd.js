@@ -147,7 +147,7 @@ av.dnd.nameParent = function(name) {
 
 av.dnd.landActiveConfig = function (pkg) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent;
+  av.debug.addUser('DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent);
   var ndx = -1;
   var klen = 0;
   var kk = 0;
@@ -295,7 +295,7 @@ av.dnd.landFzConfig = function (source, nodes, target) {
   if (configurationName) {
     var configName = av.dnd.getUniqueFzrName(configurationName, nameArray);
     if (null != configName) {
-      av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + '; --> ' + configName;
+      av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + '; --> ' + configName);
       document.getElementById(domid).textContent = configName;
       target.map[domid].data = configName;
       target.map[domid].type[0] = 'c';
@@ -343,7 +343,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   if (avidian) {
     var avName = av.dnd.getUniqueFzrName(avidian, nameArray);
     if (null != avName) {  //give dom item new avName name
-      av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + '; --> ' + avName;
+      av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent + '; --> ' + avName);
       document.getElementById(domid).textContent = avName;
       target.map[domid].data = avName;
 
@@ -399,7 +399,7 @@ av.dnd.landAncestorBox = function (source, nodes, target) {
   'use strict';
   //Do not copy parents if one is moved within Ancestor Box
   if ('ancestorBox' != source.node.id) {
-    av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+    av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
     //find genome by finding source
     var domId = Object.keys(source.selection)[0];
     var dir = av.fzr.dir[domId];
@@ -423,10 +423,8 @@ av.dnd.landAncestorBox = function (source, nodes, target) {
 };
 
 // Process Drop on gridCanvas
-//This triggers for every dnd drop, not just those of gridCanvas
 av.dnd.landGridCanvas = function (source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
   if (av.debug.dnd) console.log('inside gridCanvas dnd');
   if (av.debug.dnd) console.log('parents', av.parents);
 
@@ -434,6 +432,10 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
   //if (av.debug.dnd) console.log('xOff, yOff, xUP, y', av.grd.xOffset, av.grd.yOffset, av.mouse.UpGridPos[0];, av.mouse.UpGridPos[1];);
   //calculated grid cell to see if it was a valid grid position.
   var nn = av.parents.name.length;
+  //console.log('nn', nn);
+  //add to log
+  av.debug.addUser('DnD: ' + source.node.id + '--> GridCanvas: by: ' + nodes[0].textContent + ' on (' +  av.mouse.UpGridPos[0] + ', ' + av.mouse.UpGridPos[1] + ')' );
+
   var mouseX = av.mouse.UpGridPos[0] - av.grd.marginX - av.grd.xOffset;
   var mouseY = av.mouse.UpGridPos[1] - av.grd.marginY - av.grd.yOffset;
   if (av.debug.dnd) console.log('mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
@@ -442,6 +444,7 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
   av.parents.row[nn] = Math.floor(mouseY / av.grd.cellHt);
   //check to see if in the grid part of the canvas
   if (av.parents.col[nn] >= 0 && av.parents.col[nn] < av.grd.cols && av.parents.row[nn] >= 0 && av.parents.row[nn] < av.grd.rows) {
+    console.log('spot on grid found');
     av.parents.AvidaNdx[nn] = av.parents.row[nn] * av.grd.cols + av.parents.col[nn];
 
     //Start setting up for getting data for parents structure
@@ -481,9 +484,14 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
     //if (av.debug.dnd) console.log('after', av.parents)
     //Re-Draw Grid - done in routine that calls this one.
   }
+  else {
+    //not on grid
+    av.debug.addUser('DnD: ' + source.node.id + '--> GridCanvas: by: ' + nodes[0].textContent);
+  }
   //In all cases remove the ancestor from the gridCanvas so we only keep them in the av.dnd.ancestorBox.
   av.dnd.gridCanvas.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.gridCanvas.sync();
+  
   if (av.debug.dnd) console.log('parents', av.parents);
 }
 
@@ -504,7 +512,7 @@ av.dnd.updateFromFzrOrganism = function () {
 av.dnd.landOrganIcon = function (source, nodes, target) {
   //clear out the old data if an organism is already there
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   if (av.debug.dnd) console.log('source', source.node.id);
   if ('activeOrgan' != source.node.id) {
     var items = av.dnd.getAllItems(av.dnd.activeOrgan);    //gets some data about the items in the container
@@ -537,7 +545,7 @@ av.dnd.landOrganIcon = function (source, nodes, target) {
 //and reinserting the most resent one after a drop event.
 av.dnd.landActiveOrgan = function (source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   //clear out the old data if an organism is already there
   var items = av.dnd.getAllItems(av.dnd.activeOrgan);    //used to see if there is more than one item in Organ Current
   //if (av.debug.dnd) console.log('items', items, items.length);
@@ -560,7 +568,7 @@ av.dnd.landActiveOrgan = function (source, nodes, target) {
 //will be put in av.dnd.activeOrgan.
 av.dnd.landorganCanvas = function (source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   //Clear current to put the new organism in there.
   av.dnd.activeOrgan.selectAll().deleteSelectedNodes();  //clear items
   av.dnd.activeOrgan.sync();   //should be done after insertion or deletion
@@ -595,7 +603,7 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
   if (worldName) {
     var nameWorld = av.dnd.getUniqueFzrName(worldName, nameArray);
     if (null != nameWorld) {
-      av.debug.log += '\n --User: DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent + ' --> ' + nameWorld;
+      av.debug.addUser('DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent + ' --> ' + nameWorld);
       document.getElementById(domid).textContent = nameWorld;
       pkg.target.map[domid].data = nameWorld;
       pkg.target.map[domid].type[0] = 'w';
@@ -642,7 +650,7 @@ av.dnd.landFzWorldFn = function (pkg) {//source, pkg.nodes, pkg.target) {
 // Process av.dnd.trashCan ---------------------------------------------------
 av.dnd.landTrashCan = function (source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   var remove = {};
   remove.type = '';
   remove.domid = '';
@@ -748,7 +756,7 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
 
 av.dnd.landAnlDndChart = function (dnd, source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   var items = av.dnd.getAllItems(av.dnd.graphPop0);
   if (0 === items.length) { av.dnd.putNslot(0, source); }
   else {
@@ -781,7 +789,7 @@ av.dnd.putNslot = function (Num, source) {
 
 av.dnd.landgraphPop0 = function (dnd, source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   var items = av.dnd.getAllItems(av.dnd.graphPop0);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
   if (0 < items.length) {
@@ -804,7 +812,7 @@ av.dnd.landgraphPop0 = function (dnd, source, nodes, target) {
 
 av.dnd.landgraphPop1 = function (dnd, source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   var items = av.dnd.getAllItems(av.dnd.graphPop1);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
   if (0 < items.length) {
@@ -827,7 +835,7 @@ av.dnd.landgraphPop1 = function (dnd, source, nodes, target) {
 
 av.dnd.landgraphPop2 = function (dnd, source, nodes, target) {
   'use strict';
-  av.debug.log += '\n --User: DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent;
+  av.debug.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   var items = av.dnd.getAllItems(av.dnd.graphPop2);
   //if there is an existing item, need to clear all nodes and assign most recent to item 0
   if (0 < items.length) {
@@ -865,7 +873,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
   aMenu.addChild(new dijit.MenuItem({
     label: 'Rename',
     onClick: function () {
-  av.debug.log += '\n--User: Button: Rname:' + document.getElementById(fzItemID).textContent;
+      av.debug.addUser('Button: Rname:' + document.getElementById(fzItemID).textContent);
       var fzName = prompt('Please rename freezer item', document.getElementById(fzItemID).textContent);
       if (fzName) {
         fzName = av.dnd.getUniqueName(fzName, target);
@@ -886,7 +894,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
   aMenu.addChild(new dijit.MenuItem({
     label: 'delete',
     onClick: function () {
-      av.debug.log += '\n--User: Button: delete:' + document.getElementById(fzItemID).textContent;
+      av.debug.addUser('Button: delete:' + document.getElementById(fzItemID).textContent);
       var sure = confirm('Do you want to delete ' + document.getElementById(fzItemID).textContent);
       if (sure) {
         dir = av.fzr.dir[fzItemID];
@@ -910,7 +918,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
     aMenu.addChild(new dijit.MenuItem({
       label: 'export',
       onClick: function () {
-        av.debug.log += '\n--User: Button: export:' + document.getElementById(fzItemID).textContent;
+        av.debug.addUser('Button: export:' + document.getElementById(fzItemID).textContent);
         var type;
         var itemName = document.getElementById(fzItemID).textContent;
         var zName = prompt(itemName + ' will be saved as ' + itemName + '.avidaedfreezeritem.zip', itemName + '.avidaedfreezeritem.zip');

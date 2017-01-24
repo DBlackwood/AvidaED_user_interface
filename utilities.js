@@ -106,7 +106,7 @@ var get_color = function(cmap, dx, d1, d2, r1){
 };
 
 //from http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
-//formats numbers with commas
+//formats numbers with commas c=number of decimal places; d = 3-digit separator, t = decimal point indicator
 Number.prototype.formatNum = function(c, d, t){
   'use strict';
   var n = this,

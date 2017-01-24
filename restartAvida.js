@@ -2,7 +2,7 @@
 
 //this does not work (diane)
 av.aww.restartAvidaFn = function () {
-  av.debug.log += '\n--User: Button: testRestartButton';
+  av.debug.addUser('Button: testRestartButton');
   console.log('in testRestartButton');
   av.debug.log += '\nAvida -->ui simulated level:error';
   restartMsgLabel.textContent = 'Avida message: simulated message from Avida'
