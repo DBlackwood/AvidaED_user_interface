@@ -1630,10 +1630,10 @@ require([
 
       if (av.debug.plotly) console.log('popData', popData);
       //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
-      av.debug.log += '\n---Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1])';
+      av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1])';
       Plotly.deleteTraces(av.dom.popChart, [0, 1]);
       if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
-      av.debug.log += '\n---Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
+      av.debug.log += '\n     --uiD: Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
       Plotly.relayout(av.dom.popChart, av.pch.update);
     }
     if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
@@ -1652,7 +1652,7 @@ require([
       if ('none' === dijit.byId('yaxis').value) {
         if (undefined !== av.dom.popChart.data) {
           console.log('before purge in popChartFn');
-          av.debug.log += '\n---Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1])';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1])';
           Plotly.deleteTraces(av.dom.popChart, [0, 1]);
           //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
           console.log('after purge in popChartFn');
@@ -1720,10 +1720,10 @@ require([
           av.pch.layout.width = av.pch.wd;
           av.pch.layout.height = av.pch.ht;
           console.log('before purge in update grid chart');
-          av.debug.log += '\n---Plotly: Plotly.purge(av.dom.popChart)';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.popChart)';
           Plotly.purge(av.dom.popChart);
           console.log('after purge in update grid chart');
-          av.debug.log += '\n---Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
           Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
           //Plotly.plot('popChart', popData, av.pch.layout);
           console.log('purge chart.popData=', av.dom.popChart.data);
@@ -1747,23 +1747,23 @@ require([
 
           if (undefined == av.dom.popChart.data) {
             if (av.debug.plotly) console.log('before plot');
-            av.debug.log += '\n---Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
+            av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
             Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
             if (av.debug.plotly) console.log('after plot');
           }
           else if (0 == av.dom.popChart.data.length) {
             if (av.debug.plotly) console.log('before plot');
-            av.debug.log += '\n---Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
+            av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
             Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
             if (av.debug.plotly) console.log('after plot');
           }
           else {
             if (av.brs.isChrome) {
-              av.debug.log += '\n---Plotly: Plotly.restyle("popChart", rstl0, [0])';
+              av.debug.log += '\n     --uiD: Plotly: Plotly.restyle("popChart", rstl0, [0])';
               Plotly.restyle('popChart', rstl0, [0]);
-              av.debug.log += '\n---Plotly: Plotly.restyle("popChart", rstl1, [1])';
+              av.debug.log += '\n     --uiD: Plotly: Plotly.restyle("popChart", rstl1, [1])';
               Plotly.restyle('popChart', rstl1, [1]);
-              av.debug.log += '\n---Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
+              av.debug.log += '\n     --uiD: Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
               Plotly.relayout(av.dom.popChart, av.pch.update);
             }
             else {
@@ -1771,12 +1771,12 @@ require([
               //Plotly.restyle(graphDiv, update, [1, 2]);
               //Plotly.restyle(av.dom.popChart, av.pch.trace0, [0]);
               //Plotly.restyle(av.dom.popChart, av.pch.trace1, [1]);
-              av.debug.log += '\n---Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
+              av.debug.log += '\n     --uiD: Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
               Plotly.relayout(av.dom.popChart, av.pch.update);
               //console.log('after relayout in update grid chart');
               if (av.debug.plotly) console.log('popData', popData);
               //Plotly.animate('popChart', {popData});
-              av.debug.log += '\n---Plotly: Plotly.aminate("popChart", {popData})';
+              av.debug.log += '\n     --uiD: Plotly: Plotly.aminate("popChart", {popData})';
               Plotly.aminate('popChart', {popData});
               //Plotly.aminate('popChart', popData);
               //av.pch.Plotly.aminate('popChart', {popData});
@@ -2180,7 +2180,7 @@ require([
 
     if (undefined !== av.dom.anlChrtSpace.data) {
       if (av.debug.plotly) console.log('before purge in init');
-      av.debug.log += '\n---Plotly: Plotly.purge(av.dom.anlChrtSpace)';
+      av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace)';
       Plotly.purge(av.dom.anlChrtSpace);
       if (av.debug.plotly) console.log('after purge in init');
     }
@@ -2188,7 +2188,7 @@ require([
     var anaData = av.anl.data;
     if (av.debug.plotly) console.log('anlChrtPlotly in av.anl.anaChartInit');
     //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
-    av.debug.log += '\n---Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg)';
+    av.debug.log += '\n     --uiD: Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg)';
     Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
     if (av.debug.plotly) console.log('after plot in av.anl.anaChartInit');
 
@@ -2213,7 +2213,7 @@ require([
         if (av.debug.plotly) console.log('both axis set to none');
         if (undefined !== av.dom.anlChrtSpace.data) {
           console.log('before purge in anaChartFn');
-          av.debug.log += '\n---Plotly: Plotly.purge(av.dom.anlChrtSpace)';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace)';
           Plotly.purge(av.dom.anlChrtSpace);
           console.log('after purge in anaChartFn');
         }
@@ -2256,11 +2256,11 @@ require([
         av.anl.layout.yaxis.title = dijit.byId('yLeftSelect').value;
         av.anl.layout.yaxis2.title = dijit.byId('yRightSelect').value;
         if (av.debug.plotly) console.log('before purge in update');
-        av.debug.log += '\n---Plotly: Plotly.purge(av.dom.anlChrtSpace)';
+        av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace)';
         Plotly.purge(av.dom.anlChrtSpace);
         if (av.debug.plotly) console.log('after plot anlChrtSpace');
         //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
-        av.debug.log += '\n---Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);';
+        av.debug.log += '\n     --uiD: Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);';
         Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
         if (av.debug.plotly) console.log('after plot anlChrtSpace');
         //console.log('purge chart.anaData=', av.dom.anlChrtSpace.data);
