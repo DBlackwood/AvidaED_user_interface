@@ -171,12 +171,18 @@ var flexsplit = function (instr) {
 av.utl.dTailWrite = function (file, lineNum, nameStr, objAry) {
   av.debug.dTail = 'File=' + file + ': ' + lineNum;
   var lngth = objAry.length;
-  var objName = '';
+  var objName = ''; var sbStr = '';
   for (var ii = 0; ii < lngth; ii++) {
     objName = wsb(',', nameStr);
-    //if ('' == objName) objName = nameStr;
+    if ('' == objName) console.log('empty string');
+    sbStr = wsb('.', wsa('.', nameStr));
     nameStr = wsa(',', nameStr);
-    av.debug.dTail += '\n' + objName + ' = ' + JSON.stringify(objAry[ii], null, 2);
+    if ('dom' == sbStr) {
+      av.debug.dTail += '\n' + objName + ' = ' + objAry[ii].toString();
+    }
+    else {
+      av.debug.dTail += '\n' + objName + ' = ' + JSON.stringify(objAry[ii], null, 2);
+    }
   }
   //console.log('dTail = ', av.debug.dTail);
 }

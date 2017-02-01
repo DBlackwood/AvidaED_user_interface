@@ -516,7 +516,6 @@ require([
     av.debug.sendLogTextarea.focus();
     //av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
     av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
-    console.log('av.debug.dTail = ', av.debug.dTail);
   });
 
   //http://stackoverflow.com/questions/7080269/javascript-before-leaving-the-page
