@@ -86,3 +86,69 @@ av.mouse.downOrganCanvasFn = function(evt) {
   }
 }
 
+av.mouse.downGridCanvasFn = function (evt) {
+  av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
+  av.mouse.Dn = true;
+  // Select if it is in the grid
+  av.mouse.findSelected(evt, av.grd);
+  //check to see if in the grid part of the canvas
+  if (av.debug.mouse) console.log('av.mousedown', av.grd.selectedNdx);
+  //if (av.debug.mouse) console.log('grid Canvas; selectedNdx', av.grd.selectedNdx,'________________________________');
+  //if (av.debug.mouse) console.log('grid Canvas; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
+  if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
+    av.grd.flagSelected = true;
+    if (av.debug.mouse) console.log('ongrid', av.grd.selectedNdx);
+    av.debug.addUser('Click on grid cell with index: ' + av.grd.selectedNdx + '');
+    //console.log('before call av.grd.drawGridSetupFn');
+    av.grd.drawGridSetupFn();
+
+    //In the grid and selected. Now look to see contents of cell are dragable.
+    av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
+    if ('prepping' == av.grd.runState) {  //run has not started so look to see if cell contains ancestor
+      av.mouse.ParentNdx = av.mouse.findParentNdx(av.parents);
+      if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
+      if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
+        av.mouse.selectedDadMouseStyle();
+        av.mouse.Picked = 'parent';
+      }
+    }
+    else {  //look for decendents (kids)
+      if (av.debug.mouse) console.log('kidSelected; selectedNdx', av.grd.selectedNdx, '________________________________');
+      if (av.debug.mouse) console.log('kidSelected; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
+      //find out if there is a kid in that cell
+      //if ancestor not null then there is a 'kid' there.
+      //if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+      if (av.grd.msg.ancestor) {
+        console.log('SelectedNdx', av.grd.selectedNdx, '; ancestor', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
+        if ('-' == av.grd.msg.ancestor.data[av.grd.selectedNdx] || '-' == av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
+          dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+          dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
+        }
+        else {
+          if (av.debug.mouse) console.log('kid found');
+          av.grd.kidStatus = 'getgenome';
+          av.msg.doWebOrgDataByCell();
+          av.mouse.selectedKidMouseStyle();
+          av.grd.kidName = 'temporary';
+          av.grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
+          av.mouse.Picked = 'kid';
+          if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
+          dijit.byId('mnFzOrganism').attr('disabled', false);  //When an organism is selected, then it can be save via the menu
+          dijit.byId('mnCnOrganismTrace').attr('disabled', false);
+        }
+      }
+      else {
+        dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+        dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
+      }
+    }
+  }
+  else {
+    av.grd.flagSelected = false;
+    av.grd.selectedNdx = -1;
+    dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+    dijit.byId('mnFzOrganism').attr('disabled', true);
+  }
+  av.grd.drawGridSetupFn();
+}
+

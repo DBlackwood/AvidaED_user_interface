@@ -124,7 +124,7 @@ Number.prototype.formatNum = function(c, d, t){
  returns the part of the string that occurs before the target substring
  or the entire string if the target is not found.
  */
-function wsb(target, strng){
+function wsb(target, strng){   //string is longer, target is the substring
   'use strict';
   var sb = strng;
   var tndx = strng.indexOf(target);
@@ -166,6 +166,20 @@ var flexsplit = function (instr) {
 
   return str1;
 };
+
+//**********************************************************************************************************************
+av.utl.dTailWrite = function (file, lineNum, nameStr, objAry) {
+  av.debug.dTail = 'File=' + file + ': ' + lineNum;
+  var lngth = objAry.length;
+  var objName = '';
+  for (var ii = 0; ii < lngth; ii++) {
+    objName = wsb(',', nameStr);
+    //if ('' == objName) objName = nameStr;
+    nameStr = wsa(',', nameStr);
+    av.debug.dTail += '\n' + objName + ' = ' + JSON.stringify(objAry[ii], null, 2);
+  }
+  //console.log('dTail = ', av.debug.dTail);
+}
 
 //**********************************************************************************************************************
 av.utl.jsonStringify = function(jStr) {
@@ -252,6 +266,7 @@ av.utl.objectLength = function(object){
     return length;
   }
 };
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //  Find browser and operating system

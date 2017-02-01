@@ -18,7 +18,7 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 av.debug.plotly = false;  //both popChart and analysis
-av.debug.usr = true; //working on log for user actions.
+av.debug.usr = false; //working on log for user actions.
 
 av.debug.addUser = function(addStr, comment) {
   "use strict";
@@ -304,7 +304,7 @@ av.msg.uiReqestedReset = false;
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
 av.ui.version = '2017_0123';
-av.debug.log = 'hed: message and error log: version Beta Test ' + av.ui.version;
+av.debug.log = '--hed: message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';

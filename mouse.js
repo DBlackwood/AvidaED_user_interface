@@ -354,24 +354,28 @@ av.mouse.arrowKeysOnGrid = function (event) {
     var moved = false;
     switch (event.which) {
       case 37: // left
+        av.debug.addUser('key: arrowLeft');
         if (0 < av.grd.selectedCol) {
           av.grd.selectedCol = av.grd.selectedCol - 1;
           moved = true;
         }
         break;
       case 38: // up
+        av.debug.addUser('key: arrowUp');
         if (0 < av.grd.selectedRow) {
           av.grd.selectedRow = av.grd.selectedRow - 1;
           moved = true;
         }
         break;
       case 39: // right
+        av.debug.addUser('key: arrowRight');
         if (av.grd.selectedCol < av.grd.cols - 1) {
           av.grd.selectedCol++;
           moved = true;
         }
         break;
       case 40: // down
+        av.debug.addUser('key: arrowDown');
         if (av.grd.selectedRow < av.grd.rows - 1) {
           av.grd.selectedRow = av.grd.selectedRow + 1;
           moved = true;

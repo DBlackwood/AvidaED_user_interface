@@ -444,7 +444,6 @@ av.dnd.landGridCanvas = function (source, nodes, target) {
   av.parents.row[nn] = Math.floor(mouseY / av.grd.cellHt);
   //check to see if in the grid part of the canvas
   if (av.parents.col[nn] >= 0 && av.parents.col[nn] < av.grd.cols && av.parents.row[nn] >= 0 && av.parents.row[nn] < av.grd.rows) {
-    console.log('spot on grid found');
     av.parents.AvidaNdx[nn] = av.parents.row[nn] * av.grd.cols + av.parents.col[nn];
 
     //Start setting up for getting data for parents structure

@@ -380,14 +380,15 @@ av.ptd.FrPopulationFn = function () {
 
 av.ptd.bitToggle = function (button) {
   'use strict';
-  av.debug.addUser('Button: ' + button);
   if ('on' == document.getElementById(button).value) {
     document.getElementById(button).value = 'off';
     document.getElementById(button).className = 'bitButtonOff';
+    av.debug.addUser('Button: ' + button + ' = off');
   }
   else {
     document.getElementById(button).value = 'on';
     document.getElementById(button).className = 'bitButtonOn';
+    av.debug.addUser('Button: ' + button + ' = on');
   }
   var lngth = av.pch.aveFit.length;
   for (ii=0; ii < lngth; ii++){

@@ -85,7 +85,7 @@ require([
   'mouse.js',
   'mouseDown.js',
   //'restartAvida.js',
-  //'diagnosticConsole.js',
+  //'diagnosticconsole.js',
   'dojo/domReady!'
 ], function (space, AppStates, dijit, registry,
              Button, Select,
@@ -257,7 +257,7 @@ require([
     if (null === av.aww.uiWorker) {
       av.aww.uiWorker = new Worker('avida.js');
       //console.log('webworker created');
-      av.debug.log += '\n     av.aww.uiWorker was null, started a new webworker';
+      av.debug.log += '\n     --note: av.aww.uiWorker was null, started a new webworker';
     }
     else console.log('av.aww.uiWorker is not null');
   }
@@ -401,22 +401,25 @@ require([
       //document.getElementById('mnHpDebug').label = 'Show debug menu';
       //document.getElementById('mnHpDebug').textContent = 'Show debug menu';
       dijit.byId('mnHpDebug').set('label', 'Show debug menu');
-
+      av.debug.addUser('Button: mnHpDebug: now hidden');
     } else {
       document.getElementById('mnDebug').style.visibility = 'visible';
       //document.getElementById('mnHpDebug').label = 'Hide debug menu';
       dijit.byId('mnHpDebug').set('label', 'Hide debug menu');
+      av.debug.addUser('Button: mnHpDebug: now visible');
     }
   };
 
   //works saving text as an example -
   document.getElementById('mnDbSaveTxt').onclick = function () {
+    av.debug.addUser('Button: mnDbSaveTxt');
     av.fio.userFname = 'junk.txt';
     //av.fio.saveTxt();
     av.fio.saveJson();
   };
 
   $(fileDownloadButton).click(function () {
+    console.log('inside fileDownButton')
     //var blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});
     //saveAs(blob, 'hello world.txt');
 
@@ -502,7 +505,8 @@ require([
   dijit.byId('mnHpProblem').on('Click', function () {
     av.debug.addUser('Button: mnHpProblem');
     // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-ED: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
-    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log;
+    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail;
+
     //dijit.byId('sendLogDialog').set('value', 'Avida-ED problem report');
     document.getElementById('sendLogPara').textContent =
       'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
@@ -512,11 +516,13 @@ require([
     av.debug.sendLogTextarea.focus();
     //av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
     av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
+    console.log('av.debug.dTail = ', av.debug.dTail);
   });
 
   //http://stackoverflow.com/questions/7080269/javascript-before-leaving-the-page
   dijit.byId('sendEmail').on('Click', function () {
     av.ui.sendEmailFlag = true;
+    av.debug.addUser('Button: sendEmail');
     var link = 'mailto:' + av.fio.mailAddress +
         //'?cc=CCaddress@example.com' +
       '?subject=' + escape('Avida-ED session log') +
@@ -573,7 +579,7 @@ require([
   //Everything happens when we click a button
 //  on(dom.byId('sendPost'), 'click', function(){
   on(document.getElementById('sendPost'), 'click', function(){
-
+    av.debug.addUser('Button: sendPost');
     //Data to send
     var a_log = 'text for the log';
     var a_comment = 'text for a comment2';
@@ -618,7 +624,7 @@ require([
     //av.debug.errorEmailFn();
 
     //dijit.byId('sendLogDialog').set('title', 'javascrip error report');
-    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log;
+    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail;
     document.getElementById('sendLogPara').textContent = 'The error is the last line in the session log in the text below.';
     sendLogDialog.show();  //textarea must be visable first
     av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
@@ -1002,6 +1008,7 @@ require([
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById('popSetupButton').onclick = function () {
+    //av.debug.addUser('Button: sendEmail');  //done in popBoxSwap
     av.ptd.popBoxSwap();   //in popControls.js
   };
 
@@ -1028,6 +1035,7 @@ require([
   }
 
   document.getElementById('popStatsButton').onclick = function () {
+    ///av.debug.addUser('Button: popStatsButton');   //done in popStatView
     av.ptd.popStatView()
   };
 
@@ -1039,7 +1047,7 @@ require([
   document.getElementById('runStopButton').onclick = function () {
     av.debug.addUser('Button: runStopButton = ' + av.grd.updateNum, '=updateNum;  ' + av.grd.msg.update + '=msg.update;  ' + av.grd.popStatsMsg.update + '=popStatsMsg.update');
     var upDate = av.msg.previousUpdate + 1;
-    av.debug.addUser('Button: runStopButton = ' + upDate);
+    //av.debug.addUser('Button: runStopButton = ' + upDate);
     av.ptd.runStopFn();
   };
 
@@ -1241,6 +1249,7 @@ require([
 
   document.getElementById('mnDbThrowError').onclick = function () {
     'use strict';
+    av.debug.addUser('Button: mnDbThrowError');
     var george = fred;
   };
 
@@ -1255,81 +1264,20 @@ require([
 
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
+    av.debug.addUser('mousedown: organCanvas('+evt.offsetX + ', ' + evt.offsetY + ')');
     av.mouse.downOrganCanvasFn(evt);
   });
 
   //if a cell is selected, arrow keys can move the selection
-  $(document).keydown(function (event) { av.mouse.arrowKeysOnGrid(event)});
+  $(document).keydown(function (event) {
+    //av.debug.addUser(' ');   //in av.mouse.arrowKeyOnGrid
+    av.mouse.arrowKeysOnGrid(event)
+  });
 
   //av.mouse down on the grid
   $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
+    av.debug.addUser('mousedown: gridCanvas('+evt.offsetX + ', ' + evt.offsetY + ')');
     av.mouse.downGridCanvasFn(evt)  });
-
-  av.mouse.downGridCanvasFn = function (evt) {
-    av.mouse.DnGridPos = [evt.offsetX, evt.offsetY];
-    av.mouse.Dn = true;
-    // Select if it is in the grid
-    av.mouse.findSelected(evt, av.grd);
-    //check to see if in the grid part of the canvas
-    if (av.debug.mouse) console.log('av.mousedown', av.grd.selectedNdx);
-    //if (av.debug.mouse) console.log('grid Canvas; selectedNdx', av.grd.selectedNdx,'________________________________');
-    //if (av.debug.mouse) console.log('grid Canvas; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
-    if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
-      av.grd.flagSelected = true;
-      if (av.debug.mouse) console.log('ongrid', av.grd.selectedNdx);
-      av.debug.addUser('Click on grid cell with index: ' + av.grd.selectedNdx + '');
-      //console.log('before call av.grd.drawGridSetupFn');
-      av.grd.drawGridSetupFn();
-
-      //In the grid and selected. Now look to see contents of cell are dragable.
-      av.mouse.ParentNdx = -1; //index into parents array if parent selected else -1;
-      if ('prepping' == av.grd.runState) {  //run has not started so look to see if cell contains ancestor
-        av.mouse.ParentNdx = av.mouse.findParentNdx(av.parents);
-        if (av.debug.mouse) console.log('parent', av.mouse.ParentNdx);
-        if (-1 < av.mouse.ParentNdx) { //selected a parent, check for dragging
-          av.mouse.selectedDadMouseStyle();
-          av.mouse.Picked = 'parent';
-        }
-      }
-      else {  //look for decendents (kids)
-        if (av.debug.mouse) console.log('kidSelected; selectedNdx', av.grd.selectedNdx, '________________________________');
-        if (av.debug.mouse) console.log('kidSelected; av.grd.msg.ancestor[av.grd.selectedNdx]', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
-        //find out if there is a kid in that cell
-        //if ancestor not null then there is a 'kid' there.
-        //if (null != av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
-        if (av.grd.msg.ancestor) {
-          console.log('SelectedNdx', av.grd.selectedNdx, '; ancestor', av.grd.msg.ancestor.data[av.grd.selectedNdx]);
-          if ('-' == av.grd.msg.ancestor.data[av.grd.selectedNdx] || '-' == av.grd.msg.ancestor.data[av.grd.selectedNdx]) {
-            dijit.byId('mnCnOrganismTrace').attr('disabled', true);
-            dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
-          }
-          else {
-            if (av.debug.mouse) console.log('kid found');
-            av.grd.kidStatus = 'getgenome';
-            av.msg.doWebOrgDataByCell();
-            av.mouse.selectedKidMouseStyle();
-            av.grd.kidName = 'temporary';
-            av.grd.kidGenome = '0,heads_default,wzcagcccccccccaaaaaaaaaaaaaaaaaaaaccccccczvfcaxgab';  //ancestor
-            av.mouse.Picked = 'kid';
-            if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
-            dijit.byId('mnFzOrganism').attr('disabled', false);  //When an organism is selected, then it can be save via the menu
-            dijit.byId('mnCnOrganismTrace').attr('disabled', false);
-          }
-        }
-        else {
-          dijit.byId('mnCnOrganismTrace').attr('disabled', true);
-          dijit.byId('mnFzOrganism').attr('disabled', true);  //kid not selected, then it cannot be save via the menu
-        }
-      }
-    }
-    else {
-      av.grd.flagSelected = false;
-      av.grd.selectedNdx = -1;
-      dijit.byId('mnCnOrganismTrace').attr('disabled', true);
-      dijit.byId('mnFzOrganism').attr('disabled', true);
-    }
-    av.grd.drawGridSetupFn();
-  }
 
   //mouse move anywhere on screen - not currently in use.
   /*  $(document.getElementById('gridCanvas')).on('mousemove', function handler (evt) {
@@ -1564,6 +1512,7 @@ require([
   // *******************************************************************************************************************
   if (av.debug.root) console.log('before logic buttons');
 
+  //    av.debug.addUser('Button: notButton');    //done in av.ptd.bitToggle
   document.getElementById('notButton').onclick = function () {
     av.ptd.bitToggle('notButton');
   } //av.ptd.bitToggle in popControls.js
@@ -1613,8 +1562,10 @@ require([
 
     if (undefined == av.dom.popChart.data) {
       if (av.debug.plotly) console.log('before plotly.plot in popChartInit');
+      av.debug.log += '\n     --uiD: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg) in AvidaED.js at 1565';
+      av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'popData, av.pch.layout, av.pch.widg', [popData, av.pch.layout, av.pch.widg]);
       Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
-      if (av.debug.plotly) console.log('before plotly.plot in poChartInit');
+      if (av.debug.plotly) console.log('after plotly.plot in poChartInit');
     }
     else {
       //av.pch.update = {
@@ -1630,14 +1581,15 @@ require([
 
       if (av.debug.plotly) console.log('popData', popData);
       //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
-      av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1])';
+      av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1585';
+      av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
       Plotly.deleteTraces(av.dom.popChart, [0, 1]);
       if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
-      av.debug.log += '\n     --uiD: Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
+      av.debug.log += '\n     --uiD: Plotly.relayout(av.dom.popChart, av.pch.update) in av.grd.popChartInit in AvidaED.js at 1589';
+      av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart, av.pch.update', [av.dom.popChart, av.pch.update]);
       Plotly.relayout(av.dom.popChart, av.pch.update);
+      //console.log('av.dom.popChart=', av.dom.popChart, '; av.pch.update=', av.pch.update);
     }
-    if (av.debug.plotly) console.log('chart.popData=', av.dom.popChart.data);
-    if (av.debug.plotly) console.log('chart.layout=', av.dom.popChart.layout);
     av.dom.popChart.style.visibility='hidden';
     //console.log('layout.ht, wd =', av.dom.popChart.layout.height, av.dom.popChart.layout.width);
   };
@@ -1652,7 +1604,8 @@ require([
       if ('none' === dijit.byId('yaxis').value) {
         if (undefined !== av.dom.popChart.data) {
           console.log('before purge in popChartFn');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1])';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1612';
+          av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
           Plotly.deleteTraces(av.dom.popChart, [0, 1]);
           //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
           console.log('after purge in popChartFn');
@@ -1720,10 +1673,12 @@ require([
           av.pch.layout.width = av.pch.wd;
           av.pch.layout.height = av.pch.ht;
           console.log('before purge in update grid chart');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.popChart)';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.popChart)  in AvidaED.js at 1681';
+          av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
           Plotly.purge(av.dom.popChart);
           console.log('after purge in update grid chart');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)  in AvidaED.js at 1685';
+          av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'popData, av.pch.layout, av.pch.widg', [popData, av.pch.layout, av.pch.widg]);
           Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
           //Plotly.plot('popChart', popData, av.pch.layout);
           console.log('purge chart.popData=', av.dom.popChart.data);
@@ -1747,23 +1702,27 @@ require([
 
           if (undefined == av.dom.popChart.data) {
             if (av.debug.plotly) console.log('before plot');
-            av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
+            av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)  in AvidaED.js at 1714';
+            av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'popData, av.pch.layout, av.pch.widg', [popData, av.pch.layout, av.pch.widg]);
             Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
             if (av.debug.plotly) console.log('after plot');
           }
           else if (0 == av.dom.popChart.data.length) {
             if (av.debug.plotly) console.log('before plot');
-            av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)';
+            av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg) in AvidaED.js at 1724';
+            av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'popData, av.pch.layout, av.pch.widg', [popData, av.pch.layout, av.pch.widg]);
             Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
-            if (av.debug.plotly) console.log('after plot');
           }
           else {
             if (av.brs.isChrome) {
-              av.debug.log += '\n     --uiD: Plotly: Plotly.restyle("popChart", rstl0, [0])';
+              av.debug.log += '\n     --uiD: Plotly: Plotly.restyle("popChart", rstl0, [0]) at 1734';
+              av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'rstl0', [rstl0]);
               Plotly.restyle('popChart', rstl0, [0]);
-              av.debug.log += '\n     --uiD: Plotly: Plotly.restyle("popChart", rstl1, [1])';
+              av.debug.log += '\n     --uiD: Plotly: Plotly.restyle("popChart", rstl1, [1])  in AvidaED.js at 1738';
+              av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'rstl1', [rstl1]);
               Plotly.restyle('popChart', rstl1, [1]);
-              av.debug.log += '\n     --uiD: Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
+              av.debug.log += '\n     --uiD: Plotly.relayout(av.dom.popChart, av.pch.update) in AvidaED.js at 1741';
+              av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart, av.pch.update', [av.dom.popChart, av.pch.update]);
               Plotly.relayout(av.dom.popChart, av.pch.update);
             }
             else {
@@ -1771,12 +1730,14 @@ require([
               //Plotly.restyle(graphDiv, update, [1, 2]);
               //Plotly.restyle(av.dom.popChart, av.pch.trace0, [0]);
               //Plotly.restyle(av.dom.popChart, av.pch.trace1, [1]);
-              av.debug.log += '\n     --uiD: Plotly: Plotly.relayout(av.dom.popChart, av.pch.update)';
+              av.debug.log += '\n     --uiD: Plotly.relayout(av.dom.popChart, av.pch.update) in AvidaED.js at 1750';
+              av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart, av.pch.update', [av.dom.popChart, av.pch.update]);
               Plotly.relayout(av.dom.popChart, av.pch.update);
               //console.log('after relayout in update grid chart');
               if (av.debug.plotly) console.log('popData', popData);
               //Plotly.animate('popChart', {popData});
-              av.debug.log += '\n     --uiD: Plotly: Plotly.aminate("popChart", {popData})';
+              av.debug.log += '\n     --uiD: Plotly.aminate("popChart", {popData}) in AvidaED.js at 1757';
+              av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'popData', [popData]);
               Plotly.aminate('popChart', {popData});
               //Plotly.aminate('popChart', popData);
               //av.pch.Plotly.aminate('popChart', {popData});
@@ -1965,12 +1926,14 @@ require([
 
   //Opens Settings dialog box
   document.getElementById('OrgSetting').onclick = function () {
+    av.debug.addUser('Button: OrgSetting');
     av.ind.settingsChanged = false;
     OrganSetupDialog.show();
   }
 
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, 'hide', function (e) {
+    av.debug.addUser('Button: hide Setting');
     if (av.ind.settingsChanged) av.msg.doOrgTrace();
   });
 
@@ -2085,7 +2048,6 @@ require([
   }
 
   document.getElementById('orgBack').onclick = function () {
-    av.debug.addUser('Button: orgBack');
     var ii = Number(document.getElementById('orgCycle').value);
     if (av.ind.cycleSlider.get('minimum') < av.ind.cycleSlider.get('value')) {
       ii--;
@@ -2093,6 +2055,7 @@ require([
       av.ind.cycle = ii;
       av.ind.updateOrgTrace()
     }
+    av.debug.addUser('Button: orgBack; cycle=' + ii);
   };
 
   document.getElementById('orgForward').onclick = function () {
@@ -2104,6 +2067,7 @@ require([
       if (av.debug.ind) console.log('ii', ii, '; gen', av.gen);
       av.ind.updateOrgTrace()
     }
+    av.debug.addUser('Button: orgForward; cycle=' + ii);
   };
 
   document.getElementById('orgReset').onclick = function () {
@@ -2127,13 +2091,14 @@ require([
   };
 
   document.getElementById('orgRun').onclick = function () {
-    av.debug.addUser('Button: orgRun');
     if ('Run' == document.getElementById('orgRun').textContent) {
       document.getElementById('orgRun').textContent = 'Stop';
       av.ind.update_timer = setInterval(av.ind.orgRunFn, 100);
+      av.debug.addUser('Button: orgRun=stop; cycle=' + av.ind.cycleSlider.get('value'));
     }
     else {
       av.ind.orgStopFn();
+      av.debug.addUser('Button: orgRun=run; cycle=' + av.ind.cycleSlider.get('value'));
     }
   };
 
@@ -2180,7 +2145,8 @@ require([
 
     if (undefined !== av.dom.anlChrtSpace.data) {
       if (av.debug.plotly) console.log('before purge in init');
-      av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace)';
+      av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace) in AvidaED.js at 2168';
+      av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.anlChrtSpace', [av.dom.anlChrtSpace]);
       Plotly.purge(av.dom.anlChrtSpace);
       if (av.debug.plotly) console.log('after purge in init');
     }
@@ -2188,7 +2154,8 @@ require([
     var anaData = av.anl.data;
     if (av.debug.plotly) console.log('anlChrtPlotly in av.anl.anaChartInit');
     //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
-    av.debug.log += '\n     --uiD: Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg)';
+    av.debug.log += '\n     --uiD: Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg) in AvidaED.js at 2157';
+    av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg', [av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg]);
     Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
     if (av.debug.plotly) console.log('after plot in av.anl.anaChartInit');
 
@@ -2213,7 +2180,8 @@ require([
         if (av.debug.plotly) console.log('both axis set to none');
         if (undefined !== av.dom.anlChrtSpace.data) {
           console.log('before purge in anaChartFn');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace)';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace) in AvidaED.js at 2205';
+          av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.anlChrtSpace', [av.dom.anlChrtSpace]);
           Plotly.purge(av.dom.anlChrtSpace);
           console.log('after purge in anaChartFn');
         }
@@ -2256,15 +2224,15 @@ require([
         av.anl.layout.yaxis.title = dijit.byId('yLeftSelect').value;
         av.anl.layout.yaxis2.title = dijit.byId('yRightSelect').value;
         if (av.debug.plotly) console.log('before purge in update');
-        av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace)';
+        av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.anlChrtSpace) in AvidaED.js at 2249';
+        av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.anlChrtSpace', [av.dom.anlChrtSpace]);
         Plotly.purge(av.dom.anlChrtSpace);
         if (av.debug.plotly) console.log('after plot anlChrtSpace');
         //Plotly.plot('anlChrtSpace', anaData, av.anl.layout, av.anl.widg);
-        av.debug.log += '\n     --uiD: Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);';
+        av.debug.log += '\n     --uiD: Plotly: Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg) in AvidaED.js at 2254';
+        av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg', [av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg]);
         Plotly.plot(av.dom.anlChrtSpace, anaData, av.anl.layout, av.anl.widg);
         if (av.debug.plotly) console.log('after plot anlChrtSpace');
-        //console.log('purge chart.anaData=', av.dom.anlChrtSpace.data);
-        //console.log('purge chart.layout=', av.dom.anlChrtSpace.layout);
       }
     }
   }
@@ -2315,7 +2283,7 @@ require([
 
   //Set Y-axis title and choose the correct array to plot
   dijit.byId('yLeftSelect').on('Change', function () {
-    av.debug.addUser('Button: yLeftSelect');
+    av.debug.addUser('Button: yLeftSelect=' + dijit.byId('yLeftSelect').value);
     av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yLeftSelect', 'left');  //numbers are world landing spots
@@ -2325,13 +2293,13 @@ require([
   });
 
   dijit.byId('yRightSelect').on('Change', function () {
-    av.debug.addUser('Button: yRightSelect');
     av.anl.yRightTitle = dijit.byId('yRightSelect').value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yRightSelect', 'right');
     av.anl.loadSelectedData(1, 'yRightSelect', 'right');
     av.anl.loadSelectedData(2, 'yRightSelect', 'right');
     av.anl.AnaChartFn();
+    av.debug.addUser('Button: yRightSelect='+dijit.byId('yRightSelect').value);
   });
 
   // **************************************************************************************************************** */
@@ -2518,3 +2486,7 @@ other
 /*
 formating tables = http://www.the-art-of-web.com/html/table-markup/
  */
+
+/*
+
+  */
