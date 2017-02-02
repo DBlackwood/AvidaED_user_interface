@@ -22,8 +22,8 @@ av.debug.usr = false; //working on log for user actions.
 
 av.debug.addUser = function(addStr, comment) {
   "use strict";
-  var note = comment === undefined ? '' : ' ~.~ ' + comment;
-  av.debug.log += '\n--usr: ' + addStr + note;
+  var note = comment === undefined ? '' : comment;
+  av.debug.log += '\n--usr: ' + addStr + ' ~.~ ' + note;
   if (av.debug.usr) console.log('usr: ' + addStr + note);
 }
 
@@ -303,7 +303,7 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2017_0123';
+av.ui.version = '2017_0202';
 av.debug.log = '--hed: message and error log: version Beta Test ' + av.ui.version;
 
 av.ui.page = 'populationBlock';
