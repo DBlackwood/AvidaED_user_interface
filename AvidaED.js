@@ -161,6 +161,7 @@ require([
     av.dom.graphPop2 = document.getElementById('graphPop2');
 
     //Population Map Setup page
+    av.dom.popSetupButton = document.getElementById('popSetupButton');
     av.dom.sizeCols = document.getElementById('sizeCols');
     av.dom.sizeRows = document.getElementById('sizeRows');
     av.dom.muteInput = document.getElementById('muteInput');
@@ -1895,7 +1896,7 @@ require([
   });
 
   dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function () {
-    av.debug.addUser('Spinner: autoUpdateSpinner=' + dijit.byId('autoUpdateSpinner').get('value'));
+    av.debug.addUser('Spinner: autoUpdateSpinner = ' + dijit.byId('autoUpdateSpinner').get('value'));
     av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
     //console.log('autoUpdateSpinner=', dijit.byId('autoUpdateSpinner').get('value'));
   });
@@ -2054,7 +2055,7 @@ require([
       av.ind.cycle = ii;
       av.ind.updateOrgTrace()
     }
-    av.debug.addUser('Button: orgBack; cycle=' + ii);
+    av.debug.addUser('Button: orgBack; cycle = ' + ii);
   };
 
   document.getElementById('orgForward').onclick = function () {
@@ -2066,7 +2067,7 @@ require([
       if (av.debug.ind) console.log('ii', ii, '; gen', av.gen);
       av.ind.updateOrgTrace()
     }
-    av.debug.addUser('Button: orgForward; cycle=' + ii);
+    av.debug.addUser('Button: orgForward; cycle = ' + ii);
   };
 
   document.getElementById('orgReset').onclick = function () {
@@ -2093,11 +2094,11 @@ require([
     if ('Run' == document.getElementById('orgRun').textContent) {
       document.getElementById('orgRun').textContent = 'Stop';
       av.ind.update_timer = setInterval(av.ind.orgRunFn, 100);
-      av.debug.addUser('Button: orgRun=stop; cycle=' + av.ind.cycleSlider.get('value'));
+      av.debug.addUser('Button: orgRun = stop; cycle = ' + av.ind.cycleSlider.get('value'));
     }
     else {
       av.ind.orgStopFn();
-      av.debug.addUser('Button: orgRun=run; cycle=' + av.ind.cycleSlider.get('value'));
+      av.debug.addUser('Button: orgRun = run; cycle = ' + av.ind.cycleSlider.get('value'));
     }
   };
 
@@ -2282,7 +2283,7 @@ require([
 
   //Set Y-axis title and choose the correct array to plot
   dijit.byId('yLeftSelect').on('Change', function () {
-    av.debug.addUser('Button: yLeftSelect=' + dijit.byId('yLeftSelect').value);
+    av.debug.addUser('Button: yLeftSelect = ' + dijit.byId('yLeftSelect').value);
     av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yLeftSelect', 'left');  //numbers are world landing spots
@@ -2298,7 +2299,7 @@ require([
     av.anl.loadSelectedData(1, 'yRightSelect', 'right');
     av.anl.loadSelectedData(2, 'yRightSelect', 'right');
     av.anl.AnaChartFn();
-    av.debug.addUser('Button: yRightSelect='+dijit.byId('yRightSelect').value);
+    av.debug.addUser('Button: yRightSelect = '+dijit.byId('yRightSelect').value);
   });
 
   // **************************************************************************************************************** */

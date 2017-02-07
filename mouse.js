@@ -252,7 +252,7 @@ av.mouse.freezeTheKid = function () {
   if (avidian) {
     var avName = av.dnd.getUniqueFzrName(avidian, nameArray);
     if (null != avName) {  //give dom item new avName name
-      av.debug.addUser('Froze kid=' + avName);
+      av.debug.addUser('Froze kid = ' + avName);
       av.dnd.fzOrgan.insertNodes(false, [{data: avName, type: ['g']}]);
       av.dnd.fzOrgan.sync();
       var mapItems = Object.keys(av.dnd.fzOrgan.map);

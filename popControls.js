@@ -24,7 +24,8 @@ av.ptd.popBoxSwap = function () {
   if ('Map' == document.getElementById('popSetupButton').innerHTML) {
     av.debug.addUser('Button: popSetupButton became Setup');
     document.getElementById('mapBlock').style.display = 'block';
-    document.getElementById('popSetupButton').textContent = 'Setup';
+    //document.getElementById('popSetupButton').textContent = 'Setup';
+    av.dom.popSetupButton.textContent = 'Setup';
     dijit.byId('setupBlock').set('style', 'display: none');
 
     av.grd.cellConflict(av.grd.cols, av.grd.rows);
