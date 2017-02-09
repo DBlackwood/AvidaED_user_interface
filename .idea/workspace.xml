@@ -2,685 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojox.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxbower.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/bs/currency.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/bs/generic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/bs/gregorian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/bs/islamic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/bs/number.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/buddhist.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/chinese.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/currency.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/generic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/gregorian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/hebrew.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/islamic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/japanese.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/number.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/hr/roc.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/buddhist.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/chinese.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/coptic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/currency.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/ethiopic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/generic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/gregorian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/hebrew.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/indian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/islamic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/japanese.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/number.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/persian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/id/roc.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/mk/currency.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/mk/generic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/mk/gregorian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/mk/number.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/buddhist.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/coptic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/currency.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/ethiopic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/generic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/gregorian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/hebrew.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/indian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/islamic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/japanese.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/number.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/persian.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxcldr/nls/sr/roc.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxnls/bs/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxnls/eu/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxnls/mk/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxnls/sr/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/TODO.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/changes.diff" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/dojo.intern.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/dojo.intern.local.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/dojo.intern.proxy.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/NodeList-fx.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/eventMouse.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/eventMouse.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/a.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/asyncWithDojoRequire.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config-has.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config-sniff-djConfig.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config-sniff.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config/pkg/m1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config/pkg/m2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config/someModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config/someModuleConfiggedPriorToBoot.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/config/test.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/configApi.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/declareStepsOnProvide.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/declareStepsOnProvide.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/declareStepsOnProvideAmd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/dijit/main.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/dojox/main.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/hostenv_webworkers.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/App1/thing.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/App2/thing.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/Common1/another.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/Common2/another.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/Common2/anotherone.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/MappedModule/mappedA.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/MappedModule/mappedB.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/MappedModule/mappedC.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/Router/demoA.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/Router/demoB.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/Router/demoC.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping-multi-layer/main.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mapping.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/mappingMultiLayer.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/moduleIds.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/moduleIds.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/anon.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/data.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/factoryArity.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/factoryArityExports.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/full.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/idFactoryArity.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/idFactoryArityExports.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/impliedDep1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/impliedDep2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/impliedDep3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/impliedDep4.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/modules/wrapped.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/myTopLevelModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/myTopLevelModule/myModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/nls/ab-cd-ef/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/nls/ab-cd-ef/syncBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/nls/ab/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/nls/ab/syncBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/nls/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/nls/syncBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/paths.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/pub1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/pub2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/publishRequireResult.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/bar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/circular.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/config.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/dataMain.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/dataMain.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/depoverlap.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/depoverlap.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/dimple.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/dos.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/assign.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/assign2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/exports.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/funcSet.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/implicitModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/simpleReturn.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/usethis.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/exports/vanilla.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/foo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/func.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/funcFour.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/funcOne.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/funcThree.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/funcTwo.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/i18n/commonA.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/i18n/commonB.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/i18n/i18n.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/i18n/i18n.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/i18n/nls/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/i18n/nls/en-us-surfer/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/i18n/nls/fr/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/layers/allplugins-text.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/layers/build.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/layers/epsilon.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/layers/helloWorld.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/layers/layer1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/layers/layers.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/map.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/one.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/paths/first.js/first.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/paths/first.js/second.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/paths/paths.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/relative/foo/bar/message.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/relative/foo/bar/one.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/relative/foo/bar/two.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/relative/foo/three.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/relative/relative.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/requirejs-setup.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/requirejs.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/simple-badbase.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/simple-nohead.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/simple-tests.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/simple.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/simple.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/local.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/resources/local.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/resources/sample.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/subwidget.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/subwidget.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/subwidget2.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/text.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/textOnly.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/widget.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/text/widget.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/tres.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/two.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/uniques/one.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/uniques/three.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/uniques/two.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/uniques/uniques.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/uno.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/urlfetch/one.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/urlfetch/three.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/urlfetch/two.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/requirejs/urlfetch/urlfetch.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/support/loaderTest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/support/pageReady.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/syncFromAsyncModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/syncFromAsyncModuleDep.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/local1-browser-skip.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/local1-browser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/local1-dep.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/local1-runtimeDependent1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/local1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/local2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/local3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/_base/loader/xdomain/xdomain.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/all.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/behavior.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/behavior.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/cookie.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/dnd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/fx.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/fx/Toggler.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/hash.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/hash/basehref.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/hash/basehref.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/io/script.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/on.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/on.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parseOnLoadAutoRequire.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parseOnLoadAutoRequire.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parseOnLoadDeclarativeRequire.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parseOnLoadDeclarativeRequire.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parser-args.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parser-args.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parserAsync.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parserAsync.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parserContextRequire.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/parserContextRequire.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/AMDMixin.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/AMDWidget.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/AMDWidget2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/AMDWidget3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/a/AMDWidget.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/a/AMDWidget2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/amdmodule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/b/AMDWidget.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/parser/support/b/AMDWidget2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/query/all.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/query/blank.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/query/query.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/query/query.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/query/queryQuirks.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/query/xml.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/query/xml.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/support/fx-nodelist.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/support/fx.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/support/html.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/support/standard.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/support/touch.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/support/touch_dojoclick.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/support/touch_dojoclick2.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/touch.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/absoluteTd.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/htmlPadding.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/innerScrollable.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/noScroll.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/oversizedContent.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/scrollDocuments.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/scrollItem.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/scrollTemplate.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/iframe_content/table.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/scroll.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/scrollSetup.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/functional/window/viewport.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/main.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/request/iframe.service.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/request/script.service.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/request/support/blob.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/request/support/document.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/request/xhr.service.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/rpc/json.service.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/rpc/jsonp.service.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/services/util.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/support/prerun.bat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/support/ready.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/support/undef.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/AdapterRegistry.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/Deferred.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/Evented.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/NodeList-html.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/NodeList-manipulate.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/NodeList-traverse.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/Stateful.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/Color.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/Deferred.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/NodeList.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/all.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/array.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/browser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/connect.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/declare.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/html.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/json.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/lang.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/query.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/sniff.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/window.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/_base/xhr.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/all.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/aspect.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/back.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/cache.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/cldr/monetary.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/cldr/supplemental.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/colors.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/currency.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/date.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/date/locale.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/date/stamp.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/debounce.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/dom-attr.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/dom-class.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/dom-construct.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/dom-form.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/dom-prop.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/dom-style.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/dom.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/errors/CancelError.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/errors/RequestError.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/errors/RequestTimeoutError.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/errors/all.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/errors/create.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/fx/easing.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/hash.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/html.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/i18n.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/io-query.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/io/iframe.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/json.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/keys.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/loadInit.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/loader_tests/all.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/loader_tests/undefPlugin.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/mouse.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/node.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/number.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/on.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/on/debounce.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/on/throttle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/parser.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/parser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/support/AMDMixin.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/support/AMDWidget.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/support/AMDWidget2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/support/AMDWidget3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/support/amdmodule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/parser/support/util.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/promise.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/promise/Promise.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/promise/all.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/promise/first.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/promise/tracer.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/regexp.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/handlers.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/iframe.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/node.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/notify.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/registry.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/script.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/support/falsy.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/support/truthy.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/request/xhr.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/require/require.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/require/support/testModA.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/require/support/testModB.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/require/support/testModC.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/resources/amdmodule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/resources/nodeamd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/resources/nodemod/m.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/resources/nodemod/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/resources/nodemodule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/resources/noderequire.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/resources/noderequireamd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/router.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/rpc.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/rpc/support/testClass.smd" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/store.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/store/Cache.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/store/DataStore.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/store/JsonRest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/store/Memory.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/store/Observable.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/store/support/xhrStub.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/string.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/cache/object.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/cache/regular.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/cache/sanitized.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/foobarPlugin.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/html.template.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/ar/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/cs/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/de/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/el/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/en-au/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/en-us-hawaii/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/en-us-new_york-brooklyn/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/en-us-texas/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/es/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/fa/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/fr/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/he/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/hi/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/it/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/ja/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/ko/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/pl/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/pt/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/ru/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/sw/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/th/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/tr/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/yi/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/zh-cn/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/support/i18n/nls/zh-tw/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/text.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/throttle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/topic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtests/unit/when.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/DeferredList.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/NodeList-data.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/NodeList-data.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/TODO" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/absQuirksIframe.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/absStrictIframe.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/eventKeyPress.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/eventKeyPressRobot.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/eventMouse.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/eventMouseRobot.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_box.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_box_quirks.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_docScroll.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_element.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_id.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_isBodyLtr.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_quirks.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/html_rtl.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/i18nExhaustive.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/14808.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/14808/App.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/14808/Module.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/8976.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/a.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/addLoadEvents.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/afterOnLoad.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/amdModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/amdModule1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/amdModule2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/amdModuleDep.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/amdModuleDep1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/amdModuleDep2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/bootstrap.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/cdnTest.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/cdnTest.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/calendar-amd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/calendar.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/calendar1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/coolio-built.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/coolio-dev-async-with-packageMap.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/coolio-dev-async.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/coolio-dev-legacy-async-with-packageMap.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/coolio-dev-legacy-async.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/coolio-dev-legacy.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/coolio.profile.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/coolio/test.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/debugConsole.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/fastbackTest.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/getText.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_rhino.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_spidermonkey.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/console.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/strings.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker4-1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker4.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker5.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker5.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/hostenv_webworkers/worker6.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/legacyModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/ab-cd-ef/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/ab/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/legacyModule_ROOT.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/legacyModule_ab-cd-ef.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/legacyModule_ab-cd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/legacyModule_ab.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers-and-preloads/nls/legacyModule_xx.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers/legacyModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers/nls/ab-cd-ef/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers/nls/ab/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers/nls/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers/nls/legacyModule_ROOT.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers/nls/legacyModule_en-us.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build-with-layers/nls/legacyModule_en.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build/legacyModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build/nls/ab-cd-ef/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build/nls/ab/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/built-i18n-test/152-build/nls/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/amdModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/build-test-targets.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/i18n-test-with-layers-and-preloads.profile.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/i18n-test-with-layers.profile.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/i18n-test.profile.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/legacyModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/nls/ab-cd-ef/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/nls/ab-cd-ef/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/nls/ab/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/nls/ab/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/nls/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/nls/legacyBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/i18n-test/unit.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/i18n-exhaustive/test-instructions.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/mapping.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modulePaths.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/anon.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/data.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/factoryArity.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/factoryArityExports.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/full.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/idFactoryArity.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/idFactoryArityExports.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/impliedDep1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/impliedDep2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/impliedDep3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/impliedDep4.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/modules/wrapped.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/myTopLevelModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/myTopLevelModule/myModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/nls/ab-cd-ef/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/nls/ab-cd-ef/syncBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/nls/ab/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/nls/ab/syncBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/nls/amdBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/nls/syncBundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/onerror.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/paths.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/pub1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/pub2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/ready.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/require/m1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/require/m2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/require/test-require-plugin.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/scope04.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/stripStrict.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/syncModule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/syncModule1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/syncModule2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/syncModuleDep.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/syncModuleDep1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/syncModuleDep2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/loader/traceApi.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/object.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/queryPortability.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/runTests.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/scrollingIframe.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/scrollingQuirksIframe.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/scrollingStrictIframe.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/timeout.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/_base/xhtml.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/baseonly.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/ItemFileReadStore.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/ItemFileWriteStore.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/ObjectStore.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries_commentFiltered.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries_idcollision.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries_references.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries_withBoolean.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries_withDates.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries_withNull.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/countries_withoutid.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/data_multitype.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/geography_hierarchy_large.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/geography_hierarchy_small.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/readOnlyItemFileTestTemplates.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/reference_integrity.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/runTests.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/data/utils.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/dndDefault.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/flickr_viewer.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/robot/test_dnd.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_autoscroll.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_box_constraints.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_container.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_container_markup.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_custom_constraints.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_dnd.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_dnd_handles.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_form.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_moveable.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_moveable_markup.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_params.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_parent_constraints.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_parent_constraints_margins.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_selector.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_selector_markup.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/dnd/test_timed_moveable.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/html.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/html/test_set.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/i18n.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/i18n.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/module.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/ar/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/cs/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/de/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/el/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/en-au/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/en-us-hawaii/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/en-us-new_york-brooklyn/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/en-us-texas/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/es/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/fa/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/fr/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/he/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/hi/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/it/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/ja/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/ko/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/pl/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/pt/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/ru/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/sw/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/th/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/tr/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/yi/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/zh-cn/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/nls/zh-tw/salutations.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/on/bench.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/on/connectKey.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/on/event-focusin.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/AMDMixin.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/AMDWidget.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/AMDWidget2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/AMDWidget3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/ApplicationState.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/JSON.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/amdmodule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/nodeamd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/nodemod/m.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/nodemod/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/nodemodule.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/noderequire.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/noderequireamd.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/testClass.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/testClass.smd" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/test_JsonRPCMediator.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/test_css.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/resources/yahoo_smd_v1.smd" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/runTests.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/sniff.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/store/node1.1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/store/node1.2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/store/treeTestRoot" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/test_fx.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/uacss.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/uacss/sniffQuirks.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dojoxtestsDOH/uacss/sniffStandards.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mouse.js" afterPath="$PROJECT_DIR$/mouse.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popControls.js" afterPath="$PROJECT_DIR$/popControls.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojoDnd.js" afterPath="$PROJECT_DIR$/dojoDnd.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileIO.js" afterPath="$PROJECT_DIR$/fileIO.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -704,8 +29,8 @@
       <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="20" column="12" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="12" />
+            <state relative-caret-position="195">
+              <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -714,8 +39,8 @@
       <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2319">
-              <caret line="232" column="43" selection-start-line="232" selection-start-column="43" selection-end-line="232" selection-end-column="43" />
+            <state relative-caret-position="137">
+              <caret line="198" column="28" selection-start-line="198" selection-start-column="21" selection-end-line="198" selection-end-column="28" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -733,11 +58,31 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="1048" column="43" selection-start-line="1048" selection-start-column="43" selection-end-line="1048" selection-end-column="43" />
+            <state relative-caret-position="25395">
+              <caret line="1693" column="132" selection-start-line="1693" selection-start-column="132" selection-end-line="1693" selection-end-column="132" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dojoDnd.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dojoDnd.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="916" column="4" selection-start-line="916" selection-start-column="4" selection-end-line="916" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fileDataWrite.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="390" column="8" selection-start-line="390" selection-start-column="8" selection-end-line="390" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -747,6 +92,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="54">
               <caret line="254" column="36" selection-start-line="254" selection-start-column="36" selection-end-line="254" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fileIO.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fileIO.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2238">
+              <caret line="528" column="1" selection-start-line="528" selection-start-column="1" selection-end-line="528" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -818,17 +173,17 @@
         <option value="$PROJECT_DIR$/messaging.js" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/fileDataWrite.js" />
-        <option value="$PROJECT_DIR$/fileIO.js" />
         <option value="$PROJECT_DIR$/organismView.js" />
         <option value="$PROJECT_DIR$/mouseDown.js" />
-        <option value="$PROJECT_DIR$/dojoDnd.js" />
         <option value="$PROJECT_DIR$/utilities.js" />
-        <option value="$PROJECT_DIR$/globals.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/mouse.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
-        <option value="$PROJECT_DIR$/AvidaED.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
+        <option value="$PROJECT_DIR$/dojoDnd.js" />
+        <option value="$PROJECT_DIR$/fileIO.js" />
+        <option value="$PROJECT_DIR$/globals.js" />
+        <option value="$PROJECT_DIR$/AvidaED.js" />
       </list>
     </option>
   </component>
@@ -1030,12 +385,12 @@
       <workItem from="1483463415417" duration="309000" />
       <workItem from="1483491940903" duration="22492000" />
       <workItem from="1484685847859" duration="12720000" />
-      <workItem from="1485370612353" duration="43757000" />
+      <workItem from="1485370612353" duration="49885000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="621829000" />
+    <option name="totallyTimeSpent" value="627957000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="15" y="23" width="1413" height="822" extended-state="0" />
@@ -1044,7 +399,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16653636" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25342464" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32739726" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1070,9 +425,9 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955465" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16653636" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16653636" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1739726" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32739726" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1344,22 +699,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5160">
-          <caret line="344" column="10" selection-start-line="344" selection-start-column="10" selection-end-line="344" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileIO.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3990">
-          <caret line="268" column="219" selection-start-line="268" selection-start-column="219" selection-end-line="268" selection-end-column="219" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mouseDown.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="449">
@@ -1392,14 +731,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dojoDnd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="438" column="33" selection-start-line="438" selection-start-column="15" selection-end-line="438" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/avida-messages.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -1424,14 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="20" column="12" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mouse.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -1448,10 +771,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dojoDnd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="916" column="4" selection-start-line="916" selection-start-column="4" selection-end-line="916" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileIO.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2238">
+          <caret line="528" column="1" selection-start-line="528" selection-start-column="1" selection-end-line="528" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="390" column="8" selection-start-line="390" selection-start-column="8" selection-end-line="390" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2319">
-          <caret line="232" column="43" selection-start-line="232" selection-start-column="43" selection-end-line="232" selection-end-column="43" />
+        <state relative-caret-position="137">
+          <caret line="198" column="28" selection-start-line="198" selection-start-column="21" selection-end-line="198" selection-end-column="28" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1467,8 +822,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="1048" column="43" selection-start-line="1048" selection-start-column="43" selection-end-line="1048" selection-end-column="43" />
+        <state relative-caret-position="25395">
+          <caret line="1693" column="132" selection-start-line="1693" selection-start-column="132" selection-end-line="1693" selection-end-column="132" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

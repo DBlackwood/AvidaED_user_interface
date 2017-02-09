@@ -18,7 +18,7 @@ av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
 av.debug.userMsg  = false; //Show avida messages on screen
 av.debug.plotly = false;  //both popChart and analysis
-av.debug.usr = false; //working on log for user actions.
+av.debug.usr = ''; //working on log for user actions.
 
 av.debug.addUser = function(addStr, comment) {
   "use strict";

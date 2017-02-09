@@ -394,6 +394,7 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
 
   //console.log('brs', av.brs.isSafari, '; userFname', av.fio.userFname);
   if (av.brs.isSafari) {
+  //if (false) {
     //The lines below call a function that almost works.
     //alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .b64. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
     //av.fio.SaveInSafari(content, av.fio.userFname);
@@ -464,6 +465,7 @@ window.downloadFile = function (sUrl) {
   }
 
   //If in Chrome or Safari - download via virtual link click
+  console.log('downloadFile.isChrome=', window.downloadFile.isChrome, '   isSafari=', window.downloadFile.isSafari)
   if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
     //Creating new link node.
     var link = document.createElement('a');
@@ -494,6 +496,7 @@ window.downloadFile = function (sUrl) {
   return true;
 }
 
+//console.log('navigator.userAgent = ', navigator.userAgent);
 window.downloadFile.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
 

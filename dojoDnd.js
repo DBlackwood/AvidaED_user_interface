@@ -914,6 +914,7 @@ av.dnd.contextMenu = function(target, fzItemID) {
     }
   }));
   if (!av.brs.isSafari) {
+  //if (true) {
     aMenu.addChild(new dijit.MenuItem({
       label: 'export',
       onClick: function () {

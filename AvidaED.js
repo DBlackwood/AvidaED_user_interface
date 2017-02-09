@@ -354,6 +354,7 @@ require([
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById('mnFlSaveWorkspace').onclick = function () {
     if (!av.brs.isSafari) {
+    //if (true) {
       av.debug.addUser('Button: mnFlSaveWorkspace');
       av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
     }
@@ -368,6 +369,7 @@ require([
   // Save current workspace with a new name
   document.getElementById('mnFlSaveAs').onclick = function () {
     if (!av.brs.isSafari) {
+    //if (true) {
       av.debug.addUser('Button: mnFlSaveAs');
       var suggest = 'avidaWS.avidaedworkspace.zip';
       if (av.fio.userFname) {
@@ -476,33 +478,6 @@ require([
     mnHpAboutDialog.show();
   });
 
-  /*  //tiba delete later
-  av.ui.HardwareDialog = new Dialog({
-    title: 'Avida : A Guided Tour of an Ancestor and its Hardware',
-    id: 'HardwareDialog',
-    href: 'cpu_tour.html'
-    //hide: function() {av.ui.HardwareDialog.destroy()}
-    //style: 'width: 600px; height: 400px'
-  });
-
-  domStyle.set(av.ui.HardwareDialog.containerNode, {
-    position: 'relative'
-  });
-
-  dijit.byId('mnHpHardware').on('Click', function () {
-    if (!av.ui.HardwareDialog) {
-      av.ui.HardwareDialog = new Dialog({
-        title: 'Avida : A Guided Tour of an Ancestor and its Hardware',
-        id: 'HardwareDialog',
-        href: 'cpu_tour.html'
-        //hide: function() {av.ui.HardwareDialog.destroy()}
-        //style: 'width: 600px; height: 400px'
-      });
-    }
-    //console.log(av.ui.HardwareDialog);
-    av.ui.HardwareDialog.show();
-  });
-*/
   dijit.byId('mnHpProblem').on('Click', function () {
     av.debug.addUser('Button: mnHpProblem');
     // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-ED: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
@@ -576,7 +551,7 @@ require([
   // Error logging
   //********************************************************************************************************************
 
-  //Everything happens when we click a button
+/*  //Everything happens when we click a button
 //  on(dom.byId('sendPost'), 'click', function(){
   on(document.getElementById('sendPost'), 'click', function(){
     av.debug.addUser('Button: sendPost');
@@ -613,6 +588,44 @@ require([
       }
     ); // End then
   }); // End on's function and on statement
+*/
+
+  on(document.getElementById('sendPost'), 'click', function(){
+    av.debug.addUser('Button: sendPost');
+    //Data to send
+    var a_log = 'text for the log';
+    var a_comment = 'text for a comment2';
+    var a_jserror = 'error message2';
+    var a_email = 'foo@bar.baz';
+    var a_events = 'an event2';
+    var a_method = 'userTriggered';
+    var a_messages = 'the message, again';
+    console.log('in sendPost click');
+
+    domConst.place('<p>Button pressed; send message</p>', 'status');
+
+    xhr.post(  //Post is a helper function to xhr, a more generic class
+      'http://localhost:5000/receive',  //URL parameter
+      {  //Data and halding parameter
+        handleAs:'json',
+        data:{
+          log:a_log,
+          comment:a_comment,
+          error:a_jserror,
+          email:a_email,
+          events:a_events,
+          method:a_method,
+          messages:a_messages
+        }
+      }
+    ).then(function(received){ //Promise format; received data from request (first param of then)
+        domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
+      }, function(err){ //Error handling (second param of then)
+        domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
+      }
+    ); // End then
+  }); // End on's function and on statement
+
 
   //--------------------------------------------------------------------------------------------
   //https://bugsnag.com/blog/js-stacktracess
@@ -1581,14 +1594,15 @@ require([
 
       if (av.debug.plotly) console.log('popData', popData);
       //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
-      av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1585';
-      av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
-      Plotly.deleteTraces(av.dom.popChart, [0, 1]);
-      if (av.debug.plotly) console.log('av.pch.update', av.pch.update);
-      av.debug.log += '\n     --uiD: Plotly.relayout(av.dom.popChart, av.pch.update) in av.grd.popChartInit in AvidaED.js at 1589';
-      av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart, av.pch.update', [av.dom.popChart, av.pch.update]);
-      Plotly.relayout(av.dom.popChart, av.pch.update);
-      //console.log('av.dom.popChart=', av.dom.popChart, '; av.pch.update=', av.pch.update);
+      //console.log('data=', av.dom.popChart.data);
+      if (undefined != av.dom.popChart.data[0]) {
+        av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1599';
+        av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
+        Plotly.deleteTraces(av.dom.popChart, [0, 1]);
+        av.debug.log += '\n     --uiD: Plotly.relayout(av.dom.popChart, av.pch.update) in av.grd.popChartInit in AvidaED.js at 1589';
+        av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart, av.pch.update', [av.dom.popChart, av.pch.update]);
+        Plotly.relayout(av.dom.popChart, av.pch.update);
+      }
     }
     av.dom.popChart.style.visibility='hidden';
     //console.log('layout.ht, wd =', av.dom.popChart.layout.height, av.dom.popChart.layout.width);
@@ -1604,7 +1618,7 @@ require([
       if ('none' === dijit.byId('yaxis').value) {
         if (undefined !== av.dom.popChart.data) {
           console.log('before purge in popChartFn');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1612';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1621';
           av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
           Plotly.deleteTraces(av.dom.popChart, [0, 1]);
           //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
@@ -1673,11 +1687,11 @@ require([
           av.pch.layout.width = av.pch.wd;
           av.pch.layout.height = av.pch.ht;
           console.log('before purge in update grid chart');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.popChart)  in AvidaED.js at 1681';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.purge(av.dom.popChart)  in AvidaED.js at 1690';
           av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
           Plotly.purge(av.dom.popChart);
           console.log('after purge in update grid chart');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)  in AvidaED.js at 1685';
+          av.debug.log += '\n     --uiD: Plotly: Plotly.plot("popChart", popData, av.pch.layout, av.pch.widg)  in AvidaED.js at 1694';
           av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'popData, av.pch.layout, av.pch.widg', [popData, av.pch.layout, av.pch.widg]);
           Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
           //Plotly.plot('popChart', popData, av.pch.layout);
@@ -2366,13 +2380,20 @@ require([
 
   //Safari 9 will not allow saving workspaces or freezer items.
   if (av.brs.isSafari) {
+  //if (false) {
     userMsgLabel.textContent = 'Safari 9 does not allow saving a workspace or freezer items. Please use Firefox or Chrome';
     dijit.byId('mnFlSaveWorkspace').attr('disabled', true);
     dijit.byId('mnFlSaveWorkspace').attr('disabled', true);
     dijit.byId('mnFlSaveAs').attr('disabled', true);
   }
 
+  //http://stackoverflow.com/questions/41890009/file-download-not-working-in-safari
+  //var data = 'fred and george';
+  //var file = new Blob([data], { type: 'application/pdf;charset=utf-8' });
+  //av.fio.FileSaver.saveAs(file, 'abc.pdf');
 
+  var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, "helloWorld.txt");
   // **************************************************************************************************************** */
   //                                          Useful Generic functions
   // **************************************************************************************************************** */
