@@ -32,7 +32,7 @@ av.mouse.downOrganCanvasFn = function(evt) {
       }
     }
     if ('offspring' != av.mouse.Picked) {
-      av.debug.addUser('Click on Offspring');
+      av.post.addUser('Click on Offspring');
       if (av.debug.ind) {
       }
       var lngth = av.traceObj[av.ind.cycle].memSpace.length;
@@ -98,7 +98,7 @@ av.mouse.downGridCanvasFn = function (evt) {
   if (av.grd.selectedCol >= 0 && av.grd.selectedCol < av.grd.cols && av.grd.selectedRow >= 0 && av.grd.selectedRow < av.grd.rows) {
     av.grd.flagSelected = true;
     if (av.debug.mouse) console.log('ongrid', av.grd.selectedNdx);
-    av.debug.addUser('Click on grid cell with index: ' + av.grd.selectedNdx + '');
+    av.post.addUser('Click on grid cell with index: ' + av.grd.selectedNdx + '');
     //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
 

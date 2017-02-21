@@ -20,7 +20,8 @@ av.debug.userMsg  = false; //Show avida messages on screen
 av.debug.plotly = false;  //both popChart and analysis
 av.debug.usr = ''; //working on log for user actions.
 
-av.debug.addUser = function(addStr, comment) {
+av.post = {};
+av.post.addUser = function(addStr, comment) {
   "use strict";
   var note = comment === undefined ? '' : comment;
   av.debug.log += '\n--usr: ' + addStr + ' ~.~ ' + note;
@@ -304,7 +305,9 @@ av.msg.uiReqestedReset = false;
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
 av.ui.version = '2017_0202';
+av.debug.log = '';
 av.debug.log = '--hed: message and error log: version Beta Test ' + av.ui.version;
+av.debug.triggered = 'unknown';
 
 av.ui.page = 'populationBlock';
 av.ui.subpage = 'map';

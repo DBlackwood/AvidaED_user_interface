@@ -127,7 +127,7 @@ av.msg.readMsg = function (ee) {
     }
   }
   else if ('response' === msg.type) {
-    //console.log('msg.request.type', msg.request.type);
+    //console.log('msg.request.type', msg.request.type);  
     if ('stepUpdate' == msg.request.type) {
       av.debug.log += '\nAui: type: response; request: stepUpdate; success:' + msg.success;
     }
@@ -537,7 +537,7 @@ av.ptd.updateLogicFn = function (mUpdate){
 
     //console.log('grd.msg', av.grd.msg);
     //console.log('grd.popStatsMsg', av.grd.popStatsMsg);
-    console.log('av.grd.logicOutline', av.grd.logicOutline);
+    //console.log('av.grd.logicOutline', av.grd.logicOutline);
     var lngth =  av.grd.msg.fitness.data.length;
     for (var ii=0; ii < lngth; ii++){
       if (0 < av.grd.logicOutline[ii]) {
@@ -547,7 +547,7 @@ av.ptd.updateLogicFn = function (mUpdate){
         av.pch.logNumFnd++;
       }
     }
-    console.log('NumFnd', av.pch.logNumFnd);
+    //console.log('NumFnd', av.pch.logNumFnd);
     if (0 < av.pch.logNumFnd) {
       av.pch.logFitFnd = av.pch.logFitFnd/av.pch.logNumFnd;
       av.pch.logCstFnd = av.pch.logCstFnd/av.pch.logNumFnd;
@@ -604,6 +604,8 @@ av.grd.updateSelectedOrganismType = function (msg) {
   else ancestorLabel.textContent = msg.ancestor;
   //add + or - to text of logic function
   if (null != msg.tasks) {
+    // No longer using +/- in labels. Comment out now. Delete later
+/*
     if (0 == msg.tasks.not) notLabel.textContent = 'not-';
     else notLabel.textContent = 'not+';
     if (0 == msg.tasks.nand) nanLabel.textContent = 'nan-';
@@ -622,6 +624,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
     else xorLabel.textContent = 'xor+';
     if (0 == msg.tasks.equ) equLabel.textContent = 'equ-';
     else equLabel.textContent = 'equ+';
+    */
     //now put in the actual numbers
     notTime.textContent = msg.tasks.not;
     nanTime.textContent = msg.tasks.nand;
@@ -634,6 +637,8 @@ av.grd.updateSelectedOrganismType = function (msg) {
     equTime.textContent = msg.tasks.equ;
   }
   else {
+    // No longer using +/- in labels. Comment out now. Delete later
+/*
     notLabel.textContent = 'not-';
     nanLabel.textContent = 'nan-';
     andLabel.textContent = 'and-';
@@ -643,7 +648,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
     norLabel.textContent = 'nor-';
     xorLabel.textContent = 'xor-';
     equLabel.textContent = 'equ-';
-
+*/
     notTime.textContent = '-';
     nanTime.textContent = '-';
     andTime.textContent = '-';

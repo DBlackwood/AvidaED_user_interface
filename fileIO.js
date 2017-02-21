@@ -2,6 +2,11 @@
 // cwd = current working directory
 // saved = where files are put to save to user workspace
 
+//http://stackoverflow.com/questions/41890009/file-download-not-working-in-safari
+// works in Chrome but not Safari works with no user input in Chrome (because chrome defaults to downloads))
+//var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+//saveAs(blob, "helloWorld.txt");
+
 //---------------------------------- Call to selecct the Default workspace ---------------------------------------------
 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
 //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/
@@ -171,6 +176,10 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       alert('Unable to open Freezer Item file. Please check the file and try again or contact Avida-ED-development@googlegroups.com for help');
       av.debug.log += '\nfreezerItem fileReader error:' + err;
     }
+
+    fileReader.readAsArrayBuffer(zipFileToLoad);  //calls the function above //was 215
+    av.fzr.saveUpdateState('no');
+
     fileReader.onload = function(fileLoadedEvent) {
       var fileContainedInZipFile, zipFileLoaded;
       try {
@@ -212,8 +221,6 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
         av.debug.log += '\nfreezerItem jsZip error:' + error;
       }
     };
-    fileReader.readAsArrayBuffer(zipFileToLoad);  //calls the function above
-    av.fzr.saveUpdateState('no');
   }
 
 av.fio.fixFname = function() {

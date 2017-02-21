@@ -181,6 +181,24 @@ require([
     av.dom.manualUpdateRadio = document.getElementById('manualUpdateRadio');
     av.dom.autoUpdateRadio = document.getElementById('autoUpdateRadio');
     av.dom.autoUpdateSpinner = document.getElementById('autoUpdateSpinner');
+
+    av.dom.sendLogTextarea = document.getElementById('sendLogTextarea');
+    av.dom.sendLogPara = document.getElementById('sendLogPara');
+    av.dom.sendLogTextarea = document.getElementById('sendLogTextarea');
+
+    av.dom.postLogTextarea = document.getElementById('postLogTextarea');
+    av.dom.postLogPara = document.getElementById('postLogPara');
+    av.dom.postVersionLabel = document.getElementById('postVersionLabel');
+    av.dom.postScreenSize = document.getElementById('postScreenSize');
+    av.dom.postUserinfoLabel = document.getElementById('postUserinfoLabel');
+    av.dom.postError = document.getElementById('postError');
+    av.dom.postEmailInput = document.getElementById('postEmailInput');
+    av.dom.postEmailLabel = document.getElementById('postEmailLabel');
+    av.dom.postNoteLabel = document.getElementById('postNoteLabel');
+    av.dom.postComment = document.getElementById('postComment');
+    av.dom.postLogTextarea = document.getElementById('postLogTextarea');
+    av.dom.postdTailTextarea = document.getElementById('postdTailTextarea');
+    
     //av.dom. = document.getElementById('');
   };
   av.dom.load();
@@ -289,7 +307,7 @@ require([
 
   dijit.byId('mnFlOpenDefaultWS').on('Click', function () {
     'use strict';
-    av.debug.addUser('Button: mnFlOpenDefaultWS');
+    av.post.addUser('Button: mnFlOpenDefaultWS');
     av.fio.useDefault = true;
     av.fio.isB64 = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();  //Save WSfile Dialog box
@@ -299,14 +317,14 @@ require([
   });
 
   dijit.byId('sWSfSave').on('Click', function () {
-    av.debug.addUser('Button: sWSSave');
+    av.post.addUser('Button: sWSSave');
     //console.log('before call save workspace');
     av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
     //console.log('after call to save workspace');
   });
 
   dijit.byId('sWSfOpen').on('Click', function () {
-    av.debug.addUser('Button: sWSfOpen');
+    av.post.addUser('Button: sWSfOpen');
     sWSfDialog.hide(sWSfDialog.hide);
     if (av.fio.useDefault) {
       av.fio.readZipWS(av.fio.defaultFname, false);
@@ -322,7 +340,7 @@ require([
 
   dijit.byId('mnFlOpenWS').on('Click', function () {
     'use strict';
-    av.debug.addUser('Button: mnFlOpenWS');
+    av.post.addUser('Button: mnFlOpenWS');
     av.fio.useDefault = false;
     av.fio.isB64 = false;
     if ('no' === av.fzr.saveState) sWSfDialog.show();   //Need to change to include might be saved tiba fix
@@ -332,7 +350,7 @@ require([
 
   dijit.byId('mnFlOpenB64').on('Click', function () {
     'use strict';
-    av.debug.addUser('Button: mnFlOpenB64');
+    av.post.addUser('Button: mnFlOpenB64');
     av.fio.useDefault = false;
     av.fio.isB64 = true;
     if ('no' === av.fzr.saveState) sWSfDialog.show();
@@ -344,7 +362,7 @@ require([
 
   dijit.byId('mnFlFzItem').on('Click', function () {
     'use strict';
-    av.debug.addUser('Button: mnFlFzItem');
+    av.post.addUser('Button: mnFlFzItem');
     av.fio.useDefault = false;
     //console.log('importFzrItem', importFzrItem);
     document.getElementById('importFzrItem').click();
@@ -355,7 +373,7 @@ require([
   document.getElementById('mnFlSaveWorkspace').onclick = function () {
     if (!av.brs.isSafari) {
     //if (true) {
-      av.debug.addUser('Button: mnFlSaveWorkspace');
+      av.post.addUser('Button: mnFlSaveWorkspace');
       av.fio.fzSaveCurrentWorkspaceFn();  //fileIO.js
     }
   };
@@ -370,7 +388,7 @@ require([
   document.getElementById('mnFlSaveAs').onclick = function () {
     if (!av.brs.isSafari) {
     //if (true) {
-      av.debug.addUser('Button: mnFlSaveAs');
+      av.post.addUser('Button: mnFlSaveAs');
       var suggest = 'avidaWS.avidaedworkspace.zip';
       if (av.fio.userFname) {
         if (0 < av.fio.userFname.length) suggest = av.fio.userFname;
@@ -385,14 +403,14 @@ require([
   //Export csv data from current run.
   dijit.byId('mnFlExportData').on('Click', function () {
     'use strict';
-    av.debug.addUser('Button: mnFlExportData');
+    av.post.addUser('Button: mnFlExportData');
     av.fwt.writeCSV();
   });
 
   //Export csv data from current run.
   dijit.byId('mnFlExportGraph').on('Click', function () {
     'use strict';
-    av.debug.addUser('Button: mnFlExportGraph');
+    av.post.addUser('Button: mnFlExportGraph');
     mnFlExportGraphDialog.show();
   });
 
@@ -404,18 +422,18 @@ require([
       //document.getElementById('mnHpDebug').label = 'Show debug menu';
       //document.getElementById('mnHpDebug').textContent = 'Show debug menu';
       dijit.byId('mnHpDebug').set('label', 'Show debug menu');
-      av.debug.addUser('Button: mnHpDebug: now hidden');
+      av.post.addUser('Button: mnHpDebug: now hidden');
     } else {
       document.getElementById('mnDebug').style.visibility = 'visible';
       //document.getElementById('mnHpDebug').label = 'Hide debug menu';
       dijit.byId('mnHpDebug').set('label', 'Hide debug menu');
-      av.debug.addUser('Button: mnHpDebug: now visible');
+      av.post.addUser('Button: mnHpDebug: now visible');
     }
   };
 
   //works saving text as an example -
   document.getElementById('mnDbSaveTxt').onclick = function () {
-    av.debug.addUser('Button: mnDbSaveTxt');
+    av.post.addUser('Button: mnDbSaveTxt');
     av.fio.userFname = 'junk.txt';
     //av.fio.saveTxt();
     av.fio.saveJson();
@@ -423,8 +441,6 @@ require([
 
   $(fileDownloadButton).click(function () {
     console.log('inside fileDownButton')
-    //var blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});
-    //saveAs(blob, 'hello world.txt');
 
     if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
     if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
@@ -469,35 +485,32 @@ require([
   // Help Drop down menu buttons
   //--------------------------------------------------------------------------------------------------------------------
   dijit.byId('mnHpAbout').on('Click', function () {
-    av.debug.addUser('Button: mnHpAbout');
+    av.post.addUser('Button: mnHpAbout');
     mnHpAboutDialog.show();
   });
 
   dijit.byId('mnAeAbout').on('Click', function () {
-    av.debug.addUser('Button: mnAeAbout');
+    av.post.addUser('Button: mnAeAbout');
     mnHpAboutDialog.show();
   });
 
   dijit.byId('mnHpProblem').on('Click', function () {
-    av.debug.addUser('Button: mnHpProblem');
+    av.post.addUser('Button: mnHpProblem');
+    av.debug.triggered = 'userTriggered';
+    av.debug.sendLogPara = 'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
+    av.debug.postNoteLabel = 'Please describe the problem or suggestion in the comment field below.'
+    av.debug.postEmailLabel = 'Please include your e-mail so we can discuss your problem or suggeston further.';
+    av.debug.sendLogTextarea = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail;
+    av.debug.error = '';
+    av.dom.postError.style.color = 'grey';
+    av.ui.problemWindow();
     // only shows one line = prompt('Please put this in an e-mail to help us improve Avida-ED: Copy to clipboard: Ctrl+C, Enter', '\nto: ' + av.fio.mailAddress + '\n' + av.debug.log);
-    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail;
-
-    //dijit.byId('sendLogDialog').set('value', 'Avida-ED problem report');
-    document.getElementById('sendLogPara').textContent =
-      'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
-
-    sendLogDialog.show();  //textarea must be visable first
-    av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
-    av.debug.sendLogTextarea.focus();
-    //av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
-    av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
   });
 
   //http://stackoverflow.com/questions/7080269/javascript-before-leaving-the-page
   dijit.byId('sendEmail').on('Click', function () {
     av.ui.sendEmailFlag = true;
-    av.debug.addUser('Button: sendEmail');
+    av.post.addUser('Button: sendEmail');
     var link = 'mailto:' + av.fio.mailAddress +
         //'?cc=CCaddress@example.com' +
       '?subject=' + escape('Avida-ED session log') +
@@ -505,6 +518,170 @@ require([
     window.location.href = link;
     av.ui.sendEmailFlag = false;
   });
+
+  //process problme pop-up window
+  av.ui.problemWindow = function () {
+    console.log('in problemWindow');
+    av.debug.flags = {
+      isBlink: av.brs.isBlink,
+      isChrome: av.brs.isChrome,
+      isEdge: av.brs.isEdge,
+      isFirefox: av.brs.isFirefox,
+      isIE: av.brs.isIE,
+      isOpera: av.brs.isOpera,
+      isSafari: av.brs.isSafari
+    };
+    av.debug.postData = {
+      version: av.ui.version,
+      userinfo: window.navigator.userAgent,
+      screenSize: av.brs.userData.screen,
+      log:av.debug.log,
+      comment:'userComment',
+      error:av.debug.error,
+      email:'user email if provided',
+      triggered:av.debug.triggered,
+      details: av.debug.dTail,
+      flags: av.debug.flags
+    };
+
+    //sendLogDialog.show();  //textarea must be visable first
+    //av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
+
+
+    //av.dom.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
+
+    //av.post.emailWindow();
+    av.post.sendWindow();
+  }
+  
+  av.post.sendWindow = function () {
+    postLogDialog.show();  //textarea must be visable first
+    av.dom.postLogPara.textContent = av.post.postLogPara;
+    av.dom.postVersionLabel.textContent = av.ui.version;
+    av.dom.postScreenSize.textContent = av.brs.userData.screen;
+    av.dom.postUserinfoLabel.textContent = window.navigator.userAgent.toString();
+    av.dom.postError.textContent = av.debug.error;
+    av.dom.postError.style.color = 'red';
+    av.dom.postEmailLabel.textContent = av.debug.postEmailLabel;
+    av.dom.postNoteLabel.textContent = av.debug.postNoteLabel;
+    av.dom.postLogTextarea.textContent = av.debug.log;
+    av.dom.postdTailTextarea.textContent = av.debug.dTail;
+  }
+
+  av.post.emailWindow = function() {
+    document.getElementById('sendLogTextarea').textContent = av.debug.sendLogTextarea;
+    document.getElementById('sendLogPara').textContent = av.debug.sendLogPara;
+
+    //document.getElementById('postLogTextarea').textContent = av.debug.sendLogTextarea;
+    //document.getElementById('postLogPara').textContent = av.debug.sendLogPara;
+
+    sendLogDialog.show();  //textarea must be visable first
+    av.dom.sendLogTextarea.focus();
+    av.dom.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
+    
+  }
+  //********************************************************************************************************************
+  // Error logging
+  //********************************************************************************************************************
+
+  //--------------------------------------------------------------------------------------------
+  //https://bugsnag.com/blog/js-stacktracess
+  //http://blog.bugsnag.com/js-stacktraces
+  window.onerror = function (message, file, line, col, error) {
+    console.log('in onError');
+    document.getElementById('runStopButton').innerHTML = 'Run';  //av.msg.pause('now');
+    av.debug.triggered = 'errorTriggered';
+    av.debug.sendLogPara = 'The error is the last line in the session log in the text below.';
+    av.debug.postEmailLabel = 'Please include your e-mail if you would like feed back or are willing to further assist in debug';
+    av.debug.sendLogTextarea = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail + '\n\nError:' + av.debug.error;
+    av.debug.postNoteLabel = 'Please include any additional comments in the field below.'
+    av.debug.postEmailLabel = 'Please include your e-mail for feedback or so we can discuss the problem further';
+    av.debug.error = 'Error: ' + message + ' from ' + file + ':' + line + ':' + col;
+
+    console.log('before call problemWindow')
+    av.ui.problemWindow();
+  }
+
+  window.addEventListener('error', function (evt) {
+    //console.log('event listener', evt);
+  });
+  //--------------------------------------------------------------------------------------------
+
+  on(document.getElementById('postPost'), 'click', function(){
+    av.post.addUser('Button: sendPost');
+    //Data to send
+    av.debug.postData.email = av.dom.postEmailInput.value;
+    av.debug.postData.comment = av.dom.postComment.value;
+    console.log('postData=', av.debug.postData);
+
+    domConst.place('<p>Button pressed; send message</p>', 'status');
+
+    xhr.post(  //Post is a helper function to xhr, a more generic class
+      'http://localhost:5000/receive',  //URL parameter
+      {  //Data and halding parameter
+        handleAs:'json',
+        data: av.utl.json2stringFn(av.debug.postData)
+      }
+    ).then(function(received){ //Promise format; received data from request (first param of then)
+        domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
+      }, function(err){ //Error handling (second param of then)
+        domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
+      }
+    ); // End then
+  }); // End on's function and on statement
+
+  /*  //Everything happens when we click a button
+  //  on(dom.byId('sendPost'), 'click', function(){
+    on(document.getElementById('sendPost'), 'click', function(){
+      av.post.addUser('Button: sendPost');
+      //Data to send
+      var a_log = 'text for the log';
+      var a_comment = 'text for a comment2';
+      var a_jserror = 'error message2';
+      var a_email = 'foo@bar.baz';
+      var a_events = 'an event2';
+      var a_method = 'userTriggered';
+      var a_messages = 'the message, again';
+      console.log('in sendPost click');
+
+      domConst.place('<p>Button pressed; send message</p>', 'status');
+
+      xhr.post(  //Post is a helper function to xhr, a more generic class
+        'http://localhost:5000/receive',  //URL parameter
+        {  //Data and halding parameter
+          handleAs:'json',
+          data:{
+            log:a_log,
+            comment:a_comment,
+            error:a_jserror,
+            email:a_email,
+            events:a_events,
+            method:a_method,
+            messages:a_messages
+          }
+        }
+      ).then(function(received){ //Promise format; received data from request (first param of then)
+          domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
+        }, function(err){ //Error handling (second param of then)
+          domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
+        }
+      ); // End then
+    }); // End on's function and on statement
+  */
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
+  //More usefull websites to catch errors
+  // https://davidwalsh.name/javascript-stack-trace
+  // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
+  //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
+
+  // how to send e-mail
+  // http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
+
+  // selected text
+  // http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+  // http://www.javascriptkit.com/javatutors/copytoclipboard.shtml
 
   //http://www.technicaladvices.com/2012/03/26/detecting-the-page-leave-event-in-javascript/
   //Cannot get custom message in Firefox (or Safari for now)
@@ -547,120 +724,6 @@ require([
    }
    window.onbeforeunload=goodbye;
    */
-  //********************************************************************************************************************
-  // Error logging
-  //********************************************************************************************************************
-
-/*  //Everything happens when we click a button
-//  on(dom.byId('sendPost'), 'click', function(){
-  on(document.getElementById('sendPost'), 'click', function(){
-    av.debug.addUser('Button: sendPost');
-    //Data to send
-    var a_log = 'text for the log';
-    var a_comment = 'text for a comment2';
-    var a_jserror = 'error message2';
-    var a_email = 'foo@bar.baz';
-    var a_events = 'an event2';
-    var a_method = 'userTriggered';
-    var a_messages = 'the message, again';
-    console.log('in sendPost click');
-
-    domConst.place('<p>Button pressed; send message</p>', 'status');
-
-    xhr.post(  //Post is a helper function to xhr, a more generic class
-      'http://localhost:5000/receive',  //URL parameter
-      {  //Data and halding parameter
-        handleAs:'json',
-        data:{
-          log:a_log,
-          comment:a_comment,
-          error:a_jserror,
-          email:a_email,
-          events:a_events,
-          method:a_method,
-          messages:a_messages
-        }
-      }
-    ).then(function(received){ //Promise format; received data from request (first param of then)
-        domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
-      }, function(err){ //Error handling (second param of then)
-        domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
-      }
-    ); // End then
-  }); // End on's function and on statement
-*/
-
-  on(document.getElementById('sendPost'), 'click', function(){
-    av.debug.addUser('Button: sendPost');
-    //Data to send
-    var a_log = 'text for the log';
-    var a_comment = 'text for a comment2';
-    var a_jserror = 'error message2';
-    var a_email = 'foo@bar.baz';
-    var a_events = 'an event2';
-    var a_method = 'userTriggered';
-    var a_messages = 'the message, again';
-    console.log('in sendPost click');
-
-    domConst.place('<p>Button pressed; send message</p>', 'status');
-
-    xhr.post(  //Post is a helper function to xhr, a more generic class
-      'http://localhost:5000/receive',  //URL parameter
-      {  //Data and halding parameter
-        handleAs:'json',
-        data:{
-          log:a_log,
-          comment:a_comment,
-          error:a_jserror,
-          email:a_email,
-          events:a_events,
-          method:a_method,
-          messages:a_messages
-        }
-      }
-    ).then(function(received){ //Promise format; received data from request (first param of then)
-        domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
-      }, function(err){ //Error handling (second param of then)
-        domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
-      }
-    ); // End then
-  }); // End on's function and on statement
-
-
-  //--------------------------------------------------------------------------------------------
-  //https://bugsnag.com/blog/js-stacktracess
-  //http://blog.bugsnag.com/js-stacktraces
-  window.onerror = function (message, file, line, col, error) {
-    //console.log(message, ' from ', error.stack, '------------------');
-    document.getElementById('runStopButton').innerHTML = 'Run';  //av.msg.pause('now');
-    av.debug.log += '\n' + message + ' from ' + file + ':' + line + ':' + col;
-    //av.debug.errorEmailFn();
-
-    //dijit.byId('sendLogDialog').set('title', 'javascrip error report');
-    document.getElementById('sendLogTextarea').textContent = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail;
-    document.getElementById('sendLogPara').textContent = 'The error is the last line in the session log in the text below.';
-    sendLogDialog.show();  //textarea must be visable first
-    av.debug.sendLogTextarea = document.getElementById('sendLogTextarea');
-    av.debug.sendLogTextarea.focus();
-    //av.debug.sendLogTextarea.setSelectionRange(0, av.debug.sendLogTextarea.length);
-    av.debug.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
-  }
-
-  window.addEventListener('error', function (evt) {
-    //console.log('event listener', evt);
-  });
-
-  //More usefull websites to catch errors
-  // https://davidwalsh.name/javascript-stack-trace
-  // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
-  //to send e-mail  http://stackoverflow.com/questions/7381150/how-to-send-an-email-from-javascript
-
-  // how to send e-mail
-  // http://www.codeproject.com/Questions/303284/How-to-send-email-in-HTML-or-Javascript
-
-  // selected text
-  // http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
-  // http://www.javascriptkit.com/javatutors/copytoclipboard.shtml
 
   //--------------------------------------------------------------------------------------------------------------------
   // main button scripts
@@ -706,13 +769,13 @@ require([
 
   // Buttons that call MainBoxSwap
   document.getElementById('populationButton').onclick = function () {
-    av.debug.addUser('Button: populationButton');
+    av.post.addUser('Button: populationButton');
     if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
     av.ui.mainBoxSwap('populationBlock');
   }
 
   document.getElementById('organismButton').onclick = function () {
-    av.debug.addUser('Button: organismButton');
+    av.post.addUser('Button: organismButton');
     av.ui.mainBoxSwap('organismBlock');
     //console.log('after mainBoxSwap');
     organismCanvasHolderSize();
@@ -727,7 +790,7 @@ require([
   };
 
   document.getElementById('analysisButton').onclick = function () {
-    av.debug.addUser('Button: analysisButton');
+    av.post.addUser('Button: analysisButton');
     av.ui.mainBoxSwap('analysisBlock');
     av.anl.AnaChartFn();
   };
@@ -992,19 +1055,19 @@ require([
     // The code is here in case the dnd type is changed to 'source'
     switch (source.node.id) {
       case 'graphPop0':
-        av.debug.addUser('DnD: delete_from: graphPop0?');
+        av.post.addUser('DnD: delete_from: graphPop0?');
         av.anl.pop[0].left = [];       //remove lines from population 1
         av.anl.pop[0].right = [];
         av.anl.AnaChartFn();
         break;
       case 'graphPop1':
-        av.debug.addUser('DnD: delete_from: graphPop1?');
+        av.post.addUser('DnD: delete_from: graphPop1?');
         av.anl.pop[1].left = [];       //remove lines from population 2
         av.anl.pop[1].right = [];
         av.anl.AnaChartFn();
         break;
       case 'graphPop2':
-        av.debug.addUser('DnD: delete_from: graphPop2?');
+        av.post.addUser('DnD: delete_from: graphPop2?');
         av.anl.pop[2].left = [];       //remove lines from population 3
         av.anl.pop[2].right = [];
         av.anl.AnaChartFn();
@@ -1021,14 +1084,14 @@ require([
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   document.getElementById('popSetupButton').onclick = function () {
-    //av.debug.addUser('Button: sendEmail');  //done in popBoxSwap
+    //av.post.addUser('Button: sendEmail');  //done in popBoxSwap
     av.ptd.popBoxSwap();   //in popControls.js
   };
 
   // hides and shows the population and selected organsim data on right of population page with 'Stats/mpa' button
   av.ptd.popStatView = function () {
     if (av.ptd.popStatFlag) {
-      av.debug.addUser('Button: popStatsButton: start hidding stats');
+      av.post.addUser('Button: popStatsButton: start hidding stats');
       av.ptd.popStatFlag = false;
       registry.byId('popRight').domNode.style.width = '1px';
       registry.byId('mainBC').layout();
@@ -1036,7 +1099,7 @@ require([
 
     }
     else {
-      av.debug.addUser('Button: popStatsButton: start showing stats');
+      av.post.addUser('Button: popStatsButton: start showing stats');
       av.ptd.popStatFlag = true;
       registry.byId('sotPane').domNode.style.width = '150px';
       registry.byId('popRight').domNode.style.width = '395px';
@@ -1048,7 +1111,7 @@ require([
   }
 
   document.getElementById('popStatsButton').onclick = function () {
-    ///av.debug.addUser('Button: popStatsButton');   //done in popStatView
+    ///av.post.addUser('Button: popStatsButton');   //done in popStatView
     av.ptd.popStatView()
   };
 
@@ -1058,14 +1121,14 @@ require([
   
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   document.getElementById('runStopButton').onclick = function () {
-    av.debug.addUser('Button: runStopButton = ' + av.grd.updateNum, '=updateNum;  ' + av.grd.msg.update + '=msg.update;  ' + av.grd.popStatsMsg.update + '=popStatsMsg.update');
+    av.post.addUser('Button: runStopButton = ' + av.grd.updateNum, '=updateNum;  ' + av.grd.msg.update + '=msg.update;  ' + av.grd.popStatsMsg.update + '=popStatsMsg.update');
     var upDate = av.msg.previousUpdate + 1;
-    //av.debug.addUser('Button: runStopButton = ' + upDate);
+    //av.post.addUser('Button: runStopButton = ' + upDate);
     av.ptd.runStopFn();
   };
 
   dijit.byId('mnCnPause').on('Click', function () {
-    av.debug.addUser('Button: mnCnPause');
+    av.post.addUser('Button: mnCnPause');
     //console.log('about to call av.ptd.makePauseState()');
     av.msg.pause('now');
     //av.debug.log += '______Debug Note: about to call av.ptd.makePauseState() in AvidaEd.js line 986 \n';
@@ -1074,14 +1137,14 @@ require([
 
   //process run/Stop buttons as above but for drop down menu
   dijit.byId('mnCnRun').on('Click', function () {
-    av.debug.addUser('Button: mnCnRun');
+    av.post.addUser('Button: mnCnRun');
     av.ptd.makeRunState();
     av.ptd.runPopFn();
   });
 
   //process run/Stop buttons as above but for drop down menu
   dijit.byId('mnCnOne').on('Click', function () {
-    av.debug.addUser('Button: mnCnOne');
+    av.post.addUser('Button: mnCnOne');
     av.ui.oneUpdateFlag = true;
     av.ptd.makeRunState();
     av.ptd.runPopFn();
@@ -1090,7 +1153,7 @@ require([
   /******************************************* New Button and new Dialog **********************************************/
 
   dijit.byId('newDiscard').on('Click', function () {
-    av.debug.addUser('Button: newDiscard');
+    av.post.addUser('Button: newDiscard');
     newDialog.hide();
     av.msg.reset();
     //av.ptd.resetDishFn(true); //Only do when get reset back from avida after sending reset
@@ -1098,7 +1161,7 @@ require([
   });
 
   dijit.byId('newSaveWorld').on('Click', function () {
-    av.debug.addUser('Button: newSaveWorld');
+    av.post.addUser('Button: newSaveWorld');
     av.ptd.FrPopulationFn();
     newDialog.hide();
     av.msg.reset();
@@ -1107,7 +1170,7 @@ require([
   });
 
   dijit.byId('newSaveConfig').on('Click', function () {
-    av.debug.addUser('Button: newSaveConfig');
+    av.post.addUser('Button: newSaveConfig');
     av.ptd.FrConfigFn();
     newDialog.hide();
     av.msg.reset();
@@ -1128,12 +1191,12 @@ require([
   }
 
   document.getElementById('newDishButton').onclick = function () {
-    av.debug.addUser('Button: newDishButton');
+    av.post.addUser('Button: newDishButton');
     newButtonBoth();
   };
 
   dijit.byId('mnCnNewpop').on('Click', function () {
-    av.debug.addUser('Button: mnCnNewpop');
+    av.post.addUser('Button: mnCnNewpop');
     newButtonBoth();
   });
 
@@ -1141,7 +1204,7 @@ require([
   //Saves either configuration or populated dish
   //Also creates context menu for all new freezer items.*/
   document.getElementById('freezeButton').onclick = function () {
-    av.debug.addUser('Button: freezeButton');
+    av.post.addUser('Button: freezeButton');
     if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
     else {
       if (5 > av.msg.ByCellIDgenome.length) {
@@ -1153,45 +1216,45 @@ require([
   };
 
   dijit.byId('FzConfigurationButton').on('Click', function () {
-    av.debug.addUser('Button: FzConfigurationButton');
+    av.post.addUser('Button: FzConfigurationButton');
     fzDialog.hide();
     av.ptd.FrConfigFn();
   });
 
   //Drop down menu to save a configuration item
   dijit.byId('mnFzConfig').on('Click', function () {
-    av.debug.addUser('Button: mnFzConfig');
+    av.post.addUser('Button: mnFzConfig');
     av.ptd.FrConfigFn();
   });
 
   //
   dijit.byId('FzOrganismButton').on('Click', function () {
-    av.debug.addUser('Button: FzOrganismButton');
+    av.post.addUser('Button: FzOrganismButton');
     fzDialog.hide();
     av.ptd.FrOrganismFn('selected');
   });
 
   //button to freeze a population
   dijit.byId('FzPopulationButton').on('Click', function () {
-    av.debug.addUser('Button: FzPopulationButton');
+    av.post.addUser('Button: FzPopulationButton');
     fzDialog.hide();
     av.ptd.FrPopulationFn();
   });
 
   dijit.byId('mnFzPopulation').on('Click', function () {
-    av.debug.addUser('Button: mnFzPopulation');
+    av.post.addUser('Button: mnFzPopulation');
     av.ptd.FrPopulationFn();
   });
 
   //Buttons on drop down menu to save an organism
   dijit.byId('mnFzOrganism').on('Click', function () {
-    av.debug.addUser('Button: mnFzOrganism');
+    av.post.addUser('Button: mnFzOrganism');
     av.ptd.FrOrganismFn('selected')
   });
 
   //Buttons on drop down menu to save an offspring
   dijit.byId('mnFzOffspring').on('Click', function () {
-    av.debug.addUser('Button: mnFzOffspring');
+    av.post.addUser('Button: mnFzOffspring');
     av.ptd.FrOrganismFn('offspring')
   });
 
@@ -1224,29 +1287,29 @@ require([
   }
 
   document.getElementById('restartAvidaNow').onclick = function () {
-    av.debug.addUser('Button: restartAvidaNow');
+    av.post.addUser('Button: restartAvidaNow');
     av.ui.restartAvida();
   }
 
   document.getElementById('restartAvidaFrzConfig').onclick = function () {
-    av.debug.addUser('Button: restartAvidaFzrConfig');
+    av.post.addUser('Button: restartAvidaFzrConfig');
     av.ptd.FrConfigFn();
   }
 
   //test - delete later ------------------------------------------------------------------------------------------------
   document.getElementById('mnDbRestartAvida').onclick = function () {
-    av.debug.addUser('Button: mnDbRestartAvida');
+    av.post.addUser('Button: mnDbRestartAvida');
     av.aww.restartAvidaFn();
   }
 
   document.getElementById('mnDbDiagnostic').onclick = function () {
-    av.debug.addUser('Button: mnDbDiagnostic');
+    av.post.addUser('Button: mnDbDiagnostic');
     av.dcn.diagnosticConsoleFn();
   }
 
   document.getElementById('mnDbThrowData').onclick = function () {
     'use strict';
-    av.debug.addUser('Button: mnDbThrowData');
+    av.post.addUser('Button: mnDbThrowData');
     console.log('av', av);
     console.log('fzr', av.fzr);
     console.log('parents', av.parents);
@@ -1262,7 +1325,7 @@ require([
 
   document.getElementById('mnDbThrowError').onclick = function () {
     'use strict';
-    av.debug.addUser('Button: mnDbThrowError');
+    av.post.addUser('Button: mnDbThrowError');
     var george = fred;
   };
 
@@ -1277,19 +1340,19 @@ require([
 
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
-    av.debug.addUser('mousedown: organCanvas('+evt.offsetX + ', ' + evt.offsetY + ')');
+    av.post.addUser('mousedown: organCanvas('+evt.offsetX + ', ' + evt.offsetY + ')');
     av.mouse.downOrganCanvasFn(evt);
   });
 
   //if a cell is selected, arrow keys can move the selection
   $(document).keydown(function (event) {
-    //av.debug.addUser(' ');   //in av.mouse.arrowKeyOnGrid
+    //av.post.addUser(' ');   //in av.mouse.arrowKeyOnGrid
     av.mouse.arrowKeysOnGrid(event)
   });
 
   //av.mouse down on the grid
   $(document.getElementById('gridCanvas')).on('mousedown', function (evt) {
-    av.debug.addUser('mousedown: gridCanvas('+evt.offsetX + ', ' + evt.offsetY + ')');
+    av.post.addUser('mousedown: gridCanvas('+evt.offsetX + ', ' + evt.offsetY + ')');
     av.mouse.downGridCanvasFn(evt)  });
 
   //mouse move anywhere on screen - not currently in use.
@@ -1338,7 +1401,7 @@ require([
         document.getElementById('ExecuteJust').style.width = '100%';
         document.getElementById('ExecuteAbout').style.width = '100%';
         if (av.debug.mouse) console.log('from parent', av.parent, '; fzr', av.fzr);
-        av.debug.addUser('Dragged item to Organism Icon');
+        av.post.addUser('Dragged item to Organism Icon');
         av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
     }
@@ -1490,7 +1553,7 @@ require([
   dijit.byId('mnGnuplot2').attr('disabled', true);
 
   dijit.byId('mnViridis').on('Click', function () {
-    av.debug.addUser('Button: mnViridis');
+    av.post.addUser('Button: mnViridis');
     dijit.byId('mnCubehelix').attr('disabled', false);
     dijit.byId('mnGnuplot2').attr('disabled', false);
     dijit.byId('mnViridis').attr('disabled', true);
@@ -1500,7 +1563,7 @@ require([
   });
 
   dijit.byId('mnGnuplot2').on('Click', function () {
-    av.debug.addUser('Button: mnGnuplot2');
+    av.post.addUser('Button: mnGnuplot2');
     dijit.byId('mnCubehelix').attr('disabled', false);
     dijit.byId('mnGnuplot2').attr('disabled', true);
     dijit.byId('mnViridis').attr('disabled', false);
@@ -1510,14 +1573,14 @@ require([
   });
 
   dijit.byId('mnCubehelix').on('Click', function () {
-    av.debug.addUser('Button: mnCubehelix');
+    av.post.addUser('Button: mnCubehelix');
     dijit.byId('mnCubehelix').attr('disabled', true);
     dijit.byId('mnGnuplot2').attr('disabled', false);
     dijit.byId('mnViridis').attr('disabled', false);
     av.grd.colorMap = 'Cubehelix';
     //console.log('before call av.grd.drawGridSetupFn');
     av.grd.drawGridSetupFn();
-    av.debug.addUser('Button: mnCubehelix pressed');
+    av.post.addUser('Button: mnCubehelix pressed');
   });
 
   // *******************************************************************************************************************
@@ -1525,7 +1588,7 @@ require([
   // *******************************************************************************************************************
   if (av.debug.root) console.log('before logic buttons');
 
-  //    av.debug.addUser('Button: notButton');    //done in av.ptd.bitToggle
+  //    av.post.addUser('Button: notButton');    //done in av.ptd.bitToggle
   document.getElementById('notButton').onclick = function () {
     av.ptd.bitToggle('notButton');
   } //av.ptd.bitToggle in popControls.js
@@ -1802,11 +1865,11 @@ require([
   }
 
   dijit.byId('sizeCols').on('Change', function() {
-    av.debug.addUser('sizeCols = ' + document.getElementById('sizeCols').value);
+    av.post.addUser('sizeCols = ' + document.getElementById('sizeCols').value);
     popSizeFn();
   });
   dijit.byId('sizeRows').on('Change', function() {
-    av.debug.addUser('sizeRows = ' + document.getElementById('sizeRows').value);
+    av.post.addUser('sizeRows = ' + document.getElementById('sizeRows').value);
     popSizeFn();
   });
   
@@ -1826,7 +1889,7 @@ require([
       max: 461512,
       slide: function (event, ui) {
         var muteVal = (Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3);
-        av.debug.addUser('muteInput =' + muteVal, ' in AvidaED.js line 1855');
+        av.post.addUser('muteInput =' + muteVal, ' in AvidaED.js line 1855');
         //$( '#mRate' ).val( ui.value);  /*put slider value in the text above the slider */
         $('#muteInput').val(muteVal);
         /*put the value in the text box */
@@ -1841,76 +1904,76 @@ require([
       muteVal = parseFloat(this.value);
       slides.slider('value', muteVal);
       $('#mRate').val(muteVal);
-      av.debug.addUser('muteInput =' + muteVal.formatNum(1), ' in AvidaED.js line 1865');
+      av.post.addUser('muteInput =' + muteVal.formatNum(1), ' in AvidaED.js line 1865');
       //console.log('in mute change');
     });
   });
 
   dojo.connect(dijit.byId('childParentRadio'), 'onClick', function () {
-    av.debug.addUser('Button: childParentRadio');
+    av.post.addUser('Button: childParentRadio');
   });
 
   dojo.connect(dijit.byId('childRandomRadio'), 'onClick', function () {
-    av.debug.addUser('Button: childRandomRadio');
+    av.post.addUser('Button: childRandomRadio');
   });
 
   dojo.connect(dijit.byId('notose'), 'onClick', function () {
-    av.debug.addUser('Button: notose = ' + dijit.byId('notose').get('checked').toString());
+    av.post.addUser('Button: notose = ' + dijit.byId('notose').get('checked').toString());
   });
 
 
   dojo.connect(dijit.byId('andose'), 'onClick', function () {
-    av.debug.addUser('Button: andose = ' + dijit.byId('andose').get('checked').toString());
+    av.post.addUser('Button: andose = ' + dijit.byId('andose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('orose'), 'onClick', function () {
-    av.debug.addUser('Button: orose = ' + dijit.byId('orose').get('checked').toString());
+    av.post.addUser('Button: orose = ' + dijit.byId('orose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('norose'), 'onClick', function () {
-    av.debug.addUser('Button: norose = ' + dijit.byId('norose').get('checked').toString());
+    av.post.addUser('Button: norose = ' + dijit.byId('norose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('equose'), 'onClick', function () {
-    av.debug.addUser('Button: equose = ' + dijit.byId('equose').get('checked').toString());
+    av.post.addUser('Button: equose = ' + dijit.byId('equose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('nanose'), 'onClick', function () {
-    av.debug.addUser('Button: nanose = ' + dijit.byId('nanose').get('checked').toString());
+    av.post.addUser('Button: nanose = ' + dijit.byId('nanose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('ornose'), 'onClick', function () {
-    av.debug.addUser('Button: ornose = ' + dijit.byId('ornose').get('checked').toString());
+    av.post.addUser('Button: ornose = ' + dijit.byId('ornose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('andnose'), 'onClick', function () {
-    av.debug.addUser('Button: andnose = ' + dijit.byId('andnose').get('checked').toString());
+    av.post.addUser('Button: andnose = ' + dijit.byId('andnose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('xorose'), 'onClick', function () {
-    av.debug.addUser('Button: xorose = ' + dijit.byId('xorose').get('checked').toString());
+    av.post.addUser('Button: xorose = ' + dijit.byId('xorose').get('checked').toString());
   });
 
   dojo.connect(dijit.byId('experimentRadio'), 'onClick', function () {
-    av.debug.addUser('Button: experimentRadio');
+    av.post.addUser('Button: experimentRadio');
   });
 
   dojo.connect(dijit.byId('demoRadio'), 'onClick', function () {
-    av.debug.addUser('Button: demoRadio');
+    av.post.addUser('Button: demoRadio');
   });
 
   dojo.connect(dijit.byId('manualUpdateRadio'), 'onClick', function () {
-    av.debug.addUser('Button: manualUpdateRadio');
+    av.post.addUser('Button: manualUpdateRadio');
     av.ui.autoStopFlag = false;
   });
 
   dojo.connect(dijit.byId('autoUpdateRadio'), 'onClick', function () {
-    av.debug.addUser('Button: autoUpdateRadio');
+    av.post.addUser('Button: autoUpdateRadio');
     av.ui.autoStopFlag = true;
   });
 
   dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function () {
-    av.debug.addUser('Spinner: autoUpdateSpinner = ' + dijit.byId('autoUpdateSpinner').get('value'));
+    av.post.addUser('Spinner: autoUpdateSpinner = ' + dijit.byId('autoUpdateSpinner').get('value'));
     av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
     //console.log('autoUpdateSpinner=', dijit.byId('autoUpdateSpinner').get('value'));
   });
@@ -1923,7 +1986,7 @@ require([
   //process button to hide or show Organism detail panal.
   var DetailsFlag = true;
   document.getElementById('OrgDetailsButton').onclick = function () {
-    av.debug.addUser('Button: OrgDetailsButton');
+    av.post.addUser('Button: OrgDetailsButton');
     if (DetailsFlag) {
       DetailsFlag = false;
       dijit.byId('rightDetail').set('style', 'display: none;');
@@ -1940,14 +2003,14 @@ require([
 
   //Opens Settings dialog box
   document.getElementById('OrgSetting').onclick = function () {
-    av.debug.addUser('Button: OrgSetting');
+    av.post.addUser('Button: OrgSetting');
     av.ind.settingsChanged = false;
     OrganSetupDialog.show();
   }
 
   //If settings were changed then this will request new data when the settings dialog box is closed.
   OrganSetupDialog.connect(OrganSetupDialog, 'hide', function (e) {
-    av.debug.addUser('Button: hide Setting');
+    av.post.addUser('Button: hide Setting');
     if (av.ind.settingsChanged) av.msg.doOrgTrace();
   });
 
@@ -1983,26 +2046,26 @@ require([
       if (av.debug.trace) console.log('orMute changed', av.ind.settingsChanged)
       //$( '#orMRate' ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log('in mute change');
-      av.debug.addUser('muteInput =' + dijit.byId('orMuteInput').get('value')+'1949');
+      av.post.addUser('muteInput =' + dijit.byId('orMuteInput').get('value')+'1949');
     });
   });
 
   //triggers flag that requests more data when the settings dialog is closed.
   //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
   dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function () {
-    av.debug.addUser('Button: OrganExperimentRadio');
+    av.post.addUser('Button: OrganExperimentRadio');
     av.ind.settingsChanged = true;
   });
   dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function () {
     av.ind.settingsChanged = true;
-    av.debug.addUser('Button: OrganDemoRadio');
+    av.post.addUser('Button: OrganDemoRadio');
   });
 
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************
   dijit.byId('mnCnOrganismTrace').on('Click', function () {
-    av.debug.addUser('Button: mnCnOrganismTrace');
+    av.post.addUser('Button: mnCnOrganismTrace');
     av.mouse.traceSelected(av.dnd, av.fzr, av.grd);
     av.ui.mainBoxSwap('organismBlock');
     organismCanvasHolderSize();
@@ -2017,7 +2080,7 @@ require([
   //Put the offspring in the parent position on Organism Trace
   dijit.byId('mnCnOffspringTrace').on('Click', function () {
     //Open Oranism view
-    av.debug.addUser('Button: mnCnOffspringTrace');
+    av.post.addUser('Button: mnCnOffspringTrace');
     av.ui.mainBoxSwap('organismBlock');
     organismCanvasHolderSize();
     var height = ($('#rightDetail').innerHeight() - 375) / 2;
@@ -2069,7 +2132,7 @@ require([
       av.ind.cycle = ii;
       av.ind.updateOrgTrace()
     }
-    av.debug.addUser('Button: orgBack; cycle = ' + ii);
+    av.post.addUser('Button: orgBack; cycle = ' + ii);
   };
 
   document.getElementById('orgForward').onclick = function () {
@@ -2081,11 +2144,11 @@ require([
       if (av.debug.ind) console.log('ii', ii, '; gen', av.gen);
       av.ind.updateOrgTrace()
     }
-    av.debug.addUser('Button: orgForward; cycle = ' + ii);
+    av.post.addUser('Button: orgForward; cycle = ' + ii);
   };
 
   document.getElementById('orgReset').onclick = function () {
-    av.debug.addUser('Button: orgReset');
+    av.post.addUser('Button: orgReset');
     //dijit.byId('orgCycle').set('value', 0);
     //av.ind.cycle = 0;
     //av.ind.updateOrgTrace();
@@ -2108,16 +2171,16 @@ require([
     if ('Run' == document.getElementById('orgRun').textContent) {
       document.getElementById('orgRun').textContent = 'Stop';
       av.ind.update_timer = setInterval(av.ind.orgRunFn, 100);
-      av.debug.addUser('Button: orgRun = stop; cycle = ' + av.ind.cycleSlider.get('value'));
+      av.post.addUser('Button: orgRun = stop; cycle = ' + av.ind.cycleSlider.get('value'));
     }
     else {
       av.ind.orgStopFn();
-      av.debug.addUser('Button: orgRun = run; cycle = ' + av.ind.cycleSlider.get('value'));
+      av.post.addUser('Button: orgRun = run; cycle = ' + av.ind.cycleSlider.get('value'));
     }
   };
 
   document.getElementById('orgEnd').onclick = function () {
-    av.debug.addUser('Button: orgEnd');
+    av.post.addUser('Button: orgEnd');
     dijit.byId('orgCycle').set('value', av.ind.cycleSlider.get('maximum'));
     av.ind.cycle = av.ind.cycleSlider.get('maximum');
     av.ind.updateOrgTrace();
@@ -2253,7 +2316,7 @@ require([
 
   /* Chart buttons ****************************************/
   document.getElementById('pop0delete').onclick = function () {
-    av.debug.addUser('Button: pop0delete');
+    av.post.addUser('Button: pop0delete');
     av.anl.hasPopData[0] = false;
     av.anl.pop[0].left = [];
     av.anl.pop[0].right = [];
@@ -2262,7 +2325,7 @@ require([
     av.anl.AnaChartFn();
   }
   document.getElementById('pop1delete').onclick = function () {
-    av.debug.addUser('Button: pop1delete');
+    av.post.addUser('Button: pop1delete');
     av.anl.hasPopData[1] = false;
     av.anl.pop[1].left = [];
     av.anl.pop[1].right = [];
@@ -2271,7 +2334,7 @@ require([
     av.anl.AnaChartFn();
   }
   document.getElementById('pop2delete').onclick = function () {
-    av.debug.addUser('Button: pop2delete');
+    av.post.addUser('Button: pop2delete');
     av.anl.hasPopData[2] = false;
     av.anl.pop[2].left = [];
     av.anl.pop[2].right = [];
@@ -2281,23 +2344,23 @@ require([
   }
   dijit.byId('pop0color').on('Change', function () {
     av.anl.color[0] = av.color.names[dijit.byId('pop0color').value];
-    av.debug.addUser('Button: pop0color');
+    av.post.addUser('Button: pop0color');
     av.anl.AnaChartFn();
   });
   dijit.byId('pop1color').on('Change', function () {
-    av.debug.addUser('Button: pop1color');
+    av.post.addUser('Button: pop1color');
     av.anl.color[1] = av.color.names[dijit.byId('pop1color').value];
     av.anl.AnaChartFn();
   });
   dijit.byId('pop2color').on('Change', function () {
-    av.debug.addUser('Button: pop2color');
+    av.post.addUser('Button: pop2color');
     av.anl.color[2] = av.color.names[dijit.byId('pop2color').value];
     av.anl.AnaChartFn();
   });
 
   //Set Y-axis title and choose the correct array to plot
   dijit.byId('yLeftSelect').on('Change', function () {
-    av.debug.addUser('Button: yLeftSelect = ' + dijit.byId('yLeftSelect').value);
+    av.post.addUser('Button: yLeftSelect = ' + dijit.byId('yLeftSelect').value);
     av.anl.yLeftTitle = dijit.byId('yLeftSelect').value;
     //need to get correct array to plot from freezer
     av.anl.loadSelectedData(0, 'yLeftSelect', 'left');  //numbers are world landing spots
@@ -2313,7 +2376,7 @@ require([
     av.anl.loadSelectedData(1, 'yRightSelect', 'right');
     av.anl.loadSelectedData(2, 'yRightSelect', 'right');
     av.anl.AnaChartFn();
-    av.debug.addUser('Button: yRightSelect = '+dijit.byId('yRightSelect').value);
+    av.post.addUser('Button: yRightSelect = '+dijit.byId('yRightSelect').value);
   });
 
   // **************************************************************************************************************** */
@@ -2386,14 +2449,7 @@ require([
     dijit.byId('mnFlSaveWorkspace').attr('disabled', true);
     dijit.byId('mnFlSaveAs').attr('disabled', true);
   }
-
-  //http://stackoverflow.com/questions/41890009/file-download-not-working-in-safari
-  //var data = 'fred and george';
-  //var file = new Blob([data], { type: 'application/pdf;charset=utf-8' });
-  //av.fio.FileSaver.saveAs(file, 'abc.pdf');
-
-  var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, "helloWorld.txt");
+  
   // **************************************************************************************************************** */
   //                                          Useful Generic functions
   // **************************************************************************************************************** */
