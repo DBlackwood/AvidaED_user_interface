@@ -180,8 +180,6 @@ av.ptd.popNewExState = function () {
   ageLabel.textContent = '';
   ancestorLabel.textContent = '';
   viableLabel.textContent = '';
-  // No longer using +/- in labels. Comment out now. Delete later
-/*
   notLabel.textContent = 'not-';
   nanLabel.textContent = 'nan-';
   andLabel.textContent = 'and-';
@@ -191,7 +189,6 @@ av.ptd.popNewExState = function () {
   norLabel.textContent = 'nor-';
   xorLabel.textContent = 'xor-';
   equLabel.textContent = 'equ-';
-*/
   notTime.textContent = '0';
   nanTime.textContent = '0';
   andTime.textContent = '0';

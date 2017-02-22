@@ -16,17 +16,11 @@ var avida_update = -1;  //Holds the current update as notified
 var msg_queue = [];     //Holds the current messages to send to avida
 var diagnostic_socket = null;  //Holds the diagnostic socket if available
 var enable_diagnostic_socket = false;  //Should an attempt be made to connect to the diagnostic socket?
-var io = null;
 
 /*
   Try to import external socketio client
 */
-
-console.log('io=', io, '; enable_diagnostic_socket=', enable_diagnostic_socket, '; and=', io && enable_diagnostic_socket);
-if (enable_diagnostic_socket)
-{
-   self.importScripts("https://cdn.socket.io/socket.io-1.4.5.js");
-}
+self.importScripts("https://cdn.socket.io/socket.io-1.4.5.js");
 
 if (io && enable_diagnostic_socket){
   diagnostic_socket = io.connect('http://localhost:5000/avida');
@@ -57,22 +51,11 @@ function sendDiagMsg(msg_from, io_type, data)
 
 
 /*
-   Write received commands to the console using a compressed format.
-*/
-
-function logCommand(cmd)
-{
-   //var compressed = LZString.compressToEncodedURIComponent(JSON.stringify(cmd));      //Diane commented out line
-   //console.log(String.fromCharCode(2) + compressed + String.fromCharCode(3));         //Diane commented out line
-}
-
-/*
   Handle incoming messages from parent
 */
 onmessage = function(msg) {
     msg_queue.push(msg.data);
     sendDiagMsg('ui', 'in', msg.data);
-    logCommand(msg.data)
 }
 
 

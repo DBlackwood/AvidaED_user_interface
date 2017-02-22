@@ -440,8 +440,7 @@ function updateTimesPerformed(obj, gen) {
   document.getElementById("norPerf").textContent = obj[av.ind.cycle].functions.nor;
   document.getElementById("xorPerf").textContent = obj[av.ind.cycle].functions.xor;
   document.getElementById("equPerf").textContent = obj[av.ind.cycle].functions.equ;
-  // No longer using +/- in labels. Comment out now. Delete later
-/*
+  /*
   if (0 < obj[av.ind.cycle].functions.not) {
     document.getElementById("notOrg").textContent = "0 not+";
   }
@@ -496,7 +495,7 @@ function updateTimesPerformed(obj, gen) {
   else {
     document.getElementById("equOrg").textContent = "8 equ-";
   }
- */
+  */
 }
 
 function writeInstructDetails(obj, gen) {

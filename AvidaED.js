@@ -78,6 +78,7 @@ require([
   'fileDataRead.js',
   'fileDataWrite.js',
   'fileIO.js',
+
   'populationGrid.js',
   'organismView.js',
   'dojoDnd.js',
@@ -150,6 +151,7 @@ require([
   av.anl.yRightTitle = dijit.byId('yRightSelect').value;
 
   av.dom.load = function () {
+    'use strict';
     av.dom.popChart = document.getElementById('popChart');  //easier handle for div with chart
     av.dom.popChrtHolder = document.getElementById('popChrtHolder');
     //av.dom.anlChrtSpace = document.getElementById('anlChrtSpace');  //easier handle for div with chart
@@ -198,7 +200,15 @@ require([
     av.dom.postComment = document.getElementById('postComment');
     av.dom.postLogTextarea = document.getElementById('postLogTextarea');
     av.dom.postdTailTextarea = document.getElementById('postdTailTextarea');
-    
+
+    av.dom.popBC = document.getElementById('popBC');
+    av.dom.mainBC = document.getElementById('mainBC');
+    av.dom.mapBlockHold = document.getElementById('mapBlockHold');
+    av.dom.mapBlock = document.getElementById('mapBlock');
+    av.dom.gridHolder = document.getElementById('gridHolder');
+    av.dom.gridCanvas = document.getElementById('gridCanvas');
+    av.dom.mapBC = document.getElementById('mapBC');
+
     //av.dom. = document.getElementById('');
   };
   av.dom.load();
@@ -496,6 +506,7 @@ require([
 
   dijit.byId('mnHpProblem').on('Click', function () {
     av.post.addUser('Button: mnHpProblem');
+    av.debug.finalizeDtail();
     av.debug.triggered = 'userTriggered';
     av.debug.sendLogPara = 'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
     av.debug.postNoteLabel = 'Please describe the problem or suggestion in the comment field below.'
@@ -519,6 +530,27 @@ require([
     av.ui.sendEmailFlag = false;
   });
 
+  av.debug.finalizeDtail = function (){
+    //finalize dTail
+    //dom dimensions clientWidth clientHeight scrollWidth scrollHeight innerWidth innerHeight outerWidth outerHeight
+    //assignment must have units and is a string style.width style.height
+    av.debug.dTail = ''
+      +   '      mainBC.client wd Ht = ' + av.dom.mainBC.clientWidth + '  '  +  av.dom.mainBC.clientHeight
+      + '\n       popBC.client wd Ht = ' + av.dom.popBC.clientWidth + '  '  +  av.dom.popBC.clientHeight
+      + '\n       popBC.scroll wd Ht = ' + av.dom.popBC.scrollWidth + '  '  +  av.dom.popBC.scrollHeight
+      + '\nmapBlockHold.client wd Ht = ' + av.dom.mapBlockHold.clientWidth + '  '  +  av.dom.mapBlockHold.clientHeight
+      + '\nmapBlockHold.scroll wd Ht = ' + av.dom.mapBlockHold.scrollWidth + '  '  +  av.dom.mapBlockHold.scrollHeight
+      + '\n    mapBlock.client wd Ht = ' + av.dom.mapBlock.clientWidth + '  '  +  av.dom.mapBlock.clientHeight
+      + '\n    mapBlock.scroll wd Ht = ' + av.dom.mapBlock.scrollWidth + '  '  +  av.dom.mapBlock.scrollHeight
+      + '\n       mapBC.client wd Ht = ' + av.dom.mapBC.clientWidth + '  '  +  av.dom.mapBC.clientHeight
+      + '\n       mapBC.scroll wd Ht = ' + av.dom.mapBC.scrollWidth + '  '  +  av.dom.mapBC.scrollHeight
+      + '\n  gridHolder.client wd Ht = ' + av.dom.gridHolder.clientWidth + '  '  +  av.dom.gridHolder.clientHeight
+      + '\n  gridHolder.scroll wd Ht = ' + av.dom.gridHolder.scrollWidth + '  '  +  av.dom.gridHolder.scrollHeight
+      + '\n  gridCanvas.client wd Ht = ' + av.dom.gridCanvas.clientWidth + '  '  +  av.dom.gridCanvas.clientHeight
+      + '\n  gridCanvas.scroll wd Ht = ' + av.dom.gridCanvas.scrollWidth + '  '  +  av.dom.gridCanvas.scrollHeight
+      + '\n' + av.debug.dTail;
+  }
+
   //process problme pop-up window
   av.ui.problemWindow = function () {
     console.log('in problemWindow');
@@ -531,6 +563,7 @@ require([
       isOpera: av.brs.isOpera,
       isSafari: av.brs.isSafari
     };
+
     av.debug.postData = {
       version: av.ui.version,
       userinfo: window.navigator.userAgent,
@@ -550,8 +583,8 @@ require([
 
     //av.dom.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
 
-    //av.post.emailWindow();
-    av.post.sendWindow();
+    av.post.emailWindow();
+    //av.post.sendWindow();
   }
   
   av.post.sendWindow = function () {
@@ -590,13 +623,14 @@ require([
   window.onerror = function (message, file, line, col, error) {
     console.log('in onError');
     document.getElementById('runStopButton').innerHTML = 'Run';  //av.msg.pause('now');
+    av.debug.finalizeDtail();
     av.debug.triggered = 'errorTriggered';
     av.debug.sendLogPara = 'The error is the last line in the session log in the text below.';
     av.debug.postEmailLabel = 'Please include your e-mail if you would like feed back or are willing to further assist in debug';
-    av.debug.sendLogTextarea = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail + '\n\nError:' + av.debug.error;
     av.debug.postNoteLabel = 'Please include any additional comments in the field below.'
     av.debug.postEmailLabel = 'Please include your e-mail for feedback or so we can discuss the problem further';
     av.debug.error = 'Error: ' + message + ' from ' + file + ':' + line + ':' + col;
+    av.debug.sendLogTextarea = av.fio.mailAddress + '\n\n' + av.debug.log + '\n\nDebug Details:\n' + av.debug.dTail + '\n\n' + av.debug.error;
 
     console.log('before call problemWindow')
     av.ui.problemWindow();
@@ -608,7 +642,7 @@ require([
   //--------------------------------------------------------------------------------------------
 
   on(document.getElementById('postPost'), 'click', function(){
-    av.post.addUser('Button: sendPost');
+    av.post.addUser('Button: postPost');
     //Data to send
     av.debug.postData.email = av.dom.postEmailInput.value;
     av.debug.postData.comment = av.dom.postComment.value;
@@ -630,7 +664,7 @@ require([
     ); // End then
   }); // End on's function and on statement
 
-  /*  //Everything happens when we click a button
+  /*  //Everything happens when we click a button    From what Matt Rupp wrote
   //  on(dom.byId('sendPost'), 'click', function(){
     on(document.getElementById('sendPost'), 'click', function(){
       av.post.addUser('Button: sendPost');
@@ -882,10 +916,10 @@ require([
 
   //Adjust Statistics area width based on gridholder size and shape. gridholder should be roughly square
   av.ui.adjustPopRightSize = function () {
-    av.ui.gridHolderWd = document.getElementById('gridHolder').clientWidth;
+    av.ui.gridHolderWd = av.dom.gridHolder.clientWidth;
     //console.log('av.ui.gridHolderWd', av.ui.gridHolderWd);
     if (av.ui.pobBotWdMin < av.ui.gridHolderWd) {
-      av.ui.gridHolderXtra = av.ui.gridHolderWd - document.getElementById('gridHolder').clientHeight;
+      av.ui.gridHolderXtra = av.ui.gridHolderWd - av.dom.gridHolder.clientHeight;
       //console.log('av.ui.gridHolderXtra',av.ui.gridHolderXtra);
       if (av.ui.gridHolderSideBuffer < av.ui.gridHolderXtra) {
         av.ui.gridHolderWdNew = av.ui.gridHolderWd - av.ui.gridHolderXtra + av.ui.gridHolderSideBuffer;
@@ -1449,7 +1483,7 @@ require([
   av.grd.SelectedHt = $('#sotColor').innerHeight();
 
   av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
-  av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientHeight / 2;
+  av.grd.CanvasGrid.width = av.dom.gridHolder.clientHeight / 2;
   //av.grd.CanvasGrid.height = $('#gridHolder').innerHeight() - 16 - av.grd.CanvasScale.height;
   av.grd.CanvasGrid.height = 15;
 
@@ -1495,17 +1529,17 @@ require([
         document.getElementById('popBot').style.height = document.getElementById('popBot').scrollHeight + 'px';
         dijit.byId('populationBlock').resize();
 
-        var gridHolderHt = document.getElementById('gridHolder').clientHeight;
+        var gridHolderHt = av.dom.gridHolder.clientHeight;
         av.ui.num = Math.floor(gridHolderHt / 4);
 
-        av.grd.CanvasGrid.width = document.getElementById('gridHolder').clientWidth - 1;
+        av.grd.CanvasGrid.width = av.dom.gridHolder.clientWidth - 1;
         av.grd.CanvasGrid.height = gridHolderHt - 2;
         av.grd.spaceX = av.grd.CanvasGrid.width;
         av.grd.spaceY = av.grd.CanvasGrid.height;
 
         av.grd.findGridSize(av.grd, av.parents);
-        if (document.getElementById('gridHolder').scrollHeight == document.getElementById('gridHolder').clientHeight + 17) {
-          var numGH = document.getElementById('gridHolder').clientHeight;
+        if (av.dom.gridHolder.scrollHeight == av.dom.gridHolder.clientHeight + 17) {
+          var numGH = av.dom.gridHolder.clientHeight;
           av.grd.CanvasGrid.height = numGH - 6 - 17;
           av.grd.findGridSize(av.grd, av.parents);     //in populationGrid.js
           consold.log('inside DrawGridSetupFn in odd if statement ----------------------------------')
