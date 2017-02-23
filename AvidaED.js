@@ -216,6 +216,15 @@ require([
     av.dom.mnHpProblem = document.getElementById('mnHpProblem');
     av.dom.mnHpDebug = document.getElementById('mnHpDebug');
 
+    av.dom.mainButtons = document.getElementById('mainButtons');
+    av.dom.trashCP = document.getElementById('trashCP');
+    av.dom.orgTop = document.getElementById('orgTop');
+    
+    av.dom.ExecuteJust = document.getElementById('ExecuteJust');       //check for code repeats might be able to do a function and clean things tiba
+    av.dom.ExecuteAbout = document.getElementById('ExecuteAbout');
+    av.dom. = document.getElementById('');
+    av.dom. = document.getElementById('');
+
     //av.dom. = document.getElementById('');
   };
   av.dom.load();
@@ -771,14 +780,14 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
 
   //initialize the ht for main buttons and trash can so there is no scroll bar
-  if (document.getElementById('mainButtons').scrollHeight > document.getElementById('mainButtons').clientHeight) {
-    document.getElementById('mainButtons').style.height = document.getElementById('mainButtons').scrollHeight + 'px';
+  if (av.dom.mainButtons.scrollHeight > av.dom.mainButtons.clientHeight) {
+    av.dom.mainButtons.style.height = av.dom.mainButtons.scrollHeight + 'px';
   }
-  if (document.getElementById('trashCP').scrollHeight > document.getElementById('trashCP').clientHeight) {
-    document.getElementById('trashCP').style.height = document.getElementById('trashCP').scrollHeight + 'px';
+  if (av.dom.trashCP.scrollHeight > av.dom.trashCP.clientHeight) {
+    av.dom.trashCP.style.height = av.dom.trashCP.scrollHeight + 'px';
   }
-  if (document.getElementById('orgTop').scrollHeight > document.getElementById('orgTop').clientHeight) {
-    document.getElementById('orgTop').style.height = document.getElementById('orgTop').scrollHeight + 'px';
+  if (av.dom.orgTop.scrollHeight > av.dom.orgTop.clientHeight) {
+    av.dom.orgTop.style.height = av.dom.orgTop.scrollHeight + 'px';
   }
   //console.log('orgBot', document.getElementById('organismBottom').scrollHeight, document.getElementById('organismBottom').clientHeight);
   if (document.getElementById('organismBottom').scrollHeight > document.getElementById('organismBottom').clientHeight) {
@@ -821,10 +830,10 @@ require([
     //console.log('after mainBoxSwap');
     organismCanvasHolderSize();
     var height = ($('#rightDetail').innerHeight() - 395) / 2;
-    document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById('ExecuteAbout').style.height = height + 'px';
-    document.getElementById('ExecuteJust').style.width = '100%';
-    document.getElementById('ExecuteAbout').style.width = '100%';
+    av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    av.dom.ExecuteAbout.style.height = height + 'px';
+    av.dom.ExecuteJust.style.width = '100%';
+    av.dom.ExecuteAbout.style.width = '100%';
     if (undefined != av.traceObj) {
       av.ind.updateOrgTrace();
     }
@@ -884,10 +893,10 @@ require([
     if ('block' == domStyle.get('organismBlock', 'display')) {
       var rd = $('#rightDetail').innerHeight();
       var height = ($('#rightDetail').innerHeight() - 395) / 2;  //was 375
-      document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById('ExecuteAbout').style.height = height + 'px';
-      document.getElementById('ExecuteJust').style.width = '100%';
-      document.getElementById('ExecuteAbout').style.width = '100%';
+      av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      av.dom.ExecuteAbout.style.height = height + 'px';
+      av.dom.ExecuteJust.style.width = '100%';
+      av.dom.ExecuteAbout.style.width = '100%';
       //console.log('rightDetail', height, rd);
       av.ind.updateOrgTrace();
     }
@@ -1004,10 +1013,10 @@ require([
       av.ui.mainBoxSwap('organismBlock');
       organismCanvasHolderSize();
       var height = ($('#rightDetail').innerHeight() - 375) / 2;
-      document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-      document.getElementById('ExecuteAbout').style.height = height + 'px';
-      document.getElementById('ExecuteJust').style.width = '100%';
-      document.getElementById('ExecuteAbout').style.width = '100%';
+      av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+      av.dom.ExecuteAbout.style.height = height + 'px';
+      av.dom.ExecuteJust.style.width = '100%';
+      av.dom.ExecuteAbout.style.width = '100%';
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
@@ -1437,10 +1446,10 @@ require([
         av.ui.mainBoxSwap('organismBlock');
         organismCanvasHolderSize();
         var height = ($('#rightDetail').innerHeight() - 375) / 2;
-        document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-        document.getElementById('ExecuteAbout').style.height = height + 'px';
-        document.getElementById('ExecuteJust').style.width = '100%';
-        document.getElementById('ExecuteAbout').style.width = '100%';
+        av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+        av.dom.ExecuteAbout.style.height = height + 'px';
+        av.dom.ExecuteJust.style.width = '100%';
+        av.dom.ExecuteAbout.style.width = '100%';
         if (av.debug.mouse) console.log('from parent', av.parent, '; fzr', av.fzr);
         av.post.addUser('Dragged item to Organism Icon');
         av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
@@ -1459,10 +1468,10 @@ require([
         av.ui.mainBoxSwap('organismBlock');
         organismCanvasHolderSize();
         var height = ($('#rightDetail').innerHeight() - 375) / 2;
-        document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-        document.getElementById('ExecuteAbout').style.height = height + 'px';
-        document.getElementById('ExecuteJust').style.width = '100%';
-        document.getElementById('ExecuteAbout').style.width = '100%';
+        av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+        av.dom.ExecuteAbout.style.height = height + 'px';
+        av.dom.ExecuteJust.style.width = '100%';
+        av.dom.ExecuteAbout.style.width = '100%';
         av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
       }
       /*      else if ('fzOrgan' == target) {
@@ -2111,10 +2120,10 @@ require([
     av.ui.mainBoxSwap('organismBlock');
     organismCanvasHolderSize();
     var height = ($('#rightDetail').innerHeight() - 375) / 2;
-    document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById('ExecuteAbout').style.height = height + 'px';
-    document.getElementById('ExecuteJust').style.width = '100%';
-    document.getElementById('ExecuteAbout').style.width = '100%';
+    av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    av.dom.ExecuteAbout.style.height = height + 'px';
+    av.dom.ExecuteJust.style.width = '100%';
+    av.dom.ExecuteAbout.style.width = '100%';
     av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
 
@@ -2125,10 +2134,10 @@ require([
     av.ui.mainBoxSwap('organismBlock');
     organismCanvasHolderSize();
     var height = ($('#rightDetail').innerHeight() - 375) / 2;
-    document.getElementById('ExecuteJust').style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
-    document.getElementById('ExecuteAbout').style.height = height + 'px';
-    document.getElementById('ExecuteJust').style.width = '100%';
-    document.getElementById('ExecuteAbout').style.width = '100%';
+    av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    av.dom.ExecuteAbout.style.height = height + 'px';
+    av.dom.ExecuteJust.style.width = '100%';
+    av.dom.ExecuteAbout.style.width = '100%';
     offspringTrace(av.dnd, av.fio, av.fzr, av.gen);
   });
 
