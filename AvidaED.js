@@ -209,6 +209,13 @@ require([
     av.dom.gridCanvas = document.getElementById('gridCanvas');
     av.dom.mapBC = document.getElementById('mapBC');
 
+    av.dom.mnHpAbout = document.getElementById('mnHpAbout');
+    av.dom.mnHpManual = document.getElementById('mnHpManual');
+    av.dom.mnHpHardware = document.getElementById('mnHpHardware');
+    av.dom.mnHpInfo = document.getElementById('mnHpInfo');
+    av.dom.mnHpProblem = document.getElementById('mnHpProblem');
+    av.dom.mnHpDebug = document.getElementById('mnHpDebug');
+
     //av.dom. = document.getElementById('');
   };
   av.dom.load();
@@ -426,16 +433,16 @@ require([
 
   //------------- Testing only need to delete later.--------------------
 
-  document.getElementById('mnHpDebug').onclick = function () {
+  av.dom.mnHpDebug.onclick = function () {
     if ('visible' === document.getElementById('mnDebug').style.visibility) {
       document.getElementById('mnDebug').style.visibility = 'hidden';
-      //document.getElementById('mnHpDebug').label = 'Show debug menu';
-      //document.getElementById('mnHpDebug').textContent = 'Show debug menu';
+      //av.dom.mnHpDebug.label = 'Show debug menu';
+      //av.dom.mnHpDebug.textContent = 'Show debug menu';
       dijit.byId('mnHpDebug').set('label', 'Show debug menu');
       av.post.addUser('Button: mnHpDebug: now hidden');
     } else {
       document.getElementById('mnDebug').style.visibility = 'visible';
-      //document.getElementById('mnHpDebug').label = 'Hide debug menu';
+      //av.dom.mnHpDebug.label = 'Hide debug menu';
       dijit.byId('mnHpDebug').set('label', 'Hide debug menu');
       av.post.addUser('Button: mnHpDebug: now visible');
     }
