@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/populationGrid_.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
     </list>
     <ignored path="av_ui.iws" />
@@ -109,8 +108,8 @@
       <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="223" column="26" selection-start-line="223" selection-start-column="26" selection-end-line="223" selection-end-column="49" />
+            <state relative-caret-position="421">
+              <caret line="608" column="41" selection-start-line="608" selection-start-column="41" selection-end-line="608" selection-end-column="41" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -391,12 +390,12 @@
       <workItem from="1486867114129" duration="21797000" />
       <workItem from="1487696055630" duration="858000" />
       <workItem from="1487698640033" duration="13236000" />
-      <workItem from="1487824674126" duration="1188000" />
+      <workItem from="1487824674126" duration="1926000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="666301000" />
+    <option name="totallyTimeSpent" value="667039000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1459" y="-464" width="1413" height="1378" extended-state="0" />
@@ -835,8 +834,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="223" column="26" selection-start-line="223" selection-start-column="26" selection-end-line="223" selection-end-column="49" />
+        <state relative-caret-position="421">
+          <caret line="608" column="41" selection-start-line="608" selection-start-column="41" selection-end-line="608" selection-end-column="41" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

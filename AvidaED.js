@@ -222,8 +222,6 @@ require([
     
     av.dom.ExecuteJust = document.getElementById('ExecuteJust');       //check for code repeats might be able to do a function and clean things tiba
     av.dom.ExecuteAbout = document.getElementById('ExecuteAbout');
-    av.dom. = document.getElementById('');
-    av.dom. = document.getElementById('');
 
     //av.dom. = document.getElementById('');
   };
@@ -593,14 +591,12 @@ require([
       flags: av.debug.flags
     };
 
-    //sendLogDialog.show();  //textarea must be visable first
-    //av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
+    sendLogDialog.show();  //textarea must be visable first
+    av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
+    sendLogDialog.hide();  //
 
-
-    //av.dom.sendLogTextarea.select();  //https://css-tricks.com/snippets/javascript/auto-select-textarea-text/
-
-    av.post.emailWindow();
-    //av.post.sendWindow();
+    //av.post.emailWindow();
+    av.post.sendWindow();
   }
   
   av.post.sendWindow = function () {
