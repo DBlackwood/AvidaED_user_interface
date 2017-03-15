@@ -445,55 +445,55 @@ function updateTimesPerformed(obj, gen) {
     document.getElementById("notOrg").textContent = "0 not+";
   }
   else {
-    document.getElementById("notOrg").textContent = "0 not-";
+    document.getElementById("notOrg").textContent = "0 NOT";
   }
   if (0 < obj[av.ind.cycle].functions.nand) {
     document.getElementById("nanOrg").textContent = "1 nan+";
   }
   else {
-    document.getElementById("nanOrg").textContent = "1 nan-";
+    document.getElementById("nanOrg").textContent = "1 NAN";
   }
   if (0 < obj[av.ind.cycle].functions.and) {
     document.getElementById("andOrg").textContent = "2 and+";
   }
   else {
-    document.getElementById("andOrg").textContent = "2 and-";
+    document.getElementById("andOrg").textContent = "2 AND";
   }
   if (0 < obj[av.ind.cycle].functions.orn) {
     document.getElementById("ornOrg").textContent = "3 orn+";
   }
   else {
-    document.getElementById("ornOrg").textContent = "3 orn-";
+    document.getElementById("ornOrg").textContent = "3 ORN";
   }
   if (0 < obj[av.ind.cycle].functions.or) {
     document.getElementById("oroOrg").textContent = "4 oro+";
   }
   else {
-    document.getElementById("oroOrg").textContent = "4 oro-";
+    document.getElementById("oroOrg").textContent = "4 ORO";
   }
   if (0 < obj[av.ind.cycle].functions.andn) {
     document.getElementById("antOrg").textContent = "5 ant+";
   }
   else {
-    document.getElementById("antOrg").textContent = "5 ant-";
+    document.getElementById("antOrg").textContent = "5 ANT";
   }
   if (0 < obj[av.ind.cycle].functions.nor) {
     document.getElementById("norOrg").textContent = "6 nor+";
   }
   else {
-    document.getElementById("norOrg").textContent = "6 nor-";
+    document.getElementById("norOrg").textContent = "6 NOR";
   }
   if (0 < obj[av.ind.cycle].functions.xor) {
     document.getElementById("xorOrg").textContent = "7 xor+";
   }
   else {
-    document.getElementById("xorOrg").textContent = "7 xor-";
+    document.getElementById("xorOrg").textContent = "7 XOR";
   }
   if (0 < obj[av.ind.cycle].functions.equ) {
     document.getElementById("equOrg").textContent = "8 equ+";
   }
   else {
-    document.getElementById("equOrg").textContent = "8 equ-";
+    document.getElementById("equOrg").textContent = "8 EQU";
   }
   */
 }

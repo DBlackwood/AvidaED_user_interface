@@ -192,7 +192,7 @@ require([
     av.dom.postLogPara = document.getElementById('postLogPara');
     av.dom.postVersionLabel = document.getElementById('postVersionLabel');
     av.dom.postScreenSize = document.getElementById('postScreenSize');
-    av.dom.postUserinfoLabel = document.getElementById('postUserinfoLabel');
+    av.dom.postUserInfoLabel = document.getElementById('postUserInfoLabel');
     av.dom.postError = document.getElementById('postError');
     av.dom.postEmailInput = document.getElementById('postEmailInput');
     av.dom.postEmailLabel = document.getElementById('postEmailLabel');
@@ -205,7 +205,8 @@ require([
     av.dom.mainBC = document.getElementById('mainBC');
     av.dom.mapBlockHold = document.getElementById('mapBlockHold');
     av.dom.mapBlock = document.getElementById('mapBlock');
-    av.dom.gridHolder = document.getElementById('gridHolder');
+    av.dom.gridHolder
+      = document.getElementById('gridHolder');
     av.dom.gridCanvas = document.getElementById('gridCanvas');
     av.dom.mapBC = document.getElementById('mapBC');
 
@@ -568,7 +569,7 @@ require([
   //process problme pop-up window
   av.ui.problemWindow = function () {
     console.log('in problemWindow');
-    av.debug.flags = {
+    av.debug.vars = {
       isBlink: av.brs.isBlink,
       isChrome: av.brs.isChrome,
       isEdge: av.brs.isEdge,
@@ -580,23 +581,31 @@ require([
 
     av.debug.postData = {
       version: av.ui.version,
-      userinfo: window.navigator.userAgent,
+      userInfo: window.navigator.userAgent,
       screenSize: av.brs.userData.screen,
-      log:av.debug.log,
       comment:'userComment',
       error:av.debug.error,
       email:'user email if provided',
       triggered:av.debug.triggered,
-      details: av.debug.dTail,
-      flags: av.debug.flags
+      logs: {
+        details: av.debug.dTail,
+        session: av.debug.log,
+      },
+      vars: av.debug.vars
     };
+    console.log('postData=', av.debug.postData);
 
-    sendLogDialog.show();  //textarea must be visable first
-    av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
-    sendLogDialog.hide();  //
-
-    //av.post.emailWindow();
-    av.post.sendWindow();
+    //Until we get sending data to database figure out.
+    if (false) {
+      //Need to be able to get rid of these three lines for postPost. will crash now
+      sendLogDialog.show();  //textarea must be visable first
+      av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
+      sendLogDialog.hide();  //
+      av.post.sendWindow();
+    }
+    else {
+      av.post.emailWindow();
+    }
   }
   
   av.post.sendWindow = function () {
@@ -604,7 +613,7 @@ require([
     av.dom.postLogPara.textContent = av.post.postLogPara;
     av.dom.postVersionLabel.textContent = av.ui.version;
     av.dom.postScreenSize.textContent = av.brs.userData.screen;
-    av.dom.postUserinfoLabel.textContent = window.navigator.userAgent.toString();
+    av.dom.postUserInfoLabel.textContent = window.navigator.userAgent.toString();
     av.dom.postError.textContent = av.debug.error;
     av.dom.postError.style.color = 'red';
     av.dom.postEmailLabel.textContent = av.debug.postEmailLabel;
