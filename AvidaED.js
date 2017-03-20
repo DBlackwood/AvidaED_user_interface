@@ -193,7 +193,9 @@ require([
     av.dom.postVersionLabel = document.getElementById('postVersionLabel');
     av.dom.postScreenSize = document.getElementById('postScreenSize');
     av.dom.postUserInfoLabel = document.getElementById('postUserInfoLabel');
+    console.log('postUserInfoLabel', av.dom.postUserInfoLabel);
     av.dom.postError = document.getElementById('postError');
+    console.log('postError', av.dom.postError);
     av.dom.postEmailInput = document.getElementById('postEmailInput');
     av.dom.postEmailLabel = document.getElementById('postEmailLabel');
     av.dom.postNoteLabel = document.getElementById('postNoteLabel');
@@ -205,8 +207,7 @@ require([
     av.dom.mainBC = document.getElementById('mainBC');
     av.dom.mapBlockHold = document.getElementById('mapBlockHold');
     av.dom.mapBlock = document.getElementById('mapBlock');
-    av.dom.gridHolder
-      = document.getElementById('gridHolder');
+    av.dom.gridHolder = document.getElementById('gridHolder');
     av.dom.gridCanvas = document.getElementById('gridCanvas');
     av.dom.mapBC = document.getElementById('mapBC');
 
@@ -595,14 +596,15 @@ require([
     };
     console.log('postData=', av.debug.postData);
 
-    //Until we get sending data to database figure out.
-    if (false) {
-      //Need to be able to get rid of these three lines for postPost. will crash now
+    //Until we get sending data to database figure out. Switch between post and e-mail session log
+    if (true) {
+      //Need to be able to get rid of these three lines for postPost. will crash without them now.
       sendLogDialog.show();  //textarea must be visable first
       av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
       sendLogDialog.hide();  //
       av.post.sendWindow();
     }
+    //e-mail in production version until database worked out.
     else {
       av.post.emailWindow();
     }
@@ -1328,7 +1330,7 @@ require([
     if (typeof(Worker) !== 'undefined') {
       if (null == av.aww.uiWorker) {
         av.aww.uiWorker = new Worker('avida.js');
-        //console.log('webworker recreated');
+        console.log('webworker recreated');
         av.debug.log += '\nui --> Avida: ui killed avida webworker and started a new webworker'
       }
     }

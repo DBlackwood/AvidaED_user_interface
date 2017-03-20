@@ -81,7 +81,7 @@ av.msg.readMsg = function (ee) {
         break;
       default:
         if (av.debug.msg) {console.log('____________UnknownRequest: ', msg);}
-        av.debug.log += '\nAvida --> ui in default in messaging on line 69 \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\nAui: in default in messaging on line 84 \n' + av.utl.json2stringFn(msg);   //fix format
         break;
     }
   }
