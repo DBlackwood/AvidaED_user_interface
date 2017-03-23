@@ -107,7 +107,7 @@ require([
     console.log('Jquery ($) is not defined.');
   }
 
-  console.log('dojo version', dojo.version.toString());
+  //console.log('dojo version', dojo.version.toString());
   parser.parse();
 
   /********************************************************************************************************************/
@@ -194,9 +194,7 @@ require([
     av.dom.postVersionLabel = document.getElementById('postVersionLabel');
     av.dom.postScreenSize = document.getElementById('postScreenSize');
     av.dom.postUserInfoLabel = document.getElementById('postUserInfoLabel');
-    console.log('postUserInfoLabel', av.dom.postUserInfoLabel);
     av.dom.postError = document.getElementById('postError');
-    console.log('postError', av.dom.postError);
     av.dom.postEmailInput = document.getElementById('postEmailInput');
     av.dom.postEmailLabel = document.getElementById('postEmailLabel');
     av.dom.postNoteLabel = document.getElementById('postNoteLabel');
@@ -211,6 +209,8 @@ require([
     av.dom.gridHolder = document.getElementById('gridHolder');
     av.dom.gridCanvas = document.getElementById('gridCanvas');
     av.dom.mapBC = document.getElementById('mapBC');
+    av.dom.popRight = document.getElementById('popRight');
+    av.dom.popBot = document.getElementById('popBot');
 
     av.dom.mnHpAbout = document.getElementById('mnHpAbout');
     av.dom.mnHpManual = document.getElementById('mnHpManual');
@@ -574,7 +574,7 @@ require([
 
   //process problme pop-up window
   av.ui.problemWindow = function () {
-    console.log('in problemWindow');
+    //console.log('in problemWindow');
     av.debug.vars = {
       isBlink: av.brs.isBlink,
       isChrome: av.brs.isChrome,
@@ -602,7 +602,7 @@ require([
     console.log('postData=', av.debug.postData);
 
     //Until we get sending data to database figure out. Switch between post and e-mail session log
-    if (true) {
+    if (false) {
       //Need to be able to get rid of these three lines for postPost. will crash without them now.
       sendLogDialog.show();  //textarea must be visable first
       av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
@@ -943,23 +943,27 @@ require([
   });
 
   //Adjust Statistics area width based on gridholder size and shape. gridholder should be roughly square
+  av.ui.adjustPopRightSize_ = function () {}
   av.ui.adjustPopRightSize = function () {
     av.ui.gridHolderWd = av.dom.gridHolder.clientWidth;
-    //console.log('av.ui.gridHolderWd', av.ui.gridHolderWd);
-    if (av.ui.pobBotWdMin < av.ui.gridHolderWd) {
-      av.ui.gridHolderXtra = av.ui.gridHolderWd - av.dom.gridHolder.clientHeight;
-      //console.log('av.ui.gridHolderXtra',av.ui.gridHolderXtra);
+    console.log('av.ui.gridHolderWd', av.ui.gridHolderWd, '; popRight.wd=',av.dom.popRight.style.width, '; av.ui.popBotWdMin=', av.ui.popBotWdMin);
+    console.log('popBot wd, ht', av.dom.popBot.clientWidth, av.dom.popBot.clientHeight, '; gridHolder.Ht', av.dom.gridHolder.clientHeight);
+    if (av.ui.popBotWdMin < av.ui.gridHolderWd) {
+      av.ui.gridHolderXtra = av.ui.gridHolderWd - (av.dom.gridHolder.clientHeight-av.ui.popBotHtMin);
+      //av.ui.gridHolderXtra = av.ui.gridHolderWd - (av.dom.gridHolder.clientHeight);
+      console.log('av.ui.gridHolderXtra',av.ui.gridHolderXtra);
       if (av.ui.gridHolderSideBuffer < av.ui.gridHolderXtra) {
         av.ui.gridHolderWdNew = av.ui.gridHolderWd - av.ui.gridHolderXtra + av.ui.gridHolderSideBuffer;
         console.log('av.ui.gridHolderWdNew=',av.ui.gridHolderWdNew, '; gridHolderSideBuffer=', av.ui.gridHolderSideBuffer);
-        if (av.ui.pobBotWdMin > av.ui.gridHolderWdNew) av.ui.gridHolderWdNew = av.ui.pobBotWdMin;
-        av.ui.popRightWdNew = document.getElementById('popRight').clientWidth + av.ui.gridHolderWd - av.ui.gridHolderWdNew;
-        //console.log('av.ui.popRightWd Old, New',document.getElementById('popRight').clientWidth, av.ui.popRightWdNew);
-        //av.ui.popRightWdNew = document.getElementById('popRight').clientWidth + av.ui.gridHolderXtra - av.ui.gridHolderSideBuffer;
+        if (av.ui.popBotWdMin > av.ui.gridHolderWdNew) av.ui.gridHolderWdNew = av.ui.popBotWdMin;
+        av.ui.popRightWdNew = av.dom.popRight.clientWidth + av.ui.gridHolderWd - av.ui.gridHolderWdNew;
+        console.log('av.ui.popRightWd Old, New',document.getElementById('popRight').clientWidth, av.ui.popRightWdNew);
+        //av.ui.popRightWdNew = av.dom.popRight.clientWidth + av.ui.gridHolderXtra - av.ui.gridHolderSideBuffer;
         document.getElementById('popRight').style.width = av.ui.popRightWdNew + 'px';
       }
     }
-    //console.log('popRight', document.getElementById('popRight').style.width);
+    console.log('popRight', av.dom.popRight.style.width, '; popBot wd, ht', av.dom.popBot.clientWidth, av.dom.popBot.clientHeight);
+    console.log('gridHolder: wd, ht=', av.dom.gridHolder.clientWidth, av.dom.gridHolder.clientHeight);
   };
 
   if (av.debug.root) console.log('before dnd triggers');
@@ -1516,6 +1520,7 @@ require([
 
   av.grd.CanvasScale.width = document.getElementById('gridControlTable').clientWidth - 1;
   av.grd.CanvasGrid.width = av.dom.gridHolder.clientHeight / 2;
+  av.grd.CanvasGrid.width = av.dom.gridHolder.clientWidth - 1; //?? may need to delete 
   //av.grd.CanvasGrid.height = $('#gridHolder').innerHeight() - 16 - av.grd.CanvasScale.height;
   av.grd.CanvasGrid.height = 15;
 
