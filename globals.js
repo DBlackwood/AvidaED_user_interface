@@ -28,6 +28,10 @@ av.post.addUser = function(addStr, comment) {
   if (av.debug.usr) console.log('usr: ' + addStr + note);
 }
 
+av.post.usrOneline = function (data, comment) {
+  var note = comment === undefined ? '' : comment;
+  av.debug.log += '\n--usr: ' + JSON.stringify(data) + ' ~.~ ' + note;
+}
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};

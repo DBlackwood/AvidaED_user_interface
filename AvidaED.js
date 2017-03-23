@@ -107,6 +107,7 @@ require([
     console.log('Jquery ($) is not defined.');
   }
 
+  console.log('dojo version', dojo.version.toString());
   parser.parse();
 
   /********************************************************************************************************************/
@@ -242,12 +243,14 @@ require([
     singular: true,
     selfAccept: false
   });
+  if (av.debug.root) console.log('before fzOrgan');
   av.dnd.fzOrgan = new dndSource('fzOrgan', {
     accept: ['g'],  //g=genome
     copyOnly: true,
     singular: true,
     selfAccept: false
   });
+  if (av.debug.root) console.log('before fzWorld');
   av.dnd.fzWorld = new dndSource('fzWorld', {
     //accept: ['b', 'w'],   //b=both; w=world  //only after the population started running
     singular: true,
@@ -261,6 +264,7 @@ require([
    ]);
    */
 
+  if (av.debug.root) console.log('before organIcon');
   av.dnd.organIcon = new dndTarget('organIcon', {accept: ['g'], selfAccept: false});
   av.dnd.ancestorBox = new dndSource('ancestorBox', {accept: ['g'], copyOnly: true, selfAccept: false});
   av.dnd.gridCanvas = new dndTarget('gridCanvas', {accept: ['g']});
@@ -274,6 +278,7 @@ require([
     selfAccept: false
   });
 
+  if (av.debug.root) console.log('before activeOrgan');
   //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.activeOrgan = new dndSource('activeOrgan', {
     accept: ['g'],
@@ -946,8 +951,8 @@ require([
       //console.log('av.ui.gridHolderXtra',av.ui.gridHolderXtra);
       if (av.ui.gridHolderSideBuffer < av.ui.gridHolderXtra) {
         av.ui.gridHolderWdNew = av.ui.gridHolderWd - av.ui.gridHolderXtra + av.ui.gridHolderSideBuffer;
-        //console.log('av.ui.gridHolderWdNew',av.ui.gridHolderWdNew);
-        if (430 > av.ui.gridHolderWdNew) av.ui.gridHolderWdNew = 430;
+        console.log('av.ui.gridHolderWdNew=',av.ui.gridHolderWdNew, '; gridHolderSideBuffer=', av.ui.gridHolderSideBuffer);
+        if (av.ui.pobBotWdMin > av.ui.gridHolderWdNew) av.ui.gridHolderWdNew = av.ui.pobBotWdMin;
         av.ui.popRightWdNew = document.getElementById('popRight').clientWidth + av.ui.gridHolderWd - av.ui.gridHolderWdNew;
         //console.log('av.ui.popRightWd Old, New',document.getElementById('popRight').clientWidth, av.ui.popRightWdNew);
         //av.ui.popRightWdNew = document.getElementById('popRight').clientWidth + av.ui.gridHolderXtra - av.ui.gridHolderSideBuffer;
@@ -1265,9 +1270,9 @@ require([
     if ('prepping' == av.grd.runState) av.ptd.FrConfigFn();
     else {
       if (5 > av.msg.ByCellIDgenome.length) {
-        document.getElementById('FzOrgansimSpan').style.display = 'none';
+        document.getElementById('FzOrganismSpan').style.display = 'none';
       }  //block
-      else document.getElementById('FzOrgansimSpan').style.display = 'inline';
+      else document.getElementById('FzOrganismSpan').style.display = 'inline';
       fzDialog.show();
     }
   };
@@ -1429,7 +1434,11 @@ require([
    });
    */
 
-  //When mouse button is released, return cursor to default values
+  $(document).on('pointerup', function(evt) {
+    av.mouse.UpGridPos = [evt.originalEvent.offsetX, evt.originalEvent.offsetY];
+  });
+
+    //When mouse button is released, return cursor to default values
   $(document).on('mouseup', function (evt) {
     'use strict';
     var target = '';
@@ -1496,7 +1505,7 @@ require([
   // *******************************************************************************************************************
 
   //Set up canvas objects
-  av.grd.CanvasScale = document.getElementById('scaleCanvas');
+  av.grd.CanvasScale = document.getElementById('scaleCanvas');  //tiba should change to av.dom.scaleCanvas
   av.grd.sCtx = av.grd.CanvasScale.getContext('2d');
   av.grd.CanvasGrid = document.getElementById('gridCanvas');
   av.grd.cntx = av.grd.CanvasGrid.getContext('2d');
@@ -1961,7 +1970,38 @@ require([
       muteVal = parseFloat(this.value);
       slides.slider('value', muteVal);
       $('#mRate').val(muteVal);
+      av.post.data1 = {
+        'changed' : 'muteInput',
+        'muteInput': muteVal.formatNum(1)
+      }
+      av.post.data2 = {
+        'operation' : 'assign',
+        'object' : ['muteInput'],
+        'value' : [muteVal.formatNum(1)]
+      }
+      av.post.data = {
+        'operation' : 'assign',
+        'name' : 'muteInput',
+        'vars' : ['muteInput', 'person'],
+        'value' : [muteVal.formatNum(1), 'fred']
+      }
+
+      av.post.data = {
+        'operation' : 'button',
+        'name' : 'runPause',
+        'vars' : {'update': 5},
+        'assumptions' : {'av.dom.runStopButton.textContent': 'Run'}
+      }
+      av.post.data = {
+        'operation' : 'DojoDnd',
+        'name' : 'fz2Grid',
+        'vars' : {'source' : 'av.dnd.fzOrgan', 'node': '@ancestor', 'target': 'av.dnd.popGrid', 'xGrid': 4, 'yGrid': 9},
+        //// need dom Id associated with @ancestor.
+        'assumptions' : {}    //condition, constraint
+      }
+
       av.post.addUser('muteInput =' + muteVal.formatNum(1), ' in AvidaED.js line 1865');
+      av.post.usrOneline(av.post.data, 'in AvidaED.js line 1868');
       //console.log('in mute change');
     });
   });
