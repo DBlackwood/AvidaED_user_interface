@@ -400,7 +400,7 @@ av.ptd.bitToggle = function (button) {
   }
   av.grd.drawGridSetupFn();
   av.grd.popChartFn();
-  console.log('bitToggle: av.grd.popStatsMsg.update', av.grd.popStatsMsg.update);
+  //console.log('bitToggle: av.grd.popStatsMsg.update', av.grd.popStatsMsg.update);
   av.ptd.updateLogicFn(av.grd.popStatsMsg.update);
 }
 

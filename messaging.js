@@ -537,7 +537,7 @@ av.ptd.updateLogicFn = function (mUpdate){
 
     //console.log('grd.msg', av.grd.msg);
     //console.log('grd.popStatsMsg', av.grd.popStatsMsg);
-    console.log('av.grd.logicOutline', av.grd.logicOutline);
+    ////console.log('av.grd.logicOutline', av.grd.logicOutline);  //looking at logic outline values
     var lngth =  av.grd.msg.fitness.data.length;
     for (var ii=0; ii < lngth; ii++){
       if (0 < av.grd.logicOutline[ii]) {
@@ -547,7 +547,7 @@ av.ptd.updateLogicFn = function (mUpdate){
         av.pch.logNumFnd++;
       }
     }
-    console.log('NumFnd', av.pch.logNumFnd);
+    //console.log('NumFnd', av.pch.logNumFnd);                    //looking at logic outline values
     if (0 < av.pch.logNumFnd) {
       av.pch.logFitFnd = av.pch.logFitFnd/av.pch.logNumFnd;
       av.pch.logCstFnd = av.pch.logCstFnd/av.pch.logNumFnd;

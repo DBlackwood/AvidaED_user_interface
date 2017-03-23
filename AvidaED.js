@@ -946,24 +946,24 @@ require([
   av.ui.adjustPopRightSize_ = function () {}
   av.ui.adjustPopRightSize = function () {
     av.ui.gridHolderWd = av.dom.gridHolder.clientWidth;
-    console.log('av.ui.gridHolderWd', av.ui.gridHolderWd, '; popRight.wd=',av.dom.popRight.style.width, '; av.ui.popBotWdMin=', av.ui.popBotWdMin);
-    console.log('popBot wd, ht', av.dom.popBot.clientWidth, av.dom.popBot.clientHeight, '; gridHolder.Ht', av.dom.gridHolder.clientHeight);
+    //console.log('av.ui.gridHolderWd', av.ui.gridHolderWd, '; popRight.wd=',av.dom.popRight.style.width, '; av.ui.popBotWdMin=', av.ui.popBotWdMin);
+    //console.log('popBot wd, ht', av.dom.popBot.clientWidth, av.dom.popBot.clientHeight, '; gridHolder.Ht', av.dom.gridHolder.clientHeight);
     if (av.ui.popBotWdMin < av.ui.gridHolderWd) {
       av.ui.gridHolderXtra = av.ui.gridHolderWd - (av.dom.gridHolder.clientHeight-av.ui.popBotHtMin);
       //av.ui.gridHolderXtra = av.ui.gridHolderWd - (av.dom.gridHolder.clientHeight);
-      console.log('av.ui.gridHolderXtra',av.ui.gridHolderXtra);
+      //console.log('av.ui.gridHolderXtra',av.ui.gridHolderXtra);
       if (av.ui.gridHolderSideBuffer < av.ui.gridHolderXtra) {
         av.ui.gridHolderWdNew = av.ui.gridHolderWd - av.ui.gridHolderXtra + av.ui.gridHolderSideBuffer;
-        console.log('av.ui.gridHolderWdNew=',av.ui.gridHolderWdNew, '; gridHolderSideBuffer=', av.ui.gridHolderSideBuffer);
+        //console.log('av.ui.gridHolderWdNew=',av.ui.gridHolderWdNew, '; gridHolderSideBuffer=', av.ui.gridHolderSideBuffer);
         if (av.ui.popBotWdMin > av.ui.gridHolderWdNew) av.ui.gridHolderWdNew = av.ui.popBotWdMin;
         av.ui.popRightWdNew = av.dom.popRight.clientWidth + av.ui.gridHolderWd - av.ui.gridHolderWdNew;
-        console.log('av.ui.popRightWd Old, New',document.getElementById('popRight').clientWidth, av.ui.popRightWdNew);
+        //console.log('av.ui.popRightWd Old, New',document.getElementById('popRight').clientWidth, av.ui.popRightWdNew);
         //av.ui.popRightWdNew = av.dom.popRight.clientWidth + av.ui.gridHolderXtra - av.ui.gridHolderSideBuffer;
         document.getElementById('popRight').style.width = av.ui.popRightWdNew + 'px';
       }
     }
-    console.log('popRight', av.dom.popRight.style.width, '; popBot wd, ht', av.dom.popBot.clientWidth, av.dom.popBot.clientHeight);
-    console.log('gridHolder: wd, ht=', av.dom.gridHolder.clientWidth, av.dom.gridHolder.clientHeight);
+    //console.log('popRight', av.dom.popRight.style.width, '; popBot wd, ht', av.dom.popBot.clientWidth, av.dom.popBot.clientHeight);
+    //console.log('gridHolder: wd, ht=', av.dom.gridHolder.clientWidth, av.dom.gridHolder.clientHeight);
   };
 
   if (av.debug.root) console.log('before dnd triggers');
