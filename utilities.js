@@ -203,7 +203,7 @@ av.utl.jsonStringifyOneLine = function(jStr) {
   return str1;
 }
 
-// JSon to string
+// JSon to string  Should only be used to put statements from Avida into logs
 av.utl.json2stringFn = function (jStr) {
   'use strict';
   var rstr = '';

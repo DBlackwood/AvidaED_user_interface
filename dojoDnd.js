@@ -395,6 +395,68 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   if (av.debug.dnd) console.log('End of av.dnd.landFzOrgan');
 }
 
+av.dnd.targetAncestorBox = function (source, nodes, target) {
+  'use strict';
+  av.dnd.move.source = source; 
+  av.dnd.move.target = target;
+  av.dnd.move.nodeName = nodes[0].textContent;
+  av.dnd.move.sourceDomId = Object.keys(source.selection)[0];
+  av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
+  var domIDs = Object.keys(av.dnd.ancestorBox.map);
+  av.dnd.move.targetDomId = domIDs[domIDs.length-1];
+  console.log('move', av.dnd.move);
+  var added = av.dnd.lndAncestorBox(av.dnd.move);
+}
+
+//av.post.data = { is defined as around avidaED.js 1950
+av.dnd.testAncestorBox = function (source, target, nodeDir) {
+  "use strict";
+  console.log('nodeDir', nodeDir);
+  console.log('source=', source, av.dnd[source]);
+  console.log('target=', target, av.dnd[target]);
+
+  av.dnd.move.source = av.dnd[source];
+  av.dnd.move.target = av.dnd[target];
+  av.dnd.move.nodeName = av.fzr.file[nodeDir+'/entryname.txt'];
+  av.dnd.move.sourceDomId = av.fzr.domid[nodeDir];
+  av.dnd.move.dir = nodeDir;
+
+  av.dnd.ancestorBox.insertNodes(false, [{data: av.dnd.move.nodeName, type: ['g']}]);
+  av.dnd.ancestorBox.sync();
+  var domIDs = Object.keys(av.dnd.ancestorBox.map);
+  av.dnd.move.targetDomId = domIDs[domIDs.length-1];
+  console.log('move', av.dnd.move);
+  var added = av.dnd.lndAncestorBox(av.dnd.move);
+  if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+};
+
+av.dnd.lndAncestorBox = function (move) {
+  'use strict';
+  var added;
+  //Do not copy parents if one is moved within Ancestor Box
+  if ('ancestorBox' != move.source.node.id) {
+    av.post.addUser('DnD: ' + move.source.node.id + '--> ' + move.target.node.id + ': by: ' + move.nodeName);
+    //find genome by finding source
+    console.log('seq=', av.fzr.file[move.dir+'/genome.seq']);
+    av.parents.genome.push(av.fzr.file[move.dir+'/genome.seq']);
+    var nn = av.parents.name.length;
+    av.parents.autoNdx.push(nn);
+    av.parents.injected.push(false);
+    var newName = av.dnd.nameParent(move.nodeName);
+    document.getElementById(move.targetDomId).textContent = newName;
+    av.parents.howPlaced.push('auto');
+    av.parents.domid.push(move.targetDomId); //domid in ancestorBox used to remove if square in grid moved to trashcan
+    //Find color of ancestor
+    if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}
+    else { av.parents.color.push(av.color.defaultParentColor); }
+    av.parents.placeAncestors();
+    if (av.debug.dnd) console.log('parents', av.parents.name[nn], av.parents.domid[nn], av.parents.genome[nn]);
+    return (true);
+  }
+  else return (false);
+};
+
+
 av.dnd.landAncestorBox = function (source, nodes, target) {
   'use strict';
   //Do not copy parents if one is moved within Ancestor Box
@@ -413,6 +475,7 @@ av.dnd.landAncestorBox = function (source, nodes, target) {
     document.getElementById(domID).textContent = newName;
     //console.log('item', domID, '; name', document.getElementById(domID).textContent, '; newName', newName, '; parent', av.parents.name);
     av.parents.howPlaced.push('auto');
+    //console.log('selection=',target.selection, '; key=', Object.keys(target.selection)[0], '; domID=', domID);
     av.parents.domid.push(Object.keys(target.selection)[0]); //domid in ancestorBox used to remove if square in grid moved to trashcan
     //Find color of ancestor
     if (0 < av.parents.Colors.length) { av.parents.color.push(av.parents.Colors.pop());}

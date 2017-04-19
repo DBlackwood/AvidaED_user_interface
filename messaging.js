@@ -7,15 +7,15 @@ av.msg.readMsg = function (ee) {
     if (av.debug.userMsg) userMsgLabel.textContent = 'Avida type:data; name:' + msg.name;
     switch (msg.name) {
       case 'exportExpr':
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
         if ('untitled' != msg.popName) {av.fwt.popExpWrite(msg);}
         break;
       case 'paused':
         av.ptd.makePauseState();
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
         break;
       case 'reset':
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
         if (av.debug.userMsg) userMsgLabel.textContent = 'Avida: ' + msg.name;
         if (true === av.msg.uiReqestedReset) {
           av.ptd.resetDishFn();
@@ -24,14 +24,14 @@ av.msg.readMsg = function (ee) {
         break;
       case 'running':
         av.ptd.makeRunState();
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
         break;
       case 'runPause':
         if (true != msg['Success']) {
           if (av.debug.msg) console.log('Error: ', msg);  // msg failed
           av.ptd.runStopFn();  //flip state back since the message failed to get to Avida
         }
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
         break;
       case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
         //console.log('webOrgTraceBySequence', msg);
@@ -42,14 +42,14 @@ av.msg.readMsg = function (ee) {
         av.ind.cycleSlider.set('maximum', av.traceObj.length - 1);
         av.ind.cycleSlider.set('discreteValues', av.traceObj.length);
         av.ind.updateOrgTrace();
-        av.debug.log += '\nAvida --> ui \n' + av.utl.json2stringFn(msg);
+        av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
         break;
       case 'webPopulationStats':
         av.grd.popStatsMsg = msg;
         stub = 'name: webPopulationStats; update:' + msg.update.toString() + '; oldUpdate:' + av.grd.oldUpdate
              + '; fit:' + msg.ave_fitness.formatNum(2) + '; gln:' + msg.ave_gestation_time.formatNum(2)
              + '; Met:' + msg.ave_metabolic_rate.formatNum(2) + '; Num:' + msg.organisms.formatNum(2);
-        av.debug.log += '\nAui:  ' + stub;
+        av.debug.log += '\n--Aui:  ' + stub;
         if (av.grd.oldUpdate != msg.update && 0 <= msg.update) {  //use only one = as one maybe number and the other string
           av.grd.oldUpdate = msg.update;
           av.msg.updatePopStats(av.grd.popStatsMsg);
@@ -67,7 +67,7 @@ av.msg.readMsg = function (ee) {
       case 'webGridData':
         av.grd.msg = msg;
         stub = 'name: webGridData; type: ' + msg.type.toString() + '; update:' + msg.update;  //may not display anyway
-        av.debug.log += '\nAui:  ' + stub;
+        av.debug.log += '\n--Aui:  ' + stub;
         //av.msg.sync('webGridData:' + msg.update.toString());
         av.grd.drawGridSetupFn();  //needs to be called always as some calculations need to happen even if nothing is displayed (for logic data)
         //av.debug.log += '\n - - end webGridData: update:' + av.grd.msg.update;
@@ -76,8 +76,8 @@ av.msg.readMsg = function (ee) {
         av.msg.ByCellIDgenome = msg.genome;
         av.grd.updateSelectedOrganismType(msg);  //in messaging
         stub = 'name: webOrgDataByCellID; genotypeName: ' + msg.genotypeName.toString();  //may not display anyway
-        av.debug.log += '\nAui:  ' + stub;
-        //console.log('Avida --> ui webOrgDataByCellID', msg);
+        av.debug.log += '\n--Aui:  ' + stub;
+        //console.log('--Aui: webOrgDataByCellID', msg);
         break;
       default:
         if (av.debug.msg) {console.log('____________UnknownRequest: ', msg);}
@@ -129,14 +129,14 @@ av.msg.readMsg = function (ee) {
   else if ('response' === msg.type) {
     //console.log('msg.request.type', msg.request.type);  
     if ('stepUpdate' == msg.request.type) {
-      av.debug.log += '\nAui: type: response; request: stepUpdate; success:' + msg.success;
+      av.debug.log += '\n--Aui: type: response; request: stepUpdate; success:' + msg.success;
     }
     else {
-      av.debug.log += '\nAvida --> ui   msg.type=response\n' + av.utl.json2stringFn(msg);
+      av.debug.log += '\n--Aui: msg.type=response\n' + av.utl.json2stringFn(msg);
     }
 
   }
-  else av.debug.log += '\nAvida --> ui (else) \n' + av.utl.json2stringFn(msg);
+  else av.debug.log += '\n--Aui: (else) \n' + av.utl.json2stringFn(msg);
 };
 
 av.msg.check4anotherUpdate = function () {

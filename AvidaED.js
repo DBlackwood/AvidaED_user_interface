@@ -602,7 +602,7 @@ require([
     console.log('postData=', av.debug.postData);
 
     //Until we get sending data to database figure out. Switch between post and e-mail session log
-    if (false) {
+    if (true) {
       //Need to be able to get rid of these three lines for postPost. will crash without them now.
       sendLogDialog.show();  //textarea must be visable first
       av.dom.sendLogTextarea.focus();   //must not be commented out or extra error
@@ -681,8 +681,10 @@ require([
     xhr.post(  //Post is a helper function to xhr, a more generic class
       'http://localhost:5000/receive',  //URL parameter
       {  //Data and halding parameter
-        handleAs:'json',
-        data: av.utl.json2stringFn(av.debug.postData)
+        //handleAs:'json',
+        //data: av.utl.json2stringFn(av.debug.postData)
+        data: dojo.toJson(av.debug.postData),
+        headers: {'X-Requested-with':null}
       }
     ).then(function(received){ //Promise format; received data from request (first param of then)
         domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
@@ -691,46 +693,7 @@ require([
       }
     ); // End then
   }); // End on's function and on statement
-
-  /*  //Everything happens when we click a button    From what Matt Rupp wrote
-  //  on(dom.byId('sendPost'), 'click', function(){
-    on(document.getElementById('sendPost'), 'click', function(){
-      av.post.addUser('Button: sendPost');
-      //Data to send
-      var a_log = 'text for the log';
-      var a_comment = 'text for a comment2';
-      var a_jserror = 'error message2';
-      var a_email = 'foo@bar.baz';
-      var a_events = 'an event2';
-      var a_method = 'userTriggered';
-      var a_messages = 'the message, again';
-      console.log('in sendPost click');
-
-      domConst.place('<p>Button pressed; send message</p>', 'status');
-
-      xhr.post(  //Post is a helper function to xhr, a more generic class
-        'http://localhost:5000/receive',  //URL parameter
-        {  //Data and halding parameter
-          handleAs:'json',
-          data:{
-            log:a_log,
-            comment:a_comment,
-            error:a_jserror,
-            email:a_email,
-            events:a_events,
-            method:a_method,
-            messages:a_messages
-          }
-        }
-      ).then(function(received){ //Promise format; received data from request (first param of then)
-          domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
-        }, function(err){ //Error handling (second param of then)
-          domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
-        }
-      ); // End then
-    }); // End on's function and on statement
-  */
-
+  
   //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
   //More usefull websites to catch errors
@@ -1007,9 +970,18 @@ require([
 
   av.dnd.ancestorBox.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
-      av.dnd.landAncestorBox(source, nodes, target);
-    }
+      //console.log('ancestorBox=', target, av.dnd.ancestorBox);  //yes they are the same. could use in the above if statement.
+      //av.dnd.landAncestorBox(source, nodes, target);
+      av.dnd.targetAncestorBox(source, nodes, target);
+      }
   });
+
+  document.getElementById('mnDbAncestorBox').onclick = function () {
+    'use strict';
+    av.post.addUser('mnDbAncestorBox');
+    av.dnd.testAncestorBox('fzOrgan', 'ancestorBox', 'g0');
+  };
+
 
   av.dnd.gridCanvas.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
@@ -1340,7 +1312,7 @@ require([
       if (null == av.aww.uiWorker) {
         av.aww.uiWorker = new Worker('avida.js');
         console.log('webworker recreated');
-        av.debug.log += '\nui --> Avida: ui killed avida webworker and started a new webworker'
+        av.debug.log += '\nuiA: ui killed avida webworker and started a new webworker'
       }
     }
     else {
@@ -2000,11 +1972,17 @@ require([
       av.post.data = {
         'operation' : 'DojoDnd',
         'name' : 'fz2Grid',
-        'vars' : {'source' : 'av.dnd.fzOrgan', 'node': '@ancestor', 'target': 'av.dnd.popGrid', 'xGrid': 4, 'yGrid': 9},
+        'vars' : {'source' : 'av.dnd.fzOrgan', 'nodeDir': 'g0', 'target': 'av.dnd.popGrid', 'xGrid': 4, 'yGrid': 9},
         //// need dom Id associated with @ancestor.
-        'assumptions' : {}    //condition, constraint
+        'assumptions' : {'nodeName': '@ancestor'}    //condition, constraint
       }
-
+      av.post.data = {
+        'operation' : 'DojoDnd',
+        'name' : 'fzOrgan2AncestorBox',
+        'vars' : {'source' : 'av.dnd.fzOrgan', 'nodeDir': 'g0', 'target': 'av.dnd.ancestorBox'},
+        'assumptions' : {'nodeName': '@ancestor'}    //condition, constraint
+      }
+      //usr:
       av.post.addUser('muteInput =' + muteVal.formatNum(1), ' in AvidaED.js line 1865');
       av.post.usrOneline(av.post.data, 'in AvidaED.js line 1868');
       //console.log('in mute change');

@@ -29,8 +29,17 @@ av.post.addUser = function(addStr, comment) {
 }
 
 av.post.usrOneline = function (data, comment) {
+  "use strict";
   var note = comment === undefined ? '' : comment;
-  av.debug.log += '\n--usr: ' + JSON.stringify(data) + ' ~.~ ' + note;
+  av.debug.log += '\n--usr: ' + '~|~' + JSON.stringify(data) + ' ~.~ ' + note;
+}
+
+av.post.usrOut = function (jStr, comment) {
+  "use strict";
+  var note = comment === undefined ? '' : ' ' + comment;
+  var str0 = JSON.stringify(jStr, null, 2);
+  var str1 = '~|~' + str0.replace(/\\n/g, "\n") + '~.~' + note;
+  av.debug.log += '\n--usr: ' + '~|~' + str0.replace(/\\n/g, "\n") + '~.~' + note;
 }
 
 //default values - these are not in use; the values now come from the file system
@@ -308,7 +317,7 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '2017_0305';
+av.ui.version = '2017_0323';
 av.debug.log = '';
 av.debug.log = '--hed: message and error log: version Beta Test ' + av.ui.version;
 av.debug.triggered = 'unknown';
@@ -415,6 +424,7 @@ av.fio.useDefault = true;
 av.fio.mailAddress = 'Avida-ED-development@googlegroups.com';  //'mailto:diane.blackwood@gmail.com'
 
 av.dnd = {};  //details in AvidiaEd.js as it access the DOM
+av.dnd.move = {};  //used to hold data needed for dnd type move.
 
 //structure to hold list of ancestor organisms
 av.parents = {};

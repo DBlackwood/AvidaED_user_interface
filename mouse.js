@@ -169,7 +169,7 @@ av.mouse.offspringMouse = function(evt, dnd, fio, fzr, gen) {
           av.post.addUser('Moved offspring, ' + avidian + ', to organism freezer');
           dnd.fzOrgan.insertNodes(false, [{data: avidian, type: ['g']}]);
           dnd.fzOrgan.sync();
-          //find domId of parent as listed in dnd.fzOrgan
+          //find domId of offspring as listed in dnd.fzOrgan
           var mapItems = Object.keys(dnd.fzOrgan.map);
           var gdir =  'g' + av.fzr.gNum;
           av.fzr.dir[mapItems[mapItems.length - 1]] = gdir;
@@ -305,7 +305,9 @@ av.mouse.ParentMouse = function (evt, av) {
     if (av.debug.mouse) console.log('parent->trashCan', evt);
     if (av.debug.mouse) console.log('av.mouse.ParentNdx', av.mouse.ParentNdx, '; domid', av.parents.domid[av.mouse.ParentNdx]);
     if (av.debug.mouse) console.log('ancestorBox', av.dnd.ancestorBox);
+    if (av.debug.mouse) console.log('av.parents.domid', av.parents.domid);
     var node = dojo.byId(av.parents.domid[av.mouse.ParentNdx]);
+    console.log('node', node);
     av.dnd.ancestorBox.parent.removeChild(node);
     av.dnd.ancestorBox.sync();
     av.post.addUser('Moved ancestor to trash');
