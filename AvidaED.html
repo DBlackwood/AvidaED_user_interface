@@ -99,6 +99,14 @@
             <span data-dojo-type='dijit/MenuItem' id='mnFzPopulation' label='Save Current Population'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFzOrganism' label='Save Selected Organism'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFzOffspring' label='Save Offspring Organism'></span>
+            <div data-dojo-type='dijit/MenuSeparator'></div>
+            <div data-dojo-type='dijit/MenuSeparator'></div>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddConfigEx' label='Add Highlighted Configured Dish to Experiment'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddGenomeEx' label='Add Highlighted Organism to Experiment'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddPopEx' label='Add Highlighted Populated Dish to Experiment'></span>
+            <div data-dojo-type='dijit/MenuSeparator'></div>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddGenomeView' label='Put Highlighted Organism in Organism View'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddPopAnalysis' label='Put Highlighted Populated Dish in Analysis'></span>
           </span>
         </span>
         <span data-dojo-type='dijit/PopupMenuBarItem' label='Control' id='mnControl'>
@@ -231,6 +239,7 @@
               </td>
               <td><label id='altMsgLabel'></label></td>
               <td style='text-align: right;'>
+                <button id='oneUpdateButton'>Do 1 Update</button>
                 <button id='popSetupButton'>Setup</button>
                 <button id='popStatsButton'>Stats</button>
               </td>
@@ -972,7 +981,7 @@
 </div>
 
 <!----------------------------- Single Organism Replication Settings Dialog Box --------------------------------------->
-<div data-dojo-type='dijit/Dialog' data-dojo-id='OrganSetupDialog' title='Settings for single organism replication'>
+<div data-dojo-type='dijit/Dialog' data-dojo-id='OrganSetupDialog' title='Settings for single organism reproduction'>
   <div class='dijitDialogPaneContentArea'>
     <form id='OrganRepeatForm'>
       <div class='even'>

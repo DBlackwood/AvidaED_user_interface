@@ -139,10 +139,15 @@ require([
   // -------------------------------------------------------------------------------------------------------------------
 
   dijit.byId('mnCnPause').attr('disabled', true);
+  dijit.byId('mnCnOrganismTrace').attr('disabled', true);
   dijit.byId('mnFzOrganism').attr('disabled', true);
   dijit.byId('mnFzOffspring').attr('disabled', true);
   dijit.byId('mnFzPopulation').attr('disabled', true);
-  dijit.byId('mnCnOrganismTrace').attr('disabled', true);
+  //dijit.byId('mnFzAddConfigEx').attr('disabled', true);
+  //dijit.byId('mnFzAddGenomeEx').attr('disabled', true);
+  //dijit.byId('mnFzAddPopEx').attr('disabled', true);
+  //dijit.byId('mnFzAddGenomeView').attr('disabled', true);
+  //dijit.byId('mnFzAddPopAnalysis').attr('disabled', true);
 
   // for analyze page
   av.anl.color[0] = av.color.names[dijit.byId('pop0color').value];
@@ -165,6 +170,7 @@ require([
 
     //Population Map Setup page
     av.dom.popSetupButton = document.getElementById('popSetupButton');
+    av.dom.oneUpdateButton = document.getElementById('oneUpdateButton');
     av.dom.sizeCols = document.getElementById('sizeCols');
     av.dom.sizeRows = document.getElementById('sizeRows');
     av.dom.muteInput = document.getElementById('muteInput');
@@ -597,6 +603,7 @@ require([
         details: av.debug.dTail,
         session: av.debug.log,
       },
+      freezer: JSON.stringify(av.fzr),
       vars: av.debug.vars
     };
     console.log('postData=', av.debug.postData);
@@ -979,7 +986,7 @@ require([
   document.getElementById('mnDbAncestorBox').onclick = function () {
     'use strict';
     av.post.addUser('mnDbAncestorBox');
-    av.dnd.testAncestorBox('fzOrgan', 'ancestorBox', 'g0');
+    av.dnd.testAncestorBox('fzOrgan', 'ancestorBox', 'g0', 'dnd.lndAncestorBox');
   };
 
 
@@ -1121,7 +1128,7 @@ require([
 //----------------------------------------------------------------------------------------------------------------------
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
-  document.getElementById('popSetupButton').onclick = function () {
+  av.dom.popSetupButton.onclick = function () {
     //av.post.addUser('Button: sendEmail');  //done in popBoxSwap
     av.ptd.popBoxSwap();   //in popControls.js
   };
@@ -1187,6 +1194,13 @@ require([
     av.ptd.makeRunState();
     av.ptd.runPopFn();
   });
+
+  av.dom.oneUpdateButton.onclick = function () {
+    av.post.addUser('Button: oneUpdateButton');
+    av.ui.oneUpdateFlag = true;
+    av.ptd.makeRunState();
+    av.ptd.runPopFn();
+  };
 
   /******************************************* New Button and new Dialog **********************************************/
 
@@ -1294,6 +1308,24 @@ require([
   dijit.byId('mnFzOffspring').on('Click', function () {
     av.post.addUser('Button: mnFzOffspring');
     av.ptd.FrOrganismFn('offspring')
+  });
+
+  //Buttons on drop down menu to add Configured Dish to an Experiment
+  dijit.byId('mnFzAddConfigEx').on('Click', function () {
+    av.post.addUser('Button: mnFzAddConfigEx');
+    av.ptd.FzAddExperimentFn('fzConfig', 'activeConfig', 'c');
+  });
+
+  //Buttons on drop down menu to add Configured Dish to an Experiment
+  dijit.byId('mnFzAddGenomeEx').on('Click', function () {
+    av.post.addUser('Button: mnFzAddGenomeEx');
+    av.dnd.FzAddExperimentFn('fzOrgan', 'ancestorBox', 'g');
+  });
+
+  //Buttons on drop down menu to add Configured Dish to an Experiment
+  dijit.byId('mnFzAddPopEx').on('Click', function () {
+    av.post.addUser('Button: mnFzAddPopEx');
+    av.dnd.FzAddExperimentFn('fzWorld', 'activeConfig', 'w');
   });
 
   // End of Freezer functions
@@ -1974,12 +2006,6 @@ require([
         'name' : 'fz2Grid',
         'vars' : {'source' : 'av.dnd.fzOrgan', 'nodeDir': 'g0', 'target': 'av.dnd.popGrid', 'xGrid': 4, 'yGrid': 9},
         //// need dom Id associated with @ancestor.
-        'assumptions' : {'nodeName': '@ancestor'}    //condition, constraint
-      }
-      av.post.data = {
-        'operation' : 'DojoDnd',
-        'name' : 'fzOrgan2AncestorBox',
-        'vars' : {'source' : 'av.dnd.fzOrgan', 'nodeDir': 'g0', 'target': 'av.dnd.ancestorBox'},
         'assumptions' : {'nodeName': '@ancestor'}    //condition, constraint
       }
       //usr:
