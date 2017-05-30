@@ -684,6 +684,31 @@ require([
     console.log('postData=', av.debug.postData);
 
     domConst.place('<p>Button pressed; send message</p>', 'status');
+    var hostname = 'https://avida-ed.msu.edu/developer/report/receive';
+
+    xhr.post(  //Post is a helper function to xhr, a more generic class
+      hostname,  //URL parameter
+      {  //Data and halding parameter
+        data: dojo.toJson(av.debug.postData),
+        headers: {'X-Requested-With':null}
+      }
+    ).then(function(received){ //Promise format; received data from request (first param of then)
+        domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
+      }, function(err){ //Error handling (second param of then)
+        domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
+      }
+    ); // End then
+  }); // End on's function and on statement
+
+  // old version tiba delete later
+/*  on(document.getElementById('postPost_old'), 'click', function(){
+    av.post.addUser('Button: postPost');
+    //Data to send
+    av.debug.postData.email = av.dom.postEmailInput.value;
+    av.debug.postData.comment = av.dom.postComment.value;
+    console.log('postData=', av.debug.postData);
+
+    domConst.place('<p>Button pressed; send message</p>', 'status');
 
     xhr.post(  //Post is a helper function to xhr, a more generic class
       'http://localhost:5000/receive',  //URL parameter
@@ -700,7 +725,7 @@ require([
       }
     ); // End then
   }); // End on's function and on statement
-  
+*/
   //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
   //More usefull websites to catch errors
@@ -978,7 +1003,6 @@ require([
   av.dnd.ancestorBox.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
       //console.log('ancestorBox=', target, av.dnd.ancestorBox);  //yes they are the same. could use in the above if statement.
-      //av.dnd.landAncestorBox(source, nodes, target);
       av.dnd.targetAncestorBox(source, nodes, target);
       }
   });
@@ -1313,19 +1337,40 @@ require([
   //Buttons on drop down menu to add Configured Dish to an Experiment
   dijit.byId('mnFzAddConfigEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddConfigEx');
-    av.ptd.FzAddExperimentFn('fzConfig', 'activeConfig', 'c');
+    var fzrObject = av.dnd.fzConfig.getSelectedNodes()[0].id;
+    av.dnd.FzAddExperimentFn('fzConfig', 'activeConfig', fzrObject, 'c');
   });
 
   //Buttons on drop down menu to add Configured Dish to an Experiment
   dijit.byId('mnFzAddGenomeEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddGenomeEx');
-    av.dnd.FzAddExperimentFn('fzOrgan', 'ancestorBox', 'g');
+    //need to find slected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
+    //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
+    //Object.keys(av.dnd.fzOrgan.selection)[0] and av.dnd.fzOrgan.getSelectedNodes()[0].id return the same thing
+    var fzrObject = av.dnd.fzOrgan.getSelectedNodes()[0].id;
+    av.dnd.FzAddExperimentFn('fzOrgan', 'ancestorBox', fzrObject, 'g');
   });
 
   //Buttons on drop down menu to add Configured Dish to an Experiment
   dijit.byId('mnFzAddPopEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddPopEx');
-    av.dnd.FzAddExperimentFn('fzWorld', 'activeConfig', 'w');
+    var fzrObject = av.dnd.fzWorld.getSelectedNodes()[0].id;
+    av.dnd.FzAddExperimentFn('fzWorld', 'activeConfig', fzrObject, 'w');
+  });
+
+  //Buttons on drop down menu to add Configured Dish to an Experiment
+  dijit.byId('mnFzAddGenomeView').on('Click', function () {
+    av.post.addUser('Button: mnFzAddGenomeEx');
+    var fzrObject = av.dnd.fzOrgan.getSelectedNodes()[0].id;
+    av.dnd.FzAddExperimentFn('fzOrgan', 'activeOrgan', fzrObject, 'g');
+    av.ui.mainBoxSwap('organismBlock');
+    organismCanvasHolderSize();
+    var height = ($('#rightDetail').innerHeight() - 375) / 2;
+    av.dom.ExecuteJust.style.height = height + 'px';  //from http://stackoverflow.com/questions/18295766/javascript-overriding-styles-previously-declared-in-another-function
+    av.dom.ExecuteAbout.style.height = height + 'px';
+    av.dom.ExecuteJust.style.width = '100%';
+    av.dom.ExecuteAbout.style.width = '100%';
+    av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
 
   // End of Freezer functions
