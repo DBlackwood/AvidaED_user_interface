@@ -533,7 +533,8 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
   if (av.debug.dnd) console.log('End of av.dnd.landFzOrgan');
 }
 
-av.dnd.targetAncestorBox = function (source, nodes, target) {
+//here the parameters are Dojo DND objects
+av.dnd.makeMove = function (source, nodes, target) {
   'use strict';
   av.dnd.move.via = 'user';
   av.dnd.move.source = source; 
@@ -541,34 +542,13 @@ av.dnd.targetAncestorBox = function (source, nodes, target) {
   av.dnd.move.nodeName = nodes[0].textContent;
   av.dnd.move.sourceDomId = Object.keys(source.selection)[0];
   av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
-  var domIDs = Object.keys(av.dnd.ancestorBox.map);
+  var domIDs = Object.keys(target.map);
   av.dnd.move.targetDomId = domIDs[domIDs.length-1];
   console.log('move', av.dnd.move);
   var added = av.dnd.lndAncestorBox(av.dnd.move);
 }
 
 //av.post.data = { is defined as around avidaED.js 1950
-av.dnd.testAncestorBox = function (source, target, nodeDir, call) {
-  "use strict";
-  //console.log('nodeDir', nodeDir);
-  //console.log('source=', source, av.dnd[source]);
-  //console.log('target=', target, av.dnd[target]);
-
-  av.dnd.move.via = 'test';
-  av.dnd.move.source = av.dnd[source];
-  av.dnd.move.target = av.dnd[target];
-  av.dnd.move.sourceDomId = av.fzr.domid[nodeDir];
-  av.dnd.move.dir = nodeDir;
-  if ('dnd.lndAncestorBox' == call) av.dnd.move.nodeName = av.fzr.file[nodeDir+'/entryname.txt'];
-
-  av.dnd.ancestorBox.insertNodes(false, [{data: av.dnd.move.nodeName, type: ['g']}]);
-  av.dnd.ancestorBox.sync();
-  var domIDs = Object.keys(av.dnd.ancestorBox.map);
-  av.dnd.move.targetDomId = domIDs[domIDs.length-1];
-  console.log('move', av.dnd.move);
-  if ('dnd.lndAncestorBox' == call) var added = av.dnd.lndAncestorBox(av.dnd.move);
-  if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
-};
 
 av.dnd.lndAncestorBox = function (move) {
   'use strict';
@@ -578,7 +558,7 @@ av.dnd.lndAncestorBox = function (move) {
     //av.post.addUser('DnD: ' + move.source.node.id + '--> ' + move.target.node.id + ': by: ' + move.nodeName);
     av.post.data = {
       'operation' : 'DojoDnd',
-      'name' : 'av.dnd.testAncestorBox',   //was fzOrgan2AncestorBox
+      'name' : 'av.dnd.lndAncestorBox',
       //'vars' : {'source' : 'av.dnd.fzOrgan', 'nodeDir': move.dir, 'target': 'av.dnd.ancestorBox'},
       'vars' : {'source' : move.source.node.id, 'nodeDir': move.dir, 'target': move.target.node.id, 'call': 'dnd.lndAncestorBox'},
       'assumptions' : {'nodeName': move.nodeName, 'via': move.via}
@@ -722,28 +702,6 @@ av.dnd.landOrganIcon = function (source, nodes, target) {
   av.dnd.organIcon.selectAll().deleteSelectedNodes();  //clear items
   av.dnd.organIcon.sync();   //should be done after insertion or deletion
 }
-
-av.dnd.FzAddExperimentFn = function (fzSection, target, fzrOject, type) {
-  var added = false;
-  av.dnd.move.via = 'menu';
-  av.dnd.move.source = av.dnd[fzSection];
-  av.dnd.move.target = av.dnd[target];
-  av.dnd.move.type = type;
-  //av.dnd.move.sourceDomId = Object.keys(av.dnd.move.source.selection)[0];  //does not work here even if same basic thing work in AvidaED.js
-  av.dnd.move.sourceDomId = fzrOject;
-  av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
-  av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir+'/entryname.txt'];
-  av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
-  av.dnd[target].sync();
-  var domIDs = Object.keys(av.dnd[target].map);
-  av.dnd.move.targetDomId = domIDs[domIDs.length-1];
-  console.log('move', av.dnd.move);
-  if ('fzOrgan' == fzSection && 'ancestorBox' == target) added = av.dnd.lndAncestorBox(av.dnd.move);
-  else if ('fzOrgan' == fzSection && 'activeOrgan' == target) added = av.dnd.lndActiveOrgan(av.dnd.move);
-  else if ('fzConfig' == fzSection || 'fzWorld' == fzSection ) added = av.dnd.lndActiveConfig(av.dnd.move);
-  
-  if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
-};
 
 //Need to have only the most recent dropped organism in av.dnd.activeOrgan. Do this by deleting everything in activeOrgan
 //and reinserting the most resent one after a drop event.
@@ -981,6 +939,48 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
     }
   }
 };
+
+av.dnd.FzAddExperimentFn = function (fzSection, target, fzrOject, type) {
+  var added = false;
+  av.dnd.move.via = 'menu';
+  av.dnd.move.source = av.dnd[fzSection];
+  av.dnd.move.target = av.dnd[target];
+  av.dnd.move.type = type;
+  //av.dnd.move.sourceDomId = Object.keys(av.dnd.move.source.selection)[0];  //does not work here even if same basic thing work in AvidaED.js
+  av.dnd.move.sourceDomId = fzrOject;
+  av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
+  av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir+'/entryname.txt'];
+  av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
+  av.dnd[target].sync();
+  var domIDs = Object.keys(av.dnd[target].map);
+  av.dnd.move.targetDomId = domIDs[domIDs.length-1];
+  console.log('move', av.dnd.move);
+  if ('fzOrgan' == fzSection && 'ancestorBox' == target) added = av.dnd.lndAncestorBox(av.dnd.move);
+  else if ('fzOrgan' == fzSection && 'activeOrgan' == target) added = av.dnd.lndActiveOrgan(av.dnd.move);
+  else if (('fzConfig' == fzSection || 'fzWorld' == fzSection) && 'activeConfig' == target) added = av.dnd.lndActiveConfig(av.dnd.move);
+  else if ('anlDndChart' == fzSection && 'fzWorld' == fzSection ) added = av.dnd.lndAnlDndChart(av.dnd.move);
+
+  if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+};
+
+
+av.dnd.lndAnlDndChart = function (move) {
+  'use strict';
+  console.log('DnD: ' + move.source.node.id + '--> ' + move.target.node.id + ': by: ' + move.nodeName);
+  var items = av.dnd.getAllItems(av.dnd.graphPop0);
+  if (0 === items.length) { av.dnd.putNslot(0, move.source); }
+  else {
+    items = av.dnd.getAllItems(av.dnd.graphPop1);
+    if (0 === items.length) { av.dnd.putNslot(1, move.source); }
+    else {
+      items = av.dnd.getAllItems(av.dnd.graphPop2);
+      if (0 === items.length) { av.dnd.putNslot(2, move.source);}
+    }
+  }
+  //in all cases no population name is stored in the graph div
+  av.dnd.anlDndChart.selectAll().deleteSelectedNodes();  //clear items
+  av.dnd.anlDndChart.sync();   //should be done after insertion or deletion
+}
 
 av.dnd.landAnlDndChart = function (dnd, source, nodes, target) {
   'use strict';

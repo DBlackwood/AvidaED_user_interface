@@ -1003,16 +1003,9 @@ require([
   av.dnd.ancestorBox.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of ancestorBox
     if ('ancestorBox' == target.node.id) {
       //console.log('ancestorBox=', target, av.dnd.ancestorBox);  //yes they are the same. could use in the above if statement.
-      av.dnd.targetAncestorBox(source, nodes, target);
+      av.dnd.makeMove(source, nodes, target);
       }
   });
-
-  document.getElementById('mnDbAncestorBox').onclick = function () {
-    'use strict';
-    av.post.addUser('mnDbAncestorBox');
-    av.dnd.testAncestorBox('fzOrgan', 'ancestorBox', 'g0', 'dnd.lndAncestorBox');
-  };
-
 
   av.dnd.gridCanvas.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of gridCanvas
     if ('gridCanvas' == target.node.id) {
@@ -1372,6 +1365,14 @@ require([
     av.dom.ExecuteAbout.style.width = '100%';
     av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
+
+  //Buttons on drop down menu to add Configured Dish to an Experiment
+  dijit.byId('mnFzAddPopAnalysis').on('Click', function () {
+    av.post.addUser('Button: mnFzAddPopEx');
+    var fzrObject = av.dnd.fzWorld.getSelectedNodes()[0].id;
+    av.dnd.FzAddExperimentFn('fzWorld', 'anlDndChart', fzrObject, 'w');
+  });
+
 
   // End of Freezer functions
   //---------------------------------------------- Restart Avida web worker --------------------------------------------
