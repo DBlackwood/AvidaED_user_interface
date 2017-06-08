@@ -145,144 +145,6 @@ av.dnd.nameParent = function(name) {
 //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
 //and reinserting the most resent one after a drop event.
 
-av.dnd.landActiveConfig = function (pkg) {
-  'use strict';
-  av.post.addUser('DnD: ' + pkg.source.node.id + '--> ' + pkg.target.node.id + ': by: ' + pkg.nodes[0].textContent);
-  var ndx = -1;
-  var klen = 0;
-  var kk = 0;
-  var str = '';
-  var dir = '';
-  //there is always a node here, so it must always be cleared when adding a new one.
-  av.dnd.activeConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-  av.dnd.activeConfig.sync();   //should be done after insertion or deletion
-
-  //get the data for the new configuration
-  pkg.source.forInSelectedItems(function (item, id) { //assign the node that is selected from the source.
-    av.dnd.activeConfig.insertNodes(false, [item]);
-  });
-  var domid = Object.keys(av.dnd.activeConfig.map)[0];
-  pkg.target.map[domid].type[0] = 'b';
-  av.dnd.activeConfig.sync();
-  //console.log('data', pkg.target.map[domid].data, pkg.target.map[domid]);
-  //console.log('type', pkg.target.map[domid].type[0]);
-
-  av.fzr.actConfig.actDomid = domid;
-  av.fzr.actConfig.name = document.getElementById(domid).textContent;
-  //console.log('New Config:', av.fzr.actConfig.name);
-  av.fzr.actConfig.fzDomid = Object.keys(pkg.source.selection)[0];
-  av.fzr.actConfig.dir = av.fzr.dir[av.fzr.actConfig.fzDomid];
-  delete av.fzr.actConfig.file['instset.cfg'];
-  if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {
-    av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];
-  }
-
-  //Clear ancestorBox
-  av.dnd.ancestorBox.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
-  av.dnd.ancestorBox.sync();   //should be done after insertion or deletion
-
-  av.parents.clearParentsFn();
-  //console.log('before av.frd.updateSetup');
-  av.frd.updateSetup();  //fileIO
-  //console.log('after av.frd.updateSetup');
-  if ('fzConfig' === pkg.source.node.id) {
-    av.fzr.actConfig.type = 'c';
-    av.fzr.actConfig.file['events.cfg'] = ' ';
-    if (av.fzr.actConfig.file['clade.ssg']) {delete av.fzr.actConfig.file['clade.ssg'];}
-    if (av.fzr.actConfig.file['detail.spop']) {delete av.fzr.actConfig.file['detail.spop'];}
-    if (av.fzr.actConfig.file['update']) {delete av.fzr.actConfig.file['update'];}
-    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
-      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors'];
-      av.fio.autoAncestorLoad(str);
-    }
-    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']) {
-      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
-      av.fio.handAncestorLoad(str);
-    }
-    if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
-  }
-  else if ('fzWorld' === pkg.source.node.id) {
-    av.fzr.actConfig.type = 'w';
-    av.fzr.actConfig.file['avida.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/avida.cfg'];
-    av.fzr.actConfig.file['clade.ssg'] = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
-    av.fzr.actConfig.file['detail.spop'] = av.fzr.file[av.fzr.actConfig.dir + '/detail.spop'];
-    av.fzr.actConfig.file['environment.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/environment.cfg'];
-    av.fzr.actConfig.file['events.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/events.cfg'];
-    av.fzr.actConfig.file['update'] = av.fzr.file[av.fzr.actConfig.dir + '/update'];
-    av.grd.oldUpdate = av.fzr.actConfig.file['update'];
-    TimeLabel.textContent = av.grd.oldUpdate;
-
-    //load parents from clade.ssg and ancestors.
-    av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
-    var handList = av.fio.handAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
-    var autoList = av.fio.autoAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
-    var ndx = 0;
-    klen = av.parents.name.length;
-    for (kk = 0; kk <  klen; kk++) {
-      ndx = autoList.nam.indexOf(av.parents.name[kk]);
-      if (-1 < ndx) {
-        av.parents.genome[kk] = autoList.gen[ndx];
-        av.parents.howPlaced[kk] = 'auto';
-        av.parents.injected[kk] = true;
-        av.parents.autoNdx.push(kk);
-        autoList.nam.splice(ndx,1);
-        autoList.gen.splice(ndx,1);
-      }
-      else {
-        ndx = handList.nam.indexOf(av.parents.name[kk]);
-        if (-1 < ndx) {
-          av.parents.genome[kk] = handList.gen[ndx];
-          av.parents.col[kk] = handList.col[ndx];
-          av.parents.row[kk] = handList.row[ndx];
-          av.parents.howPlaced[kk] = 'hand';
-          av.parents.injected[kk] = true;
-          av.parents.handNdx.push(kk);
-          handList.nam.splice(ndx,1);
-          handList.gen.splice(ndx,1);
-          handList.col.splice(ndx,1);
-          handList.row.splice(ndx,1);
-        }
-        else {console.log('Name, ', av.parents.name[kk], ', not found');}
-      }
-    }
-    av.parents.placeAncestors();
-    //run status is no longer 'new' it is 'world'
-    av.ptd.popWorldStateUi();
-
-    //Load Time Recorder Data.
-    dir = av.fzr.actConfig.dir;
-    //console.log('dir', dir);
-    av.pch.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
-    av.pch.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
-    av.pch.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
-    av.pch.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
-    av.pch.aveVia = av.fio.tr2chart(av.fzr.file[dir + '/tr4']);
-    av.pch.xx = [];
-    //console.log('av.pch.aveFit', av.pch.aveFit);
-    lngth = av.pch.aveFit.length;
-    av.pch.logFit = av.utl.newFilledArray(lngth, null);
-    av.pch.logCst = av.utl.newFilledArray(lngth, null);
-    av.pch.logEar = av.utl.newFilledArray(lngth, null);
-    av.pch.logNum = av.utl.newFilledArray(lngth, null);
-    for (var ii = 0; ii < lngth; ii++) av.pch.xx[ii] = ii;
-    //console.log('tr length=', av.pch.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
-    //console.log('aveFit', av.pch.aveFit);
-    //console.log('aveCst', av.pch.aveCst);
-    //console.log('aveEar', av.pch.aveEar);
-    //console.log('aveNum', av.pch.aveNum);
-
-    //send message to Avida
-    av.msg.importPopExpr();
-    av.msg.requestGridData();
-    av.msg.sendData();
-    av.grd.popChartFn();
-    //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
-  }
-  else console.log('fzr.activeCon - something strange happened', av.fzr.actConfig);
-}
-
-//------------------------------------------ config ------------------------------------------------------------------//
-
 av.dnd.lndActiveConfig = function (move) {
   'use strict';
   av.post.addUser('DnD: ' + move.source.node.id + '--> ' + move.target.node.id + ': by: ' + move.nodeName);
@@ -536,6 +398,7 @@ av.dnd.landFzOrgan = function (source, nodes, target) {
 //here the parameters are Dojo DND objects
 av.dnd.makeMove = function (source, nodes, target) {
   'use strict';
+  var added = false;
   av.dnd.move.via = 'user';
   av.dnd.move.source = source; 
   av.dnd.move.target = target;
@@ -545,8 +408,18 @@ av.dnd.makeMove = function (source, nodes, target) {
   var domIDs = Object.keys(target.map);
   av.dnd.move.targetDomId = domIDs[domIDs.length-1];
   console.log('move', av.dnd.move);
-  var added = av.dnd.lndAncestorBox(av.dnd.move);
-}
+  switch (target) {
+    case av.dnd.ancestorBox:
+      added = av.dnd.lndAncestorBox(av.dnd.move);
+      break;
+    case av.dnd.activeConfig:
+      added = av.dnd.lndActiveConfig(av.dnd.move);
+      break;
+    case av.dnd.activeOrgan:
+      added = av.dnd.lndActiveOrgan(av.dnd.move);
+      break;
+  }
+};
 
 //av.post.data = { is defined as around avidaED.js 1950
 
@@ -940,27 +813,49 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
   }
 };
 
-av.dnd.FzAddExperimentFn = function (fzSection, target, fzrOject, type) {
-  var added = false;
-  av.dnd.move.via = 'menu';
-  av.dnd.move.source = av.dnd[fzSection];
-  av.dnd.move.target = av.dnd[target];
-  av.dnd.move.type = type;
-  //av.dnd.move.sourceDomId = Object.keys(av.dnd.move.source.selection)[0];  //does not work here even if same basic thing work in AvidaED.js
-  av.dnd.move.sourceDomId = fzrOject;
-  av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
-  av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir+'/entryname.txt'];
-  av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
-  av.dnd[target].sync();
-  var domIDs = Object.keys(av.dnd[target].map);
-  av.dnd.move.targetDomId = domIDs[domIDs.length-1];
-  console.log('move', av.dnd.move);
-  if ('fzOrgan' == fzSection && 'ancestorBox' == target) added = av.dnd.lndAncestorBox(av.dnd.move);
-  else if ('fzOrgan' == fzSection && 'activeOrgan' == target) added = av.dnd.lndActiveOrgan(av.dnd.move);
-  else if (('fzConfig' == fzSection || 'fzWorld' == fzSection) && 'activeConfig' == target) added = av.dnd.lndActiveConfig(av.dnd.move);
-  else if ('anlDndChart' == fzSection && 'fzWorld' == fzSection ) added = av.dnd.lndAnlDndChart(av.dnd.move);
+av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
+  //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
+  //need to find selected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
+  //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
+  //Object.keys(av.dnd.fzOrgan.selection)[0] and av.dnd.fzOrgan.getSelectedNodes()[0].id return the same thing
 
-  if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+  if (undefined != av.dnd[fzSection].getSelectedNodes()[0]) {
+    var nodeMv = av.dnd[fzSection].getSelectedNodes()[0].id;
+    console.log('fzSection=', fzSection, '; target=', target, '; nodeMv=', nodeMv, '; type=', type);
+    var added = false;
+    av.dnd.move.via = 'menu';
+    av.dnd.move.source = av.dnd[fzSection];
+    av.dnd.move.target = av.dnd[target];
+    av.dnd.move.type = type;
+    //av.dnd.move.sourceDomId = Object.keys(av.dnd.move.source.selection)[0];  //does not work here even if same basic thing work in AvidaED.js
+    av.dnd.move.sourceDomId = nodeMv;
+    av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
+    av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir + '/entryname.txt'];
+    av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
+    av.dnd[target].sync();
+    var domIDs = Object.keys(av.dnd[target].map);
+    av.dnd.move.targetDomId = domIDs[domIDs.length - 1];
+    console.log('move', av.dnd.move);
+    if ('fzOrgan' == fzSection && 'ancestorBox' == target) added = av.dnd.lndAncestorBox(av.dnd.move);
+    else if ('fzOrgan' == fzSection && 'activeOrgan' == target) added = av.dnd.lndActiveOrgan(av.dnd.move);
+    else if (('fzConfig' == fzSection || 'fzWorld' == fzSection) && 'activeConfig' == target) added = av.dnd.lndActiveConfig(av.dnd.move);
+    else if ('anlDndChart' == target && 'fzWorld' == fzSection) added = av.dnd.lndAnlDndChart(av.dnd.move);
+
+    if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+  }
+  else {
+    switch(fzSection) {
+      case 'fzConfig':
+        alert('You must select a configurated dish first');
+        break;
+      case 'fzOrgan':
+        alert('You must select an organism first');
+        break;
+      case 'fzWorld':
+        alert('You must select a populated dish first');
+        break;
+    }
+  }
 };
 
 
@@ -1003,6 +898,8 @@ av.dnd.landAnlDndChart = function (dnd, source, nodes, target) {
 av.dnd.putNslot = function (Num, source) {
   'use strict';
   //get the data for the new organism
+  console.log('source = ', source);
+  console.log('source.selection=', source.selection);
   var domid = Object.keys(source.selection)[0];
   var name = document.getElementById(domid).textContent
   var dir = av.fzr.dir[domid];

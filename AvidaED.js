@@ -529,7 +529,7 @@ require([
   dijit.byId('mnAeAbout').on('Click', function () {
     av.post.addUser('Button: mnAeAbout');
     mnHpAboutDialog.show();
-  });
+  });``
 
   dijit.byId('mnHpProblem').on('Click', function () {
     av.post.addUser('Button: mnHpProblem');
@@ -974,15 +974,9 @@ require([
 
   av.dnd.activeConfig.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     'use strict';
-    //console.log('pkg.target', pkg.target);
-    //console.log('pkg.target.s', pkg.target.selection);
+    console.log('s=', source.node.id, '; n=',nodes, '; c=', copy, '; t=', target.node.id)
     if ('activeConfig' === target.node.id) {
-      var pkg = {};
-      pkg.source = source;
-      pkg.nodes = nodes;
-      pkg.copy = copy;
-      pkg.target = target;
-      av.dnd.landActiveConfig(pkg);  //dojoDnd
+      av.dnd.makeMove(source, nodes, target);
     }
   });
 
@@ -1036,7 +1030,8 @@ require([
   av.dnd.activeOrgan.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeOrgan
     if ('activeOrgan' == target.node.id) {
       if (av.debug.dnd) console.log('activeOrgan: s, t', source, target);
-      av.dnd.landActiveOrgan(source, nodes, target);
+      av.dnd.makeMove(source, nodes, target);
+      //av.dnd.landActiveOrgan(source, nodes, target);
       av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
     }
   });
@@ -1330,32 +1325,25 @@ require([
   //Buttons on drop down menu to add Configured Dish to an Experiment
   dijit.byId('mnFzAddConfigEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddConfigEx');
-    var fzrObject = av.dnd.fzConfig.getSelectedNodes()[0].id;
-    av.dnd.FzAddExperimentFn('fzConfig', 'activeConfig', fzrObject, 'c');
+    av.dnd.FzAddExperimentFn('fzConfig', 'activeConfig', 'c');
   });
 
-  //Buttons on drop down menu to add Configured Dish to an Experiment
+  //Buttons on drop down menu to add Organism to an Experiment
   dijit.byId('mnFzAddGenomeEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddGenomeEx');
-    //need to find slected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
-    //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
-    //Object.keys(av.dnd.fzOrgan.selection)[0] and av.dnd.fzOrgan.getSelectedNodes()[0].id return the same thing
-    var fzrObject = av.dnd.fzOrgan.getSelectedNodes()[0].id;
-    av.dnd.FzAddExperimentFn('fzOrgan', 'ancestorBox', fzrObject, 'g');
+    av.dnd.FzAddExperimentFn('fzOrgan', 'ancestorBox', 'g');
   });
 
-  //Buttons on drop down menu to add Configured Dish to an Experiment
+  //Buttons on drop down menu to add Populated Dish to an Experiment
   dijit.byId('mnFzAddPopEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddPopEx');
-    var fzrObject = av.dnd.fzWorld.getSelectedNodes()[0].id;
-    av.dnd.FzAddExperimentFn('fzWorld', 'activeConfig', fzrObject, 'w');
+    av.dnd.FzAddExperimentFn('fzWorld', 'activeConfig', 'w');
   });
 
-  //Buttons on drop down menu to add Configured Dish to an Experiment
+  //Buttons on drop down menu to put an organism in Organism Viewer
   dijit.byId('mnFzAddGenomeView').on('Click', function () {
     av.post.addUser('Button: mnFzAddGenomeEx');
-    var fzrObject = av.dnd.fzOrgan.getSelectedNodes()[0].id;
-    av.dnd.FzAddExperimentFn('fzOrgan', 'activeOrgan', fzrObject, 'g');
+    av.dnd.FzAddExperimentFn('fzOrgan', 'activeOrgan', 'g');
     av.ui.mainBoxSwap('organismBlock');
     organismCanvasHolderSize();
     var height = ($('#rightDetail').innerHeight() - 375) / 2;
@@ -1366,11 +1354,10 @@ require([
     av.msg.doOrgTrace();  //request new Organism Trace from Avida and draw that.
   });
 
-  //Buttons on drop down menu to add Configured Dish to an Experiment
+  //Buttons on drop down menu to add Populated Dish to Analysis
   dijit.byId('mnFzAddPopAnalysis').on('Click', function () {
     av.post.addUser('Button: mnFzAddPopEx');
-    var fzrObject = av.dnd.fzWorld.getSelectedNodes()[0].id;
-    av.dnd.FzAddExperimentFn('fzWorld', 'anlDndChart', fzrObject, 'w');
+    av.dnd.FzAddExperimentFn('fzWorld', 'anlDndChart', 'w');
   });
 
 
