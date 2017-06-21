@@ -83,6 +83,16 @@ div.odd {
   clear: left;
 }
 
+.lftWide {
+  float: left;
+  width: 90%;
+}
+
+.ritThin {
+  float: right;
+  width: 10%;
+}
+
 .fltLeft {
   float: left;
 }

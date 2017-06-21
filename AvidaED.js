@@ -201,12 +201,14 @@ require([
     av.dom.postScreenSize = document.getElementById('postScreenSize');
     av.dom.postUserInfoLabel = document.getElementById('postUserInfoLabel');
     av.dom.postError = document.getElementById('postError');
+    av.dom.postProblemError = document.getElementById('postProblemError');
     av.dom.postEmailInput = document.getElementById('postEmailInput');
     av.dom.postEmailLabel = document.getElementById('postEmailLabel');
     av.dom.postNoteLabel = document.getElementById('postNoteLabel');
     av.dom.postComment = document.getElementById('postComment');
     av.dom.postLogTextarea = document.getElementById('postLogTextarea');
     av.dom.postdTailTextarea = document.getElementById('postdTailTextarea');
+    av.dom.postStatus = document.getElementById('postStatus');
 
     av.dom.popBC = document.getElementById('popBC');
     av.dom.mainBC = document.getElementById('mainBC');
@@ -231,6 +233,8 @@ require([
     
     av.dom.ExecuteJust = document.getElementById('ExecuteJust');       //check for code repeats might be able to do a function and clean things tiba
     av.dom.ExecuteAbout = document.getElementById('ExecuteAbout');
+
+    av.dom.xorLabel = document.getElementById('xorLabel');          //used to toggle debug menu
 
     //av.dom. = document.getElementById('');
   };
@@ -456,13 +460,22 @@ require([
   av.dom.mnHpDebug.onclick = function () {
     if ('visible' === document.getElementById('mnDebug').style.visibility) {
       document.getElementById('mnDebug').style.visibility = 'hidden';
-      //av.dom.mnHpDebug.label = 'Show debug menu';
-      //av.dom.mnHpDebug.textContent = 'Show debug menu';
       dijit.byId('mnHpDebug').set('label', 'Show debug menu');
       av.post.addUser('Button: mnHpDebug: now hidden');
     } else {
       document.getElementById('mnDebug').style.visibility = 'visible';
-      //av.dom.mnHpDebug.label = 'Hide debug menu';
+      dijit.byId('mnHpDebug').set('label', 'Hide debug menu');
+      av.post.addUser('Button: mnHpDebug: now visible');
+    }
+  };
+
+  av.dom.xorLabel.onclick = function () {
+    if ('visible' === document.getElementById('mnDebug').style.visibility) {
+      document.getElementById('mnDebug').style.visibility = 'hidden';
+      dijit.byId('mnHpDebug').set('label', 'Show debug menu');
+      av.post.addUser('Button: mnHpDebug: now hidden');
+    } else {
+      document.getElementById('mnDebug').style.visibility = 'visible';
       dijit.byId('mnHpDebug').set('label', 'Hide debug menu');
       av.post.addUser('Button: mnHpDebug: now visible');
     }
@@ -535,6 +548,8 @@ require([
     av.post.addUser('Button: mnHpProblem');
     av.debug.finalizeDtail();
     av.debug.triggered = 'userTriggered';
+    av.debug.postStatus = '';
+    av.post.postLogPara = 'Please send the data below to help us make Avida-ED better by clicking on the [Send] button'
     av.debug.sendLogPara = 'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
     av.debug.postNoteLabel = 'Please describe the problem or suggestion in the comment field below.'
     av.debug.postEmailLabel = 'Please include your e-mail so we can discuss your problem or suggeston further.';
@@ -632,8 +647,11 @@ require([
     av.dom.postError.style.color = 'red';
     av.dom.postEmailLabel.textContent = av.debug.postEmailLabel;
     av.dom.postNoteLabel.textContent = av.debug.postNoteLabel;
+    av.dom.postStatus.textContent = av.debug.postStatus;
     av.dom.postLogTextarea.textContent = av.debug.log;
     av.dom.postdTailTextarea.textContent = av.debug.dTail;
+    av.dom.postProblemError.textContent = '';
+
   }
 
   av.post.emailWindow = function() {
@@ -660,6 +678,7 @@ require([
     document.getElementById('runStopButton').innerHTML = 'Run';  //av.msg.pause('now');
     av.debug.finalizeDtail();
     av.debug.triggered = 'errorTriggered';
+    av.post.postLogPara = 'mares eat oats and does eat oats'
     av.debug.sendLogPara = 'The error is the last line in the session log in the text below.';
     av.debug.postEmailLabel = 'Please include your e-mail if you would like feed back or are willing to further assist in debug';
     av.debug.postNoteLabel = 'Please include any additional comments in the field below.'
@@ -683,7 +702,10 @@ require([
     av.debug.postData.comment = av.dom.postComment.value;
     console.log('postData=', av.debug.postData);
 
-    domConst.place('<p>Button pressed; send message</p>', 'status');
+    av.dom.postStatus.textContent = 'Sending';
+    av.dom.postProblemError.textContent = '';
+
+    //domConst.place('<p>sending message</p>', 'postStatus');
     var hostname = 'https://avida-ed.msu.edu/developer/report/receive';
 
     xhr.post(  //Post is a helper function to xhr, a more generic class
@@ -693,39 +715,18 @@ require([
         headers: {'X-Requested-With':null}
       }
     ).then(function(received){ //Promise format; received data from request (first param of then)
-        domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
+        av.dom.postStatus.textContent = 'Received';
+        //domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'postStatus');
       }, function(err){ //Error handling (second param of then)
-        domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
+        av.dom.postStatus.textContent = 'Error';
+        av.dom.postProblemError.textContent = 'Please send an e-mail to '+av.fio.mailAddress + ' about the error sending a Problem Report';
+        av.dom.postProblemError.style.color = 'red';
+
+      //domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'postStatus');
       }
     ); // End then
   }); // End on's function and on statement
 
-  // old version tiba delete later
-/*  on(document.getElementById('postPost_old'), 'click', function(){
-    av.post.addUser('Button: postPost');
-    //Data to send
-    av.debug.postData.email = av.dom.postEmailInput.value;
-    av.debug.postData.comment = av.dom.postComment.value;
-    console.log('postData=', av.debug.postData);
-
-    domConst.place('<p>Button pressed; send message</p>', 'status');
-
-    xhr.post(  //Post is a helper function to xhr, a more generic class
-      'http://localhost:5000/receive',  //URL parameter
-      {  //Data and halding parameter
-        //handleAs:'json',
-        //data: av.utl.json2stringFn(av.debug.postData)
-        data: dojo.toJson(av.debug.postData),
-        headers: {'X-Requested-with':null}
-      }
-    ).then(function(received){ //Promise format; received data from request (first param of then)
-        domConst.place('<p>Data received: <code>' + JSON.stringify(received) + '</code></p>', 'status');
-      }, function(err){ //Error handling (second param of then)
-        domConst.place('<p>Error: <code>' + JSON.stringify(err) + '</code></p>', 'status');
-      }
-    ); // End then
-  }); // End on's function and on statement
-*/
   //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
   //More usefull websites to catch errors
@@ -2703,6 +2704,9 @@ other
 formating tables = http://www.the-art-of-web.com/html/table-markup/
  */
 
-/*
-
-  */
+/* How to make a .gif file.
+To make a gif using screen capture
+     http://osxdaily.com/2013/08/23/record-screen-animated-gif-mac-os-x/
+ A web application reverses a GIF.
+    http://gifmaker.me/reverser/
+ */

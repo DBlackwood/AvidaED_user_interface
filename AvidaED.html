@@ -58,7 +58,7 @@
 <!-- http://stackoverflow.com/questions/20828799/creating-a-splash-page-in-html5 -->
 <div id='splash' style='display:block; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A'>
   <div align='center'>
-    <h1 style='color:whitesmoke'>Avida-ED public Beta version 2017_0323 is loading . . .</h1>
+    <h1 style='color:whitesmoke'>Avida-ED 3.0.0 is loading . . .</h1>
     <img src='images/Avida-ED-icon.png' /><br />
     <img src='images/AvidaGrid.gif' />
   </div>
@@ -128,8 +128,8 @@
               <a href='cpu_tour.html' target='_blank'>Ancestor and Hardware</a></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpInfo'><a href='http://Avida-ED.msu.edu/' target='_blank'>more info about Avida-ED</a></span>
             <span data-dojo-type='dijit/MenuItem' id='mnHpProblem' label='Report Problem(s)'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>
             <div style='display: none'>
+            <span data-dojo-type='dijit/MenuItem' id='mnHpDebug' label='Toggle Debug Menu'></span>
               <div data-dojo-type='dijit/MenuSeparator'></div>
               <div data-dojo-type='dijit/PopupMenuItem'>
                 <span>Color Gradient</span>
@@ -143,7 +143,7 @@
             </div>
           </span>
         </span>
-        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: visible'> <!--visible/hidden-->
+        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: hidden'> <!--visible/hidden-->
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowError' label='Throw Error'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowData' label='Send Data to console'></span>
@@ -285,7 +285,7 @@
                       <td></td>
                     </tr>
                     <tr>
-                      <td><div class='sotL'>Age (update):&nbsp;</div></td>
+                      <td><div class='sotL'>Age (updates):&nbsp;</div></td>
                       <td><div class='noWrapRn'><label id='ageLabel'></label>&nbsp;&nbsp;&nbsp;</div></td>
                       <td></td>
                     </tr>
@@ -1037,7 +1037,7 @@
     <p>An educational artificial life plateform developed at Michigan State University for <br />
       learning evolution and the nature of science using digital organisms.</p>
     <br />
-    <strong>Avida-ED 3.0 Public Beta Version 2017_0323</strong><br />
+    <strong>Avida-ED 3.0.0</strong><br />
     <strong>2008-2016<br />http://Avida-ED.msu.edu/</strong><br />
     <br />
     <p>Developed under NSF Grant #0341484,<br />
@@ -1432,34 +1432,41 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <div data-dojo-type='dijit/Dialog' data-dojo-id='postLogDialog'
      title='Avida-ED Problem Report - help us make Avida-ED better'>
   <div class='dijitDialogPaneContentArea'>
-    Please send the data below to help us make Avida-ED better by clicking on the [Post] button.
-    <p id='postLogPara'>
-       Please add a note to helps us figure out the problem.<br />
-      Please add your e-mail address if you want feed back or are willing to help with further testing.
-    </p>
+    <div>
+      <div class='lftWide'>
+        <p id='postLogPara'>
+          Please send the data below to help us make Avida-ED better by clicking on the [Send] button.&nbsp;
+        </p>
+        <br />
+        <label id='postEmailLabel'>Please include your e-mail so we can discuss your problem or suggeston further.</label><br />
+        <input type='text' id='postEmailInput' style='width: 40em' />
+      </div>
+      <div class='ritThin'>
+        <button data-dojo-type='dijit/form/Button' type='button' id='postPost'>Send</button>
+        <br />
+        <label id='postStatus'></label>&nbsp;
+        <br />
+        <button data-dojo-type='dijit/form/Button' type='button' data-dojo-props='onClick:function(){postLogDialog.hide();}'
+                id='postLogDialogCancel'>Cancel
+        </button>
+      </div>
+    </div>
+    <br /><br /><br /><br />
+    <label id='postProblemError' stype='color: red'></label><br />
     <br />
-    <label id='postEmailLabel'></label><br />
-    <input type='text' id='postEmailInput' style='width: 50em' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button data-dojo-type='dijit/form/Button' type='button' id='postPost'>Post</button><br />
-    <label id='postNoteLabel'></label><br />
+    <label id='postNoteLabel'>Please describe the problem or suggestion in the comment field below.</label><br />
     <textarea id='postComment' cols='90' rows='5'></textarea><br />
     Version: <label id='postVersionLabel'></label>
     Screen size: <label id='postScreenSize'></label><br />
     User Info: <label id='postUserInfoLabel'></label><br />
-    <label id='postError' stype='color: red'></label><br /><br />
+    <label id='postError' stype='color: red'></label><br />
     Session Log:<br />
     <textarea id='postLogTextarea' cols='90' rows='20' ></textarea><br /><br />
     Debug Details:<br />
     <textarea id='postdTailTextarea' cols='90' rows='20' ></textarea>
-    <div id='status'>
-      <p></p>
-    </div>
 
   </div>
   <div class='dijitDialogPaneActionBar'>
-    <button data-dojo-type='dijit/form/Button' type='button' data-dojo-props='onClick:function(){postLogDialog.hide();}'
-            id='postLogDialogCancel'>Cancel
-    </button>
   </div>
 </div>
 
