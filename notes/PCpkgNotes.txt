@@ -1,5 +1,4 @@
 I made a Windows installer for Avida-ED.
-
 Steps taken:
 
 Cloned av_ui project from GitHub.

@@ -91,6 +91,8 @@
             <span data-dojo-type='dijit/MenuItem' id='mnFlFzItem' label='Import Freezer Item'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlExportData' label='Export Data'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFlExportGraph' label='Export Graphics'></span>
+            <div data-dojo-type='dijit/MenuSeparator'></div>
+            <span data-dojo-type='dijit/MenuItem' id='mnFlStandAloneApp' label='Stand Alone Application'></span>
           </span>
         </span>
         <span data-dojo-type='dijit/PopupMenuBarItem' label='Freezer' iconClass='dijitNoIcon' id='mnFreezer'>
@@ -113,7 +115,7 @@
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnCnRun' label='Run'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnPause' label='Pause'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnCnOne' label='Do one update'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnCnOne' label='Forward (Do one update)'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnNewpop' label='Start New Experiment'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnOrganismTrace' label='Put Selected Organism in Organism View'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnOffspringTrace' label='Put Offspring in Organism View'></span>
@@ -238,7 +240,6 @@
               </td>
               <td><label id='altMsgLabel'></label></td>
               <td style='text-align: right;'>
-                <button id='oneUpdateButton'>Do 1 Update</button>
                 <button id='popSetupButton'>Setup</button>
                 <button id='popStatsButton'>Stats</button>
               </td>
@@ -501,6 +502,7 @@
                   <tr>
                     <td>
                       Time: <label id='TimeLabel'>(not started)</label><br/>
+                      <button id='freezeButton'>Freeze</button>
                     </td>
                     <td style='text-align: center; min-width:166px'><!--166px-->
                       Mode
@@ -513,7 +515,7 @@
                       </select><br/>
                       <button id='newDishButton'>New</button>
                       <button id='runStopButton'>Run</button>
-                      <button id='freezeButton'>Freeze</button>
+                      <button id='oneUpdateButton'>Forward</button>
                     </td>
                     <td style='text-align: right'>
                       <label id='rescaleLabel'> </label><br />
@@ -940,6 +942,29 @@
   <div class='dijitDialogPaneActionBar'>
     <button data-dojo-type='dijit/form/Button' type='button'  id='mnFlExportGraphCancel'
             data-dojo-props='onClick:function(){mnFlExportGraphDialog.hide();}'>Close Dialog
+    </button>
+  </div>
+</div>
+
+<!---------------------------------- Export Stand Alone Dialog box ---------------------------------------------------->
+<div data-dojo-type='dijit/Dialog' data-dojo-id='mnFlStandAloneAppDialog'
+     title='Stand alone version of Avida-ED 3.0.0'>
+  <div class='dijitDialogPaneContentArea'>
+    <h3>For working where there is no internet access</h3>
+    <ul>
+      <li class="slim"><a href="pkgs/Avida-ED-Web-PC_2016_0918.exe" target='_blank'>Avida-ED Windows installer for self-hosted version 2016_0918</a></li>
+      <li><a href="pkgs/Avida-ED_Server_3.0.0.app.zip" target='_blank'>Avida-ED 3.0.0 for Mac OS 10.6 and above</a></li>
+      <ul>
+        <li>Unzip the file once it is downloaded</li>
+        <li>Move the file ‘Avida-ED Web.app’ to the Applications Folder</li>
+        <li>. . . Your Mac will complain that the file is from an unknown source, you will have to approve opening it</li>
+      </ul>
+      </li>
+    </ul>
+  </div>
+  <div class='dijitDialogPaneActionBar'>
+    <button data-dojo-type='dijit/form/Button' type='button'  id='mnFlStandAloneAppDialogCancel'
+            data-dojo-props='onClick:function(){mnFlStandAloneAppDialog.hide();}'>Close Dialog
     </button>
   </div>
 </div>

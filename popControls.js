@@ -8,20 +8,22 @@ av.ptd.makePauseState = function () {
   dijit.byId('mnCnRun').attr('disabled', false);
   dijit.byId('mnCnOne').attr('disabled', false);
   //console.log('pauseState; button=run');
-  document.getElementById('runStopButton').textContent = 'Run';
+  av.dom.runStopButton.textContent = 'Run';
+  av.dom.oneUpdateButton.disabled = false;
 }
 
 av.ptd.makeRunState = function () {
-  document.getElementById('runStopButton').textContent = 'Pause';
+  av.dom.runStopButton.textContent = 'Pause';
   dijit.byId('mnCnPause').attr('disabled', false);
   dijit.byId('mnCnRun').attr('disabled', true);
   dijit.byId('mnCnOne').attr('disabled', true);
+  av.dom.oneUpdateButton.disabled = true;
 }
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
 av.ptd.popBoxSwap = function () {
   'use strict';
-  if ('Map' == document.getElementById('popSetupButton').innerHTML) {
+  if ('Dish' == document.getElementById('popSetupButton').innerHTML) {
     av.post.addUser('Button: popSetupButton became Setup');
     document.getElementById('mapBlock').style.display = 'block';
     //document.getElementById('popSetupButton').textContent = 'Setup';
@@ -30,7 +32,7 @@ av.ptd.popBoxSwap = function () {
 
     av.grd.cellConflict(av.grd.cols, av.grd.rows);
     av.grd.drawGridSetupFn();
-    av.ui.subpage = 'map';
+    av.ui.subpage = 'Dish';
     //var height = $('#mapBlock').innerHeight() - 6;
     //dijit.byId('mapBlock').set('style', 'display: block; height: ' + height + 'px');
     //dijit.byId('mapBlock').set('style', 'display: block;');
@@ -38,7 +40,7 @@ av.ptd.popBoxSwap = function () {
   } else {
     av.post.addUser('Button: popSetupButton became Map');
     document.getElementById('mapBlock').style.display = 'none'
-    document.getElementById('popSetupButton').textContent = 'Map';
+    document.getElementById('popSetupButton').textContent = 'Dish';
     dijit.byId('setupBlock').set('style', 'display: block;');
 
     av.ui.subpage = 'setup';
@@ -150,7 +152,7 @@ av.ptd.popNewExState = function () {
   //set run/stop and drop down menu to the 'stopped' state
   dijit.byId('mnCnPause').attr('disabled', true);
   dijit.byId('mnCnRun').attr('disabled', false);
-  document.getElementById('runStopButton').innerHTML = 'Run';
+  av.dom.runStopButton.innerHTML = 'Run';
   //console.log('pauseState; button=run in av.ptd.popNewExState');
 
   //clear the time series graphs
@@ -276,7 +278,7 @@ av.ptd.runPopFn = function () {
 }
 
 av.ptd.runStopFn = function () {
-  if ('Run' == document.getElementById('runStopButton').innerHTML) {
+  if ('Run' == av.dom.runStopButton.innerHTML) {
     av.ptd.makeRunState();
     av.ptd.runPopFn();
   } else {

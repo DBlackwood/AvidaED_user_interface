@@ -1016,31 +1016,8 @@ av.dnd.contextMenu = function(target, fzItemID) {
       }
     }
   }));
-  aMenu.addChild(new dijit.MenuItem({
-    label: 'delete',
-    onClick: function () {
-      av.post.addUser('Button: delete:' + document.getElementById(fzItemID).textContent);
-      var sure = confirm('Do you want to delete ' + document.getElementById(fzItemID).textContent);
-      if (sure) {
-        dir = av.fzr.dir[fzItemID];
-        av.fzr.file[dir+'/entryname.txt'];
-        if ('fzOrgan' == fzSection) {
-          av.fwt.removeFzrItem(dir, 'g')
-        } else if ('fzConfig' == fzSection){
-          av.fwt.removeFzrItem(dir, 'c')
-        } else if ('fzWorld' == fzSection){
-          av.fwt.removeFzrItem(dir, 'w')
-        }
-        target.selectNone();
-        dojo.destroy(fzItemID);
-        target.delItem(fzItemID);
-        av.fzr.saveUpdateState('no');
-        //need to remove from fzr and pouchDB
-      }
-    }
-  }));
   if (!av.brs.isSafari) {
-  //if (true) {
+    //if (true) {
     aMenu.addChild(new dijit.MenuItem({
       label: 'export',
       onClick: function () {
@@ -1069,6 +1046,29 @@ av.dnd.contextMenu = function(target, fzItemID) {
       }
     }))
   }
+  aMenu.addChild(new dijit.MenuItem({
+    label: 'delete',
+    onClick: function () {
+      av.post.addUser('Button: delete:' + document.getElementById(fzItemID).textContent);
+      var sure = confirm('Do you want to delete ' + document.getElementById(fzItemID).textContent);
+      if (sure) {
+        dir = av.fzr.dir[fzItemID];
+        av.fzr.file[dir+'/entryname.txt'];
+        if ('fzOrgan' == fzSection) {
+          av.fwt.removeFzrItem(dir, 'g')
+        } else if ('fzConfig' == fzSection){
+          av.fwt.removeFzrItem(dir, 'c')
+        } else if ('fzWorld' == fzSection){
+          av.fwt.removeFzrItem(dir, 'w')
+        }
+        target.selectNone();
+        dojo.destroy(fzItemID);
+        target.delItem(fzItemID);
+        av.fzr.saveUpdateState('no');
+        //need to remove from fzr and pouchDB
+      }
+    }
+  }));
 };
 
 /* ****************************************************************************************************************** */

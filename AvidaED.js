@@ -168,9 +168,12 @@ require([
     av.dom.graphPop1 = document.getElementById('graphPop1');
     av.dom.graphPop2 = document.getElementById('graphPop2');
 
+    //Population Page
+    av.dom.runStopButton = document.getElementById('runStopButton');
+    av.dom.oneUpdateButton = document.getElementById('oneUpdateButton');
+    
     //Population Map Setup page
     av.dom.popSetupButton = document.getElementById('popSetupButton');
-    av.dom.oneUpdateButton = document.getElementById('oneUpdateButton');
     av.dom.sizeCols = document.getElementById('sizeCols');
     av.dom.sizeRows = document.getElementById('sizeRows');
     av.dom.muteInput = document.getElementById('muteInput');
@@ -195,6 +198,7 @@ require([
     av.dom.sendLogPara = document.getElementById('sendLogPara');
     av.dom.sendLogTextarea = document.getElementById('sendLogTextarea');
 
+    //post - send data to database
     av.dom.postLogTextarea = document.getElementById('postLogTextarea');
     av.dom.postLogPara = document.getElementById('postLogPara');
     av.dom.postVersionLabel = document.getElementById('postVersionLabel');
@@ -220,6 +224,7 @@ require([
     av.dom.popRight = document.getElementById('popRight');
     av.dom.popBot = document.getElementById('popBot');
 
+    av.dom.mnFlStandAloneApp = document.getElementById('mnFlStandAloneApp');
     av.dom.mnHpAbout = document.getElementById('mnHpAbout');
     av.dom.mnHpManual = document.getElementById('mnHpManual');
     av.dom.mnHpHardware = document.getElementById('mnHpHardware');
@@ -455,6 +460,13 @@ require([
     mnFlExportGraphDialog.show();
   });
 
+  //Save Stand alone applicaton .
+  dijit.byId('mnFlStandAloneApp').on('Click', function () {
+    'use strict';
+    av.post.addUser('Button: mnFlExportGraph');
+    mnFlStandAloneAppDialog.show();
+  });
+
   //------------- Testing only need to delete later.--------------------
 
   av.dom.mnHpDebug.onclick = function () {
@@ -675,7 +687,7 @@ require([
   //http://blog.bugsnag.com/js-stacktraces
   window.onerror = function (message, file, line, col, error) {
     console.log('in onError');
-    document.getElementById('runStopButton').innerHTML = 'Run';  //av.msg.pause('now');
+    av.dom.runStopButton.innerHTML = 'Run';  //av.msg.pause('now');
     av.debug.finalizeDtail();
     av.debug.triggered = 'errorTriggered';
     av.post.postLogPara = 'mares eat oats and does eat oats'
@@ -1178,7 +1190,7 @@ require([
   //--------------------------------------------------------------------------------------------------------------------
   
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
-  document.getElementById('runStopButton').onclick = function () {
+  av.dom.runStopButton.onclick = function () {
     av.post.addUser('Button: runStopButton = ' + av.grd.updateNum, '=updateNum;  ' + av.grd.msg.update + '=msg.update;  ' + av.grd.popStatsMsg.update + '=popStatsMsg.update');
     var upDate = av.msg.previousUpdate + 1;
     //av.post.addUser('Button: runStopButton = ' + upDate);
