@@ -439,7 +439,7 @@ av.dnd.lndAncestorBox = function (move) {
     av.post.usrOut(av.post.data, 'in dojoDND.js line 467');
 
     //find genome by finding source
-    console.log('seq=', av.fzr.file[move.dir+'/genome.seq']);
+    //console.log('seq=', av.fzr.file[move.dir+'/genome.seq']);
     av.parents.genome.push(av.fzr.file[move.dir+'/genome.seq']);
     var nn = av.parents.name.length;
     av.parents.autoNdx.push(nn);

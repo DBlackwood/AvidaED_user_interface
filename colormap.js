@@ -902,21 +902,22 @@ av.color.parentColorList = [
 
    ,'#DB6D00'            //13 orange brown      used digital color meter to match #5 on website;
    ,'rgb(  0, 146, 146)' //14 medium blue green website #3; looks like 7 to Tritanopia
-   ,'rgb(220, 190,   0)' //15 dark yellow       website #13 modified was 219, 209, 0  looks like 4 to Tritanopia
-   ,'rgb( 0,  195,   0)' //16 green             website #14 modied was 36, 255,  36
+   ,'#FFFF9B'            //15 pale yellow
+   ,'rgb(  0, 245, 255)' //16 bright light blue
 
     ,'rgb(179,   0, 255)'  // 17 magenta
-    ,'#FFFF9B'             // 18 pale yellow
-    ,'rgb(255,   0,  10)'  // 19 red
-    ,'rgb(  0, 182, 158)'  // 20 blue-green
-    ,'rgb(  0,   0, 186)'  // 21 dark blue
-    ,'rgb(255,   0, 255)'  // 22 hot pink
-    ,'rgb(  0, 138, 255)'  // 23 sky blue
-    ,'rgb(255,  97,   0)'  // 24 red-orange
+    ,'rgb(220, 190,   0)'  // 18 dark yellow       website #13 modified was 219, 209, 0  looks like 4 to Tritanopia
+    ,'rgb(  0, 182, 158)'  // 19 blue-green
+    ,'rgb(  0,   0, 186)'  // 20 dark blue
+    ,'rgb(255,   0, 255)'  // 21 hot pink
+    ,'rgb(  0, 138, 255)'  // 22 sky blue
+    ,'rgb(255,  97,   0)'  // 23 red-orange
+    ,'rgb(255,   0,  10)'  // 24 red
     ,'rgb(127, 127, 127)'  // 25 grey
-    ,'rgb(  0, 245, 255)'  // 26 bright light blue
-    ,'rgb(187, 187, 187)'  // 27 dark grey
-    ];
+    ,'rgb(187, 187, 187)'  // 26 dark grey
+    ,'rgb(  0, 195,   0)'  // 27 green             website #14 modied was 36, 255,  36
+    ,'rgb( 36, 255,  36)'  // 28 bright green      website #14
+];
 
 av.color.chipColors = av.color.parentColorList.slice();
 
@@ -926,9 +927,9 @@ av.color.names =  {};
     av.color.names['Blue'] = 'rgb(  0, 109, 219)';    //'#0000FF'; using one that is more color blind friendly
     av.color.names['Yellow'] = 'rgb(220, 190,   0)';  //'#FFFF00'; using one that is more color blind friendly
     av.color.names['Purple'] = 'rgb( 93,  20, 166)';  //'#8800FF'; using one that is more color blind friendly
-    av.color.names['Orange'] = '#DB6D00';     //'#FFAA00'; used digital color meter to get color blind friendly
+    av.color.names['Orange'] = '#DB6D00';             //'#FFAA00'; used digital color meter to get color blind friendly
     av.color.names['Pink'] = 'rgb(255, 109, 182)';    //using one that is more color blind friendly
-    av.color.names['LtGreen'] = 'rgb( 0,  195,   0)';    //using one that is more color blind friendly
+    av.color.names['LtGreen'] = 'rgb( 0,  195,   0)'; //using one that is more color blind friendly
     av.color.names['Magenta'] = '#FF00FF';
     av.color.names['Cyan'] = '#00FFFF';
     av.color.names['Black'] = '#000000';
