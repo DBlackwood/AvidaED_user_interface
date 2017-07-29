@@ -238,8 +238,10 @@ av.frd.avidaCFGparse = function (filestr) {
 av.frd.avidaCFG2form = function (fileStr){
   'use strict';
   var dict = av.frd.avidaCFGparse(fileStr);
-  dijit.byId('sizeCols').set('value', dict.WORLD_X);
-  dijit.byId('sizeRows').set('value', dict.WORLD_Y);
+  av.dom.sizeCols.value = dict.WORLD_X
+  //dijit.byId('sizeCols').set('value', dict.WORLD_X);
+  av.dom.sizeRows.value = dict.WORLD_Y
+  //dijit.byId('sizeRows').set('value', dict.WORLD_Y);
   document.getElementById('muteInput').value = dict.COPY_MUT_PROB*100;
   //var event = new Event('change');
   var event = new window.CustomEvent('change');
@@ -394,7 +396,8 @@ av.fio.handAncestorLoad = function(fileStr) {
     av.parents.col[nn] = stuff.col[kk];
     av.parents.row[nn] = stuff.row[kk];
     av.parents.injected[nn] = false;
-    av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(dijit.byId('sizeCols').get('value'));
+    av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(sizeCols.value);
+    //av.parents.AvidaNdx[nn] = av.parents.col[nn] + Number(av.parents.row[nn]) * Number(dijit.byId('sizeCols').get('value'));
     //av.parents.AvidaNdx[av.parents.autoNdx[ii]] = av.parents.col[av.parents.autoNdx[ii]] + cols * av.parents.row[av.parents.autoNdx[ii]];
     if (av.debug.fio) console.log('av.parents:  name', av.parents.name[nn], '; domid', av.parents.domid[nn], '; gen', av.parents.genome[nn]);
   }

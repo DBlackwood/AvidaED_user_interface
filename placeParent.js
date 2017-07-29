@@ -2,8 +2,10 @@
 
 //---------- set Ancestors ------------------/
 av.parents.placeAncestors = function () {
-  var cols = dijit.byId("sizeCols").get('value');
-  var rows = dijit.byId("sizeRows").get('value');
+  //var cols = dijit.byId("sizeCols").get('value');
+  var cols = av.dom.sizeCols.value;
+  var rows = av.dom.sizeRows.value;
+  //var rows = dijit.byId("sizeRows").get('value');
   var lngth;
   var cc, rr, ii;
   if (undefined != av.parents.autoNdx) {

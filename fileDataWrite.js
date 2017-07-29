@@ -57,8 +57,12 @@ av.fwt.makeFzrEventsCfgWorld = function (idStr, em) {
 
 av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   'use strict';
-  var txt = 'WORLD_X ' + dijit.byId('sizeCols').get('value') + '\n';
-  txt += 'WORLD_Y ' + dijit.byId('sizeRows').get('value') + '\n';
+  //console.log('col; row', av.dom.sizeCols, av.dom.sizeRows);
+  //console.log('col; row - text', av.dom.sizeCols.text, av.dom.sizeRows.text);
+  //console.log('col; row - value', av.dom.sizeCols.value, av.dom.sizeRows.value);
+  //console.log('col; row - HTML', av.dom.sizeCols.innerHTML, av.dom.sizeRows.innerHTML);
+  var txt = 'WORLD_X ' + av.dom.sizeCols.value + '\n';
+  txt += 'WORLD_Y ' + av.dom.sizeRows.value + '\n';
   txt += 'WORLD_GEOMETRY 1 \n';
   txt += 'COPY_MUT_PROB ' + document.getElementById('muteInput').value/100 + '\n';
   txt += 'DIVIDE_INS_PROB 0.0 \n';
@@ -75,7 +79,7 @@ av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
   txt += '#include instset.cfg\n';
   txt += 'PRECALC_PHENOTYPE 1\n';
   txt += 'VERSION_ID 2.14.0 \n';
-  if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}
+  if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}  // always false for now 2017 July
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
 }
 

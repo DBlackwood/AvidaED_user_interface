@@ -171,9 +171,11 @@ require([
     //Population Page
     av.dom.runStopButton = document.getElementById('runStopButton');
     av.dom.oneUpdateButton = document.getElementById('oneUpdateButton');
-    
+    av.dom.newDishButton = document.getElementById('newDishButton');
+      
     //Population Map Setup page
     av.dom.popSetupButton = document.getElementById('popSetupButton');
+    av.dom.sizeCells = document.getElementById('sizeCells');
     av.dom.sizeCols = document.getElementById('sizeCols');
     av.dom.sizeRows = document.getElementById('sizeRows');
     av.dom.muteInput = document.getElementById('muteInput');
@@ -1267,7 +1269,8 @@ require([
     }
   }
 
-  document.getElementById('newDishButton').onclick = function () {
+//  document.getElementById('newDishButton').onclick = function () {
+  av.dom.newDishButton.onclick = function () {
     av.post.addUser('Button: newDishButton');
     newButtonBoth();
   };
@@ -1958,13 +1961,19 @@ require([
   // **************************************************************************************************************** */
   // ******* Population Setup Buttons from 'Setup' subpage ********* */
   // **************************************************************************************************************** */
-  av.grd.gridWasCols = Number(document.getElementById('sizeCols').value);
-  av.grd.gridWasRows = Number(document.getElementById('sizeRows').value);
+  av.grd.gridWasCols = Number(av.dom.sizeCols.value);
+  av.grd.gridWasRows = Number(av.dom.sizeRows.value);
 
-  function popSizeFn() {
-    var NewCols = Number(document.getElementById('sizeCols').value);
-    var NewRows = Number(document.getElementById('sizeRows').value);
-    document.getElementById('sizeCells').innerHTML = 'is a total of ' + NewCols * NewRows + ' cells';
+  av.ptd.popSizeFn = function() {
+    console.log('should call if viable size');
+    var NewCols = Number(av.dom.sizeCols.value);
+    var NewRows = Number(av.dom.sizeRows.value);
+    console.log('NewCols, Rows', NewCols, NewRows);
+    av.dom.sizeCells.innerHTML = 'for a total of ' + NewCols * NewRows + ' cells';
+    //av.dom.sizeCells.text = 'for a total of ' + NewCols * NewRows + ' cells';
+    av.dom.sizeCols.style.color = 'black';
+    av.dom.sizeRows.style.color = 'black';
+    av.dom.sizeCells.style.color = 'black';
     //Linear scale the position for Ancestors added by hand;
     if (undefined != av.parents.handNdx) {
       var lngth = av.parents.handNdx.length;
@@ -1976,8 +1985,8 @@ require([
         //console.log('New cr', av.parents.col[av.parents.handNdx[ii]], av.parents.row[av.parents.handNdx[ii]]);
       }
     }
-    av.grd.gridWasCols = Number(document.getElementById('sizeCols').value);
-    av.grd.gridWasRows = Number(document.getElementById('sizeRows').value);
+    av.grd.gridWasCols = Number(av.dom.sizeCols.value);
+    av.grd.gridWasRows = Number(av.dom.sizeRows.value);
     //reset zoom power to 1
     av.grd.zoomSlide.set('value', 1);
     av.parents.placeAncestors();
@@ -1985,15 +1994,44 @@ require([
     av.grd.cellConflict(NewCols, NewRows);
   }
 
-  dijit.byId('sizeCols').on('Change', function() {
-    av.post.addUser('sizeCols = ' + document.getElementById('sizeCols').value);
-    popSizeFn();
-  });
-  dijit.byId('sizeRows').on('Change', function() {
-    av.post.addUser('sizeRows = ' + document.getElementById('sizeRows').value);
-    popSizeFn();
-  });
-  
+  av.dom.sizeCols.addEventListener('onchange', av.ptd.colChange);
+
+  av.ptd.colChange = function(tmpval) {
+    console.log('cols=', av.dom.sizeCols.value);
+    var tmpNum = Number(av.dom.sizeCols.value);
+    console.log('num=', tmpNum);
+    if (tmpNum > 0 && tmpNum <= 100) {   //max number of columns
+      console.log('valid response');
+      av.ptd.popSizeFn();
+    }
+    else {
+      av.dom.sizeCols.style.color = 'red';
+      av.dom.sizeCells.style.color = 'red';
+      console.log('not valid; tmpNum=', tmpNum);
+      if (tmpNum <= 0) { av.dom.sizeCells.innerHTML = 'Number of columns must be greater than zero'; console.log('<0');}
+      if (tmpNum >= 100) { av.dom.sizeCells.innerHTML = 'Number of columns must be 100 or less'; console.log('>0');}
+      if ( isNaN(tmpNum) ) {av.dom.sizeCells.innerHTML = 'Number of columns must be a valid number'; console.log('==NaN');}
+    }
+  };
+
+  av.ptd.rowChange = function(tmpval) {
+    console.log('rows=', av.dom.sizeRows.value);
+    var tmpNum = Number(av.dom.sizeRows.value);
+    console.log('num=', tmpNum);
+    if (tmpNum > 0 && tmpNum <= 100) {   //max number of columns
+      console.log('valid response');
+      av.ptd.popSizeFn();
+    }
+    else {
+      av.dom.sizeRows.style.color = 'red';
+      av.dom.sizeCells.style.color = 'red';
+      console.log('not valid; tmpNum=', tmpNum);
+      if (tmpNum <= 0) { av.dom.sizeCells.innerHTML = 'Number of rows must be greater than zero'; console.log('<0');}
+      if (tmpNum >= 100) { av.dom.sizeCells.innerHTML = 'Number of rows must be 100 or less'; console.log('>0');}
+      if ( isNaN(tmpNum) ) {av.dom.sizeCells.innerHTML = 'Number of rows must be a valid number'; console.log('==NaN');}
+    }
+  };
+
   $(function slidemute() {
     /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
     /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */

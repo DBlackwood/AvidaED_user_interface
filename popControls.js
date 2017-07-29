@@ -23,7 +23,7 @@ av.ptd.makeRunState = function () {
 // shifts the population page from Map (grid) view to setup parameters view and back again.
 av.ptd.popBoxSwap = function () {
   'use strict';
-  if ('Dish' == document.getElementById('popSetupButton').innerHTML) {
+  if ('Map' == document.getElementById('popSetupButton').innerHTML) {
     av.post.addUser('Button: popSetupButton became Setup');
     document.getElementById('mapBlock').style.display = 'block';
     //document.getElementById('popSetupButton').textContent = 'Setup';
@@ -32,7 +32,7 @@ av.ptd.popBoxSwap = function () {
 
     av.grd.cellConflict(av.grd.cols, av.grd.rows);
     av.grd.drawGridSetupFn();
-    av.ui.subpage = 'Dish';
+    av.ui.subpage = 'Map';
     //var height = $('#mapBlock').innerHeight() - 6;
     //dijit.byId('mapBlock').set('style', 'display: block; height: ' + height + 'px');
     //dijit.byId('mapBlock').set('style', 'display: block;');
@@ -40,7 +40,7 @@ av.ptd.popBoxSwap = function () {
   } else {
     av.post.addUser('Button: popSetupButton became Map');
     document.getElementById('mapBlock').style.display = 'none'
-    document.getElementById('popSetupButton').textContent = 'Dish';
+    document.getElementById('popSetupButton').textContent = 'Map';
     dijit.byId('setupBlock').set('style', 'display: block;');
 
     av.ui.subpage = 'setup';
@@ -84,8 +84,8 @@ av.ptd.popRunningStateUi = function () {
   av.dnd.fzWorld.accept['w'] = 1;
   av.dnd.fzWorld.accept['b'] = 1;
   $('#muteSlide').slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
-  dijit.byId('sizeCols').attr('disabled', true);
-  dijit.byId('sizeRows').attr('disabled', true);
+  av.dom.sizeCols.disabled = true;
+  av.dom.sizeRows.disabled = true;
   dijit.byId('muteInput').attr('disabled', true);
   dijit.byId('childParentRadio').attr('disabled', true);
   dijit.byId('childRandomRadio').attr('disabled', true);
@@ -477,8 +477,10 @@ av.ptd.clearLogicButtons = function() {
 //and read the returned JSON string.
 av.ptd.writeHardDefault = function (av) {
   'use strict';
-  dijit.byId('sizeCols').set('value', av.dft.sizeCols);
-  dijit.byId('sizeRows').set('value', av.dft.sizeRows);
+  av.dom.sizeCols.value = av.dft.sizeCols;
+  av.dom.sizeRows.value = av.dft.sizeRows;
+  //dijit.byId('sizeCols').set('value', av.dft.sizeCols);
+  //dijit.byId('sizeRows').set('value', av.dft.sizeRows);
   if ('childParentRadio'==av.dft.child) {
     dijit.byId('childParentRadio').set('checked', true);
     dijit.byId('childRandomRadio').set('checked', false);
