@@ -182,6 +182,7 @@ require([
     av.dom.sizeCols = document.getElementById('sizeCols');
     av.dom.sizeRows = document.getElementById('sizeRows');
     av.dom.muteInput = document.getElementById('muteInput');
+    av.dom.muteError = document.getElementById('muteError');
     av.dom.childParentRadio = document.getElementById('childParentRadio');
     av.dom.childRandomRadio = document.getElementById('childRandomRadio');
     av.dom.notose = document.getElementById('notose');
@@ -1997,8 +1998,26 @@ require([
     av.grd.cellConflict(NewCols, NewRows);
   }
 
-  av.dom.sizeCols.addEventListener('onchange', av.ptd.gridChange);
-
+  av.ptd.muteInputChange = function() {
+    var muteNum = Number(av.dom.muteInput.value);
+    console.log('muteNum=', muteNum);
+    if (muteNum >= 0 && muteNum <= 100) {
+      av.ptd.validMuteInuput=true;
+      av.dom.muteError.style.color = 'black';
+      av.dom.muteError.innerHTML = '';
+      av.dom.userMsgLabel.innerHTML = '';
+    }
+    else {
+      av.ptd.validMuteInuput=false;
+      av.dom.muteError.style.color = 'red';
+      av.dom.muteError.innerHTML = '';
+      av.dom.userMsgLabel.innerHTML = '';
+      if (muteNum <= 0) { av.dom.muteError.innerHTML += 'Mutation rate must be greater than zero percent. '; console.log('<0');}
+      if (muteNum >= 100) { av.dom.muteError.innerHTML += 'Mutation rate must be 100% or less. '; console.log('>0');}
+      if ( isNaN(muteNum) ) {av.dom.muteError.innerHTML += 'Mutation rate must be a valid number. '; console.log('==NaN');}
+    }
+  }
+  
   av.ptd.gridChange = function(tmpval) {
     var colNum = Number(av.dom.sizeCols.value);
     var rowNum = Number(av.dom.sizeRows.value);
@@ -2006,7 +2025,8 @@ require([
     if (colNum > 0 && colNum <= 100 && rowNum > 0 && rowNum <= 100) {   
       //console.log('valid response');
       av.ptd.popSizeFn();
-      av.ptd.validGridSize = true; 
+      av.ptd.validGridSize = true;
+      av.dom.userMsgLabel.innerHTML = '';
     }
     else {
       av.ptd.validGridSize = false;
@@ -2017,13 +2037,13 @@ require([
       av.dom.sizeCells.style.color = 'red';
       console.log('not valid; col, row=', colNum, rowNum);
       av.dom.sizeCells.innerHTML = '';
+      av.dom.userMsgLabel.innerHTML = '';
       if (colNum <= 0) { av.dom.sizeCells.innerHTML += 'Number of columns must be greater than zero. '; console.log('<0');}
       if (colNum >= 100) { av.dom.sizeCells.innerHTML += 'Number of columns must be 100 or less. '; console.log('>0');}
       if ( isNaN(colNum) ) {av.dom.sizeCells.innerHTML += 'Number of columns must be a valid number. '; console.log('==NaN');}
       if (rowNum <= 0) { av.dom.sizeCells.innerHTML += 'Number of rows must be greater than zero. '; console.log('<0');}
       if (rowNum >= 100) { av.dom.sizeCells.innerHTML += 'Number of rows must be 100 or less. '; console.log('>0');}
       if ( isNaN(rowNum) ) {av.dom.sizeCells.innerHTML += 'Number of rows must be a valid number. '; console.log('==NaN');}
-
     }
   };
 

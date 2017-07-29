@@ -250,8 +250,14 @@ av.ptd.runPopFn = function () {
     if ('Setup' == popSetupButton.innerHTML) av.ptd.popBoxSwap();
     if ('populationBlock' !== av.ui.page) av.ui.mainBoxSwap('populationBlock');
   }
+  else if (!av.ptd.validMuteInuput) {
+    av.ptd.makePauseState();
+    av.dom.userMsgLabel.innerHTML = 'A valid mutation rate is required before Avida will run';
+    if ('Setup' == popSetupButton.innerHTML) av.ptd.popBoxSwap();
+    if ('populationBlock' !== av.ui.page) av.ui.mainBoxSwap('populationBlock');
+  }
   else { // setup for a new run by sending config data to avida
-    av.dom.userMsgLabel = '';
+    av.dom.userMsgLabel.innerHTML = '';
     if ('started' !== av.grd.runState) {
       //collect setup data to send to avida.  Order matters. Files must be created first. Then files must be sent before some other stuff.
       av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt

@@ -160,7 +160,7 @@
         |&nbsp;&nbsp;&nbsp;
         <label id='wsSavedMsg' style='color: blue'>Workspace: default</label>
         &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-        <span style='text-align: right'><label id='userMsgLabel' style='color: red; text-align: right'>user msg place holder</label></span>
+        <span style='text-align: right'><label id='userMsgLabel' style='color: red; text-align: right'> </label></span>
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false' id='leftCP'
@@ -545,9 +545,9 @@
 
               <div  class='odd'>
                 Dish Size:
-                <input id='sizeCols' type='text' onchange='av.ptd.gridChange(this.value)'></input>
+                <input id='sizeCols' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em'></input>
                 &nbsp; x &nbsp;
-                <input id='sizeRows' type='text' onchange='av.ptd.gridChange(this.value)'></input>
+                <input id='sizeRows' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em'></input>
                 cells&nbsp;<br />
                 <label id='sizeCells'>There are 900 cells by default</label>
               </div>
@@ -561,10 +561,11 @@
                 <input id='muteInput' type='text' data-dojo-type='dijit/form/NumberTextBox' value=1 required='true' ;
                        data-dojo-props='constraints:{min:0, max:100},
                      invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid mutation rate."'
-                       style='width: 4.5em; height:1.8em'>
-                </button> %
+                       style='width: 4.5em; height:1.8em' onchange='av.ptd.muteInputChange(this.value)'>
+                </button> %<br />
                 <!--; or the slider value is &nbsp;</div>
                 <input id='mRate' type='text' readonly style='width: 4em; height:1.8em'></button> -->
+                <label id='muteError'>Error place holder</label>
               </div>
               <div class='odd'>Ancestral Organism(s):
                 <div class='ancestorContainer' id='ancestorBox'></div>
