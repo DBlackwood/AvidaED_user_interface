@@ -567,6 +567,8 @@ av.grd.clearGrd = function () {
   av.msg.previousUpdate = -10;
   av.grd.popStatsMsg.update = -5;
   av.ptd.allOff = true;
+
+  av.ptd.validGridSize = true;
 };
 av.grd.clearGrd();
 

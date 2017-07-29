@@ -160,7 +160,7 @@
         |&nbsp;&nbsp;&nbsp;
         <label id='wsSavedMsg' style='color: blue'>Workspace: default</label>
         &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-        <span style='text-align: right'><label id='userMsgLabel' style='color: red; text-align: right'></label></span>
+        <span style='text-align: right'><label id='userMsgLabel' style='color: red; text-align: right'>user msg place holder</label></span>
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false' id='leftCP'
@@ -545,9 +545,9 @@
 
               <div  class='odd'>
                 Dish Size:
-                <input id='sizeCols' type='text' onchange='av.ptd.colChange(this.value)'></input>
+                <input id='sizeCols' type='text' onchange='av.ptd.gridChange(this.value)'></input>
                 &nbsp; x &nbsp;
-                <input id='sizeRows' type='text' onchange='av.ptd.rowChange(this.value)'></input>
+                <input id='sizeRows' type='text' onchange='av.ptd.gridChange(this.value)'></input>
                 cells&nbsp;<br />
                 <label id='sizeCells'>There are 900 cells by default</label>
               </div>

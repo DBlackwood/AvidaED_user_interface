@@ -168,6 +168,9 @@ require([
     av.dom.graphPop1 = document.getElementById('graphPop1');
     av.dom.graphPop2 = document.getElementById('graphPop2');
 
+    av.dom.userMsgLabel = document.getElementById('userMsgLabel');
+    av.dom.wsSavedMsg = document.getElementById('wsSavedMsg');
+
     //Population Page
     av.dom.runStopButton = document.getElementById('runStopButton');
     av.dom.oneUpdateButton = document.getElementById('oneUpdateButton');
@@ -1588,7 +1591,7 @@ require([
         av.grd.findLogicOutline();
       }
     }
-    if ('populationBlock' === av.ui.page && 'Setup' === document.getElementById('popSetupButton').textContent) {
+    if ('populationBlock' === av.ui.page && 'Setup' === av.dom.popSetupButton.textContent) {
       if ('None' == dijit.byId('colorMode').value) {
         if (av.grd.newlyNone) {
           av.grd.newlyNone = false;
@@ -1994,23 +1997,33 @@ require([
     av.grd.cellConflict(NewCols, NewRows);
   }
 
-  av.dom.sizeCols.addEventListener('onchange', av.ptd.colChange);
+  av.dom.sizeCols.addEventListener('onchange', av.ptd.gridChange);
 
-  av.ptd.colChange = function(tmpval) {
-    console.log('cols=', av.dom.sizeCols.value);
-    var tmpNum = Number(av.dom.sizeCols.value);
-    console.log('num=', tmpNum);
-    if (tmpNum > 0 && tmpNum <= 100) {   //max number of columns
-      console.log('valid response');
+  av.ptd.gridChange = function(tmpval) {
+    var colNum = Number(av.dom.sizeCols.value);
+    var rowNum = Number(av.dom.sizeRows.value);
+    console.log('col, row=', colNum, rowNum);
+    if (colNum > 0 && colNum <= 100 && rowNum > 0 && rowNum <= 100) {   
+      //console.log('valid response');
       av.ptd.popSizeFn();
+      av.ptd.validGridSize = true; 
     }
     else {
-      av.dom.sizeCols.style.color = 'red';
+      av.ptd.validGridSize = false;
+      if (colNum > 0 && colNum <= 100) av.dom.sizeCols.style.color = 'black';
+      else av.dom.sizeCols.style.color = 'red'
+      if (rowNum > 0 && rowNum <= 100) av.dom.sizeRows.style.color = 'black';
+      else av.dom.sizeRows.style.color = 'red';
       av.dom.sizeCells.style.color = 'red';
-      console.log('not valid; tmpNum=', tmpNum);
-      if (tmpNum <= 0) { av.dom.sizeCells.innerHTML = 'Number of columns must be greater than zero'; console.log('<0');}
-      if (tmpNum >= 100) { av.dom.sizeCells.innerHTML = 'Number of columns must be 100 or less'; console.log('>0');}
-      if ( isNaN(tmpNum) ) {av.dom.sizeCells.innerHTML = 'Number of columns must be a valid number'; console.log('==NaN');}
+      console.log('not valid; col, row=', colNum, rowNum);
+      av.dom.sizeCells.innerHTML = '';
+      if (colNum <= 0) { av.dom.sizeCells.innerHTML += 'Number of columns must be greater than zero. '; console.log('<0');}
+      if (colNum >= 100) { av.dom.sizeCells.innerHTML += 'Number of columns must be 100 or less. '; console.log('>0');}
+      if ( isNaN(colNum) ) {av.dom.sizeCells.innerHTML += 'Number of columns must be a valid number. '; console.log('==NaN');}
+      if (rowNum <= 0) { av.dom.sizeCells.innerHTML += 'Number of rows must be greater than zero. '; console.log('<0');}
+      if (rowNum >= 100) { av.dom.sizeCells.innerHTML += 'Number of rows must be 100 or less. '; console.log('>0');}
+      if ( isNaN(rowNum) ) {av.dom.sizeCells.innerHTML += 'Number of rows must be a valid number. '; console.log('==NaN');}
+
     }
   };
 

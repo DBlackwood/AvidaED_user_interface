@@ -431,23 +431,23 @@ av.fzr.saveUpdateState = function (newSaveState) {
   switch (av.fzr.saveState) {
     case 'yes':
       wsSavedMsg.textContent = 'Workspace: is saved ';
-      document.getElementById("wsSavedMsg").style.color = 'green';
+      wsSavedMsg.style.color = 'green';
       break;
     case 'maybe':
       wsSavedMsg.textContent = 'Workspace: might be saved';
-      document.getElementById("wsSavedMsg").style.color = 'orangered';
+      wsSavedMsg.style.color = 'orangered';
       break;
     case 'no':
       wsSavedMsg.textContent = 'Workspace: is not saved';
-      document.getElementById("wsSavedMsg").style.color = 'red';
+      wsSavedMsg.style.color = 'red';
       break;
     case 'default':
       wsSavedMsg.textContent = 'Workspace: default  ';
-      document.getElementById("wsSavedMsg").style.color = 'blue';
+      wsSavedMsg.style.color = 'blue';
       break;
     default:
       wsSavedMsg.textContent = 'Workspace: confused ';
-      document.getElementById("wsSavedMsg").style.color = 'deeppink';
+      wsSavedMsg.style.color = 'deeppink';
       break;
   }
 }
