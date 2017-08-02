@@ -194,6 +194,17 @@ require([
     av.dom.ornose = document.getElementById('ornose');
     av.dom.andnose = document.getElementById('andnose');
     av.dom.xorose = document.getElementById('xorose');
+
+    av.dom.notButton = document.getElementById('notButton');
+    av.dom.andButton = document.getElementById('andButton');
+    av.dom.orButton = document.getElementById('orButton');
+    av.dom.norButton = document.getElementById('norButton');
+    av.dom.equButton = document.getElementById('equButton');  //5
+    av.dom.nanButton = document.getElementById('nanButton');
+    av.dom.ornButton = document.getElementById('ornButton');
+    av.dom.andnButton = document.getElementById('andnButton');
+    av.dom.xorButton = document.getElementById('xorButton');
+
     av.dom.experimentRadio = document.getElementById('experimentRadio');
     av.dom.demoRadio = document.getElementById('demoRadio');
     av.dom.manualUpdateRadio = document.getElementById('manualUpdateRadio');

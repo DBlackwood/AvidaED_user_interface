@@ -516,10 +516,14 @@ av.fzr.clearMainFzrFn = function () {
 av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
 av.pch = {};   // related to the chart on the population page
 av.ptd.popStatFlag = true;  //flag that determines if the stats panel is visible.
+av.ptd.logicButtons = ['notButton', 'nanButton', 'andButton', 'ornButton', 'oroButton', 'antButton', 'norButton', 'xorButton', 'equButton'];
 
 av.grd = {};         //data about the grid canvas
 av.grd.popStatsMsg = {};
 av.dom = {};
+
+av.grd.fnSelected = [];
+for (var ii = 0; ii < 9; ii++) { av.grd.fnSelected[av.ptd.logicButtons[ii]] = 0; }
 
 // initialize data for chart on population page
 av.grd.ytitle = 'Average Fitness';

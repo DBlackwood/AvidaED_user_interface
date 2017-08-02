@@ -299,13 +299,18 @@ av.fwt.writeCSV = function() {
       + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Offspring Cost",'
       + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Energy Acq. Rate",'
       + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Pop Size",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Viable Size"';
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + '"';
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Viable Size",'
+    
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Ave Fitness",'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Ave Offspring Cost",'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Ave Energy Acq. Rate",'
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Pop Size",';
+
     var lngth = av.pch.aveFit.length;
     for (var ii = 0; ii < lngth; ii++) {
       av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii] + ',' + av.pch.aveCst[ii] + ','
-        + av.pch.aveEar[ii] + ',' + av.pch.aveNum[ii] + ','
-        + av.pch.aveVia[ii];
+        + av.pch.aveEar[ii] + ',' + av.pch.aveNum[ii] + ',' + av.pch.aveVia[ii] + ','
+        + av.pch.logFit[ii] + ',' + av.pch.logCst[ii] + ',' + av.pch.logEar[ii] + ',' + av.pch.logNum[ii];
     }
     //string completed
   }

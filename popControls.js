@@ -237,8 +237,7 @@ av.ptd.runPopFn = function () {
   'use strict';
   //console.log('runPopFn runState', av.grd.runState);
   //check for ancestor organism in configuration data
-  console.log('validGridSize=',av.ptd.validGridSize, '; popSetupButton.innerHTML=', popSetupButton.innerHTML, '; av.ui.page=',av.ui.page);
-  console.log('')
+  //console.log('validGridSize=',av.ptd.validGridSize, '; popSetupButton.innerHTML=', popSetupButton.innerHTML, '; av.ui.page=',av.ui.page);
   var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
   //console.log('namelist', namelist);
   if (1 > namelist.length) {
@@ -405,14 +404,22 @@ av.ptd.bitToggle = function (button) {
     document.getElementById(button).value = 'off';
     document.getElementById(button).className = 'bitButtonOff';
     av.post.addUser('Button: ' + button + ' = off');
+    av.grd.fnSelected[button] = 0;
   }
   else {
     document.getElementById(button).value = 'on';
     document.getElementById(button).className = 'bitButtonOn';
     av.post.addUser('Button: ' + button + ' = on');
+    av.grd.fnSelected[button] = 1;
   }
+  
+  av.grd.selFnText = '';
+  for (var ii=0; ii<9; ii++) {
+    av.grd.selFnText += av.grd.fnSelected[av.ptd.logicButtons[ii]];
+  }
+  //console.log('av.grd.selFnText=', av.grd.selFnText);
   var lngth = av.pch.aveFit.length;
-  for (ii=0; ii < lngth; ii++){
+  for (var ii=0; ii < lngth; ii++){
     av.pch.logFit[ii] = null;
     av.pch.logCst[ii] = null;
     av.pch.logEar[ii] = null;
@@ -480,11 +487,11 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
 
 //clear logic Buttons
 av.ptd.clearLogicButtons = function() {
-  var logicButtons = ['notButton', 'nanButton', 'andButton', 'ornButton', 'oroButton', 'antButton', 'norButton', 'xorButton', 'equButton'];
-  var len = logicButtons.length;
+  var len = av.ptd.logicButtons.length;
   for (var ii = 0; ii < len; ii++) {
-    document.getElementById(logicButtons[ii]).value = 'off';
-    document.getElementById(logicButtons[ii]).className = 'bitButtonOff';
+    document.getElementById(av.ptd.logicButtons[ii]).value = 'off';
+    document.getElementById(av.ptd.logicButtons[ii]).className = 'bitButtonOff';
+    av.grd.fnSelected[av.ptd.logicButtons[ii]] = 0;
   }
 }
 
