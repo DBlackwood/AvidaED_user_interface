@@ -404,18 +404,18 @@ av.ptd.bitToggle = function (button) {
     document.getElementById(button).value = 'off';
     document.getElementById(button).className = 'bitButtonOff';
     av.post.addUser('Button: ' + button + ' = off');
-    av.grd.fnSelected[button] = 0;
+    av.grd.fnChosen[button] = false;
   }
   else {
     document.getElementById(button).value = 'on';
     document.getElementById(button).className = 'bitButtonOn';
     av.post.addUser('Button: ' + button + ' = on');
-    av.grd.fnSelected[button] = 1;
+    av.grd.fnChosen[button] = true;
   }
   
   av.grd.selFnText = '';
   for (var ii=0; ii<9; ii++) {
-    av.grd.selFnText += av.grd.fnSelected[av.ptd.logicButtons[ii]];
+    if (av.grd.fnChosen[av.ptd.logicButtons[ii]]) {av.grd.selFnText += av.ptd.logicNames[ii] + '.';}
   }
   //console.log('av.grd.selFnText=', av.grd.selFnText);
   var lngth = av.pch.aveFit.length;
@@ -491,7 +491,7 @@ av.ptd.clearLogicButtons = function() {
   for (var ii = 0; ii < len; ii++) {
     document.getElementById(av.ptd.logicButtons[ii]).value = 'off';
     document.getElementById(av.ptd.logicButtons[ii]).className = 'bitButtonOff';
-    av.grd.fnSelected[av.ptd.logicButtons[ii]] = 0;
+    av.grd.fnChosen[av.ptd.logicButtons[ii]] = false;
   }
 }
 

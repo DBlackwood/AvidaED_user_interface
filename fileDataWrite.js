@@ -295,16 +295,16 @@ av.fwt.writeCSV = function() {
     //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
     //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
     av.fwt.csvStrg = 'Update,'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Fitness",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Offspring Cost",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Energy Acq. Rate",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Pop Size",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Viable Size",'
-    
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Ave Fitness",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Ave Offspring Cost",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Ave Energy Acq. Rate",'
-      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + ' Pop Size",';
+      + '"' + 'FitP = Ave Fitness ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+      + '"' + 'CstP = Ave Offspring Cost ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+      + '"' + 'EarP = Ave Energy Acq. Rate ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+      + '"' + 'NumP = Pop Size ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+      + '"' + 'ViaP = Viable Size ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+
+      + '"' + 'FitF = Ave Fitness ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+      + '"' + 'CstF = Ave Offspring Cost ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+      + '"' + 'EarF = Ave Energy Acq. Rate ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+      + '"' + 'NumF = Pop Size ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",';
 
     var lngth = av.pch.aveFit.length;
     for (var ii = 0; ii < lngth; ii++) {
