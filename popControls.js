@@ -61,8 +61,9 @@ av.ptd.popWorldStateUi = function () {
   delete av.dnd.activeConfig.accept['w'];
   av.dnd.fzWorld.accept['w'] = 1;
   av.dnd.fzWorld.accept['b'] = 1;
-  dijit.byId('sizeCols').attr('disabled', true);
-  dijit.byId('sizeRows').attr('disabled', true);
+  av.dom.sizeCols.disabled = true;
+  av.dom.sizeRows.disabled = true;
+  //dijit.byId('sizeRows').attr('disabled', true);
   //dijit.byId('experimentRadio').attr('disabled', true);
   //dijit.byId('demoRadio').attr('disabled', true);
 
@@ -129,8 +130,9 @@ av.ptd.popNewExState = function () {
   av.dnd.ancestorBox.copyOnly = true;
   av.dnd.activeConfig.isSource = true;
   $('#muteSlide').slider({disabled: false});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
-  dijit.byId('sizeCols').attr('disabled', false);
-  dijit.byId('sizeRows').attr('disabled', false);
+  av.dom.sizeCols.disabled = false;
+  av.dom.sizeRows.disabled = false;
+  //dijit.byId('sizeRows').attr('disabled', false);
   dijit.byId('muteInput').attr('disabled', false);
   dijit.byId('childParentRadio').attr('disabled', false);
   dijit.byId('childRandomRadio').attr('disabled', false);

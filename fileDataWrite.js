@@ -300,6 +300,7 @@ av.fwt.writeCSV = function() {
       + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Ave Energy Acq. Rate",'
       + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Pop Size",'
       + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Viable Size"';
+      + '"' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + ' Selected Functions' + av.grd.selFnText + '"';
     var lngth = av.pch.aveFit.length;
     for (var ii = 0; ii < lngth; ii++) {
       av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii] + ',' + av.pch.aveCst[ii] + ','
