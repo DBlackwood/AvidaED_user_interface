@@ -575,6 +575,7 @@ av.grd.clearGrd = function () {
 
   av.ptd.validGridSize = true;
   av.ptd.validMuteInuput=true;
+  av.grd.selFnText = 'none';
 };
 av.grd.clearGrd();
 

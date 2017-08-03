@@ -208,6 +208,7 @@ av.fwt.makeFzrWorld = function (num) {
   av.fwt.makeFzrTRfile('w'+num+'/tr3', av.pch.aveNum);
   av.fwt.makeFzrTRfile('w'+num+'/tr4', av.pch.aveVia);
   av.fwt.makeFzrFile('w'+num + '/update', av.grd.updateNum.toString() );
+  av.fwt.makeFzrCSV('w'+num, em);
   //there are more files needed to talk to Matt, tiba
 }
 
@@ -289,7 +290,20 @@ av.fwt.removeFzrItem = function(dir, type){
   }
 }
 
+av.fwt.makeFzrCSV = function(idStr, em) {
+  "use strict";
+  av.fwt.makeCSV();
+  if (em) {av.fwt.makeEmDxFile(idStr+'/dataRecorder.csv', txt);}
+  else {av.fwt.makeFzrFile(idStr+'/dataRecorder.csv', av.fwt.csvStrg);}
+}
+
 av.fwt.writeCSV = function() {
+  "use strict";
+  av.fwt.makeCSV();
+  av.fio.fzSaveCsvfn();
+}
+
+av.fwt.makeCSV = function() {
   'use strict';
   if ('populationBlock' === av.ui.page) {
     //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
@@ -343,7 +357,6 @@ av.fwt.writeCSV = function() {
     }
   }
   //console.log(av.fwt.csvStrg);
-  av.fio.fzSaveCsvfn();
 }
 
 

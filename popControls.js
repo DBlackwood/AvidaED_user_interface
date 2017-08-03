@@ -417,6 +417,8 @@ av.ptd.bitToggle = function (button) {
   for (var ii=0; ii<9; ii++) {
     if (av.grd.fnChosen[av.ptd.logicButtons[ii]]) {av.grd.selFnText += av.ptd.logicNames[ii] + '.';}
   }
+  if (3 > av.grd.selFnText.length) {av.grd.selFnText = 'none';}
+
   //console.log('av.grd.selFnText=', av.grd.selFnText);
   var lngth = av.pch.aveFit.length;
   for (var ii=0; ii < lngth; ii++){
