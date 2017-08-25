@@ -113,7 +113,7 @@
         </span>
         <span data-dojo-type='dijit/PopupMenuBarItem' label='Control' id='mnControl'>
           <span data-dojo-type='dijit/Menu'>
-            <span data-dojo-type='dijit/MenuItem' id='mnCnRun' label='Run'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnCnPopRun' label='Population: Run'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnPause' label='Pause'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnOne' label='Forward (Do one update)'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnCnNewpop' label='Start New Experiment'></span>
@@ -1011,7 +1011,7 @@
         <!-- style done here for the slider; margin to keep it from overlapping;
                             without width the slider is the full width of the browser window-->
         <!--<input id='orMuteInput' type='text' style='width: 4em; height:1.8em'></button>%-->
-        <input id='orMuteInput' type='text' data-dojo-type='dijit/form/NumberTextBox' value=20 required='true' ;
+        <input id='orMuteInput' type='text' data-dojo-type='dijit/form/NumberTextBox' value=2.0 required='true' ;
                data-dojo-props='constraints:{min:0, max:100},
                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid mutation rate."'
                style='width: 4.5em; height:1.8em'></button> %

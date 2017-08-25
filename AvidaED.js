@@ -158,6 +158,8 @@ require([
 
   av.dom.load = function () {
     'use strict';
+    av.dom.mnCnPopRun = document.getElementById('mnCnPopRun');
+    
     av.dom.popChart = document.getElementById('popChart');  //easier handle for div with chart
     av.dom.popChrtHolder = document.getElementById('popChrtHolder');
     //av.dom.anlChrtSpace = document.getElementById('anlChrtSpace');  //easier handle for div with chart
@@ -1223,10 +1225,21 @@ require([
   });
 
   //process run/Stop buttons as above but for drop down menu
-  dijit.byId('mnCnRun').on('Click', function () {
-    av.post.addUser('Button: mnCnRun');
-    av.ptd.makeRunState();
-    av.ptd.runPopFn();
+  dijit.byId('mnCnPopRun').on('Click', function () {
+    console.log('av.dom.mnCnPopRun.value=', av.dom.mnCnPopRun.value);
+    if ('Population: Run' == av.dom.mnCnPopRun.value) {
+      av.post.addUser('Button: mnCnPopRun');
+      av.ptd.makeRunState();
+      av.ptd.runPopFn();
+    }
+    else {
+      av.post.addUser('Button: mnCnPause');
+      //console.log('about to call av.ptd.makePauseState()');
+      av.msg.pause('now');
+      //av.debug.log += '______Debug Note: about to call av.ptd.makePauseState() in AvidaEd.js line 986 \n';
+      av.ptd.makePauseState();
+    }
+
   });
 
   //process run/Stop buttons as above but for drop down menu

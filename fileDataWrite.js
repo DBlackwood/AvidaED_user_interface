@@ -293,8 +293,8 @@ av.fwt.removeFzrItem = function(dir, type){
 av.fwt.makeFzrCSV = function(idStr, em) {
   "use strict";
   av.fwt.makeCSV();
-  if (em) {av.fwt.makeEmDxFile(idStr+'/dataRecorder.csv', txt);}
-  else {av.fwt.makeFzrFile(idStr+'/dataRecorder.csv', av.fwt.csvStrg);}
+  if (em) {av.fwt.makeEmDxFile(idStr+'/timeRecorder.csv', txt);}
+  else {av.fwt.makeFzrFile(idStr+'/timeRecorder.csv', av.fwt.csvStrg);}
 }
 
 av.fwt.writeCSV = function() {

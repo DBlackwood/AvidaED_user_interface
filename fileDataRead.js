@@ -95,7 +95,7 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'events.cfg':
     case 'genome.seq':
     case 'instset.cfg':
-    case 'pauseRunAt.txt':
+    case 'timeRecorder.csv':
     case 'tr0':
     case 'tr1':
     case 'tr2':
@@ -131,6 +131,7 @@ av.fio.processItemFiles = function (){
     case 'events.cfg':
     case 'genome.seq':
     case 'instset.cfg':
+    case 'timeRecorder.csv':
     case 'tr0':
     case 'tr1':
     case 'tr2':

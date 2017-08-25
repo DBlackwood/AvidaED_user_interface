@@ -4,8 +4,10 @@
 // ptd = PeTri Dish
 
 av.ptd.makePauseState = function () {
-  dijit.byId('mnCnPause').attr('disabled', true);
-  dijit.byId('mnCnRun').attr('disabled', false);
+  //dijit.byId('mnCnPause').attr('disabled', true);
+  //dijit.byId('mnCnPopRun').attr('disabled', false);
+  av.dom.mnCnPopRun.textContent = 'Population: Run';
+
   dijit.byId('mnCnOne').attr('disabled', false);
   //console.log('pauseState; button=run');
   av.dom.runStopButton.textContent = 'Run';
@@ -14,8 +16,10 @@ av.ptd.makePauseState = function () {
 
 av.ptd.makeRunState = function () {
   av.dom.runStopButton.textContent = 'Pause';
-  dijit.byId('mnCnPause').attr('disabled', false);
-  dijit.byId('mnCnRun').attr('disabled', true);
+  //dijit.byId('mnCnPause').attr('disabled', false);
+  //dijit.byId('mnCnPopRun').attr('disabled', true);
+  av.dom.mnCnPopRun.textContent = 'Population: Pause';
+
   dijit.byId('mnCnOne').attr('disabled', true);
   av.dom.oneUpdateButton.disabled = true;
 }
@@ -153,7 +157,7 @@ av.ptd.popNewExState = function () {
   av.parents.Colors.reverse();
   //set run/stop and drop down menu to the 'stopped' state
   dijit.byId('mnCnPause').attr('disabled', true);
-  dijit.byId('mnCnRun').attr('disabled', false);
+  dijit.byId('mnCnPopRun').attr('disabled', false);
   av.dom.runStopButton.innerHTML = 'Run';
   //console.log('pauseState; button=run in av.ptd.popNewExState');
 
