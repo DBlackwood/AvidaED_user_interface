@@ -1,5 +1,6 @@
 // need a server to run this. The one below works.
 // python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
+// python -m SimpleHTTPServer 8001  to put on 8001 instead of 8000
 // Then visit http://127.0.0.1:8000/avidaED.html
 //
 // Git commands used to push
@@ -2817,3 +2818,4 @@ To make a gif using screen capture
  A web application reverses a GIF.
     http://gifmaker.me/reverser/
  */
+

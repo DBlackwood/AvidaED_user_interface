@@ -168,7 +168,7 @@ av.frd.environmentCFGlineParse = function(instr){
   'use strict';
   var num = 0;
   var flag = true;
-  var cfgary = flexsplit(instr).split(',');
+  var cfgary = flexsplit(instr).split(',');      //replaces white space with a comma, then splits on comma
   if (0 < cfgary[3].length) {num = wsb(':',wsa('=',cfgary[3]));}
   if (0 == num) {flag = false;} //use == in this case as they are of different type
   //if (av.debug.fio) console.log('flag', flag, '; num', num, '; cfgary', cfgary[3], '; instr', instr);
@@ -269,7 +269,7 @@ av.frd.avidaCFG2form = function (fileStr){
   //dijit.byId('sleepDelay').set('value', dict.SLEEP_DELAY);
 }
 
-// puts data from the av.frd.pauseRun.txt file into the setup form for the population page
+//--------------------- puts data from the av.frd.pauseRun.txt file into the setup form for the population page---------
 av.frd.pauseRunAtTXT2form = function (fileStr) {
   'use strict';
   var update = parseInt(fileStr);
@@ -447,8 +447,45 @@ av.fio.cladeSSG2parents = function (fileStr) {
   //console.log('parents', av.parents);
 }
 
+//----------------------- section to put data from timeRecorder.csv file into data from charts ----------------------
+
+
+// makes arrays out of a time recorder file
+av.frd.timeRecorder2chart = function (filestr) {
+  'use strict';
+  if (undefined !== filestr) {
+    var jj = 0;
+    var lineData, headerLine;
+    var lines = filestr.split('\n');
+    var lngth = lines.length;
+    for (var ii = 0; ii < lngth; ii++) {
+      if (1 < lines[ii].length) {
+        lineData = lines[ii].split(',');   //replaces white space with a comma, then splits on comma
+        if (0 == ii) {
+          headerLine = lineData;
+        }
+        else {
+          av.pch.logFit
+          timeR.update[jj] = lineData[0];
+          av.pch.avaFit[jj] = lineData[1];
+          av.pch.aveCst[jj] = lineData[2];
+          av.pch.aveEar[jj] = lineData[3];
+          av.pch.aveNum[jj] = lineData[4];
+          av.pch.aveVia[jj] = lineData[5];
+          av.pch.logFit[jj] = lineData[6];
+          av.pch.logCst[jj] = lineData[7];
+          av.pch.logEar[jj] = lineData[8];
+          av.pch.logNum[jj] = lineData[9];
+        }
+      }
+    } // for
+    console.log(headerLine);
+    console.log(av.pch);
+    return;
+  }
+};
+
 //----------------------- section to put data from time recorder (tr) files into data from charts ----------------------
-//nothing in this section works.
 
 // makes a dictionary out of a time recorder file
 av.frd.tr2chartParse = function (filestr) {
@@ -476,6 +513,7 @@ av.fio.tr2chart = function (fileStr) {
   return data;
 }
 
+//nothing in this section works.
 //------------------------------------------------- rest may not be in use ---------------------------------------------
 // http://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
 /*
@@ -544,3 +582,4 @@ function writeDxFile(db, path, contents) {
     });
 }
 */
+

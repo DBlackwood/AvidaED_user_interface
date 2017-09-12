@@ -851,10 +851,11 @@ av.color.cubehelixCmap = [  //djb version
 , 'rgb(255, 255, 255)'*/
   ];
 
+//does not match color order at this time.
 av.color.parentColorNames = [
   'A blue'    //1               website #7
   ,'B yellow'  //2            website #15 modified was 255, 255, 109
-  ,'C medium blue green' // website #3
+  ,'C medium blue green'// website #3
   ,'D pink'    //4              website #4
   ,'E brown'   //5             website #12 modified was 146, 73, 0
   ,'F lt pink' //6           used digital color meter to match #5 on website lt pink
@@ -885,28 +886,28 @@ av.color.parentColorNames = [
     //http://www.vischeck.com/vischeck/vischeckImage.php
     //http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/
 av.color.parentColorList = [
-    'rgb(  0, 109, 219)' //1  blue              website #7   note that 1=black;
-   ,'rgb(255, 109, 182)' //2  pink              website #4
-   ,'rgb(255, 255, 100)' //3  yellow            website #15 modified was 255, 255, 109
-   ,'rgb(  0,  93,  93)' //4  dark blue-green   website #2 modified was 0, 73, 73
+    'rgb(  0, 109, 219)' //  1 blue              website #7   note that 1=black;
+   ,'rgb(255, 109, 182)' //  2 pink              website #4
+   ,'rgb(220, 190,   0)' // 18 dark yellow       website #13 modified was 219, 209, 0  looks like 4 to Tritanopia
+   ,'rgb(  0,  93,  93)' //  4 dark blue-green   website #2 modified was 0, 73, 73
 
-   ,'rgb(182, 219, 255)' //5  pale blue         website #10
-   ,'rgb( 93,  20, 166)' //6  purple            website #6 modified was 73,   0, 146
-   ,'#FEB6DB'            //7  lt pink           used digital color meter to match #5 on website lt pink
-   ,'rgb(156,  82,  10)' //8  brown             website #12 modified was 146, 73, 0
+   ,'rgb(182, 219, 255)' //  5 pale blue         website #10
+   ,'rgb( 93,  20, 166)' //  6 purple            website #6 modified was 73,   0, 146
+   ,'#FEB6DB'            //  7 lt pink           used digital color meter to match #5 on website lt pink
+   ,'rgb(156,  82,  10)' //  8 brown             website #12 modified was 146, 73, 0
 
-   ,'rgb(182, 109, 255)' //9 lavender          website #8
-   ,'rgb(255, 182, 119)' //10 pale orange       website #5 but does not look pink
-   ,'rgb(156,  10,  10)' //11 red brown         website #11 modified was 146,   0,   0
-   ,'rgb(109, 182, 255)' //12 lt blue           website #9
+   ,'rgb(182, 109, 255)' //  9 lavender           website #8
+   ,'rgb(255, 182, 119)' // 10 pale orange       website #5 but does not look pink
+   ,'rgb(156,  10,  10)' // 11 red brown         website #11 modified was 146,   0,   0
+   ,'rgb(109, 182, 255)' // 12 lt blue           website #9
 
-   ,'#DB6D00'            //13 orange brown      used digital color meter to match #5 on website;
-   ,'rgb(  0, 146, 146)' //14 medium blue green website #3; looks like 7 to Tritanopia
-   ,'#FFFF9B'            //15 pale yellow
-   ,'rgb(  0, 245, 255)' //16 bright light blue
+   ,'#DB6D00'            // 13 orange brown      used digital color meter to match #5 on website;
+   ,'rgb(  0, 146, 146)' // 14 medium blue green website #3; looks like 7 to Tritanopia
+   ,'#FFFF9B'            // 15 pale yellow
+   ,'rgb(  0, 245, 255)' // 16 bright light blue
 
     ,'rgb(179,   0, 255)'  // 17 magenta
-    ,'rgb(220, 190,   0)'  // 18 dark yellow       website #13 modified was 219, 209, 0  looks like 4 to Tritanopia
+    ,'rgb(255, 255, 100)'  // 3  yellow            website #15 modified was 255, 255, 109
     ,'rgb(  0, 182, 158)'  // 19 blue-green
     ,'rgb(  0,   0, 186)'  // 20 dark blue
     ,'rgb(255,   0, 255)'  // 21 hot pink
