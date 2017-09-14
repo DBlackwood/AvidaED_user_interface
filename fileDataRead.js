@@ -19,6 +19,7 @@ av.fio.addFzItem = function(dndSection, name, type, fileNum) {
 //need to make sure freezer loaded first so not currently in use. Delete later if not used tiba
 av.fio.loadDefaultConfig = function() {
   'use strict';
+  console.log('')
   av.fzr.actConfig.name = av.fzr.file['c0/entryname.txt'];
   av.fzr.actConfig.type = 'c';
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();
@@ -449,41 +450,94 @@ av.fio.cladeSSG2parents = function (fileStr) {
 
 //----------------------- section to put data from timeRecorder.csv file into data from charts ----------------------
 
-
 // makes arrays out of a time recorder file
 av.frd.timeRecorder2chart = function (filestr) {
   'use strict';
   if (undefined !== filestr) {
     var jj = 0;
-    var lineData, headerLine;
+    var lineData, aline, headerLine, functionLine;
     var lines = filestr.split('\n');
     var lngth = lines.length;
+    //console.log('length= ', lngth, '; lines = ', lines);
     for (var ii = 0; ii < lngth; ii++) {
       if (1 < lines[ii].length) {
-        lineData = lines[ii].split(',');   //replaces white space with a comma, then splits on comma
-        if (0 == ii) {
-          headerLine = lineData;
+        aline = lines[ii];
+        //console.log('aline[0]', aline[0]);
+        if ('#' == aline[0]) {
+          //console.log('aline.substring.(0,11) = ', aline.substring(0,11));
+          if ('# Functions' == aline.substring(0,11)) {
+            //console.log('functionLine = ', aline);
+            av.pch.fnBinary = aline.substring(15, 24);
+            //console.log('av.pch.fnBinary = ', av.pch.fnBinary, '; aline=', aline);
+          }
         }
         else {
-          av.pch.logFit
-          timeR.update[jj] = lineData[0];
-          av.pch.avaFit[jj] = lineData[1];
-          av.pch.aveCst[jj] = lineData[2];
-          av.pch.aveEar[jj] = lineData[3];
-          av.pch.aveNum[jj] = lineData[4];
-          av.pch.aveVia[jj] = lineData[5];
-          av.pch.logFit[jj] = lineData[6];
-          av.pch.logCst[jj] = lineData[7];
-          av.pch.logEar[jj] = lineData[8];
-          av.pch.logNum[jj] = lineData[9];
+          //console.log('lines[ii]',lines[ii]);
+          lineData = lines[ii].split(',');
+          if ('Update' == lineData[0]) {
+            headerLine = lineData;
+            //console.log('headerLine',headerLine);
+          }
+          else {
+            //console.log('lineData',lineData);
+            //console.log('av.pch.nUpdate', av.pch.nUpdate);
+            //console.log('jj=', jj);
+            av.pch.nUpdate[jj] = lineData[0];
+            console.log('av.pch.nUpdate[jj]',av.pch.nUpdate[jj]);
+            av.pch.aveFit[jj] = lineData[1];
+            av.pch.aveCst[jj] = lineData[2];
+            av.pch.aveEar[jj] = lineData[3];
+            av.pch.aveNum[jj] = lineData[4];
+            av.pch.aveVia[jj] = lineData[5];
+            av.pch.logFit[jj] = lineData[6];
+            av.pch.logCst[jj] = lineData[7];
+            av.pch.logEar[jj] = lineData[8];
+            av.pch.logNum[jj] = lineData[9];
+            jj++;
+          }
         }
       }
     } // for
-    console.log(headerLine);
-    console.log(av.pch);
+    //console.log('headerLine = ', headerLine);
+    //console.log('av.pch = ', av.pch);
     return;
   }
 };
+
+//Load Time Recorder Data.
+av.frd.loadTimeRecorderData = function(dir) {
+  'use strict';
+//console.log('fzr.file', av.fzr.file);
+// if there is NOT a timeRecorder.csv file, then look for tr0, tr1, tr2, tr3 and tr4
+  if (undefined == av.fzr.file[dir + '/timeRecorder.csv']) {
+    av.pch.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
+    av.pch.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
+    av.pch.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
+    av.pch.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
+    av.pch.aveVia = av.fio.tr2chart(av.fzr.file[dir + '/tr4']);
+    console.log('via=', av.fzr.file[dir + '/tr4']);
+    //av.pch.xx = [];  in globals.js
+    //console.log('av.pch.aveFit', av.pch.aveFit);
+    lngth = av.pch.aveFit.length;
+    av.pch.logFit = av.utl.newFilledArray(lngth, null);
+    av.pch.logCst = av.utl.newFilledArray(lngth, null);
+    av.pch.logEar = av.utl.newFilledArray(lngth, null);
+    av.pch.logNum = av.utl.newFilledArray(lngth, null);
+    for (var ii = 0; ii < lngth; ii++) av.pch.xx[ii] = ii;
+    //console.log('tr length=', av.pch.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
+    //console.log('aveFit', av.pch.aveFit);
+    //console.log('aveCst', av.pch.aveCst);
+    //console.log('aveEar', av.pch.aveEar);
+    //console.log('aveNum', av.pch.aveNum);
+  }
+  else {
+    //console.log('av.fzr.file.' + dir + '/timeRecorder.csv=', av.fzr.file[dir + '/timeRecorder.csv']);
+    console.log('av.fzr.file.' + dir + '/timeRecorder.csv.length=', av.fzr.file[dir + '/timeRecorder.csv'].length);
+
+    av.frd.timeRecorder2chart(av.fzr.file[dir+'/timeRecorder.csv']);
+    console.log('av.pch.fnBinary = ', av.pch.fnBinary);
+  }
+}
 
 //----------------------- section to put data from time recorder (tr) files into data from charts ----------------------
 

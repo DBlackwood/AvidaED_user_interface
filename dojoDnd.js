@@ -251,50 +251,9 @@ av.dnd.lndActiveConfig = function (move) {
     //run status is no longer 'new' it is 'world'
     av.ptd.popWorldStateUi();
 
-    //Load Time Recorder Data.
-    dir = av.fzr.actConfig.dir;
-    console.log('fzr.file', av.fzr.file);
-    // if there is NOT a timeRecorder.csv file, then look for tr0, tr1, tr2, tr3 and tr4
-    if (undefined == av.fzr.file[dir + '/timeRecorder.csv']) {
-      av.pch.aveFit = av.fio.tr2chart(av.fzr.file[dir + '/tr0']);
-      av.pch.aveCst = av.fio.tr2chart(av.fzr.file[dir + '/tr1']);
-      av.pch.aveEar = av.fio.tr2chart(av.fzr.file[dir + '/tr2']);
-      av.pch.aveNum = av.fio.tr2chart(av.fzr.file[dir + '/tr3']);
-      av.pch.aveVia = av.fio.tr2chart(av.fzr.file[dir + '/tr4']);
-      console.log('via=', av.fzr.file[dir + '/tr4']);
-      //av.pch.xx = [];  in globals.js
-      //console.log('av.pch.aveFit', av.pch.aveFit);
-      lngth = av.pch.aveFit.length;
-      av.pch.logFit = av.utl.newFilledArray(lngth, null);
-      av.pch.logCst = av.utl.newFilledArray(lngth, null);
-      av.pch.logEar = av.utl.newFilledArray(lngth, null);
-      av.pch.logNum = av.utl.newFilledArray(lngth, null);
-      for (var ii = 0; ii < lngth; ii++) av.pch.xx[ii] = ii;
-      //console.log('tr length=', av.pch.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
-      //console.log('aveFit', av.pch.aveFit);
-      //console.log('aveCst', av.pch.aveCst);
-      //console.log('aveEar', av.pch.aveEar);
-      //console.log('aveNum', av.pch.aveNum);
-    }
-    else {
-      console.log('av.fzr.file.' + dir + '/timeRecorder.csv=', av.fzr.file[dir + '/timeRecorder.csv']);
-      console.log('av.fzr.file.' + dir + '/timeRecorder.csv.length=', av.fzr.file[dir + '/timeRecorder.csv'].length);
-      console.log('aveNum=', av.fzr.file[dir + '/tr3']);
+    //Load Time Recorder Data
+    av.frd.loadTimeRecorderData(av.fzr.actConfig.dir);
 
-      //--av.fio.timeR2chart(av.fzr.file[dir + '/timeRecorder.csv']);
-      //console.log('av.pch.aveFit', av.pch.aveFit);
-      //--lngth = av.pch.aveFit.length;
-      //--av.pch.logFit = av.utl.newFilledArray(lngth, null);
-      //--av.pch.logCst = av.utl.newFilledArray(lngth, null);
-      //--av.pch.logEar = av.utl.newFilledArray(lngth, null);
-      //--av.pch.logNum = av.utl.newFilledArray(lngth, null);
-      //--for (var ii = 0; ii < lngth; ii++) av.pch.xx[ii] = ii;
-      //console.log('tr length=', av.pch.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
-      //console.log('aveFit', av.pch.aveFit);
-      //console.log('aveCst', av.pch.aveCst);
-      //console.log('aveEar', av.pch.aveEar);
-      //console.log('aveNum', av.pch.aveNum);
-    }
     //send message to Avida
     av.msg.importPopExpr();
     av.msg.requestGridData();

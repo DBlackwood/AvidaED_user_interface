@@ -418,10 +418,18 @@ av.ptd.bitToggle = function (button) {
   }
   
   av.grd.selFnText = '';
+  av.grd.selFnBinary = '';
   for (var ii=0; ii<9; ii++) {
-    if (av.grd.fnChosen[av.ptd.logicButtons[ii]]) {av.grd.selFnText += av.ptd.logicNames[ii] + '.';}
+    if (av.grd.fnChosen[av.ptd.logicButtons[ii]]) {
+      av.grd.selFnText += av.ptd.logicNames[ii] + '.';
+      av.grd.selFnBinary += '1';
+    }
+    else av.grd.selFnBinary +='0';
   }
   if (3 > av.grd.selFnText.length) {av.grd.selFnText = 'none';}
+  //console.log('av.grd.fnChosen = ', av.grd.fnChosen);
+  //console.log('av.grd.selFnText =', av.grd.selFnText);
+  //console.log('av.grd.selFnBinary =',av.grd.selFnBinary);
 
   //console.log('av.grd.selFnText=', av.grd.selFnText);
   var lngth = av.pch.aveFit.length;

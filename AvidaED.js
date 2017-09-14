@@ -470,10 +470,10 @@ require([
   dijit.byId('mnFlExportData').on('Click', function () {
     'use strict';
     av.post.addUser('Button: mnFlExportData');
-    av.fwt.writeCSV();
+    av.fwt.writeCurrentCSV(av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '\n');
   });
 
-  //Export csv data from current run.
+  //Export chart data from current run.
   dijit.byId('mnFlExportGraph').on('Click', function () {
     'use strict';
     av.post.addUser('Button: mnFlExportGraph');

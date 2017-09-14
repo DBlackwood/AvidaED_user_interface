@@ -292,33 +292,47 @@ av.fwt.removeFzrItem = function(dir, type){
 
 av.fwt.makeFzrCSV = function(idStr, em) {
   "use strict";
-  av.fwt.makeCSV();
+  console.log('name is ', idStr + '/entryname.txt');
+  var fileNm = av.fzr.file[idStr + '/entryname.txt'];
+  console.log('fileName = ', fileNm);
+  av.fwt.makeCSV(fileNm);
   if (em) {av.fwt.makeEmDxFile(idStr+'/timeRecorder.csv', txt);}
   else {av.fwt.makeFzrFile(idStr+'/timeRecorder.csv', av.fwt.csvStrg);}
 }
 
-av.fwt.writeCSV = function() {
+av.fwt.writeCurrentCSV = function(idStr) {  
   "use strict";
-  av.fwt.makeCSV();
+  av.fwt.makeCSV(idStr);
   av.fio.fzSaveCsvfn();
 }
 
-av.fwt.makeCSV = function() {
+av.fwt.makeCSV = function(fileNm) {
   'use strict';
   if ('populationBlock' === av.ui.page) {
     //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
     //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
-    av.fwt.csvStrg = 'Update,'
-      + '"' + 'FitP = Ave Fitness ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
-      + '"' + 'CstP = Ave Offspring Cost ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
-      + '"' + 'EarP = Ave Energy Acq. Rate ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
-      + '"' + 'NumP = Pop Size ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
-      + '"' + 'ViaP = Viable Size ' + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
+    av.fwt.csvStrg = '# Name = ' + fileNm + '\n';
+    av.fwt.csvStrg += '# Functions = ' + av.grd.selFnBinary + ' = ' + av.grd.selFnText + '\n'
+      + '# FitP = Average Fitness of Viable Population \n'
+      + '# CstP = Average Offspring Cost of Viable Population \n'
+      + '# EarP = Average Energy Acquisition Rate of Viable Population \n'
+      + '# NumP = Total Polution Size \n'
+      + '# ViaP = Viable Population Size \n'
+      + '# FitF = Ave Fitness of avidians performing picked functions \n'
+      + '# CstF = Ave Offspring Cost avidians performing picked functions \n'
+      + '# EarF = Ave Energy Acquisition Rate avidians performing picked functions \n'
+      + '# NumF = Number of avidians performing picked functions \n';
 
-      + '"' + 'FitF = Ave Fitness ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
-      + '"' + 'CstF = Ave Offspring Cost ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
-      + '"' + 'EarF = Ave Energy Acq. Rate ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",'
-      + '"' + 'NumF = Pop Size ' + 'of Chosen Functions = ' + av.grd.selFnText + ' in ' + av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '",';
+    av.fwt.csvStrg += 'Update,'
+      + 'FitP,'
+      + 'CstP,'
+      + 'EarP,'
+      + 'NumP,'
+      + 'ViaP,'
+      + 'FitF,'
+      + 'CstF,'
+      + 'EarF,'
+      + 'NumF,';
 
     var lngth = av.pch.aveFit.length;
     for (var ii = 0; ii < lngth; ii++) {

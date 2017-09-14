@@ -576,6 +576,7 @@ av.grd.clearGrd = function () {
   av.ptd.validGridSize = true;
   av.ptd.validMuteInuput=true;
   av.grd.selFnText = 'none';
+  av.grd.selFnBinary = '000000000';
 };
 av.grd.clearGrd();
 
@@ -594,6 +595,7 @@ av.pch.clearPopChrt = function () {
   av.pch.aveNum = [0];
   av.pch.logNum = [0];
   av.pch.aveVia = [0];
+  av.pch.nUpdate = [];    //not sure if this is needed.
   av.pch.aveMaxFit = 0.1;
   av.pch.aveMaxCst = 0.1;
   av.pch.aveMaxEar = 0.1;
@@ -609,6 +611,7 @@ av.pch.clearPopChrt = function () {
     x:av.pch.xx, y:av.pch.popY, type:'scatter', mode: 'lines', name: 'Population',
     line: {color: 'rgb(2, 2, 2)', width: 1 }
   };
+
   av.pch.trace1 = {
     x:av.pch.xx, y:av.pch.logY, type:'scatter', mode: 'lines', name: 'Function Subset',
     //line: {color: 'rgb(0, 255, 0)', width: 1 }
