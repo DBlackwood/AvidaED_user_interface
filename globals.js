@@ -600,6 +600,7 @@ av.pch.clearPopChrt = function () {
   av.pch.aveMaxCst = 0.1;
   av.pch.aveMaxEar = 0.1;
   av.pch.aveMaxNum = 0.1;
+  av.pch.aveMaxVia = 0.1;
   av.pch.logMaxFit = 0;
   av.pch.logMaxCst = 0;
   av.pch.logMaxEar = 0;

@@ -458,10 +458,23 @@ av.msg.updatePopStats = function (msg) {
     av.pch.xx[msg.update] = msg.update;
     //aveVia assigned after it is calculated. see below
 
+    //find out how many are not viable.
+    var numNotViable = 0;
+    var lngth = av.grd.msg.fitness.data.length;
+    for (var ii = 0; ii < lngth; ii++) {
+      if (0 === av.grd.msg.fitness.data[ii]) {  //NOT viable
+        numNotViable++;
+      }
+    }
+    var numViable = msg.organisms - numNotViable;
+    viableNumLabel.textContent = numViable.formatNum(0);
+    av.pch.aveVia[msg.update] = numViable;
+
     if (av.pch.aveFit[msg.update] > av.pch.aveMaxFit) av.pch.aveMaxFit = av.pch.aveFit[msg.update];
     if (av.pch.aveCst[msg.update] > av.pch.aveMaxCst) av.pch.aveMaxCst = av.pch.aveCst[msg.update];
     if (av.pch.aveEar[msg.update] > av.pch.aveMaxEar) av.pch.aveMaxEar = av.pch.aveEar[msg.update];
     if (av.pch.aveNum[msg.update] > av.pch.aveMaxNum) av.pch.aveMaxNum = av.pch.aveNum[msg.update];
+    if (av.pch.aveVia[msg.update] > av.pch.aveMaxVia) av.pch.aveMaxVia = av.pch.aveVia[msg.update];
 
     av.ptd.updateLogicFn(msg.update);  //for graph data  switch to run with grid data since the data is from the grid data
   }
@@ -477,18 +490,6 @@ av.msg.updatePopStats = function (msg) {
   parentNumLabel.textContent = av.parents.name.length;
   //console.log('update', msg.update, '; logNum[update]',av.pch.logNum[Number(msg.update)-1], '; logNum', av.pch.logNum);
 
-  //find out how many are not viable.
-  var numNotViable = 0;
-  var lngth = av.grd.msg.fitness.data.length;
-  for (var ii = 0; ii < lngth; ii++) {
-    if (0 === av.grd.msg.fitness.data[ii]) {  //NOT viable
-      numNotViable++;
-    }
-  }
-  var numViable = msg.organisms - numNotViable;
-  viableNumLabel.textContent = numViable.formatNum(0);
-  av.pch.aveVia[msg.update] = numViable;
-
   notPop.textContent = msg.not;
   nanPop.textContent = msg.nand;  //these do not match
   andPop.textContent = msg.and;
@@ -502,6 +503,7 @@ av.msg.updatePopStats = function (msg) {
 
 av.ptd.updateLogicFn = function (mUpdate){
   'use strict';
+  //console.log('in updateLogicFn: mUpdate = ', mUpdate);
   av.pch.logFitFnd = 0;
   av.pch.logCstFnd = 0;
   av.pch.logEarFnd = 0;
@@ -509,6 +511,7 @@ av.ptd.updateLogicFn = function (mUpdate){
 
   //console.log('av.ptd.allOff',av.ptd.allOff);
   if (av.ptd.allOff) {    logTit1.textContent = '';
+    logTit1.textContent = '';
     logTit2.textContent = '';
     logTit3.textContent = '';
     logTit4.textContent = '';

@@ -8,6 +8,11 @@
 // git commit -m 'comment about the change being pushed'
 // git push -u origin master
 //
+// Get hashtag of avida side to state which version of avida works with this version of av_ui
+// git rev-parse HEAD
+//
+// Generic Notes -------------------------------------------------------------------------------------------------------
+//
 // [option]<alt>{go} to get library in the list for finder
 //
 // /var/www/vhosts/bwng/public_html/projects/
@@ -159,7 +164,7 @@ require([
 
   av.dom.load = function () {
     'use strict';
-    av.dom.mnCnPopRun = document.getElementById('mnCnPopRun');
+    //av.dom.mnCnPopRun = document.getElementById('mnCnPopRun');
     
     av.dom.popChart = document.getElementById('popChart');  //easier handle for div with chart
     av.dom.popChrtHolder = document.getElementById('popChrtHolder');
@@ -1224,11 +1229,12 @@ require([
     //av.debug.log += '______Debug Note: about to call av.ptd.makePauseState() in AvidaEd.js line 986 \n';
     av.ptd.makePauseState();
   });
-
+/*
   //process run/Stop buttons as above but for drop down menu
   dijit.byId('mnCnPopRun').on('Click', function () {
-    console.log('av.dom.mnCnPopRun.value=', av.dom.mnCnPopRun.value);
-    if ('Population: Run' == av.dom.mnCnPopRun.value) {
+    console.log('label=', dijit.byId('mnCnPopRun').get('value'));
+    if ('Population: Run' == dijit.byId('mnCnPopRun').get('value')) {
+      console.log('in Loop');
       av.post.addUser('Button: mnCnPopRun');
       av.ptd.makeRunState();
       av.ptd.runPopFn();
@@ -1240,7 +1246,15 @@ require([
       //av.debug.log += '______Debug Note: about to call av.ptd.makePauseState() in AvidaEd.js line 986 \n';
       av.ptd.makePauseState();
     }
+    //dijit.byId('mnCnPopRun').set('value', 'Population: change');
+  });
+*/
 
+  //process run/Stop buttons as above but for drop down menu
+  dijit.byId('mnCnRun').on('Click', function () {
+    av.post.addUser('Button: mnCnRun');
+    av.ptd.makeRunState();
+    av.ptd.runPopFn();
   });
 
   //process run/Stop buttons as above but for drop down menu
@@ -1826,6 +1840,7 @@ require([
 
   av.grd.popChartFn = function () {
     'use strict';
+    //console.log('av.grd.runState = ', av.grd.runState);
     if ('prepping' === av.grd.runState) {   //values can be prepping, started, or world
       av.dom.popChart.style.visibility = 'hidden';
     }
@@ -1849,9 +1864,12 @@ require([
           av.pch.yChange = true;
           av.pch.yValue = dijit.byId('yaxis').value;
         }
+        //console.log('av.pch.maxFit=',av.pch.aveMaxFit, '; av.pch.logMaxFit=',av.pch.logMaxFit, '; av.pch.aveFit = ', av.pch.aveFit);
+        //console.log('av.pch.logFit = ', av.pch.logFit);
         if ('Average Fitness' === dijit.byId('yaxis').value) {
           av.pch.popY = av.pch.aveFit;
           av.pch.logY = av.pch.logFit;
+          //console.log('av.pch.maxFit=',av.pch.aveMaxFit, '; av.pch.logMaxFit=',av.pch.logMaxFit);
           av.pch.maxY = (av.pch.aveMaxFit > av.pch.logMaxFit) ? av.pch.aveMaxFit : av.pch.logMaxFit;
           //console.log('aveMaxFit=', av.pch.aveMaxFit, '; logMaxFit=', av.pch.logMaxFit, '; maxY=', av.pch.maxY);
           //console.log('aveFit', av.pch.aveFit);
@@ -1870,7 +1888,12 @@ require([
         else if ('Number of Organisms' == dijit.byId('yaxis').value) {
           av.pch.popY = av.pch.aveNum;
           av.pch.logY = av.pch.logNum;
-          av.pch.maxY = (av.pch.aveMaxNum > av.pch.aveMaxNum) ? av.pch.aveMaxNum : av.pch.aveMaxNum;
+          av.pch.maxY = (av.pch.aveMaxNum > av.pch.logMaxNum) ? av.pch.aveMaxNum : av.pch.logMaxNum;
+        }
+        else if ('Number Viable' == dijit.byId('yaxis').value) {
+          av.pch.popY = av.pch.aveVia;
+          av.pch.logY = av.pch.logNum;
+          av.pch.maxY = (av.pch.aveMaxVia > av.pch.logMaxNum) ? av.pch.aveMaxVia : av.pch.logMaxNum;
         }
         else {
           av.pch.yValue = 'none';

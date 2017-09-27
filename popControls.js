@@ -4,10 +4,8 @@
 // ptd = PeTri Dish
 
 av.ptd.makePauseState = function () {
-  //dijit.byId('mnCnPause').attr('disabled', true);
-  //dijit.byId('mnCnPopRun').attr('disabled', false);
-  av.dom.mnCnPopRun.textContent = 'Population: Run';
-
+  dijit.byId('mnCnPause').attr('disabled', true);
+  dijit.byId('mnCnRun').attr('disabled', false);
   dijit.byId('mnCnOne').attr('disabled', false);
   //console.log('pauseState; button=run');
   av.dom.runStopButton.textContent = 'Run';
@@ -16,10 +14,8 @@ av.ptd.makePauseState = function () {
 
 av.ptd.makeRunState = function () {
   av.dom.runStopButton.textContent = 'Pause';
-  //dijit.byId('mnCnPause').attr('disabled', false);
-  //dijit.byId('mnCnPopRun').attr('disabled', true);
-  av.dom.mnCnPopRun.textContent = 'Population: Pause';
-
+  dijit.byId('mnCnPause').attr('disabled', false);
+  dijit.byId('mnCnRun').attr('disabled', true);
   dijit.byId('mnCnOne').attr('disabled', true);
   av.dom.oneUpdateButton.disabled = true;
 }
@@ -231,6 +227,7 @@ av.ptd.popNewExState = function () {
   logTit3.textContent = '';
   logTit4.textContent = '';
   logTit5.textContent = '';
+  logTit6.textContent = '';
   av.grd.flagSelected = false;
   dijit.byId('mnFzOrganism').attr('disabled', true);
   dijit.byId('mnCnOrganismTrace').attr('disabled', true);
@@ -400,6 +397,40 @@ av.ptd.FrPopulationFn = function () {
       av.fzr.saveUpdateState('no');
     }
   }
+}
+
+av.pch.processLogic = function() {
+  "use strict";
+  console.log('In av.pch.processLogic: av.pch.fnBinary = ', av.pch.fnBinary);
+  for (var ii = 0; ii<9; ii++) {
+    console.log('substring = ', av.pch.fnBinary.substring(ii,ii+1));
+    console.log('ii = ', ii, '; buton=', av.ptd.logicButtons[ii]);
+    if ('1' == av.pch.fnBinary.substring(ii,ii+1)) {
+      av.pch.bitTurnOn(av.ptd.logicButtons[ii]);
+    }
+  }
+}
+
+av.pch.bitTurnOn = function(button) {
+  "use strict";
+  document.getElementById(button).value = 'on';
+  document.getElementById(button).className = 'bitButtonOn';
+  av.post.addUser('Button: ' + button + ' = on');
+  av.grd.fnChosen[button] = true;
+
+  av.grd.selFnText = '';
+  av.grd.selFnBinary = '';
+  for (var ii=0; ii<9; ii++) {
+    if (av.grd.fnChosen[av.ptd.logicButtons[ii]]) {
+      av.grd.selFnText += av.ptd.logicNames[ii] + '.';
+      av.grd.selFnBinary += '1';
+    }
+    else av.grd.selFnBinary +='0';
+  }
+  if (3 > av.grd.selFnText.length) {av.grd.selFnText = 'none';}
+  console.log('av.grd.fnChosen = ', av.grd.fnChosen);
+  console.log('av.grd.selFnText =', av.grd.selFnText);
+  console.log('av.grd.selFnBinary =',av.grd.selFnBinary);
 }
 
 av.ptd.bitToggle = function (button) {

@@ -459,6 +459,18 @@ av.frd.timeRecorder2chart = function (filestr) {
     var lines = filestr.split('\n');
     var lngth = lines.length;
     //console.log('length= ', lngth, '; lines = ', lines);
+
+    //Used to find the maxium for each data column
+    av.pch.aveMaxFit = 0;
+    av.pch.aveMaxCst = 0;
+    av.pch.aveMaxEar = 0;
+    av.pch.aveMaxNum = 0;
+    av.pch.aveMaxVia = 0;
+    av.pch.logMaxFit = 0;
+    av.pch.logMaxCst = 0;
+    av.pch.logMaxEar = 0;
+    av.pch.logMaxNum = 0;
+
     for (var ii = 0; ii < lngth; ii++) {
       if (1 < lines[ii].length) {
         aline = lines[ii];
@@ -467,8 +479,8 @@ av.frd.timeRecorder2chart = function (filestr) {
           //console.log('aline.substring.(0,11) = ', aline.substring(0,11));
           if ('# Functions' == aline.substring(0,11)) {
             //console.log('functionLine = ', aline);
-            av.pch.fnBinary = aline.substring(15, 24);
-            //console.log('av.pch.fnBinary = ', av.pch.fnBinary, '; aline=', aline);
+            av.pch.fnBinary = aline.substring(14, 24);
+            console.log('av.pch.fnBinary = ', av.pch.fnBinary, '; aline=', aline);
           }
         }
         else {
@@ -482,23 +494,33 @@ av.frd.timeRecorder2chart = function (filestr) {
             //console.log('lineData',lineData);
             //console.log('av.pch.nUpdate', av.pch.nUpdate);
             //console.log('jj=', jj);
-            av.pch.nUpdate[jj] = lineData[0];
-            console.log('av.pch.nUpdate[jj]',av.pch.nUpdate[jj]);
-            av.pch.aveFit[jj] = lineData[1];
-            av.pch.aveCst[jj] = lineData[2];
-            av.pch.aveEar[jj] = lineData[3];
-            av.pch.aveNum[jj] = lineData[4];
-            av.pch.aveVia[jj] = lineData[5];
-            av.pch.logFit[jj] = lineData[6];
-            av.pch.logCst[jj] = lineData[7];
-            av.pch.logEar[jj] = lineData[8];
-            av.pch.logNum[jj] = lineData[9];
+            av.pch.nUpdate[jj] = Number(lineData[0]);
+            //console.log('av.pch.nUpdate[jj]',av.pch.nUpdate[jj]);
+            av.pch.aveFit[jj] = Number(lineData[1]);
+            av.pch.aveCst[jj] = Number(lineData[2]);
+            av.pch.aveEar[jj] = Number(lineData[3]);
+            av.pch.aveNum[jj] = Number(lineData[4]);
+            av.pch.aveVia[jj] = Number(lineData[5]);
+            av.pch.logFit[jj] = Number(lineData[6]);
+            av.pch.logCst[jj] = Number(lineData[7]);
+            av.pch.logEar[jj] = Number(lineData[8]);
+            av.pch.logNum[jj] = Number(lineData[9]);
+            av.pch.xx[jj] = jj;
+            if (av.pch.aveFit[jj] > av.pch.aveMaxFit) av.pch.aveMaxFit = av.pch.aveFit[jj];
+            if (av.pch.aveCst[jj] > av.pch.aveMaxCst) av.pch.aveMaxCst = av.pch.aveCst[jj];
+            if (av.pch.aveEar[jj] > av.pch.aveMaxEar) av.pch.aveMaxEar = av.pch.aveEar[jj];
+            if (av.pch.aveNum[jj] > av.pch.aveMaxNum) av.pch.aveMaxNum = av.pch.aveNum[jj];
+            if (av.pch.aveVia[jj] > av.pch.aveMaxVia) av.pch.aveMaxVia = av.pch.aveVia[jj];
+            if (av.pch.logFit[jj] > av.pch.logMaxFit) av.pch.logMaxFit = av.pch.logFit[jj];
+            if (av.pch.logCst[jj] > av.pch.logMaxCst) av.pch.logMaxCst = av.pch.logCst[jj];
+            if (av.pch.logEar[jj] > av.pch.logMaxEar) av.pch.logMaxEar = av.pch.logEar[jj];
+            if (av.pch.logNum[jj] > av.pch.logMaxNum) av.pch.logMaxNum = av.pch.logNum[jj];
             jj++;
           }
         }
       }
     } // for
-    //console.log('headerLine = ', headerLine);
+    //console.log('headerLine = ', headerLine, '; jj=', jj);
     //console.log('av.pch = ', av.pch);
     return;
   }
@@ -532,7 +554,7 @@ av.frd.loadTimeRecorderData = function(dir) {
   }
   else {
     //console.log('av.fzr.file.' + dir + '/timeRecorder.csv=', av.fzr.file[dir + '/timeRecorder.csv']);
-    console.log('av.fzr.file.' + dir + '/timeRecorder.csv.length=', av.fzr.file[dir + '/timeRecorder.csv'].length);
+    //console.log('av.fzr.file.' + dir + '/timeRecorder.csv.length=', av.fzr.file[dir + '/timeRecorder.csv'].length);
 
     av.frd.timeRecorder2chart(av.fzr.file[dir+'/timeRecorder.csv']);
     console.log('av.pch.fnBinary = ', av.pch.fnBinary);

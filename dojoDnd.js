@@ -253,7 +253,7 @@ av.dnd.lndActiveConfig = function (move) {
 
     //Load Time Recorder Data
     av.frd.loadTimeRecorderData(av.fzr.actConfig.dir);
-
+    av.pch.processLogic();
     //send message to Avida
     av.msg.importPopExpr();
     av.msg.requestGridData();
