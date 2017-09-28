@@ -153,7 +153,7 @@ av.ptd.popNewExState = function () {
   av.parents.Colors.reverse();
   //set run/stop and drop down menu to the 'stopped' state
   dijit.byId('mnCnPause').attr('disabled', true);
-  dijit.byId('mnCnPopRun').attr('disabled', false);
+  dijit.byId('mnCnRun').attr('disabled', false);
   av.dom.runStopButton.innerHTML = 'Run';
   //console.log('pauseState; button=run in av.ptd.popNewExState');
 

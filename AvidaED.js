@@ -11,6 +11,13 @@
 // Get hashtag of avida side to state which version of avida works with this version of av_ui
 // git rev-parse HEAD
 //
+// Avida -------------------
+//
+// to thet the parse value go to the current version of avida folder and
+// git rev-parse --short HEAD
+//
+// on 2017_0927 switched to using new avida files with parse number  = 88746e4
+//
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
 // [option]<alt>{go} to get library in the list for finder

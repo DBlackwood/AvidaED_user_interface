@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js.mem" afterPath="$PROJECT_DIR$/avida.js.mem" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojoDnd.js" afterPath="$PROJECT_DIR$/dojoDnd.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileDataRead.js" afterPath="$PROJECT_DIR$/fileDataRead.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js" afterPath="$PROJECT_DIR$/avida.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popControls.js" afterPath="$PROJECT_DIR$/popControls.js" />
     </list>
     <ignored path="av_ui.iws" />
@@ -83,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18825">
-              <caret line="1255" column="4" lean-forward="true" selection-start-line="1255" selection-start-column="4" selection-end-line="1255" selection-end-column="26" />
+            <state relative-caret-position="1260">
+              <caret line="97" column="19" lean-forward="true" selection-start-line="97" selection-start-column="19" selection-end-line="97" selection-end-column="19" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -147,11 +144,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="popControls.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="popControls.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/popControls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+            <state relative-caret-position="349">
+              <caret line="158" column="0" lean-forward="true" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -192,12 +189,12 @@
       <find>timeRecorder2</find>
       <find>.set('value</find>
       <find>viableNumLabel</find>
-      <find>mnCnPopRun</find>
       <find># of viable organisms</find>
       <find>mnCnPause</find>
-      <find>mnCnRun</find>
       <find>av.ptd.makeRunState</find>
+      <find>mnCnRun</find>
       <find>av.ptd.makeRunState();</find>
+      <find>mnCnPopRun</find>
     </findStrings>
     <replaceStrings>
       <replace>av.pch.nUpdate</replace>
@@ -490,12 +487,12 @@
       <workItem from="1505400713205" duration="21530000" />
       <workItem from="1505919512439" duration="5128000" />
       <workItem from="1506449853603" duration="161000" />
-      <workItem from="1506450293486" duration="5862000" />
+      <workItem from="1506450293486" duration="7481000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="937951000" />
+    <option name="totallyTimeSpent" value="939570000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1" y="23" width="1428" height="872" extended-state="0" />
@@ -924,21 +921,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/popControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18825">
-          <caret line="1255" column="4" lean-forward="true" selection-start-line="1255" selection-start-column="4" selection-end-line="1255" selection-end-column="26" />
+        <state relative-caret-position="1260">
+          <caret line="97" column="19" lean-forward="true" selection-start-line="97" selection-start-column="19" selection-end-line="97" selection-end-column="19" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/popControls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="158" column="0" lean-forward="true" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
