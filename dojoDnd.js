@@ -390,7 +390,7 @@ av.dnd.makeMove = function (source, nodes, target) {
   av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
   var domIDs = Object.keys(target.map);
   av.dnd.move.targetDomId = domIDs[domIDs.length-1];
-  console.log('move', av.dnd.move);
+  //console.log('move', av.dnd.move);
   switch (target) {
     case av.dnd.ancestorBox:
       added = av.dnd.lndAncestorBox(av.dnd.move);

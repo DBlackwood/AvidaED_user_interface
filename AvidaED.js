@@ -1019,7 +1019,7 @@ require([
 
   av.dnd.activeConfig.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     'use strict';
-    console.log('s=', source.node.id, '; n=',nodes, '; c=', copy, '; t=', target.node.id)
+    //console.log('s=', source.node.id, '; n=',nodes, '; c=', copy, '; t=', target.node.id)
     if ('activeConfig' === target.node.id) {
       av.dnd.makeMove(source, nodes, target);
     }
@@ -2024,10 +2024,10 @@ require([
   av.grd.gridWasRows = Number(av.dom.sizeRows.value);
 
   av.ptd.popSizeFn = function() {
-    console.log('should call if viable size');
+    //console.log('av.ptd.popSizeFn: should call if viable size');
     var NewCols = Number(av.dom.sizeCols.value);
     var NewRows = Number(av.dom.sizeRows.value);
-    console.log('NewCols, Rows', NewCols, NewRows);
+    //console.log('NewCols, Rows', NewCols, NewRows);
     av.dom.sizeCells.innerHTML = 'for a total of ' + NewCols * NewRows + ' cells';
     //av.dom.sizeCells.text = 'for a total of ' + NewCols * NewRows + ' cells';
     av.dom.sizeCols.style.color = 'black';
@@ -2076,7 +2076,7 @@ require([
   av.ptd.gridChange = function(tmpval) {
     var colNum = Number(av.dom.sizeCols.value);
     var rowNum = Number(av.dom.sizeRows.value);
-    console.log('col, row=', colNum, rowNum);
+    //console.log('col, row=', colNum, rowNum);
     if (colNum > 0 && colNum <= 100 && rowNum > 0 && rowNum <= 100) {   
       //console.log('valid response');
       av.ptd.popSizeFn();

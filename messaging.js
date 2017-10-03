@@ -461,15 +461,45 @@ av.msg.updatePopStats = function (msg) {
     //find out how many are not viable.
     var numNotViable = 0;
     var lngth = av.grd.msg.fitness.data.length;
-    for (var ii = 0; ii < lngth; ii++) {
-      if (0 === av.grd.msg.fitness.data[ii]) {  //NOT viable
-        numNotViable++;
+    var lnParent = av.parents.name.length;
+    for (var kk = 0; kk < lnParent; kk++) {
+      av.pch.dadNumNow[kk] = 0;
+      av.pch.dadViaNow[kk] = 0;
+    }
+
+    console.log('av.grd.msg.ancestor.data=', av.grd.msg.ancestor.data);
+    if (undefined != av.grd.msg.ancestor.data) {
+      for (var ii = 0; ii < lngth; ii++) {
+        console.log('av.grd.msg.ancestor.data[ii]=', av.grd.msg.ancestor.data[ii]);
+        for (var jj = 0; jj < lnParent; jj++) {
+          if (av.grd.msg.ancestor.data[ii] == av.parents.name[jj]) {
+            av.pch.dadNumNow[jj]++;
+            if (0 === av.grd.msg.fitness.data[ii]) {  //NOT viable
+              numNotViable++;
+            }
+          }
+        }
+      }
+      var numViable = msg.organisms - numNotViable;
+      viableNumLabel.textContent = numViable.formatNum(0);
+      av.pch.aveVia[msg.update] = numViable;
+
+      console.log('av.pch.dadNumNow =',av.pch.dadNumNow);
+      console.log('av.pch.dadViaNow =',av.pch.dadViaNow);
+      console.log('msg.update = ', msg.update);
+      console.log('av.pch.dadNum=', av.pch.dadNum);
+      console.log('av.pch.dadNum[0][msg.update]=',av.pch.dadNum[0][msg.update]);
+      console.log('av.pch.dadVia[0][msg.update]=',av.pch.dadVia[0][msg.update]);
+      for (var kk = 0; kk < lnParent; kk++) {
+        console.log('kk=', kk, '; msg.update=', msg.update);
+        av.pch.dadNum[kk][msg.update] = av.pch.dadNumNow[kk];
+        av.pch.dadVia[kk][msg.update] = av.pch.dadViaNow[kk];
+        console.log('av.pch.dadNum[kk][msg.update]=',av.pch.dadNum[kk][msg.update]);
+        console.log('av.pch.dadVia[kk][msg.update]=',av.pch.dadVia[kk][msg.update]);
       }
     }
-    var numViable = msg.organisms - numNotViable;
-    viableNumLabel.textContent = numViable.formatNum(0);
-    av.pch.aveVia[msg.update] = numViable;
-
+    console.log('av.pch.dadNum=',av.pch.dadNum);
+    console.log('av.pch.dadVia=',av.pch.dadVia);
     if (av.pch.aveFit[msg.update] > av.pch.aveMaxFit) av.pch.aveMaxFit = av.pch.aveFit[msg.update];
     if (av.pch.aveCst[msg.update] > av.pch.aveMaxCst) av.pch.aveMaxCst = av.pch.aveCst[msg.update];
     if (av.pch.aveEar[msg.update] > av.pch.aveMaxEar) av.pch.aveMaxEar = av.pch.aveEar[msg.update];

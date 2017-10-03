@@ -401,10 +401,10 @@ av.ptd.FrPopulationFn = function () {
 
 av.pch.processLogic = function() {
   "use strict";
-  console.log('In av.pch.processLogic: av.pch.fnBinary = ', av.pch.fnBinary);
+  //console.log('In av.pch.processLogic: av.pch.fnBinary = ', av.pch.fnBinary);
   for (var ii = 0; ii<9; ii++) {
-    console.log('substring = ', av.pch.fnBinary.substring(ii,ii+1));
-    console.log('ii = ', ii, '; buton=', av.ptd.logicButtons[ii]);
+    //console.log('substring = ', av.pch.fnBinary.substring(ii,ii+1));
+    //console.log('ii = ', ii, '; buton=', av.ptd.logicButtons[ii]);
     if ('1' == av.pch.fnBinary.substring(ii,ii+1)) {
       av.pch.bitTurnOn(av.ptd.logicButtons[ii]);
     }
@@ -428,9 +428,9 @@ av.pch.bitTurnOn = function(button) {
     else av.grd.selFnBinary +='0';
   }
   if (3 > av.grd.selFnText.length) {av.grd.selFnText = 'none';}
-  console.log('av.grd.fnChosen = ', av.grd.fnChosen);
-  console.log('av.grd.selFnText =', av.grd.selFnText);
-  console.log('av.grd.selFnBinary =',av.grd.selFnBinary);
+  //console.log('av.grd.fnChosen = ', av.grd.fnChosen);
+  //console.log('av.grd.selFnText =', av.grd.selFnText);
+  //console.log('av.grd.selFnBinary =',av.grd.selFnBinary);
 }
 
 av.ptd.bitToggle = function (button) {

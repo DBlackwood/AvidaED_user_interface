@@ -514,7 +514,6 @@ av.fzr.clearMainFzrFn = function () {
 };
 
 av.ptd = {};  // on population page that are not part of the grid. (PeTri Dish)
-av.pch = {};   // related to the chart on the population page
 av.ptd.popStatFlag = true;  //flag that determines if the stats panel is visible.
 av.ptd.logicButtons = ['notButton', 'nanButton', 'andButton', 'ornButton', 'oroButton', 'antButton', 'norButton', 'xorButton', 'equButton'];
 av.ptd.logicNames = ['not', 'nan', 'and', 'orn', 'oro', 'ant', 'nor', 'xor', 'equ'];
@@ -580,6 +579,8 @@ av.grd.clearGrd = function () {
 };
 av.grd.clearGrd();
 
+av.pch = {};   // related to the chart on the population page
+av.pch.maxDads = 6;
 av.pch.clearPopChrt = function () {
   av.pch.yValue = 'new';
   av.pch.yChange = 'false';
@@ -595,6 +596,16 @@ av.pch.clearPopChrt = function () {
   av.pch.aveNum = [0];
   av.pch.logNum = [0];
   av.pch.aveVia = [0];
+  av.pch.dadNum = new Array(av.pch.maxDads);
+  av.pch.dadVia = new Array(av.pch.maxDads);
+  for (var ii=0; ii<av.pch.maxDads; ii++) {
+    av.pch.dadNum[ii] = new Array(2);
+    av.pch.dadVia[ii] = new Array(2);
+  }
+  //av.pch.dadNum = [[0,0],[0,0]];
+  //av.pch.dadVia = [[0,0],[0,0]];
+  av.pch.dadNumNow = [0];
+  av.pch.dadViaNow = [0];
   av.pch.nUpdate = [];    //not sure if this is needed.
   av.pch.aveMaxFit = 0.1;
   av.pch.aveMaxCst = 0.1;
