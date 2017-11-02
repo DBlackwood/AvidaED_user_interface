@@ -312,16 +312,23 @@ av.fwt.makeCSV = function(fileNm) {
     //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
     //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
     av.fwt.csvStrg = '# Name = ' + fileNm + '\n';
-    av.fwt.csvStrg += '# Functions = ' + av.grd.selFnBinary + ' = ' + av.grd.selFnText + '\n'
+    av.fwt.csvStrg += '# Functions = ' + av.grd.selFnBinary + ' = ' + av.grd.selFnText + ' are picked \n'
       + '# FitP = Average Fitness of Viable Population \n'
       + '# CstP = Average Offspring Cost of Viable Population \n'
       + '# EarP = Average Energy Acquisition Rate of Viable Population \n'
       + '# NumP = Total Polution Size \n'
       + '# ViaP = Viable Population Size \n'
-      + '# FitF = Ave Fitness of avidians performing picked functions \n'
-      + '# CstF = Ave Offspring Cost avidians performing picked functions \n'
-      + '# EarF = Ave Energy Acquisition Rate avidians performing picked functions \n'
-      + '# NumF = Number of avidians performing picked functions \n';
+      + '# FitF = Average Fitness of avidians performing picked functions \n'
+      + '# CstF = Average Offspring Cost avidians performing picked functions \n'
+      + '# EarF = Average Energy Acquisition Rate avidians performing functions \n'
+      + '# NumF = Number of avidians performing picked functions \n'
+      + '# columns for statistics for each ancestor (up to 16) will follow. Each column will use 3 letters for the \n'
+      + '# data type followed by _##; where the number with a leading zero is for each ancestor \n';
+
+    for (var ii = 0; ii < av.pch.numDads; ii++) {
+      av.fwt.csvStrg += '# ancestor ' + (ii).pad() + ' is ' + av.parents.name[ii] + '\n'
+    }
+
 
     av.fwt.csvStrg += 'Update,'
       + 'FitP,'
@@ -334,11 +341,32 @@ av.fwt.makeCSV = function(fileNm) {
       + 'EarF,'
       + 'NumF,';
 
+    for (var ii = 0; ii < av.pch.numDads; ii++) {
+      //av.fwt.csvStrg += 'Fit_' + av.parents.name[ii] + ','
+      //av.fwt.csvStrg += 'Cst_' + av.parents.name[ii] + ','
+      //av.fwt.csvStrg += 'Ear_' + av.parents.name[ii] + ','
+      //av.fwt.csvStrg += 'Num_' + av.parents.name[ii] + ','
+      //av.fwt.csvStrg += 'Via_' + av.parents.name[ii] + ','
+      av.fwt.csvStrg += 'Fit_' + (ii).pad() + ','
+      av.fwt.csvStrg += 'Cst_' + (ii).pad() + ','
+      av.fwt.csvStrg += 'Ear_' + (ii).pad() + ','
+      av.fwt.csvStrg += 'Num_' + (ii).pad() + ','
+      av.fwt.csvStrg += 'Via_' + (ii).pad() + ','
+    }
+
     var lngth = av.pch.aveFit.length;
-    for (var ii = 0; ii < lngth; ii++) {
-      av.fwt.csvStrg += '\n' + ii + ',' + av.pch.aveFit[ii] + ',' + av.pch.aveCst[ii] + ','
-        + av.pch.aveEar[ii] + ',' + av.pch.aveNum[ii] + ',' + av.pch.aveVia[ii] + ','
-        + av.pch.logFit[ii] + ',' + av.pch.logCst[ii] + ',' + av.pch.logEar[ii] + ',' + av.pch.logNum[ii];
+    for (var update = 0; update < lngth; update++) {
+      av.fwt.csvStrg += '\n' + update + ',' + av.pch.aveFit[update] + ',' + av.pch.aveCst[update] + ','
+        + av.pch.aveEar[update] + ',' + av.pch.aveNum[update] + ',' + av.pch.aveVia[update] + ','
+        + av.pch.logFit[update] + ',' + av.pch.logCst[update] + ',' + av.pch.logEar[update] + ',' + av.pch.logNum[update] + ',';
+
+      for (var kk = 0; kk < av.pch.numDads; kk++) {
+        av.fwt.csvStrg += av.pch.dadFit[av.parents.name[kk]][update] + ',';
+        av.fwt.csvStrg += av.pch.dadCst[av.parents.name[kk]][update] + ',';
+        av.fwt.csvStrg += av.pch.dadEar[av.parents.name[kk]][update] + ',';
+        av.fwt.csvStrg += av.pch.dadNum[av.parents.name[kk]][update] + ',';
+        av.fwt.csvStrg += av.pch.dadVia[av.parents.name[kk]][update] + ',';
+      }
     }
     //string completed
   }

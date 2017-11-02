@@ -280,6 +280,17 @@ av.ptd.runPopFn = function () {
       av.msg.requestGridData();
       av.msg.requestPopStats();
       if (0 < av.grd.selectedNdx) av.msg.doWebOrgDataByCell();
+
+      //initialize arrays to store data by_clade (or can be called by_ancestor)
+      av.pch.numDads = (av.pch.dadMax < av.parents.name.length) ? av.pch.dadMax : av.parents.name.length;
+      for (var ii = 0; ii < av.pch.numDads; ii++) {
+        av.pch.dadFit[av.parents.name[ii]] = [];
+        av.pch.dadCst[av.parents.name[ii]] = [];
+        av.pch.dadEar[av.parents.name[ii]] = [];
+        av.pch.dadNum[av.parents.name[ii]] = [];
+        av.pch.dadVia[av.parents.name[ii]] = [];
+      }
+      console.log(av.pch.numDads, '; av.pch.dadFit=',av.pch.dadFit);
     }
 
     if (dijit.byId('autoUpdateRadio').get('checked')) {
@@ -401,12 +412,14 @@ av.ptd.FrPopulationFn = function () {
 
 av.pch.processLogic = function() {
   "use strict";
-  //console.log('In av.pch.processLogic: av.pch.fnBinary = ', av.pch.fnBinary);
-  for (var ii = 0; ii<9; ii++) {
-    //console.log('substring = ', av.pch.fnBinary.substring(ii,ii+1));
-    //console.log('ii = ', ii, '; buton=', av.ptd.logicButtons[ii]);
-    if ('1' == av.pch.fnBinary.substring(ii,ii+1)) {
-      av.pch.bitTurnOn(av.ptd.logicButtons[ii]);
+  console.log('In av.pch.processLogic: av.pch.fnBinary = ', av.pch.fnBinary);
+  if ( (null !== av.pch.fnBinary) && (undefined !== av.pch.fnBinary) ) {
+    for (var ii = 0; ii<9; ii++) {
+      //console.log('substring = ', av.pch.fnBinary.substring(ii,ii+1));
+      //console.log('ii = ', ii, '; buton=', av.ptd.logicButtons[ii]);
+      if ('1' == av.pch.fnBinary.substring(ii, ii + 1)) {
+        av.pch.bitTurnOn(av.ptd.logicButtons[ii]);
+      }
     }
   }
 }

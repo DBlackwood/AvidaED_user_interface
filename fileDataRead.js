@@ -471,6 +471,7 @@ av.frd.timeRecorder2chart = function (filestr) {
     av.pch.logMaxEar = 0;
     av.pch.logMaxNum = 0;
 
+    av.pch.fnBinary = '000000000';            //default is all buttons off.
     for (var ii = 0; ii < lngth; ii++) {
       if (1 < lines[ii].length) {
         aline = lines[ii];

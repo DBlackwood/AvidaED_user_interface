@@ -455,51 +455,30 @@ av.msg.updatePopStats = function (msg) {
     av.pch.aveCst[msg.update] = msg.ave_gestation_time;
     av.pch.aveEar[msg.update] = msg.ave_metabolic_rate;
     av.pch.aveNum[msg.update] = msg.organisms;
+    av.pch.aveVia[msg.update] = msg.viables;
     av.pch.xx[msg.update] = msg.update;
-    //aveVia assigned after it is calculated. see below
 
-    //find out how many are not viable.
-    var numNotViable = 0;
-    var lngth = av.grd.msg.fitness.data.length;
-    var lnParent = av.parents.name.length;
-    for (var kk = 0; kk < lnParent; kk++) {
-      av.pch.dadNumNow[kk] = 0;
-      av.pch.dadViaNow[kk] = 0;
+    //console.log('av.parents.name.length = ',av.parents.name.length);
+    for (var ii = 0; ii<av.pch.numDads; ii++) {
+      //console.log('msg.by_clade[av.parents.name[ii]]=',msg.by_clade[av.parents.name[ii]]);
+      //console.log('msg.by_clade['+av.parents.name[ii]+'].fitness=', msg.by_clade[av.parents.name[ii]].fitness);
+      if (undefined != msg.by_clade[av.parents.name[ii]]) {
+        av.pch.dadFit[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].fitness;
+        av.pch.dadCst[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].gestation;
+        av.pch.dadEar[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].metabolism;
+        av.pch.dadNum[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].organisms;
+        av.pch.dadVia[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].viables;
+      }
+      else {
+        av.pch.dadFit[av.parents.name[ii]][msg.update] = null;
+        av.pch.dadCst[av.parents.name[ii]][msg.update] = null;
+        av.pch.dadEar[av.parents.name[ii]][msg.update] = null;
+        av.pch.dadNum[av.parents.name[ii]][msg.update] = null;
+        av.pch.dadVia[av.parents.name[ii]][msg.update] = null;
+      }
+      //console.log('av.pch.dadfFit['+av.parents.name[ii]+']['+msg.update+']=', av.pch.dadFit[av.parents.name[ii]][msg.update]);
     }
 
-    console.log('av.grd.msg.ancestor.data=', av.grd.msg.ancestor.data);
-    if (undefined != av.grd.msg.ancestor.data) {
-      for (var ii = 0; ii < lngth; ii++) {
-        console.log('av.grd.msg.ancestor.data[ii]=', av.grd.msg.ancestor.data[ii]);
-        for (var jj = 0; jj < lnParent; jj++) {
-          if (av.grd.msg.ancestor.data[ii] == av.parents.name[jj]) {
-            av.pch.dadNumNow[jj]++;
-            if (0 === av.grd.msg.fitness.data[ii]) {  //NOT viable
-              numNotViable++;
-            }
-          }
-        }
-      }
-      var numViable = msg.organisms - numNotViable;
-      viableNumLabel.textContent = numViable.formatNum(0);
-      av.pch.aveVia[msg.update] = numViable;
-
-      console.log('av.pch.dadNumNow =',av.pch.dadNumNow);
-      console.log('av.pch.dadViaNow =',av.pch.dadViaNow);
-      console.log('msg.update = ', msg.update);
-      console.log('av.pch.dadNum=', av.pch.dadNum);
-      console.log('av.pch.dadNum[0][msg.update]=',av.pch.dadNum[0][msg.update]);
-      console.log('av.pch.dadVia[0][msg.update]=',av.pch.dadVia[0][msg.update]);
-      for (var kk = 0; kk < lnParent; kk++) {
-        console.log('kk=', kk, '; msg.update=', msg.update);
-        av.pch.dadNum[kk][msg.update] = av.pch.dadNumNow[kk];
-        av.pch.dadVia[kk][msg.update] = av.pch.dadViaNow[kk];
-        console.log('av.pch.dadNum[kk][msg.update]=',av.pch.dadNum[kk][msg.update]);
-        console.log('av.pch.dadVia[kk][msg.update]=',av.pch.dadVia[kk][msg.update]);
-      }
-    }
-    console.log('av.pch.dadNum=',av.pch.dadNum);
-    console.log('av.pch.dadVia=',av.pch.dadVia);
     if (av.pch.aveFit[msg.update] > av.pch.aveMaxFit) av.pch.aveMaxFit = av.pch.aveFit[msg.update];
     if (av.pch.aveCst[msg.update] > av.pch.aveMaxCst) av.pch.aveMaxCst = av.pch.aveCst[msg.update];
     if (av.pch.aveEar[msg.update] > av.pch.aveMaxEar) av.pch.aveMaxEar = av.pch.aveEar[msg.update];
@@ -519,6 +498,9 @@ av.msg.updatePopStats = function (msg) {
 
   parentNumLabel.textContent = av.parents.name.length;
   //console.log('update', msg.update, '; logNum[update]',av.pch.logNum[Number(msg.update)-1], '; logNum', av.pch.logNum);
+
+  //update viable number on webpage
+  viableNumLabel.textContent = msg.viables.formatNum(0);
 
   notPop.textContent = msg.not;
   nanPop.textContent = msg.nand;  //these do not match

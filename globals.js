@@ -2,6 +2,12 @@
 // Defaults and Constants
 // one global to hold them all.
 
+Number.prototype.pad = function(size) {
+  var s = String(this);
+  while (s.length < (size || 2)) {s = "0" + s;}
+  return s;
+}
+
 //av.debug flags
 av.debug = {};
 av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
@@ -580,7 +586,7 @@ av.grd.clearGrd = function () {
 av.grd.clearGrd();
 
 av.pch = {};   // related to the chart on the population page
-av.pch.maxDads = 6;
+av.pch.dadMax = 16;
 av.pch.clearPopChrt = function () {
   av.pch.yValue = 'new';
   av.pch.yChange = 'false';
@@ -596,16 +602,6 @@ av.pch.clearPopChrt = function () {
   av.pch.aveNum = [0];
   av.pch.logNum = [0];
   av.pch.aveVia = [0];
-  av.pch.dadNum = new Array(av.pch.maxDads);
-  av.pch.dadVia = new Array(av.pch.maxDads);
-  for (var ii=0; ii<av.pch.maxDads; ii++) {
-    av.pch.dadNum[ii] = new Array(2);
-    av.pch.dadVia[ii] = new Array(2);
-  }
-  //av.pch.dadNum = [[0,0],[0,0]];
-  //av.pch.dadVia = [[0,0],[0,0]];
-  av.pch.dadNumNow = [0];
-  av.pch.dadViaNow = [0];
   av.pch.nUpdate = [];    //not sure if this is needed.
   av.pch.aveMaxFit = 0.1;
   av.pch.aveMaxCst = 0.1;
@@ -616,6 +612,14 @@ av.pch.clearPopChrt = function () {
   av.pch.logMaxCst = 0;
   av.pch.logMaxEar = 0;
   av.pch.logMaxNum = 0;
+
+  av.pch.fnBinary = '000000000';
+  av.pch.dadFit = {};
+  av.pch.dadCst = {};
+  av.pch.dadEar = {};
+  av.pch.dadNum = {};
+  av.pch.dadVia = {};
+  av.pch.numDads = 1;
 
   av.pch.maxX = 10;
   av.pch.maxY = 1;

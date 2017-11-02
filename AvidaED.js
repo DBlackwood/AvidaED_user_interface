@@ -6,6 +6,9 @@
 // Git commands used to push
 // git add .
 // git commit -m 'comment about the change being pushed'
+// git commit    then use editor to make the comment.
+// i to insert text in vim; escape to get out of insert mode
+// :wq will write and then quit vim
 // git push -u origin master
 //
 // Get hashtag of avida side to state which version of avida works with this version of av_ui

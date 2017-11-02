@@ -1299,7 +1299,7 @@ av.color.notNuse.OriginalCubehelixCmap = [
  * http://jfly.iam.u-tokyo.ac.jp/color/#pallet   set of 8 colors for colorbind folks
  * 
  * http://colorbrewer2.org  color selection tool 
- * http://www.iscc.org/pdf/PC54_1724_001.pdf older artical about distinct colors
+ * http://www.iscc.org/pdf/PC54_1724_001.pdf older article about distinct colors
  * 
  * http://graphicdesign.stackexchange.com/questions/3682/where-can-i-find-a-large-palette-set-of-contrasting-colors-for-coloring-many-d
  * http://tools.medialab.sciences-po.fr/iwanthue/  creates distinct colors
