@@ -282,7 +282,9 @@ av.grd.drawSelected = function () {
   if (1 > thick) thick = 1;
   av.grd.selectX = av.grd.marginX + av.grd.xOffset + av.grd.selectedCol * av.grd.cellWd;
   av.grd.selectY = av.grd.marginY + av.grd.yOffset + av.grd.selectedRow * av.grd.cellHt;
-  av.grd.drawCellOutline(thick, av.grd.SelectedColor, av.grd.selectX, av.grd.selectY, av.grd.cellWd, av.grd.cellHt)
+  av.grd.drawCellOutline(thick, av.grd.SelectedColor, av.grd.selectX, av.grd.selectY, av.grd.cellWd, av.grd.cellHt);
+  //console.log('  selected Cell x=', av.grd.selectX,';       selected Cell y=', av.grd.selectY);
+  //console.log('selected Cell col=', av.grd.selectedCol,'; selected Cell row=', av.grd.selectedRow);
 }
 
 av.grd.drawCellOutline = function (lineThickness, color, xx, yy, wide, tall) {

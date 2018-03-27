@@ -14,7 +14,7 @@ av.debug.root = false;  //statements that look for failiers when the code execut
 av.debug.bool = false;  //av.debug statements that look for errors outlining logic functions
 av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
 av.debug.dnd = false;     //debu statements about dojo dnd
-av.debug.msg = false;     //messages to and from avida
+av.debug.msg = true;     //messages to and from avida
 av.debug.trace = false;   //organism page
 av.debug.grid = false;     //population grid
 av.debug.msgOrder = false; //message order
@@ -461,9 +461,20 @@ av.fzr.clearFzrFn = function () {
   av.fzr.domid = {};
   av.fzr.file = {};
   av.fzr.item = {};
+  av.fzr.mDish = {};
+
+
+  //probably delete the next few lines
+  av.fzr.mDish[0] = {};
+  av.fzr.mDish[0].dir = {};
+  av.fzr.mDish[0].domid = {};
+  av.fzr.mDish[0].file = {};
+  av.fzr.mDish[0].item = {};
+  //to here
 
   av.fzr.cNum = 0;  //value of the next configured dish (config) number
   av.fzr.gNum = 0;  //value of the next organism (genome) number
+  av.fzr.mNum = 0;  //value of the next superdish number
   av.fzr.wNum = 0;  //value of the next world (populated dish) number
   //hold genome for active organism in Organism View
   av.fzr.actOrgan = {'name': '', 'actDomid': '', 'fzDomid': '', 'genome': ''};
@@ -481,6 +492,7 @@ av.fzr.clearFzrFn = function () {
     av.fzr.pop[ii].via = [];
   }
   av.fzr.saveUpdateState('yes');
+  av.fzr.fziType = 'none';
 };
 
 av.fzr.saveState = 'default';
@@ -491,25 +503,34 @@ av.fzr.clearMainFzrFn = function () {
   av.fzr.dir = {};
   av.fzr.domid = {};
   av.fzr.file = {};
+  av.fzr.mDish = {};
 
   av.fzr.cNum = 0;  //value of the next configured dish (config) number
   av.fzr.gNum = 0;  //value of the next organism (genome) number
+  av.fzr.mNum = 0;  //value of the next organism (genome) number
   av.fzr.wNum = 0;  //value of the next world (populated dish) number
 
   //Clear each section of the freezer and active organism and ancestorBox
-  if (av.debug.root) console.log('before av.dnd.fzConfig.selectAll');
+  if (av.debug.root) console.log('before av.dnd.fzConfig.selectAll', av.dnd.fzConfig);
   av.dnd.fzConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   if (av.debug.root) console.log('before av.dnd.fzConfig.sync');
   av.dnd.fzConfig.sync();   //should be done after insertion or deletion
-  if (av.debug.root) console.log('before av.dnd.fzOrgan.selectAll');
+  if (av.debug.root) console.log('before av.dnd.fzOrgan.selectAll=', av.dnd.fzOrgan);
   av.dnd.fzOrgan.selectAll().deleteSelectedNodes();
   if (av.debug.root) console.log('before av.dnd.fzOrgan.sync');
   av.dnd.fzOrgan.sync();
-  if (av.debug.root) console.log('before av.dnd.fzWorld.selectAll');
+
+  if (av.debug.root) console.log('before av.dnd.fzMdish.selectAll=', av.dnd.fzMdish);
+
+  av.dnd.fzMdish.selectAll().deleteSelectedNodes();
+  if (av.debug.root) console.log('before av.dnd.fzMdish.sync');
+  av.dnd.fzMdish.sync();
+
+  if (av.debug.root) console.log('before av.dnd.fzWorld.selectAll=', av.dnd.fzWorld);
   av.dnd.fzWorld.selectAll().deleteSelectedNodes();
   if (av.debug.root) console.log('before av.dnd.fzWorld.sync');
   av.dnd.fzWorld.sync();
-  if (av.debug.root) console.log('before av.dnd.ancestorBox.selectAll');
+  if (av.debug.root) console.log('before av.dnd.ancestorBox.selectAll=', av.dnd.ancestorBox);
   av.dnd.ancestorBox.selectAll().deleteSelectedNodes();
   if (av.debug.root) console.log('before av.dnd.ancestorBox.sync');
   av.dnd.ancestorBox.sync();
@@ -623,15 +644,30 @@ av.pch.clearPopChrt = function () {
 
   av.pch.maxX = 10;
   av.pch.maxY = 1;
-  av.pch.trace0 = {
-    x:av.pch.xx, y:av.pch.popY, type:'scatter', mode: 'lines', name: 'Population',
-    line: {color: 'rgb(2, 2, 2)', width: 1 }
+
+  av.pch.makeTrace = function(xx, yy, type, mode, name, color, width, texture) {
+    this.x = xx;
+    this.y = yy;
+    this.type = type;
+    this.name = name;
+    this.line = {};
+    this.line.color = color;
+    this.line.width = width;
+    this.line.dash = texture;    //solid  dot  dash    dashdot
   };
 
+  av.pch.trace0 = new av.pch.makeTrace(av.pch.xx, av.pch.popY, 'scatter', 'lines', 'Population', 'rgb(2, 2, 2)', 1, 'solid');
+/*
+  av.pch.trace0 = {
+    x:av.pch.xx, y:av.pch.popY, type:'scatter', mode: 'lines', name: 'Population',
+    line: {color: 'rgb(2, 2, 2)', width: 1, dash: 'solid' }
+  };
+*/
   av.pch.trace1 = {
     x:av.pch.xx, y:av.pch.logY, type:'scatter', mode: 'lines', name: 'Function Subset',
     //line: {color: 'rgb(0, 255, 0)', width: 1 }
-    line: {color: '#00FF00', width: 1 }
+    //line: {color: '#00FF00', width: 1, dash: 'solid' }   //dash: (solid   dot    dashdot   dash
+    line: {color: '#00FF00', width: 1, dash: 'solid' }
   };
   av.pch.data = [av.pch.trace0, av.pch.trace1];
   av.pch.layout = {
@@ -721,7 +757,11 @@ av.anl.clearChart = function () {
   //av.anl.pop[0].right = [3, 5, 4, 7, 6, 9, 8, 11, 10];
 
   av.anl.trace0 = {
-    x: av.anl.xx.slice(0,av.anl.pop[0].left.length), y: av.anl.pop[0].left, type: 'scatter', mode: 'lines', name: 'tr0',
+      x: av.anl.xx.slice(0,av.anl.pop[0].left.length)
+    , y: av.anl.pop[0].left
+    , type: 'scatter'
+    , mode: 'lines'
+    , name: 'tr0',
     line: {color: av.color.names['Red'], width: 3}
   };
   av.anl.trace1 = {

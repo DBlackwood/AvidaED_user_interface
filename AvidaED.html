@@ -103,7 +103,7 @@
             <span data-dojo-type='dijit/MenuItem' id='mnFzOffspring' label='Save Offspring Organism to Freezer'></span>
             <div data-dojo-type='dijit/MenuSeparator'></div>
             <div data-dojo-type='dijit/MenuSeparator'></div>
-            <span data-dojo-type='dijit/MenuItem' id='mnFzAddConfigEx' label='Add Highlighted in Freezer to Configured Dish to Experiment'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddConfigEx' label='Add Highlighted Configured Dish in Freezer to Experiment'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFzAddGenomeEx' label='Add Highlighted Organism in Freezer to Experiment'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFzAddPopEx' label='Add Highlighted Populated Dish in Freezer to Experiment'></span>
             <div data-dojo-type='dijit/MenuSeparator'></div>
@@ -146,10 +146,13 @@
             </div>
           </span>
         </span>
-        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: hidden'> <!--visible/hidden-->
+        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: visible'>
+          <!--visible/hidden-->
           <span data-dojo-type='dijit/Menu'>
-            <span data-dojo-type='dijit/MenuItem' id='mnDbThrowError' label='Throw Error'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddResEx' label='Run Highlighted ResourceRequest'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnFzAddMdishEx' label='Run Highlighted Mulit-Dish'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowData' label='Send Data to console'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnDbThrowError' label='Throw Error'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbLineLog' label='Add Line to Session Log'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbDiagnostic' label='Open Diagnostic Console'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbRestartAvida' label='Restart Avida WebWorker'></span>
@@ -214,6 +217,11 @@
               preload='false' refreshOnShow='false' duration='200' open='true' id='worldFzr'
               style='min-width: 1px; width: 100%; height: auto; overflow: auto'>
           <div id='fzWorld' class='container' jsId='freezePopDish'></div>
+        </span>
+        <span data-dojo-type='dijit/TitlePane' title='Super Dishes' extractContent='false' preventCache='false'
+              preload='false' refreshOnShow='false' duration='200' open='true' id='sdishFzr'
+              style='min-width: 1px; width: 100%; height: auto; overflow: auto'>
+          <div id='fzMdish' class='container' jsId='freezeSuperDish'></div>
         </span>
       </div>
     </div>

@@ -141,6 +141,55 @@ av.dnd.nameParent = function(name) {
   return theName;
 }
 
+//---------------------------------------------------------------------------------------------- av.dnd.runResReqDish --
+av.dnd.runResReqDish = function(fzSection, target, type) {
+  //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
+  //need to find selected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
+  //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
+  //Object.keys(av.dnd.fzOrgan.selection)[0] and av.dnd.fzOrgan.getSelectedNodes()[0].id return the same thing
+
+  if (undefined != av.dnd[fzSection].getSelectedNodes()[0]) {
+    //This section partially puts the multi-dish in the active area
+    var nodeMv = av.dnd[fzSection].getSelectedNodes()[0].id;
+    console.log('fzSection=', fzSection, '; nodeMv=', nodeMv);
+    var added = false;
+    av.dnd.move.via = 'menu';
+    av.dnd.move.source = av.dnd[fzSection];
+    av.dnd.move.target = av.dnd[target];
+    av.dnd.move.type = type;
+    av.dnd.move.sourceDomId = nodeMv;
+    av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
+    av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir + '/entryname.txt'];
+    av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
+    av.dnd[target].sync();
+    var domIDs = Object.keys(av.dnd[target].map);
+    av.dnd.move.targetDomId = domIDs[domIDs.length - 1];
+    console.log('move', av.dnd.move);
+    //added = av.dnd.lndActiveConfig(av.dnd.move);
+
+    //if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+    var filename = av.dnd.move.dir +'/ancestors';
+    console.log('filename = ', filename, '=======================================================');
+    if (av.fzr.file[filename]) {
+      console.log('file ', filename, 'exists');
+      av.fio.autoAncestorLoad(av.fzr.file[filename]);
+    }
+    var filename = av.dnd.move.dir +'/ancestors_manual';
+    console.log('filename = ', filename, '=======================================================');
+    if (av.fzr.file[filename]) {
+      console.log('file ', filename, 'exists');
+      av.fio.handAncestorLoad(av.fzr.file[filename]);
+    }
+    //Now actually load resreq direcdtly from the freezer.
+    av.msg.makeResReqMsg(av.dnd.move.dir);
+    av.msg.ResourceRequestFlag = true;   //we are doing a resource request.
+  }
+  else {
+    alert('You must select a multi dish first');
+  }
+};
+//------------------------------------------------------------------------------------------ end av.dnd.runResReqDish --
+
 //----------------------------------------------- Configuration DnD ----------------------------------------------------
 //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
 //and reinserting the most resent one after a drop event.
@@ -260,7 +309,29 @@ av.dnd.lndActiveConfig = function (move) {
     av.msg.sendData();
     av.grd.popChartFn();
     //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
-  }
+  }  //end fzWorld
+
+  // Nothing fixed yet just here
+  else if ('fzMdish' === move.source.node.id) {
+    av.fzr.actConfig.type = 'c';
+    av.fzr.actConfig.file['events.cfg'] = ' ';
+    if (av.fzr.actConfig.file['clade.ssg']) {delete av.fzr.actConfig.file['clade.ssg'];}
+    if (av.fzr.actConfig.file['detail.spop']) {delete av.fzr.actConfig.file['detail.spop'];}
+    if (av.fzr.actConfig.file['update']) {delete av.fzr.actConfig.file['update'];}
+    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
+      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors'];
+      av.fio.autoAncestorLoad(str);
+    }
+    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']) {
+      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
+      av.fio.handAncestorLoad(str);
+    }
+    if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
+
+    //Now need to load the files from the subdishes.
+
+  }  //end of Mdish
+
   else console.log('fzr.activeCon - something strange happened', av.fzr.actConfig);
 }
 
@@ -796,6 +867,44 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
   }
 };
 
+
+//----------------------------------------------------------------------------------------------- av.msg.runMultiDish --
+av.msg.runMultiDish = function(fzSection, target, type) {
+  //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
+  //need to find selected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
+  //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
+  //Object.keys(av.dnd.fzOrgan.selection)[0] and av.dnd.fzOrgan.getSelectedNodes()[0].id return the same thing
+
+  if (undefined != av.dnd[fzSection].getSelectedNodes()[0]) {
+    //This section partially puts the multi-dish in the active area
+    var nodeMv = av.dnd[fzSection].getSelectedNodes()[0].id;
+    console.log('fzSection=', fzSection, '; nodeMv=', nodeMv);
+    var added = false;
+    av.dnd.move.via = 'menu';
+    av.dnd.move.source = av.dnd[fzSection];
+    av.dnd.move.target = av.dnd[target];
+    av.dnd.move.type = type;
+    av.dnd.move.sourceDomId = nodeMv;
+    av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
+    av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir + '/entryname.txt'];
+    av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
+    av.dnd[target].sync();
+    var domIDs = Object.keys(av.dnd[target].map);
+    av.dnd.move.targetDomId = domIDs[domIDs.length - 1];
+    console.log('move', av.dnd.move);
+    added = av.dnd.lndActiveConfig(av.dnd.move);
+
+    //if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+
+    //Now actually load and run the multi-dish direcdtly from the freezer.
+    av.msg.importMultiDishExpr(av.dnd.move.dir)
+  }
+  else {
+    alert('You must select a multi dish first');
+  }
+};
+//------------------------------------------------------------------------------------------- end av.msg.runMultiDish --
+
 av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
   //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
   //need to find selected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
@@ -821,7 +930,9 @@ av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
     console.log('move', av.dnd.move);
     if ('fzOrgan' == fzSection && 'ancestorBox' == target) added = av.dnd.lndAncestorBox(av.dnd.move);
     else if ('fzOrgan' == fzSection && 'activeOrgan' == target) added = av.dnd.lndActiveOrgan(av.dnd.move);
-    else if (('fzConfig' == fzSection || 'fzWorld' == fzSection) && 'activeConfig' == target) added = av.dnd.lndActiveConfig(av.dnd.move);
+    else if (('fzConfig' == fzSection || 'fzWorld' == fzSection || 'fzMdish' == fzSection) && 'activeConfig' == target) {
+      added = av.dnd.lndActiveConfig(av.dnd.move);
+    }
     else if ('anlDndChart' == target && 'fzWorld' == fzSection) added = av.dnd.lndAnlDndChart(av.dnd.move);
 
     if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
@@ -837,10 +948,12 @@ av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
       case 'fzWorld':
         alert('You must select a populated dish first');
         break;
+      case 'fzMdish':
+        alert('You must select a super dish first');
+        break;
     }
   }
 };
-
 
 av.dnd.lndAnlDndChart = function (move) {
   'use strict';

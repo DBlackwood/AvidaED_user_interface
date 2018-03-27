@@ -58,6 +58,7 @@ av.ptd.popWorldStateUi = function () {
   //delete av.dnd.ancestorBox.accept['g'];
   //delete av.dnd.gridCanvas.accept['g'];
   delete av.dnd.activeConfig.accept['c'];
+  delete av.dnd.activeConfig.accept['m'];
   delete av.dnd.activeConfig.accept['w'];
   av.dnd.fzWorld.accept['w'] = 1;
   av.dnd.fzWorld.accept['b'] = 1;
@@ -82,6 +83,7 @@ av.ptd.popRunningStateUi = function () {
   delete av.dnd.gridCanvas.accept['g'];
   delete av.dnd.activeConfig.accept['c'];
   delete av.dnd.activeConfig.accept['w'];
+  delete av.dnd.activeConfig.accept['m'];
   av.dnd.fzWorld.accept['w'] = 1;
   av.dnd.fzWorld.accept['b'] = 1;
   $('#muteSlide').slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
@@ -123,9 +125,12 @@ av.ptd.popNewExState = function () {
   av.dnd.gridCanvas.accept['g'] = 1;
   av.dnd.activeConfig.accept['c'] = 1;
   av.dnd.activeConfig.accept['b'] = 1;
+  av.dnd.activeConfig.accept['m'] = 1;
   av.dnd.activeConfig.accept['w'] = 1;
   av.dnd.fzWorld.accept['w'] = 0;
   av.dnd.fzWorld.accept['b'] = 0;
+  av.dnd.fzMdish.accept['w'] = 0;
+  av.dnd.fzMdish.accept['b'] = 0;
   av.dnd.ancestorBox.isSource = true;
   av.dnd.ancestorBox.copyOnly = true;
   av.dnd.activeConfig.isSource = true;
@@ -236,11 +241,11 @@ av.ptd.popNewExState = function () {
 //after Run button pushed for population
 av.ptd.runPopFn = function () {
   'use strict';
-  //console.log('runPopFn runState', av.grd.runState);
+  console.log('runPopFn runState', av.grd.runState);
   //check for ancestor organism in configuration data
-  //console.log('validGridSize=',av.ptd.validGridSize, '; popSetupButton.innerHTML=', popSetupButton.innerHTML, '; av.ui.page=',av.ui.page);
+  console.log('validGridSize=',av.ptd.validGridSize, '; popSetupButton.innerHTML=', popSetupButton.innerHTML, '; av.ui.page=',av.ui.page);
   var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
-  //console.log('namelist', namelist);
+  console.log('namelist', namelist);
   if (1 > namelist.length) {
     //console.log('about to call av.ptd.makePauseState()');
     av.ptd.makePauseState();
@@ -260,16 +265,19 @@ av.ptd.runPopFn = function () {
   }
   else { // setup for a new run by sending config data to avida
     av.dom.userMsgLabel.innerHTML = '';
+    console.log('v.grd.runState = ', av.grd.runState);
     if ('started' !== av.grd.runState) {
       //collect setup data to send to avida.  Order matters. Files must be created first. Then files must be sent before some other stuff.
       av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
       if ('prepping' === av.grd.runState) {
-        av.msg.importConfigExpr();
+        if (!av.msg.ResourceRequestFlag) {    //for testing purposes do NOT resend config Experiment when requesting resources.
+          av.msg.importConfigExpr();
+        }
         av.msg.injectAncestors();
       }
       else {
         av.msg.importWorldExpr();
-        //console.log('parents.injected', av.parents.injected);
+        console.log('parents.injected', av.parents.injected);
         //av.debug.log += '\nstart importWorld running-----------------------------------------\n'
         av.msg.injectAncestors();
       }
@@ -297,7 +305,7 @@ av.ptd.runPopFn = function () {
       //av.msg.pause(dijit.byId('autoUpdateSpinner').get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
       av.ui.autoStopFlag = true;
       av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
-      //console.log('stop at ', dijit.byId('autoUpdateSpinner').get('value'));
+      console.log('stop at ', dijit.byId('autoUpdateSpinner').get('value'));
     }
 
     av.ptd.makeRunState();

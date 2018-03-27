@@ -2,21 +2,30 @@
 
 av.fio.addFzItem = function(dndSection, name, type, fileNum) {
   'use strict';
-  dndSection.insertNodes(false, [{data: name, type: [type]}]);
-  dndSection.sync();
-  var mapItems = Object.keys(dndSection.map);
-  var domid  =  mapItems[mapItems.length - 1];
+  if (undefined != dndSection) {
+    dndSection.insertNodes(false, [{data: name, type: [type]}]);
+    dndSection.sync();
+    var mapItems = Object.keys(dndSection.map);
+    var domid = mapItems[mapItems.length - 1];
 
-  //create a right av.mouse-click context menu for the item just created.
-  if (av.debug.fio) console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id);
-  //console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id, '; type', type);
+    //create a right av.mouse-click context menu for the item just created.
+    if (av.debug.fio) console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id);
+    //console.log('fileNum', fileNum, '; name', name, '; Section', dndSection.node.id, '; type', type);
 
-  if (0 < fileNum) { av.dnd.contextMenu(dndSection, domid); }
-  //av.dnd.contextMenu(dndSection, domid);
-  return domid;
+    if (0 < fileNum) {
+      av.dnd.contextMenu(dndSection, domid);
+    }
+    //av.dnd.contextMenu(dndSection, domid);
+    return domid;
+  }
+  else {
+    console.log('dndSection=', dndSection, '; name=', name, '; type=', type, '; fileNum=', fileNum);
+    return 'dndSection is undefined';
+  }
 }
 
 //need to make sure freezer loaded first so not currently in use. Delete later if not used tiba
+/*
 av.fio.loadDefaultConfig = function() {
   'use strict';
   console.log('')
@@ -32,6 +41,7 @@ av.fio.loadDefaultConfig = function() {
   av.frd.avidaCFG2form(av.fzr.file['c0/avida.cfg']);
   av.frd.environmentCFG2form(av.fzr.file['c0/environment.cfg']);
 }
+*/
 
 av.fio.setActiveConfig = function(dndSection, name, type){
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();
@@ -62,16 +72,30 @@ av.frd.add2freezerFromFile = function (loadConfigFlag) {
   switch (type) {
     case 'c':
       domid = av.fio.addFzItem(av.dnd.fzConfig, name, type, num);
+      if ('dndSection is undefined' == domid) console.log('av.dnd.fzConfig is undefined');
       if (av.fzr.cNum < Number(num)) {av.fzr.cNum = Number(num); }
       //console.log('c: num', num, '; name', name, 'flag', loadConfigFlag);
       if (0 == num && loadConfigFlag) {var ConfigActiveDomID = av.fio.setActiveConfig(av.dnd.activeConfig, name, 'b');}
       break;
     case 'g':
       domid = av.fio.addFzItem(av.dnd.fzOrgan, name, type, num);
+      if ('dndSection is undefined' == domid) console.log('av.dnd.fzOrgan is undefined');
       if (av.fzr.gNum < Number(num)) {av.fzr.gNum = Number(num); }
+      break;
+    case 'm':
+      domid = av.fio.addFzItem(av.dnd.fzMdish, name, type, num);
+      av.fzr.mDish[dir] = {};
+      av.fzr.mDish[dir].dir = {};
+      av.fzr.mDish[dir].domid = {};
+      av.fzr.mDish[dir].cNum = -1;
+      av.fzr.mDish[dir].wNum = -1;
+
+      if ('dndSection is undefined' == domid) console.log('av.dnd.fzMdish is undefined------------------------------');
+      if (av.fzr.mNum < Number(num)) {av.fzr.mNum = Number(num); }
       break;
     case 'w':
       domid = av.fio.addFzItem(av.dnd.fzWorld, name, type, num);
+      if ('dndSection is undefined' == domid) console.log('av.dnd.fzWorld is undefined');
       if (av.fzr.wNum < Number(num)) {av.fzr.wNum = Number(num); }
       break;
   }
@@ -80,41 +104,90 @@ av.frd.add2freezerFromFile = function (loadConfigFlag) {
   av.fzr.dir[domid] = dir;
 }
 
-av.fio.processFiles = function (loadConfigFlag){
-  'use strict';
-  var fileType = wsa('/', av.fio.anID);
-  switch (fileType) {
-    case 'entryname.txt':
-      av.frd.add2freezerFromFile(loadConfigFlag);
-      av.fzr.usrFileLoaded = true;
-    case 'ancestors':
-    case 'ancestors_manual':
-    case 'avida.cfg':
-    case 'clade.ssg':
-    case 'detail.spop':
-    case 'environment.cfg':
-    case 'events.cfg':
-    case 'genome.seq':
-    case 'instset.cfg':
-    case 'timeRecorder.csv':
-    case 'tr0':
-    case 'tr1':
-    case 'tr2':
-    case 'tr3':
-    case 'tr4':
-    case 'update':
-      if (loadConfigFlag) {
-        if ('c0/avida.cfg' == av.fio.anID) {av.frd.avidaCFG2form(av.fio.thisfile.asText());}
-        if ('c0/environment.cfg' == av.fio.anID) {av.frd.environmentCFG2form(av.fio.thisfile.asText().trim());}
-      }
-      av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
+av.frd.add2multiDishFromFile = function(){
+  "use strict";
+  console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID, '; av.fzr.fziType=',av.fzr.fziType);
+  var multiDish = wsb('/', av.fio.anID);
+  var superNum = multiDish.substr(1, multiDish.length-1);
+  var firstIndex = av.fio.anID.indexOf('/');
+  var lastIndex = av.fio.anID.lastIndexOf('/');
+  var length = lastIndex - firstIndex - 1;
+  console.log('firstI=', firstIndex, ';  lastI=', lastIndex);
+  var subDish = av.fio.anID.substr(firstIndex+1, length);
+  var type = subDish.substr(0,1);
+  var subNum = subDish.substr(1, subDish.length-1);
+  switch (type) {
+    case 'c':
+      if (av.fzr.mDish[multiDish].cNum < Number(subNum)) {av.fzr.mDish[multiDish].cNum = Number(subNum); }
       break;
-    default:
-      //if (av.debug.fio) console.log('undefined file type in zip: full ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
+    case 'w':
+      if (av.fzr.mDish[multiDish].wNum < Number(subNum)) {av.fzr.mDish[multiDish].wNum = Number(subNum); }
       break;
   }
-  //if (av.debug.fio) console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
-  //console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
+  av.fzr.mDish[multiDish].domid[subDish] = subNum;  //eventually subNum will be a domid, but we are not building the editing interface yet.
+  av.fzr.mDish[multiDish].dir[subNum] = subDish;
+
+  console.log('multiDish=', multiDish, '; superNum=', superNum, '; subDish=', subDish, '; subNum=', subNum, '; type=', type, 'wNum=', av.fzr.mDish[multiDish].wNum);
+}
+
+av.frd.processSubDish = function() {
+  "use strict";
+  console.log('SubDish:', av.fzr.fziType, ';  ID=', av.fio.anID);
+};
+
+av.fio.processFiles = function (loadConfigFlag){
+  'use strict';
+  var fileType = av.fio.anID;
+  if ('subDish' === av.fzr.fziType){
+    fileType = wsa('/', fileType);
+    //av.frd.processSubDish();
+  }
+  fileType = wsa('/', fileType);
+  //if (av.debug.fio) console.log('anID=', av.fio.anID, '; fileType=', fileType, '; fziType=', av.fzr.fziType);
+    switch (fileType) {
+      case 'entryname.txt':
+        if ('subDish' != av.fzr.fziType) {
+          av.frd.add2freezerFromFile(loadConfigFlag);
+          av.fzr.usrFileLoaded = true;
+        }
+        else {
+          av.frd.add2multiDishFromFile();
+        }
+      case 'ancestors':
+      case 'ancestors_manual':
+      case 'avida.cfg':
+      case 'clade.ssg':
+      case 'detail.spop':
+      case 'environment.cfg':
+      case 'events.cfg':
+      case 'genome.seq':
+      case 'instset.cfg':
+      case 'offset.txt':
+      case 'timeRecorder.csv':
+      case 'tr0':
+      case 'tr1':
+      case 'tr2':
+      case 'tr3':
+      case 'tr4':
+      case 'update':
+        if (loadConfigFlag) {
+          if ('c0/avida.cfg' == av.fio.anID) {
+            av.frd.avidaCFG2form(av.fio.thisfile.asText());
+          }
+          if ('c0/environment.cfg' == av.fio.anID) {
+            av.frd.environmentCFG2form(av.fio.thisfile.asText().trim());
+          }
+        }
+        av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
+        //if (av.debug.fio) console.log('FileType is ', fileType, '; filepath = ', av.fio.anID);
+        break;
+      default:
+        //if (av.debug.fio) console.log('undefined file type in zip: full ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
+        break;
+
+    //if (av.debug.fio) console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
+    //console.log('file type in zip: fname ', av.fio.fName, '; id ', av.fio.anID, '; type ', fileType);
+  }
 }
 
 
@@ -295,8 +368,8 @@ av.fio.autoAncestorParse = function (filestr) {
   rslt.nam = [];
   rslt.gen = [];
   var lineobj, gen, name;
-  var lines = filestr.split('\n');
   var kk = 0;
+  var lines = filestr.split('\n');
   var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (1 < lines[ii].length) {
@@ -547,11 +620,6 @@ av.frd.loadTimeRecorderData = function(dir) {
     av.pch.logEar = av.utl.newFilledArray(lngth, null);
     av.pch.logNum = av.utl.newFilledArray(lngth, null);
     for (var ii = 0; ii < lngth; ii++) av.pch.xx[ii] = ii;
-    //console.log('tr length=', av.pch.aveFit.length, '; update=', av.fzr.actConfig.file['update'], '; oldUpdate=', av.grd.oldUpdate);
-    //console.log('aveFit', av.pch.aveFit);
-    //console.log('aveCst', av.pch.aveCst);
-    //console.log('aveEar', av.pch.aveEar);
-    //console.log('aveNum', av.pch.aveNum);
   }
   else {
     //console.log('av.fzr.file.' + dir + '/timeRecorder.csv=', av.fzr.file[dir + '/timeRecorder.csv']);

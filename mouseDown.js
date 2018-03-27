@@ -135,6 +135,7 @@ av.mouse.downGridCanvasFn = function (evt) {
           if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
           dijit.byId('mnFzOrganism').attr('disabled', false);  //When an organism is selected, then it can be save via the menu
           dijit.byId('mnCnOrganismTrace').attr('disabled', false);
+          console.log('mnCnOrganismTrace enabled in mouseDown at 138')
         }
       }
       else {

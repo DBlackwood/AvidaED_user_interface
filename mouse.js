@@ -396,6 +396,7 @@ av.mouse.arrowKeysOnGrid = function (event) {
         if (av.debug.mouse) console.log('kid', av.grd.kidName, av.grd.kidGenome);
         dijit.byId("mnFzOrganism").attr("disabled", false);  //When an organism is selected, then it can be save via the menu
         dijit.byId("mnCnOrganismTrace").attr("disabled", false);
+        console.log('mnCnOrganismTrace enabled in mouse.js at 399')
       }
     }
     //console.log('before call av.grd.drawGridSetupFn');

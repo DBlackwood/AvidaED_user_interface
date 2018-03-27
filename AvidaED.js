@@ -307,6 +307,13 @@ require([
     copyOnly: true,
     selfAccept: false
   });
+  if (av.debug.root) console.log('before fzMdish');
+  av.dnd.fzMdish = new dndSource('fzMdish', {
+    accept: ['b', 'm'],   //b=both; w=world  //only after the population started running
+    singular: true,
+    copyOnly: true,
+    selfAccept: false
+  });
   /*  //kept only as an example of how to programatically add data to a dnd container
    av.dnd.fzWorld.insertNodes(false, [
    {data: 'm2w30u1000nand', type: ['w']},
@@ -322,7 +329,7 @@ require([
   if (av.debug.root) console.log('after trashCan');
 
   av.dnd.activeConfig = new dndSource('activeConfig', {
-    accept: ['b', 'c', 'w'],  //b-both; c-configuration; w-world (populated dish
+    accept: ['b', 'c', 's', 'w'],  //b-both; c-configuration; s-Superdish; w-world (populated dish
     singular: true,
     copyOnly: true,
     selfAccept: false
@@ -857,6 +864,7 @@ require([
   //av.ui.mainBoxSwap('organismBlock');
   //av.ui.mainBoxSwap('populationBlock');  //commented out here as it is called near the end of this file
   dijit.byId('setupBlock').set('style', 'display: none;');
+  //dijit.byId('sdishFzr').set('style', 'display: none;');  fix before put in Avida 3.
 
   av.ui.mainBoxSwap = function (showBlock) {
     av.ui.page = showBlock;
@@ -1155,6 +1163,24 @@ require([
     }
   });
 
+  /*  don't need this yet
+  //need to figure out active configuration and active Sdish
+  av.dnd.fzMdish.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
+    if ('fzMdish' == target.node.id) {
+      var pkg = {};
+      av.ui.num = av.fzr.wNum;
+      pkg.source = source;
+      pkg.nodes = nodes;
+      pkg.copy = copy;
+      pkg.target = target;
+      av.dnd.landFzSdishFn(pkg);
+      if (av.ui.num !== av.fzr.mNum) {
+        av.fwt.makeFzrSdish(av.ui.num);
+      } //tiba need to check this
+    }
+  });
+  */
+
   av.dnd.graphPop0.on('DndDrop', function (source, nodes, copy, target) {//This triggers for every dnd drop, not just those of activeConfig
     //The following cases should never happen as they are defined as 'target' not as 'source' dnd types.
     // The code is here in case the dnd type is changed to 'source'
@@ -1397,16 +1423,30 @@ require([
     av.dnd.FzAddExperimentFn('fzConfig', 'activeConfig', 'c');
   });
 
-  //Buttons on drop down menu to add Organism to an Experiment
-  dijit.byId('mnFzAddGenomeEx').on('Click', function () {
-    av.post.addUser('Button: mnFzAddGenomeEx');
-    av.dnd.FzAddExperimentFn('fzOrgan', 'ancestorBox', 'g');
+  //Buttons on drop down menu to add Configured Dish to an Experiment
+  dijit.byId('mnFzAddResEx').on('Click', function () {
+    av.post.addUser('Button: mnFzAddResEx');
+    //av.dnd.FzAddExperimentFn('fzConfig', 'activeConfig', 'm');
+    av.dnd.runResReqDish('fzConfig', 'activeConfig', 'c');
+  });
+
+  //Buttons on drop down menu to add Configured Dish to an Experiment
+  dijit.byId('mnFzAddMdishEx').on('Click', function () {
+    av.post.addUser('Button: mnFzAddMdishEx');
+    //av.dnd.FzAddExperimentFn('fzMdish', 'activeConfig', 'm');
+    av.msg.runMultiDish('fzMdish', 'activeConfig', 'm');
   });
 
   //Buttons on drop down menu to add Populated Dish to an Experiment
   dijit.byId('mnFzAddPopEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddPopEx');
     av.dnd.FzAddExperimentFn('fzWorld', 'activeConfig', 'w');
+  });
+
+  //Buttons on drop down menu to add Organism to an Experiment
+  dijit.byId('mnFzAddGenomeEx').on('Click', function () {
+    av.post.addUser('Button: mnFzAddGenomeEx');
+    av.dnd.FzAddExperimentFn('fzOrgan', 'ancestorBox', 'g');
   });
 
   //Buttons on drop down menu to put an organism in Organism Viewer
@@ -1490,6 +1530,7 @@ require([
     console.log('av.dnd.fzConfig', av.dnd.fzConfig);
     console.log('av.dnd.fzOrgan', av.dnd.fzOrgan);
     console.log('av.dnd.fzWorld', av.dnd.fzWorld);
+    console.log('av.dnd.fzMdish', av.dnd.fzMdish);
     console.log('av.dnd.activeConfig', av.dnd.activeConfig);
     console.log('av.dnd.activeOrgan', av.dnd.activeOrgan);
     console.log('av.dnd.ancestorBox', av.dnd.ancestorBox);
@@ -1795,7 +1836,7 @@ require([
   };
 
   // -------------------------------------------------------------------------------------------------------------------
-  //                    Population Chart   ; pop chart; popchart
+  //                    Population Chart   ; pop chart; popchart  uses plotly.js
   // -------------------------------------------------------------------------------------------------------------------
 
   // Chart control on population page
@@ -1853,20 +1894,28 @@ require([
     //console.log('av.grd.runState = ', av.grd.runState);
     if ('prepping' === av.grd.runState) {   //values can be prepping, started, or world
       av.dom.popChart.style.visibility = 'hidden';
+      //console.log('In prepping in miniChart');
     }
     else {
-      av.dom.popChart.style.visibility = 'visible';
-      if ('none' === dijit.byId('yaxis').value) {
+      //console.log('run state NOT prepping; in miniChart');
+      if ('None' === dijit.byId('yaxis').value) {
+        console.log('yaxis in miniChart is none');
+        av.dom.popChart.style.visibility = 'hidden';
+
+        /*
         if (undefined !== av.dom.popChart.data) {
-          console.log('before purge in popChartFn');
-          av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1621';
+          console.log('before delete traces in popChartFn');
+          av.debug.log += '\n     --uiD: Plotly: Plotly.deleteTraces(av.dom.popChart, [0, 1]) in AvidaED.js at 1865';
           av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'av.dom.popChart', [av.dom.popChart]);
           Plotly.deleteTraces(av.dom.popChart, [0, 1]);
           //Plotly.purge(av.dom.popChart);      //does not seem to work once plotly.animate has been used
-          console.log('after purge in popChartFn');
+          console.log('after delete traces in popChartFn');
         }
+        */
       }
       else {
+        //console.log('yaxis in miniChart is NOT none');
+        av.dom.popChart.style.visibility = 'visible';
         av.pch.divSize('av.grd.popChartFn');
 
         if (dijit.byId('yaxis').value === av.pch.yValue) av.pch.yChange = false;

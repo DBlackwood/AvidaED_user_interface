@@ -36,7 +36,7 @@ av.msg.readMsg = function (ee) {
       case 'webOrgTraceBySequence': //reset values and call organism tracing routines.
         //console.log('webOrgTraceBySequence', msg);
         av.traceObj = msg.snapshots;
-        //console.log('av.traceObj', av.traceObj);
+        //console.log('av.traceObj', av.traceObj);minVal
         av.ind.cycle = 0;
         dijit.byId('orgCycle').set('value', 0);
         av.ind.cycleSlider.set('maximum', av.traceObj.length - 1);
@@ -80,7 +80,7 @@ av.msg.readMsg = function (ee) {
         //console.log('--Aui: webOrgDataByCellID', msg);
         break;
       default:
-        if (av.debug.msg) {console.log('____________UnknownRequest: ', msg);}
+        {console.log('____________UnknownRequest: ', msg);}
         av.debug.log += '\nAui: in default in messaging on line 84 \n' + av.utl.json2stringFn(msg);   //fix format
         break;
     }
@@ -183,6 +183,65 @@ av.msg.stepUpdate = function () {
   }, 1);  //number is time in msec for a delay
 }
 
+//---------------------------------------------------------------------------------------------- av.msg.importPopExpr --
+av.msg.importPopExpr = function () {
+  'use strict';
+  var fList = ['avida.cfg'
+    , 'clade.ssg'
+    , 'detail.spop'
+    , 'environment.cfg'
+    , 'events.cfg'
+    , 'instset.cfg'
+    , 'update'
+  ];
+  var request = {
+    'type': 'addEvent',
+    'name': 'importExpr',
+    'triggerType': 'immediate',
+    'files': [
+//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
+    ]
+  };
+  //console.log('in importPopExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
+  var lngth = fList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
+  }
+  if (av.debug.msg) console.log('importExpr', request);
+  av.aww.uiWorker.postMessage(request);
+  av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importPopExpr';
+}
+//------------------------------------------------------------------------------------------ end av.msg.importPopExpr --
+
+//-------------------------------------------------------------------------------------------- av.msg.importWorldExpr --
+av.msg.importWorldExpr = function () {
+  'use strict';
+  var fList = ['avida.cfg'
+    , 'environment.cfg'
+  ];
+  var request = {
+    'type': 'addEvent',
+    'name': 'importExpr',
+    'triggerType': 'immediate',
+    'amend': 'true',
+    'files': [
+      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
+    ]
+  };
+  //console.log('in importWorldExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
+  var lngth = fList.length;
+  for (var ii = 0; ii < lngth; ii++) {
+    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
+  }
+  if (av.debug.msg) console.log('importExpr', request);
+  av.aww.uiWorker.postMessage(request);
+  av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importWorldExpr';
+}
+//---------------------------------------------------------------------------------------- end av.msg.importWorldExpr --
+
+//------------------------------------------------------------------------------------------- av.msg.importConfigExpr --
 av.msg.importConfigExpr = function () {
   'use strict';
   var fList = ['avida.cfg'
@@ -213,8 +272,10 @@ av.msg.importConfigExpr = function () {
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importConfigExpr';
 }
+//--------------------------------------------------------------------------------------- end av.msg.importConfigExpr --
 
-av.msg.importPopExpr = function () {
+//---------------------------------------------------------------------------------------------- av.msg.makeResReqMsg --
+av.msg.makeResReqMsg = function (dir) {
   'use strict';
   var fList = ['avida.cfg'
     , 'clade.ssg'
@@ -233,39 +294,93 @@ av.msg.importPopExpr = function () {
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
     ]
   };
-  //console.log('in importPopExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
+  console.log('in av.msg.makeResReqMsg:');
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
+    if (av.fzr.file[dir+'/'+fList[ii]]) {
+      request.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+'/'+fList[ii]] });
+      console.log('filename=', dir+'/'+fList[ii]);
+    }
   }
-  if (av.debug.msg) console.log('importExpr', request);
   av.aww.uiWorker.postMessage(request);
+  if (av.debug.msg) console.log('av.msg.makeResReqMsg', request);
+
   av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importPopExpr';
 }
+//------------------------------------------------------------------------------------------ end av.msg.makeResReqMsg --
 
-av.msg.importWorldExpr = function () {
+//---------------------------------------------------------------------------------------- av.msg.importMultiDishExpr --
+av.msg.importMultiDishExpr = function (dir) {
   'use strict';
   var fList = ['avida.cfg'
+    , 'clade.ssg'
+    , 'detail.spop'
     , 'environment.cfg'
+    , 'events.cfg'
+    , 'instset.cfg'
+    , 'update'
   ];
   var request = {
     'type': 'addEvent',
-    'name': 'importExpr',
+    'name': 'importMultiDish',
     'triggerType': 'immediate',
-    'amend': 'true',
-    'files': [
-      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
-      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
-    ]
+    'amend': 'false',
+    'superDishFiles': [
+//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
+    ],
+    'subDishes': []
   };
-  //console.log('in importWorldExpr: av.fzr.actConfig.file',av.fzr.actConfig.file)
+  var subDish = {
+      'xpos': 0
+    , 'ypos': 0
+    , 'files':[
+//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+//      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
+    ]
+  }
+
+  //console.log('in av.msg.importMultiDishExpr:');
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (av.fzr.actConfig.file[fList[ii]]) {request.files.push({ 'name': fList[ii], 'data': av.fzr.actConfig.file[fList[ii]] }); }
+    if (av.fzr.file[dir+'/'+fList[ii]]) {request.superDishFiles.push({ 'name': fList[ii], 'data': av.fzr.file[dir+'/'+fList[ii]] }); }
   }
-  if (av.debug.msg) console.log('importExpr', request);
+  var offset = [];
+  for (var key in av.fzr.mDish[dir].domid) {
+    subDish.files = [];
+    console.log('dir=', dir, '; key=', key);
+    offset = av.msg.getOffset(dir, key);
+    subDish.xpos = offset[0];
+    subDish.ypos = offset[1];
+    var lngth = fList.length;
+    for (var ii = 0; ii < lngth; ii++) {
+      if (av.fzr.file[dir+'/'+key+'/'+fList[ii]]) {
+        subDish.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+'/'+key+'/'+fList[ii]] });
+      }
+    }
+    request.subDishes.push(subDish);
+  }
+  if (av.debug.msg) console.log('importMultiDishExpr', request);
+  console.log('importMultiDishExpr', request);
   av.aww.uiWorker.postMessage(request);
-  av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importWorldExpr';
+  av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request) + '  from importPopExpr';
+}
+//------------------------------------------------------------------------------------ end av.msg.importMultiDishExpr --
+
+av.msg.getOffset = function (dir, key) {
+  "use strict";
+  var pair = [];
+  var filestr = av.fzr.file[dir+'/'+key+'/offset.txt'];
+  if (undefined != filestr) {
+    var lines = filestr.split('\n')
+    var pair = lines[0].split(',');
+    return pair;
+  }
+  else {
+    console.log('file ', dir+'/'+key+'/offset.txt', ' is missing.');
+    pair = [0, 0];
+    return
+  }
 }
 
 av.msg.exportExpr = function (popName) {
@@ -446,6 +561,7 @@ av.msg.injectAncestors = function () {
 
 //---------------------------------
 av.msg.updatePopStats = function (msg) {
+  console.log(msg);
   'use strict';
   var place = 2;
   var vari = 2;
@@ -460,9 +576,11 @@ av.msg.updatePopStats = function (msg) {
 
     //console.log('av.parents.name.length = ',av.parents.name.length);
     for (var ii = 0; ii<av.pch.numDads; ii++) {
+      console.log('ii=',ii, '; name=', av.parents.name[ii]);
       //console.log('msg.by_clade[av.parents.name[ii]]=',msg.by_clade[av.parents.name[ii]]);
       //console.log('msg.by_clade['+av.parents.name[ii]+'].fitness=', msg.by_clade[av.parents.name[ii]].fitness);
-      if (undefined != msg.by_clade[av.parents.name[ii]]) {
+      if (undefined != msg.by_clade) {
+      //if (undefined != msg.by_clade[av.parents.name[ii]]) {
         av.pch.dadFit[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].fitness;
         av.pch.dadCst[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].gestation;
         av.pch.dadEar[av.parents.name[ii]][msg.update] = msg.by_clade[av.parents.name[ii]].metabolism;
@@ -500,7 +618,10 @@ av.msg.updatePopStats = function (msg) {
   //console.log('update', msg.update, '; logNum[update]',av.pch.logNum[Number(msg.update)-1], '; logNum', av.pch.logNum);
 
   //update viable number on webpage
-  viableNumLabel.textContent = msg.viables.formatNum(0);
+  if (undefined != msg.viables) {
+    viableNumLabel.textContent = msg.viables.formatNum(0);
+  }
+  else viableNumLabel.textContent = 'no data';
 
   notPop.textContent = msg.not;
   nanPop.textContent = msg.nand;  //these do not match
@@ -687,6 +808,7 @@ av.grd.updateSelectedOrganismType = function (msg) {
     av.grd.kidGenome = msg.genome;
     if (av.debug.msg) console.log('genome',av.grd.kidGenome, '-------------------');
     dijit.byId('mnCnOrganismTrace').attr('disabled', false);
+    console.log('mnCnOrganismTrace enabled in messaging.js at 690')
   }
 }
 

@@ -43,7 +43,7 @@
 				dojo.forEach(data,function(d){
 					console.log(d);
 					if(d.name){
-						out += "<h2>" + d.name + " <span class='itemType'>" + d.type +"</span></h2>";
+						out += "<h2>" + d.name + " <span class='fziType'>" + d.type +"</span></h2>";
 					}
 					if(d.summary){
 						out += "<div class='summary'>" + d.summary + "</div>";
@@ -134,7 +134,7 @@
 					var nli = dojo.doc.createElement('li');
 					nli.innerHTML = "<div class='inner'>"
 						+"<a"+" hre"+"f='#"+ item.name +"'>"+item.name +"</a>"
-						+"- <span class='itemType'>"+ item.type +"</span>"
+						+"- <span class='fziType'>"+ item.type +"</span>"
 						+"<div class='itty'>"+item.summary+"</div></div>";
 					dojo.byId("searchResults").appendChild(nli);
 				});
