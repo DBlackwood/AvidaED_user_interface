@@ -561,7 +561,7 @@ av.msg.injectAncestors = function () {
 
 //---------------------------------
 av.msg.updatePopStats = function (msg) {
-  console.log(msg);
+  //console.log(msg);
   'use strict';
   var place = 2;
   var vari = 2;
@@ -576,7 +576,7 @@ av.msg.updatePopStats = function (msg) {
 
     //console.log('av.parents.name.length = ',av.parents.name.length);
     for (var ii = 0; ii<av.pch.numDads; ii++) {
-      console.log('ii=',ii, '; name=', av.parents.name[ii]);
+      //console.log('ii=',ii, '; name=', av.parents.name[ii]);
       //console.log('msg.by_clade[av.parents.name[ii]]=',msg.by_clade[av.parents.name[ii]]);
       //console.log('msg.by_clade['+av.parents.name[ii]+'].fitness=', msg.by_clade[av.parents.name[ii]].fitness);
       if (undefined != msg.by_clade) {

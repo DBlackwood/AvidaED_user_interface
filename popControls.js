@@ -270,7 +270,7 @@ av.ptd.runPopFn = function () {
       //collect setup data to send to avida.  Order matters. Files must be created first. Then files must be sent before some other stuff.
       av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
       if ('prepping' === av.grd.runState) {
-        if (!av.msg.ResourceRequestFlag) {    //for testing purposes do NOT resend config Experiment when requesting resources.
+        if (!av.msg.avidaTestRunFlag) {    //for testing purposes do NOT resend config Experiment when requesting resources.
           av.msg.importConfigExpr();
         }
         av.msg.injectAncestors();

@@ -141,55 +141,6 @@ av.dnd.nameParent = function(name) {
   return theName;
 }
 
-//---------------------------------------------------------------------------------------------- av.dnd.runResReqDish --
-av.dnd.runResReqDish = function(fzSection, target, type) {
-  //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
-  //need to find selected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
-  //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
-  //Object.keys(av.dnd.fzOrgan.selection)[0] and av.dnd.fzOrgan.getSelectedNodes()[0].id return the same thing
-
-  if (undefined != av.dnd[fzSection].getSelectedNodes()[0]) {
-    //This section partially puts the multi-dish in the active area
-    var nodeMv = av.dnd[fzSection].getSelectedNodes()[0].id;
-    console.log('fzSection=', fzSection, '; nodeMv=', nodeMv);
-    var added = false;
-    av.dnd.move.via = 'menu';
-    av.dnd.move.source = av.dnd[fzSection];
-    av.dnd.move.target = av.dnd[target];
-    av.dnd.move.type = type;
-    av.dnd.move.sourceDomId = nodeMv;
-    av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
-    av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir + '/entryname.txt'];
-    av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
-    av.dnd[target].sync();
-    var domIDs = Object.keys(av.dnd[target].map);
-    av.dnd.move.targetDomId = domIDs[domIDs.length - 1];
-    console.log('move', av.dnd.move);
-    //added = av.dnd.lndActiveConfig(av.dnd.move);
-
-    //if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
-    var filename = av.dnd.move.dir +'/ancestors';
-    console.log('filename = ', filename, '=======================================================');
-    if (av.fzr.file[filename]) {
-      console.log('file ', filename, 'exists');
-      av.fio.autoAncestorLoad(av.fzr.file[filename]);
-    }
-    var filename = av.dnd.move.dir +'/ancestors_manual';
-    console.log('filename = ', filename, '=======================================================');
-    if (av.fzr.file[filename]) {
-      console.log('file ', filename, 'exists');
-      av.fio.handAncestorLoad(av.fzr.file[filename]);
-    }
-    //Now actually load resreq direcdtly from the freezer.
-    av.msg.makeResReqMsg(av.dnd.move.dir);
-    av.msg.ResourceRequestFlag = true;   //we are doing a resource request.
-  }
-  else {
-    alert('You must select a multi dish first');
-  }
-};
-//------------------------------------------------------------------------------------------ end av.dnd.runResReqDish --
-
 //----------------------------------------------- Configuration DnD ----------------------------------------------------
 //Need to have only the most recent dropped configuration in configCurrent. Do this by deleting everything in configCurrent
 //and reinserting the most resent one after a drop event.
@@ -898,12 +849,78 @@ av.msg.runMultiDish = function(fzSection, target, type) {
 
     //Now actually load and run the multi-dish direcdtly from the freezer.
     av.msg.importMultiDishExpr(av.dnd.move.dir)
+    av.msg.avidaTestRunFlag = true;   //Do not reload files from the active config freezer section
+
+    //This only loads ancestors in the super dish.
+    //if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+    var filename = av.dnd.move.dir +'/ancestors';
+    console.log('filename = ', filename, '=======================================================');
+    if (av.fzr.file[filename]) {
+      console.log('file ', filename, 'exists');
+      av.fio.autoAncestorLoad(av.fzr.file[filename]);
+    }
+    var filename = av.dnd.move.dir +'/ancestors_manual';
+    console.log('filename = ', filename, '=======================================================');
+    if (av.fzr.file[filename]) {
+      console.log('file ', filename, 'exists');
+      av.fio.handAncestorLoad(av.fzr.file[filename]);
+    }
+
+  }
+  else {
+    alert('You must select a multi-dish first');
+  }
+};
+//------------------------------------------------------------------------------------------- end av.msg.runMultiDish --
+
+//---------------------------------------------------------------------------------------------- av.dnd.runResReqDish --
+av.dnd.runResReqDish = function(fzSection, target, type) {
+  //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
+  //need to find selected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
+  //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
+  //Object.keys(av.dnd.fzOrgan.selection)[0] and av.dnd.fzOrgan.getSelectedNodes()[0].id return the same thing
+
+  if (undefined != av.dnd[fzSection].getSelectedNodes()[0]) {
+    //This section partially puts the multi-dish in the active area
+    var nodeMv = av.dnd[fzSection].getSelectedNodes()[0].id;
+    console.log('fzSection=', fzSection, '; nodeMv=', nodeMv);
+    var added = false;
+    av.dnd.move.via = 'menu';
+    av.dnd.move.source = av.dnd[fzSection];
+    av.dnd.move.target = av.dnd[target];
+    av.dnd.move.type = type;
+    av.dnd.move.sourceDomId = nodeMv;
+    av.dnd.move.dir = av.fzr.dir[av.dnd.move.sourceDomId];
+    av.dnd.move.nodeName = av.fzr.file[av.dnd.move.dir + '/entryname.txt'];
+    av.dnd[target].insertNodes(false, [{data: av.dnd.move.nodeName, type: [type]}]);
+    av.dnd[target].sync();
+    var domIDs = Object.keys(av.dnd[target].map);
+    av.dnd.move.targetDomId = domIDs[domIDs.length - 1];
+    console.log('move', av.dnd.move);
+    //added = av.dnd.lndActiveConfig(av.dnd.move);
+
+    //if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
+    var filename = av.dnd.move.dir +'/ancestors';
+    console.log('filename = ', filename, '=======================================================');
+    if (av.fzr.file[filename]) {
+      console.log('file ', filename, 'exists');
+      av.fio.autoAncestorLoad(av.fzr.file[filename]);
+    }
+    var filename = av.dnd.move.dir +'/ancestors_manual';
+    console.log('filename = ', filename, '=======================================================');
+    if (av.fzr.file[filename]) {
+      console.log('file ', filename, 'exists');
+      av.fio.handAncestorLoad(av.fzr.file[filename]);
+    }
+    //Now actually load resreq direcdtly from the freezer.
+    av.msg.makeResReqMsg(av.dnd.move.dir);
+    av.msg.avidaTestRunFlag = true;   //Do not reload files from the active config freezer section
   }
   else {
     alert('You must select a multi dish first');
   }
 };
-//------------------------------------------------------------------------------------------- end av.msg.runMultiDish --
+//------------------------------------------------------------------------------------------ end av.dnd.runResReqDish --
 
 av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
   //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
