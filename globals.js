@@ -17,6 +17,7 @@ av.debug.dnd = false;     //debu statements about dojo dnd
 av.debug.msg = false;     //messages to and from avida
 av.debug.trace = false;   //organism page
 av.debug.grid = false;     //population grid
+av.debug.popCon = false;     //population Controls
 av.debug.msgOrder = false; //message order
 av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io

@@ -526,10 +526,12 @@ require([
   av.dom.xorLabel.onclick = function () {
     if ('visible' === document.getElementById('mnDebug').style.visibility) {
       document.getElementById('mnDebug').style.visibility = 'hidden';
+      document.getElementById('multidFzr').style.visibility = 'hidden';
       dijit.byId('mnHpDebug').set('label', 'Show debug menu');
       av.post.addUser('Button: mnHpDebug: now hidden');
     } else {
       document.getElementById('mnDebug').style.visibility = 'visible';
+      document.getElementById('multidFzr').style.visibility = 'visible';
       dijit.byId('mnHpDebug').set('label', 'Hide debug menu');
       av.post.addUser('Button: mnHpDebug: now visible');
     }
@@ -864,7 +866,7 @@ require([
   //av.ui.mainBoxSwap('organismBlock');
   //av.ui.mainBoxSwap('populationBlock');  //commented out here as it is called near the end of this file
   dijit.byId('setupBlock').set('style', 'display: none;');
-  //dijit.byId('sdishFzr').set('style', 'display: none;');  fix before put in Avida 3.
+  //dijit.byId('multidFzr').set('style', 'display: none;');  fix before put in Avida 3.
 
   av.ui.mainBoxSwap = function (showBlock) {
     av.ui.page = showBlock;
@@ -1428,6 +1430,14 @@ require([
     av.post.addUser('Button: mnFzAddResEx');
     //av.dnd.FzAddExperimentFn('fzConfig', 'activeConfig', 'm');
     av.dnd.runResReqDish('fzConfig', 'activeConfig', 'c');
+    av.ptd.setAutoPausePop(true, 20);
+  });
+
+  //Buttons on drop down menu to test remote pause setting
+  dijit.byId('mnDbRemoteSetPause').on('Click', function () {
+    av.post.addUser('Button: mmnDbRemoteSetPause');
+    //av.dnd.FzAddExperimentFn('fzConfig', 'activeConfig', 'm');
+    av.ptd.setAutoPausePop(true, 20);
   });
 
   //Buttons on drop down menu to add Configured Dish to an Experiment
@@ -2307,6 +2317,13 @@ require([
     av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
     //console.log('autoUpdateSpinner=', dijit.byId('autoUpdateSpinner').get('value'));
   });
+
+  av.ptd.setAutoPausePop = function(stopFlag, stopValue)  {
+    dijit.byId('autoUpdateSpinner').set('value', stopValue);
+    dijit.byId('autoUpdateRadio').set('checked', stopFlag);
+    av.ui.autoStopValue = stopValue;
+    av.ui.autoStopFlag = stopFlag;
+  }
 
   /* *************************************************************** */
   /* Organism page script *********************************************/

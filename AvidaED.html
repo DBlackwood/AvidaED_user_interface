@@ -146,13 +146,14 @@
             </div>
           </span>
         </span>
-        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: visible'>
+        <span data-dojo-type='dijit/PopupMenuBarItem' label='Debug' id='mnDebug' style = 'visibility: hidden'>
           <!--visible/hidden-->
           <span data-dojo-type='dijit/Menu'>
             <span data-dojo-type='dijit/MenuItem' id='mnFzAddResEx' label='Run Highlighted ResourceRequest'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnFzAddMdishEx' label='Run Highlighted Mulit-Dish'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowData' label='Send Data to console'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowError' label='Throw Error'></span>
+            <span data-dojo-type='dijit/MenuItem' id='mnDbRemoteSetPause' label='Remote Set Pause'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbLineLog' label='Add Line to Session Log'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbDiagnostic' label='Open Diagnostic Console'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbRestartAvida' label='Restart Avida WebWorker'></span>
@@ -218,10 +219,10 @@
               style='min-width: 1px; width: 100%; height: auto; overflow: auto'>
           <div id='fzWorld' class='container' jsId='freezePopDish'></div>
         </span>
-        <span data-dojo-type='dijit/TitlePane' title='Super Dishes' extractContent='false' preventCache='false'
-              preload='false' refreshOnShow='false' duration='200' open='true' id='sdishFzr'
-              style='min-width: 1px; width: 100%; height: auto; overflow: auto'>
-          <div id='fzMdish' class='container' jsId='freezeSuperDish'></div>
+        <span data-dojo-type='dijit/TitlePane' title='Multi-Dishes' extractContent='false' preventCache='false'
+              preload='false' refreshOnShow='false' duration='200' open='true' id='multidFzr'
+              style='min-width: 1px; width: 100%; height: auto; overflow: auto; visibility: hidden'>
+          <div id='fzMdish' class='container' jsId='freezeMultiDish'></div>
         </span>
       </div>
     </div>

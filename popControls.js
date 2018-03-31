@@ -241,11 +241,11 @@ av.ptd.popNewExState = function () {
 //after Run button pushed for population
 av.ptd.runPopFn = function () {
   'use strict';
-  console.log('runPopFn runState', av.grd.runState);
+  if (av.debug.popCon) console.log('runPopFn runState', av.grd.runState);
   //check for ancestor organism in configuration data
-  console.log('validGridSize=',av.ptd.validGridSize, '; popSetupButton.innerHTML=', popSetupButton.innerHTML, '; av.ui.page=',av.ui.page);
+  if (av.debug.popCon) console.log('validGridSize=',av.ptd.validGridSize, '; popSetupButton.innerHTML=', popSetupButton.innerHTML, '; av.ui.page=',av.ui.page);
   var namelist = dojo.query('> .dojoDndItem', 'ancestorBox');
-  console.log('namelist', namelist);
+  if (av.debug.popCon) console.log('namelist', namelist);
   if (1 > namelist.length) {
     //console.log('about to call av.ptd.makePauseState()');
     av.ptd.makePauseState();
@@ -265,7 +265,7 @@ av.ptd.runPopFn = function () {
   }
   else { // setup for a new run by sending config data to avida
     av.dom.userMsgLabel.innerHTML = '';
-    console.log('v.grd.runState = ', av.grd.runState);
+    if (av.debug.popCon) console.log('v.grd.runState = ', av.grd.runState);
     if ('started' !== av.grd.runState) {
       //collect setup data to send to avida.  Order matters. Files must be created first. Then files must be sent before some other stuff.
       av.fwt.form2cfgFolder();          //fileDataWrite.js creates avida.cfg and environment.cfg and ancestor.txt and ancestor_manual.txt
@@ -277,7 +277,7 @@ av.ptd.runPopFn = function () {
       }
       else {
         av.msg.importWorldExpr();
-        console.log('parents.injected', av.parents.injected);
+        if (av.debug.popCon) console.log('parents.injected', av.parents.injected);
         //av.debug.log += '\nstart importWorld running-----------------------------------------\n'
         av.msg.injectAncestors();
       }
@@ -298,14 +298,14 @@ av.ptd.runPopFn = function () {
         av.pch.dadNum[av.parents.name[ii]] = [];
         av.pch.dadVia[av.parents.name[ii]] = [];
       }
-      console.log(av.pch.numDads, '; av.pch.dadFit=',av.pch.dadFit);
+      if (av.debug.popCon) console.log(av.pch.numDads, '; av.pch.dadFit=',av.pch.dadFit);
     }
 
     if (dijit.byId('autoUpdateRadio').get('checked')) {
       //av.msg.pause(dijit.byId('autoUpdateSpinner').get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
       av.ui.autoStopFlag = true;
       av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
-      console.log('stop at ', dijit.byId('autoUpdateSpinner').get('value'));
+      if (av.debug.popCon) console.log('stop at ', dijit.byId('autoUpdateSpinner').get('value'));
     }
 
     av.ptd.makeRunState();
@@ -420,7 +420,7 @@ av.ptd.FrPopulationFn = function () {
 
 av.pch.processLogic = function() {
   "use strict";
-  console.log('In av.pch.processLogic: av.pch.fnBinary = ', av.pch.fnBinary);
+  if (av.debug.popCon) console.log('In av.pch.processLogic: av.pch.fnBinary = ', av.pch.fnBinary);
   if ( (null !== av.pch.fnBinary) && (undefined !== av.pch.fnBinary) ) {
     for (var ii = 0; ii<9; ii++) {
       //console.log('substring = ', av.pch.fnBinary.substring(ii,ii+1));
@@ -507,7 +507,7 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   av.msg.pause('now');
   av.ptd.makePauseState();
   av.grd.clearGrd();
-  if (av.debug.grid) console.log('before calling av.grd.popChartInit');
+  if (av.debug.popCon) console.log('before calling av.grd.popChartInit');
   av.grd.popChartInit();
   av.grd.runState = 'prepping';
   dijit.byId('mnCnOrganismTrace').attr('disabled', true);

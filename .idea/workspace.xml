@@ -2,18 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_2017_1110.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_2017_1110.js.mem" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_2018_0322.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_2018_0322.js.mem" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_testResReq.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/avida_testResReq.js.mem" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js.mem" afterPath="$PROJECT_DIR$/avida.js.mem" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida-messages.js" afterPath="$PROJECT_DIR$/avida-messages.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/avida.js" afterPath="$PROJECT_DIR$/avida.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojoDnd.js" afterPath="$PROJECT_DIR$/dojoDnd.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messaging.js" afterPath="$PROJECT_DIR$/messaging.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/popControls.js" afterPath="$PROJECT_DIR$/popControls.js" />
     </list>
     <ignored path="av_ui.iws" />
@@ -33,21 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/messaging.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8670">
-              <caret line="578" column="8" lean-forward="false" selection-start-line="578" selection-start-column="8" selection-end-line="578" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="globals.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="146">
+              <caret line="595" column="3" lean-forward="false" selection-start-line="595" selection-start-column="3" selection-end-line="595" selection-end-column="3" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -58,23 +42,45 @@
       <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7905">
-              <caret line="527" column="34" lean-forward="false" selection-start-line="527" selection-start-column="34" selection-end-line="527" selection-end-column="49" />
+            <state relative-caret-position="137">
+              <caret line="222" column="83" lean-forward="true" selection-start-line="222" selection-start-column="83" selection-end-line="222" selection-end-column="92" />
               <folding>
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#5;n#span#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#2;n#div#2;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <marker date="1522099464273" expanded="true" signature="31282:31306" ph="..." />
+                <marker date="1522515623507" expanded="true" signature="31409:31433" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18990">
-              <caret line="1307" column="7" lean-forward="false" selection-start-line="1307" selection-start-column="7" selection-end-line="1307" selection-end-column="19" />
+            <state relative-caret-position="241">
+              <caret line="526" column="76" lean-forward="true" selection-start-line="526" selection-start-column="76" selection-end-line="526" selection-end-column="76" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="popControls.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/popControls.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="549" column="25" lean-forward="true" selection-start-line="549" selection-start-column="25" selection-end-line="549" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="avida-messages.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avida-messages.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="35" lean-forward="true" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -85,21 +91,29 @@
       <file leaf-file-name="dojoDnd.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dojoDnd.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="531">
+            <state relative-caret-position="-1724">
               <caret line="868" column="3" lean-forward="true" selection-start-line="868" selection-start-column="3" selection-end-line="868" selection-end-column="3" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="popControls.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/popControls.js">
+      <file leaf-file-name="placeParent.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/placeParent.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="267" column="38" lean-forward="false" selection-start-line="267" selection-start-column="38" selection-end-line="267" selection-end-column="38" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state relative-caret-position="-4810">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="populationGrid.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/populationGrid.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="529">
+              <caret line="142" column="57" lean-forward="true" selection-start-line="142" selection-start-column="57" selection-end-line="142" selection-end-column="57" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -109,6 +123,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2175">
               <caret line="145" column="4" lean-forward="false" selection-start-line="145" selection-start-column="4" selection-end-line="145" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="messaging.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/messaging.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="145" column="8" lean-forward="false" selection-start-line="145" selection-start-column="8" selection-end-line="145" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -125,23 +149,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>split</find>
-      <find>av.grd.drawGridSetupFn</find>
-      <find>maxVal</find>
-      <find>addSdish</find>
-      <find>Sdish</find>
-      <find>addSdi</find>
-      <find>runMu</find>
-      <find>av.msg.importMultiDishExpr</find>
-      <find>av.frd.environmentCFGlineParse</find>
-      <find>av.frd.environmentCFG2form</find>
-      <find>v.frd.updateSetup</find>
-      <find>viableNumLabel</find>
-      <find>av.msg.runResReqDish</find>
-      <find>Mdish</find>
-      <find>av.msg.updatePopStats</find>
-      <find>av.msg.makeResReqMsg</find>
-      <find>av.frd.updateSetup</find>
       <find>runStop</find>
       <find>runStopFn</find>
       <find>inject</find>
@@ -152,9 +159,26 @@
       <find>ptd.runPopFn</find>
       <find>c</find>
       <find>conso</find>
-      <find>resr</find>
       <find>mD</find>
+      <find>addE</find>
+      <find>autoUpdateSpinner</find>
+      <find>debug.</find>
+      <find>av.debug.popCon</find>
+      <find>consol</find>
       <find>multi-</find>
+      <find>av.ui.autoStopValue​</find>
+      <find>av.ui.autoStopFlag</find>
+      <find>av.ui.autoStopValue</find>
+      <find>at updat</find>
+      <find>resr</find>
+      <find>v.ptd.autoPauseUpdate</find>
+      <find>av.ptd.setAutoPausePop</find>
+      <find>etAutoPausePop</find>
+      <find>freezeSuperDish</find>
+      <find>Times Performed</find>
+      <find>xorLabel</find>
+      <find>sdishFzr</find>
+      <find>multi</find>
     </findStrings>
     <replaceStrings>
       <replace>av.pch.nUpdate</replace>
@@ -170,6 +194,8 @@
       <replace>addMdi</replace>
       <replace>Mdish</replace>
       <replace>av.dnd.runResReqDish</replace>
+      <replace>freezeMultiDish</replace>
+      <replace>multidFzr</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -212,7 +238,6 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/restartAvida.js" />
         <option value="$PROJECT_DIR$/globalsDom.js" />
-        <option value="$PROJECT_DIR$/avida-messages.js" />
         <option value="$PROJECT_DIR$/organismView.js" />
         <option value="$PROJECT_DIR$/utilities.js" />
         <option value="$PROJECT_DIR$/webpageTemp.html" />
@@ -226,13 +251,14 @@
         <option value="$PROJECT_DIR$/populationGrid.js" />
         <option value="$PROJECT_DIR$/fileDataWrite.js" />
         <option value="$PROJECT_DIR$/fileIO.js" />
+        <option value="$PROJECT_DIR$/fileDataRead.js" />
+        <option value="$PROJECT_DIR$/dojoDnd.js" />
+        <option value="$PROJECT_DIR$/avida-messages.js" />
+        <option value="$PROJECT_DIR$/globals.js" />
+        <option value="$PROJECT_DIR$/popControls.js" />
+        <option value="$PROJECT_DIR$/messaging.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
-        <option value="$PROJECT_DIR$/fileDataRead.js" />
-        <option value="$PROJECT_DIR$/popControls.js" />
-        <option value="$PROJECT_DIR$/dojoDnd.js" />
-        <option value="$PROJECT_DIR$/globals.js" />
-        <option value="$PROJECT_DIR$/messaging.js" />
       </list>
     </option>
   </component>
@@ -488,20 +514,21 @@
       <workItem from="1521154146691" duration="5051000" />
       <workItem from="1522098749503" duration="11347000" />
       <workItem from="1522251114904" duration="109000" />
-      <workItem from="1522251245912" duration="2647000" />
+      <workItem from="1522251245912" duration="20320000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1045373000" />
+    <option name="totallyTimeSpent" value="1063046000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="11" y="23" width="1428" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24170274" sideWeight="0.76763487" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1890332" sideWeight="0.76763487" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31752306" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784638" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24891774" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -514,7 +541,6 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2002635" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -561,7 +587,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/globals.js</url>
-          <line>522</line>
+          <line>523</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -690,13 +716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avida-messages.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="24" column="78" lean-forward="false" selection-start-line="24" selection-start-column="78" selection-end-line="24" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/dojox/editor/plugins/nls/id/BidiSupport.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -783,13 +802,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/placeParent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="33" column="8" lean-forward="false" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/globalsDom.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -846,13 +858,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/populationGrid.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fileDataRead.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2175">
@@ -861,59 +866,83 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dojoDnd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1724">
+          <caret line="868" column="3" lean-forward="true" selection-start-line="868" selection-start-column="3" selection-end-line="868" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/placeParent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4810">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/populationGrid.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="142" column="57" lean-forward="true" selection-start-line="142" selection-start-column="57" selection-end-line="142" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avida-messages.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="35" lean-forward="true" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="595" column="3" lean-forward="false" selection-start-line="595" selection-start-column="3" selection-end-line="595" selection-end-column="3" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messaging.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="145" column="8" lean-forward="false" selection-start-line="145" selection-start-column="8" selection-end-line="145" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/popControls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="549" column="25" lean-forward="true" selection-start-line="549" selection-start-column="25" selection-end-line="549" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7905">
-          <caret line="527" column="34" lean-forward="false" selection-start-line="527" selection-start-column="34" selection-end-line="527" selection-end-column="49" />
+        <state relative-caret-position="137">
+          <caret line="222" column="83" lean-forward="true" selection-start-line="222" selection-start-column="83" selection-end-line="222" selection-end-column="92" />
           <folding>
             <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#5;n#span#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#2;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <marker date="1522099464273" expanded="true" signature="31282:31306" ph="..." />
+            <marker date="1522515623507" expanded="true" signature="31409:31433" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18990">
-          <caret line="1307" column="7" lean-forward="false" selection-start-line="1307" selection-start-column="7" selection-end-line="1307" selection-end-column="19" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/popControls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="267" column="38" lean-forward="false" selection-start-line="267" selection-start-column="38" selection-end-line="267" selection-end-column="38" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dojoDnd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="868" column="3" lean-forward="true" selection-start-line="868" selection-start-column="3" selection-end-line="868" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/messaging.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8670">
-          <caret line="578" column="8" lean-forward="false" selection-start-line="578" selection-start-column="8" selection-end-line="578" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="241">
+          <caret line="526" column="76" lean-forward="true" selection-start-line="526" selection-start-column="76" selection-end-line="526" selection-end-column="76" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
