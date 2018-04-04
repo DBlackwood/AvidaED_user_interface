@@ -4,7 +4,7 @@ av.msg.readMsg = function (ee) {
   var msg = ee.data;  //passed as object rather than string so JSON.parse is not needed.
   //console.log('msg', msg);
   if ('data' == msg.type) {
-    if (av.debug.userMsg) userMsgLabel.textContent = 'Avida type:data; name:' + msg.name;
+    if (av.debug.msg) userMsgLabel.textContent = 'Avida type:data; name:' + msg.name;
     switch (msg.name) {
       case 'exportExpr':
         av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
@@ -16,7 +16,7 @@ av.msg.readMsg = function (ee) {
         break;
       case 'reset':
         av.debug.log += '\n--Aui: \n' + av.utl.json2stringFn(msg);
-        if (av.debug.userMsg) userMsgLabel.textContent = 'Avida: ' + msg.name;
+        if (av.debug.msg) userMsgLabel.textContent = 'Avida: ' + msg.name;
         if (true === av.msg.uiReqestedReset) {
           av.ptd.resetDishFn();
           av.msg.uiReqestedReset = false;
@@ -87,7 +87,7 @@ av.msg.readMsg = function (ee) {
   }
   else if ('userFeedback' == msg.type) {
     av.debug.log += '\nAui: userFeedback \n' + av.utl.json2stringFn(msg);
-    if (av.debug.userMsg) userMsgLabel.textContent = 'Avida userFeedback: ' + msg.level + ' at ' + av.grd.oldUpdate.toString() + ' is ' + msg.message;
+    if (av.debug.msg) userMsgLabel.textContent = 'Avida userFeedback: ' + msg.level + ' at ' + av.grd.oldUpdate.toString() + ' is ' + msg.message;
     //console.log('userFeedback', msg);
     switch (msg.level) {
       case 'error':
@@ -516,7 +516,7 @@ av.msg.reset = function () {
     'name': 'reset',
     'triggerType': 'immediate'
   };
-  if (av.debug.userMsg) userMsgLabel.textContent = 'ui-->Avida: reset requested';
+  if (av.debug.msg) userMsgLabel.textContent = 'ui-->Avida: reset requested';
   av.aww.uiWorker.postMessage(request);
   av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
 }
@@ -550,6 +550,7 @@ av.msg.injectAncestors = function () {
         'start_cell_id': av.parents.AvidaNdx[ii],
         'clade_name': av.parents.name[ii]
       }
+      if (av.debug.msg) console.log('webInjectSequence', request);
       av.aww.uiWorker.postMessage(request);
       av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
       //console.log('log', av.utl.json2stringFn(request));

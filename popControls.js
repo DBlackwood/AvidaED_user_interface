@@ -55,8 +55,8 @@ av.ptd.popWorldStateUi = function () {
   //av.dnd.ancestorBox.isSource = false;
   av.dnd.ancestorBox.copyOnly = true;
   av.dnd.activeConfig.isSource = true;
-  //delete av.dnd.ancestorBox.accept['g'];
-  //delete av.dnd.gridCanvas.accept['g'];
+  delete av.dnd.ancestorBox.accept['g'];   // get rid of to allow new ancestors to be added to an existing population
+  delete av.dnd.gridCanvas.accept['g'];    // get rid of to allow new ancestors to be added to an existing population
   delete av.dnd.activeConfig.accept['c'];
   delete av.dnd.activeConfig.accept['m'];
   delete av.dnd.activeConfig.accept['w'];

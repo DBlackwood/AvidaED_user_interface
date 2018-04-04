@@ -23,7 +23,6 @@ av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
 av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
-av.debug.userMsg  = false; //Show avida messages on screen
 av.debug.plotly = false;  //both popChart and analysis
 av.debug.usr = ''; //working on log for user actions.
 
