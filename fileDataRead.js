@@ -231,6 +231,7 @@ av.frd.updateSetup = function () {
   //console.log('actConfig: path=', path);
   av.frd.avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
+  console.log("doctext is:", doctext);
   av.frd.environmentCFG2form(doctext);
   doctext = av.fzr.file[dir + '/pauseRunAt.txt'];
   av.frd.pauseRunAtTXT2form(doctext);
@@ -243,6 +244,7 @@ av.frd.environmentCFGlineParse = function(instr){
   var num = 0;
   var flag = true;
   var cfgary = flexsplit(instr).split(',');      //replaces white space with a comma, then splits on comma
+  console.log("instr=",instr);
   if (0 < cfgary[3].length) {num = wsb(':',wsa('=',cfgary[3]));}
   if (0 == num) {flag = false;} //use == in this case as they are of different type
   //if (av.debug.fio) console.log('flag', flag, '; num', num, '; cfgary', cfgary[3], '; instr', instr);
@@ -262,6 +264,7 @@ av.frd.environmentCFGparse = function (filestr) {
   var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (3 < lines[ii].length) {
+      console.log("lines[", ii, "]=", lines[ii]);
       lineobj = av.frd.environmentCFGlineParse(lines[ii]);
       rslt[lineobj.name.toUpperCase()] = lineobj.value;
     }
@@ -272,6 +275,7 @@ av.frd.environmentCFGparse = function (filestr) {
 // puts data from the environment.cfg into the setup form for the population page
 av.frd.environmentCFG2form = function (fileStr) {
   'use strict';
+  console.log("fileStr =", fileStr);
   var dict = av.frd.environmentCFGparse(fileStr);
   dijit.byId('notose').set('checked', dict.NOT);
   dijit.byId('nanose').set('checked', dict.NAND);

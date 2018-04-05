@@ -14,14 +14,14 @@
 // Get hashtag of avida side to state which version of avida works with this version of av_ui
 // git rev-parse HEAD
 //
-// Avida -------------------
+// Avida ___________________
 //
 // to thet the parse value go to the current version of avida folder and
 // git rev-parse --short HEAD
 //
 // on 2017_0927 switched to using new avida files with parse number  = 88746e4
 //
-// Generic Notes -------------------------------------------------------------------------------------------------------
+// Generic Notes _______________________________________________________________________________________________________
 //
 // [option]<alt>{go} to get library in the list for finder
 //
@@ -150,9 +150,9 @@ require([
 
   /********************************************************************************************************************/
 
-  // -------------------------------------------------------------------------------------------------------------------
+  // ___________________________________________________________________________________________________________________
   // Initialize variables that depend on files loaded in requirement statement
-  // -------------------------------------------------------------------------------------------------------------------
+  // ___________________________________________________________________________________________________________________
 
   dijit.byId('mnCnPause').attr('disabled', true);
   dijit.byId('mnCnOrganismTrace').attr('disabled', true);
@@ -384,7 +384,7 @@ require([
   av.fio.JSZip = JSZip;  //to allow other required files to be able to use JSZip
   av.fio.FileSaver = FileSaver;
   av.pch.Plotly = Plotly;
-  av.pch.Plotly.aminate = Plotly.animate;
+  av.pch.Plotly.animate = Plotly.animate;
 
   av.fio.readZipWS(av.fio.defaultFname, true);
   //av.fio.loadDefaultConfig();
@@ -424,7 +424,7 @@ require([
   });
 
   // open and read user picked file
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
 
   dijit.byId('mnFlOpenWS').on('Click', function () {
     'use strict';
@@ -434,19 +434,9 @@ require([
     if ('no' === av.fzr.saveState) sWSfDialog.show();   //Need to change to include might be saved tiba fix
     //else document.getElementById('inputFile').click();
     else document.getElementById('putWS').click();  // calls av.fio.userPickZipRead
-  });
+  })
 
-  dijit.byId('mnFlOpenB64').on('Click', function () {
-    'use strict';
-    av.post.addUser('Button: mnFlOpenB64');
-    av.fio.useDefault = false;
-    av.fio.isB64 = true;
-    if ('no' === av.fzr.saveState) sWSfDialog.show();
-    //else document.getElementById('inputFile').click();
-    else document.getElementById('putWS').click();   // call av.fio.userPickZipRead()
-  });
-
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
 
   dijit.byId('mnFlFzItem').on('Click', function () {
     'use strict';
@@ -456,7 +446,7 @@ require([
     document.getElementById('importFzrItem').click();
   });
 
-  // ----------------------- Save Workspace ----------------------------------------------------------------------------
+  // _______________________ Save Workspace ____________________________________________________________________________
   // Save current workspace (mnFzSaveWorkspace)
   document.getElementById('mnFlSaveWorkspace').onclick = function () {
     if (!av.brs.isSafari) {
@@ -469,7 +459,7 @@ require([
   try {
     var isFileSaverSupported = !!new Blob;
   } catch (e) {
-    console.log('----------------------------------------------------------filesaver supported?', e);
+    console.log('_________________________________________________________-filesaver supported?', e);
   }
 
   // Save current workspace with a new name
@@ -509,7 +499,7 @@ require([
     mnFlStandAloneAppDialog.show();
   });
 
-  //------------- Testing only need to delete later.--------------------
+  //_____________ Testing only need to delete later.____________________
 
   av.dom.mnHpDebug.onclick = function () {
     if ('visible' === document.getElementById('mnDebug').style.visibility) {
@@ -584,12 +574,12 @@ require([
       window.URL.revokeObjectURL(ab.href);
     }, 100);
   }
-  //------------- Testing only need to delete above later.--------------------
+  //_____________ Testing only need to delete above later.____________________
 
   if (av.debug.root) console.log('before Help drop down menu');
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   // Help Drop down menu buttons
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   dijit.byId('mnHpAbout').on('Click', function () {
     av.post.addUser('Button: mnHpAbout');
     mnHpAboutDialog.show();
@@ -598,7 +588,7 @@ require([
   dijit.byId('mnAeAbout').on('Click', function () {
     av.post.addUser('Button: mnAeAbout');
     mnHpAboutDialog.show();
-  });``
+  });
 
   dijit.byId('mnHpProblem').on('Click', function () {
     av.post.addUser('Button: mnHpProblem');
@@ -726,7 +716,7 @@ require([
   // Error logging
   //********************************************************************************************************************
 
-  //--------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________
   //https://bugsnag.com/blog/js-stacktracess
   //http://blog.bugsnag.com/js-stacktraces
   window.onerror = function (message, file, line, col, error) {
@@ -734,7 +724,7 @@ require([
     av.dom.runStopButton.innerHTML = 'Run';  //av.msg.pause('now');
     av.debug.finalizeDtail();
     av.debug.triggered = 'errorTriggered';
-    av.post.postLogPara = 'mares eat oats and does eat oats'
+    av.post.postLogPara = 'postLogPara should be here'
     av.debug.sendLogPara = 'The error is the last line in the session log in the text below.';
     av.debug.postEmailLabel = 'Please include your e-mail if you would like feed back or are willing to further assist in debug';
     av.debug.postNoteLabel = 'Please include any additional comments in the field below.'
@@ -749,7 +739,7 @@ require([
   window.addEventListener('error', function (evt) {
     //console.log('event listener', evt);
   });
-  //--------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________
 
   on(document.getElementById('postPost'), 'click', function(){
     av.post.addUser('Button: postPost');
@@ -783,8 +773,8 @@ require([
     ); // End then
   }); // End on's function and on statement
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
+  //____________________________________________________________________________________________________________________
   //More usefull websites to catch errors
   // https://davidwalsh.name/javascript-stack-trace
   // https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
@@ -839,9 +829,9 @@ require([
    window.onbeforeunload=goodbye;
    */
 
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   // main button scripts
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
 
   //initialize the ht for main buttons and trash can so there is no scroll bar
   if (av.dom.mainButtons.scrollHeight > av.dom.mainButtons.clientHeight) {
@@ -911,7 +901,7 @@ require([
   };
 
   //********************************************************************************************************************
-  // Resize window helpers -------------------------------------------
+  // Resize window helpers ___________________________________________
   //********************************************************************************************************************
   if (av.debug.root) console.log('before Resize helpers');
 
@@ -1209,11 +1199,11 @@ require([
   });
 
   if (av.debug.root) console.log('before Population Page');
-//----------------------------------------------------------------------------------------------------------------------
+//_____________________________________________________________________________________________________________________-
 //                                    End of dojo based DND triggered functions
-//----------------------------------------------------------------------------------------------------------------------
+//_____________________________________________________________________________________________________________________-
 //                                             Population page Buttons
-//----------------------------------------------------------------------------------------------------------------------
+//_____________________________________________________________________________________________________________________-
 
 // shifts the population page from Map (grid) view to setup parameters view and back again.
   av.dom.popSetupButton.onclick = function () {
@@ -1248,9 +1238,9 @@ require([
     av.ptd.popStatView()
   };
 
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   ///   Map Grid buttons - New  Run/Pause Freeze
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   
   //process the run/Stop Button - a separate function is used so it can be flipped if the message to avida is not successful.
   av.dom.runStopButton.onclick = function () {
@@ -1481,7 +1471,7 @@ require([
 
 
   // End of Freezer functions
-  //---------------------------------------------- Restart Avida web worker --------------------------------------------
+  //_____________________________________________- Restart Avida web worker ____________________________________________
 
   //http://www.w3schools.com/html/tryit.asp?filename=tryhtml5_webworker
   av.ui.restartAvida = function () {
@@ -1518,7 +1508,7 @@ require([
     av.ptd.FrConfigFn();
   }
 
-  //test - delete later ------------------------------------------------------------------------------------------------
+  //test - delete later ________________________________________________________________________________________________
   document.getElementById('mnDbRestartAvida').onclick = function () {
     av.post.addUser('Button: mnDbRestartAvida');
     av.aww.restartAvidaFn();
@@ -1554,12 +1544,12 @@ require([
 
   document.getElementById('mnDbLineLog').onclick = function () {
     'use strict';
-    av.debug.log += '\n -----------------------------------------------------------------------------------------------\n';
+    av.debug.log += '\n _______________________________________________________________________________________________\n';
   };
 
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   //    mouse DND functions
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
 
   //mouse click started on Organism Canvas - only offspring can be selected if present
   $(document.getElementById('organCanvas')).on('mousedown', function (evt) {
@@ -1610,7 +1600,7 @@ require([
     if (av.debug.mouse) console.log('AvidaED.js: mouse.UpGridPosX, y', av.mouse.UpGridPos[0], av.mouse.UpGridPos[1]);
     av.mouse.Dn = false;
 
-    // --------- process if something picked to dnd ------------------
+    // _________ process if something picked to dnd _________________-
     if ('parent' == av.mouse.Picked) {
       av.mouse.Picked = '';
       av.mouse.ParentMouse(evt, av);
@@ -1681,7 +1671,7 @@ require([
   //av.grd.CanvasGrid.height = $('#gridHolder').innerHeight() - 16 - av.grd.CanvasScale.height;
   av.grd.CanvasGrid.height = 15;
 
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   if (av.debug.root) console.log('before av.grd.drawGridSetupFn');
 
   av.grd.drawGridSetupFn = function () {
@@ -1736,7 +1726,7 @@ require([
           var numGH = av.dom.gridHolder.clientHeight;
           av.grd.CanvasGrid.height = numGH - 6 - 17;
           av.grd.findGridSize(av.grd, av.parents);     //in populationGrid.js
-          consold.log('inside DrawGridSetupFn in odd if statement ----------------------------------')
+          consold.log('inside DrawGridSetupFn in odd if statement _________________________________-')
         }
         av.grd.drawGridUpdate();   //in populationGrid.js
 
@@ -1845,9 +1835,9 @@ require([
     av.ptd.bitToggle('equButton');
   };
 
-  // -------------------------------------------------------------------------------------------------------------------
+  // ___________________________________________________________________________________________________________________
   //                    Population Chart   ; pop chart; popchart  uses plotly.js
-  // -------------------------------------------------------------------------------------------------------------------
+  // ___________________________________________________________________________________________________________________
 
   // Chart control on population page
   //Set Y-axis title and choose the correct array to plot
@@ -2036,7 +2026,8 @@ require([
             Plotly.plot('popChart', popData, av.pch.layout, av.pch.widg);
           }
           else {
-            if (av.brs.isChrome) {
+            if (av.brs.isChrome || av.brs.isIE) {
+              console.log('in isChrome');
               av.debug.log += '\n     --uiD: Plotly: Plotly.restyle("popChart", rstl0, [0]) at 1734';
               av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'rstl0', [rstl0]);
               Plotly.restyle('popChart', rstl0, [0]);
@@ -2058,11 +2049,11 @@ require([
               //console.log('after relayout in update grid chart');
               if (av.debug.plotly) console.log('popData', popData);
               //Plotly.animate('popChart', {popData});
-              av.debug.log += '\n     --uiD: Plotly.aminate("popChart", {popData}) in AvidaED.js at 1757';
+              av.debug.log += '\n     --uiD: Plotly.animate("popChart", {popData}) in AvidaED.js at 1757';
               av.utl.dTailWrite('AvidaED.js', (new Error).lineNumber, 'popData', [popData]);
-              Plotly.aminate('popChart', {popData});
-              //Plotly.aminate('popChart', popData);
-              //av.pch.Plotly.aminate('popChart', {popData});
+              //Plotly.animate('popChart', {popData});   //think I need for firefox but won't load in ie
+              //Plotly.animate('popChart', popData);
+              //av.pch.Plotly.animate('popChart', {popData});
               if (av.debug.plotly) console.log('after animate in update grid chart');
             }
           }
@@ -2323,6 +2314,25 @@ require([
     dijit.byId('autoUpdateRadio').set('checked', stopFlag);
     av.ui.autoStopValue = stopValue;
     av.ui.autoStopFlag = stopFlag;
+  }
+
+  av.ptd.setAutoPause1 = function(stopValue)  {
+    if (0 < stopValue) {
+      dijit.byId('autoUpdateSpinner').set('value', stopValue);
+      dijit.byId('autoUpdateRadio').set('checked', true);
+      av.ui.autoStopValue = stopValue;;
+      av.ui.autoStopFlag = true;
+    }
+    else if (0 == stopValue) {
+      dijit.byId('autoUpdateSpinner').set('value', stopValue);
+      dijit.byId('autoUpdateRadio').set('checked', false);
+      av.ui.autoStopValue = stopValue;;
+      av.ui.autoStopFlag = false;
+    }
+    else {
+      dijit.byId('autoUpdateRadio').set('checked', false);
+      av.ui.autoStopFlag = false;
+    }
   }
 
   /* *************************************************************** */
@@ -2598,7 +2608,7 @@ require([
     else {
       av.dom.anlChrtSpace.style.visibility = 'visible';
       dijit.byId('analysisBlock').resize();
-      //console.log('start av.anl.AnaChartFn-----------------------------------');
+      //console.log('start av.anl.AnaChartFn___________________________________');
       //if ('populationBlock' === av.ui.page && av.ptd.popStatFlag && undefined !== av.anl.logFit[1]) {
       if ('none' === dijit.byId('yLeftSelect').value && 'none' === dijit.byId('yRightSelect').value) {
         if (av.debug.plotly) console.log('both axis set to none');
@@ -2730,7 +2740,7 @@ require([
   //Tasks that Need to be run when page is loaded but after chart is defined
   // **************************************************************************************************************** */
 
-  // ------------------------ Population Page Statistics tables --------------------------------------------------------
+  // ________________________ Population Page Statistics tables ________________________________________________________
 
   av.ui.adjustPopRightSize();
 
@@ -2818,12 +2828,12 @@ require([
   };
   });
 
-  //------- not in use = example
+  //_______ not in use = example
   //var hexColor = av.ui.invertHash(av.color.names);
   //var theColor = hexColor['#000000'];  //This should get 'Black'
   //console.log('theColor=', theColor);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  //____________________________________________________________________________________________________________________
   //Notes on things I learned writing this code, that is not directly used in the code
   //use FileMerge to compare to versions of the same file on a Mac
   //js fiddle of dragging image to cavans and dragging it around http://jsfiddle.net/XU2a3/41/

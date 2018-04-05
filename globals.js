@@ -10,20 +10,18 @@ Number.prototype.pad = function(size) {
 
 //av.debug flags
 av.debug = {};
-av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
+av.debug.root = true;  //statements that look for failiers when the code executes outside of functions
 av.debug.bool = false;  //av.debug statements that look for errors outlining logic functions
 av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
 av.debug.dnd = false;     //debu statements about dojo dnd
-av.debug.msg = false;     //messages to and from avida
+av.debug.msg = true;     //messages to and from avida
 av.debug.trace = false;   //organism page
 av.debug.grid = false;     //population grid
 av.debug.popCon = false;     //population Controls
-av.debug.msgOrder = false; //message order
-av.debug.pdb = false; //pouchDB
 av.debug.fio = false; // file io
 av.debug.ind = false; //oranism page
 av.debug.anl = false; //analysis page
-av.debug.plotly = false;  //both popChart and analysis
+av.debug.plotly = true;  //both popChart and analysis
 av.debug.usr = ''; //working on log for user actions.
 
 av.post = {};

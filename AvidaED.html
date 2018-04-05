@@ -159,13 +159,13 @@
             <span data-dojo-type='dijit/MenuItem' id='mnDbRestartAvida' label='Restart Avida WebWorker'></span>
             <span data-dojo-type='dijit/MenuItem' id='fileDownloadButton' label='test fileDownload'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbSaveTxt' label='save Txt'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnFlOpenB64' label='Open a b64 Workspace'></span>
           </span>
         </span>
         |&nbsp;&nbsp;&nbsp;
         <label id='wsSavedMsg' style='color: blue'>Workspace: default</label>
         &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <span style='text-align: right'><label id='userMsgLabel' style='color: red; text-align: right'> </label></span>
+      </span>
   </div>
   <!-- contentPage for far left of screen with freezer etc -->
   <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false' id='leftCP'
@@ -177,9 +177,9 @@
         <table id='mainButtonTable' style='border-collapse:collapse;table-layout:auto;width:100%;height:auto;' border='0'>
           <tbody>
           <tr>
-            <td><img src='images/Avida-ED-population-icon.png' style='width: 32px; height: 32px;'></img></td>
+            <td><img src='images/Avida-ED-population-icon.png' style='width: 32px; height: 32px;' /></td>
             <td><input type='button' id='populationButton' intermediateChanges='false'
-                     value='Population' iconClass='dijitNoIcon'></button></td>
+                     value='Population' iconClass='dijitNoIcon' /></td>
           </tr>
           <tr>
             <td><img src='images/Avida-ED-organism-icon.png' style='width: 32px; height: 32px;' id='organIcon' /></td>
@@ -187,9 +187,9 @@
                        value='Organism' iconClass='dijitNoIcon' /></td>
           </tr>
           <tr>
-            <td><img src='images/Avida-ED-analysis-icon.png' style='width: 32px; height: 32px;'></img></td>
+            <td><img src='images/Avida-ED-analysis-icon.png' style='width: 32px; height: 32px;' /></td>
             <td><input type='button' id='analysisButton' intermediateChanges='false'
-                       value='Analysis' iconClass='dijitNoIcon'></button></td>
+                       value='Analysis' iconClass='dijitNoIcon' /></td>
           </tr>
           </tbody>
         </table>
@@ -197,7 +197,7 @@
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
            refreshOnShow='false' region='bottom' splitter='true' maxSize='Infinity' doLayout='false'
            style='height:35px;overflow: auto' id='trashCP'>
-        <span id='trashCan' class='container'><img id='trashCanImage' src='images/Avida-ED-trash-icon.png' style='width: 32px;'></img></span>
+        <span id='trashCan' class='container'><img id='trashCanImage' src='images/Avida-ED-trash-icon.png' style='width: 32px;' /></span>
       </div>
       <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
            refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false' id='freezerDiv'>
@@ -230,8 +230,8 @@
   <div data-dojo-type='dijit/layout/ContentPane' id='blockHolder' extractContent='false' preventCache='false'
        preload='false'
        refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'>
-    <!-- main tab container ---------------------------->
-    <!-- population block ----------------------------->
+    <!-- main tab container -->
+    <!-- population block -->
     <div data-dojo-type='dijit/layout/ContentPane' id='populationBlock' title='Population' extractContent='false'
          preventCache='false'
          refreshOnShow='false' doLayout='true' selected='true' closable='false' preload='false' style='height: 96%'>
@@ -245,7 +245,7 @@
             <tbody>
             <tr style='vertical-align: middle; line-height: 25px'>
               <td style='vertical-align: top;'>
-                <div class='lftmargin'><img src='images/Avida-ED-dish-icon.png'></img></div>
+                <div class='lftmargin'><img src='images/Avida-ED-dish-icon.png' /></div>
                 <div id='activeConfig' class='popContainer'></div>
               </td>
               <td><label id='altMsgLabel'></label></td>
@@ -427,37 +427,37 @@
                     <tr>
                       <td><div class='noWrap1'><button id='nanButton' class='bitButtonOff'>NAN</button></div></td>
                       <td><div class='noWrap2r'><label id='nanPop'></label></div></td>
-                      <td><div class='noWrapTitle'><label id='logTit1' /></div></td>
+                      <td><div class='noWrapTitle'><label id='logTit1'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='andButton' class='bitButtonOff'>AND</button></div></td>
                       <td><div class='noWrap2r'><label id='andPop'></label></div></td>
-                      <td><div class='noWrapTitle'><label id='logTit2' /></div></td>
+                      <td><div class='noWrapTitle'><label id='logTit2'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='ornButton' class='bitButtonOff'>ORN</button></div></td>
                       <td><div class='noWrap2r'><label id='ornPop'></label></div></td>
-                      <td><div class='noWrapTitle'><label id='logTit3' /></div></td>
+                      <td><div class='noWrapTitle'><label id='logTit3'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='oroButton' class='bitButtonOff'>ORO</button></div></td>
                       <td><div class='noWrap2r'><label id='oroPop'></label></div></td>
-                      <td><div class='noWrapTitle'><label id='logTit4' /></div></td>
+                      <td><div class='noWrapTitle'><label id='logTit4'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='antButton' class='bitButtonOff'>ANT</button></div></td>
                       <td><div class='noWrap2r'><label id='antPop'></label></div></td>
-                      <td><div class='noWrapTitle'><label id='logTit5' /></div></td>
+                      <td><div class='noWrapTitle'><label id='logTit5'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='norButton' class='bitButtonOff'>NOR</button></div></td>
                       <td><div class='noWrap2r'><label id='norPop'></label></div></td>
-                      <td><div class='noWrapTitle'><label id='logTit6' /></div></td>
+                      <td><div class='noWrapTitle'><label id='logTit6'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='xorButton' class='bitButtonOff'>XOR</button></div></td>
                       <td><div class='noWrap2r'><label id='xorPop'></label></div></td>
-                      <td><div style='text-align: center'><label id='numLog' /></div></td>
+                      <td><div style='text-align: center'><label id='numLog'></label></div></td>
                     </tr>
                     <tr>
                       <td><div class='noWrap1'><button id='equButton' class='bitButtonOff'>EQU</button></div></td>
@@ -556,9 +556,9 @@
 
               <div  class='odd'>
                 Dish Size:
-                <input id='sizeCols' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em'></input>
+                <input id='sizeCols' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em' />
                 &nbsp; x &nbsp;
-                <input id='sizeRows' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em'></input>
+                <input id='sizeRows' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em' />
                 cells&nbsp;<br />
                 <label id='sizeCells'>There are 900 cells by default</label>
               </div>
@@ -572,8 +572,7 @@
                 <input id='muteInput' type='text' data-dojo-type='dijit/form/NumberTextBox' value=1 required='true' ;
                        data-dojo-props='constraints:{min:0, max:100},
                      invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid mutation rate."'
-                       style='width: 4.5em; height:1.8em' onchange='av.ptd.muteInputChange(this.value)'>
-                </button> %<br />
+                       style='width: 4.5em; height:1.8em' onchange='av.ptd.muteInputChange(this.value)'> %<br />
                 <!--; or the slider value is &nbsp;</div>
                 <input id='mRate' type='text' readonly style='width: 4em; height:1.8em'></button> -->
                 <label id='muteError'>Error place holder</label>
@@ -585,11 +584,11 @@
                 Place Offspring:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='childParentRadio'
                        intermediateChanges='false'
-                       iconClass='dijitNoIcon' name='child' value='nearParent'></button>
+                       iconClass='dijitNoIcon' name='child' value='nearParent'>
                 <label id='childParentLabel'>Near their parent</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='childRandomRadio'
                        intermediateChanges='false'
-                       iconClass='dijitNoIcon' name='child' checked value='random'></button>
+                       iconClass='dijitNoIcon' name='child' checked value='random'>
                 <label id='childRandomLabel'>Anywhere, randomly</label>
               </div>
               <div class='odd'>
@@ -608,33 +607,33 @@
                   </tr>
                   <tr>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='notose'
-                               label='notose'></button>notose
+                               label='notose'>notose
                     </td>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='andose'
-                               label='andose'></button>andose
+                               label='andose'>andose
                     </td>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='orose'
-                               label='orose'></button>orose
+                               label='orose'>orose
                     </td>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='norose'
-                               label='norose'></button>norose
+                               label='norose'>norose
                     </td>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='equose'
-                               label='equose'></button>equose
+                               label='equose'>equose
                     </td>
                   </tr>
                   <tr>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='nanose'
-                               label='nanose'></button>nanose
+                               label='nanose'>nanose
                     </td>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='ornose'
-                               label='ornose'></button>ornose
+                               label='ornose'>ornose
                     </td>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='andnose'
-                               label='andnose'></button>andnose
+                               label='andnose'>andnose
                     </td>
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='xorose'
-                               label='xorose'></button>xorose
+                               label='xorose'>xorose
                     </td>
                     <td>&nbsp;</td>
                   </tr>
@@ -645,25 +644,25 @@
                 <label id='label_31'>Repeatability Mode:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='experimentRadio'
                        intermediateChanges='false' iconClass='dijitNoIcon' name='repeat'
-                       value='experimental'></button>
+                       value='experimental'>
                 <label id='experimentLabel'>Experimental</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='demoRadio' checked
-                       intermediateChanges='false' iconClass='dijitNoIcon' name='repeat' value='demo'></button>
+                       intermediateChanges='false' iconClass='dijitNoIcon' name='repeat' value='demo'>
                 <label id='demoLabel'>Demo</label>
               </div>
               <div class='odd'>
                 <label>Pause Run:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='manualUpdateRadio'
                        intermediateChanges='false' iconClass='dijitNoIcon' name='pauseType' checked
-                       value='manual'></button>
+                       value='manual' />
                 <label id='ManLabel'>Manually</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='autoUpdateRadio'
-                       intermediateChanges='false' iconClass='dijitNoIcon' name='pauseType' value='setupdate'></button>
+                       intermediateChanges='false' iconClass='dijitNoIcon' name='pauseType' value='setupdate' />
                 <label id='updateLabel'>At update:</label>
                 <input type='text' data-dojo-type='dijit/form/NumberSpinner' id='autoUpdateSpinner'
                        intermediateChanges='false'
                        trim='false' uppercase='false' lowercase='false' propercase='false' invalidMessage='$_unset_$'
-                       value='1000' data-dojo-props='smallDelta:100, constraints:{places:0}' style='width:80px'></button>
+                       value='1000' data-dojo-props='smallDelta:100, constraints:{places:0}' style='width:80px'>
               </div>
               <span data-dojo-type='dijit/TitlePane' id='AdvancedSetup' title='Advanced Setup'
                     extractContent='false' preventCache='false' preload='false' refreshOnShow='false' duration='200'
@@ -687,7 +686,7 @@
         </div>
       </div>
     </div>
-    <!-- Organism main block ---------------------------------------->
+    <!-- _______________________________________________________________________________________ Organism main block -->
     <div data-dojo-type='dijit/layout/ContentPane' title='Organism' id='organismBlock' extractContent='false'
          preventCache='false' preload='false' refreshOnShow='false' doLayout='true' closable='false'
          style='height: 97%; visibility:hidden;'>
@@ -700,7 +699,7 @@
             <tr style='valign: middle; line-height: 30px'>
               <td style='width: 20px'>
                 <div class='lftmargin' id='activeOrgImg'>
-                  <img src='images/Avida-ED-ancestor-icon.png' style='height: 32px;' id='actOrgImg'></img>
+                  <img src='images/Avida-ED-ancestor-icon.png' style='height: 32px;' id='actOrgImg' />
                 </div>
               </td>
               <td>
@@ -741,12 +740,7 @@
              id='rightDetail'
              refreshOnShow='false' doLayout='true' region='right' splitter='true' maxSize='Infinity' style='width:172px;'>
 
-          <table border='0'
-                 style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD'>
-            <colgroup>
-              <col></col>
-              <col></col>
-            </colgroup>
+          <table border='0' style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD'>
             <tbody>
             <tr>
               <td>Function</td>
@@ -892,7 +886,7 @@
                 <option value='Number of Organisms'>Number of Organisms</option>
                 <option value='Number Viable'>Number Viable</option>
               </select> Thicker line; left y-axis
-              <br></br>
+              <br />
               <select data-dojo-type='dijit/form/Select' id='yRightSelect' data-dojo-props='name: "yyaxis"'>
                 <option value='None'>None</option>
                 <option value='Average Fitness'>Average Fitness</option>
@@ -906,8 +900,8 @@
         </div>
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
              id='anaChrtHolder' refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'>
-          <div id='anlDndChart' style='height: 100%; width: 100%;>
-            <!--div id='anlChrtSpace'
+          <div id='anlDndChart' style='height: 100%; width: 100%;'>
+            <!-- div id='anlChrtSpace' -->
           </div>
         </div>
       </div>
@@ -915,8 +909,8 @@
   </div>
 </div>
 
-<!--------------------------------------------------------- Dialog boxes ---------------------------------------------->
-<!----------------------------------------- Save WSfile Dialog box ---------------------------------------------------->
+<!--___________________________________________________________________________________________________ Dialog boxes -->
+<!--_________________________________________________________________________________________ Save WSfile Dialog box -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sWSfDialog' title='The freezer has changed since last saved in a workspace'>
   <div class='dijitDialogPaneContentArea'>
     <p>Would you like to save before loading another workspace?</p>
@@ -930,7 +924,7 @@
   </div>
 </div>
 
-<!-------------------------------- Save mnFlExportGraph Dialog box ---------------------------------------------------->
+<!--________________________________________________________________________________ Save mnFlExportGraph Dialog box -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnFlExportGraphDialog'
      title='Expoert Graphics has not been implemented - for now:'>
   <div class='dijitDialogPaneContentArea'>
@@ -953,7 +947,7 @@
   </div>
 </div>
 
-<!---------------------------------- Export Stand Alone Dialog box ---------------------------------------------------->
+<!--__________________________________________________________________________________ Export Stand Alone Dialog box -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnFlStandAloneAppDialog'
      title='Stand alone version of Avida-ED 3.2.1'>
   <div class='dijitDialogPaneContentArea'>
@@ -966,7 +960,6 @@
         <li>Move the file ‘Avida-ED Web.app’ to the Applications Folder</li>
         <li>. . . Your Mac will complain that the file is from an unknown source, you will have to approve opening it</li>
       </ul>
-      </li>
     </ul>
   </div>
   <div class='dijitDialogPaneActionBar'>
@@ -976,7 +969,7 @@
   </div>
 </div>
 
-<!--------------------------------------------------- Freezer Dialog -------------------------------------------------->
+<!--_________________________________________________________________________________________________ Freezer Dialog -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='fzDialog' title='What would you like to save to the freezer?'>
   <div class='dijitDialogPaneContentArea'>
     <p>Configuration saves the experiment settings only.</p>
@@ -994,7 +987,7 @@
   </div>
 </div>
 
-<!------------------------------------------------ New button Dialog -------------------------------------------------->
+<!--______________________________________________________________________________________________ New button Dialog -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='newDialog'
      title='Would you like to save or discard the current petri dish before starting a new experiment?'>
   <div class='dijitDialogPaneContentArea'>
@@ -1011,7 +1004,7 @@
   </div>
 </div>
 
-<!----------------------------- Single Organism Replication Settings Dialog Box --------------------------------------->
+<!--________________________________________________________________ Single Organism Replication Settings Dialog Box -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='OrganSetupDialog' title='Settings for single organism reproduction'>
   <div class='dijitDialogPaneContentArea'>
     <form id='OrganRepeatForm'>
@@ -1025,18 +1018,18 @@
         <input id='orMuteInput' type='text' data-dojo-type='dijit/form/NumberTextBox' value=2.0 required='true' ;
                data-dojo-props='constraints:{min:0, max:100},
                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid mutation rate."'
-               style='width: 4.5em; height:1.8em'></button> %
+               style='width: 4.5em; height:1.8em'> %
 
         <!--<div class='fltLeft'>%</div>
         <input id='orMRate' type='text' readonly style='width: 4em; height:1.8em'></button>-->
       </div>
       <h3>Repeatability Mode:</h3>
       <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='OrganExperimentRadio'
-             intermediateChanges='false' name='child' checked value='orgExp' iconClass='dijitNoIcon'></button>
+             intermediateChanges='false' name='child' checked value='orgExp' iconClass='dijitNoIcon'>
       <label id='OrganExperimentLabel'>Experimental (Natural Variation)</label>
       <br/>
       <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='OrganDemoRadio'
-             intermediateChanges='false' name='child' value='orgDemo' iconClass='dijitNoIcon'></button>
+             intermediateChanges='false' name='child' value='orgDemo' iconClass='dijitNoIcon'>
       <label id='OrganDemoLabel'>Demo (forces exact replay)</label>
     </form>
   </div>
@@ -1047,7 +1040,7 @@
   </div>
 </div>
 
-<!------------------------------------------ Need Ancestor Dialog ----------------------------------------------------->
+<!--___________________________________________________________________________________________ Need Ancestor Dialog -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='NeedAncestorDialog'
      title='Unable to resume experiment; there is no start organism in the petri dish.'>
   <div class='dijitDialogPaneContentArea'>
@@ -1061,7 +1054,7 @@
   </div>
 </div>
 
-<!------------------------------------------ Help About Dialog -------------------------------------------------------->
+<!--______________________________________________________________________________________________ Help About Dialog -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnHpAboutDialog'
      title='Avida-ED: written in javascript with Avida in C++ via Emscripten'>
   <div class='dijitDialogPaneContentArea' align='center'>
@@ -1405,12 +1398,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!---------------------------------------- Restart Avida with in same browser Session (Does not work ------------------->
+<!--______________________________________ Restart Avida with in same browser Session (Does not work _________________-->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='restartAvidaDialog'
      title='There has been a fatal error in Avida'>
   <div class='dijitDialogPaneContentArea'>
     <p>Would you like to save or discard the current petri dish configuration before restarting Avida?</p>
-    <label id='restartMsgLabel' />
+    <label id='restartMsgLabel'></label>
   </div>
   <div class='dijitDialogPaneActionBar'>
     <button id='restartAvidaFrzConfig'>Freeze configuration</button>
@@ -1418,7 +1411,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!---------------------------------------- Suggesting restart if not loaded after a time delay  ----------------------->
+<!--______________________________________ Suggesting restart if not loaded after a time delay  _____________________-->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='appReloadDialog'
      title='Avida-ED failed to load'>
   <div class='dijitDialogPaneContentArea'>
@@ -1433,7 +1426,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!------------------------------------- Send Log Data via e-mail client  ---------------------------------------------->
+<!--___________________________________ Send Log Data via e-mail client  ____________________________________________-->
 <!-- Saving session log when no e-mail client present -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sendLogDialog'
      title='Avida-ED Problem Report - help us make Avida-ED better'>
@@ -1459,7 +1452,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!------------------------------------- Send Log Data by posting to database  ---------------------------------------------->
+<!--___________________________________ Send Log Data by posting to database  ____________________________________________-->
 <!-- Saving session log when no e-mail client present -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='postLogDialog'
      title='Avida-ED Problem Report - help us make Avida-ED better'>
@@ -1502,7 +1495,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!-------------------------------------- Save time recorder data to a csv file ---------------------------------------->
+<!--__________________________________________________________________________ Save time recorder data to a csv file -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='saveCSVdialog'
      title='write a file'>
   <div class='dijitDialogPaneContentArea'>
@@ -1512,13 +1505,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     <button data-dojo-type='dijit/form/Button' type='button' data-dojo-props='onClick:function(){ab.hide();}'
             id='saveCSVdialogCancel'>Cancel
     </button>
-</div>
-   <!--    <button data-dojo-type='dijit/form/Button' type='button' id='sendLogDialogSave'>Save</button>  -->
   </div>
+   <!--    <button data-dojo-type='dijit/form/Button' type='button' id='sendLogDialogSave'>Save</button>  -->
 </div>
 
 
-<!------------------------------------------ closing the file --------------------------------------------------------->
+<!--_______________________________________________________________________________________________ closing the file -->
 
 </body>
 </html>

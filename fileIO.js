@@ -319,86 +319,8 @@ av.fio.SaveUsingDomElement = function(aStr, fName, typeStr) {
     window.URL.revokeObjectURL(a.href);
   }, 100);
 }
+//}
 
-av.fio.SaveInSafari_doesNotWork = function (content, Fname) {
-  'use strict';
-  //if (av.debug.fio) console.log('content', content.size, content);
-
-  var reader = new FileReader();
-  reader.onloadend = function() {
-    if (reader.result) {
-      var typestr = "data:attachment/zip;charset=utf-8,";
-      av.fio.SaveUsingDomElement(reader.result, Fname, typestr);
-    }
-  }
-  reader.readAsDataURL(content);
-
-  /*
-  //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
-  var base64data;
-  var reader = new window.FileReader();
-  reader.onloadend = function() {
-    base64data = btoa(reader.result);
-    //if (av.debug.fio) console.log(base64data );
-  };
-  //reader.readAsDataURL(content);
-  var source = reader.readAsBinaryString(content);
-
-  setTimeout(function(){
-    var theStr = base64data;
-    //if (av.debug.fio) console.log('theStr', theStr);
-    var typeStrng = 'data:attachment/b64;charset=utf-8,';
-    //var typeStrng = 'data:attachment/csv;charset=utf-8,';
-    av.fio.SaveUsingDomElement(theStr, av.fio.csvFileName + '.b64', typeStrng);
-  }, 100);
-  */
-}
-
-av.fio.SaveInSafari_worksSortOf = function (content, uFname) {
-  'use strict';
-  //if (av.debug.fio) console.log('content', content.size, content);
-  //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
-  var base64data;
-  var reader = new window.FileReader();
-  reader.onloadend = function() {
-    base64data = btoa(reader.result);
-    //if (av.debug.fio) console.log(base64data );
-  };
-  //reader.readAsDataURL(content);
-  var source = reader.readAsBinaryString(content);
-
-  setTimeout(function(){
-    var theStr = base64data;
-    //if (av.debug.fio) console.log('theStr', theStr);
-    var typeStrng = 'data:attachment/b64;charset=utf-8,';
-    //var typeStrng = 'data:attachment/csv;charset=utf-8,';
-    av.fio.SaveUsingDomElement(theStr, uFname + '.b64', typeStrng);
-  }, 100);
-}
-
-av.fio.SaveInSafari = function (content, uFname) {
-  'use strict';
-  //if (av.debug.fio) console.log('content', content.size, content);
-  //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
-
-  var reader = new FileReader();
-  //File reader is for some reason asynchronous
-  reader.onloadend = function () {
-    //items.setData(reader.result, "zip");
-  };
-  //This starts the conversion
-  //reader.readAsBinaryString(content);
-  //reader.readAsDataURL(content);
-  reader.readAsArrayBuffer(content);
-
-  setTimeout(function(){
-    var theStr = reader.result;
-    //if (av.debug.fio) console.log('theStr', theStr);
-    var typeStrng = 'data:attachment/b64;charset=ISO-8859-1,';
-    //var typeStrng = 'data:attachment/csv;charset=utf-8,';
-    av.fio.SaveUsingDomElement(theStr, uFname + '.b64', typeStrng);
-  }, 100);
-}
 
 av.fio.fzSaveCurrentWorkspaceFn = function () {
   'use strict';
@@ -428,17 +350,8 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   var content = WSzip.generate({type:"blob"});
   //if (av.debug.fio) console.log('content', content.size, content);
 
-  //if (av.debug.fio) console.log('brs', av.brs.isSafari, '; userFname', av.fio.userFname);
-  if (av.brs.isSafari) {
-  //if (false) {
-    //The lines below call a function that almost works.
-    //alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .b64. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
-    //av.fio.SaveInSafari(content, av.fio.userFname);
-  }
-  else {
-    var fsaver = saveAs(content, av.fio.userFname);
-    //if (av.debug.fio) console.log('file saved via saveAs');
-  }
+  var fsaver = saveAs(content, av.fio.userFname);
+  //if (av.debug.fio) console.log('file saved via saveAs');
   av.fzr.saveUpdateState('maybe');
 };
 
