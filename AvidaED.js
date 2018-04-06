@@ -527,55 +527,6 @@ require([
     }
   };
 
-  //works saving text as an example -
-  document.getElementById('mnDbSaveTxt').onclick = function () {
-    av.post.addUser('Button: mnDbSaveTxt');
-    av.fio.userFname = 'junk.txt';
-    //av.fio.saveTxt();
-    av.fio.saveJson();
-  };
-
-  $(fileDownloadButton).click(function () {
-    console.log('inside fileDownButton')
-
-    if (0 === av.fio.userFname.length) av.fio.userFname = prompt('Choose a name for your Workspace', av.fio.defaultUserFname);
-    if (0 === av.fio.userFname.length) av.fio.userFname = av.fio.defaultUserFname;
-    var end = av.fio.userFname.substring(av.fio.userFname.length - 4);
-    if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
-    //console.log('end', end, '; userFname', av.fio.userFname);
-    var WSzip = new av.fio.JSZip();
-    //console.log('number of files', av.utl.objectLength(av.fzr.file));
-    var numFiles = 0;
-    for (var fname in av.fzr.file) {
-      WSzip.file('av.avidaedworkspace/' + fname, av.fzr.file[fname]);
-      numFiles++;
-    }
-    var blob = WSzip.generate({type: 'blob'});
-    //console.log('wrote blob');
-    //var data = { x: 42, s: 'hello, world', d: new Date() };
-    //var json = JSON.stringify(data);
-    //var blob = new Blob([json], {type: 'octet/stream'});
-    var tmpUrl = window.URL.createObjectURL(blob);
-      //console.log('tmpURL=', tmpUrl);
-      av.fio.writeSafari(tmpUrl);
-      //window.URL.revokeObjectURL(tmpUrl);
-    //av.fwt.tryDown(blob);
-  });
-
-  av.fwt.tryDown = function(blob) {
-    var ab = document.createElement('a');
-    ab.href     = 'data:attachment/csv;charset=utf-8,' + encodeURI(av.debug.log);
-    ab.target   = '_blank';
-    ab.download = 'testfile.txt';
-    document.body.appendChild(ab);
-    ab.click();
-    setTimeout(function(){
-      document.body.removeChild(ab);
-      window.URL.revokeObjectURL(ab.href);
-    }, 100);
-  }
-  //_____________ Testing only need to delete above later.____________________
-
   if (av.debug.root) console.log('before Help drop down menu');
   //____________________________________________________________________________________________________________________
   // Help Drop down menu buttons
@@ -1496,27 +1447,6 @@ require([
     //need to 'start new experiment'
     av.ptd.resetDishFn(false);  //do not send reset to avida; avida restarted
     restartAvidaDialog.hide();
-  }
-
-  document.getElementById('restartAvidaNow').onclick = function () {
-    av.post.addUser('Button: restartAvidaNow');
-    av.ui.restartAvida();
-  }
-
-  document.getElementById('restartAvidaFrzConfig').onclick = function () {
-    av.post.addUser('Button: restartAvidaFzrConfig');
-    av.ptd.FrConfigFn();
-  }
-
-  //test - delete later ________________________________________________________________________________________________
-  document.getElementById('mnDbRestartAvida').onclick = function () {
-    av.post.addUser('Button: mnDbRestartAvida');
-    av.aww.restartAvidaFn();
-  }
-
-  document.getElementById('mnDbDiagnostic').onclick = function () {
-    av.post.addUser('Button: mnDbDiagnostic');
-    av.dcn.diagnosticConsoleFn();
   }
 
   document.getElementById('mnDbThrowData').onclick = function () {

@@ -12,24 +12,6 @@ av.fwt.deleteFzrItem = function (fileId) {
   catch(e) {av.fzr.item[fileId] = undefined; }
 }
 
-av.fwt.makeEmDxFile = function (path, contents) {
-  'use strict';
-/*
-  //Dexie is not currently in use
-  av.fio.dxdb.FILE_DATA.add( {
-      timestamp: Date.now(),  //We may need to do more work with this property
-      //contents: utf8bytesEncode(contents),
-      mode: 33206
-    },
-    path
-  ).then(function () {
-      console.log('Able to add file ', path);
-    }).catch(function (err) {
-      console.log('Unable to add file, path',path, '; error', err);
-    });
-    */
-}
-
 //kept this one line function in case we need to go to storing the workspace in a database instead of freezer memory
 av.fwt.makeFzrFile = function (fileId, text) {
   'use strict';
@@ -47,12 +29,11 @@ av.fwt.makeFzrInstsetCfg = function (idStr) {
   av.fzr.file[idStr + '/instset.cfg'] = av.fzr.file['c0/instset.cfg'];
 }
 
-av.fwt.makeFzrEventsCfgWorld = function (idStr, em) {
+av.fwt.makeFzrEventsCfgWorld = function (idStr) {
   'use strict';
   var txt = 'u begin LoadPopulation detail.spop' + '\n';
   txt += 'u begin LoadStructuredSystematicsGroup role=clade:filename=clade.ssg';
-  if (em) {av.fwt.makeEmDxFile(idStr+'/events.cfg', txt);}
-  else {av.fwt.makeFzrFile(idStr+'/events.cfg', txt);}
+  av.fwt.makeFzrFile(idStr+'/events.cfg', txt);
 }
 
 av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
@@ -181,34 +162,32 @@ av.fwt.form2cfgFolder = function() {
 
 av.fwt.makeFzrConfig = function (num) {
   'use strict';
-  var em = false;
-  av.fwt.makeFzrAvidaCfg('c'+num, em);
-  av.fwt.makeFzrEnvironmentCfg('c'+num, em);
+  av.fwt.makeFzrAvidaCfg('c'+num);
+  av.fwt.makeFzrEnvironmentCfg('c'+num);
   av.fwt.makeFzrFile('c'+num+'/events.cfg', '');
   //av.fwt.makeFzrFile('c'+num+'/entryname.txt', av.fzr.config[ndx].name);  // this was created in dnd menu code
   av.fwt.makeFzrInstsetCfg('c'+num);
-  av.fwt.makeFzrAncestorAuto('c'+num, em);
-  av.fwt.makeFzrAncestorHand('c'+num, em);
-  av.fwt.makeFzrPauseRunAt('c'+num, em);
+  av.fwt.makeFzrAncestorAuto('c'+num);
+  av.fwt.makeFzrAncestorHand('c'+num);
+  av.fwt.makeFzrPauseRunAt('c'+num);
 }
 
 av.fwt.makeFzrWorld = function (num) {
   'use strict';
-  var em = false;
-  av.fwt.makeFzrAvidaCfg('w'+num, em);
-  av.fwt.makeFzrEnvironmentCfg('w'+num, em);
-  av.fwt.makeFzrEventsCfgWorld =('w'+num, em)
+  av.fwt.makeFzrAvidaCfg('w'+num);
+  av.fwt.makeFzrEnvironmentCfg('w'+num);
+  av.fwt.makeFzrEventsCfgWorld =('w'+num)
   //av.fwt.makeFzrFile('c'+num+'/entryname.txt', av.fzr.config[ndx].name);  // this was created in dnd menu code
   av.fwt.makeFzrInstsetCfg('w'+num);
-  av.fwt.makeFzrAncestorAuto('w'+num, em);
-  av.fwt.makeFzrAncestorHand('w'+num, em);
+  av.fwt.makeFzrAncestorAuto('w'+num);
+  av.fwt.makeFzrAncestorHand('w'+num);
   av.fwt.makeFzrTRfile('w'+num+'/tr0', av.pch.aveFit);
   av.fwt.makeFzrTRfile('w'+num+'/tr1', av.pch.aveCst);
   av.fwt.makeFzrTRfile('w'+num+'/tr2', av.pch.aveEar);
   av.fwt.makeFzrTRfile('w'+num+'/tr3', av.pch.aveNum);
   av.fwt.makeFzrTRfile('w'+num+'/tr4', av.pch.aveVia);
   av.fwt.makeFzrFile('w'+num + '/update', av.grd.updateNum.toString() );
-  av.fwt.makeFzrCSV('w'+num, em);
+  av.fwt.makeFzrCSV('w'+num);
   //there are more files needed to talk to Matt, tiba
 }
 
@@ -290,14 +269,13 @@ av.fwt.removeFzrItem = function(dir, type){
   }
 }
 
-av.fwt.makeFzrCSV = function(idStr, em) {
+av.fwt.makeFzrCSV = function(idStr) {
   "use strict";
   console.log('name is ', idStr + '/entryname.txt');
   var fileNm = av.fzr.file[idStr + '/entryname.txt'];
   console.log('fileName = ', fileNm);
   av.fwt.makeCSV(fileNm);
-  if (em) {av.fwt.makeEmDxFile(idStr+'/timeRecorder.csv', txt);}
-  else {av.fwt.makeFzrFile(idStr+'/timeRecorder.csv', av.fwt.csvStrg);}
+  av.fwt.makeFzrFile(idStr+'/timeRecorder.csv', av.fwt.csvStrg);
 }
 
 av.fwt.writeCurrentCSV = function(idStr) {  
@@ -401,6 +379,8 @@ av.fwt.makeCSV = function(fileNm) {
   //console.log(av.fwt.csvStrg);
 }
 
+/***********************************************************************************************************************
+/* at one point we tried to put the freezer in  Dexie; did not work well so we rewerote
 
 /***********************************************************************************************************************
                                   Notes about problems saving in Safari

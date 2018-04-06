@@ -6,22 +6,22 @@ Number.prototype.pad = function(size) {
   var s = String(this);
   while (s.length < (size || 2)) {s = "0" + s;}
   return s;
-}
+};
 
 //av.debug flags
 av.debug = {};
-av.debug.root = true;  //statements that look for failiers when the code executes outside of functions
+av.debug.root = false;  //statements that look for failiers when the code executes outside of functions
 av.debug.bool = false;  //av.debug statements that look for errors outlining logic functions
-av.debug.mouse = false;   //av.debug statements about non-dojo drag and drop
-av.debug.dnd = false;     //debu statements about dojo dnd
-av.debug.msg = true;     //messages to and from avida
-av.debug.trace = false;   //organism page
-av.debug.grid = false;     //population grid
-av.debug.popCon = false;     //population Controls
-av.debug.fio = false; // file io
-av.debug.ind = false; //oranism page
-av.debug.anl = false; //analysis page
-av.debug.plotly = true;  //both popChart and analysis
+av.debug.mouse = false;  //av.debug statements about non-dojo drag and drop
+av.debug.dnd = false;  //debu statements about dojo dnd
+av.debug.msg = false;  //messages to and from avida
+av.debug.trace = false;  //organism page
+av.debug.grid = false;  //population grid
+av.debug.popCon = false;  //population Controls
+av.debug.fio = false;  // file io
+av.debug.ind = false;  //oranism page
+av.debug.anl = false;  //analysis page
+av.debug.plotly = false;  //both popChart and analysis
 av.debug.usr = ''; //working on log for user actions.
 
 av.post = {};
@@ -29,14 +29,14 @@ av.post.addUser = function(addStr, comment) {
   "use strict";
   var note = comment === undefined ? '' : comment;
   av.debug.log += '\n--usr: ' + addStr + ' ~.~ ' + note;
-  if (av.debug.usr) console.log('usr: ' + addStr + note);
-}
+  if (av.debug.usr) {console.log('usr: ' + addStr + note);}
+};
 
 av.post.usrOneline = function (data, comment) {
   "use strict";
   var note = comment === undefined ? '' : comment;
   av.debug.log += '\n--usr: ' + '~|~' + JSON.stringify(data) + ' ~.~ ' + note;
-}
+};
 
 av.post.usrOut = function (jStr, comment) {
   "use strict";
@@ -44,7 +44,7 @@ av.post.usrOut = function (jStr, comment) {
   var str0 = JSON.stringify(jStr, null, 2);
   var str1 = '~|~' + str0.replace(/\\n/g, "\n") + '~.~' + note;
   av.debug.log += '\n--usr: ' + '~|~' + str0.replace(/\\n/g, "\n") + '~.~' + note;
-}
+};
 
 //default values - these are not in use; the values now come from the file system
 av.dft = {};
@@ -79,7 +79,7 @@ function clearmouse(av) {
   av.mouse.ParentNdx = -1;
   av.mouse.ParentSelected = false;
   av.mouse.Picked = "";
-}
+};
 clearmouse(av);
 
 //offspring on grid
@@ -225,7 +225,7 @@ var lngth = av.mouse.notDndPopList.length;
 av.mouse.notDndPopShape = [];
 for (var ii = 0; ii < lngth; ii++) {
   av.mouse.notDndPopShape[ii] = 'default';
-}
+};
 
 //Ind is for individual organism page
 av.mouse.notDndIndList = ['colorMode'
@@ -294,7 +294,7 @@ var lngth = av.mouse.notDndIndList.length;
 av.mouse.notDndIndShape = [];
 for (var ii = 0; ii < lngth; ii++) {
   av.mouse.notDndIndShape[ii] = 'default';
-}
+};
 
 //initialize globals needed to hold Organism Trace Data
 var traceObj = {}; //global that holds the traceObject that was sent from Avida
@@ -307,7 +307,6 @@ av.ind.labeled = [];
 for (ii=0; ii <101; ii++) { av.ind.labeled[ii] = false}
 
 av.aww = {}; //avida web worker
-av.dcn = {}; //diagnostic console
 
 av.msg = {}; //holds functions to send messages between the ui and Avida (web worker)
 av.msg.uiReqestedReset = false;
@@ -334,7 +333,6 @@ av.ui.autoStopValue = 987654321;
 av.ui.gridHolderSideBuffer = 0;
 av.ui.popBotWdMin = 430;
 av.ui.popBotHtMin = 90;
-
 
 //not really ui, but not sure where to put them
 av.ui.num = 0;   //tenporary holder for a number;

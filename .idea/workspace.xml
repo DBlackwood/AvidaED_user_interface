@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/pkgs/Files2MakePCpackage/avServer_older.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/diagnosticConsole.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/restartAvida.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.html" afterPath="$PROJECT_DIR$/AvidaED.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AvidaED.js" afterPath="$PROJECT_DIR$/AvidaED.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileDataRead.js" afterPath="$PROJECT_DIR$/fileDataRead.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileDataWrite.js" afterPath="$PROJECT_DIR$/fileDataWrite.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fileIO.js" afterPath="$PROJECT_DIR$/fileIO.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/globals.js" afterPath="$PROJECT_DIR$/globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pkgs/packagesReadMe.txt" afterPath="$PROJECT_DIR$/pkgs/packagesReadMe.txt" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,82 +32,20 @@
       <file leaf-file-name="globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="20" lean-forward="false" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+            <state relative-caret-position="-64">
+              <caret line="332" column="31" lean-forward="false" selection-start-line="332" selection-start-column="31" selection-end-line="332" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <marker date="1522895518899" expanded="true" signature="1059:1244" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="1292:1441" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="1485:1752" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="2431:2691" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="2750:2920" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="2961:3030" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="3083:3168" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="3192:3261" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="3422:5226" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="5336:5382" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="5447:6441" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="6551:6597" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="7115:7437" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="8171:8393" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="8824:8836" ph="/*...*/" />
-                <marker date="1522895518899" expanded="true" signature="9267:9406" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="9429:9527" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="9549:9646" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="9664:9752" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="9772:9864" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="9886:9982" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="10003:10097" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="10122:10206" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="10816:10862" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="11562:12171" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="12284:13524" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="12811:12913" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="13287:13462" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="13594:15575" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="16335:18268" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="16797:16862" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="18406:23057" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="19421:19645" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="19774:19947" ph="/*...*/" />
-                <marker date="1522895518899" expanded="true" signature="19966:20261" ph="{&quot;name&quot;: 'Function Subset'...}" />
-                <marker date="1522895518899" expanded="true" signature="20060:20202" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="20329:20968" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="20494:20738" ph="{&quot;title&quot;: 'Time (updates)'...}" />
-                <marker date="1522895518899" expanded="true" signature="20751:20964" ph="{&quot;rangemode&quot;: 'tozero'...}" />
-                <marker date="1522895518899" expanded="true" signature="20974:21116" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="21135:23054" ph="{&quot;doubleClick&quot;: 'reset+autosize'...}" />
-                <marker date="1522895518899" expanded="true" signature="22324:23050" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="22554:22623" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="22840:22873" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="23537:28176" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="23572:23699" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="23720:23870" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="23890:24089" ph="{&quot;name&quot;: 'tr0'...}" />
-                <marker date="1522895518899" expanded="true" signature="24109:24301" ph="{&quot;name&quot;: 'tr1'...}" />
-                <marker date="1522895518899" expanded="true" signature="24321:24499" ph="{&quot;name&quot;: 'tr2'...}" />
-                <marker date="1522895518899" expanded="true" signature="24519:24712" ph="{&quot;name&quot;: 'tr1'...}" />
-                <marker date="1522895518899" expanded="true" signature="24732:24911" ph="{&quot;name&quot;: 'tr4'...}" />
-                <marker date="1522895518899" expanded="true" signature="24931:25125" ph="{&quot;name&quot;: 'tr1'...}" />
-                <marker date="1522895518899" expanded="true" signature="25304:26073" ph="{...}" />
-                <marker date="1522895518899" expanded="true" signature="25457:25677" ph="{&quot;title&quot;: 'Time (updates)'...}" />
-                <marker date="1522895518899" expanded="true" signature="25690:25879" ph="{&quot;rangemode&quot;: 'tozero'...}" />
-                <marker date="1522895518899" expanded="true" signature="25893:26069" ph="{&quot;overlaying&quot;: 'y'...}" />
-                <marker date="1522895518899" expanded="true" signature="26077:26217" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="26234:28174" ph="{&quot;doubleClick&quot;: 'reset+autosize'...}" />
-                <marker date="1522895518899" expanded="true" signature="27437:28170" ph="[...]" />
-                <marker date="1522895518899" expanded="true" signature="27598:27893" ph="//..." />
-                <marker date="1522895518899" expanded="true" signature="27962:27996" ph="//..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AvidaED.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AvidaED.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="511">
-              <caret line="161" column="0" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
+            <state relative-caret-position="-1152">
+              <caret line="1396" column="52" lean-forward="false" selection-start-line="1396" selection-start-column="52" selection-end-line="1396" selection-end-column="52" />
               <folding>
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#5;n#span#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -117,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AvidaED.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="587">
-              <caret line="2335" column="0" lean-forward="true" selection-start-line="2335" selection-start-column="0" selection-end-line="2335" selection-end-column="0" />
+            <state relative-caret-position="140">
+              <caret line="1436" column="27" lean-forward="false" selection-start-line="1436" selection-start-column="27" selection-end-line="1436" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -130,8 +67,18 @@
       <file leaf-file-name="fileDataRead.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileDataRead.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-619">
-              <caret line="246" column="23" lean-forward="false" selection-start-line="246" selection-start-column="23" selection-end-line="246" selection-end-column="23" />
+            <state relative-caret-position="0">
+              <caret line="664" column="0" lean-forward="true" selection-start-line="664" selection-start-column="0" selection-end-line="664" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fileDataWrite.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1961">
+              <caret line="519" column="1" lean-forward="false" selection-start-line="519" selection-start-column="1" selection-end-line="519" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -140,20 +87,8 @@
       <file leaf-file-name="fileIO.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileIO.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="417" column="62" lean-forward="false" selection-start-line="417" selection-start-column="58" selection-end-line="417" selection-end-column="62" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="avida-messages.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avida-messages.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="17" column="35" lean-forward="false" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
+            <state relative-caret-position="4814">
+              <caret line="321" column="0" lean-forward="false" selection-start-line="321" selection-start-column="0" selection-end-line="321" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -202,21 +137,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>av.ptd.runStopFn</find>
-      <find>runst</find>
-      <find>dish siz</find>
-      <find>av.ptd.makeRunState</find>
-      <find>land</find>
-      <find>sizeCols</find>
-      <find>av.ptd.popRunningStateUi</find>
-      <find>landa</find>
-      <find>landac</find>
-      <find>move</find>
-      <find>av.dnd.move.</find>
-      <find>landFz</find>
-      <find>av.dnd.lndActiveConfig</find>
-      <find>ancestorbo</find>
-      <find>av.msg.injectAncestors</find>
       <find>av.utl.json</find>
       <find>inject</find>
       <find>av.debug.userMsg</find>
@@ -228,10 +148,25 @@
       <find>av.fio.isB64</find>
       <find>av.fio.SaveInSafari</find>
       <find>isSa</find>
-      <find>sWSfDialog</find>
       <find>mares e</find>
       <find>sWSfSave</find>
       <find>setA</find>
+      <find>json</find>
+      <find>ownloadFile</find>
+      <find>av.fwt.makeEmDxFile</find>
+      <find>em)</find>
+      <find>, em</find>
+      <find>, em)</find>
+      <find>av.fio.writeSafari</find>
+      <find>av.fwt.tryDown</find>
+      <find>fileDownloadButton</find>
+      <find>av.aww.restartAvidaFn</find>
+      <find>mnDbRestartAvida</find>
+      <find>'mnDbDiagnostic</find>
+      <find>av.dcn.diagnosticConsoleFn</find>
+      <find>av.dcn</find>
+      <find>sWSfDialog</find>
+      <find>restartAvidaNow</find>
     </findStrings>
     <replaceStrings>
       <replace>av.pch.nUpdate</replace>
@@ -251,6 +186,7 @@
       <replace>multidFzr</replace>
       <replace>av.debug.msg</replace>
       <replace>Avida-ED 3.2.1</replace>
+      <replace>)</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -304,16 +240,16 @@
         <option value="$PROJECT_DIR$/mouse.js" />
         <option value="$PROJECT_DIR$/mouseDown.js" />
         <option value="$PROJECT_DIR$/populationGrid.js" />
-        <option value="$PROJECT_DIR$/fileDataWrite.js" />
         <option value="$PROJECT_DIR$/dojoDnd.js" />
         <option value="$PROJECT_DIR$/avida-messages.js" />
         <option value="$PROJECT_DIR$/messaging.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
-        <option value="$PROJECT_DIR$/globals.js" />
-        <option value="$PROJECT_DIR$/fileIO.js" />
-        <option value="$PROJECT_DIR$/AvidaED.html" />
         <option value="$PROJECT_DIR$/fileDataRead.js" />
+        <option value="$PROJECT_DIR$/fileIO.js" />
+        <option value="$PROJECT_DIR$/fileDataWrite.js" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
+        <option value="$PROJECT_DIR$/globals.js" />
+        <option value="$PROJECT_DIR$/AvidaED.html" />
       </list>
     </option>
   </component>
@@ -614,12 +550,12 @@
       <workItem from="1522251245912" duration="21943000" />
       <workItem from="1522550841610" duration="8206000" />
       <workItem from="1522870836609" duration="463000" />
-      <workItem from="1522936979557" duration="2741000" />
+      <workItem from="1522936979557" duration="9020000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1076079000" />
+    <option name="totallyTimeSpent" value="1082358000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="12" y="23" width="1428" height="877" extended-state="0" />
@@ -628,7 +564,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1969697" sideWeight="0.76763487" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31752306" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31752306" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32806325" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784638" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24891774" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -687,7 +623,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/globals.js</url>
-          <line>520</line>
+          <line>518</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
@@ -728,13 +664,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="35" column="36" lean-forward="false" selection-start-line="35" selection-start-column="36" selection-end-line="35" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/diagnosticConsole.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="3" column="2" lean-forward="false" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -801,13 +730,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1290">
           <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/restartAvida.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="2" lean-forward="false" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -925,13 +847,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/colormap.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15075">
@@ -965,7 +880,7 @@
         <state relative-caret-position="75">
           <caret line="17" column="35" lean-forward="false" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -986,107 +901,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="20" lean-forward="false" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <marker date="1522895518899" expanded="true" signature="1059:1244" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="1292:1441" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="1485:1752" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="2431:2691" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="2750:2920" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="2961:3030" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="3083:3168" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="3192:3261" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="3422:5226" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="5336:5382" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="5447:6441" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="6551:6597" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="7115:7437" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="8171:8393" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="8824:8836" ph="/*...*/" />
-            <marker date="1522895518899" expanded="true" signature="9267:9406" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="9429:9527" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="9549:9646" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="9664:9752" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="9772:9864" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="9886:9982" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="10003:10097" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="10122:10206" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="10816:10862" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="11562:12171" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="12284:13524" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="12811:12913" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="13287:13462" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="13594:15575" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="16335:18268" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="16797:16862" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="18406:23057" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="19421:19645" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="19774:19947" ph="/*...*/" />
-            <marker date="1522895518899" expanded="true" signature="19966:20261" ph="{&quot;name&quot;: 'Function Subset'...}" />
-            <marker date="1522895518899" expanded="true" signature="20060:20202" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="20329:20968" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="20494:20738" ph="{&quot;title&quot;: 'Time (updates)'...}" />
-            <marker date="1522895518899" expanded="true" signature="20751:20964" ph="{&quot;rangemode&quot;: 'tozero'...}" />
-            <marker date="1522895518899" expanded="true" signature="20974:21116" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="21135:23054" ph="{&quot;doubleClick&quot;: 'reset+autosize'...}" />
-            <marker date="1522895518899" expanded="true" signature="22324:23050" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="22554:22623" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="22840:22873" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="23537:28176" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="23572:23699" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="23720:23870" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="23890:24089" ph="{&quot;name&quot;: 'tr0'...}" />
-            <marker date="1522895518899" expanded="true" signature="24109:24301" ph="{&quot;name&quot;: 'tr1'...}" />
-            <marker date="1522895518899" expanded="true" signature="24321:24499" ph="{&quot;name&quot;: 'tr2'...}" />
-            <marker date="1522895518899" expanded="true" signature="24519:24712" ph="{&quot;name&quot;: 'tr1'...}" />
-            <marker date="1522895518899" expanded="true" signature="24732:24911" ph="{&quot;name&quot;: 'tr4'...}" />
-            <marker date="1522895518899" expanded="true" signature="24931:25125" ph="{&quot;name&quot;: 'tr1'...}" />
-            <marker date="1522895518899" expanded="true" signature="25304:26073" ph="{...}" />
-            <marker date="1522895518899" expanded="true" signature="25457:25677" ph="{&quot;title&quot;: 'Time (updates)'...}" />
-            <marker date="1522895518899" expanded="true" signature="25690:25879" ph="{&quot;rangemode&quot;: 'tozero'...}" />
-            <marker date="1522895518899" expanded="true" signature="25893:26069" ph="{&quot;overlaying&quot;: 'y'...}" />
-            <marker date="1522895518899" expanded="true" signature="26077:26217" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="26234:28174" ph="{&quot;doubleClick&quot;: 'reset+autosize'...}" />
-            <marker date="1522895518899" expanded="true" signature="27437:28170" ph="[...]" />
-            <marker date="1522895518899" expanded="true" signature="27598:27893" ph="//..." />
-            <marker date="1522895518899" expanded="true" signature="27962:27996" ph="//..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileIO.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="417" column="62" lean-forward="false" selection-start-line="417" selection-start-column="58" selection-end-line="417" selection-end-column="62" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AvidaED.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="511">
-          <caret line="161" column="0" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#5;n#span#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-619">
-          <caret line="246" column="23" lean-forward="false" selection-start-line="246" selection-start-column="23" selection-end-line="246" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/popControls.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
@@ -1095,11 +909,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="664" column="0" lean-forward="true" selection-start-line="664" selection-start-column="0" selection-end-line="664" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileIO.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4814">
+          <caret line="321" column="0" lean-forward="false" selection-start-line="321" selection-start-column="0" selection-end-line="321" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1961">
+          <caret line="519" column="1" lean-forward="false" selection-start-line="519" selection-start-column="1" selection-end-line="519" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/restartAvida.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/diagnosticConsole.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="587">
-          <caret line="2335" column="0" lean-forward="true" selection-start-line="2335" selection-start-column="0" selection-end-line="2335" selection-end-column="0" />
+        <state relative-caret-position="140">
+          <caret line="1436" column="27" lean-forward="false" selection-start-line="1436" selection-start-column="27" selection-end-line="1436" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-64">
+          <caret line="332" column="31" lean-forward="false" selection-start-line="332" selection-start-column="31" selection-end-line="332" selection-end-column="31" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AvidaED.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1152">
+          <caret line="1396" column="52" lean-forward="false" selection-start-line="1396" selection-start-column="52" selection-end-line="1396" selection-end-column="52" />
+          <folding>
+            <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#5;n#span#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

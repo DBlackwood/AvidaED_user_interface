@@ -155,10 +155,6 @@
             <span data-dojo-type='dijit/MenuItem' id='mnDbThrowError' label='Throw Error'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbRemoteSetPause' label='Remote Set Pause'></span>
             <span data-dojo-type='dijit/MenuItem' id='mnDbLineLog' label='Add Line to Session Log'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnDbDiagnostic' label='Open Diagnostic Console'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnDbRestartAvida' label='Restart Avida WebWorker'></span>
-            <span data-dojo-type='dijit/MenuItem' id='fileDownloadButton' label='test fileDownload'></span>
-            <span data-dojo-type='dijit/MenuItem' id='mnDbSaveTxt' label='save Txt'></span>
           </span>
         </span>
         |&nbsp;&nbsp;&nbsp;
@@ -1398,20 +1394,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!--______________________________________ Restart Avida with in same browser Session (Does not work _________________-->
-<div data-dojo-type='dijit/Dialog' data-dojo-id='restartAvidaDialog'
-     title='There has been a fatal error in Avida'>
-  <div class='dijitDialogPaneContentArea'>
-    <p>Would you like to save or discard the current petri dish configuration before restarting Avida?</p>
-    <label id='restartMsgLabel'></label>
-  </div>
-  <div class='dijitDialogPaneActionBar'>
-    <button id='restartAvidaFrzConfig'>Freeze configuration</button>
-    <button id='restartAvidaNow'>Restart Avida (maintains current workspace)</button>
-  </div>
-</div>
-
-<!--______________________________________ Suggesting restart if not loaded after a time delay  _____________________-->
+<!--____________________________________________________________ Suggesting restart if not loaded after a time delay -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='appReloadDialog'
      title='Avida-ED failed to load'>
   <div class='dijitDialogPaneContentArea'>
@@ -1426,7 +1409,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!--___________________________________ Send Log Data via e-mail client  ____________________________________________-->
+<!--________________________________________________________________________________ Send Log Data via e-mail client -->
 <!-- Saving session log when no e-mail client present -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sendLogDialog'
      title='Avida-ED Problem Report - help us make Avida-ED better'>
@@ -1452,7 +1435,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </div>
 </div>
 
-<!--___________________________________ Send Log Data by posting to database  ____________________________________________-->
+<!--___________________________________________________________________________ Send Log Data by posting to database -->
 <!-- Saving session log when no e-mail client present -->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='postLogDialog'
      title='Avida-ED Problem Report - help us make Avida-ED better'>
