@@ -83,6 +83,7 @@ av.frd.add2freezerFromFile = function (loadConfigFlag) {
       if (av.fzr.gNum < Number(num)) {av.fzr.gNum = Number(num); }
       break;
     case 'm':
+      console.log('-------------------------------- in m inside av.frd.add2freezerFromFile');
       domid = av.fio.addFzItem(av.dnd.fzMdish, name, type, num);
       av.fzr.mDish[dir] = {};
       av.fzr.mDish[dir].dir = {};
@@ -106,7 +107,8 @@ av.frd.add2freezerFromFile = function (loadConfigFlag) {
 
 av.frd.add2multiDishFromFile = function(){
   "use strict";
-  console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID, '; av.fzr.fziType=',av.fzr.fziType);
+  console.log('------------------------------------------------------ av.frd.add2multiDishFromFile');
+  console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID, '; av.fzr.subDishOrNot=',av.fzr.subDishOrNot);
   var multiDish = wsb('/', av.fio.anID);
   var superNum = multiDish.substr(1, multiDish.length-1);
   var firstIndex = av.fio.anID.indexOf('/');
@@ -132,21 +134,21 @@ av.frd.add2multiDishFromFile = function(){
 
 av.frd.processSubDish = function() {
   "use strict";
-  console.log('SubDish:', av.fzr.fziType, ';  ID=', av.fio.anID);
+  console.log('SubDish:', av.fzr.subDishOrNot, ';  ID=', av.fio.anID);
 };
 
 av.fio.processFiles = function (loadConfigFlag){
   'use strict';
   var fileType = av.fio.anID;
-  if ('subDish' === av.fzr.fziType){
+  if ('subDish' === av.fzr.subDishOrNot){
     fileType = wsa('/', fileType);
     //av.frd.processSubDish();
   }
   fileType = wsa('/', fileType);
-  //if (av.debug.fio) console.log('anID=', av.fio.anID, '; fileType=', fileType, '; fziType=', av.fzr.fziType);
+  //if (av.debug.fio) console.log('anID=', av.fio.anID, '; fileType=', fileType, '; subDishOrNot=', av.fzr.subDishOrNot);
     switch (fileType) {
       case 'entryname.txt':
-        if ('subDish' != av.fzr.fziType) {
+        if ('subDish' != av.fzr.subDishOrNot) {
           av.frd.add2freezerFromFile(loadConfigFlag);
           av.fzr.usrFileLoaded = true;
         }
@@ -154,7 +156,9 @@ av.fio.processFiles = function (loadConfigFlag){
           av.frd.add2multiDishFromFile();
         }
       case 'ancestors':
+      case 'ancestors.txt':
       case 'ancestors_manual':
+      case 'ancestors_manual.txt':
       case 'avida.cfg':
       case 'clade.ssg':
       case 'detail.spop':
@@ -170,6 +174,7 @@ av.fio.processFiles = function (loadConfigFlag){
       case 'tr3':
       case 'tr4':
       case 'update':
+        //console.log('anID=', av.fio.anID, '; fileType=', fileType, '; subDishOrNot=', av.fzr.subDishOrNot);
         if (loadConfigFlag) {
           if ('c0/avida.cfg' == av.fio.anID) {
             av.frd.avidaCFG2form(av.fio.thisfile.asText());
@@ -231,7 +236,7 @@ av.frd.updateSetup = function () {
   //console.log('actConfig: path=', path);
   av.frd.avidaCFG2form(doctext);
   doctext = av.fzr.file[dir + '/environment.cfg'];
-  console.log("doctext is:", doctext);
+  //console.log("doctext is:", doctext);
   av.frd.environmentCFG2form(doctext);
   doctext = av.fzr.file[dir + '/pauseRunAt.txt'];
   av.frd.pauseRunAtTXT2form(doctext);
@@ -244,7 +249,7 @@ av.frd.environmentCFGlineParse = function(instr){
   var num = 0;
   var flag = true;
   var cfgary = flexsplit(instr).split(',');      //replaces white space with a comma, then splits on comma
-  console.log("instr=",instr);
+  //console.log("instr=",instr);
   if (0 < cfgary[3].length) {num = wsb(':',wsa('=',cfgary[3]));}
   if (0 == num) {flag = false;} //use == in this case as they are of different type
   //if (av.debug.fio) console.log('flag', flag, '; num', num, '; cfgary', cfgary[3], '; instr', instr);
@@ -264,7 +269,7 @@ av.frd.environmentCFGparse = function (filestr) {
   var lngth = lines.length;
   for (var ii = 0; ii < lngth; ii++) {
     if (3 < lines[ii].length) {
-      console.log("lines[", ii, "]=", lines[ii]);
+      //console.log("lines[", ii, "]=", lines[ii]);
       lineobj = av.frd.environmentCFGlineParse(lines[ii]);
       rslt[lineobj.name.toUpperCase()] = lineobj.value;
     }
@@ -275,7 +280,7 @@ av.frd.environmentCFGparse = function (filestr) {
 // puts data from the environment.cfg into the setup form for the population page
 av.frd.environmentCFG2form = function (fileStr) {
   'use strict';
-  console.log("fileStr =", fileStr);
+  //console.log("fileStr =", fileStr);
   var dict = av.frd.environmentCFGparse(fileStr);
   dijit.byId('notose').set('checked', dict.NOT);
   dijit.byId('nanose').set('checked', dict.NAND);

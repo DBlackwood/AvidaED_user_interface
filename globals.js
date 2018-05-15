@@ -462,6 +462,9 @@ av.fzr.clearFzrFn = function () {
 
   //probably delete the next few lines
   av.fzr.mDish[0] = {};
+  av.fzr.mDish[0].cNum = 0; //number of subdish or index of subdish
+  av.fzr.mDish[0].wNum = 0;
+  av.fzr.mDish[0].dirA = [];
   av.fzr.mDish[0].dir = {};
   av.fzr.mDish[0].domid = {};
   av.fzr.mDish[0].file = {};
@@ -488,7 +491,7 @@ av.fzr.clearFzrFn = function () {
     av.fzr.pop[ii].via = [];
   }
   av.fzr.saveUpdateState('yes');
-  av.fzr.fziType = 'none';
+  av.fzr.subDishOrNot = 'none';
 };
 
 av.fzr.saveState = 'default';

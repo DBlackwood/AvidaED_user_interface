@@ -75,9 +75,9 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
       //this section needs to be fixed for multidish I think.
       if (3 < av.fio.fName.length) {
         var tmpr = wsb('/', av.fio.anID);
-        if (0 < tmpr.indexOf('/')) {av.fzr.fziType = 'subDish';}
-        else {av.fzr.fziType = tmpr.charAt(0);}
-        //console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID, '; tmpr=', tmpr, '; av.fzr.fziType=',av.fzr.fziType);
+        if (0 < tmpr.indexOf('/')) {av.fzr.subDishOrNot = 'subDish';}
+        else {av.fzr.subDishOrNot = tmpr.charAt(0);}
+        //console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID, '; tmpr=', tmpr, '; av.fzr.subDishOrNot=',av.fzr.subDishOrNot);
         av.fio.processFiles(loadConfigFlag);
       }  //do not load configfile
     }
@@ -132,6 +132,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           // This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
           //
           //if (av.debug.fio) console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
+          //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
           //if (av.debug.fio) console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
           if (null === av.fio.zipPathRoot) {
             //if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
@@ -146,15 +147,15 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           av.fio.fName = nameOfFileContainedInZipFile;
           if (0 < av.fio.zipPathRoot.length) av.fio.anID = wsa(av.fio.zipPathRoot + '/', av.fio.fName);
           else av.fio.anID = av.fio.fName;
-          //if (av.debug.fio) console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
-          //if (av.debug.fio) console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
+          if (av.debug.fio) console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
+          if (av.debug.fio) console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
           //if (3 < av.fio.fName.length) {
           if (3 < av.fio.anID.length) {
-            av.fzr.fziType = wsb('/', av.fio.anID).charAt(0);
-            if (av.fio.anID.lastIndexOf('/') != av.fio.anID.indexOf('/') && av.fzr.fziType == 'm') {
-              av.fzr.fziType = 'subDish';
+            av.fzr.subDishOrNot = wsb('/', av.fio.anID).charAt(0);
+            if (av.fio.anID.lastIndexOf('/') != av.fio.anID.indexOf('/') && av.fzr.subDishOrNot == 'm') {
+              av.fzr.subDishOrNot = 'subDish';
             }
-            //if (av.debug.fio) console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID, '; av.fzr.fziType=',av.fzr.fziType);
+            if (av.debug.fio) console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID, '; av.fzr.subDishOrNot=',av.fzr.subDishOrNot);
             av.fio.processFiles(false);  //load files
           }
         }

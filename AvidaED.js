@@ -1385,7 +1385,7 @@ require([
   dijit.byId('mnFzAddMdishEx').on('Click', function () {
     av.post.addUser('Button: mnFzAddMdishEx');
     //av.dnd.FzAddExperimentFn('fzMdish', 'activeConfig', 'm');
-    av.msg.runMultiDish('fzMdish', 'activeConfig', 'm');
+    av.dnd.runMultiDish('fzMdish', 'activeConfig', 'm');
   });
 
   //Buttons on drop down menu to add Populated Dish to an Experiment

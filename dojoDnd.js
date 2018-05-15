@@ -182,9 +182,9 @@ av.dnd.lndActiveConfig = function (move) {
   av.dnd.ancestorBox.sync();   //should be done after insertion or deletion
 
   av.parents.clearParentsFn();
-  //console.log('before av.frd.updateSetup');
+  console.log('before av.frd.updateSetup');
   av.frd.updateSetup();  //fileIO
-  //console.log('after av.frd.updateSetup');
+  console.log('after av.frd.updateSetup');
   if ('fzConfig' === move.source.node.id) {
     av.fzr.actConfig.type = 'c';
     av.fzr.actConfig.file['events.cfg'] = ' ';
@@ -262,25 +262,92 @@ av.dnd.lndActiveConfig = function (move) {
     //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }  //end fzWorld
 
-  // Nothing fixed yet just here
+  //----------------------------------------------------------- mdish -- work in progress
   else if ('fzMdish' === move.source.node.id) {
-    av.fzr.actConfig.type = 'c';
-    av.fzr.actConfig.file['events.cfg'] = ' ';
+    console.log('av.dnd.lndActiveConfig: fzMdish');
+    av.fzr.actConfig.type = 'm';
+    //Delete some 'files' if they exist
     if (av.fzr.actConfig.file['clade.ssg']) {delete av.fzr.actConfig.file['clade.ssg'];}
     if (av.fzr.actConfig.file['detail.spop']) {delete av.fzr.actConfig.file['detail.spop'];}
     if (av.fzr.actConfig.file['update']) {delete av.fzr.actConfig.file['update'];}
-    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors']) {
-      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors'];
-      av.fio.autoAncestorLoad(str);
-    }
-    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']) {
-      str = av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'];
-      av.fio.handAncestorLoad(str);
-    }
-    if ('map' == av.ui.subpage) {av.grd.drawGridSetupFn();} //draw grid
+    //Load superdish files
+    av.fzr.actConfig.file['avida.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/avida.cfg'];
+    av.fzr.actConfig.file['clade.ssg'] = av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg'];
+    av.fzr.actConfig.file['detail.spop'] = av.fzr.file[av.fzr.actConfig.dir + '/detail.spop'];
+    av.fzr.actConfig.file['environment.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/environment.cfg'];
+    av.fzr.actConfig.file['events.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/events.cfg'];
+    //I don't think a multi-dish should have an update file.
+    //if (av.fzr.file[av.fzr.actConfig.dir + '/update']) {
+    //  av.fzr.actConfig.file['update'] = av.fzr.file[av.fzr.actConfig.dir + '/update'];
+    //  av.grd.oldUpdate = av.fzr.actConfig.file['update'];
+    //}
+    //else av.grd.oldUpdate = 0;
+    TimeLabel.textContent = av.grd.oldUpdate;
+    //Load subdish files.
 
-    //Now need to load the files from the subdishes.
 
+    //load parents from clade.ssg and ancestors.
+    console.log('av.fzr.actConfig.dir=', av.fzr.actConfig.dir);
+    console.log('av.fzr.file[av.fzr.actConfig.dir +/clade.ssg]=', av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
+    if (av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']) {
+      console.log('next line calls ')
+      av.fio.cladeSSG2parents(av.fzr.file[av.fzr.actConfig.dir + '/clade.ssg']);
+    }
+
+    // Deal with parents at super dish level if there are any.
+    var handList = {};
+    var autoList = {};
+    console.log('before handList; dir=', av.fzr.actConfig.dir, '; hand=', av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
+    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual'] != undefined)
+      handList = av.fio.handAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors_manual']);
+
+    console.log('before autoList; ancestors =', av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
+    if (av.fzr.file[av.fzr.actConfig.dir + '/ancestors'] !== undefined)
+      autoList = av.fio.autoAncestorParse(av.fzr.file[av.fzr.actConfig.dir + '/ancestors']);
+    console.log('after autoList');
+    var ndx = 0;
+    klen = av.parents.name.length;
+    for (kk = 0; kk < klen; kk++) {
+      ndx = autoList.nam.indexOf(av.parents.name[kk]);
+      if (-1 < ndx) {
+        av.parents.genome[kk] = autoList.gen[ndx];
+        av.parents.howPlaced[kk] = 'auto';
+        av.parents.injected[kk] = true;
+        av.parents.autoNdx.push(kk);
+        autoList.nam.splice(ndx, 1);
+        autoList.gen.splice(ndx, 1);
+      }
+      else {
+        ndx = handList.nam.indexOf(av.parents.name[kk]);
+        if (-1 < ndx) {
+          av.parents.genome[kk] = handList.gen[ndx];
+          av.parents.col[kk] = handList.col[ndx];
+          av.parents.row[kk] = handList.row[ndx];
+          av.parents.howPlaced[kk] = 'hand';
+          av.parents.injected[kk] = true;
+          av.parents.handNdx.push(kk);
+          handList.nam.splice(ndx, 1);
+          handList.gen.splice(ndx, 1);
+          handList.col.splice(ndx, 1);
+          handList.row.splice(ndx, 1);
+        }
+        else {
+          console.log('Name, ', av.parents.name[kk], ', not found');
+        }
+      }
+    }
+    console.log('before placeAncestors');
+    av.parents.placeAncestors();
+    //run status is no longer 'new' it is 'world'
+    av.ptd.popWorldStateUi();
+
+    //Load Time Recorder Data
+    //send message to Avida
+    av.msg.importPopExpr();
+    av.msg.requestGridData();
+    av.msg.sendData();
+    av.grd.popChartFn();
+    //av.msg.requestPopStats();  //tiba last time this was on; data was all = 0, so confusing;
   }  //end of Mdish
 
   else console.log('fzr.activeCon - something strange happened', av.fzr.actConfig);
@@ -819,8 +886,8 @@ av.anl.loadSelectedData = function (worldNum, axisSide, side) {
 };
 
 
-//----------------------------------------------------------------------------------------------- av.msg.runMultiDish --
-av.msg.runMultiDish = function(fzSection, target, type) {
+//----------------------------------------------------------------------------------------------- av.dnd.runMultiDish --
+av.dnd.runMultiDish = function(fzSection, target, type) {
   //console.log('fzrObject=', av.dnd[fzSection].getSelectedNodes()[0]);
   //need to find selected item. looking for 'dojoDndItem dojoDndItemAnchor' might help
   //console.log('fzOrgan selected keys', Object.keys(av.dnd.fzOrgan.selection)[0]);
@@ -871,7 +938,7 @@ av.msg.runMultiDish = function(fzSection, target, type) {
     alert('You must select a multi-dish first');
   }
 };
-//------------------------------------------------------------------------------------------- end av.msg.runMultiDish --
+//------------------------------------------------------------------------------------------- end av.dnd.runMultiDish --
 
 //---------------------------------------------------------------------------------------------- av.dnd.runResReqDish --
 av.dnd.runResReqDish = function(fzSection, target, type) {

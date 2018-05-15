@@ -325,29 +325,35 @@ av.msg.importMultiDishExpr = function (dir) {
     'name': 'importMultiDish',
     'triggerType': 'immediate',
     'amend': 'false',
-    'superDishFiles': [
-//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+    'superDishFiles': {
+//      { 'avida.cfg': av.fzr.actConfig.file['avida.cfg'] },
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
-    ],
+    },
     'subDishes': []
   };
   var subDish = {
       'xpos': 0
     , 'ypos': 0
-    , 'files':[
-//      { 'name': 'avida.cfg', 'data': av.fzr.actConfig.file['avida.cfg'] },
+    , 'files': {
+//      { 'avida.cfg': av.fzr.actConfig.file['avida.cfg'] },
 //      { 'name': 'environment.cfg', 'data': av.fzr.actConfig.file['environment.cfg'] }
-    ]
+    }
   }
 
+  console.log('freezer=', av.fzr);
   //console.log('in av.msg.importMultiDishExpr:');
   var lngth = fList.length;
   for (var ii = 0; ii < lngth; ii++) {
-    if (av.fzr.file[dir+'/'+fList[ii]]) {request.superDishFiles.push({ 'name': fList[ii], 'data': av.fzr.file[dir+'/'+fList[ii]] }); }
+    if (av.fzr.file[dir+'/'+fList[ii]]) {
+      //request.superDishFiles.push({ 'name': fList[ii], 'data': av.fzr.file[dir+'/'+fList[ii]] });
+      request.superDishFiles[ fList[ii] ] = av.fzr.file[dir+'/'+fList[ii]];
+    }
   }
   var offset = [];
+  console.log('dir=', dir);
+  console.log('av.fzr.mDish[dir].domid', av.fzr.mDish[dir].domid);
+  var files = {};
   for (var key in av.fzr.mDish[dir].domid) {
-    subDish.files = [];
     console.log('dir=', dir, '; key=', key);
     offset = av.msg.getOffset(dir, key);
     subDish.xpos = offset[0];
@@ -355,9 +361,12 @@ av.msg.importMultiDishExpr = function (dir) {
     var lngth = fList.length;
     for (var ii = 0; ii < lngth; ii++) {
       if (av.fzr.file[dir+'/'+key+'/'+fList[ii]]) {
-        subDish.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+'/'+key+'/'+fList[ii]] });
+        //subDish.files.push({ 'name': fList[ii], 'data': av.fzr.file[dir+'/'+key+'/'+fList[ii]] });
+        files[fList[ii]] = av.fzr.file[dir+'/'+key+'/'+fList[ii]];
       }
     }
+    subDish.files = files;
+    console.log('subdish=', subDish);
     request.subDishes.push(subDish);
   }
   if (av.debug.msg) console.log('importMultiDishExpr', request);
