@@ -1,3 +1,4 @@
+"use strict";
 // *********************************************************************************************************************
 //                                       Population page script
 // *********************************************************************************************************************
@@ -290,7 +291,7 @@ av.ptd.runPopFn = function () {
         av.pch.dadNum[av.parents.name[ii]] = [];
         av.pch.dadVia[av.parents.name[ii]] = [];
       }
-      console.log(av.pch.numDads, '; av.pch.dadFit=',av.pch.dadFit);
+      //console.log('av.pch.numDads=',av.pch.numDads, '; av.pch.dadFit=',av.pch.dadFit);
     }
 
     if (dijit.byId('autoUpdateRadio').get('checked')) {

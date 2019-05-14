@@ -1,3 +1,4 @@
+"use strict";
 // need a server to run this. The one below works.
 // python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 // python -m SimpleHTTPServer 8001  to put on 8001 instead of 8000
@@ -484,8 +485,11 @@ require([
   //Export csv data from current run.
   dijit.byId('mnFlExportData').on('Click', function () {
     'use strict';
+    //console.log('-------mnFlExportData');
     av.post.addUser('Button: mnFlExportData');
+    //console.log('call av.fwt.writeCurrentCSV ()=',av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update);
     av.fwt.writeCurrentCSV(av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '\n');
+    //console.log('string=', av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update + '\n');
   });
 
   //Export chart data from current run.
@@ -1493,6 +1497,7 @@ require([
     console.log('av.dnd.activeConfig', av.dnd.activeConfig);
     console.log('av.dnd.activeOrgan', av.dnd.activeOrgan);
     console.log('av.dnd.ancestorBox', av.dnd.ancestorBox);
+    console.log('av.debug.log', av.debug.log);
   };
 
   document.getElementById('mnDbThrowError').onclick = function () {

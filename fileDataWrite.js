@@ -1,3 +1,4 @@
+"use strict";
 //write file data
 
 av.fwt.deleteFzrFile = function (fileId) {
@@ -292,22 +293,25 @@ av.fwt.removeFzrItem = function(dir, type){
 
 av.fwt.makeFzrCSV = function(idStr, em) {
   "use strict";
-  console.log('name is ', idStr + '/entryname.txt');
-  var fileNm = av.fzr.file[idStr + '/entryname.txt'];
-  console.log('fileName = ', fileNm);
+  //console.log('idStr=', idStr, ' em=',em);
+  var fileNm = idStr + '/timeRecorder.csv';
+  //console.log('fileName = ', fileNm);
   av.fwt.makeCSV(fileNm);
-  if (em) {av.fwt.makeEmDxFile(idStr+'/timeRecorder.csv', txt);}
-  else {av.fwt.makeFzrFile(idStr+'/timeRecorder.csv', av.fwt.csvStrg);}
+  //console.log(av.fzr);
 }
 
 av.fwt.writeCurrentCSV = function(idStr) {  
   "use strict";
+  //console.log('idStr=', idStr);
   av.fwt.makeCSV(idStr);
+  //console.log('before av.fio.fzSaveCsvfn');
   av.fio.fzSaveCsvfn();
 }
 
 av.fwt.makeCSV = function(fileNm) {
   'use strict';
+  //console.log('av.fwt.makeCSV fileNm=', fileNm);
+  //console.log('av.ui.page=', av.ui.page);
   if ('populationBlock' === av.ui.page) {
     //  '@default at update 141 Average Fitness,@default at update 141 Average Gestation Time,' +
     //  '@default at update 141 Average Energy Acq. Rate,@default at update 141 Count of Organisms in the World';
@@ -398,8 +402,9 @@ av.fwt.makeCSV = function(fileNm) {
       }
     }
   }
+  //av.fwt.csvStrg now contains what should be in the cvs file
   //console.log(av.fwt.csvStrg);
-}
+};
 
 
 /***********************************************************************************************************************

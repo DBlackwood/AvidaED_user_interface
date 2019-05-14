@@ -1,3 +1,4 @@
+"use strict";
 // folders will be:
 // cwd = current working directory
 // saved = where files are put to save to user workspace
@@ -266,19 +267,32 @@ av.fio.fixFname = function() {
 
 //----------------------------------------- Save datarecorder info to a csv file ---------------------------------------
 av.fio.fzSaveCsvfn = function () {
+  //console.log('in av.fio.fzSaveCsvfn, av.fio.csvFileName=', av.fio.csvFileName);
+  //make sure there is a filename
   if (0 === av.fio.csvFileName.length) av.fio.csvFileName = prompt('Choose a name for your csv file', av.fzr.actConfig.name + '@' + av.grd.popStatsMsg.update);
   if (0 === av.fio.csvFileName.length) av.fio.csvFileName = 'avidaDataRecorder.csv';
   var end = av.fio.csvFileName.substring(av.fio.csvFileName.length - 4);
-  if ('.csv' != end) av.fio.userFname = av.fio.csvFileName + '.csv';
+  if ('.csv' !== end) av.fio.userFname = av.fio.csvFileName + '.csv';
 
-  var typeStrng = 'data:attachment/csv;charset=utf-8,';
   //console.log('brs', av.brs);
   if (av.brs.isSafari) alert("The name of the file will be 'unknown' in Safari. Please change the name to end in .csv. Safari will also open a blank tab. Please close the tab when you are done saving and resume work in Avida-ED");
-  av.fio.SaveUsingDomElement(av.fwt.csvStrg, av.fio.csvFileName, typeStrng);
-}
 
+  // call method to save to file.
+  var typeStrng = 'data:attachment/csv;charset=utf-8,';
+  //av.fio.SaveUsingDomElement(av.fwt.csvStrg, av.fio.csvFileName, typeStrng);
+  var typeStr = "text/plain;charset=utf-8";
+  av.fio.saveTextFile(av.fwt.csvStrg, av.fio.csvFileName, typeStrng);
+};
+
+av.fio.saveTextFile = function(aStr, fName, typeStr) {
+  var blob = new Blob([aStr], {type: typeStr});
+  saveAs(blob, fName);
+};
+
+  //does not work any more
 av.fio.SaveUsingDomElement = function(aStr, fName, typeStr) {
   "use strict";
+  //console.log('fName=', fName, 'typeStr', typeStr, '; aStr=', aStr);
   var a = document.createElement('a');
   a.href     = typeStr + encodeURI(aStr);
   a.target   = '_blank';
@@ -290,7 +304,7 @@ av.fio.SaveUsingDomElement = function(aStr, fName, typeStr) {
     window.URL.revokeObjectURL(a.href);
   }, 100);
 }
-
+/*
 av.fio.SaveInSafari_doesNotWork = function (content, Fname) {
   'use strict';
   //console.log('content', content.size, content);
@@ -304,7 +318,6 @@ av.fio.SaveInSafari_doesNotWork = function (content, Fname) {
   }
   reader.readAsDataURL(content);
 
-  /*
   //http://stackoverflow.com/questions/27208407/convert-blob-to-binary-string-synchronously
   var base64data;
   var reader = new window.FileReader();
@@ -322,9 +335,11 @@ av.fio.SaveInSafari_doesNotWork = function (content, Fname) {
     //var typeStrng = 'data:attachment/csv;charset=utf-8,';
     av.fio.SaveUsingDomElement(theStr, av.fio.csvFileName + '.b64', typeStrng);
   }, 100);
-  */
+
 }
 
+*/
+/*
 av.fio.SaveInSafari_worksSortOf = function (content, uFname) {
   'use strict';
   //console.log('content', content.size, content);
@@ -346,7 +361,8 @@ av.fio.SaveInSafari_worksSortOf = function (content, uFname) {
     av.fio.SaveUsingDomElement(theStr, uFname + '.b64', typeStrng);
   }, 100);
 }
-
+*/
+/*
 av.fio.SaveInSafari = function (content, uFname) {
   'use strict';
   //console.log('content', content.size, content);
@@ -370,10 +386,12 @@ av.fio.SaveInSafari = function (content, uFname) {
     av.fio.SaveUsingDomElement(theStr, uFname + '.b64', typeStrng);
   }, 100);
 }
+*/
 
+//--------------------------------------------------------------------------------- av.fio.fzSaveCurrentWorkspaceFn --//
 av.fio.fzSaveCurrentWorkspaceFn = function () {
   'use strict';
-  console.log('defaultUserFname', av.fio.defaultUserFname);
+  //console.log('defaultUserFname', av.fio.defaultUserFname);
   if (null === av.fio.userFname) {
     av.fio.userFname = av.fio.defaultUserFname;
   }
@@ -382,9 +400,9 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   }
   var end = av.fio.userFname.substring(av.fio.userFname.length-4);
   if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
-  console.log('userName=', av.fio.userFname);
+  //console.log('userName=', av.fio.userFname);
   var folderName = wsb('.zip', av.fio.userFname);
-  console.log('end', end, '; userFname', av.fio.userFname, '; folderName', folderName);
+  //console.log('end', end, '; userFname', av.fio.userFname, '; folderName', folderName);
 
   //make zipfile as a blob
   var WSzip = new av.fio.JSZip();
@@ -412,6 +430,7 @@ av.fio.fzSaveCurrentWorkspaceFn = function () {
   }
   av.fzr.saveUpdateState('maybe');
 };
+//-------------------------------------------------------------------------- end of av.fio.fzSaveCurrentWorkspaceFn --//
 
 //    wsSavedMsg.textcontent = 'Workspace: default  ';
 av.fzr.saveUpdateState = function (newSaveState) {
@@ -456,7 +475,7 @@ av.fzr.saveUpdateState = function (newSaveState) {
 
 setTimeout(function() {
 
-  url = '//assets.codepen.io/images/codepen-logo.svg';
+  var url = '//assets.codepen.io/images/codepen-logo.svg';
   //downloadFile(url); // UNCOMMENT THIS LINE TO MAKE IT WORK
 
 }, 2000);
@@ -472,7 +491,7 @@ window.downloadFile = function (sUrl) {
   }
 
   //If in Chrome or Safari - download via virtual link click
-  console.log('downloadFile.isChrome=', window.downloadFile.isChrome, '   isSafari=', window.downloadFile.isSafari)
+  //console.log('downloadFile.isChrome=', window.downloadFile.isChrome, '   isSafari=', window.downloadFile.isSafari)
   if (window.downloadFile.isChrome || window.downloadFile.isSafari) {
     //Creating new link node.
     var link = document.createElement('a');
@@ -590,7 +609,7 @@ window.downloadFile.isSafari = navigator.userAgent.toLowerCase().indexOf('safari
  reader.readAsDataURL(content);
  reader.onloadend = function() {
     var base64data = reader.result;
-    console.log(base64data );
+    //console.log(base64data );
   };
  var source = reader.readAsBinaryString(content);
 
