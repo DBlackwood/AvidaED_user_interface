@@ -2079,8 +2079,14 @@ require([
       if (muteNum >= 100) { av.dom.muteError.innerHTML += 'Mutation rate must be 100% or less. '; console.log('>0');}
       if ( isNaN(muteNum) ) {av.dom.muteError.innerHTML += 'Mutation rate must be a valid number. '; console.log('==NaN');}
     }
-  }
-  
+  };
+
+  dijit.byId('allSugarDrop').on('Change', function () {
+    var allSugar = dijit.byId('allSugarDrop').value;
+    console.log('allSugar=', allSugar);
+    av.ptd.allSugar(allSugar);
+  });
+
   av.ptd.gridChange = function(tmpval) {
     var colNum = Number(av.dom.sizeCols.value);
     var rowNum = Number(av.dom.sizeRows.value);

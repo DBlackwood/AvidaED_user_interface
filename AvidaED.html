@@ -627,7 +627,13 @@
                     <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='xorose'
                                label='xorose'></button>xorose
                     </td>
-                    <td>&nbsp;</td>
+                    <td>
+                      <select data-dojo-type='dijit/form/Select' id='allSugarDrop' data-dojo-props='name: "allSugar"'>
+                        <option value='allon' selected='selected'>All</option>
+                        <option value='alloff'>None</option>
+                        <option value='AllComp'>Complement</option>
+                      </select>
+                    </td>
                   </tr>
                   </tbody>
                 </table>

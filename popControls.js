@@ -554,6 +554,41 @@ av.ptd.clearLogicButtons = function() {
   }
 }
 
+av.ptd.allSugar = function (allmode) {
+  var onflag = true;
+  if ('AllComp' == allmode) {
+    console.log('!dijit.byId(notose).get(checked)=', !dijit.byId('notose').get('checked'));
+    dijit.byId('notose').set('checked', !dijit.byId('notose').get('checked') );
+    dijit.byId('nanose').set('checked', !dijit.byId('nanose').get('checked') );
+    dijit.byId('andose').set('checked', !dijit.byId('andose').get('checked') );
+    dijit.byId('ornose').set('checked', !dijit.byId('ornose').get('checked') );
+    dijit.byId('orose').set('checked', !dijit.byId('orose').get('checked') );
+    dijit.byId('andnose').set('checked', !dijit.byId('andnose').get('checked') );
+    dijit.byId('norose').set('checked', !dijit.byId('norose').get('checked') );
+    dijit.byId('xorose').set('checked', !dijit.byId('xorose').get('checked') );
+    dijit.byId('equose').set('checked', !dijit.byId('equose').get('checked') );
+  }
+  else {
+    if ('allon' == allmode) {
+      onflag = true;
+    }
+    else {
+      onflag = false;
+    };
+    console.log('onflag=', onflag);
+    dijit.byId('notose').set('checked', onflag);
+    dijit.byId('nanose').set('checked', onflag);
+    dijit.byId('andose').set('checked', onflag);
+    dijit.byId('ornose').set('checked', onflag);
+    dijit.byId('orose').set('checked', onflag);
+    dijit.byId('andnose').set('checked', onflag);
+    dijit.byId('norose').set('checked', onflag);
+    dijit.byId('xorose').set('checked', onflag);
+    dijit.byId('equose').set('checked', onflag);
+  }
+};
+
+
 //----------------------------------------------------------------------------------------------------------------------
 // code below this line is not in use tiba delete later
 //writes data to Environmental Settings page based on the content of av.dnd.activeConfig

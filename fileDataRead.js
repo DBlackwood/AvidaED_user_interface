@@ -1,3 +1,4 @@
+"use strict";
 //Read file data
 
 av.fio.addFzItem = function(dndSection, name, type, fileNum) {
@@ -200,6 +201,7 @@ av.frd.environmentCFGparse = function (filestr) {
 av.frd.environmentCFG2form = function (fileStr) {
   'use strict';
   var dict = av.frd.environmentCFGparse(fileStr);
+  console.log('Dict.NOT=', dict.NOT);
   dijit.byId('notose').set('checked', dict.NOT);
   dijit.byId('nanose').set('checked', dict.NAND);
   dijit.byId('andose').set('checked', dict.AND);
