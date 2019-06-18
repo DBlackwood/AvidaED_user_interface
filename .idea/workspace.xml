@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/AvidaED.html" beforeDir="false" afterPath="$PROJECT_DIR$/AvidaED.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AvidaED.js" beforeDir="false" afterPath="$PROJECT_DIR$/AvidaED.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fileDataRead.js" beforeDir="false" afterPath="$PROJECT_DIR$/fileDataRead.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/popControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/popControls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/indexPlain.html" beforeDir="false" afterPath="$PROJECT_DIR$/indexPlain.html" afterDir="false" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -176,7 +175,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/popControls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
+            <state relative-caret-position="540">
               <caret line="588" column="2" selection-start-line="588" selection-start-column="2" selection-end-line="588" selection-end-column="2" />
             </state>
           </provider>
@@ -193,7 +192,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>av.post.addUser</find>
       <find>m30deo&amp;LLei</find>
       <find>throw</find>
       <find>url</find>
@@ -223,6 +221,7 @@
       <find>ijit.byId('notose').set('checked',</find>
       <find>gridc</find>
       <find>onFlag</find>
+      <find>ED 3.2.2</find>
     </findStrings>
     <replaceStrings>
       <replace>av.pch.nUpdate</replace>
@@ -236,6 +235,7 @@
       <replace>').get('checked')</replace>
       <replace>) );</replace>
       <replace>onflag</replace>
+      <replace>ED 3.3.0</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -316,7 +316,7 @@
       <path value="$PROJECT_DIR$/lib/jquery-ui/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
     <option name="width" value="1680" />
     <option name="height" value="1027" />
@@ -521,16 +521,15 @@
       <workItem from="1549653817895" duration="441000" />
       <workItem from="1549657914983" duration="840000" />
       <workItem from="1557760157930" duration="9291000" />
-      <workItem from="1560525306349" duration="4437000" />
+      <workItem from="1560525306349" duration="5357000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="968648000" />
+    <option name="totallyTimeSpent" value="969568000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.76763487" visible="true" weight="0.11721612" />
       <window_info id="Structure" order="1" weight="0.24801587" />
@@ -903,7 +902,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/popControls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
+        <state relative-caret-position="540">
           <caret line="588" column="2" selection-start-line="588" selection-start-column="2" selection-end-line="588" selection-end-column="2" />
         </state>
       </provider>
