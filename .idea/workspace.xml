@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b4099a-2833-44d8-ada7-c5d1add03123" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AvidaED.html" beforeDir="false" afterPath="$PROJECT_DIR$/AvidaED.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AvidaED.js" beforeDir="false" afterPath="$PROJECT_DIR$/AvidaED.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fileDataRead.js" beforeDir="false" afterPath="$PROJECT_DIR$/fileDataRead.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/indexPlain.html" beforeDir="false" afterPath="$PROJECT_DIR$/indexPlain.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/popControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/popControls.js" afterDir="false" />
     </list>
     <ignored path="av_ui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -95,6 +99,26 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="2079948446">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="html" value="23" />
+          <entry key="js" value="124" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="HTML" value="23" />
+          <entry key="JavaScript" value="124" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FavoritesManager">
     <favorites_list name="av_ui" />
@@ -125,8 +149,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="631" column="39" lean-forward="true" selection-start-line="631" selection-start-column="39" selection-end-line="631" selection-end-column="44" />
+            <state relative-caret-position="606">
+              <caret line="653" column="62" selection-start-line="653" selection-start-column="62" selection-end-line="653" selection-end-column="62" />
               <folding>
                 <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -139,17 +163,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AvidaED.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="2086" column="30" selection-start-line="2086" selection-start-column="30" selection-end-line="2086" selection-end-column="30" />
+            <state relative-caret-position="461">
+              <caret line="2087" selection-start-line="2087" selection-end-line="2087" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fileDataRead.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="190">
-              <caret line="203" column="23" selection-start-line="203" selection-start-column="23" selection-end-line="203" selection-end-column="23" />
+              <caret line="203" column="4" selection-start-line="203" selection-start-column="4" selection-end-line="203" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -157,7 +181,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="832">
+            <state relative-caret-position="4440">
               <caret line="296" column="43" selection-start-line="296" selection-start-column="43" selection-end-line="296" selection-end-column="43" />
             </state>
           </provider>
@@ -172,11 +196,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/popControls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="588" column="2" selection-start-line="588" selection-start-column="2" selection-end-line="588" selection-end-column="2" />
+            <state relative-caret-position="360">
+              <caret line="576" selection-start-line="576" selection-end-line="576" />
             </state>
           </provider>
         </entry>
@@ -192,9 +216,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>m30deo&amp;LLei</find>
-      <find>throw</find>
-      <find>url</find>
       <find>av.fwt.writeCurrentCSV</find>
       <find>av.fio.fzSaveCsvfn</find>
       <find>revokeObjectURL</find>
@@ -222,6 +243,9 @@
       <find>gridc</find>
       <find>onFlag</find>
       <find>ED 3.2.2</find>
+      <find>al</find>
+      <find>ED 3.3.0</find>
+      <find>allS</find>
     </findStrings>
     <replaceStrings>
       <replace>av.pch.nUpdate</replace>
@@ -236,6 +260,7 @@
       <replace>) );</replace>
       <replace>onflag</replace>
       <replace>ED 3.3.0</replace>
+      <replace>ED 3.3.1</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -296,9 +321,9 @@
         <option value="$PROJECT_DIR$/fileIO.js" />
         <option value="$PROJECT_DIR$/fileDataWrite.js" />
         <option value="$PROJECT_DIR$/AvidaED.html" />
-        <option value="$PROJECT_DIR$/fileDataRead.js" />
         <option value="$PROJECT_DIR$/AvidaED.js" />
         <option value="$PROJECT_DIR$/popControls.js" />
+        <option value="$PROJECT_DIR$/fileDataRead.js" />
       </list>
     </option>
   </component>
@@ -327,17 +352,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="av_ui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="av_ui" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Project Files">
           <expand>
@@ -363,6 +377,17 @@
               <item name="av_ui" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="lib" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="av_ui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="av_ui" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -522,20 +547,22 @@
       <workItem from="1549657914983" duration="840000" />
       <workItem from="1557760157930" duration="9291000" />
       <workItem from="1560525306349" duration="5357000" />
+      <workItem from="1561237408226" duration="1867000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="969568000" />
+    <option name="totallyTimeSpent" value="971435000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.76763487" visible="true" weight="0.11721612" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.76763487" visible="true" weight="0.11843712" />
       <window_info id="Structure" order="1" weight="0.24801587" />
       <window_info id="Favorites" order="2" sideWeight="0.23236515" side_tool="true" weight="0.2092352" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32017544" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32017544" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32876712" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39889959" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -860,6 +887,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4440">
+          <caret line="296" column="43" selection-start-line="296" selection-start-column="43" selection-end-line="296" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fileIO.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4035">
@@ -867,17 +901,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataWrite.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="832">
-          <caret line="296" column="43" selection-start-line="296" selection-start-column="43" selection-end-line="296" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="631" column="39" lean-forward="true" selection-start-line="631" selection-start-column="39" selection-end-line="631" selection-end-column="44" />
+        <state relative-caret-position="606">
+          <caret line="653" column="62" selection-start-line="653" selection-start-column="62" selection-end-line="653" selection-end-column="62" />
           <folding>
             <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -886,24 +913,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="203" column="23" selection-start-line="203" selection-start-column="23" selection-end-line="203" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AvidaED.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="2086" column="30" selection-start-line="2086" selection-start-column="30" selection-end-line="2086" selection-end-column="30" />
+        <state relative-caret-position="461">
+          <caret line="2087" selection-start-line="2087" selection-end-line="2087" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/popControls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="588" column="2" selection-start-line="588" selection-start-column="2" selection-end-line="588" selection-end-column="2" />
+        <state relative-caret-position="360">
+          <caret line="576" selection-start-line="576" selection-end-line="576" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fileDataRead.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="203" column="4" selection-start-line="203" selection-start-column="4" selection-end-line="203" selection-end-column="4" />
         </state>
       </provider>
     </entry>

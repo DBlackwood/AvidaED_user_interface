@@ -556,8 +556,7 @@ av.ptd.clearLogicButtons = function() {
 
 av.ptd.allSugar = function (allmode) {
   var onflag = true;
-  if ('AllComp' == allmode) {
-    console.log('!dijit.byId(notose).get(checked)=', !dijit.byId('notose').get('checked'));
+  if ('allComp' == allmode) {
     dijit.byId('notose').set('checked', !dijit.byId('notose').get('checked') );
     dijit.byId('nanose').set('checked', !dijit.byId('nanose').get('checked') );
     dijit.byId('andose').set('checked', !dijit.byId('andose').get('checked') );
@@ -568,14 +567,13 @@ av.ptd.allSugar = function (allmode) {
     dijit.byId('xorose').set('checked', !dijit.byId('xorose').get('checked') );
     dijit.byId('equose').set('checked', !dijit.byId('equose').get('checked') );
   }
-  else {
+  else if ( ('allon' == allmode) || ('alloff' == allmode) ) {
     if ('allon' == allmode) {
       onflag = true;
     }
-    else {
+    else if ('alloff' == allmode) {
       onflag = false;
     };
-    console.log('onflag=', onflag);
     dijit.byId('notose').set('checked', onflag);
     dijit.byId('nanose').set('checked', onflag);
     dijit.byId('andose').set('checked', onflag);
@@ -585,7 +583,7 @@ av.ptd.allSugar = function (allmode) {
     dijit.byId('norose').set('checked', onflag);
     dijit.byId('xorose').set('checked', onflag);
     dijit.byId('equose').set('checked', onflag);
-  }
+  };
 };
 
 

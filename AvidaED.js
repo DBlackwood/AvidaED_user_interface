@@ -2083,8 +2083,8 @@ require([
 
   dijit.byId('allSugarDrop').on('Change', function () {
     var allSugar = dijit.byId('allSugarDrop').value;
-    console.log('allSugar=', allSugar);
     av.ptd.allSugar(allSugar);
+    dijit.byId('allSugarDrop').set('value', 'allNeutral');
   });
 
   av.ptd.gridChange = function(tmpval) {
