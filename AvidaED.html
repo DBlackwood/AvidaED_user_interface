@@ -58,7 +58,7 @@
 <!-- http://stackoverflow.com/questions/20828799/creating-a-splash-page-in-html5 -->
 <div id='splash' style='display:block; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A'>
   <div align='center'>
-    <h1 style='color:whitesmoke'>Avida-ED 3.3.1 is loading . . .</h1>
+    <h1 style='color:whitesmoke'>Avida-ED 3.3.2 is loading . . .</h1>
     <img src='images/Avida-ED-icon.png' /><br />
     <img src='images/AvidaGrid.gif' />
   </div>
@@ -587,57 +587,52 @@
                 <label>
                   What resources are available in the environment? (strength of energy reward shown in
                   parentheses)</label>
-                <table border='0'
-                       style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto; text-align: left'>
-                  <tbody>
-                  <tr>
-                    <td>Easy (x2)</td>
-                    <td>Moderate (x4)</td>
-                    <td>Hard (x8)</td>
-                    <td>Very hard (x16)</td>
-                    <td>Brutal (x32)</td>
-                  </tr>
-                  <tr>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='notose'
-                               label='notose'></button>notose
-                    </td>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='andose'
-                               label='andose'></button>andose
-                    </td>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='orose'
-                               label='orose'></button>orose
-                    </td>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='norose'
-                               label='norose'></button>norose
-                    </td>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='equose'
-                               label='equose'></button>equose
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='nanose'
-                               label='nanose'></button>nanose
-                    </td>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='ornose'
-                               label='ornose'></button>ornose
-                    </td>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='andnose'
-                               label='andnose'></button>andnose
-                    </td>
-                    <td><input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='xorose'
-                               label='xorose'></button>xorose
-                    </td>
-                    <td>
-                      <select data-dojo-type='dijit/form/Select' id='allSugarDrop' data-dojo-props='name: "allSugar"'>
-                        <option value='allon'>All</option>
-                        <option value='alloff'>None</option>
-                        <option value='allComp'>Complement</option>
-                        <option value='allNeutral' selected='selected'>----</option>
-                      </select>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+  
+                <div class='sugarOnOffGrid'>
+                  <div class='grid-sugarOnOff-item'>Easy (x2)</div>
+                  <div class='grid-sugarOnOff-item'>Moderate (x4)</div>
+                  <div class='grid-sugarOnOff-item'>Hard (x8)</div>
+                  <div class='grid-sugarOnOff-item'>Very hard (x16)</div>
+                  <div class='grid-sugarOnOff-item'>Brutal (x32)</div>
+    
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='notose' label='notose'>notose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='andose' label='andose'>andose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='orose' label='orose'>orose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='norose' label='norose'>norose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='equose' label='equose'>equose
+                  </div>
+    
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='nanose' label='nanose'>nanose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='ornose' label='ornose'>ornose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='andnose' label='andnose'>andnose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <input type='checkbox' data-dojo-type='dijit/form/CheckBox' class='resourceButton' id='xorose' label='xorose'>xorose
+                  </div>
+                  <div class='grid-sugarOnOff-item'>
+                    <select data-dojo-type='dijit/form/Select' id='allSugarDrop' data-dojo-props='name: "allSugar"'>
+                      <option value='allon'>All</option>
+                      <option value='alloff'>None</option>
+                      <option value='allComp'>Complement</option>
+                      <option value='allNeutral' selected='selected'>----</option>
+                    </select>
+                  </div>
+                </div>
+                
               </div>
               <div class='even'>
                 <label id='label_31'>Repeatability Mode:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -953,12 +948,12 @@
 
 <!---------------------------------- Export Stand Alone Dialog box ---------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnFlStandAloneAppDialog'
-     title='Stand alone version of Avida-ED 3.3.1'>
+     title='Stand alone version of Avida-ED 3.3.2'>
   <div class='dijitDialogPaneContentArea'>
     <h3>For working where there is no internet access</h3>
     <ul>
       <li class="slim"><a href="pkgs/Avida-ED-Web-PC_2016_0918.exe" target='_blank'>Avida-ED Windows installer for self-hosted version 2016_0918</a></li>
-      <li><a href="pkgs/Avida-ED_Server_3.0.0.app.zip" target='_blank'>Avida-ED 3.3.1 for Mac OS 10.6 and above</a></li>
+      <li><a href="pkgs/Avida-ED_Server_3.0.0.app.zip" target='_blank'>Avida-ED 3.3.2 for Mac OS 10.6 and above</a></li>
       <ul>
         <li>Unzip the file once it is downloaded</li>
         <li>Move the file ‘Avida-ED Web.app’ to the Applications Folder</li>
@@ -1067,7 +1062,7 @@
     <p>An educational artificial life plateform developed at Michigan State University for <br />
       learning evolution and the nature of science using digital organisms.</p>
     <br />
-    <strong>Avida-ED 3.3.1</strong><br />
+    <strong>Avida-ED 3.3.2</strong><br />
     <strong>2008-2016<br />http://Avida-ED.msu.edu/</strong><br />
     <br />
     <p>Developed under NSF Grant #0341484,<br />

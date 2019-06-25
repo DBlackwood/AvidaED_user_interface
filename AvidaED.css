@@ -83,6 +83,21 @@ div.odd {
   clear: left;
 }
 
+.sugarOnOffGrid {
+  display: inline-grid;
+  grid-template-columns: 17% 22% 19% 23% 19%;
+  background-color: #CCCCCC;     /* #2196F3;  blue */
+  /*  justify-content: space-evenly;  */
+  width: 100%;
+}
+
+.grid-sugarOnOff-item {
+  background-color: #CDCDCD;
+  border: 0px;
+  text-align: left;
+  padding: 1px 1px;
+}
+
 .lftWide {
   float: left;
   width: 90%;
