@@ -22,6 +22,14 @@
 //
 // on 2017_0927 switched to using new avida files with parse number  = 88746e4
 //
+// Update Notes -------------------------------------------------------------------------------------------------------
+//  Should have started this sooner
+//
+//  version 3.3.2 added new version of plotly.js to plotly.js-1.49.4
+//     modified modeBarButtons ToRemove to remove the new button called 'toggleSpikelines'
+//     modified to display the button 'zoom2d'
+//     added the setting: responsive: true    to the list of options in av.pch.widg
+//
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
 // [option]<alt>{go} to get library in the list for finder
@@ -84,8 +92,8 @@ require([
   'dojo/ready',
   'jquery',
   'jquery-ui',
-  //'lib/plotly-latest.min.js',
-  'lib/plotly.js',
+  'lib/plotly-latest.min.js',
+  //'lib/plotly.js',
   //'lib/jquery.fileDownload.js',
   //'lib/Blob',
   'lib/jszip.min.js',

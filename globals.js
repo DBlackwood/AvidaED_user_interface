@@ -1,6 +1,7 @@
 //***************************************
 // Defaults and Constants
 // one global to hold them all.
+"use strict";
 
 Number.prototype.pad = function(size) {
   var s = String(this);
@@ -666,23 +667,23 @@ av.pch.clearPopChrt = function () {
   };
     // Plotly configuration including that of the modebar
     // https://plot.ly/javascript/configuration-options/#hide-the-modebar-with-plotly.js
+    // https://community.plot.ly/search?q=modebar%20options%20list    might also be useful
     av.pch.widg = {                // https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js
     autosizable: true              // plot will respect layout.autosize=true and infer its container size
     ,fillFrame: false              // if we DO autosize, do we fill the container or the screen?
     ,frameMargins: 0               // if we DO autosize, set the frame margins in percents of plot
     ,sizescrollZoom: true          // mousewheel or two-finger scroll zooms the plot
-    ,doubleClick: 'reset+autosize' // double click interaction (false, 'reset', 'autosize' or 'reset+autosize')
     ,showTips: true                // new users see some hints about interactivity
     ,showLink: false               // link to edit image of graph - this is an edit link outside of the modebar
     ,sendData: true                // if we show a link, does it contain data or just link to a plotly file?
     ,staticPlot: false             // no interactivity, for export or image generation
     ,displaylogo: false            // hides plotly logo
-    ,doubleClick: 'reset+autosize'
-    ,displayModeBar: false       // display the mode bar (true, false, or 'hover')
+    ,displayModeBar: 'hover'       // display the mode bar (true, false, or 'hover')
+      ,responsive: true        //added 2019_10 not sure I needed to
     ,modeBarButtonsToRemove: [     // https://github.com/plotly/plotly.js/blob/master/src/components/modebar/buttons.js
       'toImage'           //makes png file
       ,'sendDataToCloud'  //sends data to plotly web editor workspace
-      ,'zoom2d'           //zoom to a box defined with cursor
+      //,'zoom2d'           //zoom to a box defined with cursor
       //,'pan2d'            //pan
       ,'select2d'         //this one does not seem to turn anything on/off
       ,'lasso2d'          //this one does not seem to turn anything on/off
@@ -692,6 +693,7 @@ av.pch.clearPopChrt = function () {
       ,'resetScale2d'
         , 'hoverClosestCartesian'  //shows values as an (x,y) pair
         , 'hoverCompareCartesian'   //shows values (x at x axis) (y near y value)
+        , 'toggleSpikelines'
     ]
   };
 };
