@@ -25,7 +25,7 @@
 // Update Notes -------------------------------------------------------------------------------------------------------
 //  Should have started this sooner
 //
-//  version 3.3.2 added new version of plotly.js to plotly.js-1.49.4
+//  Avida-ED 3.3.2 added new version of plotly.js to plotly.js-1.49.4
 //     modified modeBarButtons ToRemove to remove the new button called 'toggleSpikelines'
 //     modified to display the button 'zoom2d'
 //     added the setting: responsive: true    to the list of options in av.pch.widg
