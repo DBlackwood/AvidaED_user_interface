@@ -29,6 +29,10 @@
 //     modified modeBarButtons ToRemove to remove the new button called 'toggleSpikelines'
 //     modified to display the button 'zoom2d'
 //     added the setting: responsive: true    to the list of options in av.pch.widg
+// .Avida-ED 3.3.3 changed Pause Run: dojo radio buttons to a plain javascript check box
+// .   changed dojo number spinner to a plain javascript text input box
+// .   if autoPauseNum is changed to a value > updates, then autoPauseCheck becomes true
+// .   some students were having trouble entering the correct number of updates for Exercise 4 due to changes in browser/javascript/dojo interactions
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
@@ -234,9 +238,8 @@ require([
 
     av.dom.experimentRadio = document.getElementById('experimentRadio');
     av.dom.demoRadio = document.getElementById('demoRadio');
-    av.dom.manualUpdateRadio = document.getElementById('manualUpdateRadio');
-    av.dom.autoUpdateRadio = document.getElementById('autoUpdateRadio');
-    av.dom.autoUpdateSpinner = document.getElementById('autoUpdateSpinner');
+    av.dom.autoPauseCheck = document.getElementById('autoPauseCheck');
+    av.dom.autoPauseNum = document.getElementById('autoPauseNum');
 
     av.dom.sendLogTextarea = document.getElementById('sendLogTextarea');
     av.dom.sendLogPara = document.getElementById('sendLogPara');
@@ -2262,21 +2265,24 @@ require([
     av.post.addUser('Button: demoRadio');
   });
 
-  dojo.connect(dijit.byId('manualUpdateRadio'), 'onClick', function () {
-    av.post.addUser('Button: manualUpdateRadio');
-    av.ui.autoStopFlag = false;
-  });
+  av.dom.autoPauseCheck.onclick = function() {
+    //console.log('av.dom.autoPauseCheck.checked =', av.dom.autoPauseCheck.checked);
+    if (av.dom.autoPauseCheck.checked) { av.ui.autoStopFlag = true; }
+    else { av.ui.autoStopFlag = false; }
+    var tmpStr = 'Button: autoPauseCheck='+av.ui.autoStopFlag
+    av.post.addUser(tmpStr);
+    //console.log(tmpStr);
+  };
 
-  dojo.connect(dijit.byId('autoUpdateRadio'), 'onClick', function () {
-    av.post.addUser('Button: autoUpdateRadio');
-    av.ui.autoStopFlag = true;
-  });
-
-  dojo.connect(dijit.byId('autoUpdateSpinner'), 'onChange', function () {
-    av.post.addUser('Spinner: autoUpdateSpinner = ' + dijit.byId('autoUpdateSpinner').get('value'));
-    av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
-    //console.log('autoUpdateSpinner=', dijit.byId('autoUpdateSpinner').get('value'));
-  });
+  av.dom.autoPauseNum.onchange = function() {
+    av.post.addUser('input: autoPauseNum = ' + av.dom.autoPauseNum.value);
+    av.ui.autoStopValue = av.dom.autoPauseNum.value;
+    if (av.grd.updateNum < av.ui.autoStopValue) {
+      av.ui.autoStopFlag = true; 
+      av.dom.autoPauseCheck.checked = true;
+    }
+    //console.log('autoPauseNum=', av.dom.autoPauseNum.value);
+  };
 
   /* *************************************************************** */
   /* Organism page script *********************************************/

@@ -3,6 +3,8 @@
 //                                       Population page script
 // *********************************************************************************************************************
 // ptd = PeTri Dish
+var av = av || {};  //because av already exists
+var dijit = dijit || {};
 
 av.ptd.makePauseState = function () {
   dijit.byId('mnCnPause').attr('disabled', true);
@@ -235,6 +237,7 @@ av.ptd.popNewExState = function () {
 }
 
 //after Run button pushed for population
+//---------------------------------------------------------- av.ptd.runPopFn --
 av.ptd.runPopFn = function () {
   'use strict';
   //console.log('runPopFn runState', av.grd.runState);
@@ -294,18 +297,16 @@ av.ptd.runPopFn = function () {
       //console.log('av.pch.numDads=',av.pch.numDads, '; av.pch.dadFit=',av.pch.dadFit);
     }
 
-    if (dijit.byId('autoUpdateRadio').get('checked')) {
-      //av.msg.pause(dijit.byId('autoUpdateSpinner').get('value'));  //not used where there is handshaking (not used with av.msg.stepUpdate)
-      av.ui.autoStopFlag = true;
-      av.ui.autoStopValue = dijit.byId('autoUpdateSpinner').get('value');
-      //console.log('stop at ', dijit.byId('autoUpdateSpinner').get('value'));
-    }
-
+  if (av.dom.autoPauseCheck.checked) {
+    av.ui.autoStopFlag = true;
+    av.ui.autoStopValue = av.dom.autoPauseNum.value;
+    //console.log('stop at', av.dom.autoPauseNum.value);
+  };
     av.ptd.makeRunState();
     av.msg.stepUpdate();   //av.msg.doRunPause(av.fio);
   }
   //update screen based on data from C++
-}
+};
 
 av.ptd.runStopFn = function () {
   if ('Run' == av.dom.runStopButton.innerHTML) {
@@ -532,9 +533,8 @@ av.ptd.resetDishFn = function (need2sendRest2avida) { //Need to reset all settin
   if (av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg']) {av.fzr.actConfig.file['instset.cfg'] = av.fzr.file[av.fzr.actConfig.dir + '/instset.cfg'];}
 
     //Clear options that are not in the config files
-  dijit.byId('manualUpdateRadio').set('checked', true);
-  dijit.byId('autoUpdateRadio').set('checked', false);
-  dijit.byId('autoUpdateSpinner').set('value', av.ptd.autoPauseUpdate);
+  av.dom.autoPauseCheck.checked = false;
+  av.dom.autoPauseNum.value = av.ptd.autoPauseUpdate;
 
   av.ptd.clearLogicButtons();
   //console.log('fzr.activeCon', av.fzr.actConfig);
@@ -616,7 +616,7 @@ av.ptd.writeHardDefault = function (av) {
   dijit.byId('xorose').set('checked', av.dft.xorose);
   dijit.byId('equose').set('checked', av.dft.equose);
   dijit.byId('experimentRadio').set('checked', true);
-  dijit.byId('manualUpdateRadio').set('checked', true);
+
   if ('experimentRadio'==av.dft.repeat) {
     dijit.byId('experimentRadio').set('checked', true);
     dijit.byId('demoRadio').set('checked', false);
@@ -625,14 +625,6 @@ av.ptd.writeHardDefault = function (av) {
     dijit.byId('experimentRadio').set('checked', false);
     dijit.byId('demoRadio').set('checked', true);
   }
-  if ('manualUpdateRadio'==av.dft.pauseType) {
-    dijit.byId('manualUpdateRadio').set('checked', true);
-    dijit.byId('autoUpdateRadio').set('checked', false);
-  }
-  else {
-    dijit.byId('manualUpdateRadio').set('checked', false);
-    dijit.byId('autoUpdateRadio').set('checked', true);
-  };
 }
 
 // should really be in a ui code section

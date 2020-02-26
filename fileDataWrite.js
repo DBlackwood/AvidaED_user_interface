@@ -1,5 +1,6 @@
 "use strict";
 //write file data
+var av = av || {};  //because av already exists
 
 av.fwt.deleteFzrFile = function (fileId) {
   'use strict';
@@ -86,24 +87,24 @@ av.fwt.makeFzrAvidaCfg = function (idStr, actConfig) {
 
 av.fwt.makeFzrPauseRunAt = function (idStr, actConfig) {
   'use strict';
-  var txt = dijit.byId('autoUpdateSpinner').get('value').toString();
-  // Is auto Update Radio button checked?
-  if (dijit.byId('manualUpdateRadio').get('checked')) {  //manually pause population
-    txt = '-1';   //Manual Update
-  }
+  var txt = av.dom.autoPauseNum.value.toString();
+  // Is autoPause checked?
+  if (!av.dom.autoPauseCheck.checked) { txt = '-1'; }   //Manual Update 
+  else { txt = av.dom.autoPauseNum.value; }
   if (actConfig) {av.fwt.makeActConfigFile('pauseRunAt.txt', txt);}
   else {av.fwt.makeFzrFile(idStr+'/pauseRunAt.txt', txt);}
-}
+};
 
 /* Delete later tiba
 av.fwt.makeFzrConfigTxt = function (idStr, actConfig) {
   'use strict';
   var txt = 'update ';
   if (dijit.byId('experimentRadio').get('checked')) txt += 'RANDOM_SEED -1 \n';
-  txt += dijit.byId('autoUpdateSpinner').get('value') + '\n';
+  txt += dijit.byId('autoPauseNum').get('value') + '\n';
   if (actConfig) {av.fwt.makeActConfigFile('avida.cfg', txt);}
   else {av.fwt.makeFzrFile(idStr+'/avida.cfg', txt);}
-}
+};
+
 */
 av.fwt.makeFzrEnvironmentCfg = function (idStr, actConfig) {
   'use strict';

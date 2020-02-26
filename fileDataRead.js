@@ -277,14 +277,22 @@ av.frd.pauseRunAtTXT2form = function (fileStr) {
   'use strict';
   var update = parseInt(fileStr);
   if (0 < update) {
-    dijit.byId('manualUpdateRadio').set('checked', false);
-    dijit.byId('autoUpdateRadio').set('checked', true);
-    dijit.byId('autoUpdateSpinner').set('value', update);
+    av.dom.autoPauseCheck.checked = true;
+    av.dom.autoPauseNum.value = update;
+
+    // stopped using as of 2020_0226
+    //dijit.byId('manualUpdateRadio').set('checked', false);  
+    //dijit.byId('autoPauseCheck').set('checked', true);
+    //dijit.byId('autoPauseNum').set('value', update);
   }
   else {
-    dijit.byId('manualUpdateRadio').set('checked', true);
-    dijit.byId('autoUpdateRadio').set('checked', false);
-    dijit.byId('autoUpdateSpinner').set('value', '1000');
+    av.dom.autoPauseCheck.checked = false;
+    av.dom.autoPauseNum.value = 1000;
+
+    // stopped using as of 2020_0226
+    //dijit.byId('manualUpdateRadio').set('checked', true);
+    //dijit.byId('autoPauseCheck').set('checked', false);
+    //dijit.byId('autoPauseNum').set('value', '1000');
   }
 }
 
