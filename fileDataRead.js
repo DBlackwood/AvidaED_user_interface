@@ -32,6 +32,7 @@ av.fio.loadDefaultConfig = function() {
   if (av.debug.fio) console.log('avida.cfg', av.fzr.file['c0/avida.cfg'])
   av.frd.avidaCFG2form(av.fzr.file['c0/avida.cfg']);
   av.frd.environmentCFG2form(av.fzr.file['c0/environment.cfg']);
+  if(av.fzr.file['c0/pauseRunAt.txt']) { av.frd.environmentCFG2form(av.fzr.file['c0/pauseRunAt.txt']); }
 }
 
 av.fio.setActiveConfig = function(dndSection, name, type){
@@ -97,6 +98,7 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'events.cfg':
     case 'genome.seq':
     case 'instset.cfg':
+    case 'pauseRunAt.txt':
     case 'timeRecorder.csv':
     case 'tr0':
     case 'tr1':
@@ -105,8 +107,9 @@ av.fio.processFiles = function (loadConfigFlag){
     case 'tr4':
     case 'update':
       if (loadConfigFlag) {
-        if ('c0/avida.cfg' == av.fio.anID) {av.frd.avidaCFG2form(av.fio.thisfile.asText());}
-        if ('c0/environment.cfg' == av.fio.anID) {av.frd.environmentCFG2form(av.fio.thisfile.asText().trim());}
+        if ('c0/avida.cfg' == av.fio.anID) { av.frd.avidaCFG2form(av.fio.thisfile.asText()); }
+        if ('c0/environment.cfg' == av.fio.anID) { av.frd.environmentCFG2form(av.fio.thisfile.asText().trim()); }
+        if ('c0/pauseRunAt.txt' == av.fio.anID) { av.frd.environmentCFG2form(av.fio.thisfile.asText().trim()); }
       }
       av.fzr.file[av.fio.anID] = av.fio.thisfile.asText().trim();
       break;
@@ -133,6 +136,7 @@ av.fio.processItemFiles = function (){
     case 'events.cfg':
     case 'genome.seq':
     case 'instset.cfg':
+    case 'pauseRunAt.txt':
     case 'timeRecorder.csv':
     case 'tr0':
     case 'tr1':
@@ -158,10 +162,12 @@ av.frd.updateSetup = function () {
   var doctext = av.fzr.file[path];
   //console.log('actConfig: path=', path);
   av.frd.avidaCFG2form(doctext);
-  doctext = av.fzr.file[dir + '/environment.cfg'];
-  av.frd.environmentCFG2form(doctext);
-  doctext = av.fzr.file[dir + '/pauseRunAt.txt'];
-  av.frd.pauseRunAtTXT2form(doctext);
+  path = dir + '/pauseRunAt.txt';
+  if (undefined != av.fzr.file[path]) {
+    doctext = av.fzr.file[path];
+    console.log('path=',path,'; pauseRunAt(text)=', doctext);
+    av.frd.pauseRunAtTXT2form(doctext); 
+  }
 }
 
 //----------------------- section to put data from environment.cfg into setup form of population page ------------------
@@ -276,23 +282,14 @@ av.frd.avidaCFG2form = function (fileStr){
 av.frd.pauseRunAtTXT2form = function (fileStr) {
   'use strict';
   var update = parseInt(fileStr);
+  console.log('filestr=',fileStr, '; update=', update);
   if (0 < update) {
     av.dom.autoPauseCheck.checked = true;
     av.dom.autoPauseNum.value = update;
-
-    // stopped using as of 2020_0226
-    //dijit.byId('manualUpdateRadio').set('checked', false);  
-    //dijit.byId('autoPauseCheck').set('checked', true);
-    //dijit.byId('autoPauseNum').set('value', update);
   }
   else {
     av.dom.autoPauseCheck.checked = false;
     av.dom.autoPauseNum.value = 1000;
-
-    // stopped using as of 2020_0226
-    //dijit.byId('manualUpdateRadio').set('checked', true);
-    //dijit.byId('autoPauseCheck').set('checked', false);
-    //dijit.byId('autoPauseNum').set('value', '1000');
   }
 }
 

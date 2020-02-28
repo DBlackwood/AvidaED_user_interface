@@ -107,11 +107,11 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
     fileReader.onloadend = function(fileLoadedEvent)
     {
       try {
-        console.log('fileLoadedEvent', fileLoadedEvent);
+        //console.log('fileLoadedEvent', fileLoadedEvent);
         zip2unpack = fileLoadedEvent.target.result;
 
         zipFileLoaded = new av.fio.JSZip(zip2unpack);
-        console.log('zipFileLoaded', zipFileLoaded);
+        //console.log('zipFileLoaded', zipFileLoaded);
         av.fio.zipPathRoot = null;
         av.fzr.clearMainFzrFn();  // clear freezer (globals.js)
 
@@ -121,7 +121,7 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           // This prefix needs to be removed if present. av.fio.zipPathRoot will be assigned the beginning of the path name within the zip file.
           //
           //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile, '; fileContainedInZipFile.asText()=', fileContainedInZipFile.asText());
-          console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
+          //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile);
           if (null === av.fio.zipPathRoot) {
             //if (0 < nameOfFileContainedInZipFile.indexOf('avidaedworkspace') && 0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
             if (0 > nameOfFileContainedInZipFile.indexOf('MACOSX')) {
@@ -138,18 +138,18 @@ av.fio.readZipWS = function(zipFileName, loadConfigFlag) {
           //console.log('nameOfFileContainedInZipFile=', nameOfFileContainedInZipFile,';___fName=',av.fio.fName, '; ___zipPathRoot=', av.fio.zipPathRoot, '; ____anID=',av.fio.anID);
           //console.log('fName=',av.fio.fName, '; ____anID=',av.fio.anID);
           if (3 < av.fio.fName.length) {
-            console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID);
+            //console.log('av.fio.fName', av.fio.fName, '; av.fio.anID', av.fio.anID);
             av.fio.processFiles(false);  //load files
           }
         }
-        console.log('av.fzr.file', av.fzr);
-        console.log('cNum=',av.fzr.cNum, '; gNum=', av.fzr.gNum, '; wNum', av.fzr.wNum);
+        //console.log('av.fzr.file', av.fzr);
+        //console.log('cNum=',av.fzr.cNum, '; gNum=', av.fzr.gNum, '; wNum', av.fzr.wNum);
         if ('populationBlock' === av.ui.page) av.grd.drawGridSetupFn();
         av.fzr.cNum++;  //now the Num value refer to the next (new) item to be put in the freezer.
         av.fzr.gNum++;
         av.fzr.wNum++;
         av.fzr.saveUpdateState('yes');
-        console.log('av.fzr.usrFileLoaded', av.fzr.usrFileLoaded);
+        //console.log('av.fzr.usrFileLoaded', av.fzr.usrFileLoaded);
         if (!av.fzr.usrFileLoaded) alert('It appears that the zip file was not an Avida-ED Workspace. '
           + 'Please choose another file or load the default workspace. '
           + 'If you continue to have propblem, ask your instructor or write Avida-ED-development@googlegroups.com');

@@ -33,6 +33,8 @@
 // .   changed dojo number spinner to a plain javascript text input box
 // .   if autoPauseNum is changed to a value > updates, then autoPauseCheck becomes true
 // .   some students were having trouble entering the correct number of updates for Exercise 4 due to changes in browser/javascript/dojo interactions
+// Avida-ED 3.3.4 fixed some text in error reporting and commented out some console.log statements. 
+//     updated code so that if pauseRunAt.txt exists in the config folder and the pause at value is > 0, then that value is used and the checkbox is checked. 
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
@@ -260,6 +262,7 @@ require([
     av.dom.postLogTextarea = document.getElementById('postLogTextarea');
     av.dom.postdTailTextarea = document.getElementById('postdTailTextarea');
     av.dom.postStatus = document.getElementById('postStatus');
+    av.dom.postDeveloperEmail = document.getElementById('postDeveloperEmail');
 
     av.dom.popBC = document.getElementById('popBC');
     av.dom.mainBC = document.getElementById('mainBC');
@@ -610,6 +613,7 @@ require([
     av.post.addUser('Button: mnHpProblem');
     av.debug.finalizeDtail();
     av.debug.triggered = 'userTriggered';
+    av.debug.developerEmail = 'For more direct help, please send e-mail to avida-ed-development@googlegroups.com'
     av.debug.postStatus = '';
     av.post.postLogPara = 'Please send the data below to help us make Avida-ED better by clicking on the [Send] button'
     av.debug.sendLogPara = 'Please describe the problem and put that at the beginning of the e-mail along with the session log from the text area seeen below.';
@@ -709,6 +713,7 @@ require([
     av.dom.postError.style.color = 'red';
     av.dom.postEmailLabel.textContent = av.debug.postEmailLabel;
     av.dom.postNoteLabel.textContent = av.debug.postNoteLabel;
+    av.dom.postDeveloperEmail.textContent = av.debug.developerEmail;
     av.dom.postStatus.textContent = av.debug.postStatus;
     av.dom.postLogTextarea.textContent = av.debug.log;
     av.dom.postdTailTextarea.textContent = av.debug.dTail;
@@ -740,7 +745,7 @@ require([
     av.dom.runStopButton.innerHTML = 'Run';  //av.msg.pause('now');
     av.debug.finalizeDtail();
     av.debug.triggered = 'errorTriggered';
-    av.post.postLogPara = 'mares eat oats and does eat oats'
+    av.post.postLogPara = 'For more direct help, please send e-mail to avida-ed-development@googlegroups.com'
     av.debug.sendLogPara = 'The error is the last line in the session log in the text below.';
     av.debug.postEmailLabel = 'Please include your e-mail if you would like feed back or are willing to further assist in debug';
     av.debug.postNoteLabel = 'Please include any additional comments in the field below.'
@@ -2074,7 +2079,7 @@ require([
 
   av.ptd.muteInputChange = function() {
     var muteNum = Number(av.dom.muteInput.value);
-    console.log('muteNum=', muteNum);
+    //console.log('muteNum=', muteNum);
     if (muteNum >= 0 && muteNum <= 100) {
       av.ptd.validMuteInuput=true;
       av.dom.muteError.style.color = 'black';
