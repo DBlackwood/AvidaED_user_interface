@@ -23,7 +23,7 @@
 // on 2017_0927 switched to using new avida files with parse number  = 88746e4
 //
 // Update Notes -------------------------------------------------------------------------------------------------------
-//  Should have started this sooner
+//  Should have started this sooner;  
 //
 //  Avida-ED 3.3.2 added new version of plotly.js to plotly.js-1.49.4
 //     modified modeBarButtons ToRemove to remove the new button called 'toggleSpikelines'
@@ -55,6 +55,15 @@
 // var/sites/Avida-ED.msu.edu
 // emacs home.html
 //
+// IDEs ----------------------------------------------------------------------------------------------------------------------
+// 
+// Webstorm is a memory/cpu hog
+// Brackets is slimer/faster, but I have not learned to customize
+// Brackets uess MS Gothic', monospace which is a good font. 1iIlL|! oO0 I can tell all is, Ls and 1s for what they are. 
+// Net Beans requires files for it to look at folder as a projec and uses github. i have not leaned to juse github properly with Net Beans
+//
+// end ------------------------------------------------------------------------------------------------------------------------
+
 define.amd.jQuery = true;
 require([
   'maqetta/space',
