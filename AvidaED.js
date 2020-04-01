@@ -63,6 +63,31 @@
 // Net Beans requires files for it to look at folder as a projec and uses github. i have not leaned to juse github properly with Net Beans
 //
 // end ------------------------------------------------------------------------------------------------------------------------
+/*
+  <script type='text/javascript' src='lib/dojo-release-1.16.2/dojo/dojo.js'
+          data-dojo-config="'parseOnLoad':false,'async':true,
+        'packages':[
+        {'name':'maqetta','location':'../../maqetta'},
+        {'name':'jquery','location':'../../jquery/','main':'jquery-3.4.1.min'},
+        {'name':'jquery-ui','location':'../../jquery-ui','main':'jquery-ui'}
+        ],
+        'themeMap':[
+          ['Android','',['../../themes/android/android.css']],
+          ['BlackBerry','',['../../themes/blackberry/blackberry.css']],
+          ['iPad','',['../../themes/ipad/ipad.css']],
+          ['iPhone','',['../../themes/iphone/iphone.css']],
+          ['.*','',['../../themes/iphone/iphone.css']
+        ]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
+*/
+/*
+  <link href='images/favicon.ico' rel='icon' type='image/x-icon' />
+  <link rel='stylesheet' href='lib/jquery-ui/themes/smoothness/jquery-ui.css'>
+  <style>@import 'themes/claro/document.css';
+    @import 'themes/claro/claro.css';
+    @import 'AvidaED.css';
+  </style>
+
+*/
 
 define.amd.jQuery = true;
 require([
@@ -106,7 +131,7 @@ require([
   'dojo/request/xhr',
   'dojo/ready',
   'jquery',
-  'jquery-ui',
+  'jquery-ui',   //used primarily for the jquery slider. It can go away if the slider goes away. 
   'lib/plotly-latest.min.js',
   //'lib/plotly.js',
   //'lib/jquery.fileDownload.js',
@@ -137,12 +162,14 @@ require([
              TitlePane, parser, declare, query, nodelistTraverse,
              dndSource, dndManager, dndSelector, dndTarget, domGeometry, domStyle, dom, domConst,
              aspect, on, xhr,
-             ready, $, jqueryui, Plotly, //fileDownload,  //Blob.js,
+             ready, $, jqueryui, 
+             Plotly, //fileDownload,  //Blob.js,
              JSZip, FileSaver) {
   'use strict';
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
     // console.log($.fn.jquery);
+    console.log('jquery defined')
   } else {
     console.log('Jquery ($) is not defined.');
   }
