@@ -8,6 +8,13 @@
 //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
 //saveAs(blob, "helloWorld.txt");
 
+var av = av || {};  //incase av already exists
+var dojo = dojo || {};  //incase var already exists
+var dijit = dijit || {};
+var prompt = prompt || {};
+var console = console || {};
+var confirm = confirm || {};
+
 //---------------------------------- Call to selecct the Default workspace ---------------------------------------------
 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
 //https://thiscouldbebetter.wordpress.com/2013/08/06/reading-zip-files-in-javascript-using-jszip/

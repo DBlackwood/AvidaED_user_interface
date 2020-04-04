@@ -25,16 +25,21 @@
 // Update Notes -------------------------------------------------------------------------------------------------------
 //  Should have started this sooner;  
 //
-//  Avida-ED 3.3.2 added new version of plotly.js to plotly.js-1.49.4
+// Avida-ED 3.3.2 added new version of plotly.js to plotly.js-1.49.4
 //     modified modeBarButtons ToRemove to remove the new button called 'toggleSpikelines'
 //     modified to display the button 'zoom2d'
 //     added the setting: responsive: true    to the list of options in av.pch.widg
-// .Avida-ED 3.3.3 changed Pause Run: dojo radio buttons to a plain javascript check box
-// .   changed dojo number spinner to a plain javascript text input box
-// .   if autoPauseNum is changed to a value > updates, then autoPauseCheck becomes true
-// .   some students were having trouble entering the correct number of updates for Exercise 4 due to changes in browser/javascript/dojo interactions
-// Avida-ED 3.3.4 fixed some text in error reporting and commented out some console.log statements. 
-//     updated code so that if pauseRunAt.txt exists in the config folder and the pause at value is > 0, then that value is used and the checkbox is checked. 
+// Avida-ED 3.3.3 changed Pause Run: dojo radio buttons to a plain javascript check box
+//     changed dojo number spinner to a plain javascript text input box
+//     if autoPauseNum is changed to a value > updates, then autoPauseCheck becomes true
+//     some students were having trouble entering the correct number of updates for Exercise 4 due to changes in browser/javascript/dojo interactions
+// Avida-ED 3.3.4 changed text in error reporting & removed some console.log statements. 
+//     Fixed to look for pauseRunAt.txt file in the configured dish folder & to set the the pause if the value is > 0, 
+//     then that value is used and the checkbox is checked. 
+// Avida-ED 3.3.5 updated the following libraries: Dojo 1.16.2, plotly-v1.53, jquery-3.4.1, and jquery-ui-1.12.1
+//     need to up date jsZip and FileSaver, but ran into problems.
+//     uppdatd index.html file to redirect to AvidaED.html after 3 seconds. 
+//     removed indexPlain.html
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
@@ -130,14 +135,19 @@ require([
   'dojo/on',
   'dojo/request/xhr',
   'dojo/ready',
+  
+  //'lib/jquery.fileDownload.js',
   'jquery',
   'jquery-ui',   //used primarily for the jquery slider. It can go away if the slider goes away. 
-  'lib/plotly-latest.min.js',
+  
+  'lib/plotly-v1.53.min.js',
   //'lib/plotly.js',
-  //'lib/jquery.fileDownload.js',
-  //'lib/Blob',
-  'lib/jszip.min.js',
-  'lib/FileSaver.js',
+  //'lib/jszip-v3.3.0.min.js',
+  'lib/jszip-2.6.1.js',
+  //'lib/jszip.min.js',   //older version, not sure which version
+  '/lib/FileSaver_v1.1_date-2016_0328.js',
+  //'lib/FileSaver-2.0.3/FileSaver.min.js',
+  //'lib/FileSaver.js',
   //'avida-messages.js',
   'messaging.js',
   'fileDataRead.js',
@@ -598,6 +608,7 @@ require([
     var end = av.fio.userFname.substring(av.fio.userFname.length - 4);
     if ('.zip' != end) av.fio.userFname = av.fio.userFname + '.zip';
     //console.log('end', end, '; userFname', av.fio.userFname);
+    console.log('before use of "new av.fio.JSZip();"');
     var WSzip = new av.fio.JSZip();
     //console.log('number of files', av.utl.objectLength(av.fzr.file));
     var numFiles = 0;

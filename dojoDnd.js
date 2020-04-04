@@ -3,6 +3,13 @@
 //functions used to process events that happen when a dojo drag and drop lands on the particular dnd 'target'.
 //Note that all dnd 'source' elements can also be 'targets'.
 
+var av = av || {};  //incase av already exists
+var dojo = dojo || {};  //incase var already exists
+var dijit = dijit || {};
+var prompt = prompt || {};
+var console = console || {};
+var confirm = confirm || {};
+
 //http://stackoverflow.com/questions/1134572/dojo-is-there-an-event-after-drag-drop-finished
 //Puts the contents of the source in a object (list) called items.
 av.dnd.getAllItems = function (source) {
@@ -100,7 +107,6 @@ av.dnd.getUniqueFzrName = function(name, namelist) {
   'use strict';
   var unique = true;
   var suggestName;
-  var lngth = namelist.length;
   //console.log('namelist', namelist);
   while (unique) {
     unique = false;
@@ -152,7 +158,6 @@ av.dnd.lndActiveConfig = function (move) {
   var klen = 0;
   var kk = 0;
   var str = '';
-  var dir = '';
   //there is always a node here, so it must always be cleared when adding a new one.
   av.dnd.activeConfig.selectAll().deleteSelectedNodes();  //http://stackoverflow.com/questions/11909540/how-to-remove-delete-an-item-from-a-dojo-drag-and-drop-source
   av.dnd.activeConfig.sync();   //should be done after insertion or deletion
@@ -1013,7 +1018,9 @@ av.dnd.contextMenu = function(target, fzItemID) {
           if ('.zip' != zName.substring(zName.length - 4)) zName = zName + '.zip';
           dir = av.fzr.dir[fzItemID];
           type = dir.substring(0, 1);
+          console.log('before FIzip defined');
           var FIzip = new av.fio.JSZip();  //FreezerItemZip
+          console.log('after FIzip defined')
           FIzip.file('entrytype.txt', type);
           if (av.debug.dnd) console.log('type', type);
           for (var fname in av.fzr.file) {
