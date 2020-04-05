@@ -145,7 +145,8 @@ require([
   //'lib/jszip-v3.3.0.min.js',
   'lib/jszip-2.6.1.js',
   //'lib/jszip.min.js',   //older version, not sure which version
-  '/lib/FileSaver_v1.1_date-2016_0328.js',
+  //'/lib/FileSaver.js',
+  'lib/FileSaver_v1.1_date-2016_0328.js',
   //'lib/FileSaver-2.0.3/FileSaver.min.js',
   //'lib/FileSaver.js',
   //'avida-messages.js',
