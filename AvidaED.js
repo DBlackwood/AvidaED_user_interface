@@ -143,7 +143,7 @@ require([
   'lib/plotly-v1.53.min.js',
   //'lib/plotly.js',
   //'lib/jszip-v3.3.0.min.js',
-  'lib/jszip-2.6.1.js',
+  'lib/jszip-v2.6.1.min.js',
   //'lib/jszip.min.js',   //older version, not sure which version
   //'/lib/FileSaver.js',
   'lib/FileSaver_v1.1_date-2016_0328.js',
