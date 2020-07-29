@@ -809,7 +809,7 @@ av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
 
   if (undefined != av.dnd[fzSection].getSelectedNodes()[0]) {
     var nodeMv = av.dnd[fzSection].getSelectedNodes()[0].id;
-    console.log('fzSection=', fzSection, '; target=', target, '; nodeMv=', nodeMv, '; type=', type);
+    //console.log('fzSection=', fzSection, '; target=', target, '; nodeMv=', nodeMv, '; type=', type);
     var added = false;
     av.dnd.move.via = 'menu';
     av.dnd.move.source = av.dnd[fzSection];
@@ -823,11 +823,11 @@ av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
     av.dnd[target].sync();
     var domIDs = Object.keys(av.dnd[target].map);
     av.dnd.move.targetDomId = domIDs[domIDs.length - 1];
-    console.log('move', av.dnd.move);
+    //console.log('move', av.dnd.move);
     if ('fzOrgan' == fzSection && 'ancestorBox' == target) added = av.dnd.lndAncestorBox(av.dnd.move);
     else if ('fzOrgan' == fzSection && 'activeOrgan' == target) added = av.dnd.lndActiveOrgan(av.dnd.move);
     else if (('fzConfig' == fzSection || 'fzWorld' == fzSection) && 'activeConfig' == target) added = av.dnd.lndActiveConfig(av.dnd.move);
-    else if ('anlDndChart' == target && 'fzWorld' == fzSection) added = av.dnd.lndAnlDndChart(av.dnd.move);
+    else if ('anlDndChart' == target && 'fzWorld' == fzSection) added = av.dnd.lndAnlDndChart(av.dnd.move, 'av.dnd.FzAddExperimentFn');
 
     if (av.dom.popSetupButton.textContent === 'Setup' && added) av.grd.drawGridSetupFn();
   }
@@ -846,35 +846,36 @@ av.dnd.FzAddExperimentFn = function (fzSection, target, type) {
   }
 };
 
-
-av.dnd.lndAnlDndChart = function (move) {
+//not working
+av.dnd.lndAnlDndChart = function (move, from) {
   'use strict';
-  console.log('DnD: ' + move.source.node.id + '--> ' + move.target.node.id + ': by: ' + move.nodeName);
+  //console.log(from, 'called av.dnd.lndAnlDndChart: DnD: ' + move.source.node.id + '--> ' + move.target.node.id + ': by: ' + move.nodeName);
   var items = av.dnd.getAllItems(av.dnd.graphPop0);
-  if (0 === items.length) { av.dnd.putNslot(0, move.source); }
+  if (0 === items.length) { av.dnd.putNslot(0, move.source, "av.dnd.lndAnlDndChart"); }
   else {
     items = av.dnd.getAllItems(av.dnd.graphPop1);
-    if (0 === items.length) { av.dnd.putNslot(1, move.source); }
+    if (0 === items.length) { av.dnd.putNslot(1, move.source, "av.dnd.lndAnlDndChart"); }
     else {
       items = av.dnd.getAllItems(av.dnd.graphPop2);
-      if (0 === items.length) { av.dnd.putNslot(2, move.source);}
+      if (0 === items.length) { av.dnd.putNslot(2, move.source, "av.dnd.lndAnlDndChart");}
     }
   }
   //in all cases no population name is stored in the graph div
   av.dnd.anlDndChart.selectAll().deleteSelectedNodes();  //clear items
   av.dnd.anlDndChart.sync();   //should be done after insertion or deletion
-}
+};
 
+//working
 av.dnd.landAnlDndChart = function (dnd, source, nodes, target) {
   'use strict';
   av.post.addUser('DnD: ' + source.node.id + '--> ' + target.node.id + ': by: ' + nodes[0].textContent);
   var items = av.dnd.getAllItems(av.dnd.graphPop0);
-  if (0 === items.length) { av.dnd.putNslot(0, source); }
+  if (0 === items.length) { av.dnd.putNslot(0, source, 'av.dnd.landAnlDndChart___'); }
   else {
     items = av.dnd.getAllItems(av.dnd.graphPop1);
-    if (0 === items.length) { av.dnd.putNslot(1, source); }
+    if (0 === items.length) { av.dnd.putNslot(1, source, 'av.dnd.landAnlDndChart____'); }
     else {
-      items = av.dnd.getAllItems(av.dnd.graphPop2);
+      items = av.dnd.getAllItems(av.dnd.graphPop2, 'av.dnd.landAnlDndChart____');
       if (0 === items.length) { av.dnd.putNslot(2, source);}
     }
   }
@@ -883,21 +884,21 @@ av.dnd.landAnlDndChart = function (dnd, source, nodes, target) {
   av.dnd.anlDndChart.sync();   //should be done after insertion or deletion
 }
 
-av.dnd.putNslot = function (Num, source) {
+av.dnd.putNslot = function (Num, source, from) {
   'use strict';
   //get the data for the new organism
-  console.log('source = ', source);
-  console.log('source.selection=', source.selection);
+  //console.log(from, 'called av.dnd.putNslot; Num =',Num, '; source =', source);
+  //console.log('source.selection=', source.selection);
   var domid = Object.keys(source.selection)[0];
   var name = document.getElementById(domid).textContent
   var dir = av.fzr.dir[domid];
-  //console.log('av.dnd.putNslot: Num', Num, '; name', name);
+  //console.log('av.dnd.putNslot: Num', Num, '; name', name, '; dir=', dir);
   //I tried putting av.dnd.graphPop0 as a parameter to be passed, but that did not work.
   av.dnd['graphPop'+Num].insertNodes(false, [{data: name, type: ['w']}]);
   av.dnd['graphPop'+Num].sync();
   av.anl.loadWorldData(Num, dir);
-  av.anl.loadSelectedData(Num, 'yLeftSelect', 'left')
-  av.anl.loadSelectedData(Num, 'yRightSelect', 'right')
+  av.anl.loadSelectedData(Num, 'yLeftSelect', 'left');
+  av.anl.loadSelectedData(Num, 'yRightSelect', 'right');
 }
 
 av.dnd.landgraphPop0 = function (dnd, source, nodes, target) {

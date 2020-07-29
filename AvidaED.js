@@ -180,7 +180,7 @@ require([
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
     // console.log($.fn.jquery);
-    console.log('jquery defined')
+    console.log('jquery defined on 2020 July 27')
   } else {
     console.log('Jquery ($) is not defined.');
   }
@@ -1495,6 +1495,7 @@ require([
   dijit.byId('mnFzAddPopAnalysis').on('Click', function () {
     av.post.addUser('Button: mnFzAddPopEx');
     av.dnd.FzAddExperimentFn('fzWorld', 'anlDndChart', 'w');
+    av.anl.AnaChartFn();
   });
 
 
