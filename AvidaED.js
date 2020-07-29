@@ -40,6 +40,7 @@
 //     need to up date jsZip and FileSaver, but ran into problems.
 //     uppdatd index.html file to redirect to AvidaED.html after 3 seconds. 
 //     removed indexPlain.html
+// Avida-ED 3.3.6 patched an error so that adding a populated dish to the analysis, charts correctly. 
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
