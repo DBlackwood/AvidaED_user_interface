@@ -2,6 +2,20 @@
 //----------------------------------------------------------------------------------------------------------------------
 //because IE does not understand var event = new Event('change'); in the file fileIO.js
 
+
+//----------------------------------------------------------------------------------------------------------------------
+av.utl.log = function (base, num) {  
+  return Math.log(num) / Math.log(base);  
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+//RegExpression = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); };
+
+  //from https://stackoverflow.com/questions/1303646/check-whether-variable-is-number-or-string-in-javascript
+  av.utl.isNumber = function(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0); };
+
+
+
 //----------------------------------------------------------------------------------------------------------------------
 //http://stackoverflow.com/questions/1295584/most-efficient-way-to-create-a-zero-filled-javascript-array
 av.utl.newFilledArray = function (length, val) {

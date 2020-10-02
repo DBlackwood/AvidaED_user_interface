@@ -542,28 +542,21 @@
               <label>Environmental Settings</label>
 
               <div  class='odd'>
-                Dish Size:
-                <input id='sizeCols' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em'></input>
-                &nbsp; x &nbsp;
-                <input id='sizeRows' type='text' onchange='av.ptd.gridChange(this.value)' style='width: 4.5em; height:1.8em'></input>
-                cells&nbsp;<br />
-                <label id='sizeCells'>There are 900 cells by default</label>
+                <div id='sizePopContainer'>
+                  <div id='worldSizeLabelHolder'>Dish Size: </div>
+                  <div id='worldCols'><input id='sizeCols' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'><div id='colPopWrap'>&nbsp;columns x&nbsp;</div></div>
+                <div id='worldRows'><input id='sizeRows' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'><div id='rowPopWrap'>&nbsp;rows&nbsp;=&nbsp;</div></div>
+                  <div id='worldCellsHolder'><label id='sizeCells'>There are 900 cells by default</label></div>
+                  <div class='worldSpace'></div>
+                </div>
               </div>
               <div class='even'>
-                <span class='lftmargin'>Per Site Mutation Rate:</span>
-              <span id='muteSlide'
-                    style='width:100px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px'></span>
-                <!-- style done here for the slider; margin to keep it from overlapping;
-                                      without width the slider is the full width of the browser window-->
-                <!--<input id='muteInput' type='text' style='width: 4em; height:1.8em'></button> -->
-                <input id='muteInput' type='text' data-dojo-type='dijit/form/NumberTextBox' value=1 required='true' ;
-                       data-dojo-props='constraints:{min:0, max:100},
-                     invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid mutation rate."'
-                       style='width: 4.5em; height:1.8em' onchange='av.ptd.muteInputChange(this.value)'>
-                </button> %<br />
-                <!--; or the slider value is &nbsp;</div>
-                <input id='mRate' type='text' readonly style='width: 4em; height:1.8em'></button> -->
-                <label id='muteError'>Error place holder</label>
+                <div id='mutePopContainer'>
+                  <div id='mutePopHeading' class='enviroSubHeading lftmargin' >Per Site Mutation Rate:</div>
+                  <div id='mutePopInputHolder'><input id='mutePopInput' type='text' class='numberInputClass'>&nbsp;%</div>
+                  <div id='mutePopSlideHolder'><span id='mutePopSlideWrap'><span id='mutePopSlide' class='mutePopSlideClass'></span></span></div>
+                  <div id='mutePopErrorHolder'><label id='mutePopError'>Error place holder</label>&nbsp;</div>
+                </div>
               </div>
               <div class='odd'>Ancestral Organism(s):
                 <div class='ancestorContainer' id='ancestorBox'></div>

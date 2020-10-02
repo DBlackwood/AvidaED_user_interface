@@ -90,7 +90,7 @@ av.ptd.popRunningStateUi = function () {
   $('#muteSlide').slider({disabled: true});  //http://stackoverflow.com/questions/970358/jquery-readonly-slider-how-to-do
   av.dom.sizeCols.disabled = true;
   av.dom.sizeRows.disabled = true;
-  dijit.byId('muteInput').attr('disabled', true);
+  dijit.byId('mutePopInput').attr('disabled', true);
   dijit.byId('childParentRadio').attr('disabled', true);
   dijit.byId('childRandomRadio').attr('disabled', true);
   dijit.byId('notose').attr('disabled', true);
@@ -136,7 +136,7 @@ av.ptd.popNewExState = function () {
   av.dom.sizeCols.disabled = false;
   av.dom.sizeRows.disabled = false;
   //dijit.byId('sizeRows').attr('disabled', false);
-  dijit.byId('muteInput').attr('disabled', false);
+  dijit.byId('mutePopInput').attr('disabled', false);
   dijit.byId('childParentRadio').attr('disabled', false);
   dijit.byId('childRandomRadio').attr('disabled', false);
   dijit.byId('notose').attr('disabled', false);

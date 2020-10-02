@@ -181,7 +181,7 @@ require([
   if (typeof $ != 'undefined') {
     // jQuery is loaded => print the version
     // console.log($.fn.jquery);
-    console.log('jquery defined on 2020 July 27')
+    console.log('jquery defined on 2020 Oct 1')
   } else {
     console.log('Jquery ($) is not defined.');
   }
@@ -262,8 +262,9 @@ require([
     av.dom.sizeCells = document.getElementById('sizeCells');
     av.dom.sizeCols = document.getElementById('sizeCols');
     av.dom.sizeRows = document.getElementById('sizeRows');
-    av.dom.muteInput = document.getElementById('muteInput');
-    av.dom.muteError = document.getElementById('muteError');
+    av.dom.mutePopInput = document.getElementById('mutePopInput');
+    av.dom.mutePopError = document.getElementById('mutePopError');
+   // av.dom.muteError = document.getElementById('muteError');
     av.dom.childParentRadio = document.getElementById('childParentRadio');
     av.dom.childRandomRadio = document.getElementById('childRandomRadio');
     av.dom.notose = document.getElementById('notose');
@@ -2127,23 +2128,23 @@ require([
     av.grd.cellConflict(NewCols, NewRows);
   }
 
-  av.ptd.muteInputChange = function() {
-    var muteNum = Number(av.dom.muteInput.value);
+  av.ptd.mutePopInputChange = function() {
+    var muteNum = Number(av.dom.mutePopInput.value);
     //console.log('muteNum=', muteNum);
     if (muteNum >= 0 && muteNum <= 100) {
       av.ptd.validMuteInuput=true;
-      av.dom.muteError.style.color = 'black';
-      av.dom.muteError.innerHTML = '';
+      av.dom.mutePopError.style.color = 'black';
+      av.dom.mutePopError.innerHTML = '';
       av.dom.userMsgLabel.innerHTML = '';
     }
     else {
       av.ptd.validMuteInuput=false;
-      av.dom.muteError.style.color = 'red';
-      av.dom.muteError.innerHTML = '';
+      av.dom.mutePopError.style.color = 'red';
+      av.dom.mutePopError.innerHTML = '';
       av.dom.userMsgLabel.innerHTML = '';
-      if (muteNum <= 0) { av.dom.muteError.innerHTML += 'Mutation rate must be greater than zero percent. '; console.log('<0');}
-      if (muteNum >= 100) { av.dom.muteError.innerHTML += 'Mutation rate must be 100% or less. '; console.log('>0');}
-      if ( isNaN(muteNum) ) {av.dom.muteError.innerHTML += 'Mutation rate must be a valid number. '; console.log('==NaN');}
+      if (muteNum <= 0) { av.dom.mutePopError.innerHTML += 'Mutation rate must be greater than zero percent. '; console.log('<0');}
+      if (muteNum >= 100) { av.dom.mutePopError.innerHTML += 'Mutation rate must be 100% or less. '; console.log('>0');}
+      if ( isNaN(muteNum) ) {av.dom.mutePopError.innerHTML += 'Mutation rate must be a valid number. '; console.log('==NaN');}
     }
   };
 
@@ -2199,73 +2200,76 @@ require([
       if ( isNaN(tmpNum) ) {av.dom.sizeCells.innerHTML = 'Number of rows must be a valid number'; console.log('==NaN');}
     }
   };
-
-  $(function slidemute() {
-    /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
-    /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
-    /* so I multiplied by 100,000 to get 100.000% to come out even. */
+  
+//----------------------------------------------------------------------------------------- $(function slidePopmute() --
+   $(function slidePopMute() {
+    // because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED 
+    // the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, 
+    // so I multiplied by 200 to get 100.000% to get a reasonable number of values for the pixils in the slide
     //console.log('before defaultslide value');
-    var muteSlideDefault = 109861.;
-    var muteVal;
-    /* results in 2% as a default */
-    var muteDefault = (Math.pow(Math.E, (muteSlideDefault / 100000)) - 1).toFixed(3)
-    var slides = $('#muteSlide').slider({
-      // range: 'min',   /*causes the left side of the scroll bar to be grey */
+    var muteSlideDefault = 95.4242509439325;
+    // results in 2% as a default 
+    var muteDefault = (Math.pow(10, (muteSlideDefault / 200)) - 1).toFixed(3);
+    var slides = $('#mutePopSlide').slider({
+      range: 'max',   /*causes the left side of the scroll bar to be grey */
       value: muteSlideDefault,
       min: 0.0,
-      max: 461512,
+      max: 401,
+      theme: 'summer',
       slide: function (event, ui) {
-        var muteVal = (Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3);
-        av.post.addUser('muteInput =' + muteVal, ' in AvidaED.js line 1855');
-        //$( '#mRate' ).val( ui.value);  /*put slider value in the text above the slider */
-        $('#muteInput').val(muteVal);
-        /*put the value in the text box */
+        var tmpVal = (Math.pow(10, (ui.value / 200)) - 1);
+        if (12 <= tmpVal ) {tmpVal = tmpVal.toFixed(0); }
+        else if (1 <= tmpVal ) {tmpVal = tmpVal.toFixed(1); }
+        else if (0.3 <= tmpVal ) {tmpVal = tmpVal.toFixed(2); }
+        else {tmpVal = tmpVal.toFixed(2); }
+        //put the value in the text box 
+        //console.log('input', tmpVal, '; slide=', ui.value);
+        $('#mutePopInput').val(tmpVal); //put slider value in the text near slider 
       }
-    })
-    /* initialize */
-    //$( '#mRate' ).val( ($( '#muteSlide').slider( 'value' )));  //used in testing nonlinear scale
-    $('#muteInput').val(muteDefault);
+    });
+    // initialize
+     $('#mutePopInput').val(muteDefault);
+    
     /*update slide based on textbox */
-    $('#muteInput').change(function () {
-      //muteVal = 100000 * Math.log(1 + (parseFloat(this.value)));
-      muteVal = parseFloat(this.value);
-      slides.slider('value', muteVal);
-      $('#mRate').val(muteVal);
-      av.post.data1 = {
-        'changed' : 'muteInput',
-        'muteInput': muteVal.formatNum(1)
-      }
-      av.post.data2 = {
-        'operation' : 'assign',
-        'object' : ['muteInput'],
-        'value' : [muteVal.formatNum(1)]
-      }
-      av.post.data = {
-        'operation' : 'assign',
-        'name' : 'muteInput',
-        'vars' : ['muteInput', 'person'],
-        'value' : [muteVal.formatNum(1), 'fred']
-      }
-
-      av.post.data = {
-        'operation' : 'button',
-        'name' : 'runPause',
-        'vars' : {'update': 5},
-        'assumptions' : {'av.dom.runStopButton.textContent': 'Run'}
-      }
-      av.post.data = {
-        'operation' : 'DojoDnd',
-        'name' : 'fz2Grid',
-        'vars' : {'source' : 'av.dnd.fzOrgan', 'nodeDir': 'g0', 'target': 'av.dnd.popGrid', 'xGrid': 4, 'yGrid': 9},
-        //// need dom Id associated with @ancestor.
-        'assumptions' : {'nodeName': '@ancestor'}    //condition, constraint
-      }
-      //usr:
-      av.post.addUser('muteInput =' + muteVal.formatNum(1), ' in AvidaED.js line 1865');
-      av.post.usrOneline(av.post.data, 'in AvidaED.js line 1868');
-      //console.log('in mute change');
+    $('#mutePopInput').change(function () {
+      var value = this.value;
+      var muteNum = parseFloat(value);
+      //if (av.debug.uil) { console.log('ui: muteNum=', muteNum); }
+      if (muteNum >= 0 && muteNum <= 100) {
+        av.ptd.validMuteInuput = true;
+        av.dom.mutePopError.style.color = 'black';
+        av.dom.mutePopError.innerHTML = '';
+        //update slide value
+        slides.slider('value', 200 * av.utl.log(10,1 + (muteNum)));
+        //console.log('value=', muteNum, '; slide=', 200 * av.utl.log(10,1 + (muteNum) ) );
+        
+        //av.ind.settingsChanged = true;
+        if (av.debug.trace) { console.log('Mute changed', av.ind.settingsChanged); };
+        av.post.addUser('mutePopInput =' + av.dom.mutePopInput.value,  ' on line 2247');
+      } 
+      else {
+        av.ptd.validMuteInuput = false;
+        av.dom.mutePopError.style.color = 'red';
+        av.dom.mutePopError.innerHTML = '';
+        av.dom.userMsgLabel.innerHTML = '';
+        if (muteNum <= 0) {
+          av.dom.mutePopError.innerHTML += 'Mutation rate must be >= than zero percent. ';
+          if (av.debug.popCon) { console.log('<0'); }
+        }
+        if (muteNum >= 100) {
+          av.dom.mutePopError.innerHTML += 'Mutation rate must be 100% or less. ';
+          if (av.debug.popCon) { console.log('>0'); }
+        }
+        if (isNaN(muteNum)) {
+          av.dom.mutePopError.innerHTML += 'Mutation rate must be a valid number. ';
+          if (av.debug.popCon) { console.log('==NaN'); }
+        }
+      };
     });
   });
+//------------------------------------------------------------------------------------- end $(function slidePopmute() --
+  
+
 
   dojo.connect(dijit.byId('childParentRadio'), 'onClick', function () {
     av.post.addUser('Button: childParentRadio');

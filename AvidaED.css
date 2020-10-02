@@ -72,13 +72,13 @@ div {
 }
 
 div.odd {
-  background-color: #CCCCCC;
+  background-color: #E8E8E8;
   padding: 0.5em 0.3em 1em 0.3em;
   clear: left;
 }
 
 .even {
-  background-color: #EEEEEE;
+  background-color: #CDCDCD;
   padding: 0.5em 0.3em 1em 0.3em;
   clear: left;
 }
@@ -92,7 +92,7 @@ div.odd {
 }
 
 .grid-sugarOnOff-item {
-  background-color: #CDCDCD;
+  background-color: #DDDDDD;
   border: 0px;
   text-align: left;
   padding: 1px 1px;
@@ -182,7 +182,7 @@ div.popStatsTablePop {
   background-color: yellow;
 }
 
-#muteInput {
+#mutePopInput {
   float: left;
 }
 
@@ -387,6 +387,77 @@ table.botPopTable {
 
 .botPopTable tr *:nth-child(2) {  text-align: right;  }
 .botPopTable tr *:nth-child(3) {  width: 80%;  }
+
+.numberInputClass{
+  width:4em;
+  height:20px;
+  margin: 0px 2px;     /* top right bottom left  */   /*top left/right bottom */ /*top/bottom  left/right */
+  /* padding: 0px 0px;   /* top right bottom left  */  /* box padding border margin outside now */
+  display: inline-block; 
+  /*background: yellow; */
+  float: left;
+  vertical-align: middle;
+}
+
+.mutePopSlideClass{
+  display: block;
+  height: 10px;
+  width: 95%;
+  vertical-align: middle; 
+  background: #666; 
+}
+#mutePopSlideWrap{
+  position:relative;
+  /* top:7px; */
+}
+
+#mutePopInputHolder { grid-area: mutePopInput; }
+#mutePopSlideHolder { grid-area: mutePopSlide; width: 100%; place-self: center; }
+#mutePopErrorHolder { grid-area: mutePopError; }
+#mutePopHeading { grid-area: mutePopHead; }
+
+#mutePopContainer {
+  display: grid;
+  grid-template-areas: 'mutePopHead  mutePopError'
+                       'mutePopInput mutePopSlide'; 
+  grid-template-columns: 131px auto;
+  grid-template-rows: 20;
+  width: 100%;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+
+#colPopWrap { position:relative; top: 4px; }
+#rowPopWrap { position:relative; top: 4px; }
+#sizeCells  { position:relative; top: 4px; }
+
+#worldSpace { grid-area: worldSpace; background-color: aliceblue; }
+#worldSizeLabelHolder { grid-area: worldSizeLabel; background-color: aliceblue; }
+#worldCols { grid-area: worldCols; background-color: lightgoldenrodyellow; }
+#worldRows { grid-area: worldRows; background-color: violet; }
+#worldCellsHolder { grid-area: worldCellsHolder; background-color: lightgreen; }
+
+#sizePopContainer {
+  display: grid;
+  grid-template-areas: 'worldSizeLabel  worldSizeLabel worldSizeLabel'
+                       'worldCols       worldRows      worldCellsHolder'; 
+  grid-template-columns: 127px 106px 170px;
+  grid-template-rows: 20;
+  width: 100%;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;  
+  background-color: lightsteelblue;
+}
+/*
+              <div  class='odd'>
+                <div id='sizePopContainer'>
+                  <div id='worldSizeLabelHolder'>Dish Size: </div>
+                  <div id='worldCols'><input id='sizeCols' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'></input><div id='colPopWrap'>&nbsp;columns x&nbsp;</div></div>
+                <div id='worldRows'><input id='sizeRows' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'></input><div id='rowPopWrap'>&nbsp;rowss&nbsp;</div></div>
+                  <div id='worldCellsHolder'><label id='sizeCells'>There are 900 cells by default</label></div>
+                  <div class='worldSpace'></div>
+                </div>
+              </div>
 
 /*
 web pages about style sheets that are changed with javascript
