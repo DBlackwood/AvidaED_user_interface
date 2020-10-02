@@ -542,10 +542,12 @@
               <label>Environmental Settings</label>
 
               <div  class='odd'>
+              <div id='worldSizeLabelHolder'>Dish Size: </div>
                 <div id='sizePopContainer'>
-                  <div id='worldSizeLabelHolder'>Dish Size: </div>
-                  <div id='worldCols'><input id='sizeCols' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'><div id='colPopWrap'>&nbsp;columns x&nbsp;</div></div>
-                <div id='worldRows'><input id='sizeRows' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'><div id='rowPopWrap'>&nbsp;rows&nbsp;=&nbsp;</div></div>
+                  <div id='worldCols'><input id='sizeCols' type='text' class='sizeInputClass' onchange='av.ptd.gridChange(this.value)'></div>
+                  <div id='colPopWrap'>&nbsp;columns x&nbsp;</div>
+                  <div id='worldRows'><input id='sizeRows' type='text' class='sizeInputClass' onchange='av.ptd.gridChange(this.value)'></div>
+                  <div id='rowPopWrap'>&nbsp;rows&nbsp;=&nbsp;</div>
                   <div id='worldCellsHolder'><label id='sizeCells'>There are 900 cells by default</label></div>
                   <div class='worldSpace'></div>
                 </div>
@@ -553,7 +555,7 @@
               <div class='even'>
                 <div id='mutePopContainer'>
                   <div id='mutePopHeading' class='enviroSubHeading lftmargin' >Per Site Mutation Rate:</div>
-                  <div id='mutePopInputHolder'><input id='mutePopInput' type='text' class='numberInputClass'>&nbsp;%</div>
+                  <div id='mutePopInputHolder'><input id='mutePopInput' type='text' class='muteInputClass'>&nbsp;%</div>
                   <div id='mutePopSlideHolder'><span id='mutePopSlideWrap'><span id='mutePopSlide' class='mutePopSlideClass'></span></span></div>
                   <div id='mutePopErrorHolder'><label id='mutePopError'>Error place holder</label>&nbsp;</div>
                 </div>

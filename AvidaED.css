@@ -388,8 +388,19 @@ table.botPopTable {
 .botPopTable tr *:nth-child(2) {  text-align: right;  }
 .botPopTable tr *:nth-child(3) {  width: 80%;  }
 
-.numberInputClass{
-  width:4em;
+.sizeInputClass{
+  width:30px;
+  height:20px;
+  margin: 0px 2px;     /* top right bottom left  */   /*top left/right bottom */ /*top/bottom  left/right */
+  /* padding: 0px 0px;   /* top right bottom left  */  /* box padding border margin outside now */
+  display: inline-block; 
+  /*background: yellow; */
+  float: left;
+  vertical-align: middle;
+}
+
+.muteInputClass{
+  width:70px;
   height:20px;
   margin: 0px 2px;     /* top right bottom left  */   /*top left/right bottom */ /*top/bottom  left/right */
   /* padding: 0px 0px;   /* top right bottom left  */  /* box padding border margin outside now */
@@ -427,6 +438,29 @@ table.botPopTable {
   grid-row-gap: 5px;
 }
 
+/*****************************************************************************************************/
+/*based on flexbox */
+
+
+#worldCellsHolder { flex: auto; order: 5; height: 20 px; }
+
+#worldCols { flex: 0; order: 1; height: 20 px; width: 34px; }
+#colPopWrap { flex: 0; order: 2; height: 20 px; min-width: 68px; }
+#worldRows { flex: 0; order: 3; height: 20 px; width: 34px; }
+#rowPopWrap { flex: 0; order: 4; height: 20 px; width: 48px; }
+#worldSpace { flex: 0; order: 5; height: 20 px; min-width: 116; }
+
+
+#sizePopContainer { 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: center;
+}
+/*****************************************************************************************************/
+/*based on grid 
+
 #colPopWrap { position:relative; top: 4px; }
 #rowPopWrap { position:relative; top: 4px; }
 #sizeCells  { position:relative; top: 4px; }
@@ -441,7 +475,7 @@ table.botPopTable {
   display: grid;
   grid-template-areas: 'worldSizeLabel  worldSizeLabel worldSizeLabel'
                        'worldCols       worldRows      worldCellsHolder'; 
-  grid-template-columns: 127px 106px 170px;
+  grid-template-columns: 127px 108px autos;
   grid-template-rows: 20;
   width: 100%;
   grid-column-gap: 5px;
@@ -452,8 +486,8 @@ table.botPopTable {
               <div  class='odd'>
                 <div id='sizePopContainer'>
                   <div id='worldSizeLabelHolder'>Dish Size: </div>
-                  <div id='worldCols'><input id='sizeCols' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'></input><div id='colPopWrap'>&nbsp;columns x&nbsp;</div></div>
-                <div id='worldRows'><input id='sizeRows' type='text' class='numberInputClass' onchange='av.ptd.gridChange(this.value)'></input><div id='rowPopWrap'>&nbsp;rowss&nbsp;</div></div>
+                  <div id='worldCols'><input id='sizeCols' type='text' class='sizeInputClass' onchange='av.ptd.gridChange(this.value)'><div id='colPopWrap'>&nbsp;columns x&nbsp;</div></div>
+                <div id='worldRows'><input id='sizeRows' type='text' class='sizeInputClass' onchange='av.ptd.gridChange(this.value)'><div id='rowPopWrap'>&nbsp;rows&nbsp;=&nbsp;</div></div>
                   <div id='worldCellsHolder'><label id='sizeCells'>There are 900 cells by default</label></div>
                   <div class='worldSpace'></div>
                 </div>
