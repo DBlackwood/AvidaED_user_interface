@@ -283,8 +283,8 @@ av.mouse.notDndIndList = ['colorMode'
   , 'populationButton'
   , 'organismButton'
   , 'analysisButton'
-  , 'OrgSetting'
-  , 'OrgDetailsButton'
+  , 'orgSetting'
+  , 'orgDetailsButton'
   , 'cycleSlider'
   , 'orgCycle'
   , 'orgReset'
@@ -324,7 +324,7 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '3.3.6';
+av.ui.version = '3.3.7';
 av.debug.log = '';
 av.debug.log = '--hed: message and error log: version ' + av.ui.version;
 av.debug.triggered = 'unknown';

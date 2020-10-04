@@ -40,7 +40,7 @@
 //     need to up date jsZip and FileSaver, but ran into problems.
 //     uppdatd index.html file to redirect to AvidaED.html after 3 seconds. 
 //     removed indexPlain.html
-// Avida-ED 3.3.6 patched an error so that adding a populated dish to the analysis, charts correctly. 
+// Avida-ED 3.3.7 patched an error so that adding a populated dish to the analysis, charts correctly. 
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
@@ -263,6 +263,12 @@ require([
     av.dom.sizeCols = document.getElementById('sizeCols');
     av.dom.sizeRows = document.getElementById('sizeRows');
     av.dom.mutePopInput = document.getElementById('mutePopInput');
+    av.dom.muteOrgError = document.getElementById('muteOrgError');
+    av.dom.orgMuteInput = document.getElementById('orgMuteInput');
+    av.dom.orgSetting = document.getElementById('orgSetting');
+    av.dom.orgSettingsModalID = document.getElementById('orgSettingsModalID');
+    av.dom.indDone = document.getElementById('indDone');
+    
     av.dom.mutePopError = document.getElementById('mutePopError');
    // av.dom.muteError = document.getElementById('muteError');
     av.dom.childParentRadio = document.getElementById('childParentRadio');
@@ -2211,7 +2217,7 @@ require([
     // results in 2% as a default 
     var muteDefault = (Math.pow(10, (muteSlideDefault / 200)) - 1).toFixed(3);
     var slides = $('#mutePopSlide').slider({
-      range: 'max',   /*causes the left side of the scroll bar to be grey */
+      range: 'max',   // min causes the left side of the scroll bar to be light grey instead of white; max causes the right side of the slide to be light grey
       value: muteSlideDefault,
       min: 0.0,
       max: 401,
@@ -2350,8 +2356,8 @@ require([
 
   //process button to hide or show Organism detail panal.
   var DetailsFlag = true;
-  document.getElementById('OrgDetailsButton').onclick = function () {
-    av.post.addUser('Button: OrgDetailsButton');
+  document.getElementById('orgDetailsButton').onclick = function () {
+    av.post.addUser('Button: orgDetailsButton');
     if (DetailsFlag) {
       DetailsFlag = false;
       dijit.byId('rightDetail').set('style', 'display: none;');
@@ -2367,53 +2373,148 @@ require([
   };
 
   //Opens Settings dialog box
-  document.getElementById('OrgSetting').onclick = function () {
-    av.post.addUser('Button: OrgSetting');
+  av.dom.orgSetting.onclick = function () {
+    console.log('in orgSetting: av.dom.orgSettingsModalID = ', document.getElementById('orgSettingsModalID') );
+    av.post.addUser('Button: orgSetting');
     av.ind.settingsChanged = false;
-    OrganSetupDialog.show();
-  }
+    av.dom.orgSettingsModalID.style.display='block';
+    document.getElementById('orgSettingsModalID').style.display='block';
+    console.log('av.dom.orgSettingsModalID.style.display=',av.dom.orgSettingsModalID.style.display );
+  };
 
   //If settings were changed then this will request new data when the settings dialog box is closed.
+  /*
   OrganSetupDialog.connect(OrganSetupDialog, 'hide', function (e) {
     av.post.addUser('Button: hide Setting');
     if (av.ind.settingsChanged) av.msg.doOrgTrace();
   });
-
+*/
+  
+  av.dom.indDone.onclick = function() {
+    av.post.addUser('Button: hide Setting');
+    av.dom.orgSettingsModalID.style.display = 'none';
+    if (av.ind.settingsChanged) av.msg.doOrgTrace();    
+  }
+  
+  
+  //------------------------------------------------------------------------------------------------- $ slideOrganism --
   $(function slideOrganism() {
-    /* because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED */
-    /* the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, */
-    /* so I multiplied by 100,000 to get 100.000% to come out even. */
+    // because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED 
+    // the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, 
+    // so I multiplied by 400 to get a range .from 0 to 802 for a slide that uses 800 pixels 
+    //console.log('before defaultslide value');
+    var muteSlideDefault = 190.848501887865;
+    // results in 2% as a default 
+    var muteDefault = (Math.pow(10, (muteSlideDefault / 400)) - 1).toFixed(3);
+    var slides = $('#orgMuteSlide').slider({
+      // orientation: "vertical",
+      range: 'max',   // min causes the left side of the scroll bar to be light grey instead of white; max causes the right side of the slide to be light grey
+      value: muteSlideDefault,
+      min: 0.0,
+      max: 802,
+      slide: function (event, ui) {
+        var tmpVal = (Math.pow(10, (ui.value / 400)) - 1);
+        if (12 <= tmpVal ) {tmpVal = tmpVal.toFixed(0); }
+        else if (1 <= tmpVal ) {tmpVal = tmpVal.toFixed(1); }
+        else if (0.3 <= tmpVal ) {tmpVal = tmpVal.toFixed(2); }
+        else {tmpVal = tmpVal.toFixed(2); }
+         //console.log('mutation rate =', tmpVal, 'slider = ', ui.value);
+        $('#orgMuteInput').val(tmpVal); //put slider value in the text near slider
+        av.ind.orgMuteInputChange(tmpVal); 
+        //put the value in the text box 
+        av.ind.settingsChanged = true;
+        if (av.debug.trace) { console.log('orSlide changed', av.ind.settingsChanged); }
+      }
+    });
+    // initialize
+    $('#orgMuteInput').val(muteDefault);
+    
+    // update slide based on textbox 
+    $('#orgMuteInput').change(function () {
+      var value = this.value;
+      var muteNum = Number(value);
+      //if (av.debug.uil) { console.log('ui: muteNum=', muteNum); }
+      if (muteNum >= 0 && muteNum <= 100) {
+        //update slide value
+        slides.slider('value', 400 * av.utl.log(10,1 + (muteNum)));
+      };
+      av.ind.orgMuteInputChange(value);
+    });
+  });
+  //--------------------------------------------------------------------------------------------- end $ slideOrganism --
+
+//--------------------------------------------------------------------------------------- av.ind.orgMuteInputChange --
+  // Error messagses and format to 2 significant figures 
+  av.ind.orgMuteInputChange = function(value) {
+      var muteNum = Number(value);    
+      if (muteNum >= 0 && muteNum <= 100) {
+        av.ptd.validMuteInuput = true;
+        console.log();
+        av.dom.muteOrgError.style.color = 'black';
+        av.dom.muteOrgError.innerHTML = '';
+        av.ind.settingsChanged = true;
+        if (av.debug.trace) { console.log('Mute changed', av.ind.settingsChanged); };
+        //console.log('value=', muteNum, '; slide=', 400 * av.utl.log(10,1 + (muteNum) ) );
+        av.post.addUser('orgMuteInput =' + value + '; in av.ind.orgMuteInputChange');
+      } 
+      else {
+        av.ptd.validMuteInuput = false;
+        av.dom.muteOrgError.style.color = 'red';
+        av.dom.muteOrgError.innerHTML = '';
+        av.dom.userMsgLabel.innerHTML = '';
+        if (muteNum <= 0) {
+          av.dom.muteOrgError.innerHTML += 'Mutation rate must be >= than zero percent. ';
+          if (av.debug.popCon) { console.log('<0'); }
+        }
+        if (muteNum >= 100) {
+          av.dom.muteOrgError.innerHTML += 'Mutation rate must be 100% or less. ';
+          if (av.debug.popCon) { console.log('>0'); }
+        }
+        if (isNaN(muteNum)) {
+          av.dom.muteOrgError.innerHTML += 'Mutation rate must be a valid number. ';
+          if (av.debug.popCon) { console.log('==NaN'); }
+        }
+      }
+  };
+  //----------------------------------------------------------------------------------- end av.ind.orgMuteInputChange --
+    
+  /*
+  $(function slideOrganism() {
+    // because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED 
+    // the jQuery slider I found only deals in integers and the fix function truncates rather than rounds, 
+    // so I multiplied by 100,000 to get 100.000% to come out even. 
     //console.log('before defaultslide value');
     var muteSlideDefault = 109861.
-    /* results in 2% as a default */
+    /1 results in 2% as a default 
     var muteDefault = (Math.pow(Math.E, (muteSlideDefault / 100000)) - 1).toFixed(3)
-    var slides = $('#orMuteSlide').slider({
-      // range: 'min',   /*causes the left side of the scroll bar to be grey */
+    var slides = $('#orgMuteSlide').slider({
+      // range: 'min',   //causes the left side of the scroll bar to be grey 
       value: muteSlideDefault,
       min: 0.0,
       max: 461512,
       slide: function (event, ui) {
-        //$( '#orMRate' ).val( ui.value);  /*put slider value in the text near slider */
+        //$( '#orgMuteInput' ).val( ui.value);  //put slider value in the text near slider 
         $('#orMuteInput').val((Math.pow(Math.E, (ui.value / 100000)) - 1).toFixed(3));
-        /*put the value in the text box */
+        //put the value in the text box 
         av.ind.settingsChanged = true;
         if (av.debug.trace) console.log('orSlide changed', av.ind.settingsChanged)
       }
     });
-    /* initialize */
-    //$( '#orMRate' ).val( ($( '#orMuteSlide').slider( 'value' )));
-    //$( '#orMuteInput' ).val(muteDefault+'%');
+    // initialize 
+    // $( '#orgMuteInput' ).val( ($( '#orgMuteSlide').slider( 'value' )));
+    // $( '#orMuteInput' ).val(muteDefault+'%');
     $('#orMuteInput').val(muteDefault);
-    /*update slide based on textbox */
+    // update slide based on textbox 
     $('#orMuteInput').change(function () {
       slides.slider('value', 100000.0 * Math.log(1 + (parseFloat(this.value))));
       av.ind.settingsChanged = true;
       if (av.debug.trace) console.log('orMute changed', av.ind.settingsChanged)
-      //$( '#orMRate' ).val( 100000*Math.log(1+(parseFloat(this.value))) );
+      //$( '#orgMuteInput' ).val( 100000*Math.log(1+(parseFloat(this.value))) );
       //console.log('in mute change');
       av.post.addUser('muteInput =' + dijit.byId('orMuteInput').get('value')+'1949');
     });
   });
+  */
 
   //triggers flag that requests more data when the settings dialog is closed.
   //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button

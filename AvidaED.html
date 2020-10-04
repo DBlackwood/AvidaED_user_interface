@@ -53,7 +53,7 @@
 <!-- http://stackoverflow.com/questions/20828799/creating-a-splash-page-in-html5 -->
 <div id='splash' style='display:block; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A'>
   <div align='center'>
-    <h1 style='color:whitesmoke'>3.3.6 is loading . . .</h1>
+    <h1 style='color:whitesmoke'>3.3.7 is loading . . .</h1>
     <img src='images/Avida-ED-icon.png' /><br />
     <img src='images/AvidaGrid.gif' />
   </div>
@@ -684,9 +684,9 @@
                 &nbsp;
               </td>
               <td style='text-align: right; min-width: 160px;'>
-                <button id='OrgSetting'>Settings</button>
+                <button id='orgSetting'>Settings</button>
                 &nbsp;
-                <button id='OrgDetailsButton'>Details</button>
+                <button id='orgDetailsButton'>Details</button>
               </td>
             </tr>
             </tbody>
@@ -882,7 +882,7 @@
         </div>
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
              id='anaChrtHolder' refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'>
-          <div id='anlDndChart' style='height: 100%; width: 100%;>
+          <div id='anlDndChart' style='height: 100%; width: 100%;'>
             <!--div id='anlChrtSpace'
           </div>
         </div>
@@ -931,12 +931,12 @@
 
 <!---------------------------------- Export Stand Alone Dialog box ---------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnFlStandAloneAppDialog'
-     title='Stand alone version of 3.3.6'>
+     title='Stand alone version of 3.3.7'>
   <div class='dijitDialogPaneContentArea'>
     <h3>For working where there is no internet access</h3>
     <ul>
       <li class="slim"><a href="pkgs/Avida-ED-Web-PC_2016_0918.exe" target='_blank'>Avida-ED Windows installer for self-hosted version 2016_0918</a></li>
-      <li><a href="pkgs/Avida-ED_Server_3.0.0.app.zip" target='_blank'>3.3.6 for Mac OS 10.6 and above</a></li>
+      <li><a href="pkgs/Avida-ED_Server_3.0.0.app.zip" target='_blank'>3.3.7 for Mac OS 10.6 and above</a></li>
       <ul>
         <li>Unzip the file once it is downloaded</li>
         <li>Move the file ‘Avida-ED Web.app’ to the Applications Folder</li>
@@ -987,42 +987,38 @@
   </div>
 </div>
 
-<!----------------------------- Single Organism Replication Settings Dialog Box --------------------------------------->
-<div data-dojo-type='dijit/Dialog' data-dojo-id='OrganSetupDialog' title='Settings for single organism reproduction'>
-  <div class='dijitDialogPaneContentArea'>
-    <form id='OrganRepeatForm'>
-      <div class='even'>
-        <span class='lftmargin'>Per Site Mutation Rate:</span>
-        <span id='orMuteSlide'
-              style='width:200px; display: inline-block; vertical-align: top; margin-left:20px; margin-right:20px'></span>
-        <!-- style done here for the slider; margin to keep it from overlapping;
-                            without width the slider is the full width of the browser window-->
-        <!--<input id='orMuteInput' type='text' style='width: 4em; height:1.8em'></button>%-->
-        <input id='orMuteInput' type='text' data-dojo-type='dijit/form/NumberTextBox' value=2.0 required='true' ;
-               data-dojo-props='constraints:{min:0, max:100},
-                    invalidMessage:"Please enter a numeric value.", rangeMessage:"Invalid mutation rate."'
-               style='width: 4.5em; height:1.8em'></button> %
+<span class='notSeen' id='o_________________________________________________________________ organims_Settings___'></span>
+<div id='orgSettingsModalID' class='modal'>
+  <div class="modal-content" >
+    <div class="modal-header"><h2>'Settings for single organism reproduction'</h2></div>
+                                                                             
+    <div class="modal-body">
 
-        <!--<div class='fltLeft'>%</div>
-        <input id='orMRate' type='text' readonly style='width: 4em; height:1.8em'></button>-->
+      <div class='even'>
+        <div>
+          <span class='enviroSubHeading lftmargin' >Per Site Mutation Rate:</span>
+          <input id='orgMuteInput' type='text' class='orgMuteInputClass'>&nbsp;%
+        </div>
+        <div><label id='muteOrgError'>&nbsp;</label>&nbsp;</div>
+        <div id='orgMuteSlideHolder'>
+          <span id='orgMuteSlide' class='mutePopSlideClass'></span>&nbsp;
+        </div>
       </div>
       <h3>Repeatability Mode:</h3>
-      <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='OrganExperimentRadio'
-             intermediateChanges='false' name='child' checked value='orgExp' iconClass='dijitNoIcon'></button>
-      <label id='OrganExperimentLabel'>Experimental (Natural Variation)</label>
-      <br/>
-      <input showlabel='true' type='radio' data-dojo-type='dijit/form/RadioButton' id='OrganDemoRadio'
-             intermediateChanges='false' name='child' value='orgDemo' iconClass='dijitNoIcon'></button>
-      <label id='OrganDemoLabel'>Demo (forces exact replay)</label>
-    </form>
+      <form action="/action_page.php">
+        <input type='radio' id='OrganExperimentRadio' name='child' value='orgExp'>
+        <label for='OrganExperimentRadio'>Experimental (Natural Variation)</label><br>
+        <input type="radio" id='OrganDemoRadio' name='child' value='orgDemo'>
+        <label for='OrganDemoRadio'>Demo (forces exact replay)</label><br>
+      </form>
+                                                                             
+    </div>                                                                             
+    <div class="modal-footer">
+      <button id='indDone'>Done</button>
+    </div>
   </div>
-  <div class='dijitDialogPaneActionBar'>
-    <button data-dojo-type='dijit/form/Button' type='button' data-dojo-props='onClick:function(){OrganSetupDialog.hide();}' id='indDone'>
-      Done
-    </button>
-  </div>
-</div>
-
+</div><span id='o________________________________________________________________________end_organims_Settings___'></span>
+                                                                              
 <!------------------------------------------ Need Ancestor Dialog ----------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='NeedAncestorDialog'
      title='Unable to resume experiment; there is no start organism in the petri dish.'>
@@ -1045,7 +1041,7 @@
     <p>An educational artificial life plateform developed at Michigan State University for <br />
       learning evolution and the nature of science using digital organisms.</p>
     <br />
-    <strong>3.3.6</strong><br />
+    <strong>3.3.7</strong><br />
     <strong>2008-2016<br />http://Avida-ED.msu.edu/</strong><br />
     <br />
     <p>Developed under NSF Grant #0341484,<br />
