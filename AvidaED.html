@@ -684,7 +684,7 @@
                 &nbsp;
               </td>
               <td style='text-align: right; min-width: 160px;'>
-                <button id='orgSetting'>Settings</button>
+                <button id='orgSetting' onclick='av.ind.showOrgSettings'>Settings</button>
                 &nbsp;
                 <button id='orgDetailsButton'>Details</button>
               </td>
@@ -692,6 +692,8 @@
             </tbody>
           </table>
         </div>
+
+
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
              id='organismBottom' refreshOnShow='false' doLayout='true' region='bottom' splitter='false' maxSize='Infinity'
              style='height: 5px;'>
@@ -719,10 +721,6 @@
 
           <table border='0'
                  style='border-collapse: collapse; table-layout: auto; width: 100%; height: auto; background-color:#DDD'>
-            <colgroup>
-              <col></col>
-              <col></col>
-            </colgroup>
             <tbody>
             <tr>
               <td>Function</td>
@@ -795,6 +793,38 @@
         </div>
       </div>
     </div>
+<div id='orgSettingsModalID' class='modal'>
+  <!-- Modal content -->
+  <div class="modal-content" >
+    <div class="modal-header"><span  class='modalTitle'>Settings for single organism reproduction</span><span id='orgSettingModelClose' class = 'modalClose'>X</span></div>
+                                                                             
+    <div class="modal-body">
+
+      <div class='modalOdd'>
+        <div>
+          <span class='enviroSubHeading lftmargin' >Per Site Mutation Rate:&nbsp;</span>
+          <input id='orgMuteInput' type='text' class='orgMuteInputClass'>&nbsp;%
+        </div>
+        <div><label id='muteOrgError'>&nbsp;</label>&nbsp;</div>
+        <div id='orgMuteSlideHolder'>
+          <span id='orgMuteSlide' class='mutePopSlideClass'></span>&nbsp;
+        </div>
+      </div>
+      <div class = 'modalEven'>
+        <h3>Repeatability Mode:</h3>
+        <form action="/action_page.php">
+          &nbsp;<input type='radio' id='organExperimentRadio' name='child' value='orgExp' checked="checked" onclick='av.ind.organDemoChangeRadio(this)'>
+          <label for='organExperimentRadio'>Experimental (Natural Variation)</label><br>
+          &nbsp;<input type="radio" id='organDemoRadio' name='child' value='orgDemo' onclick='av.ind.organDemoChangeRadio(this)'>
+          <label for='organDemoRadio'>Demo (forces exact replay)</label><br>
+        </form>
+      </div>                                               
+    </div>                                                                             
+    <div class="modal-footer">
+      <input type="button" id='indDone' clase='modalDone' value=' Done '>
+    </div>
+  </div>
+
     <div data-dojo-type='dijit/layout/ContentPane' title='Analysis' id='analysisBlock' extractContent='false'
          preventCache='false' preload='false'
          refreshOnShow='false' doLayout='true' closable='false' style='height: 97%; visibility:hidden;'>
@@ -987,38 +1017,6 @@
   </div>
 </div>
 
-<span class='notSeen' id='o_________________________________________________________________ organims_Settings___'></span>
-<div id='orgSettingsModalID' class='modal'>
-  <div class="modal-content" >
-    <div class="modal-header"><h2>'Settings for single organism reproduction'</h2></div>
-                                                                             
-    <div class="modal-body">
-
-      <div class='even'>
-        <div>
-          <span class='enviroSubHeading lftmargin' >Per Site Mutation Rate:</span>
-          <input id='orgMuteInput' type='text' class='orgMuteInputClass'>&nbsp;%
-        </div>
-        <div><label id='muteOrgError'>&nbsp;</label>&nbsp;</div>
-        <div id='orgMuteSlideHolder'>
-          <span id='orgMuteSlide' class='mutePopSlideClass'></span>&nbsp;
-        </div>
-      </div>
-      <h3>Repeatability Mode:</h3>
-      <form action="/action_page.php">
-        <input type='radio' id='OrganExperimentRadio' name='child' value='orgExp'>
-        <label for='OrganExperimentRadio'>Experimental (Natural Variation)</label><br>
-        <input type="radio" id='OrganDemoRadio' name='child' value='orgDemo'>
-        <label for='OrganDemoRadio'>Demo (forces exact replay)</label><br>
-      </form>
-                                                                             
-    </div>                                                                             
-    <div class="modal-footer">
-      <button id='indDone'>Done</button>
-    </div>
-  </div>
-</div><span id='o________________________________________________________________________end_organims_Settings___'></span>
-                                                                              
 <!------------------------------------------ Need Ancestor Dialog ----------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='NeedAncestorDialog'
      title='Unable to resume experiment; there is no start organism in the petri dish.'>

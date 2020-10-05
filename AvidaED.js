@@ -2249,7 +2249,7 @@ require([
         slides.slider('value', 200 * av.utl.log(10,1 + (muteNum)));
         //console.log('value=', muteNum, '; slide=', 200 * av.utl.log(10,1 + (muteNum) ) );
         
-        //av.ind.settingsChanged = true;
+        av.ind.settingsChanged = true;
         if (av.debug.trace) { console.log('Mute changed', av.ind.settingsChanged); };
         av.post.addUser('mutePopInput =' + av.dom.mutePopInput.value,  ' on line 2247');
       } 
@@ -2371,17 +2371,26 @@ require([
       registry.byId('mainBC').layout();
     }
   };
-
-  //Opens Settings dialog box
+  
+  //Opens Settings dialog box /*
   av.dom.orgSetting.onclick = function () {
-    console.log('in orgSetting: av.dom.orgSettingsModalID = ', document.getElementById('orgSettingsModalID') );
+    //console.log('in orgSetting: av.dom.orgSettingsModalID = ', document.getElementById('orgSettingsModalID') );
     av.post.addUser('Button: orgSetting');
     av.ind.settingsChanged = false;
-    av.dom.orgSettingsModalID.style.display='block';
-    document.getElementById('orgSettingsModalID').style.display='block';
-    console.log('av.dom.orgSettingsModalID.style.display=',av.dom.orgSettingsModalID.style.display );
+    av.dom.orgSettingsModalID.style.display="block";
+    document.getElementById('orgSettingsModalID').style.display="block";
+    //console.log('av.dom.orgSettingsModalID.style.display=',av.dom.orgSettingsModalID.style.display );
   };
 
+    av.dom.indDone.onclick = function() {
+    av.post.addUser('Button: hide Setting');
+    av.dom.orgSettingsModalID.style.display = 'none';
+    console.log('av.ind.settingsChanged =', av.ind.settingsChanged);
+    if (av.ind.settingsChanged) av.msg.doOrgTrace();    
+  }
+  
+  document.getElementById('orgSettingModelClose').onclick = function() { av.dom.orgSettingsModalID.style.display = 'none'; }
+    
   //If settings were changed then this will request new data when the settings dialog box is closed.
   /*
   OrganSetupDialog.connect(OrganSetupDialog, 'hide', function (e) {
@@ -2389,13 +2398,6 @@ require([
     if (av.ind.settingsChanged) av.msg.doOrgTrace();
   });
 */
-  
-  av.dom.indDone.onclick = function() {
-    av.post.addUser('Button: hide Setting');
-    av.dom.orgSettingsModalID.style.display = 'none';
-    if (av.ind.settingsChanged) av.msg.doOrgTrace();    
-  }
-  
   
   //------------------------------------------------------------------------------------------------- $ slideOrganism --
   $(function slideOrganism() {
@@ -2437,13 +2439,14 @@ require([
       if (muteNum >= 0 && muteNum <= 100) {
         //update slide value
         slides.slider('value', 400 * av.utl.log(10,1 + (muteNum)));
+      av.ind.settingsChanged = true;
       };
       av.ind.orgMuteInputChange(value);
     });
   });
   //--------------------------------------------------------------------------------------------- end $ slideOrganism --
 
-//--------------------------------------------------------------------------------------- av.ind.orgMuteInputChange --
+  //--------------------------------------------------------------------------------------- av.ind.orgMuteInputChange --
   // Error messagses and format to 2 significant figures 
   av.ind.orgMuteInputChange = function(value) {
       var muteNum = Number(value);    
@@ -2476,8 +2479,30 @@ require([
         }
       }
   };
+  
   //----------------------------------------------------------------------------------- end av.ind.orgMuteInputChange --
     
+  //triggers flag that requests more data when the settings dialog is closed.
+  //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
+/*  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function () {
+    av.post.addUser('Button: OrganExperimentRadio');
+    av.ind.settingsChanged = true;
+  });
+  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function () {
+    av.ind.settingsChanged = true;
+    av.post.addUser('Button: OrganDemoRadio');
+  });
+*/
+  av.ind.organDemoChangeRadio = function(domObj) {
+    var radioType = domObj.id;
+    av.post.addUser('Button:', radioType);
+    av.ind.settingsChanged = true;
+    
+  }
+  
+  
+  
+  
   /*
   $(function slideOrganism() {
     // because most mutation rates will be less than 2% I set up a non-linear scale as was done in the Mac Avida-ED 
@@ -2515,18 +2540,8 @@ require([
     });
   });
   */
-
-  //triggers flag that requests more data when the settings dialog is closed.
-  //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
-  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function () {
-    av.post.addUser('Button: OrganExperimentRadio');
-    av.ind.settingsChanged = true;
-  });
-  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function () {
-    av.ind.settingsChanged = true;
-    av.post.addUser('Button: OrganDemoRadio');
-  });
-
+  
+  
   // ****************************************************************
   //        Menu buttons that call for genome/Organism trace
   // ****************************************************************

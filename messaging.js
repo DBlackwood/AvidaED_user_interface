@@ -287,7 +287,9 @@ av.msg.doOrgTrace = function () {
     if ( 50 < av.fzr.actOrgan.genome.length) {
       if (av.debug.msg) console.log('doOrgTrace: fzr', av.fzr);
       var seed = 100 * Math.random();
-      if (dijit.byId('OrganDemoRadio').get('checked', true)) {seed = 0;}
+      //if (dijit.byId('OrganDemoRadio').get('checked', true)) 
+      console.log('dom.organDemoRadio.checked =',document.getElementById('organDemoRadio').checked);
+      if (document.getElementById('organDemoRadio').checked){seed = 0;}
       else {seed = -1}
       var request = {
         'type': 'addEvent',
@@ -296,11 +298,12 @@ av.msg.doOrgTrace = function () {
         'args': [
           //'0,heads_default,' + av.fzr.actOrgan.genome,                                  //genome string
           av.fzr.actOrgan.genome,                                  //genome string
-          dijit.byId('orMuteInput').get('value') / 100,     // point mutation rate
+          av.dom.orgMuteInput.value / 100,     // point mutation rate
           seed                                            //seed where 0 = random; >0 to replay that number
         ]
       };
       if (av.debug.msg) console.log('doOrgTrace', request);
+      console.log('doOrgTrace', request);
       if (av.debug.msg) console.log('doOrgTrace string', av.utl.json2stringFn(request));
       av.aww.uiWorker.postMessage(request);
       av.debug.log += '\n--uiA: grdUpdate:' + av.msg.previousUpdate + '; \n' + av.utl.jsonStringify(request);
