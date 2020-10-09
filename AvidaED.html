@@ -4,7 +4,7 @@
   <title>Avida-ED</title>
   <meta charset='utf-8'/>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
-  <script type='text/javascript' src='lib/dojo-release-1.16.2/dojo/dojo.js'
+  <script type='text/javascript' src='lib/dojo-release-1.16.3/dojo/dojo.js'
           data-dojo-config="'parseOnLoad':false,'async':true,
         'packages':[
         {'name':'maqetta','location':'../../maqetta'},
@@ -793,37 +793,6 @@
         </div>
       </div>
     </div>
-<div id='orgSettingsModalID' class='modal'>
-  <!-- Modal content -->
-  <div class="modal-content" >
-    <div class="modal-header"><span  class='modalTitle'>Settings for single organism reproduction</span><span id='orgSettingModelClose' class = 'modalClose'>X</span></div>
-                                                                             
-    <div class="modal-body">
-
-      <div class='modalOdd'>
-        <div>
-          <span class='enviroSubHeading lftmargin' >Per Site Mutation Rate:&nbsp;</span>
-          <input id='orgMuteInput' type='text' class='orgMuteInputClass'>&nbsp;%
-        </div>
-        <div><label id='muteOrgError'>&nbsp;</label>&nbsp;</div>
-        <div id='orgMuteSlideHolder'>
-          <span id='orgMuteSlide' class='mutePopSlideClass'></span>&nbsp;
-        </div>
-      </div>
-      <div class = 'modalEven'>
-        <h3>Repeatability Mode:</h3>
-        <form action="/action_page.php">
-          &nbsp;<input type='radio' id='organExperimentRadio' name='child' value='orgExp' checked="checked" onclick='av.ind.organDemoChangeRadio(this)'>
-          <label for='organExperimentRadio'>Experimental (Natural Variation)</label><br>
-          &nbsp;<input type="radio" id='organDemoRadio' name='child' value='orgDemo' onclick='av.ind.organDemoChangeRadio(this)'>
-          <label for='organDemoRadio'>Demo (forces exact replay)</label><br>
-        </form>
-      </div>                                               
-    </div>                                                                             
-    <div class="modal-footer">
-      <input type="button" id='indDone' clase='modalDone' value=' Done '>
-    </div>
-  </div>
 
     <div data-dojo-type='dijit/layout/ContentPane' title='Analysis' id='analysisBlock' extractContent='false'
          preventCache='false' preload='false'
@@ -913,7 +882,7 @@
         <div data-dojo-type='dijit/layout/ContentPane' extractContent='false' preventCache='false' preload='false'
              id='anaChrtHolder' refreshOnShow='false' region='center' splitter='false' maxSize='Infinity' doLayout='false'>
           <div id='anlDndChart' style='height: 100%; width: 100%;'>
-            <!--div id='anlChrtSpace'
+
           </div>
         </div>
       </div>
@@ -922,6 +891,38 @@
 </div>
 
 <!--------------------------------------------------------- Dialog boxes ---------------------------------------------->
+<div id='orgSettingsModalID' class='modal'>
+  <!-- Modal content -->
+  <div class="modal-content" >
+    <div class="modal-header"><span  class='modalTitle'>Settings for single organism reproduction</span><span id='orgSettingModelClose' class = 'modalClose'>X</span></div>
+                                                                             
+    <div class="modal-body">
+
+      <div class='modalOdd'>
+        <div>
+          <span class='enviroSubHeading lftmargin' >Per Site Mutation Rate:&nbsp;</span>
+          <input id='orgMuteInput' type='text' class='orgMuteInputClass'>&nbsp;%
+        </div>
+        <div><label id='muteOrgError'>&nbsp;</label>&nbsp;</div>
+        <div id='orgMuteSlideHolder'>
+          <span id='orgMuteSlide' class='mutePopSlideClass'></span>&nbsp;
+        </div>
+      </div>
+      <div class = 'modalEven'>
+        <h3>Repeatability Mode:</h3>
+        <form action="/action_page.php">
+          &nbsp;<input type='radio' id='organExperimentRadio' name='child' value='orgExp' checked="checked" onclick='av.ind.organDemoChangeRadio(this)'>
+          <label for='organExperimentRadio'>Experimental (Natural Variation)</label><br>
+          &nbsp;<input type="radio" id='organDemoRadio' name='child' value='orgDemo' onclick='av.ind.organDemoChangeRadio(this)'>
+          <label for='organDemoRadio'>Demo (forces exact replay)</label><br>
+        </form>
+      </div>                                               
+    </div>                                                                             
+    <div class="modal-footer">
+      <input type="button" id='indDone' clase='modalDone' value=' Done '>
+    </div>
+  </div>
+</div>
 <!----------------------------------------- Save WSfile Dialog box ---------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='sWSfDialog' title='The freezer has changed since last saved in a workspace'>
   <div class='dijitDialogPaneContentArea'>

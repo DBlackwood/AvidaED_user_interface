@@ -40,7 +40,10 @@
 //     need to up date jsZip and FileSaver, but ran into problems.
 //     uppdatd index.html file to redirect to AvidaED.html after 3 seconds. 
 //     removed indexPlain.html
-// Avida-ED 3.3.7 patched an error so that adding a populated dish to the analysis, charts correctly. 
+// Avida-ED 3.3.6 patched an error so that adding a populated dish to the analysis, charts correctly. 
+// Avida-ED 3.3.7 updated slider that had stopped working on population page. Changed demo mode seed to 8 so there is 1 changed instruction with 2% mutation rate
+//     5 changed instructions at 10% mutation rate on a MacBook Pro (16-inch, 2019) running Mos 10.15.6 Catalina and Chrome Version 85.0.4183.121 (Official Build) (64-bit). 
+//     Also updating Dojo libraries to dojo-release-1.16.3
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
@@ -70,7 +73,7 @@
 //
 // end ------------------------------------------------------------------------------------------------------------------------
 /*
-  <script type='text/javascript' src='lib/dojo-release-1.16.2/dojo/dojo.js'
+  <script type='text/javascript' src='lib/dojo-release-1.16.3/dojo/dojo.js'
           data-dojo-config="'parseOnLoad':false,'async':true,
         'packages':[
         {'name':'maqetta','location':'../../maqetta'},
