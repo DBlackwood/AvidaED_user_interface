@@ -953,6 +953,8 @@ require([
     av.post.addUser('Button: populationButton');
     if (av.debug.dnd || av.debug.mouse) console.log('PopulationButton, av.fzr.genome', av.fzr.genome);
     av.ui.mainBoxSwap('populationBlock');
+    console.log('dom.fzOrgan=', document.getElementById('fzOrgan'));
+    console.log('fzOrgan has a selected item', av.dnd['fzOrgan'].getSelectedNodes()[0])
   }
 
   document.getElementById('organismButton').onclick = function () {
@@ -2484,15 +2486,7 @@ require([
     
   //triggers flag that requests more data when the settings dialog is closed.
   //http://stackoverflow.com/questions/3008406/dojo-connect-wont-connect-onclick-with-button
-/*  dojo.connect(dijit.byId('OrganExperimentRadio'), 'onClick', function () {
-    av.post.addUser('Button: OrganExperimentRadio');
-    av.ind.settingsChanged = true;
-  });
-  dojo.connect(dijit.byId('OrganDemoRadio'), 'onClick', function () {
-    av.ind.settingsChanged = true;
-    av.post.addUser('Button: OrganDemoRadio');
-  });
-*/
+
   av.ind.organDemoChangeRadio = function(domObj) {
     var radioType = domObj.id;
     av.post.addUser('Button:', radioType);

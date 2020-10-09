@@ -287,9 +287,9 @@ av.msg.doOrgTrace = function () {
     if ( 50 < av.fzr.actOrgan.genome.length) {
       if (av.debug.msg) console.log('doOrgTrace: fzr', av.fzr);
       var seed = 100 * Math.random();
-      //if (dijit.byId('OrganDemoRadio').get('checked', true)) 
       console.log('dom.organDemoRadio.checked =',document.getElementById('organDemoRadio').checked);
-      if (document.getElementById('organDemoRadio').checked){seed = 0;}
+      if (document.getElementById('organDemoRadio').checked){seed = 8;}    // seed =3 => 3 mutations at 2% with a vialble offspring; 
+                                                                           // seed=8 =>1 mutation at 2% with vialbe ofspring; also gets 5 mutations at 10% with a viable offspring.
       else {seed = -1}
       var request = {
         'type': 'addEvent',
@@ -299,7 +299,7 @@ av.msg.doOrgTrace = function () {
           //'0,heads_default,' + av.fzr.actOrgan.genome,                                  //genome string
           av.fzr.actOrgan.genome,                                  //genome string
           av.dom.orgMuteInput.value / 100,     // point mutation rate
-          seed                                            //seed where 0 = random; >0 to replay that number
+          seed                                            //seed where 0 = random; >0 to replay that number;
         ]
       };
       if (av.debug.msg) console.log('doOrgTrace', request);
