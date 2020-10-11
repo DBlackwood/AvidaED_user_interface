@@ -252,7 +252,7 @@ av.frd.avidaCFG2form = function (fileStr){
   //dijit.byId('sizeCols').set('value', dict.WORLD_X);
   av.dom.sizeRows.value = dict.WORLD_Y
   //dijit.byId('sizeRows').set('value', dict.WORLD_Y);
-  document.getElementById('mutePopInput').value = dict.COPY_MUT_PROB*100;
+  av.dom.mutePopInput.value = dict.COPY_MUT_PROB*100;
   //var event = new Event('change');
   var event = new window.CustomEvent('change');
   document.getElementById('mutePopInput').dispatchEvent(event);
