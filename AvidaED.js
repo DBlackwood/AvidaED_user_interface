@@ -2,7 +2,7 @@
 // need a server to run this. The one below works.
 // python -m SimpleHTTPServer  in the folder with index.html to start a server for using pouchDB
 // python -m SimpleHTTPServer 8001  to put on 8001 instead of 8000
-// Then visit http://127.0.0.1:8000/avidaED.html
+// Then visit http://127.0.0.1:8000/avidaED.html in a browser
 //
 // Git commands used to push
 // git add .
@@ -25,25 +25,36 @@
 // Update Notes -------------------------------------------------------------------------------------------------------
 //  Should have started this sooner;  
 //
-// Avida-ED 3.3.2 added new version of plotly.js to plotly.js-1.49.4
+// Avida-ED 3.3.2 on 2019 Oct 4
+//     added new version of plotly.js to plotly.js-1.49.4
 //     modified modeBarButtons ToRemove to remove the new button called 'toggleSpikelines'
 //     modified to display the button 'zoom2d'
 //     added the setting: responsive: true    to the list of options in av.pch.widg
-// Avida-ED 3.3.3 changed Pause Run: dojo radio buttons to a plain javascript check box
+// Avida-ED 3.3.3 2020 Feb 26
+//     changed Pause Run: dojo radio buttons to a plain javascript check box
 //     changed dojo number spinner to a plain javascript text input box
 //     if autoPauseNum is changed to a value > updates, then autoPauseCheck becomes true
 //     some students were having trouble entering the correct number of updates for Exercise 4 due to changes in browser/javascript/dojo interactions
-// Avida-ED 3.3.4 changed text in error reporting & removed some console.log statements. 
+// Avida-ED 3.3.4 on 2020 Feb 28
+//     changed text in error reporting & removed some console.log statements. 
 //     Fixed to look for pauseRunAt.txt file in the configured dish folder & to set the the pause if the value is > 0, 
 //     then that value is used and the checkbox is checked. 
-// Avida-ED 3.3.5 updated the following libraries: Dojo 1.16.2, plotly-v1.53, jquery-3.4.1, and jquery-ui-1.12.1
+// Avida-ED 3.3.5 on 2020 Apr 4
+//     updated the following libraries: Dojo 1.16.2, plotly-v1.53, jquery-3.4.1, and jquery-ui-1.12.1
 //     need to up date jsZip and FileSaver, but ran into problems.
-//     uppdatd index.html file to redirect to AvidaED.html after 3 seconds. 
+//     uppdatd index.html file to redirect to AvidaED.html after 3 seconds. Does not work as of April 2021
 //     removed indexPlain.html
-// Avida-ED 3.3.6 patched an error so that adding a populated dish to the analysis, charts correctly. 
-// Avida-ED 3.3.7 updated slider that had stopped working on population page. Changed demo mode seed to 8 so there is 1 changed instruction with 2% mutation rate
+// Avida-ED 3.3.6 2020 Jul 29
+//     patched an error so that adding a populated dish to the analysis, charts correctly using the menu. 
+// Avida-ED 3.3.7 on 2020 Oct 2
+//     updatd dojo library to release-1.16.3
+//     updated slider that had stopped working on population page. 
+//     Changed demo mode seed to 8 so there is 1 changed instruction with 2% mutation rate
 //     5 changed instructions at 10% mutation rate on a MacBook Pro (16-inch, 2019) running Mos 10.15.6 Catalina and Chrome Version 85.0.4183.121 (Official Build) (64-bit). 
 //     Also updating Dojo libraries to dojo-release-1.16.3
+// Avida-ED 3.3.9 updated Dojo libraries to dojo-release-1.16.4  on 2021 April 15
+// Avida-ED 3.3.9 updated Average Age calculation to account for the fact that Population Statistics is one update behind Selected Organsism Type
+//     The one update offset is to improve speed by having the web worker calculate the next update while the website updates the image. 
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
 //
@@ -73,7 +84,7 @@
 //
 // end ------------------------------------------------------------------------------------------------------------------------
 /*
-  <script type='text/javascript' src='lib/dojo-release-1.16.3/dojo/dojo.js'
+  <script type='text/javascript' src='lib/dojo-release-1.16.4/dojo/dojo.js'
           data-dojo-config="'parseOnLoad':false,'async':true,
         'packages':[
         {'name':'maqetta','location':'../../maqetta'},

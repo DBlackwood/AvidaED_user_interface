@@ -451,6 +451,7 @@ av.msg.updatePopStats = function (msg) {
   'use strict';
   var place = 2;
   var vari = 2;
+  var adjAge=-1;;
   //update graph arrays
   if (0 <= msg.update) {  //normal start to loop
     av.pch.aveFit[msg.update] = msg.ave_fitness;
@@ -496,7 +497,8 @@ av.msg.updatePopStats = function (msg) {
   aEnergyAcqRateLabel.textContent = msg.ave_metabolic_rate.formatNum(place);
   if (0 < msg.ave_gestation_time) {aOffspringCostLabel.textContent = msg.ave_gestation_time.formatNum(place);}
   else {aOffspringCostLabel.textContent = 'non-viable';}
-    aAgeLabel.textContent = msg.ave_age.formatNum(place);
+    adjAge = msg.ave_age + 1;
+    aAgeLabel.textContent = adjAge.formatNum(place);
 
   parentNumLabel.textContent = av.parents.name.length;
   //console.log('update', msg.update, '; logNum[update]',av.pch.logNum[Number(msg.update)-1], '; logNum', av.pch.logNum);

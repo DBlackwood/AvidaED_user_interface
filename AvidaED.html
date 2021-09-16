@@ -4,33 +4,13 @@
   <title>Avida-ED</title>
   <meta charset='utf-8'/>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
-  <script type='text/javascript' src='lib/dojo-release-1.16.3/dojo/dojo.js'
-          data-dojo-config="'parseOnLoad':false,'async':true,
-        'packages':[
-        {'name':'maqetta','location':'../../maqetta'},
-        {'name':'jquery','location':'../../','main':'jquery-v3.4.1.min'},
-        {'name':'jquery-ui','location':'../../jquery-ui-1.12.1.custom','main':'jquery-ui.min'}
-        ],
-        'themeMap':[
-          ['Android','',['../../themes/android/android.css']],
-          ['BlackBerry','',['../../themes/blackberry/blackberry.css']],
-          ['iPad','',['../../themes/ipad/ipad.css']],
-          ['iPhone','',['../../themes/iphone/iphone.css']],
-          ['.*','',['../../themes/iphone/iphone.css']
-        ]],'mblThemeFiles':[],'mblLoadCompatPattern':''">
-  </script>
-  
-  <script type='text/javascript' src='colormap.js'></script>
-  <script type='text/javascript' src='globals.js'></script>
-  <script type='text/javascript' src='placeParent.js'></script>
-  <script type='text/javascript' src='utilities.js'></script>
-  <script type='text/javascript' src='AvidaED.js'></script>
 
   <link href='images/favicon.ico' rel='icon' type='image/x-icon' />
   <link rel='stylesheet' href='lib/jquery-ui-1.12.1.custom/jquery-ui.css'>
-  <style>@import 'themes/claro/document.css';
-    @import 'themes/claro/claro.css';
-    @import 'AvidaED.css';
+  <style>
+    @import 'themes/claro/document.css';
+    @import 'themes/claro/claro.css';	
+    @import 'avidaED.css';
   </style>
   <script>
     function avResize() {
@@ -53,7 +33,7 @@
 <!-- http://stackoverflow.com/questions/20828799/creating-a-splash-page-in-html5 -->
 <div id='splash' style='display:block; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: 100%; height: 100%; z-index: 1000; background-color: #13332A'>
   <div align='center'>
-    <h1 style='color:whitesmoke'>3.3.7 is loading . . .</h1>
+    <h1 style='color:whitesmoke'>Avida-ED 3.3.9 is loading . . .</h1>
     <img src='images/Avida-ED-icon.png' /><br />
     <img src='images/AvidaGrid.gif' />
   </div>
@@ -962,12 +942,12 @@
 
 <!---------------------------------- Export Stand Alone Dialog box ---------------------------------------------------->
 <div data-dojo-type='dijit/Dialog' data-dojo-id='mnFlStandAloneAppDialog'
-     title='Stand alone version of 3.3.7'>
+     title='Stand alone version of Avidda-ED 3.3.9'>
   <div class='dijitDialogPaneContentArea'>
     <h3>For working where there is no internet access</h3>
     <ul>
       <li class="slim"><a href="pkgs/Avida-ED-Web-PC_2016_0918.exe" target='_blank'>Avida-ED Windows installer for self-hosted version 2016_0918</a></li>
-      <li><a href="pkgs/Avida-ED_Server_3.0.0.app.zip" target='_blank'>3.3.7 for Mac OS 10.6 and above</a></li>
+      <li><a href="pkgs/Avida-ED_Server_3.0.0.app.zip" target='_blank'>Avida-ED 3 for Mac OS 10.6 and above</a></li>
       <ul>
         <li>Unzip the file once it is downloaded</li>
         <li>Move the file ‘Avida-ED Web.app’ to the Applications Folder</li>
@@ -1040,8 +1020,8 @@
     <p>An educational artificial life plateform developed at Michigan State University for <br />
       learning evolution and the nature of science using digital organisms.</p>
     <br />
-    <strong>3.3.7</strong><br />
-    <strong>2008-2016<br />http://Avida-ED.msu.edu/</strong><br />
+    <strong>Avida-ED 3.3.9</strong><br />
+    <strong>2008-2021<br />http://Avida-ED.msu.edu/</strong><br />
     <br />
     <p>Developed under NSF Grant #0341484,<br />
        Cooperative Agreement DBI-093945 and <br />
@@ -1050,7 +1030,7 @@
     <textarea rows='10' cols='100'>
       Avida-ED (avida/apps/viewer-macos)
 
-Copyright 2010-2016 Michigan State University. All rights reserved.
+Copyright 2010-2021 Michigan State University. All rights reserved.
 http://avida.devosoft.org/viewer-macos
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -1064,7 +1044,7 @@ THIS SOFTWARE IS PROVIDED BY MICHIGAN STATE UNIVERSITY AND CONTRIBUTORS "AS IS" 
 
 Avida (avida-core and viewer libraries)
 
-Copyright 1999-2016 Michigan State University. All rights reserved.
+Copyright 1999-2021 Michigan State University. All rights reserved.
 Copyright 1993-2003 California Institute of Technology.
 
 Avida is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License or (at your option) any later version.
@@ -1341,7 +1321,7 @@ If the Library as you received it specifies that a proxy can decide whether futu
 
 Apto C++ Library
 
-Copyright 2011-2016 David Michael Bryson. All rights reserved.
+Copyright 2011-2021 David Michael Bryson. All rights reserved.
 http://programerror.com/software/apto
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -1493,6 +1473,26 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <!------------------------------------------ closing the file --------------------------------------------------------->
-
+  <script type='text/javascript' src='lib/dojo-release-1.16.4/dojo/dojo.js'
+          data-dojo-config="'parseOnLoad':false,'async':true,
+        'packages':[
+        {'name':'maqetta','location':'../../maqetta'},
+        {'name':'jquery','location':'../../','main':'jquery-v3.4.1.min'},
+        {'name':'jquery-ui','location':'../../jquery-ui-1.12.1.custom','main':'jquery-ui.min'}
+        ],
+        'themeMap':[
+          ['Android','',['../../themes/android/android.css']],
+          ['BlackBerry','',['../../themes/blackberry/blackberry.css']],
+          ['iPad','',['../../themes/ipad/ipad.css']],
+          ['iPhone','',['../../themes/iphone/iphone.css']],
+          ['.*','',['../../themes/iphone/iphone.css']
+        ]],'mblThemeFiles':[],'mblLoadCompatPattern':''">
+  </script>
+  
+  <script type='text/javascript' src='colormap.js'></script>
+  <script type='text/javascript' src='globals.js'></script>
+  <script type='text/javascript' src='placeParent.js'></script>
+  <script type='text/javascript' src='utilities.js'></script>
+  <script type='text/javascript' src='AvidaED.js'></script>
 </body>
 </html>
