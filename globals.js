@@ -324,7 +324,7 @@ av.msg.uiReqestedReset = false;
 
 av.ui = {};  //user interface functions and variables
 av.ui.oneUpdateFlag = false;
-av.ui.version = '3.3.9';
+av.ui.version = '3.4.0';
 av.debug.log = '';
 av.debug.log = '--hed: message and error log: version ' + av.ui.version;
 av.debug.triggered = 'unknown';

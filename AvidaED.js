@@ -53,7 +53,7 @@
 //     5 changed instructions at 10% mutation rate on a MacBook Pro (16-inch, 2019) running Mos 10.15.6 Catalina and Chrome Version 85.0.4183.121 (Official Build) (64-bit). 
 //     Also updating Dojo libraries to dojo-release-1.16.3
 // Avida-ED 3.3.9 updated Dojo libraries to dojo-release-1.16.4  on 2021 April 15
-// Avida-ED 3.3.9 updated Average Age calculation to account for the fact that Population Statistics is one update behind Selected Organsism Type
+// Avida-ED 3.4.0 updated Average Age calculation to account for the fact that Population Statistics is one update behind Selected Organsism Type
 //     The one update offset is to improve speed by having the web worker calculate the next update while the website updates the image. 
 //
 // Generic Notes -------------------------------------------------------------------------------------------------------
